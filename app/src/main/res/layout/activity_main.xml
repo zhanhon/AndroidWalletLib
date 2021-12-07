@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_078DC2">
+
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_64"
+            android:layout_marginTop="@dimen/dp_20">
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="ETH"
+                android:textSize="@dimen/sp_30" />
+
+            <ImageView
+                android:id="@+id/btnMenu"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/ic_launcher_background" />
+
+            <LinearLayout
+                android:id="@+id/relBtns"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/btnMenu"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:id="@+id/iv_gathering_top"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_margin="@dimen/dp_10"
+                    android:background="@drawable/ic_launcher_background" />
+
+                <ImageView
+                    android:id="@+id/iv_transfer_top"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_margin="@dimen/dp_10"
+                    android:background="@drawable/ic_launcher_background" />
+
+                <ImageView
+                    android:id="@+id/iv_scan_top"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_margin="@dimen/dp_10"
+                    android:background="@drawable/ic_launcher_background" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/relBtn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+                <ImageView
+                    android:id="@+id/iv_notice_top"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_margin="@dimen/dp_10"
+                    android:background="@drawable/ic_launcher_background" />
+
+                <ImageView
+                    android:id="@+id/iv_mine_top"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_margin="@dimen/dp_10"
+                    android:background="@drawable/ic_launcher_background" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <ScrollView
+            android:id="@+id/scroll01"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/linearBtns"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_64">
+
+                    <LinearLayout
+                        android:id="@+id/ll_gathering"
+                        android:layout_width="@dimen/dp_0"
+                        android:layout_height="@dimen/dp_64"
+                        android:layout_weight="1"
+                        android:background="@color/cardview_shadow_end_color"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_20"
+                            android:layout_height="@dimen/dp_20"
+                            android:background="@drawable/ic_launcher_background" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="收款" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_transfer"
+                        android:layout_width="@dimen/dp_0"
+                        android:layout_height="@dimen/dp_64"
+                        android:layout_marginStart="@dimen/dp_10"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:layout_weight="1"
+                        android:background="@color/cardview_shadow_end_color"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_20"
+                            android:layout_height="@dimen/dp_20"
+                            android:background="@drawable/ic_launcher_background" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="转账" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_scan"
+                        android:layout_width="@dimen/dp_0"
+                        android:layout_height="@dimen/dp_64"
+                        android:layout_weight="1"
+                        android:background="@color/cardview_shadow_end_color"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_20"
+                            android:layout_height="@dimen/dp_20"
+                            android:background="@drawable/ic_launcher_background" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="扫描" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/card00"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_120"
+                    android:background="#0cb5e4"
+                    android:padding="@dimen/dp_10">
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_currency"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#f0eff4" />
+            </LinearLayout>
+
+        </ScrollView>
+
+        <RelativeLayout
+            android:id="@+id/card01"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_120"
+            android:layout_below="@id/toolbar"
+            android:background="@color/color_0CB5E4"
+            android:padding="@dimen/dp_10"
+            android:visibility="gone"></RelativeLayout>
+
+
+    </RelativeLayout>
+</layout>

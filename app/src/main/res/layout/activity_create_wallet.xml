@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.CreateWalletActivity">
+
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/create_wallet"
+                android:textSize="@dimen/sp_30" />
+
+            <ImageView
+                android:id="@+id/imv_back"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/ic_launcher_background" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <Button
+                android:id="@+id/btn_btc"
+                android:layout_width="@dimen/dp_100"
+                android:layout_height="@dimen/dp_100"
+                android:text="BTC" />
+
+            <Button
+                android:id="@+id/btn_eth"
+                android:layout_width="@dimen/dp_100"
+                android:layout_height="@dimen/dp_100"
+                android:text="ETH" />
+
+            <Button
+                android:id="@+id/btn_trx"
+                android:layout_width="@dimen/dp_100"
+                android:layout_height="@dimen/dp_100"
+                android:text="TRX" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_wallet_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_currency">
+
+            <TextView
+                android:id="@+id/tv_wallet_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wallet_name" />
+
+            <EditText
+                android:id="@+id/edt_wallet_name"
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="wrap_content"
+                android:hint="@string/wallet_name" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_wallet_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_wallet_name">
+
+            <TextView
+                android:id="@+id/tv_wallet_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wallet_password" />
+
+            <EditText
+                android:id="@+id/edt_wallet_password"
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="wrap_content"
+                android:hint="@string/wallet_password" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_wallet_password_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_wallet_password">
+
+            <TextView
+                android:id="@+id/tv_passord_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/passord_confirm" />
+
+            <EditText
+                android:id="@+id/edt_password_confirm"
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="wrap_content"
+                android:hint="@string/passord_confirm" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_contributing_words"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_wallet_password_confirm">
+
+            <TextView
+                android:id="@+id/tv_contributing_words"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contributing_words" />
+
+            <EditText
+                android:id="@+id/edt_contributing_words"
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="wrap_content"
+                android:hint="@string/contributing_words" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="@string/confirm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_contributing_words" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

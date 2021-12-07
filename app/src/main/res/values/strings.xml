@@ -1,0 +1,13 @@
+<resources>
+
+    <string name="app_name">漫步钱包</string>
+    <string name="create_recover_wallet_tips">轻松存取，自由来去</string>
+    <string name="recover_wallet">恢复钱包</string>
+    <string name="create_wallet">创建钱包</string>
+    <string name="wallet_name">钱包名称</string>
+    <string name="wallet_password">钱包密码</string>
+    <string name="passord_confirm">确认密码</string>
+    <string name="contributing_words">助记词</string>
+    <string name="confirm">确认</string>
+
+</resources>

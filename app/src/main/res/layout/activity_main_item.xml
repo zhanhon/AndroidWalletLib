@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_currency_icon"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:background="@drawable/ic_launcher_background" />
+
+    <LinearLayout
+        android:id="@+id/ll_currency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/iv_currency_icon"
+        android:layout_marginStart="@dimen/dp_40"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_currency_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="性别：ricky"
+            android:textColor="@color/color_000000" />
+
+        <TextView
+            android:id="@+id/tv_converted_currency_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="年龄：25" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_currency_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="25.3323232332323" />
+
+</RelativeLayout>
