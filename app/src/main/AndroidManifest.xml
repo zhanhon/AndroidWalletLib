@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppMainTheme">
-        <activity android:name=".base.BaseActivity"></activity>
+        <activity android:name=".activity.ContributingWordsConfirmActivity" />
+        <activity android:name=".activity.ContributingWordsActivity" />
+        <activity android:name=".base.BaseActivity" />
         <activity android:name=".activity.RecoverWalletActivity" />
         <activity android:name=".activity.CreateWalletActivity" />
         <activity android:name=".activity.WelcomeActivity">

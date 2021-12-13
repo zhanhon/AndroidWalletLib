@@ -1,5 +1,9 @@
 <resources>
 
+    <item name="tag_key_data" type="id" />
+    <item name="tag_key_position" type="id" />
+
+
     <string name="app_name">漫步钱包</string>
     <string name="create_recover_wallet_tips">轻松存取，自由来去</string>
     <string name="recover_wallet">恢复钱包</string>
@@ -8,6 +12,16 @@
     <string name="wallet_password">钱包密码</string>
     <string name="passord_confirm">确认密码</string>
     <string name="contributing_words">助记词</string>
+    <string name="gathering">收款</string>
+    <string name="transfer">转账</string>
+    <string name="scan">扫描</string>
     <string name="confirm">确认</string>
+    <string name="english">英文</string>
+    <string name="chinese">中文</string>
+    <string name="one_copy">一键复制</string>
+    <string name="contributing_words_confirm">助记确认</string>
+    <string name="skip_this_step">跳过此步骤</string>
+    <string name="contributing_words_hint">请输入中文或英文助记词，每个单字中间请加上空白以便系统判定</string>
+    <string name="contributing_words_completed">助记词完成</string>
 
 </resources>

@@ -9,6 +9,7 @@ import android.widget.RelativeLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
@@ -28,6 +29,7 @@ class MainActivity : BaseActivity() {
     @SuppressLint("WrongConstant")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.color_078DC2)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         binding.scroll01.post { binding.scroll01.fullScroll(ScrollView.FOCUS_UP) } //初始值
@@ -42,10 +44,10 @@ class MainActivity : BaseActivity() {
                 if (y > 64) View.VISIBLE else View.GONE
         }
 
-        myDataBeans = ArrayList()
         for (i in 0..100) {
             myDataBeans.add(
                 MyDataBean(
+                    i + 1,
                     "ricky-$i",
                     "21-$i"
                 )

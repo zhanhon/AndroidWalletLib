@@ -111,7 +111,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="收款" />
+                            android:text="@string/gathering" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -133,7 +133,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="转账" />
+                            android:text="@string/transfer" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -153,7 +153,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="扫描" />
+                            android:text="@string/scan" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -162,7 +162,7 @@
                     android:id="@+id/card00"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_120"
-                    android:background="#0cb5e4"
+                    android:background="@color/color_0CB5E4"
                     android:padding="@dimen/dp_10">
 
                 </RelativeLayout>
@@ -171,7 +171,7 @@
                     android:id="@+id/rv_currency"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#f0eff4" />
+                    android:background="@color/color_F0EFF4" />
             </LinearLayout>
 
         </ScrollView>

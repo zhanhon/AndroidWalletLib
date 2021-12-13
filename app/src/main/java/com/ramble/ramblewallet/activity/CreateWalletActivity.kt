@@ -22,7 +22,7 @@ class CreateWalletActivity : BaseActivity() {
             finish()
         }
         binding.btnConfirm.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, ContributingWordsActivity::class.java))
         }
     }
 }

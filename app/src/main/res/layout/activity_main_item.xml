@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -24,14 +25,14 @@
             android:id="@+id/tv_currency_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="性别：ricky"
-            android:textColor="@color/color_000000" />
+            android:textColor="@color/color_000000"
+            tools:text="25" />
 
         <TextView
             android:id="@+id/tv_converted_currency_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="年龄：25" />
+            tools:text="25" />
     </LinearLayout>
 
     <TextView
@@ -40,6 +41,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:text="25.3323232332323" />
+        tools:text="25" />
 
 </RelativeLayout>

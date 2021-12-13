@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.ContributingWordsActivity">
+
+        <LinearLayout
+            android:id="@+id/ll_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_50"
+            android:layout_marginEnd="@dimen/dp_100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/ll_english"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_english"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/english" />
+
+                <View
+                    android:id="@+id/v_english"
+                    android:layout_width="@dimen/dp_40"
+                    android:layout_height="@dimen/dp_3"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:background="@color/color_3F5E94" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_chinese"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_chinese"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chinese" />
+
+                <View
+                    android:id="@+id/v_chinese"
+                    android:layout_width="@dimen/dp_40"
+                    android:layout_height="@dimen/dp_3"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:background="@color/color_9598AA" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_contributing_words"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_50"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_title"
+            app:spanCount="3" />
+
+        <LinearLayout
+            android:id="@+id/ll_copy_and_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_50"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_contributing_words">
+
+            <Button
+                android:id="@+id/btn_one_copy"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_weight="1"
+                android:background="@drawable/shape_white_bottom_green_line_btn"
+                android:gravity="center"
+                android:outlineProvider="none"
+                android:text="@string/one_copy"
+                android:textColor="@color/color_3BB7A5" />
+
+            <Button
+                android:id="@+id/btn_contributing_words_confirm"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_weight="1"
+                android:background="@drawable/shape_green_bottom_btn"
+                android:gravity="center"
+                android:outlineProvider="none"
+                android:text="@string/contributing_words_confirm"
+                android:textColor="@color/color_FFFFFF" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_skip_this"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_60"
+            android:layout_marginEnd="@dimen/dp_30"
+            android:background="@drawable/shape_white_bottom_green_line_btn"
+            android:gravity="center"
+            android:outlineProvider="none"
+            android:text="@string/skip_this_step"
+            android:textColor="@color/color_3BB7A5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_copy_and_confirm" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
