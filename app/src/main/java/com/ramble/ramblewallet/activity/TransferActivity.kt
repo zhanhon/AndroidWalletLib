@@ -28,6 +28,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setOnClickListener() {
+        binding.ivBack.setOnClickListener(this)
         binding.clMinerFee.setOnClickListener(this)
     }
 
@@ -68,6 +69,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
+            R.id.iv_back -> {
+                finish()
+            }
             R.id.cl_miner_fee -> {
                 showDialog()
             }
