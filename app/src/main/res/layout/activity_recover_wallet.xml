@@ -47,18 +47,21 @@
                 android:id="@+id/btn_btc"
                 android:layout_width="@dimen/dp_100"
                 android:layout_height="@dimen/dp_100"
+                android:outlineProvider="none"
                 android:text="BTC" />
 
             <Button
                 android:id="@+id/btn_eth"
                 android:layout_width="@dimen/dp_100"
                 android:layout_height="@dimen/dp_100"
+                android:outlineProvider="none"
                 android:text="ETH" />
 
             <Button
                 android:id="@+id/btn_trx"
                 android:layout_width="@dimen/dp_100"
                 android:layout_height="@dimen/dp_100"
+                android:outlineProvider="none"
                 android:text="TRX" />
         </LinearLayout>
 
@@ -133,6 +136,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_20"
+            android:outlineProvider="none"
             android:text="@string/confirm"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

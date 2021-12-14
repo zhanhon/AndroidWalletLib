@@ -33,5 +33,18 @@
     <string name="service_agreement">服务协议</string>
     <string name="privacy_statement">隐私声明</string>
     <string name="about_us">关于我们</string>
+    <string name="sender">发送人</string>
+    <string name="receiver_address">收件人地址</string>
+    <string name="quantity">数量</string>
+    <string name="miner_fee">矿工费</string>
+    <string name="btn_all">全部</string>
+    <string name="miner_fee_fast">快速</string>
+    <string name="miner_fee_slow">慢速</string>
+    <string name="miner_fee_custom">自定义</string>
+    <string name="miner_fee_formulae">矿工费 = GAS Price*GAS Limit</string>
+    <string name="miner_fee_tips">矿工费越高，转账越快</string>
+    <string name="miner_fee_gas_price_titile">GAS Price（GWEI）</string>
+    <string name="miner_fee_limit_title">矿工费上限</string>
+
 
 </resources>
