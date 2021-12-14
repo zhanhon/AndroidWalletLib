@@ -20,7 +20,7 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MyDataBean
 import com.ramble.ramblewallet.databinding.ActivityMainBinding
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), View.OnClickListener{
 
     private lateinit var binding: ActivityMainBinding
     private var myDataBeans: ArrayList<MyDataBean> = arrayListOf()
@@ -60,19 +60,45 @@ class MainActivity : BaseActivity() {
         binding.rvCurrency.layoutManager = linearLayoutManager
         binding.rvCurrency.adapter = mainAdapter
 
+        setOnClickListener()
+    }
 
-        binding.ivMineTop.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+    private fun setOnClickListener() {
+        binding.btnMenu.setOnClickListener(this)
+        binding.ivNoticeTop.setOnClickListener(this)
+        binding.ivMineTop.setOnClickListener(this)
+
+        binding.ivGatheringTop.setOnClickListener(this)
+        binding.llGathering.setOnClickListener(this)
+
+        binding.ivTransferTop.setOnClickListener(this)
+        binding.llTransfer.setOnClickListener(this)
+
+        binding.ivScanTop.setOnClickListener(this)
+        binding.llScan.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.btnMenu -> {
+                startActivity(Intent(this, ManageWalletActivity::class.java))
+            }
+            R.id.iv_notice_top -> {
+                startActivity(Intent(this, MessageCenterActivity::class.java))
+            }
+            R.id.iv_mine_top -> {
+                startActivity(Intent(this, MineActivity::class.java))
+            }
+            R.id.iv_gathering_top, R.id.ll_gathering -> {
+                startActivity(Intent(this, GatheringActivity::class.java))
+            }
+            R.id.iv_transfer_top, R.id.ll_transfer  -> {
+                startActivity(Intent(this, TransferActivity::class.java))
+            }
+            R.id.iv_scan_top, R.id.ll_scan -> {
+                startActivity(Intent(this, ScanActivity::class.java))
+            }
         }
-
-        binding.ivNoticeTop.setOnClickListener {
-            startActivity(Intent(this, MessageCenterActivity::class.java))
-        }
-
-        binding.btnMenu.setOnClickListener {
-            startActivity(Intent(this, ManageWalletActivity::class.java))
-        }
-
     }
 
 }

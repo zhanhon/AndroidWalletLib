@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppMainTheme">
-        <activity android:name=".activity.TransferActivity"></activity>
+        <activity android:name=".activity.GatheringActivity"></activity>
+        <activity android:name=".activity.TransferActivity" />
         <activity android:name=".activity.NewAddActivity" />
         <activity android:name=".activity.ManageWalletActivity" />
         <activity android:name=".activity.ScanActivity" />
