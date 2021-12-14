@@ -3,7 +3,6 @@
     <item name="tag_key_data" type="id" />
     <item name="tag_key_position" type="id" />
 
-
     <string name="app_name">漫步钱包</string>
     <string name="create_recover_wallet_tips">轻松存取，自由来去</string>
     <string name="recover_wallet">恢复钱包</string>
@@ -23,5 +22,16 @@
     <string name="skip_this_step">跳过此步骤</string>
     <string name="contributing_words_hint">请输入中文或英文助记词，每个单字中间请加上空白以便系统判定</string>
     <string name="contributing_words_completed">助记词完成</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="personal_management">个人管理</string>
+    <string name="manage_wallet">管理钱包</string>
+    <string name="address_book">地址本</string>
+    <string name="transaction_query">交易查询</string>
+    <string name="multi_language">多语言</string>
+    <string name="currency_unit">货币单位</string>
+    <string name="help_feedback">帮助与反馈</string>
+    <string name="service_agreement">服务协议</string>
+    <string name="privacy_statement">隐私声明</string>
+    <string name="about_us">关于我们</string>
 
 </resources>

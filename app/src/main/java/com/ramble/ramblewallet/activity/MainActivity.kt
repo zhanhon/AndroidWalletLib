@@ -1,6 +1,7 @@
 package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -58,6 +59,19 @@ class MainActivity : BaseActivity() {
         linearLayoutManager.orientation = OrientationHelper.VERTICAL
         binding.rvCurrency.layoutManager = linearLayoutManager
         binding.rvCurrency.adapter = mainAdapter
+
+
+        binding.ivMineTop.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+
+        binding.ivNoticeTop.setOnClickListener {
+            startActivity(Intent(this, MessageCenterActivity::class.java))
+        }
+
+        binding.btnMenu.setOnClickListener {
+            startActivity(Intent(this, ManageWalletActivity::class.java))
+        }
 
     }
 

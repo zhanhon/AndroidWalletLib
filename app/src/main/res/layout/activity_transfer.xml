@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.TransferActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_FFFFFF"
+        android:padding="@dimen/dp_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:background="@drawable/ic_launcher_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_transfer_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:textColor="@color/color_000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="25323232323" />
+
+        <ImageView
+            android:id="@+id/iv_transfer_scan"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:background="@drawable/ic_launcher_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_address_input"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/dp_10"
+        android:padding="@dimen/dp_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_toolbar">
+
+        <LinearLayout
+            android:id="@+id/ll_address_input_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_sender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="1111" />
+
+                <TextView
+                    android:id="@+id/tv_wallet_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="1111" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_wallet_address"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                tools:text="1111111111111111111111111111111111111" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/cl_address_input_middle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:background="@color/color_9597AA"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_address_input_up" />
+
+        <LinearLayout
+            android:id="@+id/ll_address_input_down"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_address_input_middle">
+
+            <TextView
+                android:id="@+id/tv_receiver_address"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0"
+                android:layout_weight="1"
+                tools:text="11111111111" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edt_receiver_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="1111" />
+
+                <ImageView
+                    android:id="@+id/tv_address_book"
+                    android:layout_width="@dimen/dp_10"
+                    android:layout_height="@dimen/dp_10"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_launcher_background"
+                    tools:text="1111" />
+            </RelativeLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_quantity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:padding="@dimen/dp_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_address_input">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_miner_fee"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/dp_10"
+        android:padding="@dimen/dp_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_address_input">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

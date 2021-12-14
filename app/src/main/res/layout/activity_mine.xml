@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".activity.MineActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_FFFFFF"
+            android:padding="@dimen/dp_10">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:background="@drawable/ic_launcher_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_mine_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_10"
+                android:textColor="@color/color_000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="25323232323" />
+
+            <ImageView
+                android:id="@+id/iv_mine_right"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:background="@drawable/ic_launcher_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/v_1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10"
+            android:background="@color/color_F9F9F9" />
+
+        <include
+            android:id="@+id/inc_manage_wallet"
+            layout="@layout/activity_mine_item" />
+
+        <View
+            android:id="@+id/v_2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10"
+            android:background="@color/color_F9F9F9" />
+
+        <include
+            android:id="@+id/inc_address_book"
+            layout="@layout/activity_mine_item" />
+
+        <include
+            android:id="@+id/inc_transaction_query"
+            layout="@layout/activity_mine_item" />
+
+        <include
+            android:id="@+id/inc_multi_language"
+            layout="@layout/activity_mine_item" />
+
+        <include
+            android:id="@+id/inc_currency_unit"
+            layout="@layout/activity_mine_item" />
+
+        <View
+            android:id="@+id/v_3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10" />
+
+        <include
+            android:id="@+id/inc_help_feedback"
+            layout="@layout/activity_mine_item" />
+
+        <View
+            android:id="@+id/v_4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10"
+            android:background="@color/color_F9F9F9" />
+
+        <include
+            android:id="@+id/inc_service_agreement"
+            layout="@layout/activity_mine_item" />
+
+        <include
+            android:id="@+id/inc_privacy_statement"
+            layout="@layout/activity_mine_item" />
+
+        <include
+            android:id="@+id/inc_about_us"
+            layout="@layout/activity_mine_item" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_100"
+            android:text="@string/clear_cache"
+            android:textColor="@color/color_9597AA"
+            android:textSize="@dimen/sp_13" />
+
+    </LinearLayout>
+</layout>

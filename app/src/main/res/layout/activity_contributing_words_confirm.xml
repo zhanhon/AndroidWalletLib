@@ -290,7 +290,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_skip_this"
+            android:id="@+id/btn_contributing_words_completed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_30"
