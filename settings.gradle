@@ -1,3 +1,4 @@
 include ':wallet-eth'
 include ':app'
+include ':push'
 rootProject.name = "RambleWallet"
