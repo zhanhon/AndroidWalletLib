@@ -38,6 +38,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/ll_transfer_fast"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_10"
@@ -55,12 +56,14 @@
                     android:padding="@dimen/dp_10">
 
                     <TextView
+                        android:id="@+id/tv_transfer_fast"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/miner_fee_fast"
                         android:textColor="@color/color_3BB7A5" />
 
                     <TextView
+                        android:id="@+id/tv_transfer_gwei_fast"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_10"
@@ -69,6 +72,7 @@
                         tools:text="(166 GWEI)" />
 
                     <TextView
+                        android:id="@+id/tv_transfer_gas_fast"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_5"
@@ -78,6 +82,7 @@
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:id="@+id/rl_transfer_fast_bottom"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_0"
                     android:layout_weight="1"
@@ -86,6 +91,7 @@
                     android:padding="@dimen/dp_5">
 
                     <TextView
+                        android:id="@+id/tv_transfer_speed_fast"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -96,6 +102,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_transfer_slow"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_10"
@@ -114,12 +121,14 @@
                     android:padding="@dimen/dp_10">
 
                     <TextView
+                        android:id="@+id/tv_transfer_slow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/miner_fee_slow"
                         android:textColor="@color/color_000000" />
 
                     <TextView
+                        android:id="@+id/tv_transfer_gwei_slow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_10"
@@ -128,14 +137,17 @@
                         tools:text="(166 GWEI)" />
 
                     <TextView
+                        android:id="@+id/tv_transfer_gas_slow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_5"
+                        android:textColor="@color/color_9598AA"
                         android:textSize="@dimen/dp_10"
                         tools:text="0.0003486 ETH" />
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:id="@+id/rl_transfer_slow_bottom"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_0"
                     android:layout_weight="1"
@@ -144,16 +156,18 @@
                     android:padding="@dimen/dp_5">
 
                     <TextView
+                        android:id="@+id/tv_transfer_speed_slow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:textColor="@color/color_000000"
+                        android:textColor="@color/color_9598AA"
                         android:textSize="@dimen/dp_10"
                         tools:text="dsfsfa" />
                 </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_transfer_custom"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dp_10"
@@ -172,11 +186,13 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_gwei_gas_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_30"
             android:layout_marginTop="@dimen/dp_20"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="@dimen/dp_0"
@@ -193,7 +209,19 @@
                 <EditText
                     android:id="@+id/miner_fee_gas_price"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:background="@null"
+                    android:inputType="numberDecimal"
+                    android:longClickable="false"
+                    android:textSize="@dimen/sp_18"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:layout_marginRight="@dimen/dp_30"
+                    android:background="@color/color_E2E2E2" />
             </LinearLayout>
 
             <LinearLayout
@@ -211,7 +239,19 @@
                 <EditText
                     android:id="@+id/miner_fee_limit_title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:background="@null"
+                    android:inputType="numberDecimal"
+                    android:longClickable="false"
+                    android:textSize="@dimen/sp_18"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:layout_marginRight="@dimen/dp_30"
+                    android:background="@color/color_E2E2E2" />
             </LinearLayout>
         </LinearLayout>
 
@@ -225,6 +265,7 @@
             android:textSize="@dimen/dp_10" />
 
         <Button
+            android:id="@+id/btn_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_20"

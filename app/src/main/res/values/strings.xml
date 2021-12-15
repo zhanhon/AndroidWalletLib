@@ -53,5 +53,6 @@
     <string name="copy_success">复制成功</string>
     <string name="save_success">保存成功</string>
     <string name="save_scan">保存二维码</string>
+    <string name="transfer_balance">余额</string>
 
 </resources>

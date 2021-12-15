@@ -20,11 +20,15 @@
 
             <ImageView
                 android:id="@+id/iv_back"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
                 android:layout_marginStart="@dimen/dp_20"
-                android:background="@mipmap/ic_launcher" />
+                android:layout_marginTop="@dimen/dp_5"
+                android:src="@mipmap/ic_arrow_left"
+                android:textColor="@color/color_000000"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_gathering_title"

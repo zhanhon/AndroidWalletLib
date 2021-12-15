@@ -21,11 +21,11 @@
 
             <ImageView
                 android:id="@+id/iv_back"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:layout_marginStart="@dimen/dp_10"
-                android:layout_marginEnd="@dimen/dp_10"
-                android:background="@drawable/ic_launcher_background"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:src="@mipmap/ic_arrow_left"
+                android:textColor="@color/color_000000"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,6 +36,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/dp_10"
                 android:textColor="@color/color_000000"
+                android:textSize="@dimen/sp_16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -47,7 +48,7 @@
                 android:layout_height="@dimen/dp_20"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/dp_10"
-                android:background="@drawable/ic_launcher_background"
+                android:background="@mipmap/ic_copy_gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -68,6 +69,7 @@
                 android:id="@+id/ll_address_input_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_10"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -84,12 +86,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/sender"
-                        android:textColor="@color/color_000000" />
+                        android:textColor="@color/color_000000"
+                        android:textSize="@dimen/sp_14" />
 
                     <TextView
                         android:id="@+id/tv_wallet_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/sp_13"
                         tools:text="1111" />
                 </LinearLayout>
 
@@ -98,6 +102,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:gravity="right"
+                    android:textSize="@dimen/sp_12"
                     tools:text="1111111111111111111111111111111111111" />
             </LinearLayout>
 
@@ -114,6 +120,7 @@
                 android:id="@+id/ll_address_input_down"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_10"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +131,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_0"
                     android:layout_weight="1"
-                    android:text="@string/receiver_address" />
+                    android:text="@string/receiver_address"
+                    android:textSize="@dimen/sp_14" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -136,7 +144,14 @@
                         android:id="@+id/edt_receiver_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="1111" />
+                        android:layout_alignParentLeft="true"
+                        android:background="@null"
+                        android:hint="0xxxxxxx"
+                        android:inputType="numberDecimal"
+                        android:longClickable="false"
+                        android:text=""
+                        android:textSize="@dimen/sp_18"
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/tv_address_book"
@@ -144,7 +159,7 @@
                         android:layout_height="@dimen/dp_10"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:background="@drawable/ic_launcher_background"
+                        android:background="@mipmap/ic_copy_gray"
                         tools:text="1111" />
                 </RelativeLayout>
             </LinearLayout>
@@ -179,7 +194,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:text="@string/quantity"
-                    android:textColor="@color/color_000000" />
+                    android:textColor="@color/color_000000"
+                    android:textSize="@dimen/sp_14" />
 
                 <TextView
                     android:id="@+id/tv_quantity_balance"
@@ -187,6 +203,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_weight="1"
+                    android:textSize="@dimen/sp_12"
                     tools:text="1111111111111111111111111111111111111" />
             </RelativeLayout>
 
@@ -203,6 +220,7 @@
                 android:id="@+id/rl_quantity_down"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_20"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_quantity_middle">
@@ -212,7 +230,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    tools:text="1111" />
+                    android:background="@null"
+                    android:hint="0.00"
+                    android:inputType="numberDecimal"
+                    android:longClickable="false"
+                    android:textSize="@dimen/sp_18"
+                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/tv_select_all"
@@ -223,7 +246,8 @@
                     android:background="@drawable/shape_white_bottom_blue_line_btn"
                     android:outlineProvider="none"
                     android:text="@string/btn_all"
-                    android:textColor="@color/color_3F5E94" />
+                    android:textColor="@color/color_3F5E94"
+                    android:textSize="@dimen/sp_12" />
             </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -265,25 +289,35 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/miner_fee"
-                            android:textColor="@color/color_000000" />
+                            android:textColor="@color/color_000000"
+                            android:textSize="@dimen/sp_14" />
 
                         <TextView
                             android:id="@+id/tv_miner_fee_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="right"
+                            android:textColor="@color/color_000000"
+                            android:textSize="@dimen/sp_14"
                             tools:text="1111" />
                     </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/tv_miner_fee_value_convert"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:textSize="@dimen/sp_14"
+                        tools:text="1111" />
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/tv_miner_fee_next"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/color_3F5E94"
-                    android:padding="@dimen/dp_10"
-                    tools:text="1111111111111111111111111111111111111" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:padding="@dimen/dp_20"
+                    android:src="@mipmap/ic_arrow_right"
+                    android:textColor="@color/color_000000" />
             </LinearLayout>
 
             <View
@@ -301,10 +335,11 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:padding="@dimen/dp_10"
+                android:textSize="@dimen/sp_12"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_miner_fee_middle"
-                tools:text="233sdsfdf" />
+                tools:text="161 GWEI * GAS (21,000)" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
