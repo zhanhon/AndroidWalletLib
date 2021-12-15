@@ -54,5 +54,10 @@
     <string name="save_success">保存成功</string>
     <string name="save_scan">保存二维码</string>
     <string name="transfer_balance">余额</string>
-
+    <string name="refresh_pull_down">下拉更新</string>
+    <string name="refresh_time">最后更新于{key}</string>
+    <string name="refresh_ing">正在刷新...</string>
+    <string name="refresh_release">松手立即更新</string>
+    <string name="abc">"123"</string>
+    <string name="message_center">消息中心</string>
 </resources>

@@ -2,14 +2,73 @@ package com.ramble.ramblewallet.activity
 
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.databinding.DataBindingUtil
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.databinding.ActivityMessageCenterBinding
+import com.ramble.ramblewallet.fragment.ProclamationFragment
 
-class MessageCenterActivity : BaseActivity() {
+/***
+ * 时间　: 2021/12/15 13:42
+ * 作者　: potato
+ * 描述　:消息中心
+ */
+class MessageCenterActivity : BaseActivity(), View.OnClickListener {
+    private val fragment = ProclamationFragment.newInstance()
+    private val fragment2 = ProclamationFragment.newInstance()
+//    private val fragment2 = StationFragment.newInstance()
+    private var flag = -1
+    private lateinit var binding: ActivityMessageCenterBinding
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_message_center)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_message_center)
+        initView()
+        initListener()
+
+    }
+
+
+    /**************初始化view**********/
+    private fun initView() {
+
+    }
+
+    private fun initListener() {
+        binding.ivBack.setOnClickListener(this)
+        binding.ivMineRight.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        when (v!!.id) {
+            R.id.iv_back -> finish()
+            R.id.iv_mine_right->{
+//                if (fragment2.isEmpty) {
+//                    if (binding.tvRight.text==  "编辑") {
+//                        fragment.passStatus(true)
+//                        binding.ivMineRight.background = resources.getDrawable(R.drawable.ic_launcher_background)
+//                        binding.tvRight.text = "取消"
+//                    } else {
+//                        fragment.passStatus(false)
+//                        binding.ivMineRight.background = resources.getDrawable(R.drawable.ic_launcher_background)
+//                        binding.tvRight.text = "编辑"
+//                    }
+//                }else{
+//                    if (binding.tvRight.text == "编辑") {
+//                        fragment2.passStatus(true)
+//                        binding.tvRight.text = "取消"
+//                        binding.ivMineRight.background = resources.getDrawable(R.drawable.ic_launcher_background)
+//                    } else {
+//                        fragment2.passStatus(false)
+//                        binding.tvRight.text = "编辑"
+//                        binding.ivMineRight.background = resources.getDrawable(R.drawable.ic_launcher_background)
+//                    }
+//                }
+
+            }
+        }
     }
 }

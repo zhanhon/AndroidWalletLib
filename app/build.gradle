@@ -62,4 +62,9 @@ dependencies {
     implementation 'com.king.zxing:zxing-lite:1.1.7-androidx'
     //友盟推送
     implementation project(':push')
+    //下拉刷新，上拉加载
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-4'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01'
+    implementation 'com.qmuiteam:qmui:1.4.0'
 }

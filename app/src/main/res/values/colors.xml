@@ -23,5 +23,16 @@
     <color name="color_E2E2E2">#E2E2E2</color>
     <color name="gray_F5F6F9">#F5F6F9</color>
     <color name="gray_E7ECFD">#E7ECFD</color>
-
+    <color name="secondary_text">#757575</color>
+    <color name="im_recycler">#F1F1F1</color>
+    <color name="card_border">#eeeeee</color>
+    <!--字体1-5号色值-->
+    <color name="front_one">#222222</color>
+    <color name="front_two">#444444</color>
+    <color name="front_three">#666666</color>
+    <color name="front_four">#999999</color>
+    <color name="front_five">#a1a1a1</color>
+    <color name="front_six">#7785A6</color>
+    <color name="divider">#e7e7e7</color>
+    <color name="primary">#03536E</color>
 </resources>
