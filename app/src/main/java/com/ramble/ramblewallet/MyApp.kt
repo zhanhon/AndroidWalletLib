@@ -1,6 +1,7 @@
 package com.ramble.ramblewallet
 
 import android.app.Application
+import com.ramble.ramblewallet.helper.MyPreferences
 import com.ramble.ramblewallet.helper.PushHelper
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.commonsdk.utils.UMUtils
@@ -26,10 +27,10 @@ class MyApp : Application() {
         //预初始化
         PushHelper.preInit(this)
         //是否同意隐私政策
-//        val agreed: Boolean = MyPreferences.getInstance(this).hasAgreePrivacyAgreement()
-//        if (!agreed) {
-//            return
-//        }
+        val agreed: Boolean = MyPreferences.getInstance(this).hasAgreePrivacyAgreement()
+        if (!agreed) {
+            return
+        }
         val isMainProcess = UMUtils.isMainProgress(this)
         if (isMainProcess) {
             //启动优化：建议在子线程中执行初始化
