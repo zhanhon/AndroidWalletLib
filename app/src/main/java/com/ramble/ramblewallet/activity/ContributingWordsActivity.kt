@@ -16,6 +16,7 @@ import com.ramble.ramblewallet.databinding.ActivityContributingWordsBinding
 import com.ramble.ramblewallet.eth.MnemonicUtils
 import com.ramble.ramblewallet.eth.utils.ChineseSimplified
 import com.ramble.ramblewallet.eth.utils.English
+import com.ramble.ramblewallet.utils.ClipboardUtils
 
 
 class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
@@ -25,6 +26,7 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
     private lateinit var contributingWordsAdapter: ContributingWordsAdapter
     private lateinit var mnemonicETH: ArrayList<String>
     private lateinit var mnemonicETHOriginal: ArrayList<String>
+    private lateinit var mnemonicString: String
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +35,8 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
 
         binding.llEnglish.setOnClickListener(this)
         binding.llChinese.setOnClickListener(this)
+        binding.btnOneCopy.setOnClickListener(this)
+        binding.btnSkipThis.setOnClickListener(this)
     }
 
     override fun onResume() {
@@ -40,7 +44,7 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
         binding.vEnglish.setBackgroundResource(R.color.color_3F5E94)
         binding.vChinese.setBackgroundResource(R.color.color_9598AA)
         // 生成钱包助记词
-        val mnemonicString: String = MnemonicUtils.generateMnemonicCustom(English.INSTANCE)
+        mnemonicString = MnemonicUtils.generateMnemonicCustom(English.INSTANCE)
         createContributingWordsPage(mnemonicString)
     }
 
@@ -50,16 +54,21 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
                 binding.vEnglish.setBackgroundResource(R.color.color_3F5E94)
                 binding.vChinese.setBackgroundResource(R.color.color_9598AA)
                 // 生成钱包助记词
-                val mnemonicString: String = MnemonicUtils.generateMnemonicCustom(English.INSTANCE)
+                mnemonicString = MnemonicUtils.generateMnemonicCustom(English.INSTANCE)
                 createContributingWordsPage(mnemonicString)
             }
             R.id.ll_chinese -> {
                 binding.vEnglish.setBackgroundResource(R.color.color_9598AA)
                 binding.vChinese.setBackgroundResource(R.color.color_3F5E94)
                 // 生成钱包助记词
-                val mnemonicString: String =
-                    MnemonicUtils.generateMnemonicCustom(ChineseSimplified.INSTANCE)
+                mnemonicString = MnemonicUtils.generateMnemonicCustom(ChineseSimplified.INSTANCE)
                 createContributingWordsPage(mnemonicString)
+            }
+            R.id.btn_one_copy -> {
+                ClipboardUtils.copy(mnemonicString)
+            }
+            R.id.btn_skip_this -> {
+                startActivity(Intent(this, MainActivity::class.java))
             }
         }
     }
