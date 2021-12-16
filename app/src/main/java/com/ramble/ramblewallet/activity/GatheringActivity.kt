@@ -27,6 +27,7 @@ import com.google.zxing.WriterException
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.databinding.ActivityGatheringBinding
+import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.DisplayHelper
 import com.ramble.ramblewallet.utils.QRCodeUtil
 import java.io.File
@@ -92,10 +93,7 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
                 showSaveDialog()
             }
             R.id.ll_copy -> {
-                val cm = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                cm.text = binding.tvAddress.text // 将文本内容放到系统剪贴板里。
-                println("-=-=-=->copy:${getString(R.string.copy_success)}")
-                Toast.makeText(this, getString(R.string.copy_success), Toast.LENGTH_LONG)
+                ClipboardUtils.copy(binding.tvAddress.text.toString())
             }
         }
     }

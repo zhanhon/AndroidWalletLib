@@ -47,5 +47,8 @@ class MineActivity : BaseActivity() {
         binding.incManageWallet.setOnClickListener {
             startActivity(Intent(this, ManageWalletActivity::class.java))
         }
+        binding.incAddressBook.setOnClickListener {
+            startActivity(Intent(this, AddressBookActivity::class.java))
+        }
     }
 }

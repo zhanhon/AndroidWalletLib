@@ -1,6 +1,8 @@
 package com.ramble.ramblewallet
 
 import android.app.Application
+import android.content.Context
+import androidx.multidex.MultiDex
 import com.ramble.ramblewallet.helper.MyPreferences
 import com.ramble.ramblewallet.helper.PushHelper
 import com.umeng.commonsdk.UMConfigure
@@ -15,8 +17,15 @@ class MyApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        sInstance = this
         initUmengSDK()
     }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
+    }
+
 
     /**
      * 初始化友盟SDK
@@ -39,6 +48,10 @@ class MyApp : Application() {
             //若不是主进程（":channel"结尾的进程），直接初始化sdk，不可在子线程中执行
             PushHelper.init(applicationContext)
         }
+    }
+
+    companion object {
+        lateinit var sInstance: Application
     }
 
 }
