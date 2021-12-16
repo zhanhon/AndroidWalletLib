@@ -16,6 +16,7 @@
         <activity android:name=".activity.TransferActivity" />
         <activity android:name=".activity.NewAddActivity" />
         <activity android:name=".activity.ManageWalletActivity" />
+        <activity android:name=".activity.AddressBookActivity" />
         <activity android:name=".activity.ScanActivity" />
         <activity android:name=".activity.MineActivity" />
         <activity android:name=".activity.MessageCenterActivity" />

@@ -8,18 +8,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
 import com.ramble.ramblewallet.R
-import com.ramble.ramblewallet.adapter.ManageWalletAdapter
-import com.ramble.ramblewallet.adapter.ManageWalletIconAdapter
+import com.ramble.ramblewallet.adapter.AddressBookAdapter
+import com.ramble.ramblewallet.adapter.AddressBookIconAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MyDataBean
-import com.ramble.ramblewallet.databinding.ActivityManageWalletBinding
+import com.ramble.ramblewallet.databinding.ActivityAddressBookBinding
 
 class AddressBookActivity : BaseActivity() {
 
-    private lateinit var binding: ActivityManageWalletBinding
+    private lateinit var binding: ActivityAddressBookBinding
     private var myDataBeans: ArrayList<MyDataBean> = arrayListOf()
-    private lateinit var manageWalletIconAdapter: ManageWalletIconAdapter
-    private lateinit var manageWalletAdapter: ManageWalletAdapter
+    private lateinit var addressBookIconAdapter: AddressBookIconAdapter
+    private lateinit var addressBookAdapter: AddressBookAdapter
 
     @SuppressLint("WrongConstant")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -37,26 +37,26 @@ class AddressBookActivity : BaseActivity() {
             )
         }
 
-        manageWalletIconAdapter = ManageWalletIconAdapter(myDataBeans)
+        addressBookIconAdapter = AddressBookIconAdapter(myDataBeans)
         val linearLayoutManagerIcon = LinearLayoutManager(this)
         linearLayoutManagerIcon.orientation = OrientationHelper.VERTICAL
         binding.rvMainCurrencyIcon.layoutManager = linearLayoutManagerIcon
-        binding.rvMainCurrencyIcon.adapter = manageWalletIconAdapter
+        binding.rvMainCurrencyIcon.adapter = addressBookIconAdapter
 
 
-        manageWalletAdapter = ManageWalletAdapter(myDataBeans, false)
+        addressBookAdapter = AddressBookAdapter(myDataBeans, false)
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = OrientationHelper.VERTICAL
         binding.rvMainCurrency.layoutManager = linearLayoutManager
-        binding.rvMainCurrency.adapter = manageWalletAdapter
+        binding.rvMainCurrency.adapter = addressBookAdapter
 
 
         binding.ivManageWalletRight.setOnClickListener {
-            manageWalletAdapter = ManageWalletAdapter(myDataBeans, true)
+            addressBookAdapter = AddressBookAdapter(myDataBeans, true)
             val linearLayoutManager = LinearLayoutManager(this)
             linearLayoutManager.orientation = OrientationHelper.VERTICAL
             binding.rvMainCurrency.layoutManager = linearLayoutManager
-            binding.rvMainCurrency.adapter = manageWalletAdapter
+            binding.rvMainCurrency.adapter = addressBookAdapter
         }
 
         binding.ivBack.setOnClickListener {
