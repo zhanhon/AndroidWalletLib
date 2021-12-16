@@ -53,11 +53,26 @@ class MineActivity : BaseActivity() {
             getString(R.string.about_us)
 
         binding.incServiceAgreement.setOnClickListener {
-            start(MsgDetailsActivity::class.java,Bundle().also {
+            start(MsgDetailsActivity::class.java, Bundle().also {
                 it.putString(ARG_PARAM1, getString(R.string.service_agreement))
-                it.putString(ARG_PARAM2, "我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个")
+                it.putString(
+                    ARG_PARAM2,
+                    "我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个"
+                )
                 it.putString(ARG_PARAM3, "1111111111111111111111111")
                 it.putString(ARG_PARAM4, getString(R.string.service_agreement))
+            })
+        }
+
+        binding.incPrivacyStatement.setOnClickListener {
+            start(MsgDetailsActivity::class.java, Bundle().also {
+                it.putString(ARG_PARAM1, getString(R.string.privacy_statement))
+                it.putString(
+                    ARG_PARAM2,
+                    "我是隐私声明，我要打10个，我是隐私声明，我要打10个，我是隐私声明，我要打10个，我是隐私声明，我要打10个，我是隐私声明，我要打10个，我是隐私声明，我要打10个"
+                )
+                it.putString(ARG_PARAM3, "1111111111111111111111111")
+                it.putString(ARG_PARAM4, getString(R.string.privacy_statement))
             })
         }
         binding.incManageWallet.setOnClickListener {
