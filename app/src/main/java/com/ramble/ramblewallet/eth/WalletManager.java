@@ -1,6 +1,6 @@
 package com.ramble.ramblewallet.eth;
 
-import com.develop.mnemonic.MnemonicUtils;
+import com.develop.mnemonic.wordlists.WordList;
 import com.ramble.ramblewallet.eth.listener.WalletListener;
 
 import org.web3j.abi.FunctionEncoder;
@@ -39,31 +39,28 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.ramble.ramblewallet.eth.MnemonicUtils.generateMnemonicCustom;
+
 /**
  * @author Angus
  */
 public class WalletManager {
 
+    private static final int maxResetCount = 100;
     public static boolean DEBUG = true;
     /**
      * 代币合约地址
      */
     public static String tokenAddres = "0x047a880b27ca11509c9c1e853fe47229febc57fe";
-
     /**
      * 区块链服务器地址
      */
     public static String URL = "http://192.168.1.138";
-
-
     public static BigInteger GAS_PRICE = BigInteger.valueOf(0x3b9aca00);
     public static BigInteger GAS_LIMIT = BigInteger.valueOf(0x493e0);
-
     private static Web3j web3j;
     private static Admin admin;
-
     private static ExecutorService mExecutorService;
-    private static final int maxResetCount = 100;
 
     public static Web3j getWeb3j() {
         if (web3j == null) {
@@ -99,12 +96,13 @@ public class WalletManager {
         DEBUG = debug;
     }
 
+
     /**
      * 生成钱包地址
      */
-    public static Wallet generateWalletAddress() {
+    public static Wallet generateWalletAddress(WordList type) {
         try {
-            String mnemonic = MnemonicUtils.generateMnemonic();
+            String mnemonic = generateMnemonicCustom(type);
             ECKeyPair ecKeyPair = WalletUtils.generateBip32ECKeyPair(mnemonic);
             String address = EthUtils.getAddress(ecKeyPair);
 

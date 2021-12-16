@@ -12,8 +12,8 @@ import com.ramble.ramblewallet.bean.MyDataBean
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.databinding.ActivityContributingWordsBinding
-import com.ramble.ramblewallet.eth.Wallet
-import com.ramble.ramblewallet.eth.WalletManager
+import com.ramble.ramblewallet.eth.MnemonicUtils
+import com.ramble.ramblewallet.eth.utils.ChineseTraditional
 
 
 class ContributingWordsActivity : BaseActivity() {
@@ -29,10 +29,11 @@ class ContributingWordsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contributing_words)
 
-        // 生成钱包助记词、地址、私钥、公钥实例
-        val wallet: Wallet = WalletManager.generateWalletAddress()
-        mnemonicETH = wallet.mnemonic.split(" ") as ArrayList<String>
-        mnemonicETHOriginal = wallet.mnemonic.split(" ") as ArrayList<String>
+        // 生成钱包助记词
+        val mnemonicString: String =
+            MnemonicUtils.generateMnemonicCustom(ChineseTraditional.INSTANCE)
+        mnemonicETH = mnemonicString.split(" ") as ArrayList<String>
+        mnemonicETHOriginal = mnemonicString.split(" ") as ArrayList<String>
         println("-=-=-=->before:$mnemonicETH")
         mnemonicETH.forEachIndexed { index, element ->
             myDataBeans.add(MyDataBean(index + 1, element, ""))
