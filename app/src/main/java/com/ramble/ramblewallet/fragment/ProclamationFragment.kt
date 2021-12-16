@@ -77,7 +77,7 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
     }
 
     private fun load() {
-//        lock = true
+        lock = true
 //        model.getAnnouncementPage(Page.Req(currentPage + 1, Pie.PAGE_SIZE)).subscribe(
 //            {
 //                if (it.status()) {
@@ -111,13 +111,12 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
 
     private fun onLoaded() {
 //        myActivity.dismissLoading()
-//        lock = false
+        lock = false
         binding.pullToRefresh.finishRefresh()
-//        ProgressItem.removeFrom(adapter)
+        ProgressItem.removeFrom(adapter)
     }
 
     override fun onRefresh() {
-//        Timber.e("onRefresh")
         if (lock) {
             binding.pullToRefresh.finishRefresh()
             return

@@ -67,4 +67,7 @@ dependencies {
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01'
     implementation 'com.qmuiteam:qmui:1.4.0'
+    implementation 'com.jakewharton:process-phoenix:2.0.0'
+    implementation 'org.jooq:joor-java-6:0.9.9'
+    implementation 'androidx.fragment:fragment:1.1.0-alpha05'
 }
