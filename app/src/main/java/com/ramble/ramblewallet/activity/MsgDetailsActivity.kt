@@ -11,6 +11,7 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.constant.ARG_PARAM3
+import com.ramble.ramblewallet.constant.ARG_PARAM4
 import com.ramble.ramblewallet.databinding.ActivityMsgDetailsBinding
 import com.ramble.ramblewallet.helper.formatHTML
 import com.ramble.ramblewallet.helper.getExtras
@@ -26,6 +27,8 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener{
     private var title=""
     private var content=""
     private var createTime=""
+    private var typeText=""
+
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +37,8 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener{
         title=getExtras().getString(ARG_PARAM1,"")
         content=getExtras().getString(ARG_PARAM2,"")
         createTime=getExtras().getString(ARG_PARAM3,"")
+        typeText=getExtras().getString(ARG_PARAM4,"")
+        binding.tvMineTitle.text=typeText
         binding.title1.text = title
         binding.time2.text = createTime
         isCheckContent(content,title)

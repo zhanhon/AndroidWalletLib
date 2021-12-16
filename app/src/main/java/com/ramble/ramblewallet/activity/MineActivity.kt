@@ -8,7 +8,13 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
+import com.ramble.ramblewallet.constant.ARG_PARAM3
+import com.ramble.ramblewallet.constant.ARG_PARAM4
 import com.ramble.ramblewallet.databinding.ActivityMineBinding
+import com.ramble.ramblewallet.helper.start
+import com.ramble.ramblewallet.helper.start2
 
 class MineActivity : BaseActivity() {
 
@@ -23,7 +29,7 @@ class MineActivity : BaseActivity() {
             finish()
         }
         binding.ivMineRight.setOnClickListener {
-            startActivity(Intent(this, MessageCenterActivity::class.java))
+            start(MessageCenterActivity::class.java)
         }
 
         binding.tvMineTitle.text = getString(R.string.personal_management)
@@ -46,7 +52,14 @@ class MineActivity : BaseActivity() {
         binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.about_us)
 
-
+        binding.incServiceAgreement.setOnClickListener {
+            start(MsgDetailsActivity::class.java,Bundle().also {
+                it.putString(ARG_PARAM1, getString(R.string.service_agreement))
+                it.putString(ARG_PARAM2, "我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个")
+                it.putString(ARG_PARAM3, "1111111111111111111111111")
+                it.putString(ARG_PARAM4, getString(R.string.service_agreement))
+            })
+        }
         binding.incManageWallet.setOnClickListener {
             startActivity(Intent(this, ManageWalletActivity::class.java))
         }

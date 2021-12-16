@@ -14,6 +14,7 @@ import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.constant.ARG_PARAM3
+import com.ramble.ramblewallet.constant.ARG_PARAM4
 import com.ramble.ramblewallet.databinding.FragmentProclamationBinding
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start2
@@ -244,6 +245,7 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
                     it.putString(ARG_PARAM1, itemBean.title)
                     it.putString(ARG_PARAM2, itemBean.content)
                     it.putString(ARG_PARAM3, itemBean.createTime)
+                    it.putString(ARG_PARAM4, "消息详情")
                 })
 //                if (itemBean.isReaded==0){
 //                    model.getUserLetterEdit(
