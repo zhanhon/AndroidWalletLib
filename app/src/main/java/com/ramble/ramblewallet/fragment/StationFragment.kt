@@ -8,14 +8,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.MessageCenterActivity
+import com.ramble.ramblewallet.activity.MsgDetailsActivity
 import com.ramble.ramblewallet.adapter.RecyclerViewFragment
 import com.ramble.ramblewallet.bean.Page
+import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
+import com.ramble.ramblewallet.constant.ARG_PARAM3
 import com.ramble.ramblewallet.databinding.FragmentProclamationBinding
 import com.ramble.ramblewallet.helper.dataBinding
+import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.StationItem
 import com.ramble.ramblewallet.pull.EndlessRecyclerViewScrollListener
 import com.ramble.ramblewallet.pull.QMUIPullRefreshLayout
 import com.ramble.ramblewallet.wight.ProgressItem
+import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
 import java.util.*
 
@@ -233,7 +239,12 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
 //                    toastDefault("处于编辑状态不可查看")
                     return
                 }
-//                val itemBean = AdapterUtils.getHolder(v).getItem<StationItem>().data
+                val itemBean = AdapterUtils.getHolder(v).getItem<StationItem>().data
+                start2(MsgDetailsActivity::class.java,Bundle().also {
+                    it.putString(ARG_PARAM1, itemBean.title)
+                    it.putString(ARG_PARAM2, itemBean.content)
+                    it.putString(ARG_PARAM3, itemBean.createTime)
+                })
 //                if (itemBean.isReaded==0){
 //                    model.getUserLetterEdit(
 //                        Edit.Req(

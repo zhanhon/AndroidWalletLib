@@ -60,4 +60,5 @@
     <string name="refresh_release">松手立即更新</string>
     <string name="abc">"123"</string>
     <string name="message_center">消息中心</string>
+    <string name="message_details">消息详情</string>
 </resources>

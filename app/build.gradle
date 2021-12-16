@@ -70,4 +70,5 @@ dependencies {
     implementation 'com.jakewharton:process-phoenix:2.0.0'
     implementation 'org.jooq:joor-java-6:0.9.9'
     implementation 'androidx.fragment:fragment:1.1.0-alpha05'
+    implementation 'org.jsoup:jsoup:1.10.3'
 }

@@ -35,4 +35,6 @@
     <color name="front_six">#7785A6</color>
     <color name="divider">#e7e7e7</color>
     <color name="primary">#03536E</color>
+    <color name="app_theme">#F6F6F6</color>
+    <color name="account_change_win">#df2939</color>
 </resources>

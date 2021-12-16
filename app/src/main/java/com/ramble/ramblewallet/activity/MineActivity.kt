@@ -22,6 +22,9 @@ class MineActivity : BaseActivity() {
         binding.ivBack.setOnClickListener {
             finish()
         }
+        binding.ivMineRight.setOnClickListener {
+            startActivity(Intent(this, MessageCenterActivity::class.java))
+        }
 
         binding.tvMineTitle.text = getString(R.string.personal_management)
         binding.incManageWallet.findViewById<TextView>(R.id.tv_mine_title).text =

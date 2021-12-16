@@ -19,6 +19,7 @@
         <activity android:name=".activity.ScanActivity" />
         <activity android:name=".activity.MineActivity" />
         <activity android:name=".activity.MessageCenterActivity" />
+        <activity android:name=".activity.MsgDetailsActivity" />
         <activity android:name=".activity.ContributingWordsConfirmActivity" />
         <activity android:name=".activity.ContributingWordsActivity" />
         <activity android:name=".base.BaseActivity" />
