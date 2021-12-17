@@ -2,6 +2,12 @@
 <resources>
 
     <dimen name="dp_0">0dp</dimen>
+    <dimen name="dp_01">0.1dp</dimen>
+    <dimen name="dp_02">0.2dp</dimen>
+    <dimen name="dp_04">0.4dp</dimen>
+    <dimen name="dp_05">0.5dp</dimen>
+    <dimen name="dp_06">0.6dp</dimen>
+    <dimen name="dp_08">0.8dp</dimen>
     <dimen name="dp_1">1dp</dimen>
     <dimen name="dp_2">2dp</dimen>
     <dimen name="dp_3">3dp</dimen>

@@ -62,4 +62,7 @@
     <string name="abc">"123"</string>
     <string name="message_center">消息中心</string>
     <string name="message_details">消息详情</string>
+    <string name="help_center">帮助中心</string>
+    <string name="help_door_sister">新手入门须知</string>
+    <string name="help_sever_sister">客服中心</string>
 </resources>

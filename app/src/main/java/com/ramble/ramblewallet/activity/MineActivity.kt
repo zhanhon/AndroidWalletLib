@@ -64,7 +64,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incPrivacyStatement.setOnClickListener(this)
         binding.incManageWallet.setOnClickListener(this)
         binding.incAddressBook.setOnClickListener(this)
-
+        binding.incHelpFeedback.setOnClickListener(this)
     }
 
 
@@ -101,6 +101,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.inc_address_book -> {
                 start(AddressBookActivity::class.java)
+            }
+            R.id.inc_help_feedback->{
+                start(HelpActivity::class.java)
             }
         }
     }

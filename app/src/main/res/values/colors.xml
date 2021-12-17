@@ -37,4 +37,9 @@
     <color name="primary">#03536E</color>
     <color name="app_theme">#F6F6F6</color>
     <color name="account_change_win">#df2939</color>
+    <color name="bg_gray2">#eeeeee</color>
+    <!--所有分割线  色值-->
+    <color name="driver_gray">#e7e7e7</color>
+    <color name="white">@android:color/white</color>
+    <color name="path_game_item_selected">#D9D9D9</color>
 </resources>
