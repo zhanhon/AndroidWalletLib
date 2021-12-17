@@ -11,6 +11,7 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.GetFaqInfos
 import com.ramble.ramblewallet.databinding.ActivityHelpBinding
 import com.ramble.ramblewallet.item.Help
+import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.QuickItemDecoration
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
@@ -120,6 +121,25 @@ class HelpActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_back -> finish()
             R.id.iv_mine_right -> {
 
+            }
+            R.id.item_help_todo -> {
+                val holder = AdapterUtils.getHolder(v)
+                when (val item = holder.getItem<SimpleRecyclerItem>()) {
+                    is Help.FaqTypeList -> {
+//                        RxViewModel.globe.helpTitle = item.data.typeName!!
+//                        RxViewModel.globe.FaqTypeListId = item.data.id!!
+//                        this.start2(
+//                            UniversalActivity::class.java,
+//                            Bundle().also { it.putInt(ARG_PARAM1, 21) })
+                    }
+                    is Help.HotFaqList -> {
+//                        RxViewModel.globe.helpTitle = item.data.title!!
+//                        RxViewModel.globe.FaqTypeListId = item.data.id!!
+//                        this.start2(
+//                            UniversalActivity::class.java,
+//                            Bundle().also { it.putInt(ARG_PARAM1, 22) })
+                    }
+                }
             }
         }
     }
