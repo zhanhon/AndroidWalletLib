@@ -1,18 +1,24 @@
 package com.ramble.ramblewallet.activity
 
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.constant.CN
+import com.ramble.ramblewallet.constant.EN
+import com.ramble.ramblewallet.constant.LANGUAGE
+import com.ramble.ramblewallet.constant.TW
 import com.ramble.ramblewallet.helper.MyPreferences
 import com.ramble.ramblewallet.helper.PushHelper
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.umeng.message.PushAgent
 import com.umeng.message.api.UPushRegisterCallback
+import java.util.*
 
 class WelcomeActivity : BaseActivity() {
 
@@ -32,7 +38,7 @@ class WelcomeActivity : BaseActivity() {
 
     }
 
-    private fun showAgreement(){
+    private fun showAgreement() {
         //用户点击隐私协议同意按钮后，初始化PushSDK
         MyPreferences.getInstance(applicationContext).setAgreePrivacyAgreement(true)
         PushHelper.init(applicationContext)
@@ -49,6 +55,27 @@ class WelcomeActivity : BaseActivity() {
             }
         })
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //设置跟随手机系统语言进行设置app默认语言
+        val locale: Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Resources.getSystem().configuration.locales[0]
+        } else {
+            Resources.getSystem().configuration.locale
+        }
+        when (locale.country) {
+            "CN" -> {
+                SharedPreferencesUtils.saveString(this, LANGUAGE, CN)
+            }
+            "TW" -> {
+                SharedPreferencesUtils.saveString(this, LANGUAGE, TW)
+            }
+            else -> {
+                SharedPreferencesUtils.saveString(this, LANGUAGE, EN)
+            }
+        }
     }
 
 }

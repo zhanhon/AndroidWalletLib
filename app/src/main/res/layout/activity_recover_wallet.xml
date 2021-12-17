@@ -35,44 +35,13 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/ll_currency"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_50"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
-
-            <Button
-                android:id="@+id/btn_btc"
-                android:layout_width="@dimen/dp_100"
-                android:layout_height="@dimen/dp_100"
-                android:outlineProvider="none"
-                android:text="BTC" />
-
-            <Button
-                android:id="@+id/btn_eth"
-                android:layout_width="@dimen/dp_100"
-                android:layout_height="@dimen/dp_100"
-                android:outlineProvider="none"
-                android:text="ETH" />
-
-            <Button
-                android:id="@+id/btn_trx"
-                android:layout_width="@dimen/dp_100"
-                android:layout_height="@dimen/dp_100"
-                android:outlineProvider="none"
-                android:text="TRX" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/ll_wallet_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_50"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_currency">
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
             <TextView
                 android:id="@+id/tv_wallet_name"
@@ -131,6 +100,28 @@
                 android:hint="@string/passord_confirm" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_contributing_words"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_wallet_password_confirm">
+
+            <TextView
+                android:id="@+id/tv_contributing_words"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contributing_words" />
+
+            <EditText
+                android:id="@+id/edt_contributing_words"
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="wrap_content"
+                android:hint="@string/contributing_words" />
+        </LinearLayout>
+
         <Button
             android:id="@+id/btn_confirm"
             android:layout_width="wrap_content"
@@ -140,7 +131,7 @@
             android:text="@string/confirm"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_wallet_password_confirm" />
+            app:layout_constraintTop_toBottomOf="@id/ll_contributing_words" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

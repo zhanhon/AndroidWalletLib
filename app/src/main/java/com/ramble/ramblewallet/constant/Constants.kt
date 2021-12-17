@@ -16,3 +16,8 @@ const val ARG_PARAM8 = "08"
 const val ARG_PARAM9 = "09"
 const val ARG_PARAM10 = "10"
 const val ARG_PARAM11 = "11"
+
+const val CN = "中"
+const val TW = "繁"
+const val EN = "En"
+const val LANGUAGE = "language"

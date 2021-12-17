@@ -55,6 +55,11 @@
     <string name="save_success">保存成功</string>
     <string name="save_scan">保存二维码</string>
     <string name="transfer_balance">余额</string>
+    <string name="language_simplified_chinese">简体中文</string>
+    <string name="language_traditional_chinese">繁體中文</string>
+    <string name="language_english">English</string>
+    <string name="choose_language">选择语言</string>
+
     <string name="refresh_pull_down">下拉更新</string>
     <string name="refresh_time">最后更新于{key}</string>
     <string name="refresh_ing">正在刷新...</string>

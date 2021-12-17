@@ -4,14 +4,14 @@
     <item name="tag_key_data" type="id" />
     <item name="tag_key_position" type="id" />
 
-    <string name="app_name">漫步钱包</string>
-    <string name="create_recover_wallet_tips">轻松存取，自由来去</string>
-    <string name="recover_wallet">恢复钱包</string>
-    <string name="create_wallet">创建钱包</string>
-    <string name="wallet_name">钱包名称</string>
-    <string name="wallet_password">钱包密码</string>
-    <string name="passord_confirm">确认密码</string>
-    <string name="contributing_words">助记词</string>
+    <string name="app_name">Walking wallet </string>
+    <string name="create_recover_wallet_tips">Easy access, free to come and go</string>
+    <string name="recover_wallet">Restore the wallet</string>
+    <string name="create_wallet">Create a wallet</string>
+    <string name="wallet_name">Wallet name</string>
+    <string name="wallet_password">Wallet password</string>
+    <string name="passord_confirm">Confirm password</string>
+    <string name="contributing_words">Contributing words</string>
     <string name="gathering">收款</string>
     <string name="transfer">转账</string>
     <string name="scan">扫码</string>
