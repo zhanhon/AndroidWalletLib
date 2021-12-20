@@ -170,13 +170,9 @@
     <string name="transaction_ing">交易中</string>
     <string name="transaction_failed">交易失败</string>
     <string name="transaction_success">交易成功</string>
-    <string name="amount">金额</string>
     <string name="miner_fees">矿工费用</string>
-    <string name="payment_address">付款地址</string>
     <string name="receiving_address">收款地址</string>
-    <string name="remark">备注</string>
     <string name="transaction_code">交易代号</string>
-    <string name="block_number">区块编号</string>
     <string name="enquire_now">立即查询</string>
     <string name="transaction_details">详细内容</string>
 </resources>
