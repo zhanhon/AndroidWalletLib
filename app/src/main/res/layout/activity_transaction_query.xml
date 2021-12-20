@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_FFFFFF"
+            android:padding="@dimen/dp_10">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:background="@drawable/ic_launcher_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_mine_title"
+                tools:text="25323232323"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_10"
+                android:text="@string/message_center"
+                android:textColor="@color/color_000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/iv_mine_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="编辑"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/iv_right"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:background="@drawable/ic_launcher_background" />
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout style="@style/MatchMatch">
+
+            <com.ramble.ramblewallet.wight.MySmartTabLayout
+                android:id="@+id/layout_tab"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_32"
+                android:background="@color/color_FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:stl_clickable="true"
+                app:stl_defaultTabBackground="?attr/selectableItemBackground"
+                app:stl_defaultTabTextAllCaps="true"
+                app:stl_defaultTabTextColor="@color/color_activity_tab_text"
+                app:stl_defaultTabTextSize="@dimen/sp_12"
+                app:stl_distributeEvenly="true"
+                app:stl_dividerColor="@android:color/transparent"
+                app:stl_dividerThickness="@dimen/dp_0"
+                app:stl_drawDecorationAfterTab="false"
+                app:stl_indicatorAlwaysInCenter="false"
+                app:stl_indicatorColor="@color/tab_selected_text"
+                app:stl_indicatorCornerRadius="@dimen/dp_2"
+                app:stl_indicatorGravity="bottom"
+                app:stl_indicatorInFront="false"
+                app:stl_indicatorInterpolation="smart"
+                app:stl_indicatorThickness="@dimen/dp_3"
+                app:stl_indicatorWidth="@dimen/dp_20"
+                app:stl_indicatorWithoutPadding="false"
+                app:stl_overlineColor="@android:color/transparent"
+                app:stl_overlineThickness="@dimen/dp_0"
+                app:stl_titleOffset="auto_center"
+                app:stl_underlineColor="@color/tab_indicator_green"
+                app:stl_underlineThickness="@dimen/dp_08" />
+
+            <com.ramble.ramblewallet.pull.DeadViewPager
+                android:id="@+id/pager"
+                style="@style/ConCon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_tab" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

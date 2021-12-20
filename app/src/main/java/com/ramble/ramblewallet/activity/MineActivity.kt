@@ -65,6 +65,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incManageWallet.setOnClickListener(this)
         binding.incAddressBook.setOnClickListener(this)
         binding.incHelpFeedback.setOnClickListener(this)
+        binding.incTransactionQuery.setOnClickListener(this)
     }
 
 
@@ -104,6 +105,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.inc_help_feedback->{
                 start(HelpActivity::class.java)
+            }
+            R.id.inc_transaction_query->{
+                start(TransactionQueryActivity::class.java)
             }
         }
     }

@@ -71,4 +71,7 @@ dependencies {
     implementation 'org.jooq:joor-java-6:0.9.9'
     implementation 'androidx.fragment:fragment:1.1.0-alpha05'
     implementation 'org.jsoup:jsoup:1.10.3'
+    //tabBar三方库
+    implementation 'com.ogaclejapan.smarttablayout:library:2.0.0'
+    implementation 'com.ogaclejapan.smarttablayout:utils-v4:2.0.0'
 }

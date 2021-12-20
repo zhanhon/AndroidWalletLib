@@ -70,4 +70,13 @@
     <string name="help_center">帮助中心</string>
     <string name="help_door_sister">新手入门须知</string>
     <string name="help_sever_sister">客服中心</string>
+    <string name="transaction_query_all">全部</string>
+    <string name="transaction_query_chu">转出</string>
+    <string name="transaction_query_ru">转入</string>
+    <string name="transaction_query_fail">失败</string>
+    <string name="game_today_order_no_log2"></string>
+    <string name="transaction_query_all2">全部交易</string>
+    <string name="transaction_query_week">7日内</string>
+    <string name="transaction_query_month">30日内</string>
+    <string name="transaction_query_year">1年内</string>
 </resources>
