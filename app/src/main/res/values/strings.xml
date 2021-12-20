@@ -79,4 +79,7 @@
     <string name="transaction_query_week">7日内</string>
     <string name="transaction_query_month">30日内</string>
     <string name="transaction_query_year">1年内</string>
+    <string name="transaction_ing">交易中</string>
+    <string name="transaction_failed">交易失败</string>
+
 </resources>
