@@ -10,13 +10,14 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.ContributingWordsAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MyDataBean
-import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.constant.ARG_PARAM2
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityContributingWordsBinding
 import com.ramble.ramblewallet.eth.MnemonicUtils
 import com.ramble.ramblewallet.eth.utils.ChineseSimplified
+import com.ramble.ramblewallet.eth.utils.ChineseTraditional
 import com.ramble.ramblewallet.eth.utils.English
 import com.ramble.ramblewallet.utils.ClipboardUtils
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 
 
 class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
@@ -33,10 +34,18 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contributing_words)
 
+        initData()
+
         binding.llEnglish.setOnClickListener(this)
         binding.llChinese.setOnClickListener(this)
         binding.btnOneCopy.setOnClickListener(this)
         binding.btnSkipThis.setOnClickListener(this)
+    }
+
+    private fun initData() {
+        if (SharedPreferencesUtils.getString(this, LANGUAGE, CN) == EN) {
+            binding.llChinese.visibility = View.GONE
+        }
     }
 
     override fun onResume() {
@@ -60,9 +69,17 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
             R.id.ll_chinese -> {
                 binding.vEnglish.setBackgroundResource(R.color.color_9598AA)
                 binding.vChinese.setBackgroundResource(R.color.color_3F5E94)
-                // 生成钱包助记词
-                mnemonicString = MnemonicUtils.generateMnemonicCustom(ChineseSimplified.INSTANCE)
-                createContributingWordsPage(mnemonicString)
+                if (SharedPreferencesUtils.getString(this, LANGUAGE, CN) == CN) {
+                    // 生成钱包助记词
+                    mnemonicString =
+                        MnemonicUtils.generateMnemonicCustom(ChineseSimplified.INSTANCE)
+                    createContributingWordsPage(mnemonicString)
+                } else {
+                    // 生成钱包助记词
+                    mnemonicString =
+                        MnemonicUtils.generateMnemonicCustom(ChineseTraditional.INSTANCE)
+                    createContributingWordsPage(mnemonicString)
+                }
             }
             R.id.btn_one_copy -> {
                 ClipboardUtils.copy(mnemonicString)
