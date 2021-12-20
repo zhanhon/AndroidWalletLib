@@ -7,22 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.ramble.ramblewallet.R
+import com.ramble.ramblewallet.activity.DealDetailActivity
 import com.ramble.ramblewallet.activity.TransactionQueryActivity
 import com.ramble.ramblewallet.adapter.RecyclerViewFragment
-import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.QueryTransferRecord
 import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.databinding.FragmentProclamationBinding
 import com.ramble.ramblewallet.databinding.FragmentTransactionQueryBinding
 import com.ramble.ramblewallet.helper.dataBinding
-import com.ramble.ramblewallet.item.StationItem
+import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.TransferItem
 import com.ramble.ramblewallet.pull.EndlessRecyclerViewScrollListener
 import com.ramble.ramblewallet.pull.QMUIPullRefreshLayout
 import com.ramble.ramblewallet.wight.ProgressItem
-import com.ramble.ramblewallet.wight.adapter.OnDataSetChanged
+import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
 import java.util.ArrayList
 
@@ -181,6 +179,15 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
                 arguments = Bundle().also {
                     it.putInt(ARG_PARAM1, gameType)
                 }
+            }
+        }
+    }
+
+    override fun onClick(v: View?) {
+        when (v!!.id) {
+            R.id.item_transfer -> {//转账详情
+                val itemBean = AdapterUtils.getHolder(v).getItem<TransferItem>().data
+                start2(DealDetailActivity::class.java)
             }
         }
     }

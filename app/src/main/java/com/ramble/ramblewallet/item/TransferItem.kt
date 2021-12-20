@@ -49,5 +49,6 @@ class TransferItem (val data: QueryTransferRecord.Record) : SimpleRecyclerItem()
                 binding.tvMoneyType.isVisible=true
             }
         }
+        holder.attachOnClickListener(R.id.item_transfer)
     }
 }

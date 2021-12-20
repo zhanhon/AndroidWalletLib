@@ -49,4 +49,6 @@
     <color name="bg_gray1">#f6f6f6</color>
     <color name="black">#333333</color>
     <color name="color_e1e1e1">#e1e1e1</color>
+    <color name="gray_8F95AA">#8F95AA</color>
+    <color name="bg_color">#F5F6F9</color>
 </resources>
