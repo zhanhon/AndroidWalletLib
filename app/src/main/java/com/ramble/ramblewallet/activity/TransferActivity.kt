@@ -18,6 +18,7 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 
+
 class TransferActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityTransferBinding
@@ -69,6 +70,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         binding.ivTransferScan.setOnClickListener(this)
         binding.clMinerFee.setOnClickListener(this)
         binding.tvSelectAll.setOnClickListener(this)
+        binding.btnConfirm.setOnClickListener(this)
     }
 
     @SuppressLint("SetTextI18n", "ResourceAsColor")
@@ -235,6 +237,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             R.id.tv_select_all -> {
                 binding.edtInputQuantity.setText(transferBalance)
             }
+            R.id.btn_confirm -> {
+                //doTransaction()
+            }
         }
     }
+
+
 }

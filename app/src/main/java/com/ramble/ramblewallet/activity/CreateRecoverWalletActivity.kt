@@ -54,7 +54,7 @@ class CreateRecoverWalletActivity : BaseActivity() {
         }
 
         binding.btnRecoverWallet.setOnClickListener {
-            startActivity(Intent(this, RecoverWalletActivity::class.java))
+            startActivity(Intent(this, RecoverWalletListActivity::class.java))
         }
 
         binding.btnCreateWallet.setOnClickListener {

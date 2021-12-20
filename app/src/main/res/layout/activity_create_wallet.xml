@@ -6,6 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/color_FFFFFF"
         tools:context=".activity.CreateWalletActivity">
 
         <RelativeLayout
@@ -22,8 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/create_wallet"
-                android:textSize="@dimen/sp_30" />
+                android:text="@string/create_wallet" />
 
             <ImageView
                 android:id="@+id/imv_back"
@@ -34,71 +34,87 @@
                 android:background="@drawable/ic_launcher_background" />
         </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_wallet_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_50"
+        <View
+            android:id="@+id/v_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10"
+            android:background="@color/color_F9F9F9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-            <TextView
-                android:id="@+id/tv_wallet_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/wallet_name" />
-
-            <EditText
-                android:id="@+id/edt_wallet_name"
-                android:layout_width="@dimen/dp_200"
-                android:layout_height="wrap_content"
-                android:hint="@string/wallet_name" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_wallet_password"
+        <TextView
+            android:id="@+id/tv_wallet_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_40"
+            android:text="@string/wallet_name"
+            android:textColor="@color/color_000000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v_line" />
+
+
+        <EditText
+            android:id="@+id/edt_wallet_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/shape_light_green_bottom_btn"
+            android:hint="@string/wallet_name"
+            android:padding="@dimen/dp_5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_wallet_name">
+            app:layout_constraintTop_toBottomOf="@id/tv_wallet_name" />
 
-            <TextView
-                android:id="@+id/tv_wallet_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/wallet_password" />
-
-            <EditText
-                android:id="@+id/edt_wallet_password"
-                android:layout_width="@dimen/dp_200"
-                android:layout_height="wrap_content"
-                android:hint="@string/wallet_password" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_wallet_password_confirm"
+        <TextView
+            android:id="@+id/tv_wallet_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_10"
+            android:text="@string/wallet_password"
+            android:textColor="@color/color_000000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edt_wallet_name" />
+
+        <EditText
+            android:id="@+id/edt_wallet_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/shape_light_green_bottom_btn"
+            android:hint="@string/wallet_password"
+            android:padding="@dimen/dp_5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_wallet_password">
+            app:layout_constraintTop_toBottomOf="@id/tv_wallet_password" />
 
-            <TextView
-                android:id="@+id/tv_passord_confirm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/passord_confirm" />
+        <TextView
+            android:id="@+id/tv_passord_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@string/passord_confirm"
+            android:textColor="@color/color_000000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edt_wallet_password" />
 
-            <EditText
-                android:id="@+id/edt_password_confirm"
-                android:layout_width="@dimen/dp_200"
-                android:layout_height="wrap_content"
-                android:hint="@string/passord_confirm" />
-        </LinearLayout>
+        <EditText
+            android:id="@+id/edt_password_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/shape_light_green_bottom_btn"
+            android:hint="@string/passord_confirm"
+            android:padding="@dimen/dp_5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_passord_confirm" />
 
         <Button
             android:id="@+id/btn_confirm"
@@ -109,7 +125,7 @@
             android:text="@string/confirm"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_wallet_password_confirm" />
+            app:layout_constraintTop_toBottomOf="@id/edt_password_confirm" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
