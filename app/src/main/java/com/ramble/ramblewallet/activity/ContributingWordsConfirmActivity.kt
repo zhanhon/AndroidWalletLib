@@ -6,15 +6,18 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.ContributingWordsConfirmAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MyDataBean
-import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.constant.ARG_PARAM2
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityContributingWordsConfirmBinding
-import com.ramble.ramblewallet.eth.WalletManager
+import com.ramble.ramblewallet.eth.Wallet
+import com.ramble.ramblewallet.eth.WalletManager.generateWalletKeystore
 import com.ramble.ramblewallet.eth.WalletManager.isETHValidAddress
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 
 
 class ContributingWordsConfirmActivity : BaseActivity() {
@@ -25,7 +28,10 @@ class ContributingWordsConfirmActivity : BaseActivity() {
     private var mnemonicETHShuffled: ArrayList<String> = arrayListOf()
     private var mnemonicETHOriginal: ArrayList<String> = arrayListOf()
     private var mnemonicETHChoose: ArrayList<String> = arrayListOf()
-    private lateinit var walletETHString: String
+    private var walletETHString: String = ""
+    private lateinit var walletName: String
+    private lateinit var walletPassword: String
+    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,22 +39,44 @@ class ContributingWordsConfirmActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contributing_words_confirm)
         mnemonicETHShuffled = intent.getStringArrayListExtra(ARG_PARAM1)
         mnemonicETHOriginal = intent.getStringArrayListExtra(ARG_PARAM2)
+        walletName = intent.getStringExtra(ARG_PARAM3)
+        walletPassword = intent.getStringExtra(ARG_PARAM4)
         initMnmonicETH()
         mnmonicETHClick()
         binding.btnContributingWordsCompleted.setOnClickListener {
             if (mnemonicETHChoose == mnemonicETHOriginal) {
                 mnemonicETHChoose.forEach {
-                    walletETHString = "$it "
+                    walletETHString = "$walletETHString$it "
                 }
-                //1、助记词生成地址
-                var walletETHAddress: String = WalletManager.generateAddress(walletETHString.trim())
-                println("-=-=-=->wallestETHAddress:$walletETHAddress")
+                //1、助记词生成keystore
+                var walletETHKeyStore: Wallet =
+                    generateWalletKeystore(walletPassword, walletETHString.trim())
+                walletETHKeyStore.walletName = walletName
+                walletETHKeyStore.walletPassword = walletPassword
+                println("-=-=-=->wallestETHAddress:${walletETHKeyStore.address}")
+                println("-=-=-=->walletETHMnemonic:${walletETHKeyStore.mnemonic}")
+                println("-=-=-=->walletETHPrivateKey:${walletETHKeyStore.privateKey}")
+                println("-=-=-=->walletETHKeystore:${walletETHKeyStore.keystore}")
+
+                if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+                    saveWalletList =
+                        Gson().fromJson(
+                            SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                            object : TypeToken<ArrayList<Wallet>>() {}.type
+                        )
+                }
+                saveWalletList.add(walletETHKeyStore)
+                println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
+                SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+
+
                 //2、之后地址校验
-                var isValidSuccess = isETHValidAddress(walletETHAddress)
+                var isValidSuccess = isETHValidAddress(walletETHKeyStore.address)
                 if (isValidSuccess) {
+                    println("-=-=-=->isValidSuccess:$isValidSuccess")
                     startActivity(Intent(this, MainActivity::class.java))
                 }
-                println("-=-=-=->isValidSuccess:$isValidSuccess")
+
             }
         }
     }
@@ -209,61 +237,73 @@ class ContributingWordsConfirmActivity : BaseActivity() {
             when (position) {
                 0 -> {
                     position(myDataBeans[position].index)
+                    mnemonicETHChoose.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 1 -> {
                     position(myDataBeans[position].index)
+                    mnemonicETHChoose.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 2 -> {
                     position(myDataBeans[position].index)
+                    mnemonicETHChoose.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 3 -> {
                     position(myDataBeans[position].index)
+                    mnemonicETHChoose.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 4 -> {
                     position(myDataBeans[position].index)
+                    mnemonicETHChoose.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 5 -> {
                     position(myDataBeans[position].index)
+                    mnemonicETHChoose.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 6 -> {
                     position(myDataBeans[position].index)
+                    mnemonicETHChoose.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 7 -> {
                     position(myDataBeans[position].index)
+                    mnemonicETHChoose.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 8 -> {
                     position(myDataBeans[position].index)
+                    mnemonicETHChoose.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 9 -> {
                     position(myDataBeans[position].index)
+                    mnemonicETHChoose.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 10 -> {
                     position(myDataBeans[position].index)
+                    mnemonicETHChoose.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 11 -> {
                     position(myDataBeans[position].index)
+                    mnemonicETHChoose.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }

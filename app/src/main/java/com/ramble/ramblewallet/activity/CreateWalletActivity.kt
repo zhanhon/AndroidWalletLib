@@ -7,6 +7,8 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.databinding.ActivityCreateWalletBinding
 
 class CreateWalletActivity : BaseActivity() {
@@ -22,7 +24,10 @@ class CreateWalletActivity : BaseActivity() {
             finish()
         }
         binding.btnConfirm.setOnClickListener {
-            startActivity(Intent(this, ContributingWordsActivity::class.java))
+            startActivity(Intent(this, ContributingWordsActivity::class.java).apply {
+                putExtra(ARG_PARAM1, binding.edtWalletName.text.toString())
+                putExtra(ARG_PARAM2, binding.edtWalletPassword.text.toString())
+            })
         }
     }
 }

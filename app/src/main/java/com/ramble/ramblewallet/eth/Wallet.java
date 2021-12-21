@@ -1,25 +1,17 @@
 package com.ramble.ramblewallet.eth;
 
 /**
- * @author Angus
+ * @author Ricky
  */
 public class Wallet {
+    private String walletName;
+    private String walletPassword;
     private String mnemonic;
     private String address;
     private String privateKey;
     private String publicKey;
     private String keystore;
-
-    /**
-     * Path to wallet file.
-     */
     private String filename;
-
-
-    public Wallet(String mnemonic, String address) {
-        this.mnemonic = mnemonic;
-        this.address = address;
-    }
 
     public Wallet(String mnemonic, String address, String privateKey, String publicKey) {
         this.mnemonic = mnemonic;
@@ -31,6 +23,29 @@ public class Wallet {
     public Wallet(String mnemonic, String address, String privateKey, String publicKey, String keystore) {
         this(mnemonic, address, privateKey, publicKey);
         this.keystore = keystore;
+    }
+
+    public Wallet(String walletName, String walletPassword, String mnemonic, String address,
+                  String privateKey, String publicKey, String keystore) {
+        this(mnemonic, address, privateKey, publicKey, keystore);
+        this.walletName = walletName;
+        this.walletPassword = walletPassword;
+    }
+
+    public String getWalletName() {
+        return walletName;
+    }
+
+    public void setWalletName(String walletName) {
+        this.walletName = walletName;
+    }
+
+    public String getWalletPassword() {
+        return walletPassword;
+    }
+
+    public void setWalletPassword(String walletPassword) {
+        this.walletPassword = walletPassword;
     }
 
     public String getMnemonic() {

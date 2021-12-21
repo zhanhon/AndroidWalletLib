@@ -28,12 +28,15 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mnemonicETH: ArrayList<String>
     private lateinit var mnemonicETHOriginal: ArrayList<String>
     private lateinit var mnemonicString: String
+    private lateinit var walletName: String
+    private lateinit var walletPassword: String
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contributing_words)
-
+        walletName = intent.getStringExtra(ARG_PARAM1)
+        walletPassword = intent.getStringExtra(ARG_PARAM2)
         initData()
 
         binding.llEnglish.setOnClickListener(this)
@@ -106,6 +109,8 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
             startActivity(Intent(this, ContributingWordsConfirmActivity::class.java).apply {
                 putStringArrayListExtra(ARG_PARAM1, mnemonicETH)
                 putStringArrayListExtra(ARG_PARAM2, mnemonicETHOriginal)
+                putExtra(ARG_PARAM3, walletName)
+                putExtra(ARG_PARAM4, walletPassword)
             })
         }
     }
