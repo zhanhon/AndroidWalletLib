@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 
 import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout
+import com.ramble.ramblewallet.base.BaseFragment
 import com.ramble.ramblewallet.base.Fragment
 import com.ramble.ramblewallet.wight.adapter.OnDataSetChanged
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
@@ -13,12 +14,12 @@ import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
  * 作者　: potato
  * 描述　:
  */
-abstract class RecyclerViewFragment : Fragment(), QMUIPullRefreshLayout.OnPullListener,
-    OnDataSetChanged, View.OnClickListener {
+abstract class RecyclerViewFragment : BaseFragment(), QMUIPullRefreshLayout.OnPullListener,
+    OnDataSetChanged {
     protected val adapter = RecyclerAdapter()
     protected open var currentPage = 0
     protected var totalPage = 1
-    protected var lock = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +39,4 @@ abstract class RecyclerViewFragment : Fragment(), QMUIPullRefreshLayout.OnPullLi
     override fun apply(count: Int) {
     }
 
-    override fun onClick(v: View?) {
-
-    }
 }

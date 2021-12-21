@@ -5,14 +5,27 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import androidx.annotation.CallSuper
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.ramble.ramblewallet.R
+import com.ramble.ramblewallet.utils.RxBus
+import com.ramble.ramblewallet.utils.addTo
+import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
+
+    @JvmField
+    val onPauseComposite = CompositeDisposable()
+
+    @JvmField
+    val onStopComposite = CompositeDisposable()
+
+    @JvmField
+    val onDestroyComposite = CompositeDisposable()
 
     var mPermissionListener: PermissionListener? = null
 
@@ -24,7 +37,32 @@ abstract class BaseActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_FFFFFF)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR //状态栏黑色字体
+        RxBus.eventObservable()
+            .subscribe(
+                {
+                    try {
+                        onRxBus(it)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }, { it.printStackTrace() }
+            )
+            .addTo(onDestroyComposite)
+    }
 
+
+    open fun onRxBus(event: RxBus.Event) {
+
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (!this.isDestroyed) {
+            onPauseComposite.dispose()
+            onStopComposite.dispose()
+            onDestroyComposite.dispose()
+        }
     }
 
     interface PermissionListener {
