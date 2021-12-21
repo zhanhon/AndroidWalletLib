@@ -55,7 +55,7 @@ public class WalletManager {
     /**
      * 区块链服务器地址
      */
-    public static String URL = "http://192.168.1.138";
+    public static String URL = "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161";
     public static BigInteger GAS_PRICE = BigInteger.valueOf(0x3b9aca00);
     public static BigInteger GAS_LIMIT = BigInteger.valueOf(0x493e0);
     private static Web3j web3j;
