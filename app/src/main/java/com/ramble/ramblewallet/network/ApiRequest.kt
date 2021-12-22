@@ -20,12 +20,9 @@ class ApiRequest <T : ApiRequest.Body>(
         @Json(name = "callTime") val callTime: Long,
         @Json(name = "clientType") val clientType: Int,
         @Json(name = "sign") val sign: String,
-        @Json(name = "token") val token: String,
-        @Json(name = "platformId") val platformId: Long,
-        @Json(name = "clientVersion") val clientVersion: String = AppUtils.getVersionName(),
+        @Json(name = "languageCode") val languageCode: String,
         @Json(name = "apiVersion") val apiVersion: String = AppUtils.getApiVersion(),
-        @Json(name = "gzipEnabled") val gzipEnabled: Int = getGzipEnabled(),
-        @Json(name = "deviceCode") val deviceCode: String = MMKVManager.getDeviceId()
+        @Json(name = "gzipEnabled") val gzipEnabled: Int = getGzipEnabled()
     )
 
     override fun toString(): String {

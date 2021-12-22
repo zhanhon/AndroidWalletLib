@@ -1,7 +1,6 @@
 package com.ramble.ramblewallet.network
 
-import com.ramble.ramblewallet.BuildConfig
-import com.ramble.ramblewallet.MyApp
+
 import com.ramble.ramblewallet.constant.DEF_HEAD
 
 /**
@@ -33,8 +32,7 @@ object ObjUtils {
             System.currentTimeMillis(),
             1,
             sign(),
-            token(),
-            BuildConfig.PLATFORM_ID
+            "1"
         )
     }
 

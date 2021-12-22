@@ -201,11 +201,9 @@ public class ApiNameInterceptor implements Interceptor {
 
     private String md5(JSONObject jHeader, String aesJBody) throws JSONException {
         return md55(
-                String.valueOf(jHeader.getInt("clientType")) +
-                        jHeader.getLong("platformId") +
-                        jHeader.getString("apiName") +
-                        jHeader.getString("token") +
+                jHeader.getString("apiName") +
                         jHeader.getLong("callTime") +
+                        String.valueOf(jHeader.getInt("clientType")) +
                         aesJBody +
                        " RxViewModel.globe.getSignSecret()"
         );
