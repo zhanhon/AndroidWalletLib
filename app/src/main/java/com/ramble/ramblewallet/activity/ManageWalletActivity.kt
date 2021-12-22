@@ -45,17 +45,11 @@ class ManageWalletActivity : BaseActivity() {
 
 
         manageWalletAdapter = ManageWalletAdapter(myDataBeans, false)
-        val linearLayoutManager = LinearLayoutManager(this)
-        linearLayoutManager.orientation = OrientationHelper.VERTICAL
-        binding.rvMainCurrency.layoutManager = linearLayoutManager
         binding.rvMainCurrency.adapter = manageWalletAdapter
 
 
         binding.ivManageWalletRight.setOnClickListener {
             manageWalletAdapter = ManageWalletAdapter(myDataBeans, true)
-            val linearLayoutManager = LinearLayoutManager(this)
-            linearLayoutManager.orientation = OrientationHelper.VERTICAL
-            binding.rvMainCurrency.layoutManager = linearLayoutManager
             binding.rvMainCurrency.adapter = manageWalletAdapter
         }
 

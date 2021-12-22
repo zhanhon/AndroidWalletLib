@@ -12,15 +12,13 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.OrientationHelper
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MyDataBean
 import com.ramble.ramblewallet.databinding.ActivityMainBinding
 
-class MainActivity : BaseActivity(), View.OnClickListener{
+class MainActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private var myDataBeans: ArrayList<MyDataBean> = arrayListOf()
@@ -55,10 +53,11 @@ class MainActivity : BaseActivity(), View.OnClickListener{
             )
         }
         mainAdapter = MainAdapter(myDataBeans)
-        val linearLayoutManager = LinearLayoutManager(this)
-        linearLayoutManager.orientation = OrientationHelper.VERTICAL
-        binding.rvCurrency.layoutManager = linearLayoutManager
         binding.rvCurrency.adapter = mainAdapter
+
+        mainAdapter.setOnItemClickListener { adapter, view, position ->
+            startActivity(Intent(this, TokenActivity::class.java))
+        }
 
         setOnClickListener()
     }
@@ -92,7 +91,7 @@ class MainActivity : BaseActivity(), View.OnClickListener{
             R.id.iv_gathering_top, R.id.ll_gathering -> {
                 startActivity(Intent(this, GatheringActivity::class.java))
             }
-            R.id.iv_transfer_top, R.id.ll_transfer  -> {
+            R.id.iv_transfer_top, R.id.ll_transfer -> {
                 startActivity(Intent(this, TransferActivity::class.java))
             }
             R.id.iv_scan_top, R.id.ll_scan -> {

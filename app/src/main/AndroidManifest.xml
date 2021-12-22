@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppMainTheme"
         tools:replace="allowBackup">
-        <activity android:name=".activity.RecoverWalletListActivity"></activity>
+        <activity android:name=".activity.AddTokenActivity"></activity>
+        <activity android:name=".activity.TokenManageActivity" />
+        <activity android:name=".activity.TokenActivity" />
+        <activity android:name=".activity.RecoverWalletListActivity" />
         <activity android:name=".activity.GatheringActivity" />
         <activity android:name=".activity.TransferActivity" />
         <activity android:name=".activity.NewAddActivity" />

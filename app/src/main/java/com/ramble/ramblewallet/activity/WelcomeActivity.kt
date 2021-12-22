@@ -33,7 +33,8 @@ class WelcomeActivity : BaseActivity() {
             showAgreement()
         }
         Handler().postDelayed({
-            startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java)) //暂时测试用
+            //startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
         }, 3000)
 
     }
