@@ -3,6 +3,7 @@ package com.ramble.ramblewallet
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
+import com.ramble.ramblewallet.constant.setupArchLibrary
 import com.ramble.ramblewallet.helper.MyPreferences
 import com.ramble.ramblewallet.helper.PushHelper
 import com.umeng.commonsdk.UMConfigure
@@ -24,6 +25,12 @@ class MyApp : Application() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this)
+        setupArchLibrary(
+            this,
+            BuildConfig.DEBUG,
+            BuildConfig.APPLICATION_ID,
+            0
+        )
     }
 
 

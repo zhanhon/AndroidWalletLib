@@ -17,7 +17,8 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
-
+        buildConfigField "long", "PLATFORM_ID", '1'
+        buildConfigField "String[]", "BASE_SERVER_URL", '{"http://122.248.244.178:8089/wallet-api/"}'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     packagingOptions {
@@ -53,7 +54,10 @@ android {
     buildFeatures {
         dataBinding = true
     }
+
+
 }
+
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -118,7 +122,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.4.0"
     implementation "com.squareup.retrofit2:converter-moshi:2.4.0"
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
-
-
+    implementation 'javax.inject:javax.inject:1'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'com.tencent:mmkv:1.0.22'
 
 }

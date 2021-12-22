@@ -1,5 +1,7 @@
 package com.ramble.ramblewallet.constant
 
+import android.content.Context
+
 /**
  * @创建人： Ricky
  * @创建时间： 2021/12/13
@@ -21,4 +23,29 @@ const val CN = "中"
 const val TW = "繁"
 const val EN = "En"
 const val LANGUAGE = "language"
+
+const val DEF_HEAD = "config-api/appVersion/queryNewestVersion"
+const val APK_PACKAGE_ARCHIVE_TYPE = "application/vnd.android.package-archive"
+lateinit var appContext: Context
+    private set
+
+var isDebug: Boolean = false
+    private set
+
+var appProcessName = "android"
+    private set
+var appUIDeep = 0
+    private set
+
+fun setupArchLibrary(
+    __appContext: Context,
+    __isDebug: Boolean,
+    __appProcessName: String,
+    __appUIDeep: Int
+) {
+    appContext = __appContext
+    isDebug = __isDebug
+    appProcessName = __appProcessName
+    appUIDeep = __appUIDeep
+}
 const val WALLETINFO = "wallet_info"
