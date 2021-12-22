@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
+import com.ramble.ramblewallet.eth.TransferEthUtils
 
 
 class TransferActivity : BaseActivity(), View.OnClickListener {
@@ -228,6 +229,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_back -> {
                 finish()
             }
+
             R.id.iv_transfer_scan -> {
                 startActivity(Intent(this, ScanActivity::class.java))
             }
@@ -238,6 +240,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 binding.edtInputQuantity.setText(transferBalance)
             }
             R.id.btn_confirm -> {
+                TransferEthUtils.transferTest()
                 //doTransaction()
             }
         }

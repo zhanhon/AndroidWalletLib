@@ -19,14 +19,22 @@ import java.math.BigInteger;
  * @创建时间： 2021/12/19
  */
 public class TransferEthUtils {
-    String from = "0x85a22B7ECC69C6E7E888BD9E9164bD3841e0E21d";
-    String to = "0xc706ddcd78ccd994c604770787e71d231cc66fd2";
-    String privateKey = "your privatekey";
-    String number = "11212.12";
 
-    public static void transfer(String fromAddress, String toAddress, String privateKey, String number,
-                                BigInteger gasPrice, BigInteger gasLimit, String desc) throws Exception {
-        Web3j web3j = Web3jFactory.build(new HttpService("https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"));
+
+    public static void transferTest() throws Exception {
+        String from = "0x5273c93c4aa6f857cd805644339cf8990bc71b50";
+        String to = "0xd46e597892f81e9fff5b3caefc476488eda2995f";
+        String privateKey = "ea2ed39bd5b4dfec655c77f1b28a6c1f823d4a5868056f61db815d080e94acae";
+        String number = "0.003";
+        int gasPrice = 20;
+        int gasLimit = 210000;
+        String desc = "aaaaaaaaas";
+        transferMain(from, to, privateKey, number, BigInteger.valueOf(gasPrice), BigInteger.valueOf(gasLimit), desc);
+    }
+
+    public static void transferMain(String fromAddress, String toAddress, String privateKey, String number,
+                                    BigInteger gasPrice, BigInteger gasLimit, String desc) throws Exception {
+        Web3j web3j = Web3jFactory.build(new HttpService("http://13.229.173.84:8545"));
         BigInteger value = Convert.toWei(number, Convert.Unit.ETHER).toBigInteger();
         //加载转账所需的凭证，用私钥
         Credentials credentials = Credentials.create(privateKey);
@@ -43,8 +51,51 @@ public class TransferEthUtils {
 
         //发送交易
         EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexValue).sendAsync().get();
-        String transactionHash = ethSendTransaction.getTransactionHash();
-        //Log.i(TAG, "transfer txhash : " + transactionHash);
+        if (ethSendTransaction.hasError()) {
+            //log.info("transfer error:", ethSendTransaction.getError().getMessage());
+        } else {
+            String transactionHash = ethSendTransaction.getTransactionHash();
+            //log.info("Transfer transactionHash:" + transactionHash);
+        }
     }
+
+//    public static void transferToken(String fromAddress, String toAddress, String privateKey, String number,
+//                                    BigInteger gasPrice, BigInteger gasLimit, String desc) throws Exception {
+//        Web3j web3j = Web3jFactory.build(new HttpService("http://13.229.173.84:8545"));
+//        BigInteger value = Convert.toWei(number, Convert.Unit.ETHER).toBigInteger();
+//        //加载转账所需的凭证，用私钥
+//        Credentials credentials = Credentials.create(privateKey);
+//        //获取nonce，交易笔数
+//        EthGetTransactionCount transactionCount = web3j.ethGetTransactionCount(fromAddress, DefaultBlockParameterName.LATEST).sendAsync().get();
+//        BigInteger nonce = transactionCount.getTransactionCount();
+//        //Log.i(TAG, "transfer nonce : " + nonce);
+//
+//        Function function = new Function(
+//                "transfer",
+//                Arrays.asList(new Address(toAddress), new Uint256(new BigInteger(number))),
+//                Arrays.asList(new TypeReference<Type>() {
+//                }));
+//
+//        String encodedFunction = FunctionEncoder.encode(function);
+//
+//        RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, gasPrice,
+//                gasLimit, contractAddress, encodedFunction);
+//        //创建RawTransaction交易对象
+//        //RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, gasPrice, gasLimit, toAddress, value, desc);
+//
+//        //签名Transaction，这里要对交易做签名
+//        byte[] signMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
+//        String hexValue = Numeric.toHexString(signMessage);
+//
+//        //发送交易
+//        EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexValue).sendAsync().get();
+//        if (ethSendTransaction.hasError()) {
+//            //log.info("transfer error:", ethSendTransaction.getError().getMessage());
+//        } else {
+//            String transactionHash = ethSendTransaction.getTransactionHash();
+//            //log.info("Transfer transactionHash:" + transactionHash);
+//        }
+//    }
+
 
 }
