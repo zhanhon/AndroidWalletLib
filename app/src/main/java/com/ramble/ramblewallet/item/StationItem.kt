@@ -25,8 +25,10 @@ class StationItem(val data: Page.Record) : CheckableSimpleRecyclerItem(), View.O
         binding.tvContent.text = data.content
         if (isEditable) {
             binding.ckDelete.visibility = View.VISIBLE
+            binding.bells.visibility = View.INVISIBLE
         } else {
             binding.ckDelete.visibility = View.GONE
+            binding.bells.visibility = View.VISIBLE
         }
         binding.ckDelete.isChecked = isChecked
         binding.ckDelete.setOnClickListener(this)
@@ -48,8 +50,10 @@ class StationItem(val data: Page.Record) : CheckableSimpleRecyclerItem(), View.O
         val binding: ItemNoticeBinding = holder.binding()
         if (isEditable) {
             binding.ckDelete.visibility = View.VISIBLE
+            binding.bells.visibility = View.INVISIBLE
         } else {
             binding.ckDelete.visibility = View.GONE
+            binding.bells.visibility = View.VISIBLE
         }
     }
 }

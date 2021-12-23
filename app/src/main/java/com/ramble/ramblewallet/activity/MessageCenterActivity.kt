@@ -3,7 +3,9 @@ package com.ramble.ramblewallet.activity
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
@@ -39,10 +41,12 @@ class MessageCenterActivity : BaseActivity(), View.OnClickListener {
         binding.rgTab.setOnCheckedChangeListener { _, checkedId ->
             if (checkedId == R.id.rb_left) {
                 binding.tvRight.text = "编辑"
+                binding.ivMineRight.isVisible = false
                 replaceFragment(fragment, false, R.id.container)
             }
             if (checkedId == R.id.rb_right) {
                 binding.tvRight.text = "编辑"
+                binding.ivMineRight.isVisible = true
                 replaceFragment(fragment2, false, R.id.container)
             }
 
@@ -57,27 +61,15 @@ class MessageCenterActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> finish()
-            R.id.iv_mine_right->{
-                if (fragment2.isEmpty) {
-                    if (binding.tvRight.text==  "编辑") {
-//                        fragment.passStatus(true)
-                        binding.ivMineRight.background = resources.getDrawable(R.drawable.ic_launcher_background)
-                        binding.tvRight.text = "取消"
-                    } else {
-//                        fragment.passStatus(false)
-                        binding.ivMineRight.background = resources.getDrawable(R.drawable.ic_launcher_background)
-                        binding.tvRight.text = "编辑"
-                    }
-                }else{
-                    if (binding.tvRight.text == "编辑") {
-                        fragment2.passStatus(true)
-                        binding.tvRight.text = "取消"
-                        binding.ivMineRight.background = resources.getDrawable(R.drawable.ic_launcher_background)
-                    } else {
-                        fragment2.passStatus(false)
-                        binding.tvRight.text = "编辑"
-                        binding.ivMineRight.background = resources.getDrawable(R.drawable.ic_launcher_background)
-                    }
+            R.id.iv_mine_right -> {
+                if (binding.tvRight.text == "编辑") {
+                    fragment2.passStatus(true)
+                    binding.ivRight.setImageResource(R.drawable.ic_confirm)
+                    binding.tvRight.text = "取消"
+                } else {
+                    fragment2.passStatus(false)
+                    binding.ivRight.setImageResource(R.drawable.ic_delelet_line)
+                    binding.tvRight.text = "编辑"
                 }
 
             }
