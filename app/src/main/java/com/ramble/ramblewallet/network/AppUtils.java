@@ -101,6 +101,15 @@ public class AppUtils {
         return "21121701";//格式：YYMMDDXX，YYMMDD=年月日，XX=序列编号
     }
 
+    /**
+     * secretKey 值
+     *
+     * @return
+     */
+    public static String getSecretKey() {
+        return "6211249d5e6d4b829990853643c4b18c53d91b2aab0d469f8625a2ea66461c93";//格式：YYMMDDXX，YYMMDD=年月日，XX=序列编号
+    }
+
     public static void printExceptionForDebug(Exception e) {
         if (isDebug()) {
             e.printStackTrace();

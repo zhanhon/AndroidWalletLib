@@ -203,9 +203,9 @@ public class ApiNameInterceptor implements Interceptor {
         return md55(
                 jHeader.getString("apiName") +
                         jHeader.getLong("callTime") +
-                        String.valueOf(jHeader.getInt("clientType")) +
+                        jHeader.getInt("clientType") +
                         aesJBody +
-                       " RxViewModel.globe.getSignSecret()"
+                        AppUtils.getSecretKey()
         );
     }
 

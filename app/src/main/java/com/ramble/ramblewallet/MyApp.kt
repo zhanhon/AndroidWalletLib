@@ -6,6 +6,7 @@ import androidx.multidex.MultiDex
 import com.ramble.ramblewallet.constant.setupArchLibrary
 import com.ramble.ramblewallet.helper.MyPreferences
 import com.ramble.ramblewallet.helper.PushHelper
+import com.ramble.ramblewallet.network.AppComponent
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.commonsdk.utils.UMUtils
 
@@ -59,6 +60,8 @@ class MyApp : Application() {
 
     companion object {
         lateinit var sInstance: Application
+        lateinit var appComponent: AppComponent
+            private set
     }
 
 }
