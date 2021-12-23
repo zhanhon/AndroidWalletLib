@@ -4,6 +4,7 @@ package com.ramble.ramblewallet.activity
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
@@ -37,22 +38,31 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.tvMineTitle.text = getString(R.string.personal_management)
         binding.incManageWallet.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.manage_wallet)
+        binding.incManageWallet.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_manag)
         binding.incAddressBook.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.address_book)
+        binding.incAddressBook.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_address_book)
         binding.incTransactionQuery.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.transaction_query)
+        binding.incTransactionQuery.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_transaction_query)
         binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.multi_language)
+        binding.incMultiLanguage.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_multi_language)
         binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.currency_unit)
+        binding.incCurrencyUnit.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_currency)
         binding.incHelpFeedback.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.help_feedback)
+        binding.incHelpFeedback.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_help_feedback)
         binding.incServiceAgreement.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.service_agreement)
+        binding.incServiceAgreement.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_service)
         binding.incPrivacyStatement.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.privacy_statement)
+        binding.incPrivacyStatement.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_privacy_statement)
         binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.about_us)
+        binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_about)
     }
     /****
      * 事件监听
