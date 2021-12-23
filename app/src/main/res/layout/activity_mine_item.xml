@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/iv_mine_icon"
-        android:layout_width="@dimen/dp_20"
-        android:layout_height="@dimen/dp_20"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_24"
         android:layout_marginStart="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_10"
         tools:background="@drawable/ic_launcher_background"
@@ -25,6 +25,7 @@
         android:layout_marginStart="@dimen/dp_10"
         android:textColor="@color/color_000000"
         android:textSize="@dimen/sp_15"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_mine_icon"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="25323232323" />
@@ -37,17 +38,19 @@
         android:layout_marginEnd="@dimen/dp_10"
         android:textColor="@color/color_9597AA"
         android:textSize="@dimen/sp_13"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/iv_mine_next"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="25323232323" />
 
     <ImageView
         android:id="@+id/iv_mine_next"
-        android:layout_width="@dimen/dp_20"
-        android:layout_height="@dimen/dp_20"
+        android:layout_width="@dimen/dp_16"
+        android:layout_height="@dimen/dp_16"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dp_10"
-        android:background="@drawable/ic_launcher_background"
+        android:src="@drawable/ic_right"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
