@@ -42,7 +42,7 @@
                 android:layout_height="@dimen/dp_20"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/dp_10"
-                android:background="@drawable/ic_launcher_background"
+                android:src="@drawable/ic_bell_unread"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

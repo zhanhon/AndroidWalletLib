@@ -45,7 +45,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" >
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="invisible">
                 <TextView
                     android:id="@+id/tv_right"
                     android:visibility="gone"
@@ -85,7 +86,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:src="@mipmap/ic_success" />
+                        android:src="@drawable/ic_success" />
 
                     <TextView
                         android:id="@+id/tv_status"
