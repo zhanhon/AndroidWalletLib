@@ -124,7 +124,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 start(TransactionQueryActivity::class.java)
             }
             R.id.inc_multi_language->{//多语言
-
+                start(UpdateLauguageActivity::class.java, Bundle().also {
+                    it.putInt(ARG_PARAM1, 2)
+                })
             }
             R.id.inc_currency_unit->{//货币
                 start(UpdateCurrencyActivity::class.java, Bundle().also {

@@ -180,4 +180,5 @@
     <string name="usd_dollar">美元（USD）</string>
     <string name="up_data">更新</string>
     <string name="up_data_currency">修改计价币种</string>
+    <string name="up_data_language">修改显示语言</string>
 </resources>
