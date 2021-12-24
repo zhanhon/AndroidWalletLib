@@ -20,15 +20,13 @@
 
             <ImageView
                 android:id="@+id/iv_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginStart="@dimen/dp_20"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dp_5"
                 android:layout_marginTop="@dimen/dp_5"
-                android:src="@mipmap/ic_arrow_left"
-                android:textColor="@color/color_000000"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:background="@drawable/vector_left_back"
+                android:textColor="@color/color_000000" />
 
             <TextView
                 android:id="@+id/tv_gathering_title"
@@ -141,7 +139,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@mipmap/ic_copy_gray" />
+                            android:background="@drawable/vector_gathering_save" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -167,7 +165,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@mipmap/ic_copy_gray" />
+                            android:background="@drawable/vector_gathering_copy" />
 
                         <TextView
                             android:layout_width="wrap_content"

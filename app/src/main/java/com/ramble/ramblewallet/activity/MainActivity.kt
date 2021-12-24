@@ -88,8 +88,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         binding.ivScanTop.setOnClickListener(this)
         binding.llScan.setOnClickListener(this)
 
-        binding.card00.setOnClickListener(this)
-        binding.card01.setOnClickListener(this)
+        binding.ivTokenManageClick.setOnClickListener(this)
+        binding.ivTokenManageClick01.setOnClickListener(this)
+
     }
 
     private fun showTransferGatheringDialog() {
@@ -143,7 +144,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_scan_top, R.id.ll_scan -> {
                 startActivity(Intent(this, ScanActivity::class.java))
             }
-            R.id.card00, R.id.card01 -> {
+            R.id.iv_token_manage_click, R.id.iv_token_manage_click_01 -> {
                 startActivity(Intent(this, TokenActivity::class.java))
             }
         }

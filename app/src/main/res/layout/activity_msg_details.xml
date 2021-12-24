@@ -2,11 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/app_theme"
         android:orientation="vertical">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,7 +21,7 @@
                 android:layout_height="@dimen/dp_20"
                 android:layout_marginStart="@dimen/dp_10"
                 android:layout_marginEnd="@dimen/dp_10"
-                android:src="@drawable/ic_left_black"
+                android:src="@drawable/vector_left_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,26 +43,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" >
+                app:layout_constraintTop_toTopOf="parent">
+
                 <TextView
                     android:id="@+id/tv_right"
-                    android:visibility="gone"
-                    android:text="编辑"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="编辑"
+                    android:visibility="gone" />
+
                 <ImageView
                     android:id="@+id/iv_right"
                     android:layout_width="@dimen/dp_20"
                     android:layout_height="@dimen/dp_20"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/dp_10"
-                    android:background="@drawable/ic_launcher_background"
-                    />
+                    android:background="@drawable/ic_launcher_background" />
             </LinearLayout>
 
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.core.widget.NestedScrollView style="@style/MatchMatch">
 
             <androidx.constraintlayout.widget.ConstraintLayout
