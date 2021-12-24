@@ -50,4 +50,5 @@
     <color name="color_e1e1e1">#e1e1e1</color>
     <color name="gray_8F95AA">#8F95AA</color>
     <color name="bg_color">#F5F6F9</color>
+    <color name="item_click_color">#ededed</color>
 </resources>

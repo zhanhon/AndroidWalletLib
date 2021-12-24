@@ -175,4 +175,9 @@
     <string name="transaction_code">交易代号</string>
     <string name="enquire_now">立即查询</string>
     <string name="transaction_details">详细内容</string>
+    <string name="hk_dollar">港币（HK$）</string>
+    <string name="cny_dollar">人民币（CNY）</string>
+    <string name="usd_dollar">美元（USD）</string>
+    <string name="up_data">更新</string>
+    <string name="up_data_currency">修改计价币种</string>
 </resources>

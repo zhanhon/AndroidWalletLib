@@ -112,16 +112,12 @@ class HelpActivity : BaseActivity(), View.OnClickListener {
 
     private fun initListener() {
         binding.ivBack.setOnClickListener(this)
-        binding.ivMineRight.setOnClickListener(this)
         adapter.onClickListener = this
     }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> finish()
-            R.id.iv_mine_right -> {
-
-            }
             R.id.item_help_todo -> {
                 val holder = AdapterUtils.getHolder(v)
                 when (val item = holder.getItem<SimpleRecyclerItem>()) {

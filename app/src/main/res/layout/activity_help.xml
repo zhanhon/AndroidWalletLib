@@ -36,30 +36,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="25323232323" />
 
-            <LinearLayout
-                android:id="@+id/iv_mine_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" >
-                <TextView
-                    android:id="@+id/tv_right"
-                    android:visibility="gone"
-                    android:text="编辑"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <ImageView
-                    android:id="@+id/iv_right"
-                    android:layout_width="@dimen/dp_20"
-                    android:layout_height="@dimen/dp_20"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/dp_10"
-                    android:background="@drawable/ic_launcher_background"
-                    />
-            </LinearLayout>
-
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"

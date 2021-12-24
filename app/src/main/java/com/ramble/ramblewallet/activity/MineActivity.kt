@@ -78,6 +78,8 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incAddressBook.setOnClickListener(this)
         binding.incHelpFeedback.setOnClickListener(this)
         binding.incTransactionQuery.setOnClickListener(this)
+        binding.incMultiLanguage.setOnClickListener(this)
+        binding.incCurrencyUnit.setOnClickListener(this)
     }
 
 
@@ -120,6 +122,14 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.inc_transaction_query->{
                 start(TransactionQueryActivity::class.java)
+            }
+            R.id.inc_multi_language->{//多语言
+
+            }
+            R.id.inc_currency_unit->{//货币
+                start(UpdateCurrencyActivity::class.java, Bundle().also {
+                    it.putInt(ARG_PARAM1, 2)
+                })
             }
         }
     }

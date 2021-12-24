@@ -9,12 +9,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.MessageCenterActivity
 import com.ramble.ramblewallet.adapter.RecyclerViewFragment
+import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.databinding.FragmentProclamationBinding
 import com.ramble.ramblewallet.helper.dataBinding
+import com.ramble.ramblewallet.item.StationItem
 import com.ramble.ramblewallet.pull.EndlessRecyclerViewScrollListener
 import com.ramble.ramblewallet.pull.QMUIPullRefreshLayout
 import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
+import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
+import java.util.ArrayList
 
 
 /**
@@ -27,6 +31,8 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
     lateinit var myActivity: MessageCenterActivity
         private set
     private lateinit var endless: EndlessRecyclerViewScrollListener
+    var isShowCheck: Boolean = false
+    var isShowALLCheck: Boolean = false
 
     override fun onAttach(context: Context) {
         myActivity = activity as MessageCenterActivity
@@ -78,6 +84,45 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
 
     private fun load() {
         lock = true
+
+        currentPage++
+        var page= Page()
+        page.pageNo=1
+        page.pageSize=20
+        page.totalCount=20
+        page.totalPage=1
+        var list= arrayListOf<Page.Record>()
+        for (j in 0 until 20) {
+            var v1= Page.Record()
+            v1.title= "比特币交易新狂潮$j"
+            v1.content="二二恶飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞二二二二二何飞飞飞飞飞非官方过分过分过分个人夫人夫人$j"
+            v1.createTime="33333333$j"
+            v1.isReaded=0
+            list.add(v1)
+        }
+        page.records=list
+        ArrayList<SimpleRecyclerItem>().apply {
+            page.records.forEach { item -> add(StationItem(item)) }
+            if (page.pageNo == 1) {
+                forEach {
+                    if (it is StationItem) {
+                        it.isEditable = isShowCheck
+                        it.isChecked = isShowALLCheck
+                    }
+                }
+                adapter.replaceAll(this.toList())
+            } else {
+                forEach {
+                    if (it is StationItem) {
+                        it.isEditable = isShowCheck
+                        it.isChecked = isShowALLCheck
+                    }
+                }
+                adapter.addAll(this.toList())
+            }
+        }
+        onLoaded()
+        totalPage=1
 //        model.getAnnouncementPage(Page.Req(currentPage + 1, Pie.PAGE_SIZE)).subscribe(
 //            {
 //                if (it.status()) {
