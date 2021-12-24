@@ -32,7 +32,7 @@ class StationItem(val data: Page.Record) : CheckableSimpleRecyclerItem(), View.O
         }
         binding.ckDelete.isChecked = isChecked
         binding.ckDelete.setOnClickListener(this)
-        binding.flagNew.visibility = View.VISIBLE
+//        binding.flagNew.visibility = View.VISIBLE
 //        binding.imgFirst.setImageResource(R.drawable.img_station)
 //        if (data.isReaded == 0) {
 //            binding.flagNew.setImageResource(R.drawable.img_unread)
