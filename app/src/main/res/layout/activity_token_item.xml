@@ -10,9 +10,8 @@
         android:id="@+id/iv_token_icon"
         android:layout_width="@dimen/dp_20"
         android:layout_height="@dimen/dp_20"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/dp_10"
-        android:background="@drawable/ic_launcher_background" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginEnd="@dimen/dp_10" />
 
     <TextView
         android:id="@+id/tv_token_name"
@@ -27,8 +26,7 @@
         android:id="@+id/iv_token_status"
         android:layout_width="@dimen/dp_20"
         android:layout_height="@dimen/dp_20"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/dp_10"
-        android:background="@drawable/ic_launcher_background" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/dp_10" />
 
 </RelativeLayout>

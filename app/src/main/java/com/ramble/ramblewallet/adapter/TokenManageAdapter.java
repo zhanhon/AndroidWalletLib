@@ -25,6 +25,32 @@ public class TokenManageAdapter extends BaseQuickAdapter<MyDataBean, BaseViewHol
 
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, MyDataBean myDataBean) {
+        switch (myDataBean.getName()) {
+            case "TFT":
+                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_tft);
+                break;
+            case "WBTC":
+                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_wbtc);
+                break;
+            case "DAI":
+                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_dai);
+                break;
+            case "USDC":
+                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_usdc);
+                break;
+            case "USDT":
+                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_usdt);
+                break;
+            case "LINK":
+                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_link);
+                break;
+            case "YFI":
+                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_yfi);
+                break;
+            case "UNI":
+                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_uni);
+                break;
+        }
         if (isNeedDelete) {
             baseViewHolder.itemView.findViewById(R.id.cl_icon).setVisibility(View.VISIBLE);
         } else {

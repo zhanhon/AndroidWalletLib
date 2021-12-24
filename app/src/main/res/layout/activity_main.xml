@@ -5,7 +5,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_078DC2">
+        android:background="@mipmap/ic_home_bg_eth">
 
         <RelativeLayout
             android:id="@+id/toolbar"
@@ -19,14 +19,15 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="ETH"
-                android:textSize="@dimen/sp_30" />
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/sp_20" />
 
             <ImageView
                 android:id="@+id/btnMenu"
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"
                 android:layout_margin="@dimen/dp_10"
-                android:background="@drawable/ic_launcher_background" />
+                android:background="@drawable/vector_menu" />
 
             <LinearLayout
                 android:id="@+id/relBtns"
@@ -40,21 +41,21 @@
                     android:layout_width="@dimen/dp_20"
                     android:layout_height="@dimen/dp_20"
                     android:layout_margin="@dimen/dp_10"
-                    android:background="@drawable/ic_launcher_background" />
+                    android:background="@drawable/vector_gathering_small" />
 
                 <ImageView
                     android:id="@+id/iv_transfer_top"
                     android:layout_width="@dimen/dp_20"
                     android:layout_height="@dimen/dp_20"
                     android:layout_margin="@dimen/dp_10"
-                    android:background="@drawable/ic_launcher_background" />
+                    android:background="@drawable/vector_transfer_small" />
 
                 <ImageView
                     android:id="@+id/iv_scan_top"
                     android:layout_width="@dimen/dp_20"
                     android:layout_height="@dimen/dp_20"
                     android:layout_margin="@dimen/dp_10"
-                    android:background="@drawable/ic_launcher_background" />
+                    android:background="@drawable/vector_scan_small" />
             </LinearLayout>
 
             <LinearLayout
@@ -68,14 +69,14 @@
                     android:layout_width="@dimen/dp_20"
                     android:layout_height="@dimen/dp_20"
                     android:layout_margin="@dimen/dp_10"
-                    android:background="@drawable/ic_launcher_background" />
+                    android:background="@drawable/vector_message_center" />
 
                 <ImageView
                     android:id="@+id/iv_mine_top"
                     android:layout_width="@dimen/dp_20"
                     android:layout_height="@dimen/dp_20"
                     android:layout_margin="@dimen/dp_10"
-                    android:background="@drawable/ic_launcher_background" />
+                    android:background="@drawable/vector_personal" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -87,7 +88,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_60"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -105,14 +106,17 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/dp_20"
-                            android:layout_height="@dimen/dp_20"
-                            android:background="@drawable/ic_launcher_background" />
+                            android:layout_width="@dimen/dp_40"
+                            android:layout_height="@dimen/dp_40"
+                            android:layout_marginTop="@dimen/dp_3"
+                            android:background="@drawable/vector_home_gathering" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/gathering" />
+                            android:layout_marginTop="@dimen/dp_3"
+                            android:text="@string/gathering"
+                            android:textColor="@color/color_FFFFFF" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -127,14 +131,16 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/dp_20"
-                            android:layout_height="@dimen/dp_20"
-                            android:background="@drawable/ic_launcher_background" />
+                            android:layout_width="@dimen/dp_40"
+                            android:layout_height="@dimen/dp_40"
+                            android:background="@drawable/vector_home_transfer" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/transfer" />
+                            android:layout_marginTop="@dimen/dp_3"
+                            android:text="@string/transfer"
+                            android:textColor="@color/color_FFFFFF" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -147,47 +153,98 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="@dimen/dp_20"
-                            android:layout_height="@dimen/dp_20"
-                            android:background="@drawable/ic_launcher_background" />
+                            android:layout_width="@dimen/dp_40"
+                            android:layout_height="@dimen/dp_40"
+                            android:background="@drawable/vector_home_scan" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/scan" />
+                            android:layout_marginTop="@dimen/dp_3"
+                            android:text="@string/scan"
+                            android:textColor="@color/color_FFFFFF" />
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/card00"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_120"
-                    android:background="@color/color_0CB5E4"
+                    android:layout_height="@dimen/dp_240"
+                    android:background="@mipmap/ic_home_eth_spread"
+                    android:orientation="vertical"
                     android:padding="@dimen/dp_10">
 
-                </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_30"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="Chric"
+                        android:textColor="@color/color_FFFFFF" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_30"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="$23232343"
+                        android:textColor="@color/color_FFFFFF" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_30"
+                        android:layout_marginTop="@dimen/dp_30"
+                        android:text="0xxxs....sdfs"
+                        android:textColor="@color/color_FFFFFF" />
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_currency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_F0EFF4"
+                    android:background="@color/color_FFFFFF"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
 
         </ScrollView>
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/card01"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_120"
+            android:layout_height="@dimen/dp_240"
             android:layout_below="@id/toolbar"
-            android:background="@color/color_0CB5E4"
+            android:background="@mipmap/ic_home_eth_pack_up"
+            android:orientation="vertical"
             android:padding="@dimen/dp_10"
-            android:visibility="gone"></RelativeLayout>
+            android:visibility="gone">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="Chric"
+                android:textColor="@color/color_FFFFFF" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="$23232343"
+                android:textColor="@color/color_FFFFFF" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_30"
+                android:text="0xxxs....sdfs"
+                android:textColor="@color/color_FFFFFF" />
+        </LinearLayout>
 
     </RelativeLayout>
 </layout>

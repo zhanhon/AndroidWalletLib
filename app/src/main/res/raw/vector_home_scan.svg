@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="58px"
+    height="58px"
+    viewBox="0 0 58 58"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg">
+    <title>图标/首页/扫码</title>
+    <g
+        id="图标/首页/扫码"
+        stroke="none"
+        stroke-width="1"
+        fill="none"
+        fill-rule="evenodd">
+        <rect
+            id="矩形"
+            fill="#A1A1A1"
+            opacity="0"
+            x="0"
+            y="0"
+            width="58"
+            height="58"></rect>
+        <rect
+            id="矩形"
+            fill="#FFFFFF"
+            opacity="0.160019985"
+            x="0"
+            y="0"
+            width="58"
+            height="58"
+            rx="10"></rect>
+        <g
+            id="编组"
+            transform="translate(13.000000, 13.000000)">
+            <path
+                d="M7.20922872,13.3535234 L23.2092287,13.3535234 C24.3137982,13.3535234 25.2092287,14.2489539 25.2092287,15.3535234 C25.2092287,16.4580929 24.3137982,17.3535234 23.2092287,17.3535234 L7.20922872,17.3535234 C6.10465922,17.3535234 5.20922872,16.4580929 5.20922872,15.3535234 C5.20922872,14.2489539 6.10465922,13.3535234 7.20922872,13.3535234 Z"
+                id="矩形"
+                fill="#FFFFFF"></path>
+            <path
+                d="M8.4,4.4408921e-14 L3,4.4408921e-14 C1.34314575,4.4408921e-14 7.27418126e-13,1.34314575 7.27418126e-13,3 L7.27418126e-13,8.4 L7.27418126e-13,8.4"
+                id="路径-13"
+                stroke="#FFFFFF"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            <path
+                d="M8.4,31.4 L3,31.4 C1.34314575,31.4 7.27418126e-13,30.0568542 7.27418126e-13,28.4 L7.27418126e-13,23 L7.27418126e-13,23"
+                id="路径-13备份"
+                stroke="#FFFFFF"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            <path
+                d="M23,31.4 L28.4,31.4 C30.0568542,31.4 31.4,30.0568542 31.4,28.4 L31.4,23 L31.4,23"
+                id="路径-13备份-2"
+                stroke="#FFFFFF"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            <path
+                d="M23,4.4408921e-14 L28.4,4.4408921e-14 C30.0568542,4.4408921e-14 31.4,1.34314575 31.4,3 L31.4,8.4 L31.4,8.4"
+                id="路径-13备份-3"
+                stroke="#FFFFFF"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+        </g>
+    </g>
+</svg>
