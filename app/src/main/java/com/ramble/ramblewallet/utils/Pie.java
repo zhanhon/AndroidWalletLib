@@ -7,4 +7,5 @@ package com.ramble.ramblewallet.utils;
  */
 public class Pie {
     public static final String MMKV_DEVICE_ID = "MMKV_DEVICE_ID";
+    public static final int EVENT_CHECK_MSG = 2001270;
 }

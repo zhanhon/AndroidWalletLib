@@ -21,6 +21,8 @@ import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.StationItem
 import com.ramble.ramblewallet.pull.EndlessRecyclerViewScrollListener
 import com.ramble.ramblewallet.pull.QMUIPullRefreshLayout
+import com.ramble.ramblewallet.utils.Pie
+import com.ramble.ramblewallet.utils.RxBus
 import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
@@ -325,7 +327,15 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
         }
         adapter.notifyItemRangeChanged(0, adapter.itemCount)
     }
-
+    override fun onRxBus(event: RxBus.Event) {
+        super.onRxBus(event)
+        when (event.id()) {
+            Pie.EVENT_CHECK_MSG -> {
+                passStatus(event.data())
+            }
+            else -> return
+        }
+    }
     private fun setAdapterALLChecked(isChecked: Boolean) {
         isShowALLCheck = isChecked
         adapter.all.forEach {
@@ -336,7 +346,7 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
         adapter.notifyItemRangeChanged(0, adapter.itemCount)
     }
 
-    fun passStatus(isedit: Boolean) {
+    private fun passStatus(isedit: Boolean) {
 //        if (isedit) {
 //            binding.layoutBottoom.visibility = View.VISIBLE
 //        } else {

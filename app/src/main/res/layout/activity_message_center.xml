@@ -101,11 +101,9 @@
 
             </RadioGroup>
         </LinearLayout>
-        <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </FrameLayout>
+        <com.ramble.ramblewallet.wight.CustomViewPager
+            android:id="@+id/pager"
+            style="@style/MatchMatch"
+            android:background="@color/bg_gray2" />
     </LinearLayout>
 </layout>
