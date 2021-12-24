@@ -115,12 +115,12 @@
                     android:gravity="center"
                     android:paddingHorizontal="@dimen/dp_10"
                     android:text="0xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                    android:textColor="@color/color_9597AA" />
+                    android:textColor="@color/color_9598AA" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/color_9597AA" />
+                    android:background="@color/color_9598AA" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -154,7 +154,7 @@
                     <View
                         android:layout_width="0.5dp"
                         android:layout_height="match_parent"
-                        android:background="@color/color_9597AA" />
+                        android:background="@color/color_9598AA" />
 
                     <LinearLayout
                         android:id="@+id/ll_copy"

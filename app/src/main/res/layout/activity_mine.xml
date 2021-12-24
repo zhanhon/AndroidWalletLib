@@ -113,7 +113,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_100"
             android:text="@string/clear_cache"
-            android:textColor="@color/color_9597AA"
+            android:textColor="@color/color_9598AA"
             android:textSize="@dimen/sp_13" />
 
     </LinearLayout>

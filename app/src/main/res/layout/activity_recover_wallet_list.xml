@@ -89,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ethereum"
-                    android:textColor="@color/color_9597AA"
+                    android:textColor="@color/color_9598AA"
                     android:textSize="@dimen/dp_12" />
             </LinearLayout>
 
@@ -150,7 +150,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TRON"
-                    android:textColor="@color/color_9597AA"
+                    android:textColor="@color/color_9598AA"
                     android:textSize="@dimen/dp_12" />
             </LinearLayout>
 
@@ -212,7 +212,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Bitcoin"
-                    android:textColor="@color/color_9597AA"
+                    android:textColor="@color/color_9598AA"
                     android:textSize="@dimen/dp_12" />
             </LinearLayout>
 

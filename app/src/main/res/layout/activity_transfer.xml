@@ -111,7 +111,7 @@
                 android:id="@+id/v_address_input_middle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_1"
-                android:background="@color/color_9597AA"
+                android:background="@color/color_9598AA"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ll_address_input_up" />
@@ -211,7 +211,7 @@
                 android:id="@+id/v_quantity_middle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_1"
-                android:background="@color/color_9597AA"
+                android:background="@color/color_9598AA"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_quantity_up" />
@@ -324,7 +324,7 @@
                 android:id="@+id/v_miner_fee_middle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_1"
-                android:background="@color/color_9597AA"
+                android:background="@color/color_9598AA"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ll_miner_fee_up" />

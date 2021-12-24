@@ -56,15 +56,14 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
         }
 
-        for (i in 0..100) {
-            myDataBeans.add(
-                MyDataBean(
-                    i + 1,
-                    "ricky-$i",
-                    "21-$i"
-                )
-            )
-        }
+        myDataBeans.add(MyDataBean(1, "TFT", ""))
+        myDataBeans.add(MyDataBean(2, "WBTC", ""))
+        myDataBeans.add(MyDataBean(3, "DAI", ""))
+        myDataBeans.add(MyDataBean(4, "USDC", ""))
+        myDataBeans.add(MyDataBean(5, "USDT", ""))
+        myDataBeans.add(MyDataBean(6, "LINK", ""))
+        myDataBeans.add(MyDataBean(7, "YFI", ""))
+        myDataBeans.add(MyDataBean(8, "UNI", ""))
         mainAdapter = MainAdapter(myDataBeans)
         binding.rvCurrency.adapter = mainAdapter
 

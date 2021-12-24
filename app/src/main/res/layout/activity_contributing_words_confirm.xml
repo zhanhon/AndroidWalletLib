@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/contributing_words_hint"
-                    android:textColor="@color/color_9597AA"
+                    android:textColor="@color/color_9598AA"
                     android:textSize="@dimen/sp_15" />
 
                 <androidx.recyclerview.widget.RecyclerView
