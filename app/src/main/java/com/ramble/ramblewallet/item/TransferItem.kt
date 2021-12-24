@@ -40,13 +40,13 @@ class TransferItem (val data: QueryTransferRecord.Record) : SimpleRecyclerItem()
                 }
                 binding.tvMoneyType
                 binding.tvMoneyType.text=data.userReceivedWashBetAmount.toString()
-                binding.tvMoneyType.isVisible=true
+                binding.tvMoneyType.isVisible=false
             }
             3-> {
                 binding.tvMoney.setText(R.string.transaction_failed)
                 binding.tvMoney.setTextColor( Color.parseColor("#222222"))
                 binding.tvMoneyType.text=data.userReceivedWashBetAmount.toString()
-                binding.tvMoneyType.isVisible=true
+                binding.tvMoneyType.isVisible=false
             }
         }
         holder.attachOnClickListener(R.id.item_transfer)
