@@ -41,15 +41,13 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener{
 
     private fun initListener() {
         binding.ivBack.setOnClickListener(this)
-        binding.ivMineRight.setOnClickListener(this)
+
     }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> finish()
-            R.id.iv_mine_right -> {
 
-            }
         }
     }
 

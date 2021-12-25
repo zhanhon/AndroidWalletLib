@@ -20,7 +20,7 @@
                 android:layout_height="@dimen/dp_20"
                 android:layout_marginStart="@dimen/dp_10"
                 android:layout_marginEnd="@dimen/dp_10"
-                android:background="@drawable/ic_launcher_background"
+                android:src="@drawable/vector_left_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,30 +36,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:id="@+id/iv_mine_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/tv_right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="编辑"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/iv_right"
-                    android:layout_width="@dimen/dp_20"
-                    android:layout_height="@dimen/dp_20"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/dp_10"
-                    android:background="@drawable/ic_launcher_background" />
-            </LinearLayout>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

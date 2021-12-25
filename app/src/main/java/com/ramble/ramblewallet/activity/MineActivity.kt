@@ -46,7 +46,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incTransactionQuery.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.transaction_query)
         binding.incTransactionQuery.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_transaction_query)
-        binding.incTransactionQuery.isVisible=false
+//        binding.incTransactionQuery.isVisible=false
         binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.multi_language)
         binding.incMultiLanguage.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_multi_language)

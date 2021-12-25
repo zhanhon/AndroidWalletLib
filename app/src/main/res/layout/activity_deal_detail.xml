@@ -437,7 +437,7 @@
                                 android:layout_gravity="right"
                                 android:layout_marginLeft="@dimen/dp_5"
                                 android:gravity="right"
-                                android:src="@mipmap/ic_arrow_right"
+                                android:src="@drawable/ic_right"
                                 android:textColor="@color/black" />
                         </LinearLayout>
                     </LinearLayout>
