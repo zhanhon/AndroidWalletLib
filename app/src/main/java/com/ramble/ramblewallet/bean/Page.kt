@@ -1,5 +1,8 @@
 package com.ramble.ramblewallet.bean
 
+import com.ramble.ramblewallet.network.ApiRequest
+import com.squareup.moshi.Json
+
 /**
  * 时间　: 2021/12/16 9:48
  * 作者　: potato
@@ -32,14 +35,14 @@ class Page @SuppressWarnings("unused") constructor()  {
         var title: String = ""
     )
 
-//    class Req(
-//        @Json(name = "pageNo") val pageNo: Int,//当前页码
-//        @Json(name = "pageSize") val pageSize: Int, //每页显示条数
-//        @Json(name = "isReaded") var isReaded: Int = -1
-//    ) : ApiRequest.Body() {
-//        override fun toString(): String {
-//            return "Req(pageNo=$pageNo, pageSize=$pageSize, isReaded=$isReaded)"
-//        }
-//    }
+    class Req(
+        @Json(name = "pageNo") val pageNo: Int,//当前页码
+        @Json(name = "pageSize") val pageSize: Int, //每页显示条数
+        @Json(name = "isReaded") var isReaded: Int = -1
+    ) : ApiRequest.Body() {
+        override fun toString(): String {
+            return "Req(pageNo=$pageNo, pageSize=$pageSize, isReaded=$isReaded)"
+        }
+    }
 
 }

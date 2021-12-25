@@ -8,4 +8,13 @@ package com.ramble.ramblewallet.utils;
 public class Pie {
     public static final String MMKV_DEVICE_ID = "MMKV_DEVICE_ID";
     public static final int EVENT_CHECK_MSG = 2001270;
+    /**
+     * pref 存储服务端cdn
+     */
+    public static final String PREFS_SERVER_CDN = "server_cdn";
+
+    /**
+     * pref 存储服务端cdn
+     */
+    public static final String PREFS_SERVER_CDN_SELECT = "server_cdn_select";
 }

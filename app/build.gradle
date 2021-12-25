@@ -18,7 +18,7 @@ android {
         versionName "1.0"
         multiDexEnabled true
         buildConfigField "long", "PLATFORM_ID", '1'
-        buildConfigField "String[]", "BASE_SERVER_URL", '{"http://122.248.244.178:8089/wallet-api/"}'
+        buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.229.173.84:8095/"}'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     packagingOptions {
@@ -121,4 +121,5 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.tencent:mmkv:1.0.22'
 
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 }

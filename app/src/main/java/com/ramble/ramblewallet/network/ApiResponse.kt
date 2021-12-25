@@ -13,7 +13,7 @@ class ApiResponse <T>(
 ) : Envelope<T> {
 
     override fun status(): Boolean {
-        return body.code == 1
+        return body.code == 200
     }
 
     override fun code(): Int = body.code

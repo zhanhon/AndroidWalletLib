@@ -11,12 +11,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.ramble.ramblewallet.R
+import com.ramble.ramblewallet.model.Activity
 import com.ramble.ramblewallet.utils.RxBus
 import com.ramble.ramblewallet.utils.addTo
 import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : Activity() {
 
     @JvmField
     val onPauseComposite = CompositeDisposable()
