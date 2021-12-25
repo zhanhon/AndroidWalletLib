@@ -50,9 +50,11 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.multi_language)
         binding.incMultiLanguage.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_multi_language)
+        binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text =  getString(R.string.language_simplified_chinese)
         binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.currency_unit)
         binding.incCurrencyUnit.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_currency)
+        binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text =getString(R.string.cny_dollar)
         binding.incHelpFeedback.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.help_feedback)
         binding.incHelpFeedback.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_help_feedback)
@@ -65,6 +67,8 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.about_us)
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_about)
+        binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).visibility=View.INVISIBLE
+        binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text ="v2.1"
     }
     /****
      * 事件监听
