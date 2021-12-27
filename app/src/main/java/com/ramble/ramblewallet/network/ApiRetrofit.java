@@ -28,7 +28,6 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 import static com.ramble.ramblewallet.constant.ConstantsKt.CN;
 import static com.ramble.ramblewallet.constant.ConstantsKt.LANGUAGE;
 import static com.ramble.ramblewallet.constant.ConstantsKt.getAppContext;
-import static com.ramble.ramblewallet.utils.Zlib.setApiName;
 
 /**
  * @author ChayChan
@@ -86,9 +85,6 @@ public class ApiRetrofit {
                 .replace("https://", "");
         String signStr = url + System.currentTimeMillis() + "1" + "" + AppUtils.getSecretKey();
         String sign = Md5Util.md5(signStr);
-
-        setApiName(url);
-
         builder.addHeader("apiName", url); //API接口名
         builder.addHeader("callTime", String.valueOf(System.currentTimeMillis())); //调用时间
         builder.addHeader("sign", sign);
