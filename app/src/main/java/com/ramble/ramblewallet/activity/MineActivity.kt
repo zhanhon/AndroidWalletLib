@@ -18,8 +18,8 @@ import com.ramble.ramblewallet.constant.ARG_PARAM3
 import com.ramble.ramblewallet.constant.ARG_PARAM4
 import com.ramble.ramblewallet.databinding.ActivityMineBinding
 import com.ramble.ramblewallet.helper.start
-import com.ramble.ramblewallet.model.MainViewModel
-import com.ramble.ramblewallet.model.activityViewModel
+import com.ramble.ramblewallet.network.getEthMinerConfigUrl
+import com.ramble.ramblewallet.network.rateInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.applyIo
 
@@ -27,7 +27,6 @@ import com.ramble.ramblewallet.utils.applyIo
  * 我的管理页面
  */
 class MineActivity : BaseActivity(), View.OnClickListener {
-    private val model by activityViewModel(MainViewModel::class.java)
     private lateinit var binding: ActivityMineBinding
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -89,11 +88,11 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun getData() {
-        mApiService.getRateInfo(EmptyReq().toApiRequest("wallet-decentralized-api/sys/getRateInfo"))
+        mApiService.getRateInfo(EmptyReq().toApiRequest(rateInfoUrl))
             .applyIo().subscribe(
                 {
-                    if (it.status()) {
-                        it.data()?.let { it1 -> println("-=-=-=->${it1.currencyType}") }
+                    if (it.code() == 1) {
+                        it.data()?.let { it1 -> println("-=-=-=->${it1[0].rateCny}") }
                     } else {
                         println("-=-=-=->${it.message()}")
                     }
@@ -101,19 +100,6 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                     println("-=-=-=->${it.printStackTrace()}")
                 }
             )
-        mApiService.getEthMinerConfig(
-            EthMinerConfig.Req("ETH").toApiRequest("wallet-decentralized-api/sys/getEthMinerConfig")
-        ).applyIo().subscribe(
-            {
-                if (it.status()) {
-                    it.data()?.let { it1 -> println("-=-=-=->ETH:${it1.currencyType}") }
-                } else {
-                    println("-=-=-=->ETH:${it.message()}")
-                }
-            }, {
-                println("-=-=-=->ETH:${it.printStackTrace()}")
-            }
-        )
     }
 
     /****

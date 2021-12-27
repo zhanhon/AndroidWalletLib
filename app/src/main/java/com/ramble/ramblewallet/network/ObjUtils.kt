@@ -17,32 +17,18 @@ object ObjUtils {
     @JvmStatic
     fun <T : ApiRequest.Body> apiRequest(body: T, apiName: String): ApiRequest<T> {
         val getLanguage = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
-        var language = "zh_CN"
+        var languageCode = "zh_CN"
         when (getLanguage) {
-            "中" -> language = "zh_CN"
-            "繁" -> language = "zh_TW"
-            "En" -> language = "EN"
+            "中" -> languageCode = "zh_CN"
+            "繁" -> languageCode = "zh_TW"
+            "En" -> languageCode = "EN"
         }
         val signStr = apiName + System.currentTimeMillis() + "1" + "" + AppUtils.getSecretKey()
         val sign = Md5Util.md5(signStr)
         return ApiRequest(
-            apiRequestHeader(apiName, sign, language),
+            ApiRequest.Header(apiName, System.currentTimeMillis(), 1, sign, languageCode),
             body
         )
     }
-
-    @JvmStatic
-    private fun apiRequestHeader(
-        apiName: String,
-        sign: String,
-        languageCode: String
-    ): ApiRequest.Header {
-        return ApiRequest.Header(
-            apiName,
-            System.currentTimeMillis(),
-            1,
-            sign,
-            languageCode
-        )
-    }
+    
 }

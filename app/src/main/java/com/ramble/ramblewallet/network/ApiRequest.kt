@@ -15,7 +15,6 @@ class ApiRequest<T : ApiRequest.Body>(
 
     open class Body @SuppressWarnings("unused") constructor()
 
-
     data class Header(
         @Json(name = "apiName") val apiName: String,
         @Json(name = "callTime") val callTime: Long,

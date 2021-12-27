@@ -108,7 +108,7 @@ public class ApiRetrofit {
         Cache cache = new Cache(httpCacheDirectory, cacheSize);
 
         mClient = new OkHttpClient.Builder()
-                .addInterceptor(mHeaderInterceptor)//添加头部信息拦截器
+                //.addInterceptor(mHeaderInterceptor)//添加头部信息拦截器
                 .addInterceptor(mLogInterceptor)//添加log拦截器
                 .sslSocketFactory(createSSLSocketFactory())
                 .cache(cache)

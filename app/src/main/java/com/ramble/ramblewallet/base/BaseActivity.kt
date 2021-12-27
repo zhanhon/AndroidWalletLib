@@ -1,15 +1,16 @@
 package com.ramble.ramblewallet.base
 
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.ramble.ramblewallet.R
-import com.ramble.ramblewallet.model.Activity
 import com.ramble.ramblewallet.network.ApiRetrofit
 import com.ramble.ramblewallet.network.ApiService
 import com.ramble.ramblewallet.utils.RxBus
@@ -17,7 +18,7 @@ import com.ramble.ramblewallet.utils.addTo
 import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 
-abstract class BaseActivity : Activity() {
+abstract class BaseActivity : AppCompatActivity() {
 
     var mApiService: ApiService = ApiRetrofit.getInstance().apiService
 
