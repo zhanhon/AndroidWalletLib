@@ -11,13 +11,19 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.ContributingWordsConfirmAdapter
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.bean.AddressReport
+import com.ramble.ramblewallet.bean.EthMinerConfig
 import com.ramble.ramblewallet.bean.MyDataBean
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityContributingWordsConfirmBinding
 import com.ramble.ramblewallet.eth.Wallet
 import com.ramble.ramblewallet.eth.WalletManager.generateWalletKeystore
 import com.ramble.ramblewallet.eth.WalletManager.isETHValidAddress
+import com.ramble.ramblewallet.network.getEthMinerConfigUrl
+import com.ramble.ramblewallet.network.reportAddressUrl
+import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.applyIo
 
 
 class ContributingWordsConfirmActivity : BaseActivity() {
@@ -58,6 +64,8 @@ class ContributingWordsConfirmActivity : BaseActivity() {
                 println("-=-=-=->walletETHPrivateKey:${walletETHKeyStore.privateKey}")
                 println("-=-=-=->walletETHKeystore:${walletETHKeyStore.keystore}")
 
+                putAddress(walletETHKeyStore)
+
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
                     saveWalletList =
                         Gson().fromJson(
@@ -79,6 +87,26 @@ class ContributingWordsConfirmActivity : BaseActivity() {
 
             }
         }
+    }
+
+    private fun putAddress(walletETHKeyStore: Wallet) {
+        var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+        detailsList.add(AddressReport.DetailsList(walletETHKeyStore.address, 1)) //ETH
+        val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
+        mApiService.putAddress(
+            AddressReport.Req(detailsList, languageCode).toApiRequest(reportAddressUrl)
+        ).applyIo().subscribe(
+            {
+                if (it.code() == 1) {
+                    it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
+                } else {
+                    putAddress(walletETHKeyStore)
+                    println("-=-=-=->putAddress:${it.message()}")
+                }
+            }, {
+                println("-=-=-=->putAddress:${it.printStackTrace()}")
+            }
+        )
     }
 
     private fun initMnmonicETH() {

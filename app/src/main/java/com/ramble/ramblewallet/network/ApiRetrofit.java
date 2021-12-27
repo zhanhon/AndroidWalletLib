@@ -49,9 +49,9 @@ public class ApiRetrofit {
         Response response = chain.proceed(chain.request());
         okhttp3.MediaType mediaType = response.body().contentType();
         String content = response.body().string();
-        Log.v("-=-=->", "----------Request Start----------------");
-        Log.v("-=-=->Request:", request.toString());
-        Log.v("-=-=->", "----------Response End----------------");
+        Log.v("-=-=->", "=========================Request Start=========================");
+        Log.v("-=-=->Request:", request.body().toString());
+        Log.v("-=-=->", "=========================Response End==========================");
         Log.v("-=-=->Response", content);
 
         return response.newBuilder()
@@ -63,19 +63,7 @@ public class ApiRetrofit {
      * 增加头部信息的拦截器
      */
     private final Interceptor mHeaderInterceptor = chain -> {
-        String getLanguage = SharedPreferencesUtils.getString(getAppContext(), LANGUAGE, CN);
-        String language = "zh_CN";
-        switch (getLanguage) { //语言代码|zh_CN:简体中文|zh_TW:繁体中文|en:英文|th:泰语|vi:越南语
-            case "中":
-                language = "zh_CN";
-                break;
-            case "繁":
-                language = "zh_TW";
-                break;
-            case "En":
-                language = "EN";
-                break;
-        }
+        String languageCode = SharedPreferencesUtils.getString(getAppContext(), LANGUAGE, CN);
         Request.Builder builder = chain.request().newBuilder();
         Request request = chain.request();
         String url = request.url().toString()
@@ -89,7 +77,7 @@ public class ApiRetrofit {
         builder.addHeader("callTime", String.valueOf(System.currentTimeMillis())); //调用时间
         builder.addHeader("sign", sign);
         builder.addHeader("clientType", "1"); //"客户端类型|1:Android|2:IOSv|3:H5|4:PC"
-        builder.addHeader("languageCode", language); //语言代码|zh_CN:简体中文|zh_TW:繁体中文|en:英文|th:泰语|vi:越南语
+        builder.addHeader("languageCode", languageCode); //语言代码|zh_CN:简体中文|zh_TW:繁体中文|en:英文|th:泰语|vi:越南语
         builder.addHeader("apiVersion", "20211227"); //(预留字段)Api版本号
         builder.addHeader("gzipEnabled", "0"); //(预留字段)是否启用gzip压缩｜0:不启用｜1:启用
 
