@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -94,7 +94,7 @@
             android:background="@color/path_game_item_selected" />
         <com.ramble.ramblewallet.pull.PiePullRefreshLayout
             android:id="@+id/pull_to_refresh"
-            style="@style/MatchMatch"
+            style="@style/WrapWrap"
             android:background="@drawable/selector_report_buy">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -106,15 +106,16 @@
 
         <RelativeLayout
             android:id="@+id/txt_empty"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_100"
             android:visibility="gone">
 
             <TextView
                 android:id="@+id/text1"
                 style="@style/WrapWrap"
                 android:layout_centerHorizontal="true"
-                android:drawableTop="@drawable/state_empty_log"
+                android:drawableTop="@drawable/ic_no_records"
                 android:gravity="center"
                 android:text="暂无记录"
                 android:textColor="@color/front_three"

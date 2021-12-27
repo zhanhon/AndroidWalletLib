@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.DealDetailActivity
@@ -81,6 +82,7 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
 //        binding.tvDelete.setOnClickListener(this)
         return reusedView
     }
+
     override fun onRefresh() {
         init()
     }
@@ -100,61 +102,62 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
         super.actualLazyLoad()
         binding.pullToRefresh.setToRefreshDirectly()
     }
+
     private fun loadData() {
         lock = true
         currentPage++
-        var page= QueryTransferRecord()
-        page.pageNo=1
-        page.pageSize=20
-        page.totalCount=20
-        page.totalPage=1
-        var list= arrayListOf<QueryTransferRecord.Record>()
-        var v1= QueryTransferRecord.Record()
-        v1.createTime= "11111111111111111"
-        v1.thirdGameName="0x457496574569845675896576586"
-        v1.actionStatus=1
-        v1.blockStatus=1
+        var page = QueryTransferRecord()
+        page.pageNo = 1
+        page.pageSize = 20
+        page.totalCount = 20
+        page.totalPage = 1
+        var list = arrayListOf<QueryTransferRecord.Record>()
+        var v1 = QueryTransferRecord.Record()
+        v1.createTime = "11111111111111111"
+        v1.thirdGameName = "0x457496574569845675896576586"
+        v1.actionStatus = 1
+        v1.blockStatus = 1
         list.add(v1)
-        var v2= QueryTransferRecord.Record()
-        v2.createTime= "11111111111111111"
-        v2.thirdGameName="0x457496574569845675896576586"
-        v2.actionStatus=1
-        v2.blockStatus=2
-        v2.userReceivedWashBetAmount=111.00
-        v2.validBetAmount=222.00
+        var v2 = QueryTransferRecord.Record()
+        v2.createTime = "11111111111111111"
+        v2.thirdGameName = "0x457496574569845675896576586"
+        v2.actionStatus = 1
+        v2.blockStatus = 2
+        v2.userReceivedWashBetAmount = 111.00
+        v2.validBetAmount = 222.00
         list.add(v2)
-        var v3= QueryTransferRecord.Record()
-        v3.createTime= "11111111111111111"
-        v3.thirdGameName="0x457496574569845675896576586"
-        v3.actionStatus=1
-        v3.blockStatus=3
-        v3.userReceivedWashBetAmount=111.00
-        v3.validBetAmount=222.00
+        var v3 = QueryTransferRecord.Record()
+        v3.createTime = "11111111111111111"
+        v3.thirdGameName = "0x457496574569845675896576586"
+        v3.actionStatus = 1
+        v3.blockStatus = 3
+        v3.userReceivedWashBetAmount = 111.00
+        v3.validBetAmount = 222.00
         list.add(v3)
-        var v4= QueryTransferRecord.Record()
-        v4.createTime= "11111111111111111"
-        v4.thirdGameName="0x457496574569845675896576586"
-        v4.actionStatus=2
-        v4.blockStatus=1
+        var v4 = QueryTransferRecord.Record()
+        v4.createTime = "11111111111111111"
+        v4.thirdGameName = "0x457496574569845675896576586"
+        v4.actionStatus = 2
+        v4.blockStatus = 1
         list.add(v4)
-        var v5= QueryTransferRecord.Record()
-        v5.createTime= "11111111111111111"
-        v5.thirdGameName="0x457496574569845675896576586"
-        v5.actionStatus=2
-        v5.blockStatus=2
-        v5.userReceivedWashBetAmount=111.00
-        v5.validBetAmount=222.00
+        var v5 = QueryTransferRecord.Record()
+        v5.createTime = "11111111111111111"
+        v5.thirdGameName = "0x457496574569845675896576586"
+        v5.actionStatus = 2
+        v5.blockStatus = 2
+        v5.userReceivedWashBetAmount = 111.00
+        v5.validBetAmount = 222.00
         list.add(v5)
-        var v6= QueryTransferRecord.Record()
-        v6.createTime= "11111111111111111"
-        v6.thirdGameName="0x457496574569845675896576586"
-        v6.actionStatus=2
-        v6.blockStatus=3
-        v6.userReceivedWashBetAmount=111.00
-        v6.validBetAmount=222.00
+        var v6 = QueryTransferRecord.Record()
+        v6.createTime = "11111111111111111"
+        v6.thirdGameName = "0x457496574569845675896576586"
+        v6.actionStatus = 2
+        v6.blockStatus = 3
+        v6.userReceivedWashBetAmount = 111.00
+        v6.validBetAmount = 222.00
         list.add(v6)
 
-        page.records=list
+        page.records = list
         ArrayList<SimpleRecyclerItem>().apply {
             page.records.forEach { item -> add(TransferItem(item)) }
             if (page.pageNo == 1) {
@@ -163,9 +166,11 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
                 adapter.addAll(this.toList())
             }
         }
+        apply(adapter.itemCount)
         onLoaded()
-        totalPage=1
+        totalPage = 1
     }
+
     private fun onLoaded() {
 //        myActivity.dismissLoading()
         lock = false
@@ -193,20 +198,25 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
         }
     }
 
+    override fun apply(count: Int) {
+        binding.txtEmpty.isVisible = count == 0
+        binding.pullToRefresh.isVisible = count > 0
+    }
+
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-           when(checkedId){
-               R.id.all->{
+        when (checkedId) {
+            R.id.all -> {
 
-               }
-               R.id.week->{
+            }
+            R.id.week -> {
 
-               }
-               R.id.month->{
+            }
+            R.id.month -> {
 
-               }
-               R.id.year->{
+            }
+            R.id.year -> {
 
-               }
-           }
+            }
+        }
     }
 }

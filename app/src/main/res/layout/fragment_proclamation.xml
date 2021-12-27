@@ -1,23 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <com.ramble.ramblewallet.pull.PiePullRefreshLayout
-        android:id="@+id/pull_to_refresh"
-        style="@style/ConCon"
-        android:background="@color/im_recycler"
-        app:layout_constraintBottom_toTopOf="@+id/layout_bottoom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.ramble.ramblewallet.pull.PiePullRefreshLayout
+            android:id="@+id/pull_to_refresh"
+            style="@style/ConCon"
+            android:background="@color/im_recycler"
+            app:layout_constraintBottom_toTopOf="@+id/layout_bottoom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler"
-            style="@style/MatchMatch"
-            android:clipToPadding="false"
-            android:paddingBottom="@dimen/dp_8"
-            android:scrollbars="vertical" />
-    </com.ramble.ramblewallet.pull.PiePullRefreshLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                style="@style/MatchMatch"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/dp_8"
+                android:scrollbars="vertical" />
+        </com.ramble.ramblewallet.pull.PiePullRefreshLayout>
+        <RelativeLayout
+            android:id="@+id/txt_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line3"
+            app:layout_constraintTop_toTopOf="@+id/line3">
+
+            <TextView
+                android:id="@+id/text1"
+                style="@style/WrapWrap"
+                android:layout_centerHorizontal="true"
+                android:drawableTop="@drawable/ic_no_records"
+                android:gravity="center"
+                android:text="@string/no_records"
+                android:textColor="@color/third_text"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text1"
+                android:layout_marginTop="10dp"
+                android:text="@string/game_today_order_no_log2"
+                android:textColor="@color/third_text"
+                android:textSize="@dimen/sp_13" />
+        </RelativeLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 </layout>
