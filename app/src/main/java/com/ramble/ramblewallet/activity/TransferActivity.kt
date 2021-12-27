@@ -50,12 +50,15 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
         setOnClickListener()
 
+    }
+
+    private fun initData() {
         mApiService.getEthMinerConfig(
-            EthMinerConfig.Req("ETH").toApiRequest(getEthMinerConfigUrl)
+            EthMinerConfig.Req(transferTitle).toApiRequest(getEthMinerConfigUrl)
         ).applyIo().subscribe(
             {
                 if (it.code() == 1) {
-                    it.data()?.let { it1 -> println("-=-=-=->ETH:${it1.currencyType}") }
+                    it.data()?.let { data -> println("-=-=-=->ETH:${data.currencyType}") }
                 } else {
                     println("-=-=-=->ETH:${it.message()}")
                 }
@@ -64,9 +67,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
         )
 
-    }
-
-    private fun initData() {
         binding.tvTransferTitle.text = transferTitle + " " + getString(R.string.transfer)
         binding.tvWalletAddress.text = transferAddress
         binding.tvWalletName.text = transferName

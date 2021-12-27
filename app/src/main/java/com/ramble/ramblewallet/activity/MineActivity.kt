@@ -10,18 +10,12 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.EmptyReq
-import com.ramble.ramblewallet.bean.EthMinerConfig
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.constant.ARG_PARAM3
 import com.ramble.ramblewallet.constant.ARG_PARAM4
 import com.ramble.ramblewallet.databinding.ActivityMineBinding
 import com.ramble.ramblewallet.helper.start
-import com.ramble.ramblewallet.network.getEthMinerConfigUrl
-import com.ramble.ramblewallet.network.rateInfoUrl
-import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.utils.applyIo
 
 /***
  * 我的管理页面
@@ -88,18 +82,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun getData() {
-        mApiService.getRateInfo(EmptyReq().toApiRequest(rateInfoUrl))
-            .applyIo().subscribe(
-                {
-                    if (it.code() == 1) {
-                        it.data()?.let { it1 -> println("-=-=-=->${it1[0].rateCny}") }
-                    } else {
-                        println("-=-=-=->${it.message()}")
-                    }
-                }, {
-                    println("-=-=-=->${it.printStackTrace()}")
-                }
-            )
+
     }
 
     /****

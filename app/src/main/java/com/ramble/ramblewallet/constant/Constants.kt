@@ -49,3 +49,4 @@ fun setupArchLibrary(
     appUIDeep = __appUIDeep
 }
 const val WALLETINFO = "wallet_info"
+const val RATEINFO = "rate_info"

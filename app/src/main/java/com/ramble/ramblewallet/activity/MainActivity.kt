@@ -15,11 +15,18 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.google.gson.Gson
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.bean.EmptyReq
 import com.ramble.ramblewallet.bean.MyDataBean
+import com.ramble.ramblewallet.constant.RATEINFO
 import com.ramble.ramblewallet.databinding.ActivityMainBinding
+import com.ramble.ramblewallet.network.rateInfoUrl
+import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.applyIo
 
 class MainActivity : BaseActivity(), View.OnClickListener {
 
@@ -72,6 +79,37 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         }
 
         setOnClickListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Thread {
+            while (true) {
+                try {
+                    Thread.sleep(10000)
+                    mApiService.getRateInfo(EmptyReq().toApiRequest(rateInfoUrl))
+                        .applyIo().subscribe(
+                            {
+                                if (it.code() == 1) {
+                                    it.data()?.let { data ->
+                                        SharedPreferencesUtils.saveString(
+                                            this,
+                                            RATEINFO,
+                                            Gson().toJson(data)
+                                        )
+                                    }
+                                } else {
+                                    println("-=-=-=->${it.message()}")
+                                }
+                            }, {
+                                println("-=-=-=->${it.printStackTrace()}")
+                            }
+                        )
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }.start()
     }
 
     private fun setOnClickListener() {
