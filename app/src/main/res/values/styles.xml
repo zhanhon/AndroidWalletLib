@@ -62,9 +62,9 @@
     </style>
 
     <style name="GameActionDivider">
-        <item name="android:background">@color/divider</item>
+        <item name="android:background">@color/white</item>
         <item name="android:layout_width">@dimen/dp_0</item>
-        <item name="android:layout_height">@dimen/dp_08</item>
+        <item name="android:layout_height">@dimen/dp_0</item>
     </style>
 
     <style name="LobbyHeaderText" parent="WrapWrap">

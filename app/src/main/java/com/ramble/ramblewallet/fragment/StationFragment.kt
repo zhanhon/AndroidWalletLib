@@ -67,6 +67,7 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
                 endless = EndlessRecyclerViewScrollListener(this) { _, _ ->
                     if (!lock && currentPage < totalPage) {
                         lock = true
+                        currentPage += 1
                         ProgressItem.addTo(adapter)
                         load()
                     }

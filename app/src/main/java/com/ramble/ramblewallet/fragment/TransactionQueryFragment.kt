@@ -63,6 +63,7 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
                     if (!lock && currentPage < totalPage) {
                         lock = true
                         ProgressItem.addTo(adapter)
+                        currentPage += 1
                         loadData()
                     }
                     if (currentPage >= totalPage) {

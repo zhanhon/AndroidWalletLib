@@ -6,7 +6,7 @@
     <solid android:color="#FFFFFF" />
     <!-- 线的宽度，颜色灰色 -->
     <stroke
-        android:width="2dp"
+        android:width="0.4dp"
         android:color="#eeeeee" />
 
 </shape>
