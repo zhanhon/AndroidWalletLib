@@ -24,17 +24,17 @@ class TransferItem (val data: QueryTransferRecord.Record) : SimpleRecyclerItem()
         when (data.blockStatus){
             1-> {
                 binding.tvMoney.setText(R.string.transaction_ing)
-                binding.tvMoney.setTextColor( Color.parseColor("#222222"))
+                binding.tvMoney.setTextColor( Color.parseColor("#333333"))
                 binding.tvMoneyType.isVisible=false
             }
             2-> {
                 when (data.actionStatus){
                     1->{//转入
-                        binding.tvMoney.setTextColor( Color.parseColor("#03DAC5"))
+                        binding.tvMoney.setTextColor( Color.parseColor("#009474"))
                         binding.tvMoney.text="+"+data.validBetAmount
                     }
                     2->{//转出
-                        binding.tvMoney.setTextColor( Color.parseColor("#df2939"))
+                        binding.tvMoney.setTextColor( Color.parseColor("#e11334"))
                         binding.tvMoney.text="-"+data.validBetAmount.toString()
                     }
                 }
@@ -44,7 +44,7 @@ class TransferItem (val data: QueryTransferRecord.Record) : SimpleRecyclerItem()
             }
             3-> {
                 binding.tvMoney.setText(R.string.transaction_failed)
-                binding.tvMoney.setTextColor( Color.parseColor("#222222"))
+                binding.tvMoney.setTextColor( Color.parseColor("#a1a1a1"))
                 binding.tvMoneyType.text=data.userReceivedWashBetAmount.toString()
                 binding.tvMoneyType.isVisible=false
             }

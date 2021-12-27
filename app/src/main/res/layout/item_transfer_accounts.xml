@@ -36,7 +36,7 @@
                     android:lines="1"
                     tools:text="0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/sp_15"
+                    android:textSize="@dimen/sp_14"
                     tools:ignore="EllipsizeMaxLines" />
 
                 <TextView
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_5"
                     tools:text="星期四 11/06"
-                    android:textColor="@color/front_four"
+                    android:textColor="@color/front_five"
                     android:textSize="@dimen/sp_12" />
             </LinearLayout>
 
@@ -64,7 +64,7 @@
                     android:singleLine="true"
                     tools:text="0.0000"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/sp_16" />
+                    android:textSize="@dimen/sp_14" />
 
                 <TextView
                     android:id="@+id/tv_money_type"
