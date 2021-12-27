@@ -1,7 +1,11 @@
 package com.ramble.ramblewallet.network;
 
+import android.util.Log;
+
 import com.google.gson.GsonBuilder;
 import com.ramble.ramblewallet.MyApp;
+import com.ramble.ramblewallet.utils.Md5Util;
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils;
 
 import java.io.File;
 import java.security.SecureRandom;
@@ -12,7 +16,6 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
 import okhttp3.Cache;
-import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -21,6 +24,11 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+
+import static com.ramble.ramblewallet.constant.ConstantsKt.CN;
+import static com.ramble.ramblewallet.constant.ConstantsKt.LANGUAGE;
+import static com.ramble.ramblewallet.constant.ConstantsKt.getAppContext;
+import static com.ramble.ramblewallet.utils.Zlib.setApiName;
 
 /**
  * @author ChayChan
@@ -34,51 +42,18 @@ public class ApiRetrofit {
     private final OkHttpClient mClient;
     private final ApiService mApiService;
 
-
-    //缓存配置
-    private final Interceptor mCacheInterceptor = chain -> {
-
-        CacheControl.Builder cacheBuilder = new CacheControl.Builder();
-        cacheBuilder.maxAge(0, TimeUnit.SECONDS);
-        cacheBuilder.maxStale(365, TimeUnit.DAYS);
-        CacheControl cacheControl = cacheBuilder.build();
-
-        Request request = chain.request();
-        if (!NetWorkUtils.isNetworkAvailable(MyApp.sInstance)) {
-            request = request.newBuilder()
-                    .cacheControl(cacheControl)
-                    .build();
-        }
-        Response originalResponse = chain.proceed(request);
-        if (NetWorkUtils.isNetworkAvailable(MyApp.sInstance)) {
-            int maxAge = 0; // read from cache
-            return originalResponse.newBuilder()
-                    .removeHeader("Pragma")
-                    .header("Cache-Control", "public ,max-age=" + maxAge)
-                    .build();
-        } else {
-            int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
-            return originalResponse.newBuilder()
-                    .removeHeader("Pragma")
-                    .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                    .build();
-        }
-    };
-
     /**
      * 请求访问quest和response拦截器
      */
     private final Interceptor mLogInterceptor = chain -> {
         Request request = chain.request();
-        long startTime = System.currentTimeMillis();
         Response response = chain.proceed(chain.request());
-        long endTime = System.currentTimeMillis();
-        long duration = endTime - startTime;
         okhttp3.MediaType mediaType = response.body().contentType();
         String content = response.body().string();
-//        KLog.e("----------Request Start----------------");
-//        KLog.e("| " + request.toString());
-//        KLog.json("| Response:" + content);
+        Log.v("-=-=->", "----------Request Start----------------");
+        Log.v("-=-=->Request:", request.toString());
+        Log.v("-=-=->", "----------Response End----------------");
+        Log.v("-=-=->Response", content);
 
         return response.newBuilder()
                 .body(okhttp3.ResponseBody.create(mediaType, content))
@@ -89,26 +64,39 @@ public class ApiRetrofit {
      * 增加头部信息的拦截器
      */
     private final Interceptor mHeaderInterceptor = chain -> {
-//        String getLanguage = SharedPreferencesUtils.getString(getTopActivity(), LANGUAGE, CN);
-//        String language;
-//        switch (getLanguage) {
-//            case "繁":
-//                language = "ZH_TW";
-//                break;
-//            case "En":
-//                language = "EN";
-//                break;
-//            default:
-//                language = "CN";
-//                break;
-//        }
+        String getLanguage = SharedPreferencesUtils.getString(getAppContext(), LANGUAGE, CN);
+        String language = "zh_CN";
+        switch (getLanguage) { //语言代码|zh_CN:简体中文|zh_TW:繁体中文|en:英文|th:泰语|vi:越南语
+            case "中":
+                language = "zh_CN";
+                break;
+            case "繁":
+                language = "zh_TW";
+                break;
+            case "En":
+                language = "EN";
+                break;
+        }
         Request.Builder builder = chain.request().newBuilder();
-        builder.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.108 Safari/537.36 2345Explorer/8.0.0.13547");
-        builder.addHeader("Cache-Control", "max-age=0");
-        builder.addHeader("Upgrade-Insecure-Requests", "1");
-        builder.addHeader("X-Requested-With", "XMLHttpRequest");
-        //builder.addHeader("language", language);
-        builder.addHeader("Cookie", "uuid=\"w:f2e0e469165542f8a3960f67cb354026\"; __tasessionId=4p6q77g6q1479458262778; csrftoken=7de2dd812d513441f85cf8272f015ce5; tt_webid=36385357187");
+        Request request = chain.request();
+        String url = request.url().toString()
+                .replace(request.url().host() + ":" + request.url().port(), "")
+                .replace(request.url().host(), "")
+                .replace("http://", "")
+                .replace("https://", "");
+        String signStr = url + System.currentTimeMillis() + "1" + "" + AppUtils.getSecretKey();
+        String sign = Md5Util.md5(signStr);
+
+        setApiName(url);
+
+        builder.addHeader("apiName", url); //API接口名
+        builder.addHeader("callTime", String.valueOf(System.currentTimeMillis())); //调用时间
+        builder.addHeader("sign", sign);
+        builder.addHeader("clientType", "1"); //"客户端类型|1:Android|2:IOSv|3:H5|4:PC"
+        builder.addHeader("languageCode", language); //语言代码|zh_CN:简体中文|zh_TW:繁体中文|en:英文|th:泰语|vi:越南语
+        builder.addHeader("apiVersion", "20211227"); //(预留字段)Api版本号
+        builder.addHeader("gzipEnabled", "0"); //(预留字段)是否启用gzip压缩｜0:不启用｜1:启用
+
 
         return chain.proceed(builder.build());
     };

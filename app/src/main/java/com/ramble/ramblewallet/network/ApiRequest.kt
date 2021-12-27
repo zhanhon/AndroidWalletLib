@@ -8,14 +8,15 @@ import com.squareup.moshi.Json
  * 作者　: potato
  * 描述　:
  */
-class ApiRequest <T : ApiRequest.Body>(
+class ApiRequest<T : ApiRequest.Body>(
     @Json(name = "header") val header: Header,
     @Json(name = "body") val body: T
 ) {
 
     open class Body @SuppressWarnings("unused") constructor()
 
-    data class Header(//注意：com.square.domain.Api.kt 也有一个Header，每次修改 需保持两处同步
+
+    data class Header(
         @Json(name = "apiName") val apiName: String,
         @Json(name = "callTime") val callTime: Long,
         @Json(name = "clientType") val clientType: Int,
@@ -25,7 +26,4 @@ class ApiRequest <T : ApiRequest.Body>(
         @Json(name = "gzipEnabled") val gzipEnabled: Int = getGzipEnabled()
     )
 
-    override fun toString(): String {
-        return "ApiRequest(header=$header, body=$body)"
-    }
 }

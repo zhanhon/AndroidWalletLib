@@ -1,6 +1,5 @@
 package com.ramble.ramblewallet.utils
 
-import io.reactivex.Observable
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -84,6 +83,7 @@ class Zlib {
     companion object {
 
         private var isGzip = 0 //是否需要解压缩
+        private var apiName = ""
 
         @JvmStatic
         fun setGzipEnabled(isGzipParameter: Int) {
@@ -93,6 +93,16 @@ class Zlib {
         @JvmStatic
         fun getGzipEnabled(): Int {
             return isGzip
+        }
+
+        @JvmStatic
+        fun setApiName(apiName: String) {
+            this.apiName = apiName
+        }
+
+        @JvmStatic
+        fun getApiName(): String {
+            return apiName
         }
 
         /**

@@ -90,6 +90,6 @@ fun daysToMillis(days: Int): Long {
 }
 
 
-fun <T : ApiRequest.Body> T.toApiRequest(): ApiRequest<T> {
-    return ObjUtils.apiRequest(this)
+fun <T : ApiRequest.Body> T.toApiRequest(apiName: String): ApiRequest<T> {
+    return ObjUtils.apiRequest(this, apiName)
 }

@@ -18,7 +18,6 @@ import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import java.io.File;
@@ -27,7 +26,6 @@ import java.util.List;
 import static com.ramble.ramblewallet.constant.ConstantsKt.APK_PACKAGE_ARCHIVE_TYPE;
 import static com.ramble.ramblewallet.constant.ConstantsKt.getAppContext;
 import static com.ramble.ramblewallet.constant.ConstantsKt.isDebug;
-import static com.ramble.ramblewallet.network.AssertUtilsKt.unsupportedOperationException;
 
 
 /**
@@ -306,19 +304,6 @@ public class AppUtils {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
-    public static Intent getCallPhoneNumberIntent(@NonNull String phoneNumber) {
-        int granted = ActivityCompat.checkSelfPermission(
-                getAppContext(),
-                android.Manifest.permission.CALL_PHONE
-        );
-        if (granted == PackageManager.PERMISSION_GRANTED) {
-            return new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneNumber))
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        } else {
-            return unsupportedOperationException();
-        }
-    }
-
     public static Intent getSendSmsIntent(@NonNull String phoneNumber, @NonNull String content) {
         return new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNumber))
                 .putExtra("sms_body", content)
@@ -391,10 +376,6 @@ public class AppUtils {
 
     public static void toDialPhoneNumber(@NonNull String phoneNumber) {
         getAppContext().startActivity(getDialPhoneNumberIntent(phoneNumber));
-    }
-
-    public static void toCallPhoneNumber(@NonNull String phoneNumber) {
-        getAppContext().startActivity(getCallPhoneNumberIntent(phoneNumber));
     }
 
     public static void toSendSms(@NonNull String phoneNumber, @NonNull String content) {

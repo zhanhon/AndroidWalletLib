@@ -24,7 +24,6 @@ const val TW = "繁"
 const val EN = "En"
 const val LANGUAGE = "language"
 
-const val DEF_HEAD = "config-api/appVersion/queryNewestVersion"
 const val APK_PACKAGE_ARCHIVE_TYPE = "application/vnd.android.package-archive"
 lateinit var appContext: Context
     private set

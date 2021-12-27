@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EmptyReq
+import com.ramble.ramblewallet.bean.EthMinerConfig
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.constant.ARG_PARAM3
@@ -88,28 +89,31 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun getData() {
-        mApiService.getRateInfo(EmptyReq().toApiRequest()).applyIo().subscribe(
+        mApiService.getRateInfo(EmptyReq().toApiRequest("wallet-decentralized-api/sys/getRateInfo"))
+            .applyIo().subscribe(
+                {
+                    if (it.status()) {
+                        it.data()?.let { it1 -> println("-=-=-=->${it1.currencyType}") }
+                    } else {
+                        println("-=-=-=->${it.message()}")
+                    }
+                }, {
+                    println("-=-=-=->${it.printStackTrace()}")
+                }
+            )
+        mApiService.getEthMinerConfig(
+            EthMinerConfig.Req("ETH").toApiRequest("wallet-decentralized-api/sys/getEthMinerConfig")
+        ).applyIo().subscribe(
             {
                 if (it.status()) {
-                    it.data()?.let { it1 -> println("-=-=-=->${it1.currencyType}") }
+                    it.data()?.let { it1 -> println("-=-=-=->ETH:${it1.currencyType}") }
                 } else {
-                    println("-=-=-=->${it.message()}")
+                    println("-=-=-=->ETH:${it.message()}")
                 }
             }, {
-                println("-=-=-=->${it.printStackTrace()}")
+                println("-=-=-=->ETH:${it.printStackTrace()}")
             }
         )
-        /*model.getRateInfo().subscribe(
-            {
-                if (it.status()) {
-                    it.data()?.let { it1 ->  Log.e("1111111111", it1.change) }
-                } else {
-                    Log.e("1111111111", "失败")
-                }
-            }, {
-                Log.e("1111111111", it.message)
-            }
-        ).addTo(onDestroyComposite)*/
     }
 
     /****

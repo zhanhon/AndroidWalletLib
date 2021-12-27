@@ -18,25 +18,25 @@ import javax.inject.Inject
  */
 class MainViewModel @Inject constructor() : RxViewModel() {
 
-    /** 基息查询*/
-    fun getUserTransferInfo(): Observable<ApiResponse<RateBeen>> {
-        return dataService.getInMessage(RateBeen.Req().toApiRequest()).applyIo()
-    }
-
-
-    /** APP端地址上传 */
-    fun putAddress(req: AddressReport.Req): Observable<ApiResponse<Any>> {
-        return dataService.putAddress(req.toApiRequest()).applyIo()
-    }
-
-    /** 查询以太坊矿工费 */
-    fun getEthMinerConfig(req: EthMinerConfig.Req): Observable<ApiResponse<EthMinerConfig>> {
-        return dataService.getEthMinerConfig(req.toApiRequest()).applyIo()
-    }
-
-    /** 查询汇率相关信息 */
-    fun getRateInfo(): Observable<ApiResponse<RateBeen>> {
-        return dataService.getRateInfo(EmptyReq().toApiRequest()).applyIo()
-    }
+//    /** 基息查询*/
+//    fun getUserTransferInfo(): Observable<ApiResponse<RateBeen>> {
+//        return dataService.getInMessage(RateBeen.Req()).applyIo()
+//    }
+//
+//
+//    /** APP端地址上传 */
+//    fun putAddress(req: AddressReport.Req): Observable<ApiResponse<Any>> {
+//        return dataService.putAddress(req).applyIo()
+//    }
+//
+//    /** 查询以太坊矿工费 */
+//    fun getEthMinerConfig(req: EthMinerConfig.Req): Observable<ApiResponse<EthMinerConfig>> {
+//        return dataService.getEthMinerConfig(req).applyIo()
+//    }
+//
+//    /** 查询汇率相关信息 */
+//    fun getRateInfo(): Observable<ApiResponse<RateBeen>> {
+//        return dataService.getRateInfo().applyIo()
+//    }
 
 }
