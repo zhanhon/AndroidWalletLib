@@ -8,10 +8,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.MessageCenterActivity
+import com.ramble.ramblewallet.activity.MsgDetailsActivity
 import com.ramble.ramblewallet.adapter.RecyclerViewFragment
 import com.ramble.ramblewallet.bean.Page
+import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
+import com.ramble.ramblewallet.constant.ARG_PARAM4
 import com.ramble.ramblewallet.databinding.FragmentProclamationBinding
 import com.ramble.ramblewallet.helper.dataBinding
+import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.StationItem
 import com.ramble.ramblewallet.pull.EndlessRecyclerViewScrollListener
 import com.ramble.ramblewallet.pull.QMUIPullRefreshLayout
@@ -96,7 +101,6 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
             var v1= Page.Record()
             v1.title= "比特币交易新狂潮$j"
             v1.content="二二恶飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞二二二二二何飞飞飞飞飞非官方过分过分过分个人夫人夫人$j"
-            v1.createTime="33333333$j"
             v1.isReaded=0
             list.add(v1)
         }
@@ -187,10 +191,12 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.item_msg_notic -> {
-                val holder = AdapterUtils.getHolder(v)
-//                val item = holder.getItem<NoticeItem>()
-//                RxViewModel.liveEvent.postValue(RxBus.Event(FLAG1, item.data))
-//                this.startMsgDetailsFragment(8)
+                val itemBean = AdapterUtils.getHolder(v).getItem<StationItem>().data
+                start2(MsgDetailsActivity::class.java,Bundle().also {
+                    it.putString(ARG_PARAM1, itemBean.title)
+                    it.putString(ARG_PARAM2, itemBean.content)
+                    it.putString(ARG_PARAM4, "消息详情")
+                })
 
             }
         }

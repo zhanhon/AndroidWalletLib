@@ -114,7 +114,6 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
             var v1= Page.Record()
             v1.content= "11111111111111111$j"
             v1.title="222222222222222$j"
-            v1.createTime="33333333$j"
             v1.isReaded=0
             list.add(v1)
         }
@@ -247,7 +246,6 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
                 start2(MsgDetailsActivity::class.java,Bundle().also {
                     it.putString(ARG_PARAM1, itemBean.title)
                     it.putString(ARG_PARAM2, itemBean.content)
-                    it.putString(ARG_PARAM3, itemBean.createTime)
                     it.putString(ARG_PARAM4, "消息详情")
                 })
 //                if (itemBean.isReaded==0){

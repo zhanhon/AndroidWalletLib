@@ -21,7 +21,7 @@ class StationItem(val data: Page.Record) : CheckableSimpleRecyclerItem(), View.O
     override fun bind(holder: ViewHolder) {
         val binding: ItemNoticeBinding = holder.binding()
         binding.title1.text = data.title
-        binding.time2.text = data.createTime
+//        binding.time2.text = data.createTime
         binding.tvContent.text = data.content
         if (isEditable) {
             binding.ckDelete.visibility = View.VISIBLE
