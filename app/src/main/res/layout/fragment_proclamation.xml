@@ -7,7 +7,7 @@
         android:orientation="vertical">
         <com.ramble.ramblewallet.pull.PiePullRefreshLayout
             android:id="@+id/pull_to_refresh"
-            style="@style/ConCon"
+            style="@style/MatchWrap"
             android:background="@color/im_recycler"
             app:layout_constraintBottom_toTopOf="@+id/layout_bottoom"
             app:layout_constraintEnd_toEndOf="parent"
@@ -23,14 +23,10 @@
         </com.ramble.ramblewallet.pull.PiePullRefreshLayout>
         <RelativeLayout
             android:id="@+id/txt_empty"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line3"
-            app:layout_constraintTop_toTopOf="@+id/line3">
+            android:layout_marginTop="@dimen/dp_100"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/text1"
@@ -38,9 +34,9 @@
                 android:layout_centerHorizontal="true"
                 android:drawableTop="@drawable/ic_no_records"
                 android:gravity="center"
-                android:text="@string/no_records"
-                android:textColor="@color/third_text"
-                android:textSize="@dimen/sp_14" />
+                android:text="暂无记录"
+                android:textColor="@color/front_three"
+                android:textSize="@dimen/sp_15" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,7 +44,7 @@
                 android:layout_below="@id/text1"
                 android:layout_marginTop="10dp"
                 android:text="@string/game_today_order_no_log2"
-                android:textColor="@color/third_text"
+                android:textColor="@color/front_four"
                 android:textSize="@dimen/sp_13" />
         </RelativeLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.MessageCenterActivity
@@ -138,6 +139,8 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
                 adapter.addAll(this.toList())
             }
         }
+
+        apply(adapter.itemCount)
         onLoaded()
         totalPage=1
 //        model.getUserLetterPage(Page.Req(currentPage + 1, Pie.PAGE_SIZE)).subscribe(
@@ -282,6 +285,11 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
 
             }
         }
+    }
+
+    override fun apply(count: Int) {
+        binding.txtEmpty.isVisible = count == 0
+        binding.pullToRefresh.isVisible = count > 0
     }
 
     private fun setIDlist() {

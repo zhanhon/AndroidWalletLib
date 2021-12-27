@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.MessageCenterActivity
@@ -125,6 +126,7 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
                 adapter.addAll(this.toList())
             }
         }
+        apply(adapter.itemCount)
         onLoaded()
         totalPage=1
 //        model.getAnnouncementPage(Page.Req(currentPage + 1, Pie.PAGE_SIZE)).subscribe(
@@ -157,7 +159,10 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
 //            }
 //        ).addTo(onDestroyComposite)
     }
-
+    override fun apply(count: Int) {
+        binding.txtEmpty.isVisible = count == 0
+        binding.pullToRefresh.isVisible = count > 0
+    }
     private fun onLoaded() {
 //        myActivity.dismissLoading()
         lock = false
