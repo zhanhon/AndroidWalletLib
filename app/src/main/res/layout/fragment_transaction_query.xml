@@ -8,10 +8,12 @@
         <RadioGroup
             android:id="@+id/table_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_10"
-            android:layout_marginEnd="@dimen/dp_10"
-            android:orientation="horizontal" >
+            android:layout_height="@dimen/dp_64"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_10"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/white">
             <RadioButton
                 android:id="@+id/all"
                 android:layout_width="0dp"
@@ -28,7 +30,7 @@
                 android:paddingRight="@dimen/dp_9"
                 android:singleLine="true"
                 android:text="@string/transaction_query_all2"
-                android:textColor="@color/black"
+                android:textColor="@color/color_group_button_transaction"
                 android:textSize="@dimen/sp_13"/>
             <RadioButton
                 android:id="@+id/week"
@@ -46,7 +48,7 @@
                 android:paddingRight="@dimen/dp_9"
                 android:singleLine="true"
                 android:text="@string/transaction_query_week"
-                android:textColor="@color/black"
+                android:textColor="@color/color_group_button_transaction"
                 android:textSize="@dimen/sp_13"/>
             <RadioButton
                 android:id="@+id/month"
@@ -64,7 +66,7 @@
                 android:paddingRight="@dimen/dp_9"
                 android:singleLine="true"
                 android:text="@string/transaction_query_month"
-                android:textColor="@color/black"
+                android:textColor="@color/color_group_button_transaction"
                 android:textSize="@dimen/sp_13"/>
             <RadioButton
                 android:id="@+id/year"
@@ -82,7 +84,7 @@
                 android:paddingRight="@dimen/dp_9"
                 android:singleLine="true"
                 android:text="@string/transaction_query_month"
-                android:textColor="@color/black"
+                android:textColor="@color/color_group_button_transaction"
                 android:textSize="@dimen/sp_13"/>
         </RadioGroup>
         <View
