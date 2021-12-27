@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.ramble.ramblewallet.MyApp
-import com.ramble.ramblewallet.network.DataService
+import com.ramble.ramblewallet.network.ApiService
 import com.ramble.ramblewallet.utils.RxBus
 import com.ramble.ramblewallet.utils.addTo
 import com.squareup.moshi.Moshi
@@ -34,7 +34,7 @@ abstract class RxViewModel : AndroidViewModel(MyApp.sInstance) {
     lateinit var sharedPreferences: SharedPreferences
 
     @Inject
-    lateinit var dataService: DataService
+    lateinit var dataService: ApiService
 
     @Inject
     lateinit var retrofit: Retrofit

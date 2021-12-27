@@ -9,6 +9,7 @@ import com.squareup.moshi.Json
  * 描述　:
  */
 class RateBeen @SuppressWarnings("unused") constructor() {
+
     @Json(name = "change")
     var change: String? = ""//汇率改变百分比
 

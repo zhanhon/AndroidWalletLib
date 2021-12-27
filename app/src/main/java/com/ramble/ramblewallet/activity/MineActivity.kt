@@ -3,31 +3,30 @@ package com.ramble.ramblewallet.activity
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.util.rangeTo
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.bean.EmptyReq
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.constant.ARG_PARAM3
 import com.ramble.ramblewallet.constant.ARG_PARAM4
 import com.ramble.ramblewallet.databinding.ActivityMineBinding
 import com.ramble.ramblewallet.helper.start
-import com.ramble.ramblewallet.model.HomeViewModel
+import com.ramble.ramblewallet.model.MainViewModel
 import com.ramble.ramblewallet.model.activityViewModel
-import com.ramble.ramblewallet.utils.addTo
+import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.utils.applyIo
 
 /***
  * 我的管理页面
  */
 class MineActivity : BaseActivity(), View.OnClickListener {
-    private val model by activityViewModel(HomeViewModel::class.java)
+    private val model by activityViewModel(MainViewModel::class.java)
     private lateinit var binding: ActivityMineBinding
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -89,7 +88,18 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun getData() {
-        model.getUserTransferInfo().subscribe(
+        mApiService.getRateInfo(EmptyReq().toApiRequest()).applyIo().subscribe(
+            {
+                if (it.status()) {
+                    it.data()?.let { it1 -> println("-=-=-=->${it1.currencyType}") }
+                } else {
+                    println("-=-=-=->${it.message()}")
+                }
+            }, {
+                println("-=-=-=->${it.printStackTrace()}")
+            }
+        )
+        /*model.getRateInfo().subscribe(
             {
                 if (it.status()) {
                     it.data()?.let { it1 ->  Log.e("1111111111", it1.change) }
@@ -99,7 +109,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             }, {
                 Log.e("1111111111", it.message)
             }
-        ).addTo(onDestroyComposite)
+        ).addTo(onDestroyComposite)*/
     }
 
     /****
