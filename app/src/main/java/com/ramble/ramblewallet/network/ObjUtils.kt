@@ -19,10 +19,11 @@ object ObjUtils {
     @JvmStatic
     fun <T : ApiRequest.Body> apiRequest(body: T, apiName: String): ApiRequest<T> {
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
+        val currentTime = System.currentTimeMillis()
         var signOriginal: String = if (Gson().toJson(body).equals("{}")) {
-            apiName + System.currentTimeMillis() + "1" + AppUtils.getSecretKey()
+            apiName + currentTime + "1" + AppUtils.getSecretKey()
         } else {
-            apiName + System.currentTimeMillis() + "1" + Gson().toJson(body) + AppUtils.getSecretKey()
+            apiName + currentTime + "1" + Gson().toJson(body) + AppUtils.getSecretKey()
         }
         val sign = Md5Util.md5(signOriginal)
         Log.v("-=-=->", "=========================Sign Original=========================")
@@ -31,13 +32,13 @@ object ObjUtils {
         Log.v(
             "-=-=->", Gson().toJson(
                 ApiRequest(
-                    ApiRequest.Header(apiName, System.currentTimeMillis(), 1, sign, languageCode),
+                    ApiRequest.Header(apiName, currentTime, 1, sign, languageCode),
                     body
                 )
             )
         )
         return ApiRequest(
-            ApiRequest.Header(apiName, System.currentTimeMillis(), 1, sign, languageCode),
+            ApiRequest.Header(apiName, currentTime, 1, sign, languageCode),
             body
         )
     }
