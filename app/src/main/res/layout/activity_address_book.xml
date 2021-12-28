@@ -141,10 +141,12 @@
                         android:textColor="@color/black"/>
 
                     <ImageView
+                        android:id="@+id/add"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/vector_add_address" />
                     <ImageView
+                        android:id="@+id/delete"
                         android:layout_marginStart="@dimen/dp_22"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

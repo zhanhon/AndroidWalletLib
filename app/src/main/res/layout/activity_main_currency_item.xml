@@ -3,28 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/dp_15"
-    android:orientation="horizontal">
+    android:layout_height="@dimen/dp_76"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@color/white">
 
-    <RelativeLayout
-        android:id="@+id/cl_icon"
-        android:layout_width="@dimen/dp_70"
-        android:layout_height="@dimen/dp_70"
-        android:background="@color/color_FFFFFF"
-        android:padding="@dimen/dp_10">
+
 
         <ImageView
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
-            android:layout_centerInParent="true"
-            android:background="@drawable/ic_launcher_background" />
-    </RelativeLayout>
+            android:id="@+id/cl_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/vector_trx_selecter"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"/>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_0CB5E4"
+        android:layout_height="match_parent"
         android:padding="@dimen/dp_10">
 
         <TextView
@@ -33,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginEnd="@dimen/dp_10"
-            android:textColor="@color/color_FFFFFF"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="ETH" />
@@ -44,18 +41,19 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginEnd="@dimen/dp_10"
-            android:textColor="@color/color_FFFFFF"
+            android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@id/tv_main_currency_name"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="2232eweDS" />
 
         <ImageView
             android:id="@+id/iv_menu"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/dp_10"
-            android:background="@drawable/ic_launcher_background"
+            android:src="@drawable/vector_more_address"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,20 +64,21 @@
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginEnd="@dimen/dp_10"
-            android:textColor="@color/color_FFFFFF"
+            android:textColor="@color/front_five"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_main_currency_name"
             tools:text="0x2232sdower...2323s" />
 
         <ImageView
-            android:id="@+id/iv_copy"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
+            android:id="@+id/iv_reduce"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginTop="@dimen/dp_10"
             android:layout_marginEnd="@dimen/dp_10"
-            android:background="@drawable/ic_launcher_background"
+            android:visibility="gone"
+            android:src="@drawable/vector_reduce_address"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_menu" />
+            app:layout_constraintTop_toTopOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
