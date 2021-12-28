@@ -70,28 +70,30 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         binding.ivBack.setOnClickListener(this)
         binding.delete.setOnClickListener(this)
         binding.add.setOnClickListener(this)
-        addressBookAdapter.addChildClickViewIds(R.id.iv_reduce)
-        addressBookAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
-//            when(view.id){
-//                R.id.iv_menu->{
-//
-//                }
-//                R.id.iv_reduce->{
-//                    println("-=-=-=->sav撒旦发射点发射点发范德萨发撒是否")
-//                    myDataBeans.removeAt(position)
-//                    addressBookAdapter = AddressBookAdapter(myDataBeans, false)
-//                    binding.rvMainCurrency.adapter = addressBookAdapter
-//                    binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
-//                }
-//            }
-            println("-=-=-=->11111111111111111111")
-        })
-
     }
 
     private fun loadData() {
         addressBookAdapter = AddressBookAdapter(myDataBeans, false)
         binding.rvMainCurrency.adapter = addressBookAdapter
+        addressBookAdapter.addChildClickViewIds(R.id.iv_reduce)
+        addressBookAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
+            when(view.id){
+                R.id.iv_menu->{
+                    myDataBeans.removeAt(position)
+                    addressBookAdapter = AddressBookAdapter(myDataBeans, false)
+                    binding.rvMainCurrency.adapter = addressBookAdapter
+                    binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
+                }
+                R.id.iv_reduce->{
+                    println("-=-=-=->sav撒旦发射点发射点发范德萨发撒是否")
+                    myDataBeans.removeAt(position)
+                    addressBookAdapter = AddressBookAdapter(myDataBeans, false)
+                    binding.rvMainCurrency.adapter = addressBookAdapter
+                    binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
+                }
+            }
+            println("-=-=-=->11111111111111111111")
+        })
     }
 
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
@@ -193,6 +195,26 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 addressBookAdapter = AddressBookAdapter(myDataBeans, true)
                 binding.rvMainCurrency.adapter = addressBookAdapter
                 binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
+                addressBookAdapter.addChildClickViewIds(R.id.iv_reduce)
+                addressBookAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
+                    when(view.id){
+                        R.id.iv_menu->{
+                            myDataBeans.removeAt(position)
+                            addressBookAdapter = AddressBookAdapter(myDataBeans, false)
+                            binding.rvMainCurrency.adapter = addressBookAdapter
+                            binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
+                        }
+                        R.id.iv_reduce->{
+                            println("-=-=-=->sav撒旦发射点发射点发范德萨发撒是否")
+                            myDataBeans.removeAt(position)
+                            addressBookAdapter = AddressBookAdapter(myDataBeans, false)
+                            binding.rvMainCurrency.adapter = addressBookAdapter
+                            binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
+                        }
+                    }
+                    println("-=-=-=->11111111111111111111")
+                })
+
             }
         }
     }
