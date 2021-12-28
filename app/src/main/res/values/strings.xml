@@ -182,4 +182,5 @@
     <string name="up_data_currency">修改计价币种</string>
     <string name="up_data_language">修改显示语言</string>
     <string name="no_records">暂无记录</string>
+    <string name="address_page">地址页</string>
 </resources>

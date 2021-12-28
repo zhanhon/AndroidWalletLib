@@ -20,7 +20,7 @@
                 android:layout_height="@dimen/dp_20"
                 android:layout_marginStart="@dimen/dp_10"
                 android:layout_marginEnd="@dimen/dp_10"
-                android:background="@drawable/ic_launcher_background"
+                android:background="@drawable/vector_left_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,6 +42,7 @@
                 android:layout_height="@dimen/dp_20"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/dp_10"
+                android:visibility="gone"
                 android:background="@drawable/ic_launcher_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -62,21 +63,56 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/iv_menu"
-                    android:layout_width="@dimen/dp_20"
-                    android:layout_height="@dimen/dp_20"
-                    android:layout_marginStart="@dimen/dp_10"
-                    android:layout_marginEnd="@dimen/dp_10"
-                    android:background="@drawable/ic_launcher_background"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_main_currency_icon"
+                <RadioGroup
+                    android:id="@+id/group_button"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/color_F0EFF4" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton
+                        android:id="@+id/check_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_2"
+                        android:layout_marginBottom="@dimen/dp_10"
+                        android:background="@drawable/selector_check_meun"
+                        android:button="@null"
+                        android:gravity="center" />
+                    <RadioButton
+                        android:id="@+id/check_bt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_2"
+                        android:layout_marginBottom="@dimen/dp_10"
+                        android:background="@drawable/selector_check_bt"
+                        android:button="@null"
+                        android:gravity="center" />
+                    <RadioButton
+                        android:id="@+id/check_eth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_2"
+                        android:layout_marginBottom="@dimen/dp_10"
+                        android:background="@drawable/selector_check_eth"
+                        android:button="@null"
+                        android:gravity="center" />
+                    <RadioButton
+                        android:id="@+id/check_trx"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_2"
+                        android:layout_marginBottom="@dimen/dp_10"
+                        android:background="@drawable/selector_check_trx"
+                        android:button="@null"
+                        android:gravity="center" />
+                </RadioGroup>
 
             </LinearLayout>
 
@@ -87,26 +123,33 @@
                 android:layout_weight="7"
                 android:background="@color/color_FFFFFF"
                 android:orientation="vertical"
-                android:padding="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_25"
+                android:paddingRight="@dimen/dp_25"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_66"
+                    android:gravity="center_vertical">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/dp_0"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:text="@string/scan" />
+                        android:text="@string/my_address"
+                        android:textColor="@color/black"/>
 
                     <ImageView
-                        android:layout_width="@dimen/dp_20"
-                        android:layout_height="@dimen/dp_20"
-                        android:layout_alignParentRight="true"
-                        android:background="@drawable/ic_launcher_background" />
-                </RelativeLayout>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/vector_add_address" />
+                    <ImageView
+                        android:layout_marginStart="@dimen/dp_22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/vector_delect_unline" />
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_main_currency"
