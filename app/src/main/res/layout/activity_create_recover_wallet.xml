@@ -22,17 +22,15 @@
                 android:layout_width="@dimen/dp_40"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginRight="@dimen/dp_20"
-                android:padding="@dimen/dp_7"
+                android:background="@drawable/vector_arrow_down"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:background="@mipmap/ic_arrow_down" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/dp_5"
                 android:textColor="@color/color_000000"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -48,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_100"
-            android:background="@drawable/ic_launcher_background"
+            android:background="@mipmap/ic_welcome"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rl_toolbar" />

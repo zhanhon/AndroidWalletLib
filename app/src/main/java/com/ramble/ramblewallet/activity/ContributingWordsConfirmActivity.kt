@@ -12,14 +12,12 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.ContributingWordsConfirmAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
-import com.ramble.ramblewallet.bean.EthMinerConfig
 import com.ramble.ramblewallet.bean.MyDataBean
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityContributingWordsConfirmBinding
 import com.ramble.ramblewallet.eth.Wallet
 import com.ramble.ramblewallet.eth.WalletManager.generateWalletKeystore
 import com.ramble.ramblewallet.eth.WalletManager.isETHValidAddress
-import com.ramble.ramblewallet.network.getEthMinerConfigUrl
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
@@ -82,7 +80,7 @@ class ContributingWordsConfirmActivity : BaseActivity() {
                 var isValidSuccess = isETHValidAddress(walletETHKeyStore.address)
                 if (isValidSuccess) {
                     println("-=-=-=->isValidSuccess:$isValidSuccess")
-                    startActivity(Intent(this, MainActivity::class.java))
+                    startActivity(Intent(this, MainETHActivity::class.java))
                 }
 
             }

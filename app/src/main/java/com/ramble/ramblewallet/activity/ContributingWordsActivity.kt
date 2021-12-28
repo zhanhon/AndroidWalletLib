@@ -88,7 +88,7 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
                 ClipboardUtils.copy(mnemonicString)
             }
             R.id.btn_skip_this -> {
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, MainETHActivity::class.java))
             }
         }
     }

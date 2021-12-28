@@ -9,30 +9,39 @@
         android:background="@color/color_FFFFFF"
         tools:context=".activity.CreateWalletActivity">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_20"
+            android:background="@color/color_FFFFFF"
+            android:padding="@dimen/dp_10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/txtTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/create_wallet" />
-
             <ImageView
-                android:id="@+id/imv_back"
+                android:id="@+id/iv_back"
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:background="@drawable/vector_left_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_create_wallet_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_margin="@dimen/dp_10"
-                android:background="@drawable/ic_launcher_background" />
-        </RelativeLayout>
+                android:layout_marginStart="@dimen/dp_10"
+                android:text="@string/create_wallet"
+                android:textColor="@color/color_000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/v_line"
@@ -118,11 +127,17 @@
 
         <Button
             android:id="@+id/btn_confirm"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginStart="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_200"
+            android:layout_marginEnd="@dimen/dp_30"
+            android:background="@drawable/shape_gray_bottom_btn"
+            android:gravity="center"
             android:outlineProvider="none"
             android:text="@string/confirm"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/dp_18"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edt_password_confirm" />

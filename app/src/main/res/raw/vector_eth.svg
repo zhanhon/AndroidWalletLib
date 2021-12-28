@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="35px" height="35px" viewBox="0 0 35 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>图标/eth-选中</title>
+    <g id="图标/eth-选中" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="矩形" fill="#D8D8D8" opacity="0" x="0" y="0" width="35" height="35"></rect>
+        <circle id="椭圆形" fill="#1A90C1" cx="17.5" cy="17.5" r="17.5"></circle>
+        <g id="ETH" transform="translate(12.000000, 9.000000)" fill="#FFFFFF" fill-rule="nonzero">
+            <path d="M6,0.254355469 L6,7.47589844 L0.783300781,9.09972656 L6,0.254355469 Z M6,0.254355469 L6,7.47589844 L11.2166992,9.09972656 L6,0.254355469 Z M6,17.7456445 L6,12.7207422 L0.783300781,9.84388672 L6,17.7456445 Z M6,17.7456445 L6,12.7207422 L11.2166992,9.84388672 L6,17.7456445 Z" id="形状"></path>
+            <path d="M0.783300781,9.09972656 L6,6.67550781 L6,11.6620508 L0.783300781,9.09972656 Z M11.2166992,9.09972656 L6,6.67550781 L6,11.6620508 L11.2166992,9.09972656 Z" id="形状"></path>
+        </g>
+    </g>
+</svg>

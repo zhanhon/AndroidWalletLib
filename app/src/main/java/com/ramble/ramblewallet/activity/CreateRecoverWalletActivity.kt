@@ -23,7 +23,7 @@ import com.ramble.ramblewallet.databinding.ActivityCreateRecoverWalletBinding
 import com.ramble.ramblewallet.utils.LanguageSetting
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 
-class CreateRecoverWalletActivity : BaseActivity() {
+class CreateRecoverWalletActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityCreateRecoverWalletBinding
     private lateinit var dialogLanguage: AlertDialog
@@ -33,34 +33,38 @@ class CreateRecoverWalletActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_recover_wallet)
-
         setLanguage()
-        binding.tvMore.setTextColor(Color.parseColor("#000000"))
-        val dra = resources.getDrawable(R.mipmap.ic_arrow_down)
-        //调用setCompoundDrawables时，必须调用Drawable.setBounds()方法,否则图片不显示
-        dra.setBounds(0, 0, dra.minimumWidth, dra.minimumHeight)
-        binding.tvMore.setCompoundDrawables(null, null, dra, null) //设置顶部图标
-        dialogLanguage = AlertDialog.Builder(this).create()
-        binding.tvMore.setOnClickListener { v: View? ->
-            if (dialogLanguage != null) {
-                if (dialogLanguage.isShowing) {
-                    dialogLanguage.dismiss()
+        setOnClickListener()
+    }
+
+    fun setOnClickListener() {
+        binding.tvMore.setOnClickListener(this)
+        binding.ivMore.setOnClickListener(this)
+        binding.btnRecoverWallet.setOnClickListener(this)
+        binding.btnCreateWallet.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.tv_more, R.id.iv_more -> {
+                dialogLanguage = AlertDialog.Builder(this).create()
+                if (dialogLanguage != null) {
+                    if (dialogLanguage.isShowing) {
+                        dialogLanguage.dismiss()
+                    } else {
+                        safetyDialog()
+                    }
                 } else {
                     safetyDialog()
                 }
-            } else {
-                safetyDialog()
+            }
+            R.id.btn_recover_wallet -> {
+                startActivity(Intent(this, RecoverWalletListActivity::class.java))
+            }
+            R.id.btn_create_wallet -> {
+                startActivity(Intent(this, CreateWalletActivity::class.java))
             }
         }
-
-        binding.btnRecoverWallet.setOnClickListener {
-            startActivity(Intent(this, RecoverWalletListActivity::class.java))
-        }
-
-        binding.btnCreateWallet.setOnClickListener {
-            startActivity(Intent(this, CreateWalletActivity::class.java))
-        }
-
     }
 
     private fun setLanguage() {
@@ -131,4 +135,5 @@ class CreateRecoverWalletActivity : BaseActivity() {
             dialogLanguage.show()
         }
     }
+
 }

@@ -22,15 +22,15 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EmptyReq
 import com.ramble.ramblewallet.bean.MyDataBean
 import com.ramble.ramblewallet.constant.RATEINFO
-import com.ramble.ramblewallet.databinding.ActivityMainBinding
+import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
 import com.ramble.ramblewallet.network.rateInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 
-class MainActivity : BaseActivity(), View.OnClickListener {
+class MainETHActivity : BaseActivity(), View.OnClickListener {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainEthBinding
     private var myDataBeans: ArrayList<MyDataBean> = arrayListOf()
     private lateinit var mainAdapter: MainAdapter
 
@@ -39,7 +39,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_078DC2)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main_eth)
 
         binding.scroll01.post { binding.scroll01.fullScroll(ScrollView.FOCUS_UP) } //初始值
         findViewById<RelativeLayout>(R.id.toolbar).setBackgroundResource(0)

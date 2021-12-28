@@ -43,7 +43,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.CreateRecoverWalletActivity" />
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.MainETHActivity" />
+        <activity android:name=".activity.MainTRXActivity" />
+        <activity android:name=".activity.MainBTCActivity" />
     </application>
 
 </manifest>

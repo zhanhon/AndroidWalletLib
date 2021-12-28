@@ -20,7 +20,7 @@ class CreateWalletActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_wallet)
 
-        binding.imvBack.setOnClickListener {
+        binding.ivBack.setOnClickListener {
             finish()
         }
         binding.btnConfirm.setOnClickListener {

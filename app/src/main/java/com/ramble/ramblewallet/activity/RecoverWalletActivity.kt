@@ -35,7 +35,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setOnClickListener() {
-        binding.imvBack.setOnClickListener(this)
+        binding.ivBack.setOnClickListener(this)
         binding.btnConfirm.setOnClickListener(this)
     }
 
@@ -48,17 +48,17 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
         when (chooseMode) {
             1 -> {
-                binding.tvTitle.text = getString(R.string.import_mnemonic_words)
+                binding.tvRecoverTitle.text = getString(R.string.import_mnemonic_words)
                 binding.tvContributingWords.text = getString(R.string.contributing_words)
                 binding.edtContributingWords.hint = getString(R.string.input_mnemonic_words)
             }
             2 -> {
-                binding.tvTitle.text = getString(R.string.import_secret_key)
+                binding.tvRecoverTitle.text = getString(R.string.import_secret_key)
                 binding.tvContributingWords.text = getString(R.string.secret_key)
                 binding.edtContributingWords.hint = getString(R.string.input_secret_key)
             }
             3 -> {
-                binding.tvTitle.text = getString(R.string.import_keystore)
+                binding.tvRecoverTitle.text = getString(R.string.import_keystore)
                 binding.tvContributingWords.text = "Keystore"
                 binding.edtContributingWords.hint = getString(R.string.input_keystore)
             }
@@ -115,7 +115,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                         }
                     }
                 }
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, MainETHActivity::class.java))
             }
         }
     }

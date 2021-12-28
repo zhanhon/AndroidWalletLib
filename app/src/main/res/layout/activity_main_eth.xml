@@ -5,7 +5,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@mipmap/ic_home_bg_eth">
+        android:background="@mipmap/ic_home_bg_eth_big">
 
         <RelativeLayout
             android:id="@+id/toolbar"
