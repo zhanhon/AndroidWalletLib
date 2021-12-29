@@ -55,29 +55,18 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incTransactionQuery.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_transaction_query)
         binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_title).text = getString(R.string.multi_language)
         binding.incMultiLanguage.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_multi_language)
-        when (language) {
-            CN -> {
-                binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text = getString(R.string.language_simplified_chinese)
-            }
-            TW -> {
-                binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text = getString(R.string.language_traditional_chinese)
-            }
-            EN -> {
-                binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text = getString(R.string.language_english)
-            }
+        binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text = when (language) {
+            TW -> getString(R.string.language_traditional_chinese)
+            EN -> getString(R.string.language_english)
+            else->getString(R.string.language_simplified_chinese)
         }
         binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_title).text = getString(R.string.currency_unit)
         binding.incCurrencyUnit.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_currency)
-        when (currency) {
-            RMB -> {
-                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = getString(R.string.cny_dollar)
-            }
-            HKD -> {
-                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = getString(R.string.hk_dollar)
-            }
-            USD -> {
-                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = getString(R.string.usd_dollar)
-            }
+        binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = when (currency) {
+            HKD -> getString(R.string.hk_dollar)
+            USD ->  getString(R.string.usd_dollar)
+            else -> getString(R.string.cny_dollar)
+
         }
         binding.incHelpFeedback.findViewById<TextView>(R.id.tv_mine_title).text = getString(R.string.help_feedback)
         binding.incHelpFeedback.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_help_feedback)
