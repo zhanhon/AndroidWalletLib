@@ -6,6 +6,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -21,6 +22,14 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.processphoenix.ProcessPhoenix
+import com.ramble.ramblewallet.R
+import com.ramble.ramblewallet.constant.REQUEST_CODE_1029
+import com.ramble.ramblewallet.constant.appProcessName
+import com.ramble.ramblewallet.utils.Glide4Engine
+import com.ramble.ramblewallet.utils.dimensionPixelSize
+import com.zhihu.matisse.Matisse
+import com.zhihu.matisse.MimeType
+import com.zhihu.matisse.internal.entity.CaptureStrategy
 import org.joor.Reflect
 
 @JvmOverloads
@@ -307,6 +316,24 @@ fun <T : Fragment> Fragment.findFragmentByTag(tag: String): T {
 fun Activity.jumpTo(to: Class<*>, extras: Bundle? = null) {
     this.start(to, extras)
     this.finish()
+}
+
+/**
+ * 选择相片
+ */
+fun Activity.startMatisseActivity() {
+    Matisse.from(this)
+        .choose(MimeType.ofImage(), true)
+        .countable(false)
+        .maxSelectable(1)
+        .gridExpectedSize(this.dimensionPixelSize(R.dimen.dp_120))
+        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+        .thumbnailScale(0.85f)
+        .imageEngine(Glide4Engine())
+        .capture(true)
+        .captureStrategy(CaptureStrategy(true, "$appProcessName.file_provider", "pie"))
+        .theme(R.style.MyMatisse)
+        .forResult(REQUEST_CODE_1029)
 }
 
 @JvmOverloads

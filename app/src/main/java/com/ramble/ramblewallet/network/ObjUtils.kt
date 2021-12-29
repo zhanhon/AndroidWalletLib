@@ -1,13 +1,18 @@
 package com.ramble.ramblewallet.network
 
 
+import android.Manifest
+import android.app.Activity
 import android.util.Log
 import com.google.gson.Gson
+import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.constant.CN
 import com.ramble.ramblewallet.constant.LANGUAGE
+import com.ramble.ramblewallet.constant.REQUEST_CODE_1025
 import com.ramble.ramblewallet.constant.appContext
 import com.ramble.ramblewallet.utils.Md5Util
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import pub.devrel.easypermissions.EasyPermissions
 
 /**
  * 时间　: 2021/12/21 14:14
@@ -43,4 +48,17 @@ object ObjUtils {
         )
     }
 
+    fun isCameraPermission(activity: Activity): Boolean {
+        return if (EasyPermissions.hasPermissions(activity, Manifest.permission.CAMERA)) {
+            true
+        } else {
+            EasyPermissions.requestPermissions(
+                activity,
+                activity.getString(R.string.alert_request_permission),
+                REQUEST_CODE_1025,
+                Manifest.permission.CAMERA
+            )
+            false
+        }
+    }
 }

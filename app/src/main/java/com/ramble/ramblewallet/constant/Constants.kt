@@ -31,6 +31,9 @@ const val HKD = "hkd"
 const val USD = "usd"
 const val CURRENCY = "currency"
 
+const val REQUEST_CODE_1025 = 1025
+const val REQUEST_CODE_1029 = 1029
+
 const val APK_PACKAGE_ARCHIVE_TYPE = "application/vnd.android.package-archive"
 lateinit var appContext: Context
     private set

@@ -2,6 +2,8 @@
 
 package com.ramble.ramblewallet.utils
 
+import android.content.Context
+import androidx.annotation.DimenRes
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okio.ByteString
@@ -32,3 +34,4 @@ fun <T> fromJson(json: String, type: Type, moshi: Moshi? = null): T {
 }
 
 fun String.md5() = ByteString.encodeUtf8(this).md5().hex()!!
+fun Context.dimensionPixelSize(@DimenRes id: Int) = this.resources.getDimensionPixelSize(id)

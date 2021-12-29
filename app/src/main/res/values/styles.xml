@@ -93,4 +93,8 @@
         <item name="android:textSize">@dimen/sp_14</item>
         <item name="android:clickable">true</item>
     </style>
+    <style name="MyMatisse" parent="Matisse.Zhihu">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary</item>
+    </style>
 </resources>

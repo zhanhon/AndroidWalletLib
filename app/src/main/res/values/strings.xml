@@ -185,4 +185,5 @@
     <string name="up_data_language">修改显示语言</string>
     <string name="no_records">暂无记录</string>
     <string name="address_page">地址页</string>
+    <string name="alert_request_permission">为了保证本程序能正常运行，现在开始向您申请必要权限。</string>
 </resources>

@@ -1,50 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_000000"
-    tools:context=".activity.ScanActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
-        android:id="@+id/toolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_20"
-        android:background="@color/color_000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:background="@color/color_000000">
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
-            android:layout_marginStart="@dimen/dp_5"
-            android:layout_marginEnd="@dimen/dp_10"
-            android:background="@drawable/vector_left_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/txtTitle"
-            android:layout_width="wrap_content"
+        <cn.bingoogolapple.qrcode.zxing.ZXingView
+            android:id="@+id/qrc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:qrcv_animTime="1000"
+            app:qrcv_barCodeTipText="将条码放入框内，即可自动扫描"
+            app:qrcv_barcodeRectHeight="140dp"
+            app:qrcv_borderColor="@android:color/white"
+            app:qrcv_borderSize="1px"
+            app:qrcv_cornerColor="@color/green3"
+            app:qrcv_cornerLength="20dp"
+            app:qrcv_cornerSize="3dp"
+            app:qrcv_isBarcode="false"
+            app:qrcv_isOnlyDecodeScanBoxArea="false"
+            app:qrcv_isScanLineReverse="true"
+            app:qrcv_isShowDefaultGridScanLineDrawable="false"
+            app:qrcv_isShowDefaultScanLineDrawable="true"
+            app:qrcv_isShowTipBackground="true"
+            app:qrcv_isShowTipTextAsSingleLine="false"
+            app:qrcv_isTipTextBelowRect="true"
+            app:qrcv_maskColor="@color/color_000000"
+            app:qrcv_qrCodeTipText="将二维码/条码放入框内，即可自动扫描"
+            app:qrcv_rectWidth="200dp"
+            app:qrcv_scanLineColor="@color/green3"
+            app:qrcv_scanLineMargin="0dp"
+            app:qrcv_scanLineSize="1dp"
+            app:qrcv_tipTextColor="@android:color/white"
+            app:qrcv_tipTextSize="12sp"
+            app:qrcv_toolbarHeight="112px"
+            app:qrcv_topOffset="100dp" />
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/scan"
-            android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/sp_16" />
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@color/color_000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imv_gallery"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="@dimen/dp_10"
-            android:background="@drawable/ic_launcher_background" />
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:src="@drawable/vector_left_white" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/scan"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/sp_16" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/imv_gallery"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/dp_10"
+                android:src="@drawable/vector_photo_white" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_000000"
+            app:layout_constraintBottom_toBottomOf="@+id/qrc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.8">
+
+            <ImageView
+                android:id="@+id/light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/vector_light_close" />
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
