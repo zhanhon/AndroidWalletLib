@@ -10,6 +10,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import static com.ramble.ramblewallet.constant.ConstantsKt.HKD;
+import static com.ramble.ramblewallet.constant.ConstantsKt.RMB;
+import static com.ramble.ramblewallet.constant.ConstantsKt.USD;
+
 /**
  * @创建人： Ricky
  * @创建时间： 2021/12/5
@@ -24,7 +28,18 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
         tokenIcon(baseViewHolder, mainETHTokenBean);
         baseViewHolder.setText(R.id.tv_token_name, mainETHTokenBean.getName());
         baseViewHolder.setText(R.id.tv_token_balance, DecimalFormatUtil.format8.format(mainETHTokenBean.getBalance()));
-        baseViewHolder.setText(R.id.tv_converted_token_unit, "$");
+        switch (mainETHTokenBean.getCurrencyUnit()) {
+            case RMB:
+                baseViewHolder.setText(R.id.tv_converted_token_unit, "￥");
+                break;
+            case HKD:
+                baseViewHolder.setText(R.id.tv_converted_token_unit, "HK$");
+                break;
+            case USD:
+                baseViewHolder.setText(R.id.tv_converted_token_unit, "$");
+                break;
+        }
+
         baseViewHolder.setText(R.id.tv_converted_token_balance, DecimalFormatUtil.format2.format(mainETHTokenBean.getBalance().multiply(mainETHTokenBean.getRate())));
         if (mainETHTokenBean.getChange().toString().contains("-")) {
             baseViewHolder.setTextColor(R.id.tv_increase_change, getContext().getResources().getColor(R.color.color_E11334));

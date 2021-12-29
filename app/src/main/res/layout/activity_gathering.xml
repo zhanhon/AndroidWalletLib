@@ -57,15 +57,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dp_4"
-                    android:background="@mipmap/ic_copy_gray" />
+                    android:background="@drawable/vector_gathering_warning" />
 
                 <TextView
                     android:id="@+id/tv_gathering_tips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_5"
                     android:gravity="center_horizontal"
                     android:text="@string/gathering_tips"
-                    android:textSize="@dimen/dp_12" />
+                    android:textSize="@dimen/sp_12" />
             </LinearLayout>
 
             <LinearLayout
@@ -86,7 +87,7 @@
                     android:layout_marginTop="@dimen/dp_30"
                     android:gravity="center_horizontal"
                     android:text="@string/gathering_scan_tips"
-                    android:textSize="@dimen/dp_12" />
+                    android:textSize="@dimen/sp_12" />
 
                 <ImageView
                     android:id="@+id/iv_code"
@@ -101,7 +102,7 @@
                     android:layout_marginTop="@dimen/dp_30"
                     android:gravity="center_horizontal"
                     android:text="@string/gathering_wallet_address_title"
-                    android:textSize="@dimen/dp_12" />
+                    android:textSize="@dimen/sp_12" />
 
                 <TextView
                     android:id="@+id/tv_address"
@@ -113,7 +114,8 @@
                     android:gravity="center"
                     android:paddingHorizontal="@dimen/dp_10"
                     android:text="0xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                    android:textColor="@color/color_9598AA" />
+                    android:textColor="@color/color_9598AA"
+                    android:textSize="@dimen/sp_12" />
 
                 <View
                     android:layout_width="match_parent"

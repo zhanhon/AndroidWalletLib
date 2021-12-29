@@ -2,7 +2,6 @@ package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.ClipboardManager
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -26,6 +25,8 @@ import androidx.databinding.DataBindingUtil
 import com.google.zxing.WriterException
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.databinding.ActivityGatheringBinding
 import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.DisplayHelper
@@ -38,8 +39,8 @@ import java.io.IOException
 class GatheringActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityGatheringBinding
-    private var gatherTitle: String = "ETH"
-    private var gatherAddress: String = "0x23flwrf2232wafrwerqwr2rlsf23r23"
+    private lateinit var gatherTitle: String
+    private lateinit var gatherAddress: String
     private var bitmap: Bitmap? = null
     private val sdCardDir =
         Environment.getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DCIM
@@ -48,6 +49,8 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_gathering)
+        gatherTitle = intent.getStringExtra(ARG_PARAM1)
+        gatherAddress = intent.getStringExtra(ARG_PARAM2)
         setOnClickListener()
         initData()
 

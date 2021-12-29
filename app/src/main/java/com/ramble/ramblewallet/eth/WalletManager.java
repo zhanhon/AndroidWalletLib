@@ -51,7 +51,7 @@ public class WalletManager {
     /**
      * 代币合约地址
      */
-    public static String tokenAddres = "0x047a880b27ca11509c9c1e853fe47229febc57fe";
+    public static String tokenAddres = "0x245A86D04C678E1Ab7e5a8FbD5901C12361Ea308";
     /**
      * 区块链服务器地址
      */
