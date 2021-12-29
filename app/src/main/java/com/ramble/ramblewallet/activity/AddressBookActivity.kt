@@ -12,12 +12,18 @@ import androidx.recyclerview.widget.OrientationHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnItemClickListener
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.AddressBookAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MyAddressBean
+import com.ramble.ramblewallet.constant.ADDRESS_BOOK_INFO
+import com.ramble.ramblewallet.constant.WALLETINFO
 import com.ramble.ramblewallet.databinding.ActivityAddressBookBinding
+import com.ramble.ramblewallet.eth.Wallet
 import com.ramble.ramblewallet.item.TransferItem
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 
 class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
@@ -25,6 +31,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
 
     private lateinit var binding: ActivityAddressBookBinding
     private var myDataBeans: ArrayList<MyAddressBean> = arrayListOf()
+    private var myData: ArrayList<MyAddressBean> = arrayListOf()
     private lateinit var addressBookAdapter: AddressBookAdapter
     private var isDelete=false
 
@@ -59,9 +66,34 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         a2.userName = "大爷2"
         a2.address = "dfgfdfgpfdgkdpdsfs2"
         a2.type = 3
+
+        var b = MyAddressBean()
+        b.userName = "大爷"
+        b.address = "hhhhh"
+        b.type = 1
+        var b1 = MyAddressBean()
+        b1.userName = "大爷1"
+        b1.address = "hhhhh"
+        b1.type = 2
+        var b2 = MyAddressBean()
+        b2.userName = "大爷2"
+        b2.address = "hhhh"
+        b2.type = 3
         myDataBeans.add(a)
         myDataBeans.add(a1)
         myDataBeans.add(a2)
+        myDataBeans.add(b)
+        myDataBeans.add(b1)
+        myDataBeans.add(b2)
+        println("-=-=-=->walletJson:${Gson().toJson(myDataBeans)}")
+        SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myDataBeans))
+        if (SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
+            myData =
+                Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, ""),
+                    object : TypeToken<ArrayList<MyAddressBean>>() {}.type
+                )
+        }
         loadData()
     }
 
@@ -86,7 +118,9 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 }
                 R.id.iv_reduce->{
                     println("-=-=-=->sav撒旦发射点发射点发范德萨发撒是否")
+                    myData.remove( myDataBeans[position])
                     myDataBeans.removeAt(position)
+                    SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
                     addressBookAdapter = AddressBookAdapter(myDataBeans, false)
                     binding.rvMainCurrency.adapter = addressBookAdapter
                     binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
@@ -100,78 +134,36 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         when (checkedId) {
             R.id.check_all -> {
                 myDataBeans = arrayListOf()
-                var a = MyAddressBean()
-                a.userName = "大爷"
-                a.address = "dfgfdfgpfdgkdpdsfs"
-                a.type = 1
-                var a1 = MyAddressBean()
-                a1.userName = "大爷1"
-                a1.address = "dfgfdfgpfdgkdpdsfs1"
-                a1.type = 2
-                var a2 = MyAddressBean()
-                a2.userName = "大爷2"
-                a2.address = "dfgfdfgpfdgkdpdsfs2"
-                a2.type = 3
-                myDataBeans.add(a)
-                myDataBeans.add(a1)
-                myDataBeans.add(a2)
+                myData.forEach {
+                    myDataBeans.add(it)
+                }
                 loadData()
             }
             R.id.check_bt -> {
                 myDataBeans = arrayListOf()
-                var a = MyAddressBean()
-                a.userName = "大爷"
-                a.address = "dfgfdfgpfdgkdpdsfs"
-                a.type = 2
-                var a1 = MyAddressBean()
-                a1.userName = "大爷1"
-                a1.address = "dfgfdfgpfdgkdpdsfs1"
-                a1.type = 2
-                var a2 = MyAddressBean()
-                a2.userName = "大爷2"
-                a2.address = "dfgfdfgpfdgkdpdsfs2"
-                a2.type = 2
-                myDataBeans.add(a)
-                myDataBeans.add(a1)
-                myDataBeans.add(a2)
+                myData.forEach {
+                    if (it.type==2){
+                        myDataBeans.add(it)
+                    }
+                }
                 loadData()
             }
             R.id.check_eth -> {
                 myDataBeans = arrayListOf()
-                var a = MyAddressBean()
-                a.userName = "大爷"
-                a.address = "dfgfdfgpfdgkdpdsfs"
-                a.type = 1
-                var a1 = MyAddressBean()
-                a1.userName = "大爷1"
-                a1.address = "dfgfdfgpfdgkdpdsfs1"
-                a1.type = 1
-                var a2 = MyAddressBean()
-                a2.userName = "大爷2"
-                a2.address = "dfgfdfgpfdgkdpdsfs2"
-                a2.type = 1
-                myDataBeans.add(a)
-                myDataBeans.add(a1)
-                myDataBeans.add(a2)
+                myData.forEach {
+                    if (it.type==1){
+                        myDataBeans.add(it)
+                    }
+                }
                 loadData()
             }
             R.id.check_trx -> {
                 myDataBeans = arrayListOf()
-                var a = MyAddressBean()
-                a.userName = "大爷"
-                a.address = "dfgfdfgpfdgkdpdsfs"
-                a.type = 3
-                var a1 = MyAddressBean()
-                a1.userName = "大爷1"
-                a1.address = "dfgfdfgpfdgkdpdsfs1"
-                a1.type = 3
-                var a2 = MyAddressBean()
-                a2.userName = "大爷2"
-                a2.address = "dfgfdfgpfdgkdpdsfs2"
-                a2.type = 3
-                myDataBeans.add(a)
-                myDataBeans.add(a1)
-                myDataBeans.add(a2)
+                myData.forEach {
+                    if (it.type==3){
+                        myDataBeans.add(it)
+                    }
+                }
                 loadData()
             }
         }
@@ -206,13 +198,15 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                         }
                         R.id.iv_reduce->{
                             println("-=-=-=->sav撒旦发射点发射点发范德萨发撒是否")
+                            myData.remove( myDataBeans[position])
                             myDataBeans.removeAt(position)
+                            SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
                             addressBookAdapter = AddressBookAdapter(myDataBeans, false)
                             binding.rvMainCurrency.adapter = addressBookAdapter
                             binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
                         }
                     }
-                    println("-=-=-=->11111111111111111111")
+                    println("-=-=-=->$position")
                 })
 
             }
