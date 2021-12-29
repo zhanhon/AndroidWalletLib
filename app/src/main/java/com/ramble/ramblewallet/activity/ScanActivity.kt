@@ -30,7 +30,7 @@ import java.util.*
 
 class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
     private lateinit var binding: ActivityScanBinding
-
+    private var isLight=false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -137,8 +137,12 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
                 }
             }
             R.id.light -> {
-                binding.zxingview.openFlashlight()// 打开闪光灯
-//                binding.zxingview.closeFlashlight() // 关闭闪光灯
+                isLight = !isLight
+                if (isLight) {
+                    binding.zxingview.openFlashlight()// 打开闪光灯
+                } else {
+                    binding.zxingview.closeFlashlight() // 关闭闪光灯
+                }
             }
 
         }
