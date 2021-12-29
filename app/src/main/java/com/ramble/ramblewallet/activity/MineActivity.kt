@@ -161,7 +161,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         dialogLanguage.show()
         val window: Window? = dialogLanguage.window
         if (window != null) {
-            window.setContentView(R.layout.language_layout)
+            window.setContentView(R.layout.dialog_language)
             window.setGravity(Gravity.BOTTOM)
             window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             window.findViewById<View>(R.id.tv_language1).setOnClickListener { v1: View? ->
@@ -201,7 +201,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         dialogCurrency.show()
         val window: Window? = dialogCurrency.window
         if (window != null) {
-            window.setContentView(R.layout.currency_layout)
+            window.setContentView(R.layout.dialog_currency)
             window.setGravity(Gravity.BOTTOM)
             window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             window.findViewById<View>(R.id.tv_language1).setOnClickListener { v1: View? ->

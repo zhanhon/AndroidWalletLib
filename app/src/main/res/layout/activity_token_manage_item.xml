@@ -5,17 +5,17 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:id="@+id/cl_icon"
+        android:id="@+id/cl_delete"
         android:layout_width="@dimen/dp_50"
         android:layout_height="@dimen/dp_50"
         android:background="@color/color_FFFFFF"
         android:padding="@dimen/dp_10">
 
         <ImageView
+            android:id="@+id/iv_delete"
             android:layout_width="@dimen/dp_20"
             android:layout_height="@dimen/dp_20"
-            android:layout_centerInParent="true"
-            android:background="@drawable/ic_launcher_background" />
+            android:layout_centerInParent="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -28,9 +28,9 @@
             android:id="@+id/iv_token_icon"
             android:layout_width="@dimen/dp_20"
             android:layout_height="@dimen/dp_20"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/dp_10"
-            android:background="@drawable/ic_launcher_background" />
+            android:layout_marginEnd="@dimen/dp_10" />
 
         <TextView
             android:id="@+id/tv_token_name"
@@ -45,9 +45,9 @@
             android:id="@+id/iv_token_status"
             android:layout_width="@dimen/dp_20"
             android:layout_height="@dimen/dp_20"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/dp_10"
-            android:background="@drawable/ic_launcher_background" />
+            android:layout_marginEnd="@dimen/dp_10" />
 
     </RelativeLayout>
 

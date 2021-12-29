@@ -71,9 +71,4 @@
         android:layout_height="1dp"
         android:background="@color/color_E7E7E7" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_FFFFFF"
-        android:visibility="gone" />
 </LinearLayout>

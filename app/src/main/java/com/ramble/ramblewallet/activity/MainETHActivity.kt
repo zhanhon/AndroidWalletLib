@@ -11,9 +11,9 @@ import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.ScrollView
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -121,8 +121,11 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                             if ((it.currencyType == "ETH") || (it.currencyType == "USDT") || (it.currencyType == "WBTC")) {
                                                 mainETHTokenBean.add(
                                                     MainETHTokenBean(
-                                                        it.currencyType, BigDecimal(10.12123), BigDecimal(it.rateUsd),
-                                                        currencyUnit, BigDecimal(it.change)
+                                                        it.currencyType,
+                                                        BigDecimal(10.12123),
+                                                        BigDecimal(it.rateUsd),
+                                                        currencyUnit,
+                                                        BigDecimal(it.change)
                                                     )
                                                 )
                                             }
@@ -131,7 +134,9 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                     mainAdapter = MainAdapter(mainETHTokenBean)
                                     binding.rvCurrency.adapter = mainAdapter
                                     mainAdapter.setOnItemClickListener { adapter, view, position ->
-                                        showTransferGatheringDialog()
+                                        if (adapter.getItem(position) is MainETHTokenBean) {
+                                            showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean).name)
+                                        }
                                     }
                                 } else {
                                     println("-=-=-=->${it.message()}")
@@ -171,7 +176,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 
     }
 
-    private fun showTransferGatheringDialog() {
+    private fun showTransferGatheringDialog(tokenName: String) {
         var dialog = AlertDialog.Builder(this).create()
         dialog.show()
         val window: Window? = dialog.window
@@ -180,14 +185,17 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             window.setGravity(Gravity.BOTTOM)
             window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-            val btnTransfer = window.findViewById<Button>(R.id.btn_transfer)
-            val btnGathering = window.findViewById<Button>(R.id.btn_gathering)
+            val tvTokenTitle = window.findViewById<TextView>(R.id.tv_currency_title)
+            val tvTransfer = window.findViewById<TextView>(R.id.tv_transfer)
+            val tvGathering = window.findViewById<TextView>(R.id.tv_gathering)
 
-            btnTransfer.setOnClickListener { v1: View? ->
+            tvTokenTitle.text = tokenName
+
+            tvTransfer.setOnClickListener { v1: View? ->
                 startActivity(Intent(this, TransferActivity::class.java))
                 dialog.dismiss()
             }
-            btnGathering.setOnClickListener { v1: View? ->
+            tvGathering.setOnClickListener { v1: View? ->
                 startActivity(Intent(this, GatheringActivity::class.java))
                 dialog.dismiss()
             }
@@ -230,7 +238,9 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, ScanActivity::class.java))
             }
             R.id.iv_token_manage_click, R.id.iv_token_manage_click_01 -> {
-                startActivity(Intent(this, TokenActivity::class.java))
+                startActivity(Intent(this, TokenActivity::class.java).apply {
+                    putExtra(ARG_PARAM1, "ETH")
+                })
             }
             R.id.iv_balance_refresh -> {
 

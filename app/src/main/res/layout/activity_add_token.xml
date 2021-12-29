@@ -76,7 +76,7 @@
                         android:layout_width="@dimen/dp_20"
                         android:layout_height="@dimen/dp_20"
                         android:layout_alignParentRight="true"
-                        android:background="@drawable/ic_launcher_background" />
+                        android:background="@drawable/vector_more_address" />
                 </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -113,7 +113,7 @@
                         android:layout_width="@dimen/dp_20"
                         android:layout_height="@dimen/dp_20"
                         android:layout_alignParentRight="true"
-                        android:background="@drawable/ic_launcher_background" />
+                        android:background="@drawable/vector_solid_triangle_down" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,17 +1,10 @@
 package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
-import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.ScrollView
 import androidx.annotation.RequiresApi
@@ -73,7 +66,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         binding.rvCurrency.adapter = mainAdapter
 
         mainAdapter.setOnItemClickListener { adapter, view, position ->
-            showTransferGatheringDialog()
+            //showTransferGatheringDialog()
         }
 
         setOnClickListener()
@@ -129,36 +122,36 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
 
     }
 
-    private fun showTransferGatheringDialog() {
-        var dialog = AlertDialog.Builder(this).create()
-        dialog.show()
-        val window: Window? = dialog.window
-        if (window != null) {
-            window.setContentView(R.layout.dialog_transfer_gathering)
-            window.setGravity(Gravity.CENTER)
-            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            //设置属性
-            val params = window.attributes
-            params.width = WindowManager.LayoutParams.MATCH_PARENT
-            //弹出一个窗口，让背后的窗口变暗一点
-            params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-            //dialog背景层
-            params.dimAmount = 0.5f
-            window.attributes = params
-
-            val btnTransfer = window.findViewById<Button>(R.id.btn_transfer)
-            val btnGathering = window.findViewById<Button>(R.id.btn_gathering)
-
-            btnTransfer.setOnClickListener { v1: View? ->
-                startActivity(Intent(this, TransferActivity::class.java))
-                dialog.dismiss()
-            }
-            btnGathering.setOnClickListener { v1: View? ->
-                startActivity(Intent(this, GatheringActivity::class.java))
-                dialog.dismiss()
-            }
-        }
-    }
+//    private fun showTransferGatheringDialog() {
+//        var dialog = AlertDialog.Builder(this).create()
+//        dialog.show()
+//        val window: Window? = dialog.window
+//        if (window != null) {
+//            window.setContentView(R.layout.dialog_transfer_gathering)
+//            window.setGravity(Gravity.CENTER)
+//            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//            //设置属性
+//            val params = window.attributes
+//            params.width = WindowManager.LayoutParams.MATCH_PARENT
+//            //弹出一个窗口，让背后的窗口变暗一点
+//            params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+//            //dialog背景层
+//            params.dimAmount = 0.5f
+//            window.attributes = params
+//
+//            val btnTransfer = window.findViewById<Button>(R.id.btn_transfer)
+//            val btnGathering = window.findViewById<Button>(R.id.btn_gathering)
+//
+//            btnTransfer.setOnClickListener { v1: View? ->
+//                startActivity(Intent(this, TransferActivity::class.java))
+//                dialog.dismiss()
+//            }
+//            btnGathering.setOnClickListener { v1: View? ->
+//                startActivity(Intent(this, GatheringActivity::class.java))
+//                dialog.dismiss()
+//            }
+//        }
+//    }
 
     override fun onClick(v: View) {
         when (v.id) {

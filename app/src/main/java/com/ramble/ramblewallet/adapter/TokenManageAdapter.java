@@ -25,6 +25,14 @@ public class TokenManageAdapter extends BaseQuickAdapter<MyDataBean, BaseViewHol
 
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, MyDataBean myDataBean) {
+        if (isNeedDelete) {
+            baseViewHolder.itemView.findViewById(R.id.cl_delete).setVisibility(View.VISIBLE);
+            baseViewHolder.setImageResource(R.id.iv_delete, R.drawable.vector_not_deleted);
+            baseViewHolder.setImageResource(R.id.iv_token_status, R.drawable.vector_token_move);
+        } else {
+            baseViewHolder.itemView.findViewById(R.id.cl_delete).setVisibility(View.GONE);
+            baseViewHolder.setImageResource(R.id.iv_token_status, R.drawable.vector_token_add);
+        }
         switch (myDataBean.getName()) {
             case "TFT":
                 baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_tft);
@@ -50,11 +58,6 @@ public class TokenManageAdapter extends BaseQuickAdapter<MyDataBean, BaseViewHol
             case "UNI":
                 baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_uni);
                 break;
-        }
-        if (isNeedDelete) {
-            baseViewHolder.itemView.findViewById(R.id.cl_icon).setVisibility(View.VISIBLE);
-        } else {
-            baseViewHolder.itemView.findViewById(R.id.cl_icon).setVisibility(View.GONE);
         }
         baseViewHolder.setText(R.id.tv_token_name, myDataBean.getName());
     }

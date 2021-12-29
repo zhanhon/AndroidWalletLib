@@ -87,6 +87,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private fun setOnClickListener() {
         binding.ivBack.setOnClickListener(this)
         binding.ivTransferScan.setOnClickListener(this)
+        binding.ivAddressBook.setOnClickListener(this)
         binding.clMinerFee.setOnClickListener(this)
         binding.tvSelectAll.setOnClickListener(this)
         binding.btnConfirm.setOnClickListener(this)
@@ -247,9 +248,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_back -> {
                 finish()
             }
-
             R.id.iv_transfer_scan -> {
                 startActivity(Intent(this, ScanActivity::class.java))
+            }
+            R.id.iv_address_book -> {
+                startActivity(Intent(this, AddressBookActivity::class.java))
             }
             R.id.cl_miner_fee -> {
                 showDialog()

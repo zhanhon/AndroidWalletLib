@@ -3,29 +3,57 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_white_rectangle"
-    android:gravity="center_horizontal"
-    android:orientation="horizontal"
-    android:padding="@dimen/dp_10">
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/dp_10"
+    android:paddingRight="@dimen/dp_10"
+    android:paddingBottom="10dp">
 
-    <Button
-        android:id="@+id/btn_transfer"
-        android:layout_width="110dp"
-        android:layout_height="@dimen/dp_40"
-        android:layout_marginRight="@dimen/dp_20"
-        android:background="@drawable/shape_white_bottom_blue_line_btn"
+    <TextView
+        android:id="@+id/tv_currency_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="10dp"
+        android:gravity="left|center_vertical"
+        android:text="USDT"
+        android:textColor="@color/color_000000"
+        android:textSize="@dimen/sp_15"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_E7E7E7" />
+
+    <TextView
+        android:id="@+id/tv_transfer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
         android:text="@string/transfer"
-        android:textAllCaps="false"
         android:textColor="@color/color_000000"
-        android:textSize="@dimen/sp_14" />
+        android:textSize="@dimen/sp_15" />
 
-    <Button
-        android:id="@+id/btn_gathering"
-        android:layout_width="110dp"
-        android:layout_height="@dimen/dp_40"
-        android:layout_marginLeft="@dimen/dp_20"
-        android:background="@drawable/shape_white_bottom_blue_line_btn"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_E7E7E7" />
+
+    <TextView
+        android:id="@+id/tv_gathering"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:gravity="center"
         android:text="@string/gathering"
-        android:textAllCaps="false"
         android:textColor="@color/color_000000"
-        android:textSize="@dimen/sp_14" />
+        android:textSize="@dimen/sp_15" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_E7E7E7" />
+
 </LinearLayout>

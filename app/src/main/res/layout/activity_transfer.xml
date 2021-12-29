@@ -111,7 +111,7 @@
             <View
                 android:id="@+id/v_address_input_middle"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_1"
+                android:layout_height="@dimen/dp_05"
                 android:background="@color/color_9598AA"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -155,12 +155,12 @@
                         android:textStyle="bold" />
 
                     <ImageView
-                        android:id="@+id/tv_address_book"
-                        android:layout_width="@dimen/dp_10"
-                        android:layout_height="@dimen/dp_10"
+                        android:id="@+id/iv_address_book"
+                        android:layout_width="@dimen/dp_20"
+                        android:layout_height="@dimen/dp_20"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:background="@mipmap/ic_copy_gray"
+                        android:background="@drawable/vector_contacts"
                         tools:text="1111" />
                 </RelativeLayout>
             </LinearLayout>
@@ -211,7 +211,7 @@
             <View
                 android:id="@+id/v_quantity_middle"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_1"
+                android:layout_height="@dimen/dp_05"
                 android:background="@color/color_9598AA"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -324,7 +324,7 @@
             <View
                 android:id="@+id/v_miner_fee_middle"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_1"
+                android:layout_height="@dimen/dp_05"
                 android:background="@color/color_9598AA"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
