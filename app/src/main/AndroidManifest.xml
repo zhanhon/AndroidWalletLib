@@ -28,8 +28,6 @@
         <activity android:name=".activity.HelpActivity" />
         <activity android:name=".activity.DealDetailActivity" />
         <activity android:name=".activity.TransactionQueryActivity" />
-        <activity android:name=".activity.UpdateCurrencyActivity" />
-        <activity android:name=".activity.UpdateLauguageActivity" />
         <activity android:name=".activity.ContributingWordsConfirmActivity" />
         <activity android:name=".activity.ContributingWordsActivity" />
         <activity android:name=".base.BaseActivity" />

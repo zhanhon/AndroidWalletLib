@@ -10,7 +10,7 @@
 
 
         <cn.bingoogolapple.qrcode.zxing.ZXingView
-            android:id="@+id/qrc"
+            android:id="@+id/zxingview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:qrcv_animTime="1000"
@@ -83,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_000000"
-            app:layout_constraintBottom_toBottomOf="@+id/qrc"
+            app:layout_constraintBottom_toBottomOf="@+id/zxingview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

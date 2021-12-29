@@ -136,28 +136,28 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
             val btnCancel = window.findViewById<Button>(R.id.btn_cancel)
             btnCancel.setOnClickListener { v1: View? -> dialog.dismiss() }
             btnNext.setOnClickListener { v1: View? ->
-                requestRuntimePermission(
-                    arrayOf(
-                        "android.permission.CAMERA",
-                        "android.permission.WRITE_EXTERNAL_STORAGE",
-                        "android.permission.READ_EXTERNAL_STORAGE"
-                    ), object : PermissionListener {
-                        override
-                        fun onGranted() {
-                            try {
-                                val bitmap: Bitmap = viewConversionBitmap(ivImg)
-                                if (bitmap != null) {
-                                    saveBitmap(bitmap)
-                                    bitmap.recycle()
-                                }
-                            } catch (e: Exception) {
-                            }
-                        }
-
-                        override
-                        fun onDenied(deniedPermissions: List<String?>?) {
-                        }
-                    })
+//                requestRuntimePermission(
+//                    arrayOf(
+//                        "android.permission.CAMERA",
+//                        "android.permission.WRITE_EXTERNAL_STORAGE",
+//                        "android.permission.READ_EXTERNAL_STORAGE"
+//                    ), object : PermissionListener {
+//                        override
+//                        fun onGranted() {
+//                            try {
+//                                val bitmap: Bitmap = viewConversionBitmap(ivImg)
+//                                if (bitmap != null) {
+//                                    saveBitmap(bitmap)
+//                                    bitmap.recycle()
+//                                }
+//                            } catch (e: Exception) {
+//                            }
+//                        }
+//
+//                        override
+//                        fun onDenied(deniedPermissions: List<String?>?) {
+//                        }
+//                    })
                 dialog.dismiss()
             }
         }
