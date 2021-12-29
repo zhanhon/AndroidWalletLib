@@ -47,16 +47,7 @@ class CreateRecoverWalletActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.tv_more, R.id.iv_more -> {
-                dialogLanguage = AlertDialog.Builder(this).create()
-                if (dialogLanguage != null) {
-                    if (dialogLanguage.isShowing) {
-                        dialogLanguage.dismiss()
-                    } else {
-                        safetyDialog()
-                    }
-                } else {
-                    safetyDialog()
-                }
+                safetyDialog()
             }
             R.id.btn_recover_wallet -> {
                 startActivity(Intent(this, RecoverWalletListActivity::class.java))

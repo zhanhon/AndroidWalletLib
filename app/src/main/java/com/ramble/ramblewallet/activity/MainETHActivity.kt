@@ -11,7 +11,9 @@ import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.*
+import android.widget.Button
+import android.widget.RelativeLayout
+import android.widget.ScrollView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -20,19 +22,22 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EmptyReq
-import com.ramble.ramblewallet.bean.MyDataBean
+import com.ramble.ramblewallet.bean.MainETHTokenBean
+import com.ramble.ramblewallet.bean.RateBeen
 import com.ramble.ramblewallet.constant.RATEINFO
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
 import com.ramble.ramblewallet.network.rateInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
+import java.math.BigDecimal
 
 class MainETHActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainEthBinding
-    private var myDataBeans: ArrayList<MyDataBean> = arrayListOf()
+    private var mainETHTokenBean: ArrayList<MainETHTokenBean> = arrayListOf()
     private lateinit var mainAdapter: MainAdapter
+    private var rateBean: List<RateBeen> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -44,39 +49,27 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         binding.scroll01.post { binding.scroll01.fullScroll(ScrollView.FOCUS_UP) } //初始值
         findViewById<RelativeLayout>(R.id.toolbar).setBackgroundResource(0)
         binding.scroll01.setOnScrollChangeListener { view, x, y, oldx, oldy ->
-
-            findViewById<TextView>(R.id.txtTitle).visibility =
-                if (y > 64) View.INVISIBLE else View.VISIBLE
-            findViewById<LinearLayout>(R.id.linearBtns).visibility =
-                if (y > 64) View.INVISIBLE else View.VISIBLE
-            findViewById<LinearLayout>(R.id.relBtns).visibility =
-                if (y > 64) View.VISIBLE else View.INVISIBLE
-            findViewById<LinearLayout>(R.id.card01).visibility =
-                if (y > 64) View.VISIBLE else View.GONE
             if (y > 64) {
-                findViewById<RelativeLayout>(R.id.toolbar).background =
-                    getDrawable(R.mipmap.ic_home_bg_eth_small)
+                binding.txtTitle.visibility = View.INVISIBLE
+                binding.linearBtns.visibility = View.INVISIBLE
+                binding.relBtns.visibility = View.VISIBLE
+                binding.card01.visibility = View.VISIBLE
+                binding.toolbar.background = getDrawable(R.mipmap.ic_home_bg_eth_small)
             } else {
-                findViewById<RelativeLayout>(R.id.toolbar).setBackgroundResource(0)
+                binding.txtTitle.visibility = View.VISIBLE
+                binding.linearBtns.visibility = View.VISIBLE
+                binding.relBtns.visibility = View.INVISIBLE
+                binding.card01.visibility = View.GONE
+                binding.toolbar.setBackgroundResource(0)
             }
-
-
         }
 
-        myDataBeans.add(MyDataBean(1, "TFT", ""))
-        myDataBeans.add(MyDataBean(2, "WBTC", ""))
-        myDataBeans.add(MyDataBean(3, "DAI", ""))
-        myDataBeans.add(MyDataBean(4, "USDC", ""))
-        myDataBeans.add(MyDataBean(5, "USDT", ""))
-        myDataBeans.add(MyDataBean(6, "LINK", ""))
-        myDataBeans.add(MyDataBean(7, "YFI", ""))
-        myDataBeans.add(MyDataBean(8, "UNI", ""))
-        mainAdapter = MainAdapter(myDataBeans)
-        binding.rvCurrency.adapter = mainAdapter
 
-        mainAdapter.setOnItemClickListener { adapter, view, position ->
-            showTransferGatheringDialog()
-        }
+//        mainAdapter.addChildClickViewIds(R.id.iv_token_icon)
+//        mainAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
+//            println("-=-=-=->sav撒旦发射点发射点发范德萨发撒是否")
+//        })
+
 
         setOnClickListener()
     }
@@ -92,11 +85,30 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                             {
                                 if (it.code() == 1) {
                                     it.data()?.let { data ->
+                                        rateBean = data
                                         SharedPreferencesUtils.saveString(
                                             this,
                                             RATEINFO,
                                             Gson().toJson(data)
                                         )
+                                        println("-=-=-=->${Gson().toJson(data)}")
+                                    }
+
+                                    if (rateBean.isNotEmpty()) {
+                                        rateBean.forEach {
+                                            if ((it.currencyType == "ETH") || (it.currencyType == "USDT") || (it.currencyType == "WBTC")) {
+                                                mainETHTokenBean.add(
+                                                    MainETHTokenBean(
+                                                        it.currencyType, BigDecimal(10.12123), BigDecimal(it.rateUsd), BigDecimal(it.change)
+                                                    )
+                                                )
+                                            }
+                                        }
+                                    }
+                                    mainAdapter = MainAdapter(mainETHTokenBean)
+                                    binding.rvCurrency.adapter = mainAdapter
+                                    mainAdapter.setOnItemClickListener { adapter, view, position ->
+                                        showTransferGatheringDialog()
                                     }
                                 } else {
                                     println("-=-=-=->${it.message()}")

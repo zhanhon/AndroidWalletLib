@@ -15,7 +15,7 @@
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginTop="10dp"
         android:gravity="left|center_vertical"
-        android:text="@string/language_choose"
+        android:text="@string/currency_choose"
         android:textColor="@color/color_000000"
         android:textSize="@dimen/sp_15"
         android:textStyle="bold" />
@@ -32,7 +32,7 @@
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginTop="10dp"
         android:gravity="left|center_vertical"
-        android:text="@string/language_simplified_chinese"
+        android:text="RMB"
         android:textColor="@color/color_000000"
         android:textSize="@dimen/sp_15" />
 
@@ -47,7 +47,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="@dimen/dp_10"
         android:gravity="left|center_vertical"
-        android:text="@string/language_traditional_chinese"
+        android:text="HKD"
         android:textColor="@color/color_000000"
         android:textSize="@dimen/sp_15" />
 
@@ -62,7 +62,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="@dimen/dp_10"
         android:gravity="left|center_vertical"
-        android:text="@string/language_english"
+        android:text="USD"
         android:textColor="@color/color_000000"
         android:textSize="@dimen/sp_15" />
 

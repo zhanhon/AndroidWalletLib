@@ -23,6 +23,9 @@
     <color name="color_E7E7E7">#E7E7E7</color>
     <color name="gray_F5F6F9">#F5F6F9</color>
     <color name="gray_E7ECFD">#E7ECFD</color>
+    <color name="color_E11334">#E11334</color>
+    <color name="color_009272">#009272</color>
+
     <color name="secondary_text">#757575</color>
     <color name="im_recycler">#F1F1F1</color>
     <color name="card_border">#eeeeee</color>

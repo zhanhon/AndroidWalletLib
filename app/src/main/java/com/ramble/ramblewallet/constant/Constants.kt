@@ -25,6 +25,12 @@ const val TW = "zh_TW"
 const val EN = "en"
 const val LANGUAGE = "language"
 
+
+const val RMB = "rmb"
+const val HKD = "hkd"
+const val USD = "usd"
+const val CURRENCY = "currency"
+
 const val APK_PACKAGE_ARCHIVE_TYPE = "application/vnd.android.package-archive"
 lateinit var appContext: Context
     private set
@@ -48,6 +54,7 @@ fun setupArchLibrary(
     appProcessName = __appProcessName
     appUIDeep = __appUIDeep
 }
+
 const val WALLETINFO = "wallet_info"
 const val RATEINFO = "rate_info"
 const val ADDRESS_BOOK_INFO = "address_book_info"

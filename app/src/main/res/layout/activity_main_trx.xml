@@ -319,7 +319,7 @@
             android:background="@mipmap/ic_home_trx_pack_up"
             android:orientation="vertical"
             android:padding="@dimen/dp_10"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"

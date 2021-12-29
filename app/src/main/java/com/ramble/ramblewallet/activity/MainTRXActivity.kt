@@ -11,7 +11,9 @@ import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.*
+import android.widget.Button
+import android.widget.RelativeLayout
+import android.widget.ScrollView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -20,7 +22,7 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EmptyReq
-import com.ramble.ramblewallet.bean.MyDataBean
+import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.constant.RATEINFO
 import com.ramble.ramblewallet.databinding.ActivityMainTrxBinding
 import com.ramble.ramblewallet.network.rateInfoUrl
@@ -31,7 +33,7 @@ import com.ramble.ramblewallet.utils.applyIo
 class MainTRXActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainTrxBinding
-    private var myDataBeans: ArrayList<MyDataBean> = arrayListOf()
+    private var myDataBeans: ArrayList<MainETHTokenBean> = arrayListOf()
     private lateinit var mainAdapter: MainAdapter
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -44,33 +46,29 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
         binding.scroll01.post { binding.scroll01.fullScroll(ScrollView.FOCUS_UP) } //初始值
         findViewById<RelativeLayout>(R.id.toolbar).setBackgroundResource(0)
         binding.scroll01.setOnScrollChangeListener { view, x, y, oldx, oldy ->
-
-            findViewById<TextView>(R.id.txtTitle).visibility =
-                if (y > 64) View.INVISIBLE else View.VISIBLE
-            findViewById<LinearLayout>(R.id.linearBtns).visibility =
-                if (y > 64) View.INVISIBLE else View.VISIBLE
-            findViewById<LinearLayout>(R.id.relBtns).visibility =
-                if (y > 64) View.VISIBLE else View.INVISIBLE
-            findViewById<LinearLayout>(R.id.card01).visibility =
-                if (y > 64) View.VISIBLE else View.GONE
             if (y > 64) {
-                findViewById<RelativeLayout>(R.id.toolbar).background =
-                    getDrawable(R.mipmap.ic_home_bg_trx_small)
+                binding.txtTitle.visibility = View.INVISIBLE
+                binding.linearBtns.visibility = View.INVISIBLE
+                binding.relBtns.visibility = View.VISIBLE
+                binding.card01.visibility = View.VISIBLE
+                binding.toolbar.background = getDrawable(R.mipmap.ic_home_bg_eth_small)
             } else {
-                findViewById<RelativeLayout>(R.id.toolbar).setBackgroundResource(0)
+                binding.txtTitle.visibility = View.VISIBLE
+                binding.linearBtns.visibility = View.VISIBLE
+                binding.relBtns.visibility = View.INVISIBLE
+                binding.card01.visibility = View.GONE
+                binding.toolbar.setBackgroundResource(0)
             }
-
-
         }
 
-        myDataBeans.add(MyDataBean(1, "TFT", ""))
-        myDataBeans.add(MyDataBean(2, "WBTC", ""))
-        myDataBeans.add(MyDataBean(3, "DAI", ""))
-        myDataBeans.add(MyDataBean(4, "USDC", ""))
-        myDataBeans.add(MyDataBean(5, "USDT", ""))
-        myDataBeans.add(MyDataBean(6, "LINK", ""))
-        myDataBeans.add(MyDataBean(7, "YFI", ""))
-        myDataBeans.add(MyDataBean(8, "UNI", ""))
+//        myDataBeans.add(MyDataBean(1, "TFT", ""))
+//        myDataBeans.add(MyDataBean(2, "WBTC", ""))
+//        myDataBeans.add(MyDataBean(3, "DAI", ""))
+//        myDataBeans.add(MyDataBean(4, "USDC", ""))
+//        myDataBeans.add(MyDataBean(5, "USDT", ""))
+//        myDataBeans.add(MyDataBean(6, "LINK", ""))
+//        myDataBeans.add(MyDataBean(7, "YFI", ""))
+//        myDataBeans.add(MyDataBean(8, "UNI", ""))
         mainAdapter = MainAdapter(myDataBeans)
         binding.rvCurrency.adapter = mainAdapter
 
