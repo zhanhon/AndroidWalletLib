@@ -83,7 +83,7 @@
                 android:paddingLeft="@dimen/dp_9"
                 android:paddingRight="@dimen/dp_9"
                 android:singleLine="true"
-                android:text="@string/transaction_query_month"
+                android:text="@string/transaction_query_year"
                 android:textColor="@color/color_group_button_transaction"
                 android:textSize="@dimen/sp_13"/>
         </RadioGroup>

@@ -110,14 +110,16 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
     }
 
     private fun init() {
-        if (lock) {
-            binding.pullToRefresh.finishRefresh()
-            return
-        }
-        currentPage = 0
+        binding.pullToRefresh.finishRefresh()
+        currentPage = 1
         totalPage = 1
         endless.reset()
         loadData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        init()
     }
 
     override fun actualLazyLoad() {
@@ -134,9 +136,18 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
             endTime = chooseDay.toJdk7Date().time
             startTime = startDay.toJdk7Date().time
         }
+        status=  when(gameType){
+            2->3
+            else->null
+        }
+        transferType=when(gameType){ //交易类型|1:转出|2:转入|其它null
+            4->1
+            3->2
+            else->null
+        }
         var req = QueryTransferRecord.Req(
-            1,
-            20,
+            currentPage,
+            2,
             "0x90d51f90fdf0722f1d621820ca9f45547221fdd9",
             1,
             1,
@@ -151,6 +162,7 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
             {
                 if (it.code() == 1) {
                     it.data()?.let { data ->
+                        totalPage = data.totalPage
                         println("==================>getTransferInfo:${data}")
                         ArrayList<SimpleRecyclerItem>().apply {
                             data.records.forEach { item -> add(TransferItem(item)) }
@@ -162,7 +174,6 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
                         }
                         apply(adapter.itemCount)
                         onLoaded()
-                        totalPage = 1
                     }
 
                 } else {
@@ -211,22 +222,22 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
         when (checkedId) {
             R.id.all -> {
                 isAll = true
-                loadData()
+                init()
             }
             R.id.week -> {
                 isAll = false
                 startDay = LocalDateTime.of(chooseDay.plusDays(-7).toLocalDate(), LocalTime.MIN)
-                loadData()
+                init()
             }
             R.id.month -> {
                 isAll = false
                 startDay = LocalDateTime.of(chooseDay.plusMonths(-1).toLocalDate(), LocalTime.MIN)
-                loadData()
+                init()
             }
             R.id.year -> {
                 isAll = false
                 startDay = LocalDateTime.of(chooseDay.plusYears(-1).toLocalDate(), LocalTime.MIN)
-                loadData()
+                init()
             }
         }
     }
