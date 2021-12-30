@@ -18,7 +18,7 @@ public class AddressBookAdapter extends BaseQuickAdapter<MyAddressBean, BaseView
     private final boolean isNeedDelete;
 
     public AddressBookAdapter(List<MyAddressBean> datas, boolean isNeedDelete) {
-        super(R.layout.activity_main_currency_item, datas);
+        super(R.layout.activity_address_book_item, datas);
         this.isNeedDelete = isNeedDelete;
     }
 

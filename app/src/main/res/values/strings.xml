@@ -127,6 +127,7 @@
     <string name="recommend_tokens">推荐代币</string>
     <string name="my_address">我的地址</string>
     <string name="my_assets">我的资产</string>
+    <string name="my_wallet">我的钱包</string>
     <string name="detail">详细内容</string>
     <string name="disappear">消失</string>
     <string name="message_content">消息内容</string>
@@ -149,6 +150,7 @@
     <string name="cash_in">转入</string>
     <string name="asset">资产</string>
     <string name="minimum_miner_fee">最低矿工费</string>
+    <string name="wallet_status_selected">已选择</string>
 
     <string name="refresh_pull_down">下拉更新</string>
     <string name="refresh_time">最后更新于{key}</string>

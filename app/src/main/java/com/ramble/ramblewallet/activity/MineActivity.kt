@@ -47,7 +47,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
      */
     private fun initView() {
         binding.tvMineTitle.text = getString(R.string.personal_management)
-        binding.incManageWallet.findViewById<TextView>(R.id.tv_mine_title).text = getString(R.string.manage_wallet)
+        binding.incManageWallet.findViewById<TextView>(R.id.tv_mine_title).text = getString(R.string.wallet_management)
         binding.incManageWallet.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_manag)
         binding.incAddressBook.findViewById<TextView>(R.id.tv_mine_title).text = getString(R.string.address_book)
         binding.incAddressBook.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_address_book)
@@ -130,7 +130,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 })
             }
             R.id.inc_manage_wallet -> {
-                start(ManageWalletActivity::class.java)
+                start(WalletManageActivity::class.java)
             }
             R.id.inc_address_book -> {
                 start(AddressBookActivity::class.java)
