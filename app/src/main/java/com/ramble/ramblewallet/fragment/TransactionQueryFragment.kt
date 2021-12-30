@@ -1,5 +1,6 @@
 package com.ramble.ramblewallet.fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,11 +19,21 @@ import com.ramble.ramblewallet.databinding.FragmentTransactionQueryBinding
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.TransferItem
+import com.ramble.ramblewallet.network.reportAddressUrl
+import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.network.transferInfoUrl
 import com.ramble.ramblewallet.pull.EndlessRecyclerViewScrollListener
 import com.ramble.ramblewallet.pull.QMUIPullRefreshLayout
+import com.ramble.ramblewallet.utils.applyIo
+import com.ramble.ramblewallet.utils.toJdk7Date
+import com.ramble.ramblewallet.utils.yyyy_mm_dd_hh_mm_ss
 import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.LocalTime
+import org.threeten.bp.ZoneId
 import java.util.ArrayList
 
 /**
@@ -37,6 +48,13 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
         private set
     private var gameType: Int = 1
     private lateinit var endless: EndlessRecyclerViewScrollListener
+    private lateinit var chooseDay: LocalDateTime
+    private lateinit var startDay: LocalDateTime
+    private var status: Int? = null
+    private var transferType: Int? = null
+    private var endTime: Long? = null
+    private var startTime: Long? = null
+    private var isAll = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -57,7 +75,11 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
     ): View? {
         if (reusedView == null) {
             binding = inflater.dataBinding(R.layout.fragment_transaction_query, container)
+            chooseDay = LocalDateTime.now()
+            chooseDay = LocalDateTime.of(chooseDay.toLocalDate(), LocalTime.MAX)
             binding.pullToRefresh.setOnPullListener(this)
+            binding.tableHeader.check(R.id.all)
+            isAll = true
             LinearLayoutManager(myActivity).apply {
                 binding.recycler.layoutManager = this
                 endless = EndlessRecyclerViewScrollListener(this) { _, _ ->
@@ -74,7 +96,7 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
                 binding.recycler.addOnScrollListener(endless)
             }
             binding.recycler.adapter = adapter
-            binding.tableHeader.check(R.id.all)
+
             binding.tableHeader.setOnCheckedChangeListener(this)
             reusedView = binding.root
         }
@@ -103,72 +125,54 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
         binding.pullToRefresh.setToRefreshDirectly()
     }
 
+    @SuppressLint("CheckResult")
     private fun loadData() {
-        lock = true
-        currentPage++
-        var page = QueryTransferRecord()
-        page.pageNo = 1
-        page.pageSize = 20
-        page.totalCount = 20
-        page.totalPage = 1
-        var list = arrayListOf<QueryTransferRecord.Record>()
-        var v1 = QueryTransferRecord.Record()
-        v1.createTime = "11111111111111111"
-        v1.thirdGameName = "0x457496574569845675896576586"
-        v1.actionStatus = 1
-        v1.blockStatus = 1
-        list.add(v1)
-        var v2 = QueryTransferRecord.Record()
-        v2.createTime = "11111111111111111"
-        v2.thirdGameName = "0x457496574569845675896576586"
-        v2.actionStatus = 1
-        v2.blockStatus = 2
-        v2.userReceivedWashBetAmount = 111.00
-        v2.validBetAmount = 222.00
-        list.add(v2)
-        var v3 = QueryTransferRecord.Record()
-        v3.createTime = "11111111111111111"
-        v3.thirdGameName = "0x457496574569845675896576586"
-        v3.actionStatus = 1
-        v3.blockStatus = 3
-        v3.userReceivedWashBetAmount = 111.00
-        v3.validBetAmount = 222.00
-        list.add(v3)
-        var v4 = QueryTransferRecord.Record()
-        v4.createTime = "11111111111111111"
-        v4.thirdGameName = "0x457496574569845675896576586"
-        v4.actionStatus = 2
-        v4.blockStatus = 1
-        list.add(v4)
-        var v5 = QueryTransferRecord.Record()
-        v5.createTime = "11111111111111111"
-        v5.thirdGameName = "0x457496574569845675896576586"
-        v5.actionStatus = 2
-        v5.blockStatus = 2
-        v5.userReceivedWashBetAmount = 111.00
-        v5.validBetAmount = 222.00
-        list.add(v5)
-        var v6 = QueryTransferRecord.Record()
-        v6.createTime = "11111111111111111"
-        v6.thirdGameName = "0x457496574569845675896576586"
-        v6.actionStatus = 2
-        v6.blockStatus = 3
-        v6.userReceivedWashBetAmount = 111.00
-        v6.validBetAmount = 222.00
-        list.add(v6)
-
-        page.records = list
-        ArrayList<SimpleRecyclerItem>().apply {
-            page.records.forEach { item -> add(TransferItem(item)) }
-            if (page.pageNo == 1) {
-                adapter.replaceAll(this.toList())
-            } else {
-                adapter.addAll(this.toList())
-            }
+        if (isAll) {
+            endTime = null
+            startTime = null
+        } else {
+            endTime = chooseDay.toJdk7Date().time
+            startTime = startDay.toJdk7Date().time
         }
-        apply(adapter.itemCount)
-        onLoaded()
-        totalPage = 1
+        var req = QueryTransferRecord.Req(
+            1,
+            20,
+            "0x90d51f90fdf0722f1d621820ca9f45547221fdd9",
+            1,
+            1,
+            endTime,
+            startTime,
+            status,
+            transferType
+        )
+        myActivity.mApiService.getTransferInfo(
+            req.toApiRequest(transferInfoUrl)
+        ).applyIo().subscribe(
+            {
+                if (it.code() == 1) {
+                    it.data()?.let { data ->
+                        println("==================>getTransferInfo:${data}")
+                        ArrayList<SimpleRecyclerItem>().apply {
+                            data.records.forEach { item -> add(TransferItem(item)) }
+                            if (data.pageNo == 1) {
+                                adapter.replaceAll(this.toList())
+                            } else {
+                                adapter.addAll(this.toList())
+                            }
+                        }
+                        apply(adapter.itemCount)
+                        onLoaded()
+                        totalPage = 1
+                    }
+
+                } else {
+                    println("==================>getTransferInfo1:${it.message()}")
+                }
+            }, {
+                println("==================>getTransferInfo1:${it.printStackTrace()}")
+            }
+        )
+
     }
 
     private fun onLoaded() {
@@ -206,16 +210,23 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
         when (checkedId) {
             R.id.all -> {
-
+                isAll = true
+                loadData()
             }
             R.id.week -> {
-
+                isAll = false
+                startDay = LocalDateTime.of(chooseDay.plusDays(-7).toLocalDate(), LocalTime.MIN)
+                loadData()
             }
             R.id.month -> {
-
+                isAll = false
+                startDay = LocalDateTime.of(chooseDay.plusMonths(-1).toLocalDate(), LocalTime.MIN)
+                loadData()
             }
             R.id.year -> {
-
+                isAll = false
+                startDay = LocalDateTime.of(chooseDay.plusYears(-1).toLocalDate(), LocalTime.MIN)
+                loadData()
             }
         }
     }

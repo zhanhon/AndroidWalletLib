@@ -2,6 +2,7 @@ package com.ramble.ramblewallet.utils
 
 import android.os.Looper
 import io.reactivex.*
+import io.reactivex.Observable
 import io.reactivex.android.MainThreadDisposable
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -9,6 +10,11 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZoneId
+import org.threeten.bp.format.DateTimeFormatter
+import java.util.*
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
 
@@ -264,4 +270,25 @@ fun Runnable.mainThread(delay: Long) {
 
 fun Runnable.mainThread(delay: Long, unit: TimeUnit) {
     AndroidSchedulers.mainThread().scheduleDirect(this, delay, unit)
+}
+
+
+val FORMATTER_DD_MM_YYYY_HH_MM_SS: DateTimeFormatter by lazy {
+    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+}
+
+fun yyyy_mm_dd_hh_mm_ss(milliseconds: Long): String {
+    return Instant.ofEpochMilli(milliseconds)
+        .atZone(ZoneId.systemDefault())
+        .toLocalDateTime()
+        .format(FORMATTER_DD_MM_YYYY_HH_MM_SS)
+}
+
+fun LocalDateTime.toJdk7Date(): Date {
+    return try {
+        java.sql.Timestamp.valueOf(this.toString())
+    } catch (e: Exception) {
+        Date(this.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
+    }
+
 }

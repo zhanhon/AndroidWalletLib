@@ -3,6 +3,7 @@ package com.ramble.ramblewallet
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.ramble.ramblewallet.constant.setupArchLibrary
 import com.ramble.ramblewallet.helper.MyPreferences
 import com.ramble.ramblewallet.helper.PushHelper
@@ -19,6 +20,7 @@ class MyApp : Application() {
     override fun onCreate() {
         super.onCreate()
         sInstance = this
+        AndroidThreeTen.init(this)
         initUmengSDK()
     }
 

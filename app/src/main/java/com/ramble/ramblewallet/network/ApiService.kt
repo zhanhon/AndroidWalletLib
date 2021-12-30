@@ -15,6 +15,8 @@ import retrofit2.http.POST
 const val reportAddressUrl = "wallet-decentralized-api/address/report"
 const val getEthMinerConfigUrl = "wallet-decentralized-api/sys/getEthMinerConfig"
 const val rateInfoUrl = "wallet-decentralized-api/sys/getRateInfo"
+const val transferInfoUrl = "wallet-decentralized-api/transfer/info"
+
 
 
 interface ApiService {
@@ -23,6 +25,9 @@ interface ApiService {
     @POST("lottery-api/userLetter/queryPageUserLetter")
     fun getUserLetterPage(@Body req: ApiRequest<Page.Req>): Observable<ApiResponse<Page>>
 
+    /** 根据地址获取交易记录 */
+    @POST(transferInfoUrl)
+    fun getTransferInfo(@Body req: ApiRequest<QueryTransferRecord.Req>): Observable<ApiResponse<QueryTransferRecord>>
 
     /** APP端地址上传 */
     @POST(reportAddressUrl)

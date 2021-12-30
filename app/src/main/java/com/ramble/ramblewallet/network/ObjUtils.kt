@@ -25,11 +25,7 @@ object ObjUtils {
     fun <T : ApiRequest.Body> apiRequest(body: T, apiName: String): ApiRequest<T> {
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
         val currentTime = System.currentTimeMillis()
-        var signOriginal: String = if (Gson().toJson(body).equals("{}")) {
-            apiName + currentTime + "1" + AppUtils.getSecretKey()
-        } else {
-            apiName + currentTime + "1" + Gson().toJson(body) + AppUtils.getSecretKey()
-        }
+        var signOriginal: String = apiName + currentTime + "1" + AppUtils.getSecretKey()
         val sign = Md5Util.md5(signOriginal)
         Log.v("-=-=->", "=========================Sign Original=========================")
         Log.v("-=-=->", signOriginal)

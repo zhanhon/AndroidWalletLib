@@ -80,9 +80,6 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text = "v2.1"
     }
 
-    private fun getData() {
-
-    }
 
     /****
      * 事件监听
@@ -151,7 +148,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 currencyDialog()
             }
             R.id.inc_about_us -> {
-                getData()
+
             }
         }
     }
