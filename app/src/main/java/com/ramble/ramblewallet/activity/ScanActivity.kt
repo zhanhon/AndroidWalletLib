@@ -80,24 +80,24 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if ( requestCode == REQUEST_CODE_1029 && resultCode == Activity.RESULT_OK) {
+            if (Matisse.obtainPathResult(data).isNotEmpty()){
+                val uris = Matisse.obtainResult(data)
+                val uri: Uri? =uris[0]
+                try {
+                    val result: Result? = scanningImage(uri)
+                    if (result != null) {
+                        println("====-=->11111111111111111111识别内容 " + result.text)
+                        transDialog(result.text)
+                    } else {
+                        println("====-=->11111111111111111111识别失败，请试试其它二维码")
+                    }
+                } catch (e: FileNotFoundException) {
+                    e.printStackTrace()
+                }
+            }
 
         }
-        val uris = Matisse.obtainResult(data)
-        val uri: Uri? =uris[0]
-        try {
-//            setZxingResult()
-            val result: Result? = scanningImage(uri)
-            if (result != null) {
-                println("====-=->11111111111111111111识别内容 " + result.text)
-                transDialog(result.text)
-//                vibrate()
-//                zxingview?.stopSpot()
-            } else {
-                println("====-=->11111111111111111111识别失败，请试试其它二维码")
-            }
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        }
+
     }
 
 
