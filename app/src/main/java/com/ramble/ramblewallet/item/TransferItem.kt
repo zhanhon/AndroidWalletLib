@@ -20,35 +20,32 @@ class TransferItem (val data: QueryTransferRecord.Record) : SimpleRecyclerItem()
         var binding: ItemTransferAccountsBinding = holder.binding()
 
         binding.tvAddress.text = data.fromAddress
-//        binding.tvTime.text = data.createTime
-//        when (data.blockStatus){
-//            1-> {
-//                binding.tvMoney.setText(R.string.transaction_ing)
-//                binding.tvMoney.setTextColor( Color.parseColor("#333333"))
-//                binding.tvMoneyType.isVisible=false
-//            }
-//            2-> {
-//                when (data.actionStatus){
-//                    1->{//转入
-//                        binding.tvMoney.setTextColor( Color.parseColor("#009474"))
-//                        binding.tvMoney.text="+"+data.validBetAmount
-//                    }
-//                    2->{//转出
-//                        binding.tvMoney.setTextColor( Color.parseColor("#e11334"))
-//                        binding.tvMoney.text="-"+data.validBetAmount.toString()
-//                    }
-//                }
-//                binding.tvMoneyType
-//                binding.tvMoneyType.text=data.userReceivedWashBetAmount.toString()
-//                binding.tvMoneyType.isVisible=false
-//            }
-//            3-> {
-//                binding.tvMoney.setText(R.string.transaction_failed)
-//                binding.tvMoney.setTextColor( Color.parseColor("#a1a1a1"))
-//                binding.tvMoneyType.text=data.userReceivedWashBetAmount.toString()
-//                binding.tvMoneyType.isVisible=false
-//            }
-//        }
+        binding.tvTime.text = "2021-12-30"
+        binding.tvMoneyType.isVisible=false
+        when (data.status){
+            1-> {
+                binding.tvMoney.setText(R.string.transaction_ing)
+                binding.tvMoney.setTextColor( Color.parseColor("#333333"))
+
+            }
+            2-> {
+                when (data.transferType){
+                    2->{//转入
+                        binding.tvMoney.setTextColor( Color.parseColor("#009474"))
+                        binding.tvMoney.text="+"+data.amount
+                    }
+                    1->{//转出
+                        binding.tvMoney.setTextColor( Color.parseColor("#e11334"))
+                        binding.tvMoney.text="-"+data.amount
+                    }
+                }
+
+            }
+            3-> {
+                binding.tvMoney.setText(R.string.transaction_failed)
+                binding.tvMoney.setTextColor( Color.parseColor("#a1a1a1"))
+            }
+        }
         holder.attachOnClickListener(R.id.item_transfer)
     }
 }

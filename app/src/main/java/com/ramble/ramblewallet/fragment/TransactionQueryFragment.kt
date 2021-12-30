@@ -19,21 +19,17 @@ import com.ramble.ramblewallet.databinding.FragmentTransactionQueryBinding
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.TransferItem
-import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.network.transferInfoUrl
 import com.ramble.ramblewallet.pull.EndlessRecyclerViewScrollListener
 import com.ramble.ramblewallet.pull.QMUIPullRefreshLayout
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.utils.toJdk7Date
-import com.ramble.ramblewallet.utils.yyyy_mm_dd_hh_mm_ss
 import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
-import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
-import org.threeten.bp.ZoneId
 import java.util.ArrayList
 
 /**
@@ -100,8 +96,6 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
             binding.tableHeader.setOnCheckedChangeListener(this)
             reusedView = binding.root
         }
-//        binding.tvCancel.setOnClickListener(this)
-//        binding.tvDelete.setOnClickListener(this)
         return reusedView
     }
 
@@ -110,7 +104,10 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
     }
 
     private fun init() {
-        binding.pullToRefresh.finishRefresh()
+        if (lock) {
+            binding.pullToRefresh.finishRefresh()
+            return
+        }
         currentPage = 1
         totalPage = 1
         endless.reset()
@@ -187,7 +184,6 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
     }
 
     private fun onLoaded() {
-//        myActivity.dismissLoading()
         lock = false
         binding.pullToRefresh.finishRefresh()
         ProgressItem.removeFrom(adapter)
