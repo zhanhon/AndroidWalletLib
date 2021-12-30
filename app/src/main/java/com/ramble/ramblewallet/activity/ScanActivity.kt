@@ -1,6 +1,7 @@
 package com.ramble.ramblewallet.activity
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -17,7 +18,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.CheckBox
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.databinding.DataBindingUtil
@@ -28,9 +28,11 @@ import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.QRCodeReader
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.constant.REQUEST_CODE_1029
 import com.ramble.ramblewallet.databinding.ActivityScanBinding
 import com.ramble.ramblewallet.helper.startMatisseActivity
 import com.ramble.ramblewallet.network.ObjUtils.isCameraPermission
+import com.zhihu.matisse.Matisse
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.FileNotFoundException
@@ -62,7 +64,8 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
     private fun requestCodeQRCodePermissions() {
         val perms = arrayOf(
             Manifest.permission.CAMERA,
-            Manifest.permission.READ_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
         if (!EasyPermissions.hasPermissions(this, *perms)) {
             EasyPermissions.requestPermissions(
@@ -76,11 +79,19 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val uri: Uri? = data?.data
+        if ( requestCode == REQUEST_CODE_1029 && resultCode == Activity.RESULT_OK) {
+
+        }
+        val uris = Matisse.obtainResult(data)
+        val uri: Uri? =uris[0]
         try {
+//            setZxingResult()
             val result: Result? = scanningImage(uri)
             if (result != null) {
-                println("====-=->11111111111111111111识别内容 "+result.text)
+                println("====-=->11111111111111111111识别内容 " + result.text)
+                transDialog(result.text)
+//                vibrate()
+//                zxingview?.stopSpot()
             } else {
                 println("====-=->11111111111111111111识别失败，请试试其它二维码")
             }
@@ -88,6 +99,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
             e.printStackTrace()
         }
     }
+
 
     /** 扫描图片 **/
     private fun scanningImage(uri: Uri?): Result? {
