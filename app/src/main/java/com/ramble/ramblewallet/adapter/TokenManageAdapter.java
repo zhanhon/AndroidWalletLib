@@ -5,7 +5,7 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.ramble.ramblewallet.R;
-import com.ramble.ramblewallet.bean.MyDataBean;
+import com.ramble.ramblewallet.bean.TokenManageBean;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -15,25 +15,29 @@ import java.util.List;
  * @创建人： Ricky
  * @创建时间： 2021/12/5
  */
-public class TokenManageAdapter extends BaseQuickAdapter<MyDataBean, BaseViewHolder> {
+public class TokenManageAdapter extends BaseQuickAdapter<TokenManageBean, BaseViewHolder> {
     private final boolean isNeedDelete;
 
-    public TokenManageAdapter(List<MyDataBean> datas, boolean isNeedDelete) {
+    public TokenManageAdapter(List<TokenManageBean> datas, boolean isNeedDelete) {
         super(R.layout.activity_token_manage_item, datas);
         this.isNeedDelete = isNeedDelete;
     }
 
     @Override
-    protected void convert(@NotNull BaseViewHolder baseViewHolder, MyDataBean myDataBean) {
+    protected void convert(@NotNull BaseViewHolder baseViewHolder, TokenManageBean tokenManageBean) {
         if (isNeedDelete) {
             baseViewHolder.itemView.findViewById(R.id.cl_delete).setVisibility(View.VISIBLE);
             baseViewHolder.setImageResource(R.id.iv_delete, R.drawable.vector_not_deleted);
             baseViewHolder.setImageResource(R.id.iv_token_status, R.drawable.vector_token_move);
         } else {
             baseViewHolder.itemView.findViewById(R.id.cl_delete).setVisibility(View.GONE);
-            baseViewHolder.setImageResource(R.id.iv_token_status, R.drawable.vector_token_add);
+            if (tokenManageBean.getStatus() == 1) {
+                baseViewHolder.setImageResource(R.id.iv_token_status, R.drawable.vector_token_reduce);
+            } else {
+                baseViewHolder.setImageResource(R.id.iv_token_status, R.drawable.vector_token_add);
+            }
         }
-        switch (myDataBean.getName()) {
+        switch (tokenManageBean.getName()) {
             case "TFT":
                 baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_tft);
                 break;
@@ -59,6 +63,6 @@ public class TokenManageAdapter extends BaseQuickAdapter<MyDataBean, BaseViewHol
                 baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_uni);
                 break;
         }
-        baseViewHolder.setText(R.id.tv_token_name, myDataBean.getName());
+        baseViewHolder.setText(R.id.tv_token_name, tokenManageBean.getName());
     }
 }

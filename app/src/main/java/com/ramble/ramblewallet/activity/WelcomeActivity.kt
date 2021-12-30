@@ -1,5 +1,6 @@
 package com.ramble.ramblewallet.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Build
@@ -7,15 +8,17 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.google.gson.Gson
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.constant.CN
-import com.ramble.ramblewallet.constant.EN
-import com.ramble.ramblewallet.constant.LANGUAGE
-import com.ramble.ramblewallet.constant.TW
+import com.ramble.ramblewallet.bean.EmptyReq
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.helper.MyPreferences
 import com.ramble.ramblewallet.helper.PushHelper
+import com.ramble.ramblewallet.network.rateInfoUrl
+import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.applyIo
 import com.umeng.message.PushAgent
 import com.umeng.message.api.UPushRegisterCallback
 import java.util.*
@@ -58,6 +61,7 @@ class WelcomeActivity : BaseActivity() {
 
     }
 
+    @SuppressLint("CheckResult")
     override fun onResume() {
         super.onResume()
         //设置跟随手机系统语言进行设置app默认语言
@@ -77,6 +81,35 @@ class WelcomeActivity : BaseActivity() {
                 SharedPreferencesUtils.saveString(this, LANGUAGE, EN)
             }
         }
+
+        Thread {
+            while (true) {
+                try {
+                    mApiService.getRateInfo(EmptyReq().toApiRequest(rateInfoUrl))
+                        .applyIo().subscribe(
+                            {
+                                if (it.code() == 1) {
+                                    it.data()?.let { data ->
+                                        SharedPreferencesUtils.saveString(
+                                            this,
+                                            RATEINFO,
+                                            Gson().toJson(data)
+                                        )
+                                        println("-=-=-=->${Gson().toJson(data)}")
+                                    }
+                                } else {
+                                    println("-=-=-=->${it.message()}")
+                                }
+                            }, {
+                                println("-=-=-=->${it.printStackTrace()}")
+                            }
+                        )
+                    Thread.sleep(10000)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }.start()
     }
 
 }

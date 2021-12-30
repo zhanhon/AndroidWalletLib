@@ -22,18 +22,14 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.EmptyReq
 import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.RateBeen
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
 import com.ramble.ramblewallet.eth.Wallet
 import com.ramble.ramblewallet.eth.WalletManager.getTokenBalance
-import com.ramble.ramblewallet.network.rateInfoUrl
-import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.applyIo
 import java.math.BigDecimal
 
 class MainETHActivity : BaseActivity(), View.OnClickListener {
@@ -45,6 +41,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private lateinit var currencyUnit: String
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var isClickEyes = false
+    private var saveTokenList: ArrayList<String> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -52,11 +49,18 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_078DC2)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_eth)
+        saveTokenList.add("ETH")
+        SharedPreferencesUtils.saveString(this, SELECTED_TOKENS, Gson().toJson(saveTokenList))
+        rateBean = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, RATEINFO, ""),
+            object : TypeToken<ArrayList<RateBeen>>() {}.type
+        )
         currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, RMB)
         saveWalletList = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
             object : TypeToken<ArrayList<Wallet>>() {}.type
         )
+
 
         binding.scroll01.post { binding.scroll01.fullScroll(ScrollView.FOCUS_UP) } //初始值
         findViewById<RelativeLayout>(R.id.toolbar).setBackgroundResource(0)
@@ -99,58 +103,35 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        Thread {
-            while (true) {
-                try {
-                    mApiService.getRateInfo(EmptyReq().toApiRequest(rateInfoUrl))
-                        .applyIo().subscribe(
-                            {
-                                if (it.code() == 1) {
-                                    it.data()?.let { data ->
-                                        rateBean = data
-                                        SharedPreferencesUtils.saveString(
-                                            this,
-                                            RATEINFO,
-                                            Gson().toJson(data)
-                                        )
-                                        println("-=-=-=->${Gson().toJson(data)}")
-                                    }
-
-                                    if (rateBean.isNotEmpty()) {
-                                        rateBean.forEach {
-                                            if ((it.currencyType == "ETH") || (it.currencyType == "USDT") || (it.currencyType == "WBTC")) {
-                                                mainETHTokenBean.add(
-                                                    MainETHTokenBean(
-                                                        it.currencyType,
-                                                        BigDecimal(10.12123),
-                                                        BigDecimal(it.rateUsd),
-                                                        currencyUnit,
-                                                        BigDecimal(it.change)
-                                                    )
-                                                )
-                                            }
-                                        }
-                                    }
-                                    mainAdapter = MainAdapter(mainETHTokenBean)
-                                    binding.rvCurrency.adapter = mainAdapter
-                                    mainAdapter.setOnItemClickListener { adapter, view, position ->
-                                        if (adapter.getItem(position) is MainETHTokenBean) {
-                                            showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean).name)
-                                        }
-                                    }
-                                } else {
-                                    println("-=-=-=->${it.message()}")
-                                }
-                            }, {
-                                println("-=-=-=->${it.printStackTrace()}")
-                            }
+        mainETHTokenBean.clear()
+        saveTokenList = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, SELECTED_TOKENS, ""),
+            object : TypeToken<ArrayList<String>>() {}.type
+        )
+        if (rateBean.isNotEmpty() && saveTokenList.isNotEmpty()) {
+            saveTokenList.forEach { saveToken ->
+                rateBean.forEach { rateBean ->
+                    if (saveToken == rateBean.currencyType) {
+                        mainETHTokenBean.add(
+                            MainETHTokenBean(
+                                rateBean.currencyType,
+                                BigDecimal(10.12123),
+                                BigDecimal(rateBean.rateUsd),
+                                currencyUnit,
+                                BigDecimal(rateBean.change)
+                            )
                         )
-                    Thread.sleep(10000)
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                    }
                 }
             }
-        }.start()
+        }
+        mainAdapter = MainAdapter(mainETHTokenBean)
+        binding.rvCurrency.adapter = mainAdapter
+        mainAdapter.setOnItemClickListener { adapter, view, position ->
+            if (adapter.getItem(position) is MainETHTokenBean) {
+                showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean).name)
+            }
+        }
     }
 
     private fun setOnClickListener() {
