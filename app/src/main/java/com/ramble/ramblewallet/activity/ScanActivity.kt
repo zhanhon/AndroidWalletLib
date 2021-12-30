@@ -70,7 +70,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
         if (!EasyPermissions.hasPermissions(this, *perms)) {
             EasyPermissions.requestPermissions(
                 this,
-                "请授予权限，否则app功能无法使用",
+                 getString(R.string.alert_request_permission),
                 1,
                 *perms
             )
@@ -86,7 +86,6 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
                 try {
                     val result: Result? = scanningImage(uri)
                     if (result != null) {
-                        println("====-=->11111111111111111111识别内容 " + result.text)
                         transDialog(result.text)
                     } else {
                         println("====-=->11111111111111111111识别失败，请试试其它二维码")
@@ -133,7 +132,6 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
         binding.ivBack.setOnClickListener(this)
         binding.imvGallery.setOnClickListener(this)
         binding.light.setOnClickListener(this)
-
     }
 
     override fun onStart() {
@@ -141,8 +139,6 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
         requestCodeQRCodePermissions()
         zxingview?.startCamera()
         zxingview?.startSpotAndShowRect()
-//        binding.zxingview.startCamera()
-//        binding.zxingview.startSpotAndShowRect()
     }
 
     override fun onStop() {
@@ -181,8 +177,6 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
     }
 
     override fun onScanQRCodeSuccess(result: String?) {
-        println("====-=->11111111111111111111")
-        println("====-=->$result")
         transDialog(result)
         vibrate()
         zxingview?.stopSpot()

@@ -186,4 +186,6 @@
     <string name="no_records">暂无记录</string>
     <string name="address_page">地址页</string>
     <string name="alert_request_permission">为了保证本程序能正常运行，现在开始向您申请必要权限。</string>
+    <string name="put_barcode_in_box">将条码放入框内，即可自动扫描</string>
+    <string name="put_qrcode_in_box">将二维码放入框内，即可自动扫描</string>
 </resources>
