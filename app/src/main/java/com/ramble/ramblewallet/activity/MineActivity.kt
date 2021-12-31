@@ -159,8 +159,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         val window: Window? = dialogLanguage.window
         if (window != null) {
             window.setContentView(R.layout.dialog_language)
-            window.setGravity(Gravity.BOTTOM)
-            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
             window.findViewById<View>(R.id.tv_language1).setOnClickListener { v1: View? ->
                 SharedPreferencesUtils.saveString(this, LANGUAGE, CN)
                 setLanguage()
@@ -180,15 +179,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, MineActivity::class.java))
             }
 
-            //设置属性
-            val params = window.attributes
-            params.width = WindowManager.LayoutParams.MATCH_PARENT
-            //弹出一个窗口，让背后的窗口变暗一点
-            params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-            //dialog背景层
-            params.dimAmount = 0.5f
-            window.attributes = params
-            //点击空白处不关闭dialog
+            dialogTheme(window)
             dialogLanguage.show()
         }
     }
@@ -199,8 +190,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         val window: Window? = dialogCurrency.window
         if (window != null) {
             window.setContentView(R.layout.dialog_currency)
-            window.setGravity(Gravity.BOTTOM)
-            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
             window.findViewById<View>(R.id.tv_language1).setOnClickListener { v1: View? ->
                 SharedPreferencesUtils.saveString(this, CURRENCY, RMB)
                 setCurrency()
@@ -216,17 +206,23 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 setCurrency()
                 dialogCurrency.dismiss()
             }
-            //设置属性
-            val params = window.attributes
-            params.width = WindowManager.LayoutParams.MATCH_PARENT
-            //弹出一个窗口，让背后的窗口变暗一点
-            params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-            //dialog背景层
-            params.dimAmount = 0.5f
-            window.attributes = params
-            //点击空白处不关闭dialog
+
+            dialogTheme(window)
             dialogCurrency.show()
         }
+    }
+
+    private fun dialogTheme(window: Window) {
+        //设置属性
+        val params = window.attributes
+        params.width = WindowManager.LayoutParams.MATCH_PARENT
+        //弹出一个窗口，让背后的窗口变暗一点
+        params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        //dialog背景层
+        params.dimAmount = 0.5f
+        window.attributes = params
+        window.setGravity(Gravity.BOTTOM)
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private fun setLanguage() {

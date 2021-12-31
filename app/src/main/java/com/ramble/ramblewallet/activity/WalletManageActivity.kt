@@ -13,6 +13,7 @@ import com.ramble.ramblewallet.adapter.WalletManageAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.WalletManageBean
 import com.ramble.ramblewallet.databinding.ActivityWalletManageBinding
+import com.ramble.ramblewallet.utils.ClipboardUtils
 
 class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     View.OnClickListener {
@@ -67,6 +68,8 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         walletManageBean.add(b1)
         walletManageBean.add(b2)
         loadData(walletManageBean)
+
+
     }
 
     private fun initListener() {
@@ -79,6 +82,20 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     private fun loadData(walletManageBean: ArrayList<WalletManageBean>) {
         walletManageAdapter = WalletManageAdapter(walletManageBean, isDeletePage)
         binding.rvMainCurrency.adapter = walletManageAdapter
+        walletManageAdapter.addChildClickViewIds(R.id.iv_copy_address)
+        walletManageAdapter.addChildClickViewIds(R.id.iv_wallet_more)
+        walletManageAdapter.setOnItemChildClickListener { adapter, view, position ->
+            when (view.id) {
+                R.id.iv_copy_address -> {
+                    if (adapter.getItem(position) is WalletManageBean) {
+                        ClipboardUtils.copy((adapter.getItem(position) as WalletManageBean).address)
+                    }
+                }
+                R.id.iv_wallet_more -> {
+                    startActivity(Intent(this, WalletMoreOperateActivity::class.java))
+                }
+            }
+        }
     }
 
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
@@ -121,20 +138,17 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             R.id.iv_back -> {
                 if (isDeletePage) {
                     isDeletePage = false
-                    walletManageAdapter = WalletManageAdapter(walletManageBean, isDeletePage)
-                    binding.rvMainCurrency.adapter = walletManageAdapter
+                    loadData(walletManageBean)
                 } else {
                     finish()
                 }
             }
             R.id.iv_add_wallet -> {
-                startActivity(Intent(this, RecoverWalletListActivity::class.java))
+                startActivity(Intent(this, CreateWalletListActivity::class.java))
             }
             R.id.iv_manage_wallet_right -> {
                 isDeletePage = true
-                walletManageAdapter = WalletManageAdapter(walletManageBean, isDeletePage)
-                binding.rvMainCurrency.adapter = walletManageAdapter
-
+                loadData(walletManageBean)
             }
         }
     }

@@ -110,7 +110,10 @@
     <string name="wallet_management">钱包管理</string>
     <string name="waiting_complete">请耐心等待交易完成信息</string>
     <string name="confirm_delete_cat_wallet">请确认删除小猫的钱包</string>
-    <string name="input_password">请输入密码</string>
+    <string name="please_input_password">请输入密码</string>
+    <string name="input_password">输入密码</string>
+    <string name="please_input_wallet_name">请输入钱包名称</string>
+    <string name="input_wallet_name">输入名称</string>
     <string name="block_number">区块编号</string>
     <string name="cancel">取消</string>
     <string name="cancel_this_creation">取消此次创建</string>
@@ -151,6 +154,7 @@
     <string name="asset">资产</string>
     <string name="minimum_miner_fee">最低矿工费</string>
     <string name="wallet_status_selected">已选择</string>
+    <string name="delete_wallet">删除钱包</string>
 
     <string name="refresh_pull_down">下拉更新</string>
     <string name="refresh_time">最后更新于{key}</string>

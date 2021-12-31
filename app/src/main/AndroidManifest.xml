@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppMainTheme"
         tools:replace="allowBackup">
-        <activity android:name=".activity.AddTokenActivity"></activity>
+        <activity android:name=".activity.WalletMoreOperateActivity"></activity>
+        <activity android:name=".activity.AddTokenActivity" />
         <activity android:name=".activity.TokenManageActivity" />
         <activity android:name=".activity.TokenActivity" />
         <activity android:name=".activity.RecoverWalletListActivity" />
@@ -41,6 +42,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.CreateRecoverWalletActivity" />
+        <activity android:name=".activity.CreateWalletListActivity" />
         <activity android:name=".activity.MainETHActivity" />
         <activity android:name=".activity.MainTRXActivity" />
         <activity android:name=".activity.MainBTCActivity" />

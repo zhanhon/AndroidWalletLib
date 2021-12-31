@@ -127,8 +127,8 @@
                 android:layout_weight="7"
                 android:background="@color/color_FFFFFF"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/dp_25"
-                android:paddingRight="@dimen/dp_25"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
