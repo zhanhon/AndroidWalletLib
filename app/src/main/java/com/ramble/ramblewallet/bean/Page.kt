@@ -31,9 +31,7 @@ class Page @SuppressWarnings("unused") constructor() {
         var title: String = "",//标题
         @Json(name = "id")
         var id: Int = 0,//公告ID
-        var isReaded: Int = 0,
-        var isPopup: Int = 0,
-        var isPush: Int = 0,
+        var isRead: Int = 0,//是否已读
         @Json(name = "lang")
         var lang: Int = 0//公告语言1:简体中文|2:繁体中文|3:英文
 
@@ -42,10 +40,10 @@ class Page @SuppressWarnings("unused") constructor() {
     class Req(
         @Json(name = "pageNo") val pageNo: Int,//当前页码
         @Json(name = "pageSize") val pageSize: Int, //每页显示条数
-        @Json(name = "isReaded") var isReaded: Int = -1
+        @Json(name = "lang") var lang: Int = -1//公告语言1:简体中文|2:繁体中文|3:英文
     ) : ApiRequest.Body() {
         override fun toString(): String {
-            return "Req(pageNo=$pageNo, pageSize=$pageSize, isReaded=$isReaded)"
+            return "Req(pageNo=$pageNo, pageSize=$pageSize, lang=$lang)"
         }
     }
 

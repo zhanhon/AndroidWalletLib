@@ -102,7 +102,7 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
             var v1= Page.Record()
             v1.title= "比特币交易新狂潮$j"
             v1.content="二二恶飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞二二二二二何飞飞飞飞飞非官方过分过分过分个人夫人夫人$j"
-            v1.isReaded=0
+            v1.isRead=0
             list.add(v1)
         }
         page.records=list

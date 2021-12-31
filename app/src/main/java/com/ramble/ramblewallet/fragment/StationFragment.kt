@@ -115,7 +115,7 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
             var v1= Page.Record()
             v1.content= "11111111111111111$j"
             v1.title="222222222222222$j"
-            v1.isReaded=0
+            v1.isRead=0
             list.add(v1)
         }
         page.records=list
