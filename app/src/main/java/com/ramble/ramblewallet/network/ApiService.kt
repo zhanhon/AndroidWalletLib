@@ -16,14 +16,14 @@ const val reportAddressUrl = "wallet-decentralized-api/address/report"
 const val getEthMinerConfigUrl = "wallet-decentralized-api/sys/getEthMinerConfig"
 const val rateInfoUrl = "wallet-decentralized-api/sys/getRateInfo"
 const val transferInfoUrl = "wallet-decentralized-api/transfer/info"
-
+const val noticeInfoUrl = "wallet-decentralized-api/sys/getNotice"
 
 
 interface ApiService {
 
-    /** 查询站内信 */
-    @POST("lottery-api/userLetter/queryPageUserLetter")
-    fun getUserLetterPage(@Body req: ApiRequest<Page.Req>): Observable<ApiResponse<Page>>
+    /** 查询公告列表 */
+    @POST(noticeInfoUrl)
+    fun getNotice(@Body req: ApiRequest<Page.Req>): Observable<ApiResponse<Page>>
 
     /** 根据地址获取交易记录 */
     @POST(transferInfoUrl)
