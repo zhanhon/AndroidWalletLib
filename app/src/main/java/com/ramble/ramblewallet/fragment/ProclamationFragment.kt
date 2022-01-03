@@ -43,6 +43,7 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
     private lateinit var endless: EndlessRecyclerViewScrollListener
     var isShowCheck: Boolean = false
     var isShowALLCheck: Boolean = false
+    private  var list= mutableListOf<Any?>()
 
     override fun onAttach(context: Context) {
         myActivity = activity as MessageCenterActivity
@@ -94,17 +95,21 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
                         println("==================>getTransferInfo:${data}")
                         ArrayList<SimpleRecyclerItem>().apply {
                             data.records.forEach { item ->
-                               if (SharedPreferencesUtils.getString(myActivity, READ_ID, "").isNotEmpty()) {
-                                    SharedPreferencesUtils.String2SceneList(SharedPreferencesUtils.getString(myActivity, READ_ID, "")).forEach {
-                                        if (it==item.id){
-                                            item.isRead =  1
-                                        }else{
-                                            item.isRead =   0
-                                        }
-
+                                if (SharedPreferencesUtils.getString(myActivity, READ_ID, "").isNotEmpty()) {
+                                    if (  SharedPreferencesUtils.String2SceneList(
+                                            SharedPreferencesUtils.getString(
+                                                myActivity,
+                                                READ_ID,
+                                                ""
+                                            )
+                                        ).contains(item.id)){
+                                        item.isRead = 1
+                                    }else{
+                                        item.isRead = 0
                                     }
+
                                 } else {
-                                   item.isRead =  0
+                                    item.isRead = 0
                                 }
                                 add(StationItem(item))
                             }
@@ -191,8 +196,30 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
         when (v!!.id) {
             R.id.item_msg_notic -> {
                 val itemBean = AdapterUtils.getHolder(v).getItem<StationItem>().data
-                var list=SharedPreferencesUtils.String2SceneList(SharedPreferencesUtils.getString(myActivity, READ_ID, ""))
-                list.add(itemBean.id)
+                list = if ( SharedPreferencesUtils.getString(
+                        myActivity,
+                        READ_ID,
+                        ""
+                    ).isNotEmpty()){
+                    SharedPreferencesUtils.String2SceneList(
+                        SharedPreferencesUtils.getString(
+                            myActivity,
+                            READ_ID,
+                            ""
+                        )
+                    )
+                }else{
+                    mutableListOf()
+                }
+                list.size
+                if (list.isNotEmpty()){
+                    if (!list.contains(itemBean.id)){
+                        list.add(itemBean.id)
+                    }
+                }else{
+                    list.add(itemBean.id)
+                }
+                list.size
                 var addId = SharedPreferencesUtils.SceneList2String(list)
                 SharedPreferencesUtils.saveString(myActivity, READ_ID, addId)
                 start2(MsgDetailsActivity::class.java, Bundle().also {

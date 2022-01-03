@@ -42,7 +42,7 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
     var isEmpty: Boolean = false
     private var dlist: ArrayList<Int>? = ArrayList()
 
-    var list= mutableListOf<Any?>()
+    private  var list= mutableListOf<Any?>()
 
     override fun onAttach(context: Context) {
         myActivity = activity as MessageCenterActivity
