@@ -24,7 +24,7 @@
             android:id="@+id/bells"
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
-            android:src="@drawable/ic_unread"
+            android:background="@drawable/ic_unread"
             app:layout_constraintBottom_toBottomOf="@+id/cardview"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@+id/cardview"/>
