@@ -1,10 +1,12 @@
 package com.ramble.ramblewallet.activity
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
@@ -12,8 +14,12 @@ import com.ramble.ramblewallet.adapter.TokenManageAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.TokenManageBean
 import com.ramble.ramblewallet.constant.SELECTED_TOKENS
+import com.ramble.ramblewallet.custom.ItemTouchDelegate
+import com.ramble.ramblewallet.custom.ItemTouchHelperCallback
+import com.ramble.ramblewallet.custom.ItemTouchHelperImpl
 import com.ramble.ramblewallet.databinding.ActivityTokenManageBinding
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import java.util.*
 
 class TokenManageActivity : BaseActivity(), View.OnClickListener {
 
@@ -22,6 +28,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
     private var tokenManageBean: ArrayList<TokenManageBean> = arrayListOf()
     private var saveTokenList: ArrayList<String> = arrayListOf()
     private lateinit var saveTokenListJson: String
+    private lateinit var itemTouchHelper: ItemTouchHelperImpl
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +38,6 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
             SharedPreferencesUtils.getString(this, SELECTED_TOKENS, ""),
             object : TypeToken<ArrayList<String>>() {}.type
         )
-
         saveTokenListJson = SharedPreferencesUtils.getString(this, SELECTED_TOKENS, "")
         //初始化推荐代币
         tokenManageBean.add(
@@ -117,10 +123,38 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
             SharedPreferencesUtils.saveString(this, SELECTED_TOKENS, Gson().toJson(saveTokenList))
         }
 
+        // 实现拖拽
+        val itemTouchCallback = ItemTouchHelperCallback(object : ItemTouchDelegate {
+            override fun onMove(srcPosition: Int, targetPosition: Int): Boolean {
+                if (tokenManageBean.size > 1 && srcPosition < tokenManageBean.size && targetPosition < tokenManageBean.size) {
+                    // 更换数据源中的数据Item的位置
+                    Collections.swap(tokenManageBean, srcPosition, targetPosition)
+                    // 更新UI中的Item的位置，主要是给用户看到交互效果
+                    tokenManageAdapter.notifyItemMoved(srcPosition, targetPosition)
+                    return true
+                }
+                return false
+            }
+
+            override fun uiOnDragging(viewHolder: RecyclerView.ViewHolder?) {
+                viewHolder?.itemView?.setBackgroundColor(Color.parseColor("#22000000"))
+            }
+
+            override fun uiOnClearView(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ) {
+                viewHolder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"))
+            }
+        })
+        itemTouchHelper = ItemTouchHelperImpl(itemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(binding.rvTokenManageCurrency)
+        itemTouchHelper.setDragEnable(true)
 
         binding.ivBack.setOnClickListener(this)
         binding.ivDeleteToken.setOnClickListener(this)
     }
+
 
     override fun onClick(v: View) {
         when (v.id) {
