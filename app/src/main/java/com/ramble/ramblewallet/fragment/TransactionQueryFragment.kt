@@ -15,6 +15,7 @@ import com.ramble.ramblewallet.activity.TransactionQueryActivity
 import com.ramble.ramblewallet.adapter.RecyclerViewFragment
 import com.ramble.ramblewallet.bean.QueryTransferRecord
 import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.databinding.FragmentTransactionQueryBinding
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start2
@@ -51,6 +52,7 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
     private var endTime: Long? = null
     private var startTime: Long? = null
     private var isAll = false
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -204,7 +206,9 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
         when (v!!.id) {
             R.id.item_transfer -> {//转账详情
                 val itemBean = AdapterUtils.getHolder(v).getItem<TransferItem>().data
-                start2(DealDetailActivity::class.java)
+                start2(DealDetailActivity::class.java, Bundle().also {
+                    it.putSerializable(ARG_PARAM1, itemBean)
+                })
             }
         }
     }

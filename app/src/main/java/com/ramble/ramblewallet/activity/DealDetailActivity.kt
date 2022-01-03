@@ -1,5 +1,6 @@
 package com.ramble.ramblewallet.activity
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -7,7 +8,11 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.bean.QueryTransferRecord
+import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.databinding.ActivityDealDetailBinding
+import com.ramble.ramblewallet.helper.getExtras
+import com.ramble.ramblewallet.utils.TimeUtils
 
 
 /**
@@ -15,8 +20,10 @@ import com.ramble.ramblewallet.databinding.ActivityDealDetailBinding
  * 作者　: potato
  * 描述　: 交易详情
  */
-class DealDetailActivity  : BaseActivity(), View.OnClickListener {
+class DealDetailActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityDealDetailBinding
+    private var trans: QueryTransferRecord.Record? = null
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,15 +34,55 @@ class DealDetailActivity  : BaseActivity(), View.OnClickListener {
     }
 
 
-
     private fun initView() {
         binding.tvMineTitle.text = getString(R.string.transaction_details)
+        trans = getExtras().getSerializable(ARG_PARAM1) as QueryTransferRecord.Record?
+        binding.minerFees.text = trans?.miner.toString()
+        binding.minerFeesUsd.text = trans?.minerUnit
+        binding.tvToAddress.text = trans?.fromAddress
+        binding.tvFromAddress.text = trans?.toAddress
+        binding.mark.text = trans?.remark
+        binding.transactionCode.text = trans?.txHash
+        binding.blockNumber.text = trans?.blockNumber.toString()
+        binding.tvStatus.text=trans?.statusDesc
+        binding.tvTime.text= TimeUtils.dateToWeek(trans?.createTime) +"  "+trans?.createTime
+        when (trans?.status) {
+            1 ->{
+                binding.ivStatus.setImageResource(R.drawable.ic_success)
+            }
+            2 -> {
+                binding.ivStatus.setImageResource(R.drawable.ic_success)
+                when(trans?.transferType){
+                    2->{//转入
+                        binding.tvMoneyCount.text = "+"+trans?.amount
+                        binding.tvMoneyType.text = trans?.unit
+                        binding.tvMoneyCount.setTextColor( Color.parseColor("#009474"))
+                        binding.tvMoneyType.setTextColor( Color.parseColor("#009474"))
+                    }
+                    1->{//转出
+                        binding.tvMoneyCount.text = "-"+trans?.amount
+                        binding.tvMoneyType.text = trans?.unit
+                        binding.tvMoneyCount.setTextColor( Color.parseColor("#e11334"))
+                        binding.tvMoneyType.setTextColor( Color.parseColor("#e11334"))
+                    }
+                }
+            }
+            3 -> {
+                binding.ivStatus.setImageResource(R.drawable.ic_fail)
+                binding.tvMoneyCount.text = trans?.amount.toString()
+                binding.tvMoneyType.text = trans?.unit
+                binding.tvMoneyCount.setTextColor( Color.parseColor("#333333"))
+                binding.tvMoneyType.setTextColor( Color.parseColor("#333333"))
+            }
+        }
 
     }
+
     private fun initListener() {
         binding.ivBack.setOnClickListener(this)
         binding.ivMineRight.setOnClickListener(this)
     }
+
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> finish()

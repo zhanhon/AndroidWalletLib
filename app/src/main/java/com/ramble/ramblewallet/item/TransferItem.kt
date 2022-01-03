@@ -5,6 +5,7 @@ import androidx.core.view.isVisible
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.bean.QueryTransferRecord
 import com.ramble.ramblewallet.databinding.ItemTransferAccountsBinding
+import com.ramble.ramblewallet.utils.TimeUtils.dateToWeek
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
 import com.ramble.ramblewallet.wight.adapter.ViewHolder
 
@@ -20,7 +21,7 @@ class TransferItem (val data: QueryTransferRecord.Record) : SimpleRecyclerItem()
         var binding: ItemTransferAccountsBinding = holder.binding()
 
         binding.tvAddress.text = data.fromAddress
-        binding.tvTime.text = "2021-12-30"
+        binding.tvTime.text = dateToWeek(data.createTime)+"  "+data.createTime
         binding.tvMoneyType.isVisible=false
         when (data.status){
             1-> {
