@@ -27,6 +27,8 @@ class Page @SuppressWarnings("unused") constructor() {
     class Record(
         @Json(name = "content")
         var content: String = "",//公告内容
+        @Json(name = "createTime")
+        var createTime: String = "",//公告内容
         @Json(name = "title")
         var title: String = "",//标题
         @Json(name = "id")

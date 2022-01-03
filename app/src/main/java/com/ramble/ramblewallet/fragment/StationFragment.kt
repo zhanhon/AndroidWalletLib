@@ -319,6 +319,7 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
                 start2(MsgDetailsActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, itemBean.title)
                     it.putString(ARG_PARAM2, itemBean.content)
+                    it.putString(ARG_PARAM3, itemBean.createTime)
                 })
 
 
