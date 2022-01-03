@@ -31,6 +31,8 @@ const val HKD = "hkd"
 const val USD = "usd"
 const val CURRENCY = "currency"
 
+const val READ_ID = "read_ID"
+
 const val REQUEST_CODE_1025 = 1025
 const val REQUEST_CODE_1029 = 1029
 

@@ -36,8 +36,6 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener{
         binding= DataBindingUtil.setContentView(this, R.layout.activity_msg_details)
         title=getExtras().getString(ARG_PARAM1,"")
         content=getExtras().getString(ARG_PARAM2,"")
-        typeText=getExtras().getString(ARG_PARAM4,"")
-        binding.tvMineTitle.text=typeText
         binding.title1.text = title
         binding.time2.text = createTime
         isCheckContent(content,title)

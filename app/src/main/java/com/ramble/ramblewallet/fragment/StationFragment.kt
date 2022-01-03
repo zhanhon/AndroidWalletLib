@@ -12,10 +12,7 @@ import com.ramble.ramblewallet.activity.MessageCenterActivity
 import com.ramble.ramblewallet.activity.MsgDetailsActivity
 import com.ramble.ramblewallet.adapter.RecyclerViewFragment
 import com.ramble.ramblewallet.bean.Page
-import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.constant.ARG_PARAM2
-import com.ramble.ramblewallet.constant.ARG_PARAM3
-import com.ramble.ramblewallet.constant.ARG_PARAM4
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.FragmentProclamationBinding
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start2
@@ -24,6 +21,7 @@ import com.ramble.ramblewallet.pull.EndlessRecyclerViewScrollListener
 import com.ramble.ramblewallet.pull.QMUIPullRefreshLayout
 import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
@@ -43,6 +41,8 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
     var isShowALLCheck: Boolean = false
     var isEmpty: Boolean = false
     private var dlist: ArrayList<Int>? = ArrayList()
+
+    var list= mutableListOf<Any?>()
 
     override fun onAttach(context: Context) {
         myActivity = activity as MessageCenterActivity
@@ -105,22 +105,64 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
     private fun load() {
         lock = true
         currentPage++
-        var page=Page()
-        page.pageNo=1
-        page.pageSize=20
-        page.totalCount=20
-        page.totalPage=1
-        var list= arrayListOf<Page.Record>()
-        for (j in 0 until 20) {
-            var v1= Page.Record()
-            v1.content= "11111111111111111$j"
-            v1.title="222222222222222$j"
-            v1.isRead=0
-            list.add(v1)
-        }
-        page.records=list
+        var page = Page()
+        page.pageNo = 1
+        page.pageSize = 20
+        page.totalCount = 20
+        page.totalPage = 1
+        var list = arrayListOf<Page.Record>()
+
+        var v1 = Page.Record()
+        v1.content = "11111111111111111"
+        v1.title = "222222222222222"
+        v1.isRead = 0
+        v1.id = 1
+        list.add(v1)
+        var v2 = Page.Record()
+        v2.content = "11111111111111111"
+        v2.title = "222222222222222"
+        v2.isRead = 0
+        v2.id = 2
+        list.add(v2)
+        var v3 = Page.Record()
+        v3.content = "11111111111111111"
+        v3.title = "222222222222222"
+        v3.isRead = 0
+        v3.id = 3
+        list.add(v3)
+        var v4 = Page.Record()
+        v4.content = "11111111111111111"
+        v4.title = "222222222222222"
+        v4.isRead = 0
+        v4.id = 4
+        list.add(v4)
+        var v5 = Page.Record()
+        v5.content = "11111111111111111"
+        v5.title = "222222222222222"
+        v5.isRead = 0
+        v5.id = 5
+        list.add(v5)
+        page.records = list
         ArrayList<SimpleRecyclerItem>().apply {
-            page.records.forEach { item -> add(StationItem(item)) }
+            page.records.forEach { item ->
+                if (SharedPreferencesUtils.getString(myActivity, READ_ID, "").isNotEmpty()) {
+                    if (  SharedPreferencesUtils.String2SceneList(
+                            SharedPreferencesUtils.getString(
+                                myActivity,
+                                READ_ID,
+                                ""
+                            )
+                        ).contains(item.id)){
+                        item.isRead = 1
+                    }else{
+                        item.isRead = 0
+                    }
+
+                } else {
+                    item.isRead = 0
+                }
+                add(StationItem(item))
+            }
             if (page.pageNo == 1) {
                 forEach {
                     if (it is StationItem) {
@@ -142,7 +184,7 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
 
         apply(adapter.itemCount)
         onLoaded()
-        totalPage=1
+        totalPage = 1
 //        model.getUserLetterPage(Page.Req(currentPage + 1, Pie.PAGE_SIZE)).subscribe(
 //            {
 //                if (it.status()) {
@@ -246,46 +288,42 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
                     return
                 }
                 val itemBean = AdapterUtils.getHolder(v).getItem<StationItem>().data
-                start2(MsgDetailsActivity::class.java,Bundle().also {
+                 list = if ( SharedPreferencesUtils.getString(
+                         myActivity,
+                         READ_ID,
+                         ""
+                     ).isNotEmpty()){
+                     SharedPreferencesUtils.String2SceneList(
+                         SharedPreferencesUtils.getString(
+                             myActivity,
+                             READ_ID,
+                             ""
+                         )
+                     )
+                 }else{
+                     mutableListOf()
+                 }
+                list.size
+                if (list.isNotEmpty()){
+                    if (!list.contains(itemBean.id)){
+                        list.add(itemBean.id)
+                    }
+                }else{
+                    list.add(itemBean.id)
+                }
+                list.size
+                var addId = SharedPreferencesUtils.SceneList2String(list)
+                SharedPreferencesUtils.saveString(myActivity, READ_ID, addId)
+                start2(MsgDetailsActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, itemBean.title)
                     it.putString(ARG_PARAM2, itemBean.content)
-                    it.putString(ARG_PARAM4, "消息详情")
                 })
-//                if (itemBean.isReaded==0){
-//                    model.getUserLetterEdit(
-//                        Edit.Req(
-//                            itemBean.content,
-//                            itemBean.createTime,
-//                            itemBean.id,
-//                            itemBean.isReaded,
-//                            itemBean.isPopup,
-//                            itemBean.isPush,
-//                            itemBean.platformId,
-//                            itemBean.title
-//                        )
-//                    ).subscribe(
-//                        {
-//                            if (it.status()) {
-//                                LogUtils.eTag("editUserLetter",1111)
-//                                myActivity.dismissLoading()
-//                                init()
-//
-//                            } else {
-//                                myActivity.dismissLoading()
-//                                toastDefault(it.message())
-//                            }
-//                        }, {
-//                            LogUtils.eTag("editUserLetter",it.message)
-//                            it.printStackTrace()
-//                        }
-//                    ).addTo(onDestroyComposite)
-//                }
-//                RxViewModel.liveEvent.postValue(RxBus.Event(FLAG2, itemBean))
-//                this.startMsgDetailsFragment(9)
+                adapter.notifyItemRangeChanged(0, adapter.itemCount)
 
             }
         }
     }
+
 
     override fun apply(count: Int) {
         binding.txtEmpty.isVisible = count == 0
@@ -334,6 +372,7 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
         }
         adapter.notifyItemRangeChanged(0, adapter.itemCount)
     }
+
     override fun onRxBus(event: RxBus.Event) {
         super.onRxBus(event)
         when (event.id()) {
@@ -343,6 +382,7 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
             else -> return
         }
     }
+
     private fun setAdapterALLChecked(isChecked: Boolean) {
         isShowALLCheck = isChecked
         adapter.all.forEach {
