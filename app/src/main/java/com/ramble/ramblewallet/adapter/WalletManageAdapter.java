@@ -27,7 +27,11 @@ public class WalletManageAdapter extends BaseQuickAdapter<WalletManageBean, Base
     protected void convert(@NotNull BaseViewHolder baseViewHolder, WalletManageBean walletManageBean) {
         if (isNeedDelete) {
             baseViewHolder.itemView.findViewById(R.id.cl_delete).setVisibility(View.VISIBLE);
-            baseViewHolder.setImageResource(R.id.iv_delete, R.drawable.vector_not_deleted);
+            if (walletManageBean.isClickDelete()) {
+                baseViewHolder.setImageResource(R.id.iv_delete, R.drawable.vector_have_deleted);
+            } else {
+                baseViewHolder.setImageResource(R.id.iv_delete, R.drawable.vector_not_deleted);
+            }
         } else {
             baseViewHolder.itemView.findViewById(R.id.cl_delete).setVisibility(View.GONE);
         }

@@ -27,7 +27,11 @@ public class TokenManageAdapter extends BaseQuickAdapter<TokenManageBean, BaseVi
     protected void convert(@NotNull BaseViewHolder baseViewHolder, TokenManageBean tokenManageBean) {
         if (isNeedDelete) {
             baseViewHolder.itemView.findViewById(R.id.cl_delete).setVisibility(View.VISIBLE);
-            baseViewHolder.setImageResource(R.id.iv_delete, R.drawable.vector_not_deleted);
+            if (tokenManageBean.isClickDelete()) {
+                baseViewHolder.setImageResource(R.id.iv_delete, R.drawable.vector_have_deleted);
+            } else {
+                baseViewHolder.setImageResource(R.id.iv_delete, R.drawable.vector_not_deleted);
+            }
             baseViewHolder.setImageResource(R.id.iv_token_status, R.drawable.vector_token_move);
         } else {
             baseViewHolder.itemView.findViewById(R.id.cl_delete).setVisibility(View.GONE);

@@ -8,16 +8,18 @@ public class TokenManageBean {
     private int index;
     private String name;
     private int status;
+    private boolean isClickDelete;
 
     public TokenManageBean(int index, String name) {
         this.index = index;
         this.name = name;
     }
 
-    public TokenManageBean(int index, String name, int status) {
+    public TokenManageBean(int index, String name, int status, boolean isClickDelete) {
         this.index = index;
         this.name = name;
         this.status = status;
+        this.isClickDelete = isClickDelete;
     }
 
     public int getIndex() {
@@ -42,5 +44,13 @@ public class TokenManageBean {
 
     public void setAge(int status) {
         this.status = status;
+    }
+
+    public boolean isClickDelete() {
+        return isClickDelete;
+    }
+
+    public void setClickDelete(boolean clickDelete) {
+        isClickDelete = clickDelete;
     }
 }

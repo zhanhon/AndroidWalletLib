@@ -44,85 +44,67 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
             TokenManageBean(
                 0,
                 "TFT",
-                if (saveTokenListJson.contains("TFT")) 1 else 0
+                if (saveTokenListJson.contains("TFT")) 1 else 0,
+                false
             )
         )
         tokenManageBean.add(
             TokenManageBean(
                 1,
                 "WBTC",
-                if (saveTokenListJson.contains("WBTC")) 1 else 0
+                if (saveTokenListJson.contains("WBTC")) 1 else 0,
+                false
             )
         )
         tokenManageBean.add(
             TokenManageBean(
                 2,
                 "DAI",
-                if (saveTokenListJson.contains("DAI")) 1 else 0
+                if (saveTokenListJson.contains("DAI")) 1 else 0,
+                false
             )
         )
         tokenManageBean.add(
             TokenManageBean(
                 3,
                 "USDC",
-                if (saveTokenListJson.contains("USDC")) 1 else 0
+                if (saveTokenListJson.contains("USDC")) 1 else 0,
+                false
             )
         )
         tokenManageBean.add(
             TokenManageBean(
                 4,
                 "USDT",
-                if (saveTokenListJson.contains("USDT")) 1 else 0
+                if (saveTokenListJson.contains("USDT")) 1 else 0,
+                false
             )
         )
         tokenManageBean.add(
             TokenManageBean(
                 5,
                 "LINK",
-                if (saveTokenListJson.contains("LINK")) 1 else 0
+                if (saveTokenListJson.contains("LINK")) 1 else 0,
+                false
             )
         )
         tokenManageBean.add(
             TokenManageBean(
                 6,
                 "YFI",
-                if (saveTokenListJson.contains("YFI")) 1 else 0
+                if (saveTokenListJson.contains("YFI")) 1 else 0,
+                false
             )
         )
         tokenManageBean.add(
             TokenManageBean(
                 7,
                 "UNI",
-                if (saveTokenListJson.contains("UNI")) 1 else 0
+                if (saveTokenListJson.contains("UNI")) 1 else 0,
+                false
             )
         )
-        tokenManageAdapter = TokenManageAdapter(tokenManageBean, false)
-        binding.rvTokenManageCurrency.adapter = tokenManageAdapter
-
-        tokenManageAdapter.addChildClickViewIds(R.id.iv_token_status)
-        tokenManageAdapter.setOnItemChildClickListener { adapter, view, position ->
-            if (adapter.getItem(position) is TokenManageBean) {
-                if ((adapter.getItem(position) as TokenManageBean).status == 0) {
-                    tokenManageBean[position] = TokenManageBean(
-                        position,
-                        (adapter.getItem(position) as TokenManageBean).name,
-                        1
-                    )
-                    tokenManageAdapter.notifyItemChanged(position)
-                    saveTokenList.add((adapter.getItem(position) as TokenManageBean).name)
-                } else {
-                    tokenManageBean[position] = TokenManageBean(
-                        position,
-                        (adapter.getItem(position) as TokenManageBean).name,
-                        0
-                    )
-                    tokenManageAdapter.notifyItemChanged(position)
-                    saveTokenList.remove((adapter.getItem(position) as TokenManageBean).name)
-                }
-            }
-            SharedPreferencesUtils.saveString(this, SELECTED_TOKENS, Gson().toJson(saveTokenList))
-        }
-
+        loadData()
         // 实现拖拽
         val itemTouchCallback = ItemTouchHelperCallback(object : ItemTouchDelegate {
             override fun onMove(srcPosition: Int, targetPosition: Int): Boolean {
@@ -155,6 +137,65 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
         binding.ivDeleteToken.setOnClickListener(this)
     }
 
+    private fun loadData() {
+        tokenManageAdapter = TokenManageAdapter(tokenManageBean, true)
+        binding.rvTokenManageCurrency.adapter = tokenManageAdapter
+
+        tokenManageAdapter.addChildClickViewIds(R.id.iv_token_status)
+        tokenManageAdapter.addChildClickViewIds(R.id.cl_delete)
+        tokenManageAdapter.setOnItemChildClickListener { adapter, view, position ->
+            if (adapter.getItem(position) is TokenManageBean) {
+                when (view.id) {
+                    R.id.iv_token_status -> {
+                        if ((adapter.getItem(position) as TokenManageBean).status == 0) {
+                            tokenManageBean[position] = TokenManageBean(
+                                position,
+                                (adapter.getItem(position) as TokenManageBean).name,
+                                1,
+                                false
+                            )
+                            tokenManageAdapter.notifyItemChanged(position)
+                            saveTokenList.add((adapter.getItem(position) as TokenManageBean).name)
+                        } else {
+                            tokenManageBean[position] = TokenManageBean(
+                                position,
+                                (adapter.getItem(position) as TokenManageBean).name,
+                                0,
+                                false
+                            )
+                            tokenManageAdapter.notifyItemChanged(position)
+                            saveTokenList.remove((adapter.getItem(position) as TokenManageBean).name)
+                        }
+                        SharedPreferencesUtils.saveString(
+                            this,
+                            SELECTED_TOKENS,
+                            Gson().toJson(saveTokenList)
+                        )
+                    }
+                    R.id.cl_delete -> {
+                        if ((adapter.getItem(position) as TokenManageBean).isClickDelete) {
+                            tokenManageBean[position] = TokenManageBean(
+                                position,
+                                (adapter.getItem(position) as TokenManageBean).name,
+                                0,
+                                false
+                            )
+                            tokenManageAdapter.notifyItemChanged(position)
+                        } else {
+                            tokenManageBean[position] = TokenManageBean(
+                                position,
+                                (adapter.getItem(position) as TokenManageBean).name,
+                                0,
+                                true
+                            )
+                            tokenManageAdapter.notifyItemChanged(position)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     override fun onClick(v: View) {
         when (v.id) {
@@ -162,8 +203,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.iv_delete_token -> {
-                tokenManageAdapter = TokenManageAdapter(tokenManageBean, true)
-                binding.rvTokenManageCurrency.adapter = tokenManageAdapter
+                loadData()
             }
         }
     }

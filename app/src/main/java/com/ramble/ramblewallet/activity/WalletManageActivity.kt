@@ -40,27 +40,33 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         a.userName = "大爷"
         a.address = "dfgfdfgpfdgkdpdsfs"
         a.type = 1
+        a.isClickDelete = false
         var a1 = WalletManageBean()
         a1.userName = "大爷1"
         a1.address = "dfgfdfgpfdgkdpdsfs1"
         a1.type = 2
+        a1.isClickDelete = false
         var a2 = WalletManageBean()
         a2.userName = "大爷2"
         a2.address = "dfgfdfgpfdgkdpdsfs2"
         a2.type = 3
+        a2.isClickDelete = false
 
         var b = WalletManageBean()
         b.userName = "大爷"
         b.address = "hhhhh"
         b.type = 1
+        b.isClickDelete = false
         var b1 = WalletManageBean()
         b1.userName = "大爷1"
         b1.address = "hhhhh"
         b1.type = 2
+        b1.isClickDelete = false
         var b2 = WalletManageBean()
         b2.userName = "大爷2"
         b2.address = "hhhh"
         b2.type = 3
+        b2.isClickDelete = false
         walletManageBean.add(a)
         walletManageBean.add(a1)
         walletManageBean.add(a2)
@@ -84,6 +90,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         binding.rvMainCurrency.adapter = walletManageAdapter
         walletManageAdapter.addChildClickViewIds(R.id.iv_copy_address)
         walletManageAdapter.addChildClickViewIds(R.id.iv_wallet_more)
+        walletManageAdapter.addChildClickViewIds(R.id.cl_delete)
         walletManageAdapter.setOnItemChildClickListener { adapter, view, position ->
             when (view.id) {
                 R.id.iv_copy_address -> {
@@ -93,6 +100,27 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 }
                 R.id.iv_wallet_more -> {
                     startActivity(Intent(this, WalletMoreOperateActivity::class.java))
+                }
+                R.id.cl_delete -> {
+                    if (adapter.getItem(position) is WalletManageBean) {
+                        if ((adapter.getItem(position) as WalletManageBean).isClickDelete) {
+                            var abac = WalletManageBean()
+                            abac.userName = "大爷1"
+                            abac.address = "hhhhh"
+                            abac.type = 2
+                            abac.isClickDelete = false
+                            walletManageBean[position] = abac
+                            walletManageAdapter.notifyItemChanged(position)
+                        } else {
+                            var abac = WalletManageBean()
+                            abac.userName = "大爷1"
+                            abac.address = "hhhhh"
+                            abac.type = 2
+                            abac.isClickDelete = true
+                            walletManageBean[position] = abac
+                            walletManageAdapter.notifyItemChanged(position)
+                        }
+                    }
                 }
             }
         }

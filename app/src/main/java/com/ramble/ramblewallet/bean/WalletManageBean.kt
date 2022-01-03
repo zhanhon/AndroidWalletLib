@@ -15,4 +15,6 @@ class WalletManageBean @SuppressWarnings("unused") constructor() {
 
     var type: Int = 0//1:eth 2：比特币 3: trx  选择图标
 
+    var isClickDelete: Boolean = false
+
 }
