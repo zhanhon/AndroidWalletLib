@@ -313,12 +313,14 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
                 }
                 list.size
                 var addId = SharedPreferencesUtils.SceneList2String(list)
+                itemBean.isRead=1
                 SharedPreferencesUtils.saveString(myActivity, READ_ID, addId)
+                adapter.notifyItemChanged(AdapterUtils.getHolder(v).adapterPosition)
                 start2(MsgDetailsActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, itemBean.title)
                     it.putString(ARG_PARAM2, itemBean.content)
                 })
-                adapter.notifyItemRangeChanged(0, adapter.itemCount)
+
 
             }
         }

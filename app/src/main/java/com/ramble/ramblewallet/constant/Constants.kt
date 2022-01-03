@@ -32,6 +32,7 @@ const val USD = "usd"
 const val CURRENCY = "currency"
 
 const val READ_ID = "read_ID"
+const val READ_ID_NEW = "read_ID_new"
 
 const val REQUEST_CODE_1025 = 1025
 const val REQUEST_CODE_1029 = 1029

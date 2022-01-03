@@ -95,11 +95,11 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
                         println("==================>getTransferInfo:${data}")
                         ArrayList<SimpleRecyclerItem>().apply {
                             data.records.forEach { item ->
-                                if (SharedPreferencesUtils.getString(myActivity, READ_ID, "").isNotEmpty()) {
+                                if (SharedPreferencesUtils.getString(myActivity, READ_ID_NEW, "").isNotEmpty()) {
                                     if (  SharedPreferencesUtils.String2SceneList(
                                             SharedPreferencesUtils.getString(
                                                 myActivity,
-                                                READ_ID,
+                                                READ_ID_NEW,
                                                 ""
                                             )
                                         ).contains(item.id)){
@@ -198,13 +198,13 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
                 val itemBean = AdapterUtils.getHolder(v).getItem<StationItem>().data
                 list = if ( SharedPreferencesUtils.getString(
                         myActivity,
-                        READ_ID,
+                        READ_ID_NEW,
                         ""
                     ).isNotEmpty()){
                     SharedPreferencesUtils.String2SceneList(
                         SharedPreferencesUtils.getString(
                             myActivity,
-                            READ_ID,
+                            READ_ID_NEW,
                             ""
                         )
                     )
@@ -221,7 +221,9 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
                 }
                 list.size
                 var addId = SharedPreferencesUtils.SceneList2String(list)
-                SharedPreferencesUtils.saveString(myActivity, READ_ID, addId)
+                SharedPreferencesUtils.saveString(myActivity, READ_ID_NEW, addId)
+                itemBean.isRead=1
+                adapter.notifyItemChanged(AdapterUtils.getHolder(v).adapterPosition)
                 start2(MsgDetailsActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, itemBean.title)
                     it.putString(ARG_PARAM2, itemBean.content)
