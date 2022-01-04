@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.content.Context;
 import android.util.Log;
 
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengMessageHandler;
@@ -17,6 +18,8 @@ import org.android.agoo.mezu.MeizuRegister;
 import org.android.agoo.oppo.OppoRegister;
 import org.android.agoo.vivo.VivoRegister;
 import org.android.agoo.xiaomi.MiPushRegistar;
+
+import static com.ramble.ramblewallet.constant.ConstantsKt.DEVICE_TOKEN;
 
 /**
  *  时间　: 2021/12/15
@@ -54,7 +57,7 @@ public class PushHelper {
         PushAgent pushAgent = PushAgent.getInstance(context);
 
         //TODO:需修改为您app/src/main/AndroidManifest.xml中package值
-        pushAgent.setResourcePackageName("com.umeng.message.sample");
+        pushAgent.setResourcePackageName("com.ramble.ramblewallet");
 
         //推送设置
         pushSetting(context);
@@ -66,6 +69,7 @@ public class PushHelper {
             public void onSuccess(String deviceToken) {
                 //注册成功会返回deviceToken deviceToken是推送消息的唯一标志
                 Log.i(TAG, "deviceToken --> " + deviceToken);
+                SharedPreferencesUtils.saveString(context,DEVICE_TOKEN,deviceToken);
 //                //获取deviceToken可通过接口：
 //                PushAgent.getInstance(context).getRegistrationId();
 //                //可设置别名，推送时使用别名推送
@@ -82,6 +86,7 @@ public class PushHelper {
             @Override
             public void onFailure(String errCode, String errDesc) {
                 Log.e(TAG, "register failure：--> " + "code:" + errCode + ",desc:" + errDesc);
+                SharedPreferencesUtils.saveString(context,DEVICE_TOKEN,"");
             }
         });
         registerDeviceChannel(context);

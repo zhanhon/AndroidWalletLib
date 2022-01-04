@@ -91,8 +91,9 @@ class ContributingWordsConfirmActivity : BaseActivity() {
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
         detailsList.add(AddressReport.DetailsList(walletETHKeyStore.address, 1)) //ETH
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
+        val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
         mApiService.putAddress(
-            AddressReport.Req(detailsList, languageCode).toApiRequest(reportAddressUrl)
+            AddressReport.Req(detailsList,deviceToken ,languageCode).toApiRequest(reportAddressUrl)
         ).applyIo().subscribe(
             {
                 if (it.code() == 1) {

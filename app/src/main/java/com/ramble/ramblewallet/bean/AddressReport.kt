@@ -12,6 +12,8 @@ class AddressReport @SuppressWarnings("unused") constructor() {
     class Req(
         @Json(name = "detailsList") //地址列表
         val detailsList: List<DetailsList>,
+        @Json(name = "deviceToken") //友盟deviceToken
+        val deviceToken: String,
         @Json(name = "language") //钱包语言|zh_CN:简体中文|zh_TW:繁体中文|en:英文|th:泰语
         val language: String
     ) : ApiRequest.Body()

@@ -32,6 +32,7 @@ class WelcomeActivity : BaseActivity() {
         if (MyPreferences.getInstance(this).hasAgreePrivacyAgreement()) {
             PushAgent.getInstance(this).onAppStart()
             val deviceToken = PushAgent.getInstance(this).registrationId
+            SharedPreferencesUtils.saveString(this, DEVICE_TOKEN, deviceToken)
         } else {
             showAgreement()
         }
