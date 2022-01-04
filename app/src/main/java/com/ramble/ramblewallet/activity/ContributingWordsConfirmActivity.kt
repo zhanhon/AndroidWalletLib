@@ -1,5 +1,6 @@
 package com.ramble.ramblewallet.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +15,7 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
 import com.ramble.ramblewallet.bean.MyDataBean
 import com.ramble.ramblewallet.constant.*
+import com.ramble.ramblewallet.custom.AutoLineFeedLayoutManager
 import com.ramble.ramblewallet.databinding.ActivityContributingWordsConfirmBinding
 import com.ramble.ramblewallet.eth.Wallet
 import com.ramble.ramblewallet.eth.WalletManager.generateWalletKeystore
@@ -24,7 +26,7 @@ import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 
 
-class ContributingWordsConfirmActivity : BaseActivity() {
+class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var contributingWordsConfirmAdapter: ContributingWordsConfirmAdapter
     private lateinit var binding: ActivityContributingWordsConfirmBinding
@@ -36,18 +38,27 @@ class ContributingWordsConfirmActivity : BaseActivity() {
     private lateinit var walletName: String
     private lateinit var walletPassword: String
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
+    private var currentTab = ""
+    private lateinit var mnemonicETH: ArrayList<String>
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contributing_words_confirm)
-        mnemonicETHShuffled = intent.getStringArrayListExtra(ARG_PARAM1)
-        mnemonicETHOriginal = intent.getStringArrayListExtra(ARG_PARAM2)
-        walletName = intent.getStringExtra(ARG_PARAM3)
-        walletPassword = intent.getStringExtra(ARG_PARAM4)
+        mnemonicETH = intent.getStringArrayListExtra(ARG_PARAM1)
+        walletName = intent.getStringExtra(ARG_PARAM2)
+        walletPassword = intent.getStringExtra(ARG_PARAM3)
+        currentTab = intent.getStringExtra(ARG_PARAM4)
+
+        initData()
         initMnmonicETH()
         mnmonicETHClick()
+
+
+        binding.llEnglish.setOnClickListener(this)
+        binding.llChinese.setOnClickListener(this)
         binding.btnContributingWordsCompleted.setOnClickListener {
+            println("-=-=-=->mnemonicETHChoose:${mnemonicETHChoose}")
             if (mnemonicETHChoose == mnemonicETHOriginal) {
                 mnemonicETHChoose.forEach {
                     walletETHString = "$walletETHString$it "
@@ -87,13 +98,63 @@ class ContributingWordsConfirmActivity : BaseActivity() {
         }
     }
 
+    private fun initData() {
+        if (SharedPreferencesUtils.getString(this, LANGUAGE, CN) == EN) {
+            binding.llChinese.visibility = View.GONE
+        }
+        if (mnemonicETH.size == 2) {
+            when (currentTab) {
+                "english" -> {
+                    binding.vEnglish.setBackgroundResource(R.color.color_3F5E94)
+                    binding.vChinese.setBackgroundResource(R.color.color_9598AA)
+                    mnemonicETHOriginal = mnemonicETH[0].split(" ") as ArrayList<String>
+                    mnemonicETHShuffled = mnemonicETH[0].split(" ") as ArrayList<String>
+                    println("-=-=-=->before:$mnemonicETH")
+                    mnemonicETHShuffled.shuffle()
+                    println("-=-=-=->after:$mnemonicETHShuffled")
+                }
+                "chinese" -> {
+                    binding.vEnglish.setBackgroundResource(R.color.color_9598AA)
+                    binding.vChinese.setBackgroundResource(R.color.color_3F5E94)
+                    mnemonicETHOriginal = mnemonicETH[1].split(" ") as ArrayList<String>
+                    mnemonicETHShuffled = mnemonicETH[1].split(" ") as ArrayList<String>
+                    println("-=-=-=->before:$mnemonicETH")
+                    mnemonicETHShuffled.shuffle()
+                    println("-=-=-=->after:$mnemonicETHShuffled")
+                }
+            }
+        } else {
+            mnemonicETHOriginal = mnemonicETH[0].split(" ") as ArrayList<String>
+            mnemonicETHShuffled = mnemonicETH[0].split(" ") as ArrayList<String>
+            println("-=-=-=->before:$mnemonicETH")
+            mnemonicETHShuffled.shuffle()
+            println("-=-=-=->after:$mnemonicETHShuffled")
+        }
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.ll_english -> {
+                currentTab = "english"
+                initData()
+                initMnmonicETH()
+            }
+            R.id.ll_chinese -> {
+                currentTab = "chinese"
+                initData()
+                initMnmonicETH()
+            }
+        }
+    }
+
+    @SuppressLint("CheckResult")
     private fun putAddress(walletETHKeyStore: Wallet) {
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
         detailsList.add(AddressReport.DetailsList(walletETHKeyStore.address, 1)) //ETH
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
         val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
         mApiService.putAddress(
-            AddressReport.Req(detailsList,deviceToken ,languageCode).toApiRequest(reportAddressUrl)
+            AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)
         ).applyIo().subscribe(
             {
                 if (it.code() == 1) {
@@ -130,9 +191,10 @@ class ContributingWordsConfirmActivity : BaseActivity() {
 
             myDataBeans.add(MyDataBean(0, binding.tvContributingWordsName1.text.toString(), ""))
             mnemonicETHChoose.add(binding.tvContributingWordsName1.text.toString())
+
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
+            binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
-            contributingWordsConfirmAdapter.notifyDataSetChanged()
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName2.setOnClickListener {
@@ -142,8 +204,8 @@ class ContributingWordsConfirmActivity : BaseActivity() {
             myDataBeans.add(MyDataBean(1, binding.tvContributingWordsName2.text.toString(), ""))
             mnemonicETHChoose.add(binding.tvContributingWordsName2.text.toString())
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
+            binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
-            contributingWordsConfirmAdapter.notifyDataSetChanged()
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName3.setOnClickListener {
@@ -153,8 +215,8 @@ class ContributingWordsConfirmActivity : BaseActivity() {
             myDataBeans.add(MyDataBean(2, binding.tvContributingWordsName3.text.toString(), ""))
             mnemonicETHChoose.add(binding.tvContributingWordsName3.text.toString())
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
+            binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
-            contributingWordsConfirmAdapter.notifyDataSetChanged()
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName4.setOnClickListener {
@@ -164,8 +226,8 @@ class ContributingWordsConfirmActivity : BaseActivity() {
             myDataBeans.add(MyDataBean(3, binding.tvContributingWordsName4.text.toString(), ""))
             mnemonicETHChoose.add(binding.tvContributingWordsName4.text.toString())
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
+            binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
-            contributingWordsConfirmAdapter.notifyDataSetChanged()
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName5.setOnClickListener {
@@ -175,8 +237,8 @@ class ContributingWordsConfirmActivity : BaseActivity() {
             myDataBeans.add(MyDataBean(4, binding.tvContributingWordsName5.text.toString(), ""))
             mnemonicETHChoose.add(binding.tvContributingWordsName5.text.toString())
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
+            binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
-            contributingWordsConfirmAdapter.notifyDataSetChanged()
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName6.setOnClickListener {
@@ -186,8 +248,8 @@ class ContributingWordsConfirmActivity : BaseActivity() {
             myDataBeans.add(MyDataBean(5, binding.tvContributingWordsName6.text.toString(), ""))
             mnemonicETHChoose.add(binding.tvContributingWordsName6.text.toString())
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
+            binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
-            contributingWordsConfirmAdapter.notifyDataSetChanged()
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName7.setOnClickListener {
@@ -197,8 +259,8 @@ class ContributingWordsConfirmActivity : BaseActivity() {
             myDataBeans.add(MyDataBean(6, binding.tvContributingWordsName7.text.toString(), ""))
             mnemonicETHChoose.add(binding.tvContributingWordsName7.text.toString())
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
+            binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
-            contributingWordsConfirmAdapter.notifyDataSetChanged()
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName8.setOnClickListener {
@@ -208,8 +270,8 @@ class ContributingWordsConfirmActivity : BaseActivity() {
             myDataBeans.add(MyDataBean(7, binding.tvContributingWordsName8.text.toString(), ""))
             mnemonicETHChoose.add(binding.tvContributingWordsName8.text.toString())
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
+            binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
-            contributingWordsConfirmAdapter.notifyDataSetChanged()
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName9.setOnClickListener {
@@ -219,8 +281,8 @@ class ContributingWordsConfirmActivity : BaseActivity() {
             myDataBeans.add(MyDataBean(8, binding.tvContributingWordsName9.text.toString(), ""))
             mnemonicETHChoose.add(binding.tvContributingWordsName9.text.toString())
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
+            binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
-            contributingWordsConfirmAdapter.notifyDataSetChanged()
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName10.setOnClickListener {
@@ -230,8 +292,8 @@ class ContributingWordsConfirmActivity : BaseActivity() {
             myDataBeans.add(MyDataBean(9, binding.tvContributingWordsName10.text.toString(), ""))
             mnemonicETHChoose.add(binding.tvContributingWordsName10.text.toString())
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
+            binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
-            contributingWordsConfirmAdapter.notifyDataSetChanged()
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName11.setOnClickListener {
@@ -241,8 +303,8 @@ class ContributingWordsConfirmActivity : BaseActivity() {
             myDataBeans.add(MyDataBean(10, binding.tvContributingWordsName11.text.toString(), ""))
             mnemonicETHChoose.add(binding.tvContributingWordsName11.text.toString())
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
+            binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
-            contributingWordsConfirmAdapter.notifyDataSetChanged()
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName12.setOnClickListener {
@@ -252,8 +314,8 @@ class ContributingWordsConfirmActivity : BaseActivity() {
             myDataBeans.add(MyDataBean(11, binding.tvContributingWordsName12.text.toString(), ""))
             mnemonicETHChoose.add(binding.tvContributingWordsName12.text.toString())
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
+            binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
-            contributingWordsConfirmAdapter.notifyDataSetChanged()
             contributingWordsConfirmClick()
         }
     }
@@ -264,73 +326,73 @@ class ContributingWordsConfirmActivity : BaseActivity() {
             when (position) {
                 0 -> {
                     position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(myDataBeans[position])
+                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 1 -> {
                     position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(myDataBeans[position])
+                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 2 -> {
                     position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(myDataBeans[position])
+                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 3 -> {
                     position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(myDataBeans[position])
+                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 4 -> {
                     position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(myDataBeans[position])
+                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 5 -> {
                     position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(myDataBeans[position])
+                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 6 -> {
                     position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(myDataBeans[position])
+                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 7 -> {
                     position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(myDataBeans[position])
+                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 8 -> {
                     position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(myDataBeans[position])
+                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 9 -> {
                     position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(myDataBeans[position])
+                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 10 -> {
                     position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(myDataBeans[position])
+                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }
                 11 -> {
                     position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(myDataBeans[position])
+                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
                     contributingWordsConfirmAdapter.remove(myDataBeans[position])
                     contributingWordsConfirmAdapter.notifyDataSetChanged()
                 }

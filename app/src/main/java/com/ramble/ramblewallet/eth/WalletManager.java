@@ -39,7 +39,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.ramble.ramblewallet.eth.MnemonicUtils.generateMnemonicCustom;
+import static com.ramble.ramblewallet.eth.MnemonicUtils.generateMnemonicEnglish;
+
 
 /**
  * @author Angus
@@ -102,7 +103,7 @@ public class WalletManager {
      */
     public static Wallet generateWalletAddress(WordList type) {
         try {
-            String mnemonic = generateMnemonicCustom(type);
+            String mnemonic = generateMnemonicEnglish().get(0);
             ECKeyPair ecKeyPair = WalletUtils.generateBip32ECKeyPair(mnemonic);
             String address = EthUtils.getAddress(ecKeyPair);
 

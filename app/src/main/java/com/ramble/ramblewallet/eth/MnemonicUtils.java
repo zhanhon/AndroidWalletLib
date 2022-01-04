@@ -1,9 +1,12 @@
 package com.ramble.ramblewallet.eth;
 
 import com.develop.mnemonic.crypto.SecureRandomUtils;
-import com.develop.mnemonic.wordlists.WordList;
+import com.ramble.ramblewallet.eth.utils.ChineseSimplified;
+import com.ramble.ramblewallet.eth.utils.ChineseTraditional;
+import com.ramble.ramblewallet.eth.utils.English;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 
 import static com.develop.mnemonic.MnemonicUtils.generateMnemonic;
 
@@ -14,19 +17,52 @@ import static com.develop.mnemonic.MnemonicUtils.generateMnemonic;
 public class MnemonicUtils {
 
     private static final SecureRandom secureRandom = SecureRandomUtils.secureRandom();
+    private final ArrayList<String> mnemonicList = new ArrayList();
 
     /**
-     * 生成助记词
+     * 生成助记词：语言为英文
      *
-     * @param type
      * @return
      */
-    public static String generateMnemonicCustom(WordList type) {
+    public static ArrayList<String> generateMnemonicEnglish() {
         byte[] initialEntropy = new byte[16];
+        ArrayList<String> mnemonicList = new ArrayList();
         secureRandom.nextBytes(initialEntropy);
+        String mnemonic = generateMnemonic(initialEntropy, English.INSTANCE);
+        mnemonicList.add(mnemonic);
+        return mnemonicList;
+    }
 
-        String mnemonic = generateMnemonic(initialEntropy, type);
-        return mnemonic;
+    /**
+     * 生成助记词：语言为简体中文
+     *
+     * @return
+     */
+    public static ArrayList<String> generateMnemonicChineseSimplified() {
+        byte[] initialEntropy = new byte[16];
+        ArrayList<String> mnemonicList = new ArrayList();
+        secureRandom.nextBytes(initialEntropy);
+        String mnemonic1 = generateMnemonic(initialEntropy, English.INSTANCE);
+        mnemonicList.add(mnemonic1);
+        String mnemonic2 = generateMnemonic(initialEntropy, ChineseSimplified.INSTANCE);
+        mnemonicList.add(mnemonic2);
+        return mnemonicList;
+    }
+
+    /**
+     * 生成助记词：语言为繁体中文
+     *
+     * @return
+     */
+    public static ArrayList<String> generateMnemonicChineseTraditional() {
+        byte[] initialEntropy = new byte[16];
+        ArrayList<String> mnemonicList = new ArrayList();
+        secureRandom.nextBytes(initialEntropy);
+        String mnemonic1 = generateMnemonic(initialEntropy, English.INSTANCE);
+        mnemonicList.add(mnemonic1);
+        String mnemonic2 = generateMnemonic(initialEntropy, ChineseTraditional.INSTANCE);
+        mnemonicList.add(mnemonic2);
+        return mnemonicList;
     }
 
 }
