@@ -1,0 +1,61 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.umeng.message.lib" >
+4
+5    <uses-sdk
+6        android:minSdkVersion="14"
+6-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml
+7        android:targetSdkVersion="30" />
+7-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml
+8
+9    <uses-permission android:name="android.permission.INTERNET" />
+9-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:5:5-67
+9-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:5:22-64
+10    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+10-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:6:5-79
+10-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:6:22-76
+11    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+11-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:7:5-76
+11-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:7:22-73
+12    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+12-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:8:5-81
+12-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:8:22-78
+13    <uses-permission android:name="android.permission.WAKE_LOCK" />
+13-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:9:5-68
+13-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:9:22-65
+14    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+14-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:10:5-75
+14-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:10:22-72
+15    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_ADDED" />
+15-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:11:5-82
+15-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:11:22-79
+16    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_CHANGED" />
+16-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:12:5-84
+16-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:12:22-81
+17    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_INSTALL" />
+17-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:13:5-84
+17-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:13:22-81
+18    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED" />
+18-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:14:5-85
+18-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:14:22-82
+19    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+19-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:15:5-75
+19-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:15:22-72
+20    <uses-permission android:name="android.permission.GET_TASKS" />
+20-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:16:5-68
+20-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:16:22-65
+21    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+21-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:17:5-81
+21-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:17:22-78
+22    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+22-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:18:5-79
+22-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:18:22-76
+23    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+23-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:19:5-76
+23-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:19:22-73
+24
+25    <application>
+25-->D:\workspace\RambleWallet\UMLibrary\AndroidManifest.xml:21:5-22:19
+26    </application>
+27
+28</manifest>
