@@ -12,6 +12,8 @@ public class Wallet {
     private String publicKey;
     private String keystore;
     private String filename;
+    private Integer type; //1:eth 2:比特币 3:trx
+    private Boolean isClickDelete;
 
     public Wallet(String mnemonic, String address, String privateKey, String publicKey) {
         this.mnemonic = mnemonic;
@@ -26,10 +28,17 @@ public class Wallet {
     }
 
     public Wallet(String walletName, String walletPassword, String mnemonic, String address,
-                  String privateKey, String publicKey, String keystore) {
+                  String privateKey, String publicKey, String keystore, Integer type) {
         this(mnemonic, address, privateKey, publicKey, keystore);
         this.walletName = walletName;
         this.walletPassword = walletPassword;
+        this.type = type;
+    }
+
+    public Wallet(String walletName, String walletPassword, String mnemonic, String address,
+                  String privateKey, String publicKey, String keystore, Integer type, Boolean isClickDelete) {
+        this(walletName, walletPassword, mnemonic, address, privateKey, publicKey, keystore, type);
+        this.isClickDelete = isClickDelete;
     }
 
     public String getWalletName() {
@@ -95,4 +104,21 @@ public class Wallet {
     public void setFilename(String filename) {
         this.filename = filename;
     }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Boolean getClickDelete() {
+        return isClickDelete;
+    }
+
+    public void setClickDelete(Boolean clickDelete) {
+        isClickDelete = clickDelete;
+    }
+
 }

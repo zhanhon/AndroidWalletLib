@@ -146,6 +146,7 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
             WalletManager.generateWalletKeystore(walletPassword, walletETHString.trim())
         walletETHKeyStore.walletName = walletName
         walletETHKeyStore.walletPassword = walletPassword
+        walletETHKeyStore.type = 1
         println("-=-=-=->wallestETHAddress:${walletETHKeyStore.address}")
         println("-=-=-=->walletETHMnemonic:${walletETHKeyStore.mnemonic}")
         println("-=-=-=->walletETHPrivateKey:${walletETHKeyStore.privateKey}")

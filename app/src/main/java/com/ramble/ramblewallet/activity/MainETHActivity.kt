@@ -58,11 +58,11 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_078DC2)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_eth)
         saveTokenList.add("ETH")
+        SharedPreferencesUtils.saveString(this, SELECTED_TOKENS, Gson().toJson(saveTokenList))
         saveTokenList = Gson().fromJson(
             SharedPreferencesUtils.getString(this, SELECTED_TOKENS, ""),
             object : TypeToken<ArrayList<String>>() {}.type
         )
-        SharedPreferencesUtils.saveString(this, SELECTED_TOKENS, Gson().toJson(saveTokenList))
         rateBean = Gson().fromJson(
             SharedPreferencesUtils.getString(this, RATEINFO, ""),
             object : TypeToken<ArrayList<RateBeen>>() {}.type
