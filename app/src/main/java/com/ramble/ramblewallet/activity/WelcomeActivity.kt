@@ -6,7 +6,6 @@ import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.ramble.ramblewallet.R
@@ -14,13 +13,13 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EmptyReq
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.helper.MyPreferences
-import com.ramble.ramblewallet.helper.PushHelper
 import com.ramble.ramblewallet.network.rateInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.push.UmInitConfig
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
+import com.umeng.commonsdk.UMConfigure
 import com.umeng.message.PushAgent
-import com.umeng.message.api.UPushRegisterCallback
 import java.util.*
 
 class WelcomeActivity : BaseActivity() {
@@ -46,20 +45,12 @@ class WelcomeActivity : BaseActivity() {
     private fun showAgreement() {
         //用户点击隐私协议同意按钮后，初始化PushSDK
         MyPreferences.getInstance(applicationContext).setAgreePrivacyAgreement(true)
-        PushHelper.init(applicationContext)
-        PushAgent.getInstance(applicationContext).register(object : UPushRegisterCallback {
-            override fun onSuccess(deviceToken: String) {
-                runOnUiThread {
-//                    val token = findViewById<TextView>(R.id.tv_device_token)
-//                    token.text = deviceToken
-                }
-            }
+        UMConfigure.submitPolicyGrantResult(applicationContext, true)
+        /*** 友盟sdk正式初始化 */
 
-            override fun onFailure(code: String, msg: String) {
-                Log.d("MainActivity", "code:$code msg:$msg")
-            }
-        })
-
+        UmInitConfig.UMinit(this@WelcomeActivity)
+        //推送平台多维度推送决策必须调用方法(需要同意隐私协议之后初始化完成调用)
+        PushAgent.getInstance(this@WelcomeActivity).onAppStart()
     }
 
     @SuppressLint("CheckResult")

@@ -21,6 +21,9 @@ android {
         buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.229.173.84:8095/"}'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //flavorDimensions "default"
+        ndk {//PushSDK目前只支持4种架构
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86'
+        }
     }
     packagingOptions {
         exclude 'META-INF/*'
@@ -56,7 +59,6 @@ android {
 //            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.229.173.84:8095/"}'
 //        }
 //    }
-
 
 }
 
@@ -101,7 +103,11 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
     //友盟推送
-    implementation project(':push')
+    implementation project(':UMLibrary')
+    // 显式依赖umeng asms库
+    implementation files('libs/umeng-asms-v1.2.2.aar') // asms包依赖(必选)
+    // 显式依赖umeng apm库
+    implementation files('libs/umeng-apm-v1.1.1.aar') // native crash包依赖(必选)
     //下拉刷新，上拉加载
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-4'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'

@@ -1,4 +1,4 @@
 include ':wallet-eth'
 include ':app'
-include ':push'
+include ':UMLibrary'
 rootProject.name = "RambleWallet"
