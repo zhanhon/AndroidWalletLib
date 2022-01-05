@@ -104,7 +104,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                 false
             )
         )
-        loadData()
+        loadData(false)
         // 实现拖拽
         val itemTouchCallback = ItemTouchHelperCallback(object : ItemTouchDelegate {
             override fun onMove(srcPosition: Int, targetPosition: Int): Boolean {
@@ -137,8 +137,8 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
         binding.ivDeleteToken.setOnClickListener(this)
     }
 
-    private fun loadData() {
-        tokenManageAdapter = TokenManageAdapter(tokenManageBean, true)
+    private fun loadData(isNeedDelete: Boolean) {
+        tokenManageAdapter = TokenManageAdapter(tokenManageBean, isNeedDelete)
         binding.rvTokenManageCurrency.adapter = tokenManageAdapter
 
         tokenManageAdapter.addChildClickViewIds(R.id.iv_token_status)
@@ -203,7 +203,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.iv_delete_token -> {
-                loadData()
+                loadData(true)
             }
         }
     }

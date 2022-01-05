@@ -74,34 +74,25 @@ class WelcomeActivity : BaseActivity() {
             }
         }
 
-        Thread {
-            while (true) {
-                try {
-                    mApiService.getRateInfo(EmptyReq().toApiRequest(rateInfoUrl))
-                        .applyIo().subscribe(
-                            {
-                                if (it.code() == 1) {
-                                    it.data()?.let { data ->
-                                        SharedPreferencesUtils.saveString(
-                                            this,
-                                            RATEINFO,
-                                            Gson().toJson(data)
-                                        )
-                                        println("-=-=-=->${Gson().toJson(data)}")
-                                    }
-                                } else {
-                                    println("-=-=-=->${it.message()}")
-                                }
-                            }, {
-                                println("-=-=-=->${it.printStackTrace()}")
-                            }
-                        )
-                    Thread.sleep(10000)
-                } catch (e: Exception) {
-                    e.printStackTrace()
+        mApiService.getRateInfo(EmptyReq().toApiRequest(rateInfoUrl))
+            .applyIo().subscribe(
+                {
+                    if (it.code() == 1) {
+                        it.data()?.let { data ->
+                            SharedPreferencesUtils.saveString(
+                                this,
+                                RATEINFO,
+                                Gson().toJson(data)
+                            )
+                            println("-=-=-=->${Gson().toJson(data)}")
+                        }
+                    } else {
+                        println("-=-=-=->${it.message()}")
+                    }
+                }, {
+                    println("-=-=-=->${it.printStackTrace()}")
                 }
-            }
-        }.start()
+            )
     }
 
 }

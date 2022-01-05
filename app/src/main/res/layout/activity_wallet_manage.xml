@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,11 +32,11 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/dp_10"
-                android:textColor="@color/color_000000"
                 android:text="@string/wallet_management"
+                android:textColor="@color/color_000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/iv_manage_wallet_right"
@@ -60,10 +59,10 @@
             <LinearLayout
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
                 android:layout_marginStart="@dimen/dp_10"
                 android:layout_marginEnd="@dimen/dp_10"
+                android:layout_weight="1"
+                android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -72,6 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <RadioButton
                         android:id="@+id/check_all"
                         android:layout_width="wrap_content"
@@ -83,6 +83,7 @@
                         android:background="@drawable/selector_check_meun"
                         android:button="@null"
                         android:gravity="center" />
+
                     <RadioButton
                         android:id="@+id/check_btc"
                         android:layout_width="wrap_content"
@@ -94,6 +95,7 @@
                         android:background="@drawable/selector_check_bt"
                         android:button="@null"
                         android:gravity="center" />
+
                     <RadioButton
                         android:id="@+id/check_eth"
                         android:layout_width="wrap_content"
@@ -105,6 +107,7 @@
                         android:background="@drawable/selector_check_eth"
                         android:button="@null"
                         android:gravity="center" />
+
                     <RadioButton
                         android:id="@+id/check_trx"
                         android:layout_width="wrap_content"
@@ -139,10 +142,10 @@
 
                     <TextView
                         android:layout_width="@dimen/dp_0"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="@string/my_wallet"
-                        android:textColor="@color/color_000000"/>
+                        android:textColor="@color/color_000000" />
 
                     <ImageView
                         android:id="@+id/iv_add_wallet"
@@ -152,13 +155,21 @@
                         android:src="@drawable/vector_add_address" />
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_main_currency"
+                <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                    android:id="@+id/ly_pull_refresh"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:background="@color/color_FFFFFF"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                    app:srlReboundDuration="600">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_main_currency"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/color_FFFFFF"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
             </LinearLayout>
 

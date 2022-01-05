@@ -15,6 +15,7 @@ import com.ramble.ramblewallet.bean.WalletManageBean
 import com.ramble.ramblewallet.databinding.ActivityWalletManageBinding
 import com.ramble.ramblewallet.utils.ClipboardUtils
 
+
 class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     View.OnClickListener {
 
@@ -29,6 +30,16 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_wallet_manage)
+
+        //刷新的监听事件
+        binding.lyPullRefresh.setOnRefreshListener {
+            binding.lyPullRefresh.finishRefresh() //刷新完成
+        }
+        //加载的监听事件
+        binding.lyPullRefresh.setOnLoadMoreListener {
+            binding.lyPullRefresh.finishLoadMore() //加载完成
+        }
+
         initView()
         initListener()
     }

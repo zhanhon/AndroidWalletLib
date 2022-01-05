@@ -1,5 +1,6 @@
 package com.ramble.ramblewallet.activity
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
@@ -7,6 +8,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -22,14 +24,19 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.bean.EmptyReq
 import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.RateBeen
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
 import com.ramble.ramblewallet.eth.Wallet
 import com.ramble.ramblewallet.eth.WalletManager.getTokenBalance
+import com.ramble.ramblewallet.network.rateInfoUrl
+import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.applyIo
+import com.ramble.ramblewallet.utils.asyncAnimator
 import java.math.BigDecimal
 
 class MainETHActivity : BaseActivity(), View.OnClickListener {
@@ -42,6 +49,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var isClickEyes = false
     private var saveTokenList: ArrayList<String> = arrayListOf()
+    private var animator: ObjectAnimator? = null
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -50,6 +58,10 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_078DC2)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_eth)
         saveTokenList.add("ETH")
+        saveTokenList = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, SELECTED_TOKENS, ""),
+            object : TypeToken<ArrayList<String>>() {}.type
+        )
         SharedPreferencesUtils.saveString(this, SELECTED_TOKENS, Gson().toJson(saveTokenList))
         rateBean = Gson().fromJson(
             SharedPreferencesUtils.getString(this, RATEINFO, ""),
@@ -101,37 +113,22 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         return "$subStr1...$subStr2"
     }
 
+    private fun startSyncAnimation() {
+        if (animator != null) {
+            return
+        }
+        animator = binding.ivBalanceRefresh1.asyncAnimator()
+        animator = binding.ivBalanceRefresh2.asyncAnimator()
+    }
+
+    private fun cancelSyncAnimation() {
+        animator?.cancel()
+        animator = null
+    }
+
     override fun onResume() {
         super.onResume()
-        mainETHTokenBean.clear()
-        saveTokenList = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, SELECTED_TOKENS, ""),
-            object : TypeToken<ArrayList<String>>() {}.type
-        )
-        if (rateBean.isNotEmpty() && saveTokenList.isNotEmpty()) {
-            saveTokenList.forEach { saveToken ->
-                rateBean.forEach { rateBean ->
-                    if (saveToken == rateBean.currencyType) {
-                        mainETHTokenBean.add(
-                            MainETHTokenBean(
-                                rateBean.currencyType,
-                                BigDecimal(10.12123),
-                                BigDecimal(rateBean.rateUsd),
-                                currencyUnit,
-                                BigDecimal(rateBean.change)
-                            )
-                        )
-                    }
-                }
-            }
-        }
-        mainAdapter = MainAdapter(mainETHTokenBean)
-        binding.rvCurrency.adapter = mainAdapter
-        mainAdapter.setOnItemClickListener { adapter, view, position ->
-            if (adapter.getItem(position) is MainETHTokenBean) {
-                showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean).name)
-            }
-        }
+        refreshData()
     }
 
     private fun setOnClickListener() {
@@ -151,7 +148,8 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         binding.ivTokenManageClick.setOnClickListener(this)
         binding.ivTokenManageClick01.setOnClickListener(this)
 
-        binding.ivBalanceRefresh.setOnClickListener(this)
+        binding.ivBalanceRefresh1.setOnClickListener(this)
+        binding.ivBalanceRefresh2.setOnClickListener(this)
         binding.ivEyes.setOnClickListener(this)
         binding.ivCopy.setOnClickListener(this)
 
@@ -177,7 +175,10 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 dialog.dismiss()
             }
             tvGathering.setOnClickListener { v1: View? ->
-                startActivity(Intent(this, GatheringActivity::class.java))
+                startActivity(Intent(this, GatheringActivity::class.java).apply {
+                    putExtra(ARG_PARAM1, "ETH")
+                    putExtra(ARG_PARAM2, saveWalletList[0].address)
+                })
                 dialog.dismiss()
             }
 
@@ -223,8 +224,11 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                     putExtra(ARG_PARAM1, "ETH")
                 })
             }
-            R.id.iv_balance_refresh -> {
-
+            R.id.iv_balance_refresh_1, R.id.iv_balance_refresh_2 -> {
+                startSyncAnimation()
+                Handler().postDelayed({
+                    refreshData()
+                }, 2000)
             }
             R.id.iv_eyes -> {
                 if (isClickEyes) {
@@ -241,6 +245,60 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 ClipboardUtils.copy(binding.tvEthAddress.text.toString())
             }
         }
+    }
+
+    @SuppressLint("CheckResult")
+    private fun refreshData() {
+        mApiService.getRateInfo(EmptyReq().toApiRequest(rateInfoUrl))
+            .applyIo().subscribe(
+                {
+                    if (it.code() == 1) {
+                        it.data()?.let { data ->
+                            SharedPreferencesUtils.saveString(
+                                this,
+                                RATEINFO,
+                                Gson().toJson(data)
+                            )
+                            println("-=-=-=->${Gson().toJson(data)}")
+                            mainETHTokenBean.clear()
+                            saveTokenList = Gson().fromJson(
+                                SharedPreferencesUtils.getString(this, SELECTED_TOKENS, ""),
+                                object : TypeToken<ArrayList<String>>() {}.type
+                            )
+                            if (rateBean.isNotEmpty() && saveTokenList.isNotEmpty()) {
+                                saveTokenList.forEach { saveToken ->
+                                    rateBean.forEach { rateBean ->
+                                        if (saveToken == rateBean.currencyType) {
+                                            mainETHTokenBean.add(
+                                                MainETHTokenBean(
+                                                    rateBean.currencyType,
+                                                    BigDecimal(10.12123),
+                                                    BigDecimal(rateBean.rateUsd),
+                                                    currencyUnit,
+                                                    BigDecimal(rateBean.change)
+                                                )
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                            mainAdapter = MainAdapter(mainETHTokenBean)
+                            binding.rvCurrency.adapter = mainAdapter
+                            mainAdapter.setOnItemClickListener { adapter, view, position ->
+                                if (adapter.getItem(position) is MainETHTokenBean) {
+                                    showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean).name)
+                                }
+                            }
+                        }
+                    } else {
+                        println("-=-=-=->${it.message()}")
+                    }
+                    cancelSyncAnimation()
+                }, {
+                    cancelSyncAnimation()
+                    println("-=-=-=->${it.printStackTrace()}")
+                }
+            )
     }
 
 }

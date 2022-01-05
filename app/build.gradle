@@ -101,6 +101,8 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     //RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    //SmartRefreshLayout
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
 
     //友盟推送
     implementation project(':UMLibrary')
