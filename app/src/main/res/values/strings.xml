@@ -195,4 +195,6 @@
     <string name="put_barcode_in_box">将条码放入框内，即可自动扫描</string>
     <string name="put_qrcode_in_box">将二维码放入框内，即可自动扫描</string>
     <string name="umeng_msg_secret">50bb050a3c372095dfbb6610b89bc987</string>
+    <string name="edit_book">编辑</string>
+    <string name="delete_book">删除</string>
 </resources>

@@ -24,7 +24,9 @@ import com.ramble.ramblewallet.databinding.ActivityAddressBookBinding
 import com.ramble.ramblewallet.eth.Wallet
 import com.ramble.ramblewallet.item.AddressBookItem
 import com.ramble.ramblewallet.item.TransferItem
+import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.showBottomDialog
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.OnDataSetChanged
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
@@ -160,14 +162,23 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         when (v!!.id) {
             R.id.iv_back -> finish()
             R.id.iv_menu -> {//转账详情
-                val itemBean = AdapterUtils.getHolder(v).getItem<TransferItem>().data
-                // start2(DealDetailActivity::class.java)
-//                myData.remove( myDataBeans[position])
-//                myDataBeans.removeAt(position)
-//                SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
-//                addressBookAdapter = AddressBookAdapter(myDataBeans, false)
-//                binding.rvMainCurrency.adapter = addressBookAdapter
-//                binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
+                val position = AdapterUtils.getHolder(v).adapterPosition
+                val itemBean = AdapterUtils.getHolder(v).getItem<AddressBookItem>().data
+                showBottomDialog(this,
+                    itemBean.userName,
+                    copeListener = View.OnClickListener {//复制
+                    ClipboardUtils.copy(itemBean.address)
+                },
+                    editListener = View.OnClickListener {//编辑
+
+                },
+                    delListener = View.OnClickListener {//删除
+                    myDataBeans.removeAt(position)
+                    myData.removeAt(position)
+                    SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
+                    adapter.remove(position)
+                    adapter.notifyDataSetChanged()
+                })
             }
             R.id.iv_reduce -> {//转账详情
                 val position = AdapterUtils.getHolder(v).adapterPosition
@@ -178,13 +189,14 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 adapter.notifyDataSetChanged()
             }
             R.id.add -> {
+                if (myDataBeans.isNullOrEmpty())return
                 myDataBeans.forEach {
                     it.isNeedDelete=false
                 }
                 loadData()
             }
             R.id.delete -> {
-
+                if (myDataBeans.isNullOrEmpty())return
                 myDataBeans.forEach {
                     it.isNeedDelete=true
                 }
