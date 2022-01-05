@@ -22,19 +22,20 @@ import com.ramble.ramblewallet.constant.ADDRESS_BOOK_INFO
 import com.ramble.ramblewallet.constant.WALLETINFO
 import com.ramble.ramblewallet.databinding.ActivityAddressBookBinding
 import com.ramble.ramblewallet.eth.Wallet
+import com.ramble.ramblewallet.item.AddressBookItem
 import com.ramble.ramblewallet.item.TransferItem
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
+import com.ramble.ramblewallet.wight.adapter.OnDataSetChanged
+import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 
 class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
-    View.OnClickListener  {
+    View.OnClickListener , OnDataSetChanged {
 
     private lateinit var binding: ActivityAddressBookBinding
     private var myDataBeans: ArrayList<MyAddressBean> = arrayListOf()
     private var myData: ArrayList<MyAddressBean> = arrayListOf()
-    private lateinit var addressBookAdapter: AddressBookAdapter
-    private var isDelete=false
-
+    private val adapter = RecyclerAdapter()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,10 +50,10 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         binding.tvManageWalletTitle.text = getString(R.string.address_page)
         val linearLayoutManagerIcon = LinearLayoutManager(this)
         linearLayoutManagerIcon.orientation = OrientationHelper.VERTICAL
-        binding.groupButton.check(R.id.check_all)
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = OrientationHelper.VERTICAL
         binding.rvMainCurrency.layoutManager = linearLayoutManager
+        binding.rvMainCurrency.adapter = adapter
         myDataBeans = arrayListOf()
         var a = MyAddressBean()
         a.userName = "大爷"
@@ -94,6 +95,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                 )
         }
+        binding.groupButton.check(R.id.check_all)
         loadData()
     }
 
@@ -102,32 +104,17 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         binding.ivBack.setOnClickListener(this)
         binding.delete.setOnClickListener(this)
         binding.add.setOnClickListener(this)
+        adapter.onClickListener = this
+        adapter.onDataSetChanged = this
     }
 
     private fun loadData() {
-        addressBookAdapter = AddressBookAdapter(myDataBeans, false)
-        binding.rvMainCurrency.adapter = addressBookAdapter
-        addressBookAdapter.addChildClickViewIds(R.id.iv_reduce)
-        addressBookAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
-            when(view.id){
-                R.id.iv_menu->{
-                    myDataBeans.removeAt(position)
-                    addressBookAdapter = AddressBookAdapter(myDataBeans, false)
-                    binding.rvMainCurrency.adapter = addressBookAdapter
-                    binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
-                }
-                R.id.iv_reduce->{
-                    println("-=-=-=->sav撒旦发射点发射点发范德萨发撒是否")
-                    myData.remove( myDataBeans[position])
-                    myDataBeans.removeAt(position)
-                    SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
-                    addressBookAdapter = AddressBookAdapter(myDataBeans, false)
-                    binding.rvMainCurrency.adapter = addressBookAdapter
-                    binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
-                }
+        ArrayList<AddressBookItem>().also {
+            for (item in myDataBeans) {
+                it.add(AddressBookItem(item))
             }
-            println("-=-=-=->11111111111111111111")
-        })
+            adapter.replaceAll(it.toList())
+        }
     }
 
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
@@ -172,45 +159,42 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> finish()
-            R.id.item_transfer -> {//转账详情
+            R.id.iv_menu -> {//转账详情
                 val itemBean = AdapterUtils.getHolder(v).getItem<TransferItem>().data
                 // start2(DealDetailActivity::class.java)
+//                myData.remove( myDataBeans[position])
+//                myDataBeans.removeAt(position)
+//                SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
+//                addressBookAdapter = AddressBookAdapter(myDataBeans, false)
+//                binding.rvMainCurrency.adapter = addressBookAdapter
+//                binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
+            }
+            R.id.iv_reduce -> {//转账详情
+                val position = AdapterUtils.getHolder(v).adapterPosition
+                myDataBeans.removeAt(position)
+                myData.removeAt(position)
+                SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
+                adapter.remove(position)
+                adapter.notifyDataSetChanged()
             }
             R.id.add -> {
-                isDelete = false
-                addressBookAdapter = AddressBookAdapter(myDataBeans, false)
-                binding.rvMainCurrency.adapter = addressBookAdapter
-                binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
+                myDataBeans.forEach {
+                    it.isNeedDelete=false
+                }
+                loadData()
             }
             R.id.delete -> {
-                isDelete = true
-                addressBookAdapter = AddressBookAdapter(myDataBeans, true)
-                binding.rvMainCurrency.adapter = addressBookAdapter
-                binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
-                addressBookAdapter.addChildClickViewIds(R.id.iv_reduce)
-                addressBookAdapter.setOnItemChildClickListener(OnItemChildClickListener { adapter, view, position ->
-                    when(view.id){
-                        R.id.iv_menu->{
-                            myDataBeans.removeAt(position)
-                            addressBookAdapter = AddressBookAdapter(myDataBeans, false)
-                            binding.rvMainCurrency.adapter = addressBookAdapter
-                            binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
-                        }
-                        R.id.iv_reduce->{
-                            println("-=-=-=->sav撒旦发射点发射点发范德萨发撒是否")
-                            myData.remove( myDataBeans[position])
-                            myDataBeans.removeAt(position)
-                            SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
-                            addressBookAdapter = AddressBookAdapter(myDataBeans, false)
-                            binding.rvMainCurrency.adapter = addressBookAdapter
-                            binding.rvMainCurrency.adapter!!.notifyDataSetChanged()
-                        }
-                    }
-                    println("-=-=-=->$position")
-                })
 
+                myDataBeans.forEach {
+                    it.isNeedDelete=true
+                }
+                loadData()
             }
         }
+    }
+
+    override fun apply(count: Int) {
+
     }
 
 }
