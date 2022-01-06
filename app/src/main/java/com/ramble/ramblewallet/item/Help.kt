@@ -1,6 +1,7 @@
 package com.ramble.ramblewallet.item
 
 import com.ramble.ramblewallet.R
+import com.ramble.ramblewallet.bean.FaqInfos
 import com.ramble.ramblewallet.bean.GetFaqInfos
 import com.ramble.ramblewallet.databinding.ItemHelpHeaderBinding
 import com.ramble.ramblewallet.databinding.ItemHelpTodoBinding
@@ -24,12 +25,12 @@ class Help {
         }
     }
 
-    class HotFaqList(val data: GetFaqInfos.HotFaqList) : SimpleRecyclerItem() {
+    class HotFaqList(val data: FaqInfos.CategoryReq) : SimpleRecyclerItem() {
         override fun getLayout(): Int = R.layout.item_help_todo
 
         override fun bind(holder: ViewHolder) {
             val binding: ItemHelpTodoBinding = holder.binding()
-            binding.itemHelpTodo.text = data.title
+            binding.itemHelpTodo.text = data.name
             holder.attachOnClickListener(R.id.item_help_todo)
         }
     }
@@ -74,12 +75,12 @@ class Help {
 //        }
 //    }
 //
-    class FaqTypeList(val data: GetFaqInfos.FaqTypeList) : SimpleRecyclerItem() {
+    class FaqTypeList(val data: FaqInfos.NoviceReq) : SimpleRecyclerItem() {
         override fun getLayout(): Int = R.layout.item_help_todo
 
         override fun bind(holder: ViewHolder) {
             val binding: ItemHelpTodoBinding = holder.binding()
-            binding.itemHelpTodo.text = data.typeName
+            binding.itemHelpTodo.text = data.categoryName
             holder.attachOnClickListener(R.id.item_help_todo)
         }
     }

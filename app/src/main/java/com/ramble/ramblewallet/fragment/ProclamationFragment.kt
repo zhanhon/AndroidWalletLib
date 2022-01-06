@@ -155,15 +155,6 @@ class ProclamationFragment : BaseFragment(){
 
     }
 
-    private fun setAdapterEditable(isEditable: Boolean) {
-        isShowCheck = isEditable
-        adapter.all.forEach {
-            if (it is StationItem) {
-                it.isEditable = isEditable
-            }
-        }
-        adapter.notifyItemRangeChanged(0, adapter.itemCount, isEditable)
-    }
 
     private fun apply(count: Int) {
         binding.txtEmpty.isVisible = count == 0

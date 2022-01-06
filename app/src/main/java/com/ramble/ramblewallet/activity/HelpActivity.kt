@@ -1,5 +1,6 @@
 package com.ramble.ramblewallet.activity
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -8,9 +9,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.GetFaqInfos
+import com.ramble.ramblewallet.bean.FaqInfos
 import com.ramble.ramblewallet.databinding.ActivityHelpBinding
 import com.ramble.ramblewallet.item.Help
+import com.ramble.ramblewallet.network.faqInfoUrl
+import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.QuickItemDecoration
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
@@ -48,65 +52,31 @@ class HelpActivity : BaseActivity(), View.OnClickListener {
         binding.recycler.adapter = adapter
     }
 
+    @SuppressLint("CheckResult")
     private fun loadData() {
-        var hotFaqLists= arrayListOf<GetFaqInfos.HotFaqList>()
-        var hotFaqList = GetFaqInfos.HotFaqList()
-        hotFaqList.title="撒大苏打实打实方式"
-        var hotFaqList1 = GetFaqInfos.HotFaqList()
-        hotFaqList1.title="是否是v发"
-        var hotFaqList2 = GetFaqInfos.HotFaqList()
-        hotFaqList2.title="i离开英国法国的"
-        hotFaqLists.add(hotFaqList)
-        hotFaqLists.add(hotFaqList1)
-        hotFaqLists.add(hotFaqList2)
-        var getFaqInfos=GetFaqInfos()
-        getFaqInfos.hotFaqLists=hotFaqLists
-        var faqs= arrayListOf<GetFaqInfos.FaqTypeList>()
-        var faq = GetFaqInfos.FaqTypeList()
-        faq.typeName="232323232323232"
-        var faq1 = GetFaqInfos.FaqTypeList()
-        faq1.typeName="ssddfdfdfdfdf"
-        var faq2 = GetFaqInfos.FaqTypeList()
-        faq2.typeName="gtgtgtgtgtgtggt"
-        faqs.add(faq)
-        faqs.add(faq1)
-        faqs.add(faq2)
-        getFaqInfos.faqTypeLists=faqs
-        adapter.add(Help.Header(getString(R.string.help_door_sister)))
-        ArrayList<SimpleRecyclerItem>().apply {
-            getFaqInfos.hotFaqLists.forEach { o -> this.add(Help.HotFaqList(o)) }
-            adapter.addAll(this.toList())
+        mApiService.getFaqInfos(FaqInfos.Req(1).toApiRequest(faqInfoUrl)).applyIo().subscribe({
+            if (it.code() == 1) {
+                it.data()?.let { data ->
+                    adapter.add(Help.Header(getString(R.string.help_door_sister)))
+                    ArrayList<SimpleRecyclerItem>().apply {
+                        it.data()!!.noviceList.forEach { o -> this.add(Help.FaqTypeList(o)) }
+                        adapter.addAll(this.toList())
+                    }
+                    adapter.add(Help.Header(getString(R.string.help_sever_sister)))
+                    ArrayList<SimpleRecyclerItem>().apply {
+                        it.data()!!.categoryList.forEach { o -> this.add(Help.HotFaqList(o)) }
+                        adapter.addAll(this.toList())
+                    }
+
+                }
+            } else {
+                println("==================>getTransferInfo1:${it.message()}")
+            }
+        }, {
+            println("==================>getTransferInfo1:${it.printStackTrace()}")
         }
-        adapter.add(Help.Header(getString(R.string.help_sever_sister)))
-        ArrayList<SimpleRecyclerItem>().apply {
-            getFaqInfos.faqTypeLists.forEach { o -> this.add(Help.FaqTypeList(o)) }
-            adapter.addAll(this.toList())
-        }
-//        if (lock) {
-//            return
-//        }
-//        lock = true
-//        model.getFaqInfos(GetFaqInfos.Req()).subscribe({
-//            if (it.status()) {
-//                lock = false
-//                adapter.add(Help.Header("热门问题"))
-//                ArrayList<SimpleRecyclerItem>().apply {
-//                    it.data()!!.hotFaqLists.forEach { o -> this.add(Help.HotFaqList(o)) }
-//                    adapter.addAll(this.toList())
-//                }
-//                adapter.add(Help.Header("问题分类"))
-//                ArrayList<SimpleRecyclerItem>().apply {
-//                    it.data()!!.faqTypeLists.forEach { o -> this.add(Help.FaqTypeList(o)) }
-//                    adapter.addAll(this.toList())
-//                }
-//            } else {
-//                toastDefault(it.message())
-//            }
-//        }, {
-//            lock = false
-//            it.toast()
-//        }
-//        ).addTo(onDestroyComposite)
+        )
+
     }
 
 

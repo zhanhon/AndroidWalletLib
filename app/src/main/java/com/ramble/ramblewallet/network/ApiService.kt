@@ -17,6 +17,7 @@ const val getEthMinerConfigUrl = "wallet-decentralized-api/sys/getEthMinerConfig
 const val rateInfoUrl = "wallet-decentralized-api/sys/getRateInfo"
 const val transferInfoUrl = "wallet-decentralized-api/transfer/info"
 const val noticeInfoUrl = "wallet-decentralized-api/sys/getNotice"
+const val faqInfoUrl = "wallet-decentralized-api/faq/getFaqInfos"
 
 
 interface ApiService {
@@ -28,6 +29,10 @@ interface ApiService {
     /** 根据地址获取交易记录 */
     @POST(transferInfoUrl)
     fun getTransferInfo(@Body req: ApiRequest<QueryTransferRecord.Req>): Observable<ApiResponse<QueryTransferRecord>>
+
+    /** 查询公告列表 */
+    @POST(faqInfoUrl)
+    fun getFaqInfos(@Body req: ApiRequest<FaqInfos.Req>): Observable<ApiResponse<FaqInfos>>
 
     /** APP端地址上传 */
     @POST(reportAddressUrl)
