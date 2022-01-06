@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.AddressBookActivity
 import com.ramble.ramblewallet.activity.ScanActivity
+import com.ramble.ramblewallet.bean.MyAddressBean
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.constant.ARG_PARAM3
@@ -64,6 +65,7 @@ fun showBottomDialog(
 fun showBottomDialog2(
     activity: AddressBookActivity,
     tvName:String,
+    type:Int,
     editListener: View.OnClickListener? = null
 ): Dialog {
     val binding: BottomNoticeDialog2Binding =
@@ -76,7 +78,10 @@ fun showBottomDialog2(
         window?.setGravity(Gravity.BOTTOM)
         show()
         setContentView(binding.root)
-        binding.tvTitle.text=tvName
+        binding.editName.setText(tvName)
+        when(type){
+            1-> binding.tvTitle.text="编辑地址"
+        }
         binding.ivQr.setOnClickListener {
             activity.start(ScanActivity::class.java, Bundle().also {
                 it.putInt(ARG_PARAM1, 1)
@@ -86,7 +91,12 @@ fun showBottomDialog2(
             dismiss()
         }
         binding.tvUpdata.setOnClickListener {
+            if (binding.editName.text.isNullOrEmpty()||binding.editAddress.text.isNullOrEmpty())return@setOnClickListener
             editListener?.onClick(it)
+            var data=MyAddressBean()
+            data.address=binding.editAddress.text.toString()
+            data.userName=binding.editName.text.toString()
+            RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_UPDATA, data)
             dismiss()
         }
         activity.setOnResultsListener(object :AddressBookActivity.OnResultsListener{
@@ -95,5 +105,6 @@ fun showBottomDialog2(
             }
 
         })
+
     }
 }

@@ -20,8 +20,12 @@ public class Pie {
 
 
     /**
-     * pref 存储服务端cdn
+     * 地址本扫描二维码
      */
     public static final int EVENT_ADDRESS_BOOK_SCAN = 2001;
+    /**
+     * 地址本编辑地址
+     */
+    public static final int EVENT_ADDRESS_BOOK_UPDATA = 2002;
 
 }

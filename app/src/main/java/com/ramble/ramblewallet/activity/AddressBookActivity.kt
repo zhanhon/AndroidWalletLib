@@ -30,6 +30,8 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     private var myDataBeans: ArrayList<MyAddressBean> = arrayListOf()
     private var myData: ArrayList<MyAddressBean> = arrayListOf()
     private val adapter = RecyclerAdapter()
+    private var pos=-1
+    private var bean=MyAddressBean()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -154,8 +156,19 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         super.onRxBus(event)
         when (event.id()) {
             Pie.EVENT_ADDRESS_BOOK_SCAN ->{
-                Log.e("111111111",event.data())
+
                 mOnResultsListener!!.onResultsClick(event.data())
+            }
+            Pie.EVENT_ADDRESS_BOOK_UPDATA->{
+                Log.e("111111111",event.data<MyAddressBean>().userName)
+                Log.e("1111111112",event.data<MyAddressBean>().address)
+                bean.userName=event.data<MyAddressBean>().userName
+                bean.address=event.data<MyAddressBean>().address
+                myDataBeans.set(pos,bean)
+                myData.set(pos,bean)
+                SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
+                adapter.replaceAt(pos,AddressBookItem(bean))
+                adapter.notifyDataSetChanged()
             }
             else -> return
         }
@@ -179,19 +192,18 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> finish()
-            R.id.iv_menu -> {//转账详情
+            R.id.iv_menu -> {//更多
                 val position = AdapterUtils.getHolder(v).adapterPosition
+                pos=position
                 val itemBean = AdapterUtils.getHolder(v).getItem<AddressBookItem>().data
+                bean=itemBean
                 showBottomDialog(this,
                     itemBean.userName,
                     copeListener = View.OnClickListener {//复制
                         ClipboardUtils.copy(itemBean.address)
                     },
                     editListener = View.OnClickListener {//编辑
-                        showBottomDialog2(this, "编辑地址", editListener = View.OnClickListener {//编辑
-
-
-                        })
+                        showBottomDialog2(this, itemBean.userName,1)
                     },
                     delListener = View.OnClickListener {//删除
                         myDataBeans.removeAt(position)
@@ -205,7 +217,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                         adapter.notifyDataSetChanged()
                     })
             }
-            R.id.iv_reduce -> {//转账详情
+            R.id.iv_reduce -> {//删除
                 val position = AdapterUtils.getHolder(v).adapterPosition
                 myDataBeans.removeAt(position)
                 myData.removeAt(position)
