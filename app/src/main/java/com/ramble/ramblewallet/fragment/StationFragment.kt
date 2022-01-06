@@ -6,25 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.MessageCenterActivity
 import com.ramble.ramblewallet.activity.MsgDetailsActivity
-import com.ramble.ramblewallet.adapter.RecyclerViewFragment
+import com.ramble.ramblewallet.base.BaseFragment
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.FragmentProclamationBinding
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.StationItem
-import com.ramble.ramblewallet.pull.EndlessRecyclerViewScrollListener
-import com.ramble.ramblewallet.pull.QMUIPullRefreshLayout
 import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
+import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter
+import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import java.util.*
 
 /**
@@ -32,17 +32,18 @@ import java.util.*
  * 作者　: potato
  * 描述　: 站内消息
  */
-open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPullListener {
+open class StationFragment : BaseFragment() {
     private lateinit var binding: FragmentProclamationBinding
     lateinit var myActivity: MessageCenterActivity
         private set
-    private lateinit var endless: EndlessRecyclerViewScrollListener
     var isShowCheck: Boolean = false
     var isShowALLCheck: Boolean = false
     var isEmpty: Boolean = false
     private var dlist: ArrayList<Int>? = ArrayList()
-
     private  var list= mutableListOf<Any?>()
+    private var currentPage = 1
+    private var totalPage = 1
+    private val adapter = RecyclerAdapter()
 
     override fun onAttach(context: Context) {
         myActivity = activity as MessageCenterActivity
@@ -62,47 +63,40 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
     ): View? {
         if (reusedView == null) {
             binding = inflater.dataBinding(R.layout.fragment_proclamation, container)
-            binding.pullToRefresh.setOnPullListener(this)
-            LinearLayoutManager(myActivity).apply {
-                binding.recycler.layoutManager = this
-                endless = EndlessRecyclerViewScrollListener(this) { _, _ ->
-                    if (!lock && currentPage < totalPage) {
-                        lock = true
-                        currentPage += 1
-                        ProgressItem.addTo(adapter)
-                        load()
-                    }
-                    if (currentPage >= totalPage) {
-//                        toastDefault("已加载完所有数据！")
-                    }
-                }
-                binding.recycler.addOnScrollListener(endless)
+            binding.lyPullRefresh.setRefreshHeader(ClassicsHeader(myActivity))
+            binding.lyPullRefresh.setRefreshFooter(ClassicsFooter(myActivity))
+            //刷新的监听事件
+            binding.lyPullRefresh.setOnRefreshListener {
+                binding.lyPullRefresh.finishRefresh() //刷新完成
+                ProgressItem.addTo(adapter)
+                reFreshData()
+            }
+            //加载的监听事件
+            binding.lyPullRefresh.setOnLoadMoreListener {
+                binding.lyPullRefresh.finishLoadMore() //加载完成
+                ProgressItem.addTo(adapter)
+                currentPage += 1
+                loadData()
+
             }
             binding.recycler.adapter = adapter
             reusedView = binding.root
         }
-//        binding.tvCancel.setOnClickListener(this)
-//        binding.tvDelete.setOnClickListener(this)
         return reusedView
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if (isEmpty) {
-            setEmptyView()
-            return
-        }
-        setInitChecked()
-    }
 
+    private fun reFreshData() {
+        currentPage = 1
+        totalPage = 1
+        loadData()
+    }
     override fun onResume() {
         super.onResume()
-        if ((lock || currentPage > 0) && adapter.isEmpty) {
-            setEmptyView()
-        }
+        reFreshData()
     }
 
-    private fun load() {
+    private fun loadData() {
         lock = true
         currentPage++
         var page = Page()
@@ -229,30 +223,13 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
     }
 
     private fun onLoaded() {
-//        myActivity.dismissLoading()
-        lock = false
-        binding.pullToRefresh.finishRefresh()
         ProgressItem.removeFrom(adapter)
     }
 
-    override fun onRefresh() {
-        init()
-    }
-
-    private fun init() {
-        if (lock) {
-            binding.pullToRefresh.finishRefresh()
-            return
-        }
-        currentPage = 0
-        totalPage = 1
-        endless.reset()
-        load()
-    }
 
     override fun actualLazyLoad() {
         super.actualLazyLoad()
-        binding.pullToRefresh.setToRefreshDirectly()
+        reFreshData()
     }
 
     override fun onClick(v: View?) {
@@ -328,9 +305,9 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
     }
 
 
-    override fun apply(count: Int) {
+    private fun apply(count: Int) {
         binding.txtEmpty.isVisible = count == 0
-        binding.pullToRefresh.isVisible = count > 0
+        binding.lyPullRefresh.isVisible = count > 0
     }
 
     private fun setIDlist() {
@@ -346,15 +323,7 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
         }
     }
 
-//    private fun selectTvCancel() {
-//        if (tv_cancel.text == "全  选") {
-//            setAdapterALLChecked(true)
-//            tv_cancel.text = "取消全选"
-//        } else {
-//            setAdapterALLChecked(false)
-//            tv_cancel.text = "全  选"
-//        }
-//    }
+
 
     private fun setAdapterEditable(isEditable: Boolean) {
         isShowCheck = isEditable
@@ -397,11 +366,6 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
     }
 
     private fun passStatus(isedit: Boolean) {
-//        if (isedit) {
-//            binding.layoutBottoom.visibility = View.VISIBLE
-//        } else {
-//            binding.layoutBottoom.visibility = View.GONE
-//        }
         setAdapterEditable(isedit)
     }
 
@@ -411,10 +375,4 @@ open class StationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
 
     }
 
-    private fun setEmptyView() {
-        isEmpty = true
-//        binding.pullToRefresh.visibility = View.GONE
-//        binding.emptyView.visibility = View.VISIBLE
-//        binding.layoutBottoom.visibility = View.GONE
-    }
 }

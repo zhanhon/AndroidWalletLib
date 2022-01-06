@@ -50,40 +50,13 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         linearLayoutManager.orientation = OrientationHelper.VERTICAL
         binding.rvMainCurrency.layoutManager = linearLayoutManager
         binding.rvMainCurrency.adapter = adapter
-        myDataBeans = arrayListOf()
-        var a = MyAddressBean()
-        a.userName = "大爷"
-        a.address = "dfgfdfgpfdgkdpdsfs"
-        a.type = 1
-        var a1 = MyAddressBean()
-        a1.userName = "大爷1"
-        a1.address = "dfgfdfgpfdgkdpdsfs1"
-        a1.type = 2
-        var a2 = MyAddressBean()
-        a2.userName = "大爷2"
-        a2.address = "dfgfdfgpfdgkdpdsfs2"
-        a2.type = 3
-
-        var b = MyAddressBean()
-        b.userName = "大爷"
-        b.address = "hhhhh"
-        b.type = 1
-        var b1 = MyAddressBean()
-        b1.userName = "大爷1"
-        b1.address = "hhhhh"
-        b1.type = 2
-        var b2 = MyAddressBean()
-        b2.userName = "大爷2"
-        b2.address = "hhhh"
-        b2.type = 3
-        myDataBeans.add(a)
-        myDataBeans.add(a1)
-        myDataBeans.add(a2)
-        myDataBeans.add(b)
-        myDataBeans.add(b1)
-        myDataBeans.add(b2)
-        println("-=-=-=->walletJson:${Gson().toJson(myDataBeans)}")
-        SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myDataBeans))
+        if (SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
+            myDataBeans =
+                Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, ""),
+                    object : TypeToken<ArrayList<MyAddressBean>>() {}.type
+                )
+        }
         if (SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
             myData =
                 Gson().fromJson(
@@ -167,6 +140,27 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
                 adapter.replaceAt(pos,AddressBookItem(event.data()))
                 adapter.notifyDataSetChanged()
+            }
+            Pie.EVENT_ADDRESS_BOOK_ADD->{
+                if (SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
+                    myDataBeans =
+                        Gson().fromJson(
+                            SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, ""),
+                            object : TypeToken<ArrayList<MyAddressBean>>() {}.type
+                        )
+                }
+                myDataBeans.add(event.data())
+
+                if (SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
+                    myData =
+                        Gson().fromJson(
+                            SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, ""),
+                            object : TypeToken<ArrayList<MyAddressBean>>() {}.type
+                        )
+                }
+                myData.add(event.data())
+                SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
+                loadData()
             }
             else -> return
         }

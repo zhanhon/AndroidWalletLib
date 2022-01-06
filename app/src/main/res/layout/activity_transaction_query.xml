@@ -73,7 +73,7 @@
                 app:stl_underlineColor="@android:color/transparent"
                 app:stl_underlineThickness="@dimen/dp_08" />
 
-            <com.ramble.ramblewallet.pull.DeadViewPager
+            <com.ramble.ramblewallet.wight.DeadViewPager
                 android:id="@+id/pager"
                 style="@style/ConCon"
                 app:layout_constraintBottom_toBottomOf="parent"

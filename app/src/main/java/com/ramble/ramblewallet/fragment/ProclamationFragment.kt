@@ -7,12 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.MessageCenterActivity
 import com.ramble.ramblewallet.activity.MsgDetailsActivity
-import com.ramble.ramblewallet.adapter.RecyclerViewFragment
+import com.ramble.ramblewallet.base.BaseFragment
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.FragmentProclamationBinding
@@ -21,13 +19,14 @@ import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.StationItem
 import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.pull.EndlessRecyclerViewScrollListener
-import com.ramble.ramblewallet.pull.QMUIPullRefreshLayout
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
+import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter
+import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import java.util.ArrayList
 
 
@@ -36,14 +35,16 @@ import java.util.ArrayList
  * 作者　: potato
  * 描述　:公告
  */
-class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPullListener {
+class ProclamationFragment : BaseFragment(){
     private lateinit var binding: FragmentProclamationBinding
     lateinit var myActivity: MessageCenterActivity
         private set
-    private lateinit var endless: EndlessRecyclerViewScrollListener
     var isShowCheck: Boolean = false
     var isShowALLCheck: Boolean = false
     private  var list= mutableListOf<Any?>()
+    private var currentPage = 1
+    private var totalPage = 1
+    private val adapter = RecyclerAdapter()
 
     override fun onAttach(context: Context) {
         myActivity = activity as MessageCenterActivity
@@ -63,18 +64,21 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
     ): View? {
         if (reusedView == null) {
             binding = inflater.dataBinding(R.layout.fragment_proclamation, container)
-            binding.pullToRefresh.setOnPullListener(this)
-            LinearLayoutManager(myActivity).apply {
-                binding.recycler.layoutManager = this
-                endless = EndlessRecyclerViewScrollListener(this) { _, _ ->
-                    if (!lock && currentPage < totalPage) {
-                        lock = true
-                        ProgressItem.addTo(adapter)
-                        currentPage += 1
-                        load()
-                    }
-                }
-                binding.recycler.addOnScrollListener(endless)
+            binding.lyPullRefresh.setRefreshHeader(ClassicsHeader(myActivity))
+            binding.lyPullRefresh.setRefreshFooter(ClassicsFooter(myActivity))
+            //刷新的监听事件
+            binding.lyPullRefresh.setOnRefreshListener {
+                binding.lyPullRefresh.finishRefresh() //刷新完成
+                ProgressItem.addTo(adapter)
+                reFreshData()
+            }
+            //加载的监听事件
+            binding.lyPullRefresh.setOnLoadMoreListener {
+                binding.lyPullRefresh.finishLoadMore() //加载完成
+                ProgressItem.addTo(adapter)
+                currentPage += 1
+                loadData()
+
             }
             binding.recycler.adapter = adapter
             reusedView = binding.root
@@ -83,8 +87,8 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
     }
 
     @SuppressLint("CheckResult")
-    private fun load() {
-        var req = Page.Req(currentPage, 1, 1)
+    private fun loadData() {
+        var req = Page.Req(currentPage, 2, 1)
         myActivity.mApiService.getNotice(
             req.toApiRequest(noticeInfoUrl)
         ).applyIo().subscribe(
@@ -133,13 +137,13 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
                             }
                         }
                         apply(adapter.itemCount)
-
+                        onLoaded()
                     }
 
                 } else {
                     println("==================>getTransferInfo1:${it.message()}")
                 }
-                onLoaded()
+
             }, {
                 onLoaded()
                 println("==================>getTransferInfo1:${it.printStackTrace()}")
@@ -158,37 +162,29 @@ class ProclamationFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPul
         adapter.notifyItemRangeChanged(0, adapter.itemCount, isEditable)
     }
 
-    override fun apply(count: Int) {
+    private fun apply(count: Int) {
         binding.txtEmpty.isVisible = count == 0
-        binding.pullToRefresh.isVisible = count > 0
+        binding.lyPullRefresh.isVisible = count > 0
     }
 
     private fun onLoaded() {
-        lock = false
-        binding.pullToRefresh.finishRefresh()
         ProgressItem.removeFrom(adapter)
     }
 
-    override fun onRefresh() {
-        if (lock) {
-            binding.pullToRefresh.finishRefresh()
-            return
-        }
+    private fun reFreshData() {
         currentPage = 1
         totalPage = 1
-        endless.reset()
-        load()
+        loadData()
+    }
+    override fun onResume() {
+        super.onResume()
+        reFreshData()
     }
 
 
     override fun actualLazyLoad() {
         super.actualLazyLoad()
-        binding.pullToRefresh.setToRefreshDirectly()
-    }
-
-
-    private fun sendToServer() {
-
+        reFreshData()
     }
 
 

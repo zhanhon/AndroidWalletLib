@@ -27,5 +27,9 @@ public class Pie {
      * 地址本编辑地址
      */
     public static final int EVENT_ADDRESS_BOOK_UPDATA = 2002;
+    /**
+     * 新增地址本地址
+     */
+    public static final int EVENT_ADDRESS_BOOK_ADD = 2003;
 
 }

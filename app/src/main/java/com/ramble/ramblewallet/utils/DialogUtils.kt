@@ -6,15 +6,13 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.AddressBookActivity
 import com.ramble.ramblewallet.activity.ScanActivity
 import com.ramble.ramblewallet.bean.MyAddressBean
 import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.constant.ARG_PARAM2
-import com.ramble.ramblewallet.constant.ARG_PARAM3
-import com.ramble.ramblewallet.constant.ARG_PARAM4
 import com.ramble.ramblewallet.databinding.BottomNoticeDialog2Binding
 import com.ramble.ramblewallet.databinding.BottomNoticeDialogBinding
 import com.ramble.ramblewallet.helper.dataBinding
@@ -27,7 +25,7 @@ import com.ramble.ramblewallet.helper.start
  */
 fun showBottomDialog(
     activity: Activity,
-    tvName:String,
+    tvName: String,
     copeListener: View.OnClickListener? = null,
     editListener: View.OnClickListener? = null,
     delListener: View.OnClickListener? = null
@@ -42,7 +40,7 @@ fun showBottomDialog(
         window?.setGravity(Gravity.BOTTOM)
         show()
         setContentView(binding.root)
-        binding.tvTitle.text=tvName
+        binding.tvTitle.text = tvName
         binding.tvCopy.setOnClickListener {
             dismiss()
             copeListener?.onClick(it)
@@ -57,6 +55,7 @@ fun showBottomDialog(
         }
     }
 }
+
 /**
  * 时间　: 2022/1/5 15:52
  * 作者　: potato
@@ -64,8 +63,8 @@ fun showBottomDialog(
  */
 fun showBottomDialog2(
     activity: AddressBookActivity,
-    tvName:String,
-    type:Int,
+    tvName: String,
+    type: Int,
     editListener: View.OnClickListener? = null
 ): Dialog {
     val binding: BottomNoticeDialog2Binding =
@@ -79,16 +78,18 @@ fun showBottomDialog2(
         show()
         setContentView(binding.root)
         binding.editName.setText(tvName)
-        when(type){
-            1-> {
-                binding.tvTitle.text="编辑地址"
-                binding.tvUpdata.text=activity.getString(R.string.edit)
+        when (type) {
+            1 -> {
+                binding.tvTitle.text = "编辑地址"
+                binding.tvUpdata.text = activity.getString(R.string.edit)
             }
-            2->{
-                binding.tvTitle.text="新增地址"
-                binding.tvUpdata.text=activity.getString(R.string.confirm)
+            2 -> {
+                binding.tvTitle.text = "新增地址"
+                binding.tvUpdata.text = activity.getString(R.string.confirm)
             }
         }
+
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
         binding.ivQr.setOnClickListener {
             activity.start(ScanActivity::class.java, Bundle().also {
                 it.putInt(ARG_PARAM1, 1)
@@ -98,24 +99,28 @@ fun showBottomDialog2(
             dismiss()
         }
         binding.tvUpdata.setOnClickListener {
-            if (binding.editName.text.isNullOrEmpty()||binding.editAddress.text.isNullOrEmpty())return@setOnClickListener
+            if (binding.editName.text.isNullOrEmpty() || binding.editAddress.text.isNullOrEmpty()) return@setOnClickListener
             editListener?.onClick(it)
-            var data=MyAddressBean()
-            data.address=binding.editAddress.text.toString()
-            data.userName=binding.editName.text.toString()
-            data.type=if (data.address.startsWith("1")||data.address.startsWith("3")){
-                        1
-            }else if (data.address.startsWith("0")){
+            var data = MyAddressBean()
+            data.address = binding.editAddress.text.toString()
+            data.userName = binding.editName.text.toString()
+            data.type = if (data.address.startsWith("1") || data.address.startsWith("3")) {
+                1
+            } else if (data.address.startsWith("0")) {
                 2
-            }else if (data.address.startsWith("T")||data.address.startsWith("t")){
+            } else if (data.address.startsWith("T") || data.address.startsWith("t")) {
                 3
-            }else{
+            } else {
                 4
             }
-            RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_UPDATA, data)
+            when (type) {
+                1 -> RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_UPDATA, data)
+                2 -> RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_ADD, data)
+            }
+
             dismiss()
         }
-        activity.setOnResultsListener(object :AddressBookActivity.OnResultsListener{
+        activity.setOnResultsListener(object : AddressBookActivity.OnResultsListener {
             override fun onResultsClick(result: String) {
                 binding.editAddress.setText(result)
             }

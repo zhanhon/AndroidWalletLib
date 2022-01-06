@@ -8,27 +8,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.DealDetailActivity
 import com.ramble.ramblewallet.activity.TransactionQueryActivity
-import com.ramble.ramblewallet.adapter.RecyclerViewFragment
+import com.ramble.ramblewallet.base.BaseFragment
 import com.ramble.ramblewallet.bean.QueryTransferRecord
 import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.databinding.FragmentTransactionQueryBinding
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.TransferItem
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.network.transferInfoUrl
-import com.ramble.ramblewallet.pull.EndlessRecyclerViewScrollListener
-import com.ramble.ramblewallet.pull.QMUIPullRefreshLayout
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.utils.toJdk7Date
 import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
+import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter
+import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
 import java.util.ArrayList
@@ -38,13 +37,12 @@ import java.util.ArrayList
  * 作者　: potato
  * 描述　:
  */
-class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.OnPullListener,
+class TransactionQueryFragment : BaseFragment(),
     RadioGroup.OnCheckedChangeListener {
     private lateinit var binding: FragmentTransactionQueryBinding
     lateinit var myActivity: TransactionQueryActivity
         private set
     private var gameType: Int = 1
-    private lateinit var endless: EndlessRecyclerViewScrollListener
     private lateinit var chooseDay: LocalDateTime
     private lateinit var startDay: LocalDateTime
     private var status: Int? = null
@@ -52,6 +50,9 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
     private var endTime: Long? = null
     private var startTime: Long? = null
     private var isAll = false
+    private var currentPage = 1
+    private var totalPage = 1
+    private val adapter = RecyclerAdapter()
 
 
     override fun onAttach(context: Context) {
@@ -75,55 +76,46 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
             binding = inflater.dataBinding(R.layout.fragment_transaction_query, container)
             chooseDay = LocalDateTime.now()
             chooseDay = LocalDateTime.of(chooseDay.toLocalDate(), LocalTime.MAX)
-            binding.pullToRefresh.setOnPullListener(this)
+            binding.lyPullRefresh.setRefreshHeader(ClassicsHeader(myActivity))
+            binding.lyPullRefresh.setRefreshFooter(ClassicsFooter(myActivity))
+            //刷新的监听事件
+            binding.lyPullRefresh.setOnRefreshListener {
+                binding.lyPullRefresh.finishRefresh() //刷新完成
+                ProgressItem.addTo(adapter)
+                reFreshData()
+            }
+            //加载的监听事件
+            binding.lyPullRefresh.setOnLoadMoreListener {
+                binding.lyPullRefresh.finishLoadMore() //加载完成
+                ProgressItem.addTo(adapter)
+                currentPage += 1
+                loadData()
+
+            }
             binding.tableHeader.check(R.id.all)
             isAll = true
-            LinearLayoutManager(myActivity).apply {
-                binding.recycler.layoutManager = this
-                endless = EndlessRecyclerViewScrollListener(this) { _, _ ->
-                    if (!lock && currentPage < totalPage) {
-                        lock = true
-                        ProgressItem.addTo(adapter)
-                        currentPage += 1
-                        loadData()
-                    }
-                    if (currentPage >= totalPage) {
-//                        toastDefault("已加载完所有数据！")
-                    }
-                }
-                binding.recycler.addOnScrollListener(endless)
-            }
             binding.recycler.adapter = adapter
-
             binding.tableHeader.setOnCheckedChangeListener(this)
             reusedView = binding.root
         }
         return reusedView
     }
 
-    override fun onRefresh() {
-        init()
-    }
 
-    private fun init() {
-        if (lock) {
-            binding.pullToRefresh.finishRefresh()
-            return
-        }
+    private fun reFreshData() {
         currentPage = 1
         totalPage = 1
-        endless.reset()
         loadData()
     }
 
     override fun onResume() {
         super.onResume()
-        init()
+        reFreshData()
     }
 
     override fun actualLazyLoad() {
         super.actualLazyLoad()
-        binding.pullToRefresh.setToRefreshDirectly()
+        reFreshData()
     }
 
     @SuppressLint("CheckResult")
@@ -186,8 +178,6 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
     }
 
     private fun onLoaded() {
-        lock = false
-        binding.pullToRefresh.finishRefresh()
         ProgressItem.removeFrom(adapter)
     }
 
@@ -213,31 +203,31 @@ class TransactionQueryFragment : RecyclerViewFragment(), QMUIPullRefreshLayout.O
         }
     }
 
-    override fun apply(count: Int) {
+    private fun apply(count: Int) {
         binding.txtEmpty.isVisible = count == 0
-        binding.pullToRefresh.isVisible = count > 0
+        binding.lyPullRefresh.isVisible = count > 0
     }
 
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
         when (checkedId) {
             R.id.all -> {
                 isAll = true
-                init()
+                reFreshData()
             }
             R.id.week -> {
                 isAll = false
                 startDay = LocalDateTime.of(chooseDay.plusDays(-7).toLocalDate(), LocalTime.MIN)
-                init()
+                reFreshData()
             }
             R.id.month -> {
                 isAll = false
                 startDay = LocalDateTime.of(chooseDay.plusMonths(-1).toLocalDate(), LocalTime.MIN)
-                init()
+                reFreshData()
             }
             R.id.year -> {
                 isAll = false
                 startDay = LocalDateTime.of(chooseDay.plusYears(-1).toLocalDate(), LocalTime.MIN)
-                init()
+                reFreshData()
             }
         }
     }

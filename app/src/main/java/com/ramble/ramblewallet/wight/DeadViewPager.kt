@@ -1,4 +1,4 @@
-package com.ramble.ramblewallet.pull
+package com.ramble.ramblewallet.wight
 
 import android.content.Context
 import android.util.AttributeSet
