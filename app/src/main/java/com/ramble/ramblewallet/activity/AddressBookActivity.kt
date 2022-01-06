@@ -162,12 +162,10 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             Pie.EVENT_ADDRESS_BOOK_UPDATA->{
                 Log.e("111111111",event.data<MyAddressBean>().userName)
                 Log.e("1111111112",event.data<MyAddressBean>().address)
-                bean.userName=event.data<MyAddressBean>().userName
-                bean.address=event.data<MyAddressBean>().address
-                myDataBeans.set(pos,bean)
-                myData.set(pos,bean)
+                myDataBeans.set(pos,event.data())
+                myData.set(pos,event.data())
                 SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
-                adapter.replaceAt(pos,AddressBookItem(bean))
+                adapter.replaceAt(pos,AddressBookItem(event.data()))
                 adapter.notifyDataSetChanged()
             }
             else -> return
@@ -226,6 +224,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 adapter.notifyDataSetChanged()
             }
             R.id.add -> {
+                showBottomDialog2(this, "",2)
                 if (myDataBeans.isNullOrEmpty()) return
                 myDataBeans.forEach {
                     it.isNeedDelete = false

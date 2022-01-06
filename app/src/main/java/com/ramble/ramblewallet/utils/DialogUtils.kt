@@ -80,7 +80,14 @@ fun showBottomDialog2(
         setContentView(binding.root)
         binding.editName.setText(tvName)
         when(type){
-            1-> binding.tvTitle.text="编辑地址"
+            1-> {
+                binding.tvTitle.text="编辑地址"
+                binding.tvUpdata.text=activity.getString(R.string.edit)
+            }
+            2->{
+                binding.tvTitle.text="新增地址"
+                binding.tvUpdata.text=activity.getString(R.string.confirm)
+            }
         }
         binding.ivQr.setOnClickListener {
             activity.start(ScanActivity::class.java, Bundle().also {
@@ -96,6 +103,15 @@ fun showBottomDialog2(
             var data=MyAddressBean()
             data.address=binding.editAddress.text.toString()
             data.userName=binding.editName.text.toString()
+            data.type=if (data.address.startsWith("1")||data.address.startsWith("3")){
+                        1
+            }else if (data.address.startsWith("0")){
+                2
+            }else if (data.address.startsWith("T")||data.address.startsWith("t")){
+                3
+            }else{
+                4
+            }
             RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_UPDATA, data)
             dismiss()
         }
