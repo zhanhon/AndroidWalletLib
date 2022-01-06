@@ -16,13 +16,15 @@ import com.ramble.ramblewallet.bean.MyDataBean
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityContributingWordsBinding
 import com.ramble.ramblewallet.ethereum.MnemonicUtils
-import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.ethereum.WalleETHManager
+import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
+import org.tron.walletserver.WalletTron
+import org.tron.walletserver.WalletTronManager
 
 
 class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
@@ -141,6 +143,17 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
                 walletETHString = mnemonicList[0]
             }
         }
+
+
+        val wallet: WalletTron = WalletTron(true)
+        try {
+            wallet.setWalletName(walletName)
+            WalletTronManager.store(this, wallet, walletPassword)
+            WalletTronManager.selectWallet(this, walletName)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         //1、助记词生成keystore
         var walletETHKeyStore: WalletETH =
             WalleETHManager.generateWalletKeystore(walletPassword, walletETHString.trim())
@@ -152,7 +165,11 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
         println("-=-=-=->walletETHPrivateKey:${walletETHKeyStore.privateKey}")
         println("-=-=-=->walletETHKeystore:${walletETHKeyStore.keystore}")
 
-        putAddress(walletETHKeyStore)
+        var walletTronKeyStore = WalletETH(
+            walletName, walletPassword, walletETHKeyStore.mnemonic,
+            wallet.address, wallet.privateKey.toString(), wallet.publicKey.toString(), "", 3, false
+        )
+        putAddress(walletETHKeyStore, walletTronKeyStore)
 
         if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
             saveWalletList =
@@ -162,6 +179,7 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
                 )
         }
         saveWalletList.add(walletETHKeyStore)
+        saveWalletList.add(walletTronKeyStore)
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
 
@@ -174,9 +192,10 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun putAddress(walletETHKeyStore: WalletETH) {
+    private fun putAddress(walletETHKeyStore: WalletETH, walletTRON: WalletETH) {
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
-        detailsList.add(AddressReport.DetailsList(walletETHKeyStore.address, 1)) //ETH
+        detailsList.add(AddressReport.DetailsList(walletETHKeyStore.address, 1)) //链类型|0:ETC|1:ETH|2:TRON
+        detailsList.add(AddressReport.DetailsList(walletTRON.address, 2))
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
         val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
         mApiService.putAddress(
@@ -186,7 +205,7 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
                 if (it.code() == 1) {
                     it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
                 } else {
-                    putAddress(walletETHKeyStore)
+                    putAddress(walletETHKeyStore, walletTRON)
                     println("-=-=-=->putAddress:${it.message()}")
                 }
             }, {

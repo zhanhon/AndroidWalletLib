@@ -1,3 +1,4 @@
+include ':TronLibrary'
 include ':wallet-eth'
 include ':app'
 include ':UMLibrary'

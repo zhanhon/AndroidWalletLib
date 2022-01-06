@@ -38,6 +38,7 @@ public class WalletManageAdapter extends BaseQuickAdapter<WalletETH, BaseViewHol
 
 
         baseViewHolder.setText(R.id.tv_wallet_name, walletManageBean.getWalletName());
+        baseViewHolder.setText(R.id.tv_currency_address, walletManageBean.getAddress());
 
         switch (walletManageBean.getType()) {
             case 1:
