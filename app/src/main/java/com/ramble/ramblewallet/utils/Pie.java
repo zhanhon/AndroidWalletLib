@@ -17,4 +17,11 @@ public class Pie {
      * pref 存储服务端cdn
      */
     public static final String PREFS_SERVER_CDN_SELECT = "server_cdn_select";
+
+
+    /**
+     * pref 存储服务端cdn
+     */
+    public static final int EVENT_ADDRESS_BOOK_SCAN = 2001;
+
 }

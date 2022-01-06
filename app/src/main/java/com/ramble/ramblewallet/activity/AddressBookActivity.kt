@@ -3,36 +3,28 @@ package com.ramble.ramblewallet.activity
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.RadioGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
-import com.ramble.ramblewallet.adapter.AddressBookAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MyAddressBean
 import com.ramble.ramblewallet.constant.ADDRESS_BOOK_INFO
-import com.ramble.ramblewallet.constant.WALLETINFO
 import com.ramble.ramblewallet.databinding.ActivityAddressBookBinding
-import com.ramble.ramblewallet.eth.Wallet
 import com.ramble.ramblewallet.item.AddressBookItem
-import com.ramble.ramblewallet.item.TransferItem
-import com.ramble.ramblewallet.utils.ClipboardUtils
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.showBottomDialog
+import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.OnDataSetChanged
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 
 class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
-    View.OnClickListener , OnDataSetChanged {
+    View.OnClickListener, OnDataSetChanged {
 
     private lateinit var binding: ActivityAddressBookBinding
     private var myDataBeans: ArrayList<MyAddressBean> = arrayListOf()
@@ -131,7 +123,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             R.id.check_bt -> {
                 myDataBeans = arrayListOf()
                 myData.forEach {
-                    if (it.type==2){
+                    if (it.type == 2) {
                         myDataBeans.add(it)
                     }
                 }
@@ -140,7 +132,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             R.id.check_eth -> {
                 myDataBeans = arrayListOf()
                 myData.forEach {
-                    if (it.type==1){
+                    if (it.type == 1) {
                         myDataBeans.add(it)
                     }
                 }
@@ -149,7 +141,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             R.id.check_trx -> {
                 myDataBeans = arrayListOf()
                 myData.forEach {
-                    if (it.type==3){
+                    if (it.type == 3) {
                         myDataBeans.add(it)
                     }
                 }
@@ -157,6 +149,32 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             }
         }
     }
+
+    override fun onRxBus(event: RxBus.Event) {
+        super.onRxBus(event)
+        when (event.id()) {
+            Pie.EVENT_ADDRESS_BOOK_SCAN ->{
+                Log.e("111111111",event.data())
+                mOnResultsListener!!.onResultsClick(event.data())
+            }
+            else -> return
+        }
+
+    }
+
+    /***
+     * 接口回调到activity中使用
+     */
+    var mOnResultsListener: OnResultsListener? = null
+
+    interface OnResultsListener {
+        fun onResultsClick(result: String)
+    }
+
+    fun setOnResultsListener(mOnResultsListener: OnResultsListener) {
+        this.mOnResultsListener = mOnResultsListener
+    }
+
 
     override fun onClick(v: View?) {
         when (v!!.id) {
@@ -167,18 +185,25 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 showBottomDialog(this,
                     itemBean.userName,
                     copeListener = View.OnClickListener {//复制
-                    ClipboardUtils.copy(itemBean.address)
-                },
+                        ClipboardUtils.copy(itemBean.address)
+                    },
                     editListener = View.OnClickListener {//编辑
+                        showBottomDialog2(this, "编辑地址", editListener = View.OnClickListener {//编辑
 
-                },
+
+                        })
+                    },
                     delListener = View.OnClickListener {//删除
-                    myDataBeans.removeAt(position)
-                    myData.removeAt(position)
-                    SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
-                    adapter.remove(position)
-                    adapter.notifyDataSetChanged()
-                })
+                        myDataBeans.removeAt(position)
+                        myData.removeAt(position)
+                        SharedPreferencesUtils.saveString(
+                            this,
+                            ADDRESS_BOOK_INFO,
+                            Gson().toJson(myData)
+                        )
+                        adapter.remove(position)
+                        adapter.notifyDataSetChanged()
+                    })
             }
             R.id.iv_reduce -> {//转账详情
                 val position = AdapterUtils.getHolder(v).adapterPosition
@@ -189,16 +214,16 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 adapter.notifyDataSetChanged()
             }
             R.id.add -> {
-                if (myDataBeans.isNullOrEmpty())return
+                if (myDataBeans.isNullOrEmpty()) return
                 myDataBeans.forEach {
-                    it.isNeedDelete=false
+                    it.isNeedDelete = false
                 }
                 loadData()
             }
             R.id.delete -> {
-                if (myDataBeans.isNullOrEmpty())return
+                if (myDataBeans.isNullOrEmpty()) return
                 myDataBeans.forEach {
-                    it.isNeedDelete=true
+                    it.isNeedDelete = true
                 }
                 loadData()
             }

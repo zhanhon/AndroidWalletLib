@@ -28,10 +28,14 @@ import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.QRCodeReader
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.REQUEST_CODE_1029
 import com.ramble.ramblewallet.databinding.ActivityScanBinding
+import com.ramble.ramblewallet.helper.getExtras
 import com.ramble.ramblewallet.helper.startMatisseActivity
 import com.ramble.ramblewallet.network.ObjUtils.isCameraPermission
+import com.ramble.ramblewallet.utils.Pie
+import com.ramble.ramblewallet.utils.RxBus
 import com.zhihu.matisse.Matisse
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -44,11 +48,13 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
     private var isLight = false
     private var zxingview: ZXingView? = null
     var isChecked: Boolean = false
+    private var type=0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scan)
+        type=getExtras().getInt(ARG_PARAM1,0)
         zxingview = findViewById(R.id.zxingview)
         zxingview?.setDelegate(this)
         initView()
@@ -177,10 +183,18 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
     }
 
     override fun onScanQRCodeSuccess(result: String?) {
-        transDialog(result)
         vibrate()
         zxingview?.stopSpot()
+        when(type){
+            1->{
+                RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_SCAN, result)
+                finish()
+            }
+            else->transDialog(result)
+        }
+
     }
+
 
     override fun onCameraAmbientBrightnessChanged(isDark: Boolean) {
 
