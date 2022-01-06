@@ -22,24 +22,36 @@ import com.ramble.ramblewallet.wight.HtmlWebView
  * 作者　: potato
  * 描述　: 消息详情
  */
-class MsgDetailsActivity : BaseActivity(), View.OnClickListener{
+class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityMsgDetailsBinding
-    private var title=""
-    private var content=""
-    private var createTime=""
-    private var typeText=""
+    private var title = ""
+    private var content = ""
+    private var createTime = ""
+    private var typeText = 0
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= DataBindingUtil.setContentView(this, R.layout.activity_msg_details)
-        title=getExtras().getString(ARG_PARAM1,"")
-        content=getExtras().getString(ARG_PARAM2,"")
-        createTime=getExtras().getString(ARG_PARAM3,"")
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_msg_details)
+        title = getExtras().getString(ARG_PARAM1, "")
+        content = getExtras().getString(ARG_PARAM2, "")
+        createTime = getExtras().getString(ARG_PARAM3, "")
+        typeText = getExtras().getInt(ARG_PARAM4, 0)
+        binding.tvMineTitle.text = when (typeText) {
+            1 -> {
+                binding.ivRight.visibility=View.GONE
+                getString(R.string.help_center_content)
+            }
+            2 -> {
+                binding.ivRight.visibility=View.GONE
+                getString(R.string.message_details)
+            }
+            else -> getString(R.string.message_details)
+        }
         binding.title1.text = title
         binding.time2.text = createTime
-        isCheckContent(content,title)
+        isCheckContent(content, title)
         initListener()
 
     }
@@ -71,10 +83,11 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener{
             binding.tvContent.text = content
         }
     }
+
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> finish()
-            R.id.iv_mine_right->{
+            R.id.iv_mine_right -> {
 
 
             }

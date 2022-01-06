@@ -2,7 +2,6 @@ package com.ramble.ramblewallet.item
 
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.bean.FaqInfos
-import com.ramble.ramblewallet.bean.GetFaqInfos
 import com.ramble.ramblewallet.databinding.ItemHelpHeaderBinding
 import com.ramble.ramblewallet.databinding.ItemHelpTodoBinding
 import com.ramble.ramblewallet.wight.CheckableSimpleRecyclerItem

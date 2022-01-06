@@ -10,7 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.FaqInfos
+import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
+import com.ramble.ramblewallet.constant.ARG_PARAM3
+import com.ramble.ramblewallet.constant.ARG_PARAM4
 import com.ramble.ramblewallet.databinding.ActivityHelpBinding
+import com.ramble.ramblewallet.helper.start
+import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.Help
 import com.ramble.ramblewallet.network.faqInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -89,21 +95,18 @@ class HelpActivity : BaseActivity(), View.OnClickListener {
         when (v!!.id) {
             R.id.iv_back -> finish()
             R.id.item_help_todo -> {
-                val holder = AdapterUtils.getHolder(v)
-                when (val item = holder.getItem<SimpleRecyclerItem>()) {
+                val item = AdapterUtils.getHolder(v).getItem<SimpleRecyclerItem>()
+                when (item) {
                     is Help.FaqTypeList -> {
-//                        RxViewModel.globe.helpTitle = item.data.typeName!!
-//                        RxViewModel.globe.FaqTypeListId = item.data.id!!
-//                        this.start2(
-//                            UniversalActivity::class.java,
-//                            Bundle().also { it.putInt(ARG_PARAM1, 21) })
+                        start(MsgDetailsActivity::class.java, Bundle().also {
+                            it.putString(ARG_PARAM1, item.data.title)
+                            it.putString(ARG_PARAM2, item.data.content)
+                            it.putString(ARG_PARAM3, item.data.createTime)
+                            it.putInt(ARG_PARAM4, 1)
+                        })
                     }
                     is Help.HotFaqList -> {
-//                        RxViewModel.globe.helpTitle = item.data.title!!
-//                        RxViewModel.globe.FaqTypeListId = item.data.id!!
-//                        this.start2(
-//                            UniversalActivity::class.java,
-//                            Bundle().also { it.putInt(ARG_PARAM1, 22) })
+
                     }
                 }
             }
