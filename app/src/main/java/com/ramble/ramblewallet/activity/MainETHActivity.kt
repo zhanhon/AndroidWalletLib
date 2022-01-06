@@ -29,8 +29,8 @@ import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.RateBeen
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
-import com.ramble.ramblewallet.eth.Wallet
-import com.ramble.ramblewallet.eth.WalletManager.getTokenBalance
+import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.ethereum.WalleETHManager.getTokenBalance
 import com.ramble.ramblewallet.network.rateInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.ClipboardUtils
@@ -46,7 +46,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mainAdapter: MainAdapter
     private var rateBean: List<RateBeen> = arrayListOf()
     private lateinit var currencyUnit: String
-    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
+    private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
     private var isClickEyes = false
     private var saveTokenList: ArrayList<String> = arrayListOf()
     private var animator: ObjectAnimator? = null
@@ -70,7 +70,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, RMB)
         saveWalletList = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-            object : TypeToken<ArrayList<Wallet>>() {}.type
+            object : TypeToken<ArrayList<WalletETH>>() {}.type
         )
 
 

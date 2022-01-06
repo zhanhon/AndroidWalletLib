@@ -1,4 +1,4 @@
-package com.ramble.ramblewallet.eth.utils;
+package com.ramble.ramblewallet.ethereum.utils;
 
 public final class HexUtils {
     public static String toHex(byte[] bytes) {

@@ -1,4 +1,4 @@
-package com.ramble.ramblewallet.eth;
+package com.ramble.ramblewallet.ethereum;
 
 import com.develop.mnemonic.KeyPairUtils;
 import com.develop.mnemonic.MnemonicUtils;
@@ -26,7 +26,7 @@ import static org.web3j.crypto.Keys.PRIVATE_KEY_LENGTH_IN_HEX;
 /**
  * @author Angus
  */
-public class WalletUtils {
+public class WalletETHUtils {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     static {
@@ -121,13 +121,13 @@ public class WalletUtils {
      * @throws CipherException
      * @throws IOException
      */
-    public static Wallet generateBip32WalletFile(String password, File destinationDirectory)
+    public static WalletETH generateBip32WalletFile(String password, File destinationDirectory)
             throws CipherException, IOException {
         String mnemonic = MnemonicUtils.generateMnemonic();
         ECKeyPair ecKeyPair = generateBip32ECKeyPair(mnemonic);
 
         String fileName = generateWalletFile(password, ecKeyPair, destinationDirectory, false);
-        Wallet wallet = new Wallet(mnemonic, EthUtils.getAddress(ecKeyPair), EthUtils.getPrivateKey(ecKeyPair), EthUtils.getPublicKey(ecKeyPair));
+        WalletETH wallet = new WalletETH(mnemonic, EthUtils.getAddress(ecKeyPair), EthUtils.getPrivateKey(ecKeyPair), EthUtils.getPublicKey(ecKeyPair));
         wallet.setFilename(fileName);
 
         return wallet;
@@ -140,14 +140,14 @@ public class WalletUtils {
      * @param mnemonic
      * @return
      */
-    public static Wallet generateBip32Wallet(String password, String mnemonic) throws CipherException, IOException {
-        ECKeyPair ecKeyPair = WalletUtils.generateBip32ECKeyPair(mnemonic);
+    public static WalletETH generateBip32Wallet(String password, String mnemonic) throws CipherException, IOException {
+        ECKeyPair ecKeyPair = WalletETHUtils.generateBip32ECKeyPair(mnemonic);
         WalletFile walletFile = createWalletFile(password, ecKeyPair, false);
         String json = objectMapper.writeValueAsString(walletFile);
         String privateKey = EthUtils.getPrivateKey(ecKeyPair);
         String publicKey = EthUtils.getPublicKey(ecKeyPair);
 
-        return new Wallet(mnemonic, EthUtils.getAddress(ecKeyPair), privateKey, publicKey, json);
+        return new WalletETH(mnemonic, EthUtils.getAddress(ecKeyPair), privateKey, publicKey, json);
     }
 
     /**

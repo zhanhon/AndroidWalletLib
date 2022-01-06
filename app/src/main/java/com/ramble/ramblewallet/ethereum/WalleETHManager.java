@@ -1,7 +1,7 @@
-package com.ramble.ramblewallet.eth;
+package com.ramble.ramblewallet.ethereum;
 
 import com.develop.mnemonic.wordlists.WordList;
-import com.ramble.ramblewallet.eth.listener.WalletListener;
+import com.ramble.ramblewallet.ethereum.listener.WalletListener;
 
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.FunctionReturnDecoder;
@@ -39,13 +39,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.ramble.ramblewallet.eth.MnemonicUtils.generateMnemonicEnglish;
+import static com.ramble.ramblewallet.ethereum.MnemonicUtils.generateMnemonicEnglish;
 
 
 /**
  * @author Angus
  */
-public class WalletManager {
+public class WalleETHManager {
 
     private static final int maxResetCount = 100;
     public static boolean DEBUG = true;
@@ -101,16 +101,16 @@ public class WalletManager {
     /**
      * 生成钱包地址
      */
-    public static Wallet generateWalletAddress(WordList type) {
+    public static WalletETH generateWalletAddress(WordList type) {
         try {
             String mnemonic = generateMnemonicEnglish().get(0);
-            ECKeyPair ecKeyPair = WalletUtils.generateBip32ECKeyPair(mnemonic);
+            ECKeyPair ecKeyPair = WalletETHUtils.generateBip32ECKeyPair(mnemonic);
             String address = EthUtils.getAddress(ecKeyPair);
 
             String privateKey = EthUtils.getPrivateKey(ecKeyPair);
             String publicKey = EthUtils.getPublicKey(ecKeyPair);
             log(String.format("generateWalletAddress: mnemonic = %s, address = %s, privateKey = %s", mnemonic, address, privateKey));
-            return new Wallet(mnemonic, address, privateKey, publicKey);
+            return new WalletETH(mnemonic, address, privateKey, publicKey);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -124,7 +124,7 @@ public class WalletManager {
      * @return
      */
     public static String generateAddress(String mnemonic) {
-        ECKeyPair ecKeyPair = WalletUtils.generateBip32ECKeyPair(mnemonic);
+        ECKeyPair ecKeyPair = WalletETHUtils.generateBip32ECKeyPair(mnemonic);
         String address = EthUtils.getAddress(ecKeyPair);
         log(String.format("generateAddress: mnemonic = %s, address = %s", mnemonic, address));
         return address;
@@ -165,7 +165,7 @@ public class WalletManager {
      * @param mnemonic
      */
     public static String generatePrivateKey(String mnemonic) {
-        ECKeyPair ecKeyPair = WalletUtils.generateBip32ECKeyPair(mnemonic);
+        ECKeyPair ecKeyPair = WalletETHUtils.generateBip32ECKeyPair(mnemonic);
         String privateKey = EthUtils.getPrivateKey(ecKeyPair);
         log(String.format("generatePrivateKey: mnemonic = %s, privateKey = %s", mnemonic, privateKey));
         return privateKey;
@@ -178,9 +178,9 @@ public class WalletManager {
      * @param mnemonic
      * @return
      */
-    public static Wallet generateWalletKeystore(String password, String mnemonic) {
+    public static WalletETH generateWalletKeystore(String password, String mnemonic) {
         try {
-            Wallet wallet = WalletUtils.generateBip32Wallet(password, mnemonic);
+            WalletETH wallet = WalletETHUtils.generateBip32Wallet(password, mnemonic);
             if (wallet != null) {
                 log(String.format("generateWalletKeystore: mnemonic = %s, password = %s, privateKey = %s, keystore = %s", mnemonic, password, wallet.getPrivateKey(), wallet.getKeystore()));
             }
@@ -201,7 +201,7 @@ public class WalletManager {
      */
     public static void generatePrivateKey(String password, String keystore) {
         try {
-            ECKeyPair ecKeyPair = WalletUtils.loadKeystore(password, keystore);
+            ECKeyPair ecKeyPair = WalletETHUtils.loadKeystore(password, keystore);
             String address = EthUtils.getAddress(ecKeyPair);
             String privateKey = EthUtils.getPrivateKey(ecKeyPair);
             log(String.format("generatePrivateKey: privateKey = %s, address = %s, password = %s, keystore = %s", privateKey, address, password, keystore));
@@ -239,7 +239,7 @@ public class WalletManager {
      * @return
      */
     public static String sendTransactionByMnemonic(String fromAddress, String mnemonic, String toAddress, String amount) {
-        ECKeyPair ecKeyPair = WalletUtils.generateBip32ECKeyPair(mnemonic);
+        ECKeyPair ecKeyPair = WalletETHUtils.generateBip32ECKeyPair(mnemonic);
         return sendTransaction(fromAddress, ecKeyPair, toAddress, EthUtils.toBigInteger(amount));
     }
 
@@ -260,7 +260,7 @@ public class WalletManager {
         getExecutorService().submit(new Runnable() {
             @Override
             public void run() {
-                ECKeyPair ecKeyPair = WalletUtils.generateBip32ECKeyPair(mnemonic);
+                ECKeyPair ecKeyPair = WalletETHUtils.generateBip32ECKeyPair(mnemonic);
                 String hash = sendTransaction(fromAddress, ecKeyPair, toAddress, EthUtils.toBigInteger(amount));
                 if (listener != null) {
                     listener.onSendTransaction(hash);

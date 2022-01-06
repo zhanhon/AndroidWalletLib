@@ -1,4 +1,4 @@
-package com.ramble.ramblewallet.eth.utils;
+package com.ramble.ramblewallet.ethereum.utils;
 
 import com.develop.mnemonic.wordlists.WordList;
 

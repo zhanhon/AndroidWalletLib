@@ -1,4 +1,4 @@
-package com.ramble.ramblewallet.eth.listener;
+package com.ramble.ramblewallet.ethereum.listener;
 
 /**
  * @author Angus

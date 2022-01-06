@@ -1,9 +1,9 @@
-package com.ramble.ramblewallet.eth;
+package com.ramble.ramblewallet.ethereum;
 
 import com.develop.mnemonic.crypto.SecureRandomUtils;
-import com.ramble.ramblewallet.eth.utils.ChineseSimplified;
-import com.ramble.ramblewallet.eth.utils.ChineseTraditional;
-import com.ramble.ramblewallet.eth.utils.English;
+import com.ramble.ramblewallet.ethereum.utils.ChineseSimplified;
+import com.ramble.ramblewallet.ethereum.utils.ChineseTraditional;
+import com.ramble.ramblewallet.ethereum.utils.English;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;

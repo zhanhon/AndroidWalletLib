@@ -1,7 +1,7 @@
-package com.ramble.ramblewallet.eth;
+package com.ramble.ramblewallet.ethereum;
 
-import com.ramble.ramblewallet.eth.utils.HexUtils;
-import com.ramble.ramblewallet.eth.utils.KECCAK256;
+import com.ramble.ramblewallet.ethereum.utils.HexUtils;
+import com.ramble.ramblewallet.ethereum.utils.KECCAK256;
 
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Keys;

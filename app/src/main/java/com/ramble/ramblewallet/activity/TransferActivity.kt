@@ -18,7 +18,7 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EthMinerConfig
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
-import com.ramble.ramblewallet.eth.TransferEthUtils
+import com.ramble.ramblewallet.ethereum.TransferEthUtils
 import com.ramble.ramblewallet.network.getEthMinerConfigUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.applyIo

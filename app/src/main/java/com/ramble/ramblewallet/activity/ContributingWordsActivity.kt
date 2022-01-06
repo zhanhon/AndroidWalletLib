@@ -15,9 +15,9 @@ import com.ramble.ramblewallet.bean.AddressReport
 import com.ramble.ramblewallet.bean.MyDataBean
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityContributingWordsBinding
-import com.ramble.ramblewallet.eth.MnemonicUtils
-import com.ramble.ramblewallet.eth.Wallet
-import com.ramble.ramblewallet.eth.WalletManager
+import com.ramble.ramblewallet.ethereum.MnemonicUtils
+import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.ethereum.WalleETHManager
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.ClipboardUtils
@@ -36,7 +36,7 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
     private lateinit var walletPassword: String
     private var currentTab = "english"
     private var walletETHString: String = ""
-    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
+    private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -142,8 +142,8 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
             }
         }
         //1、助记词生成keystore
-        var walletETHKeyStore: Wallet =
-            WalletManager.generateWalletKeystore(walletPassword, walletETHString.trim())
+        var walletETHKeyStore: WalletETH =
+            WalleETHManager.generateWalletKeystore(walletPassword, walletETHString.trim())
         walletETHKeyStore.walletName = walletName
         walletETHKeyStore.walletPassword = walletPassword
         walletETHKeyStore.type = 1
@@ -158,7 +158,7 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
             saveWalletList =
                 Gson().fromJson(
                     SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                    object : TypeToken<ArrayList<Wallet>>() {}.type
+                    object : TypeToken<ArrayList<WalletETH>>() {}.type
                 )
         }
         saveWalletList.add(walletETHKeyStore)
@@ -167,14 +167,14 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
 
 
         //2、之后地址校验
-        var isValidSuccess = WalletManager.isETHValidAddress(walletETHKeyStore.address)
+        var isValidSuccess = WalleETHManager.isETHValidAddress(walletETHKeyStore.address)
         if (isValidSuccess) {
             println("-=-=-=->isValidSuccess:$isValidSuccess")
             startActivity(Intent(this, MainETHActivity::class.java))
         }
     }
 
-    private fun putAddress(walletETHKeyStore: Wallet) {
+    private fun putAddress(walletETHKeyStore: WalletETH) {
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
         detailsList.add(AddressReport.DetailsList(walletETHKeyStore.address, 1)) //ETH
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)

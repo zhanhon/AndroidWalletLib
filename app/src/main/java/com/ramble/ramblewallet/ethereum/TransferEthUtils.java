@@ -1,4 +1,4 @@
-package com.ramble.ramblewallet.eth;
+package com.ramble.ramblewallet.ethereum;
 
 import android.annotation.SuppressLint;
 import android.util.Log;

@@ -17,9 +17,9 @@ import com.ramble.ramblewallet.bean.MyDataBean
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.custom.AutoLineFeedLayoutManager
 import com.ramble.ramblewallet.databinding.ActivityContributingWordsConfirmBinding
-import com.ramble.ramblewallet.eth.Wallet
-import com.ramble.ramblewallet.eth.WalletManager.generateWalletKeystore
-import com.ramble.ramblewallet.eth.WalletManager.isETHValidAddress
+import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.ethereum.WalleETHManager.generateWalletKeystore
+import com.ramble.ramblewallet.ethereum.WalleETHManager.isETHValidAddress
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
@@ -37,7 +37,7 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
     private var walletETHString: String = ""
     private lateinit var walletName: String
     private lateinit var walletPassword: String
-    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
+    private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
     private var currentTab = ""
     private lateinit var mnemonicETH: ArrayList<String>
 
@@ -64,7 +64,7 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                     walletETHString = "$walletETHString$it "
                 }
                 //1、助记词生成keystore
-                var walletETHKeyStore: Wallet =
+                var walletETHKeyStore: WalletETH =
                     generateWalletKeystore(walletPassword, walletETHString.trim())
                 walletETHKeyStore.walletName = walletName
                 walletETHKeyStore.walletPassword = walletPassword
@@ -80,7 +80,7 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                     saveWalletList =
                         Gson().fromJson(
                             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                            object : TypeToken<ArrayList<Wallet>>() {}.type
+                            object : TypeToken<ArrayList<WalletETH>>() {}.type
                         )
                 }
                 saveWalletList.add(walletETHKeyStore)
@@ -149,7 +149,7 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
     }
 
     @SuppressLint("CheckResult")
-    private fun putAddress(walletETHKeyStore: Wallet) {
+    private fun putAddress(walletETHKeyStore: WalletETH) {
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
         detailsList.add(AddressReport.DetailsList(walletETHKeyStore.address, 1)) //ETH
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)

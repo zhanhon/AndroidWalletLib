@@ -14,14 +14,14 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.WALLETINFO
 import com.ramble.ramblewallet.databinding.ActivityRecoverWalletBinding
-import com.ramble.ramblewallet.eth.Wallet
+import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 
 class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityRecoverWalletBinding
     private var chooseMode = 0
-    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
+    private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
     private var isErrorContributingWords = true
     private var isErrorSecretKey = true
     private var isErrorKeystore = true
@@ -42,7 +42,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     private fun initData() {
         saveWalletList = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-            object : TypeToken<ArrayList<Wallet>>() {}.type
+            object : TypeToken<ArrayList<WalletETH>>() {}.type
         )
         chooseMode = intent.getIntExtra(ARG_PARAM1, 0)
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
