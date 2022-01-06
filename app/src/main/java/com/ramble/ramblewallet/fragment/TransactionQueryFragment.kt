@@ -86,11 +86,14 @@ class TransactionQueryFragment : BaseFragment(),
             }
             //加载的监听事件
             binding.lyPullRefresh.setOnLoadMoreListener {
-                binding.lyPullRefresh.finishLoadMore() //加载完成
-                ProgressItem.addTo(adapter)
-                currentPage += 1
-                loadData()
-
+                if (currentPage<totalPage){
+                    binding.lyPullRefresh.finishLoadMore() //加载完成
+                    ProgressItem.addTo(adapter)
+                    currentPage += 1
+                    loadData()
+                }else{
+                    binding.lyPullRefresh.finishLoadMoreWithNoMoreData()
+                }
             }
             binding.tableHeader.check(R.id.all)
             isAll = true
