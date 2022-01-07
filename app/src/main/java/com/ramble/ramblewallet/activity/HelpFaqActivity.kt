@@ -9,16 +9,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.FaqInfos
+import com.ramble.ramblewallet.bean.QueryFaqInfos
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.constant.ARG_PARAM3
 import com.ramble.ramblewallet.constant.ARG_PARAM4
 import com.ramble.ramblewallet.databinding.ActivityHelpBinding
+import com.ramble.ramblewallet.helper.getExtras
 import com.ramble.ramblewallet.helper.start
-import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.Help
-import com.ramble.ramblewallet.network.faqInfoUrl
+import com.ramble.ramblewallet.network.queryFaqInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
@@ -27,26 +27,29 @@ import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
 
 /**
- * 时间　: 2021/12/17 8:45
+ * 时间　: 2022/1/7 11:46
  * 作者　: potato
- * 描述　: 帮助中心
+ * 描述　:
  */
-class HelpActivity : BaseActivity(), View.OnClickListener {
+class HelpFaqActivity: BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityHelpBinding
     private val adapter = RecyclerAdapter()
-
+    private var title = ""
+    private var id = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_help)
+        title = getExtras().getString(ARG_PARAM1, "")
+        id = getExtras().getInt(ARG_PARAM2, 0)
         initView()
         initListener()
         loadData()
     }
 
     private fun initView() {
-        binding.tvMineTitle.text = getString(R.string.help_center)
+        binding.tvMineTitle.text = title
         LinearLayoutManager(this).apply {
             binding.recycler.layoutManager = this
         }
@@ -60,20 +63,13 @@ class HelpActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("CheckResult")
     private fun loadData() {
-        mApiService.getFaqInfos(FaqInfos.Req(1).toApiRequest(faqInfoUrl)).applyIo().subscribe({
+        mApiService.queryAllFaqByType(QueryFaqInfos.Req(id,1).toApiRequest(queryFaqInfoUrl)).applyIo().subscribe({
             if (it.code() == 1) {
                 it.data()?.let { data ->
-                    adapter.add(Help.Header(getString(R.string.help_door_sister)))
                     ArrayList<SimpleRecyclerItem>().apply {
-                        it.data()!!.noviceList.forEach { o -> this.add(Help.FaqTypeList(o)) }
+                        data.forEach { o -> this.add(Help.FaqAllTypeList(o)) }
                         adapter.addAll(this.toList())
                     }
-                    adapter.add(Help.Header(getString(R.string.help_sever_sister)))
-                    ArrayList<SimpleRecyclerItem>().apply {
-                        it.data()!!.categoryList.forEach { o -> this.add(Help.HotFaqList(o)) }
-                        adapter.addAll(this.toList())
-                    }
-
                 }
             } else {
                 println("==================>getTransferInfo1:${it.message()}")
@@ -82,7 +78,6 @@ class HelpActivity : BaseActivity(), View.OnClickListener {
             println("==================>getTransferInfo1:${it.printStackTrace()}")
         }
         )
-
     }
 
 
@@ -96,18 +91,12 @@ class HelpActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_back -> finish()
             R.id.item_help_todo -> {
                 when (val item = AdapterUtils.getHolder(v).getItem<SimpleRecyclerItem>()) {
-                    is Help.FaqTypeList -> {
+                    is Help.FaqAllTypeList -> {
                         start(MsgDetailsActivity::class.java, Bundle().also {
                             it.putString(ARG_PARAM1, item.data.title)
                             it.putString(ARG_PARAM2, item.data.content)
                             it.putString(ARG_PARAM3, item.data.createTime)
                             it.putInt(ARG_PARAM4, 1)
-                        })
-                    }
-                    is Help.HotFaqList -> {
-                        start(HelpFaqActivity::class.java, Bundle().also {
-                            it.putString(ARG_PARAM1, item.data.name)
-                            it.putInt(ARG_PARAM2, item.data.id)
                         })
                     }
                 }

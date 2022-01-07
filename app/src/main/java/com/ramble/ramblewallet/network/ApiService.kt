@@ -18,6 +18,7 @@ const val rateInfoUrl = "wallet-decentralized-api/sys/getRateInfo"
 const val transferInfoUrl = "wallet-decentralized-api/transfer/info"
 const val noticeInfoUrl = "wallet-decentralized-api/sys/getNotice"
 const val faqInfoUrl = "wallet-decentralized-api/faq/getFaqInfos"
+const val queryFaqInfoUrl = "wallet-decentralized-api/faq/queryAllFaqByType"
 
 
 interface ApiService {
@@ -33,6 +34,10 @@ interface ApiService {
     /** 查询公告列表 */
     @POST(faqInfoUrl)
     fun getFaqInfos(@Body req: ApiRequest<FaqInfos.Req>): Observable<ApiResponse<FaqInfos>>
+
+    /** 获取分类下常见问题列表 */
+    @POST(queryFaqInfoUrl)
+    fun queryAllFaqByType(@Body req: ApiRequest<QueryFaqInfos.Req>): Observable<ApiResponse<List<QueryFaqInfos>>>
 
     /** APP端地址上传 */
     @POST(reportAddressUrl)

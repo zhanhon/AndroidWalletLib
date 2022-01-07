@@ -2,6 +2,7 @@ package com.ramble.ramblewallet.item
 
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.bean.FaqInfos
+import com.ramble.ramblewallet.bean.QueryFaqInfos
 import com.ramble.ramblewallet.databinding.ItemHelpHeaderBinding
 import com.ramble.ramblewallet.databinding.ItemHelpTodoBinding
 import com.ramble.ramblewallet.wight.CheckableSimpleRecyclerItem
@@ -54,15 +55,15 @@ class Help {
 //        }
 //    }
 //
-//    class adviceList2(val data: String) : SimpleRecyclerItem() {
-//        override fun getLayout(): Int = R.layout.item_help_todo
-//
-//        override fun bind(holder: ViewHolder) {
-//            val binding: ItemHelpTodoBinding = holder.binding()
-//            binding.itemHelpTodo.text = data
-//            holder.attachOnClickListener(R.id.item_help_todo)
-//        }
-//    }
+    class FaqAllTypeList(val data: QueryFaqInfos) : SimpleRecyclerItem() {
+        override fun getLayout(): Int = R.layout.item_help_todo
+
+        override fun bind(holder: ViewHolder) {
+            val binding: ItemHelpTodoBinding = holder.binding()
+            binding.itemHelpTodo.text = data.categoryName
+            holder.attachOnClickListener(R.id.item_help_todo)
+        }
+    }
 //
 //    class HotFaqMainList(val data: Faq) : SimpleRecyclerItem() {
 //        override fun getLayout(): Int = R.layout.item_sub_help_todo

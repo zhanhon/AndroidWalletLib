@@ -43,6 +43,7 @@
         <activity android:name=".activity.MessageCenterActivity" />
         <activity android:name=".activity.MsgDetailsActivity" />
         <activity android:name=".activity.HelpActivity" />
+        <activity android:name=".activity.HelpFaqActivity" />
         <activity android:name=".activity.DealDetailActivity" />
         <activity android:name=".activity.TransactionQueryActivity" />
         <activity android:name=".activity.ContributingWordsConfirmActivity" />
