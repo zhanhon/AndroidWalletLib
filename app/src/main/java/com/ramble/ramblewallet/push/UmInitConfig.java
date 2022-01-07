@@ -15,7 +15,6 @@ import com.ramble.ramblewallet.R;
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
-import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UTrack;

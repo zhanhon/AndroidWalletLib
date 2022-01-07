@@ -65,6 +65,7 @@ class TransactionQueryFragment : BaseFragment(),
         arguments?.let {
             gameType = it.getInt(ARG_PARAM1, 1)
         }
+        adapter.onClickListener = this
     }
 
     override fun onCreateView(
