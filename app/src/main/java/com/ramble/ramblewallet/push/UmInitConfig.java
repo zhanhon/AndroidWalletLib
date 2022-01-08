@@ -29,9 +29,10 @@ import static com.ramble.ramblewallet.constant.ConstantsKt.DEVICE_TOKEN;
 
 public class UmInitConfig {
 
-    private static final String TAG ="UmInitConfig";
+    private static final String TAG = "UmInitConfig";
     public static final String UPDATE_STATUS_ACTION = "com.umeng.message.example.action.UPDATE_STATUS";
     private static Handler handler;
+
     /**
      * 预初始化
      */
@@ -40,7 +41,8 @@ public class UmInitConfig {
         PushAgent.setup(context, "61cc2cb0cccde77a8a5cc2e7", "50bb050a3c372095dfbb6610b89bc987");
         UMConfigure.preInit(context, "61cc2cb0cccde77a8a5cc2e7", PushConstants.CHANNEL);
     }
-    public  static void  UMinit(Context context){
+
+    public static void umInit(Context context) {
 
         //初始化组件化基础库, 统计SDK/推送SDK/分享SDK都必须调用此初始化接口
         UMConfigure.init(context, "61cc2cb0cccde77a8a5cc2e7", "Umeng",
@@ -193,14 +195,14 @@ public class UmInitConfig {
             @Override
             public void onSuccess(String deviceToken) {
                 Log.i(TAG, "device token: " + deviceToken);
-                SharedPreferencesUtils.saveString(context,DEVICE_TOKEN,deviceToken);
+                SharedPreferencesUtils.saveString(context, DEVICE_TOKEN, deviceToken);
                 context.sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
             }
 
             @Override
             public void onFailure(String s, String s1) {
                 Log.i(TAG, "register failed: " + s + " " + s1);
-                SharedPreferencesUtils.saveString(context,DEVICE_TOKEN,"");
+                SharedPreferencesUtils.saveString(context, DEVICE_TOKEN, "");
                 context.sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
             }
         });
@@ -215,7 +217,6 @@ public class UmInitConfig {
         //魅族通道
         //MeizuRegister.register(this, MEIZU_APPID, MEIZU_APPKEY);
     }
-
 
 
 }

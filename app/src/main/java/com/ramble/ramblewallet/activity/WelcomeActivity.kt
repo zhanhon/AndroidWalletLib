@@ -37,7 +37,7 @@ class WelcomeActivity : BaseActivity() {
         }
         Handler().postDelayed({
             startActivity(Intent(this, MainETHActivity::class.java)) //暂时测试用
-            //startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
+//            startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
         }, 3000)
 
     }
@@ -48,7 +48,7 @@ class WelcomeActivity : BaseActivity() {
         UMConfigure.submitPolicyGrantResult(applicationContext, true)
         /*** 友盟sdk正式初始化 */
 
-        UmInitConfig.UMinit(this@WelcomeActivity)
+        UmInitConfig.umInit(this@WelcomeActivity)
         //推送平台多维度推送决策必须调用方法(需要同意隐私协议之后初始化完成调用)
         PushAgent.getInstance(this@WelcomeActivity).onAppStart()
     }

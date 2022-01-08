@@ -54,7 +54,7 @@ class MyApp : Application() {
             return
         }
 
-        UmInitConfig.UMinit(this)
+        UmInitConfig.umInit(this)
 
     }
 
