@@ -80,8 +80,8 @@
         </LinearLayout>
         <View
             android:layout_marginStart="@dimen/dp_60"
-            android:background="@color/gray_8F95AA"
+            android:background="@color/path_game_item_selected"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_04"/>
+            android:layout_height="@dimen/dp_08"/>
     </LinearLayout>
 </layout>
