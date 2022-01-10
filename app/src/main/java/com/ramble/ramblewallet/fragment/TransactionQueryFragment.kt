@@ -7,19 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.core.view.isVisible
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.DealDetailActivity
 import com.ramble.ramblewallet.activity.TransactionQueryActivity
 import com.ramble.ramblewallet.base.BaseFragment
 import com.ramble.ramblewallet.bean.QueryTransferRecord
-import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.FragmentTransactionQueryBinding
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.TransferItem
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.network.transferInfoUrl
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.utils.toJdk7Date
 import com.ramble.ramblewallet.wight.ProgressItem
@@ -140,12 +142,24 @@ class TransactionQueryFragment : BaseFragment(),
             3->2
             else->null
         }
+
+       var changeCurrencyType= when (SharedPreferencesUtils.getString(myActivity, CURRENCY, RMB)) {
+            RMB -> {
+              1
+            }
+            HKD -> {
+               2
+            }
+            else -> {
+               3
+            }
+        }
         var req = QueryTransferRecord.Req(
             currentPage,
             2,
             "0x90d51f90fdf0722f1d621820ca9f45547221fdd9",
             1,
-            1,
+            changeCurrencyType,
             endTime,
             startTime,
             status,

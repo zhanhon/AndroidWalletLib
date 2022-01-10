@@ -10,16 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.FaqInfos
-import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.constant.ARG_PARAM2
-import com.ramble.ramblewallet.constant.ARG_PARAM3
-import com.ramble.ramblewallet.constant.ARG_PARAM4
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityHelpBinding
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.Help
 import com.ramble.ramblewallet.network.faqInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.QuickItemDecoration
@@ -60,7 +58,18 @@ class HelpActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("CheckResult")
     private fun loadData() {
-        mApiService.getFaqInfos(FaqInfos.Req(1).toApiRequest(faqInfoUrl)).applyIo().subscribe({
+        var lang= when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
+            CN -> {
+                1
+            }
+            TW -> {
+                2
+            }
+            else -> {
+                3
+            }
+        }
+        mApiService.getFaqInfos(FaqInfos.Req(lang).toApiRequest(faqInfoUrl)).applyIo().subscribe({
             if (it.code() == 1) {
                 it.data()?.let { data ->
                     adapter.add(Help.Header(getString(R.string.help_door_sister)))

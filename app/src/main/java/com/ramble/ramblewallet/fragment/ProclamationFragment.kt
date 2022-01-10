@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.isVisible
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.MessageCenterActivity
@@ -19,6 +20,7 @@ import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.StationItem
 import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.utils.LanguageSetting
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.ProgressItem
@@ -91,7 +93,18 @@ class ProclamationFragment : BaseFragment(){
 
     @SuppressLint("CheckResult")
     private fun loadData() {
-        var req = Page.Req(currentPage, 2, 1)
+       var lang= when (SharedPreferencesUtils.getString(myActivity, LANGUAGE, CN)) {
+            CN -> {
+               1
+            }
+            TW -> {
+               2
+            }
+            else -> {
+               3
+            }
+        }
+        var req = Page.Req(currentPage, 2, lang)
         myActivity.mApiService.getNotice(
             req.toApiRequest(noticeInfoUrl)
         ).applyIo().subscribe(

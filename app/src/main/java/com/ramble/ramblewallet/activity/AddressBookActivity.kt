@@ -133,8 +133,6 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 mOnResultsListener!!.onResultsClick(event.data())
             }
             Pie.EVENT_ADDRESS_BOOK_UPDATA->{
-                Log.e("111111111",event.data<MyAddressBean>().userName)
-                Log.e("1111111112",event.data<MyAddressBean>().address)
                 myDataBeans.set(pos,event.data())
                 myData.set(pos,event.data())
                 SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
