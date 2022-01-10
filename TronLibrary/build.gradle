@@ -60,4 +60,6 @@ dependencies {
     api 'io.grpc:grpc-okhttp:1.17.1'
     api 'io.grpc:grpc-protobuf-lite:1.17.1'
     api 'io.grpc:grpc-stub:1.17.1'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.56'
+
 }

@@ -20,9 +20,13 @@ import com.ramble.ramblewallet.ethereum.WalleETHManager
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.tron.Wallet
+import com.ramble.ramblewallet.tron.bip32.Bip32ECKeyPair
+import com.ramble.ramblewallet.tron.bip32.Bip32ECKeyPair.HARDENED_BIT
 import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
+import org.tron.common.crypto.ECKey
 import org.tron.walletserver.WalletTron
 import org.tron.walletserver.WalletTronManager
 
@@ -144,15 +148,21 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
+        val seed: ByteArray = org.web3j.crypto.MnemonicUtils.generateSeed(
+            walletETHString.trim(),
+            null
+        )
 
-        val wallet: WalletTron = WalletTron(true)
-        try {
-            wallet.setWalletName(walletName)
-            WalletTronManager.store(this, wallet, walletPassword)
-            WalletTronManager.selectWallet(this, walletName)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+
+        val masterKeypair: Bip32ECKeyPair = Bip32ECKeyPair.generateKeyPair(seed)
+        val bip44Keypair: Bip32ECKeyPair? = generateBip44KeyPair(masterKeypair, false)
+        val mECKey: ECKey = ECKey.fromPrivate(bip44Keypair?.privateKeyBytes33)
+        val wallet = WalletTron(mECKey)
+        println("-=-=-=->wallestTRONAddress:${wallet.address}")
+        println("-=-=-=->walletTRONMnemonic:${wallet.publicKey}")
+        println("-=-=-=->walletTRONPrivateKey:${wallet.privateKey}")
+        println("-=-=-=->walletTRONKeystore:${walletETHString.trim()}")
+
 
         //1、助记词生成keystore
         var walletETHKeyStore: WalletETH =
@@ -213,4 +223,16 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
             }
         )
     }
+
+    private fun generateBip44KeyPair(master: Bip32ECKeyPair?, testNet: Boolean): Bip32ECKeyPair? {
+        return if (testNet) {
+            val path = intArrayOf(44 or HARDENED_BIT, 0 or HARDENED_BIT, 0 or HARDENED_BIT, 0)
+            Bip32ECKeyPair.deriveKeyPair(master, path)
+        } else {
+            val path = intArrayOf(44 or HARDENED_BIT, 195 or HARDENED_BIT, 0 or HARDENED_BIT, 0, 0)
+            Bip32ECKeyPair.deriveKeyPair(master, path)
+        }
+    }
+
+
 }

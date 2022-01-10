@@ -27,6 +27,10 @@ public class WalletTron {
         }
     }
 
+    public WalletTron(ECKey mECKey) {
+        this.mECKey = mECKey;
+    }
+
     public WalletTron(String privateKey) {
         setPrivateKey(privateKey);
     }

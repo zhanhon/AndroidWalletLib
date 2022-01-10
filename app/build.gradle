@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id "com.google.protobuf"
 }
 
 android {
@@ -63,30 +62,6 @@ android {
 
 }
 
-protobuf {
-    protoc {
-        artifact = 'com.google.protobuf:protoc:3.0.0'
-    }
-    plugins {
-        javalite {
-            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
-        }
-        grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.17.1'
-        }
-    }
-    generateProtoTasks {
-        all().each { task ->
-            task.plugins {
-                javalite {}
-                grpc {
-                    option 'lite'
-                }
-            }
-        }
-    }
-}
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -106,6 +81,7 @@ dependencies {
     //以太坊
     implementation 'org.web3j:core:3.3.1-android'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.56'
     //二维码
     implementation 'com.king.zxing:zxing-lite:1.1.7-androidx'
     //moshi
@@ -127,10 +103,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     //SmartRefreshLayout
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
-    //波场
-    api 'io.grpc:grpc-okhttp:1.17.1'
-    api 'io.grpc:grpc-protobuf-lite:1.17.1'
-    api 'io.grpc:grpc-stub:1.17.1'
+
 
     //友盟推送
     implementation project(':UMLibrary')
