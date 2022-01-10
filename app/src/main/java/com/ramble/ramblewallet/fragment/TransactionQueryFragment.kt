@@ -114,7 +114,7 @@ class TransactionQueryFragment : BaseFragment(),
 
     override fun onResume() {
         super.onResume()
-        reFreshData()
+//        reFreshData()
     }
 
     override fun actualLazyLoad() {

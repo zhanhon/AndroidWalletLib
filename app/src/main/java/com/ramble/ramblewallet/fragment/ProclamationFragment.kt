@@ -172,7 +172,7 @@ class ProclamationFragment : BaseFragment(){
     }
     override fun onResume() {
         super.onResume()
-        reFreshData()
+//        reFreshData()
     }
 
 

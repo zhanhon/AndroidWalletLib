@@ -96,7 +96,7 @@ open class StationFragment : BaseFragment() {
     }
     override fun onResume() {
         super.onResume()
-        reFreshData()
+//        reFreshData()
     }
 
     private fun loadData() {
