@@ -50,7 +50,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
             else -> getString(R.string.message_details)
         }
         binding.title1.text = title
-        binding.time2.text = createTime
+        binding.time2.text =if(createTime.isNotEmpty())"发布日期：$createTime"   else createTime
         isCheckContent(content, title)
         initListener()
 
