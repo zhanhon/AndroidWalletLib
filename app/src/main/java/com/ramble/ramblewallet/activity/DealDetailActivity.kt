@@ -12,6 +12,7 @@ import com.ramble.ramblewallet.bean.QueryTransferRecord
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.databinding.ActivityDealDetailBinding
 import com.ramble.ramblewallet.helper.getExtras
+import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.TimeUtils
 
 
@@ -81,6 +82,9 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
     private fun initListener() {
         binding.ivBack.setOnClickListener(this)
         binding.ivMineRight.setOnClickListener(this)
+        binding.addCopy.setOnClickListener(this)
+        binding.payCopy.setOnClickListener(this)
+        binding.numberCopy.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -88,6 +92,15 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_back -> finish()
             R.id.iv_mine_right -> {
 
+            }
+            R.id.add_copy -> {
+                ClipboardUtils.copy(binding.tvFromAddress.text.toString())
+            }
+            R.id.pay_copy -> {
+                ClipboardUtils.copy(binding.tvToAddress.text.toString())
+            }
+            R.id.number_copy -> {
+                ClipboardUtils.copy(binding.transactionCode.text.toString())
             }
         }
     }

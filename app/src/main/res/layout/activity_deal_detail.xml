@@ -244,6 +244,7 @@
                                 tools:text="0x2323243245qqqqqqqqqqqqqqqqq" />
 
                             <ImageView
+                                android:id="@+id/pay_copy"
                                 android:layout_width="@dimen/dp_20"
                                 android:layout_height="@dimen/dp_20"
                                 android:layout_marginStart="@dimen/dp_20"
@@ -278,6 +279,7 @@
                                 tools:text="0x2323243245qqqqqqqqqqqqqqqqq" />
 
                             <ImageView
+                                android:id="@+id/add_copy"
                                 android:layout_width="@dimen/dp_20"
                                 android:layout_height="@dimen/dp_20"
                                 android:layout_marginStart="@dimen/dp_20"
@@ -351,6 +353,7 @@
                                 tools:text="0x2323243245qqqqqqqqqqqqqqqqq" />
 
                             <ImageView
+                                android:id="@+id/number_copy"
                                 android:layout_width="@dimen/dp_20"
                                 android:layout_height="@dimen/dp_20"
                                 android:layout_marginStart="@dimen/dp_20"
