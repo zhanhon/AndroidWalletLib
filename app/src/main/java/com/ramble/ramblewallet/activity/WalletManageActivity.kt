@@ -103,7 +103,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                                     (adapter.getItem(position) as WalletETH).privateKey,
                                     (adapter.getItem(position) as WalletETH).publicKey,
                                     (adapter.getItem(position) as WalletETH).keystore,
-                                    (adapter.getItem(position) as WalletETH).type,
+                                    (adapter.getItem(position) as WalletETH).walletType,
                                     false
                                 )
                             walletManageAdapter.notifyItemChanged(position)
@@ -117,7 +117,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                                     (adapter.getItem(position) as WalletETH).privateKey,
                                     (adapter.getItem(position) as WalletETH).publicKey,
                                     (adapter.getItem(position) as WalletETH).keystore,
-                                    (adapter.getItem(position) as WalletETH).type,
+                                    (adapter.getItem(position) as WalletETH).walletType,
                                     false
                                 )
                             walletManageAdapter.notifyItemChanged(position)
@@ -137,7 +137,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             R.id.check_btc -> {
                 walletManageCurrencyBean.clear()
                 walletManageBean.forEach {
-                    if (it.type == 2) {
+                    if (it.walletType == 0) {
                         walletManageCurrencyBean.add(it)
                     }
                 }
@@ -146,7 +146,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             R.id.check_eth -> {
                 walletManageCurrencyBean.clear()
                 walletManageBean.forEach {
-                    if (it.type == 1) {
+                    if (it.walletType == 1) {
                         walletManageCurrencyBean.add(it)
                     }
                 }
@@ -155,7 +155,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             R.id.check_trx -> {
                 walletManageCurrencyBean.clear()
                 walletManageBean.forEach {
-                    if (it.type == 3) {
+                    if (it.walletType == 2) {
                         walletManageCurrencyBean.add(it)
                     }
                 }

@@ -50,18 +50,11 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contributing_words)
         walletName = intent.getStringExtra(ARG_PARAM1)
         walletPassword = intent.getStringExtra(ARG_PARAM2)
-        initData()
 
         binding.llEnglish.setOnClickListener(this)
         binding.llChinese.setOnClickListener(this)
         binding.btnOneCopy.setOnClickListener(this)
         binding.btnSkipThis.setOnClickListener(this)
-    }
-
-    private fun initData() {
-        if (SharedPreferencesUtils.getString(this, LANGUAGE, CN) == EN) {
-            binding.llChinese.visibility = View.GONE
-        }
     }
 
     override fun onResume() {
@@ -70,14 +63,11 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
         binding.vChinese.setBackgroundResource(R.color.color_9598AA)
         // 生成钱包助记词
         when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
-            CN -> {
-                mnemonicList = MnemonicUtils.generateMnemonicChineseSimplified()
+            EN,CN -> {
+                mnemonicList = MnemonicUtils.generateMnemonicEnglishChinese()
             }
             TW -> {
                 mnemonicList = MnemonicUtils.generateMnemonicChineseTraditional()
-            }
-            EN -> {
-                mnemonicList = MnemonicUtils.generateMnemonicEnglish()
             }
         }
         createContributingWordsPage(mnemonicList[0])
@@ -143,9 +133,6 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
             "chiese" -> {
                 walletETHString = mnemonicList[1]
             }
-            else -> {
-                walletETHString = mnemonicList[0]
-            }
         }
 
         val seed: ByteArray = org.web3j.crypto.MnemonicUtils.generateSeed(
@@ -169,7 +156,7 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
             WalleETHManager.generateWalletKeystore(walletPassword, walletETHString.trim())
         walletETHKeyStore.walletName = walletName
         walletETHKeyStore.walletPassword = walletPassword
-        walletETHKeyStore.type = 1
+        walletETHKeyStore.walletType = 1 //链类型|0:BTC|1:ETH|2:TRX
         println("-=-=-=->wallestETHAddress:${walletETHKeyStore.address}")
         println("-=-=-=->walletETHMnemonic:${walletETHKeyStore.mnemonic}")
         println("-=-=-=->walletETHPrivateKey:${walletETHKeyStore.privateKey}")
@@ -177,7 +164,7 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
 
         var walletTronKeyStore = WalletETH(
             walletName, walletPassword, walletETHKeyStore.mnemonic,
-            wallet.address, wallet.privateKey.toString(), wallet.publicKey.toString(), "", 3, false
+            wallet.address, wallet.privateKey.toString(), wallet.publicKey.toString(), "", 2, false
         )
         putAddress(walletETHKeyStore, walletTronKeyStore)
 

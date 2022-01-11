@@ -40,16 +40,16 @@ public class WalletManageAdapter extends BaseQuickAdapter<WalletETH, BaseViewHol
         baseViewHolder.setText(R.id.tv_wallet_name, walletManageBean.getWalletName());
         baseViewHolder.setText(R.id.tv_currency_address, walletManageBean.getAddress());
 
-        switch (walletManageBean.getType()) {
+        switch (walletManageBean.getWalletType()) {
+            case 0:
+                baseViewHolder.setText(R.id.tv_currency_name, "BTC");
+                baseViewHolder.setBackgroundResource(R.id.cy_wallet_manage_item, R.drawable.shape_wallet_manage_btc);
+                break;
             case 1:
                 baseViewHolder.setText(R.id.tv_currency_name, "ETH");
                 baseViewHolder.setBackgroundResource(R.id.cy_wallet_manage_item, R.drawable.shape_wallet_manage_eth);
                 break;
             case 2:
-                baseViewHolder.setText(R.id.tv_currency_name, "BTC");
-                baseViewHolder.setBackgroundResource(R.id.cy_wallet_manage_item, R.drawable.shape_wallet_manage_btc);
-                break;
-            case 3:
                 baseViewHolder.setText(R.id.tv_currency_name, "TRX");
                 baseViewHolder.setBackgroundResource(R.id.cy_wallet_manage_item, R.drawable.shape_wallet_manage_trx);
                 break;

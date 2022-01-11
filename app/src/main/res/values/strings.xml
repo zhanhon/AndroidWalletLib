@@ -155,6 +155,8 @@
     <string name="minimum_miner_fee">最低矿工费</string>
     <string name="wallet_status_selected">已选择</string>
     <string name="delete_wallet">删除钱包</string>
+    <string name="different_password">密码不一致</string>
+    <string name="password_less_six_tips">密码不小于6位</string>
 
     <string name="refresh_pull_down">下拉更新</string>
     <string name="refresh_time">最后更新于{key}</string>

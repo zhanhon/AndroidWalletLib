@@ -12,7 +12,7 @@ public class WalletETH {
     private String publicKey;
     private String keystore;
     private String filename;
-    private Integer type; //1:eth 2:比特币 3:trx
+    private Integer walletType; //链类型|0:BTC|1:ETH|2:TRX
     private Boolean isClickDelete;
 
     public WalletETH(String mnemonic, String address, String privateKey, String publicKey) {
@@ -28,11 +28,11 @@ public class WalletETH {
     }
 
     public WalletETH(String walletName, String walletPassword, String mnemonic, String address,
-                     String privateKey, String publicKey, String keystore, Integer type) {
+                     String privateKey, String publicKey, String keystore, Integer walletType) {
         this(mnemonic, address, privateKey, publicKey, keystore);
         this.walletName = walletName;
         this.walletPassword = walletPassword;
-        this.type = type;
+        this.walletType = walletType;
     }
 
     public WalletETH(String walletName, String walletPassword, String mnemonic, String address,
@@ -105,12 +105,12 @@ public class WalletETH {
         this.filename = filename;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getWalletType() {
+        return walletType;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setWalletType(Integer walletType) {
+        this.walletType = walletType;
     }
 
     public Boolean getClickDelete() {

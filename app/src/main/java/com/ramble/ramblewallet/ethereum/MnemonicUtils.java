@@ -20,25 +20,11 @@ public class MnemonicUtils {
     private final ArrayList<String> mnemonicList = new ArrayList();
 
     /**
-     * 生成助记词：语言为英文
+     * 生成助记词：语言为简体中文\英文
      *
      * @return
      */
-    public static ArrayList<String> generateMnemonicEnglish() {
-        byte[] initialEntropy = new byte[16];
-        ArrayList<String> mnemonicList = new ArrayList();
-        secureRandom.nextBytes(initialEntropy);
-        String mnemonic = generateMnemonic(initialEntropy, English.INSTANCE);
-        mnemonicList.add(mnemonic);
-        return mnemonicList;
-    }
-
-    /**
-     * 生成助记词：语言为简体中文
-     *
-     * @return
-     */
-    public static ArrayList<String> generateMnemonicChineseSimplified() {
+    public static ArrayList<String> generateMnemonicEnglishChinese() {
         byte[] initialEntropy = new byte[16];
         ArrayList<String> mnemonicList = new ArrayList();
         secureRandom.nextBytes(initialEntropy);

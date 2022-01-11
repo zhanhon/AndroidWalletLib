@@ -54,7 +54,6 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
         initMnmonicETH()
         mnmonicETHClick()
 
-
         binding.llEnglish.setOnClickListener(this)
         binding.llChinese.setOnClickListener(this)
         binding.btnContributingWordsCompleted.setOnClickListener {
@@ -68,7 +67,7 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                     generateWalletKeystore(walletPassword, walletETHString.trim())
                 walletETHKeyStore.walletName = walletName
                 walletETHKeyStore.walletPassword = walletPassword
-                walletETHKeyStore.type = 1
+                walletETHKeyStore.walletType = 1
                 println("-=-=-=->wallestETHAddress:${walletETHKeyStore.address}")
                 println("-=-=-=->walletETHMnemonic:${walletETHKeyStore.mnemonic}")
                 println("-=-=-=->walletETHPrivateKey:${walletETHKeyStore.privateKey}")
@@ -100,36 +99,25 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initData() {
-        if (SharedPreferencesUtils.getString(this, LANGUAGE, CN) == EN) {
-            binding.llChinese.visibility = View.GONE
-        }
-        if (mnemonicETH.size == 2) {
-            when (currentTab) {
-                "english" -> {
-                    binding.vEnglish.setBackgroundResource(R.color.color_3F5E94)
-                    binding.vChinese.setBackgroundResource(R.color.color_9598AA)
-                    mnemonicETHOriginal = mnemonicETH[0].split(" ") as ArrayList<String>
-                    mnemonicETHShuffled = mnemonicETH[0].split(" ") as ArrayList<String>
-                    println("-=-=-=->before:$mnemonicETH")
-                    mnemonicETHShuffled.shuffle()
-                    println("-=-=-=->after:$mnemonicETHShuffled")
-                }
-                "chinese" -> {
-                    binding.vEnglish.setBackgroundResource(R.color.color_9598AA)
-                    binding.vChinese.setBackgroundResource(R.color.color_3F5E94)
-                    mnemonicETHOriginal = mnemonicETH[1].split(" ") as ArrayList<String>
-                    mnemonicETHShuffled = mnemonicETH[1].split(" ") as ArrayList<String>
-                    println("-=-=-=->before:$mnemonicETH")
-                    mnemonicETHShuffled.shuffle()
-                    println("-=-=-=->after:$mnemonicETHShuffled")
-                }
+        when (currentTab) {
+            "english" -> {
+                binding.vEnglish.setBackgroundResource(R.color.color_3F5E94)
+                binding.vChinese.setBackgroundResource(R.color.color_9598AA)
+                mnemonicETHOriginal = mnemonicETH[0].split(" ") as ArrayList<String>
+                mnemonicETHShuffled = mnemonicETH[0].split(" ") as ArrayList<String>
+                println("-=-=-=->before:$mnemonicETH")
+                mnemonicETHShuffled.shuffle()
+                println("-=-=-=->after:$mnemonicETHShuffled")
             }
-        } else {
-            mnemonicETHOriginal = mnemonicETH[0].split(" ") as ArrayList<String>
-            mnemonicETHShuffled = mnemonicETH[0].split(" ") as ArrayList<String>
-            println("-=-=-=->before:$mnemonicETH")
-            mnemonicETHShuffled.shuffle()
-            println("-=-=-=->after:$mnemonicETHShuffled")
+            "chinese" -> {
+                binding.vEnglish.setBackgroundResource(R.color.color_9598AA)
+                binding.vChinese.setBackgroundResource(R.color.color_3F5E94)
+                mnemonicETHOriginal = mnemonicETH[1].split(" ") as ArrayList<String>
+                mnemonicETHShuffled = mnemonicETH[1].split(" ") as ArrayList<String>
+                println("-=-=-=->before:$mnemonicETH")
+                mnemonicETHShuffled.shuffle()
+                println("-=-=-=->after:$mnemonicETHShuffled")
+            }
         }
     }
 
