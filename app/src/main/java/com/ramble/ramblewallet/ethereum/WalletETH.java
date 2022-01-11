@@ -12,8 +12,8 @@ public class WalletETH {
     private String publicKey;
     private String keystore;
     private String filename;
-    private Integer walletType; //链类型|0:BTC|1:ETH|2:TRX
-    private Boolean isClickDelete;
+    private int walletType; //链类型|0:BTC|1:ETH|2:TRX
+    private boolean isClickDelete;
 
     public WalletETH(String mnemonic, String address, String privateKey, String publicKey) {
         this.mnemonic = mnemonic;
@@ -28,7 +28,7 @@ public class WalletETH {
     }
 
     public WalletETH(String walletName, String walletPassword, String mnemonic, String address,
-                     String privateKey, String publicKey, String keystore, Integer walletType) {
+                     String privateKey, String publicKey, String keystore, int walletType) {
         this(mnemonic, address, privateKey, publicKey, keystore);
         this.walletName = walletName;
         this.walletPassword = walletPassword;
@@ -36,8 +36,8 @@ public class WalletETH {
     }
 
     public WalletETH(String walletName, String walletPassword, String mnemonic, String address,
-                     String privateKey, String publicKey, String keystore, Integer type, Boolean isClickDelete) {
-        this(walletName, walletPassword, mnemonic, address, privateKey, publicKey, keystore, type);
+                     String privateKey, String publicKey, String keystore, int walletType, boolean isClickDelete) {
+        this(walletName, walletPassword, mnemonic, address, privateKey, publicKey, keystore, walletType);
         this.isClickDelete = isClickDelete;
     }
 
@@ -105,19 +105,19 @@ public class WalletETH {
         this.filename = filename;
     }
 
-    public Integer getWalletType() {
+    public int getWalletType() {
         return walletType;
     }
 
-    public void setWalletType(Integer walletType) {
+    public void setWalletType(int walletType) {
         this.walletType = walletType;
     }
 
-    public Boolean getClickDelete() {
+    public boolean getClickDelete() {
         return isClickDelete;
     }
 
-    public void setClickDelete(Boolean clickDelete) {
+    public void setClickDelete(boolean clickDelete) {
         isClickDelete = clickDelete;
     }
 

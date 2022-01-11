@@ -18,9 +18,7 @@ import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.Web3jFactory;
 import org.web3j.protocol.admin.Admin;
-import org.web3j.protocol.admin.AdminFactory;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.EthCall;
@@ -65,14 +63,14 @@ public class WalleETHManager {
 
     public static Web3j getWeb3j() {
         if (web3j == null) {
-            web3j = Web3jFactory.build(new HttpService(URL));
+            web3j = Web3j.build(new HttpService(URL));
         }
         return web3j;
     }
 
     public static Admin getAdmin() {
         if (admin == null) {
-            admin = AdminFactory.build(new HttpService(URL));
+            admin = Admin.build(new HttpService(URL));
         }
         return admin;
     }

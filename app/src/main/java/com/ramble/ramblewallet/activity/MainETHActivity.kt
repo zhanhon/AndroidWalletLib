@@ -101,12 +101,12 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         Thread {
             binding.tvBalanceTotal.text = getTokenBalance(saveWalletList[0].address)
         }
-        binding.tvEthAddress.text = getSubStr(saveWalletList[0].address)
+        binding.tvEthAddress.text = addressHandle(saveWalletList[0].address)
 
         setOnClickListener()
     }
 
-    private fun getSubStr(str: String): String? {
+    private fun addressHandle(str: String): String? {
         val subStr1 = str.substring(0, 6)
         val strLength = str.length
         val subStr2 = str.substring(strLength - 4, strLength)

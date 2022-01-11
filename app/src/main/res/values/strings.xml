@@ -82,6 +82,9 @@
     <string name="input_keystore">请输入Keystore</string>
     <string name="input_secret_key">请输入密钥</string>
     <string name="input_mnemonic_words">请输入助记词并按照原有助记词顺序进行输入</string>
+    <string name="input_correct_keystore">请输入正确的Keystore</string>
+    <string name="input_correct_secret_key">请输入正确的密钥</string>
+    <string name="input_correct_mnemonic_words">请输入正确的助记词</string>
     <string name="address">地址</string>
     <string name="initiate_transfer">发起转帐或建立Wallet Connet连接</string>
     <string name="sending_address">发送地址</string>

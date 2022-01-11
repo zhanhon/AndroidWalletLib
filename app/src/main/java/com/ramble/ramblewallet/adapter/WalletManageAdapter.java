@@ -38,7 +38,7 @@ public class WalletManageAdapter extends BaseQuickAdapter<WalletETH, BaseViewHol
 
 
         baseViewHolder.setText(R.id.tv_wallet_name, walletManageBean.getWalletName());
-        baseViewHolder.setText(R.id.tv_currency_address, walletManageBean.getAddress());
+        baseViewHolder.setText(R.id.tv_currency_address, addressHandle(walletManageBean.getAddress()));
 
         switch (walletManageBean.getWalletType()) {
             case 0:
@@ -55,4 +55,12 @@ public class WalletManageAdapter extends BaseQuickAdapter<WalletETH, BaseViewHol
                 break;
         }
     }
+
+    private String addressHandle(String str) {
+        String subStr1 = str.substring(0,6);
+        int strLength = str.length();
+        String subStr2 = str.substring(strLength-4, strLength);
+        return subStr1 + "..." + subStr2;
+    }
+
 }

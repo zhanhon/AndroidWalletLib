@@ -13,7 +13,6 @@ import org.web3j.crypto.Credentials;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.Web3jFactory;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
@@ -47,7 +46,7 @@ public class TransferEthUtils {
     @SuppressLint("LongLogTag")
     public static void transferMain(String fromAddress, String toAddress, String privateKey, String number,
                                     BigInteger gasPrice, BigInteger gasLimit, String desc) throws Exception {
-        Web3j web3j = Web3jFactory.build(new HttpService("http://13.229.173.84:8545"));
+        Web3j web3j = Web3j.build(new HttpService("http://13.229.173.84:8545"));
         BigInteger value = Convert.toWei(number, Convert.Unit.ETHER).toBigInteger();
         //加载转账所需的凭证，用私钥
         Credentials credentials = Credentials.create(privateKey);
@@ -75,7 +74,7 @@ public class TransferEthUtils {
     @SuppressLint("LongLogTag")
     public static void transferToken(String fromAddress, String toAddress, String privateKey, BigInteger number,
                                      BigInteger gasPrice, BigInteger gasLimit, String desc) throws Exception {
-        Web3j web3j = Web3jFactory.build(new HttpService("http://13.229.173.84:8545"));
+        Web3j web3j = Web3j.build(new HttpService("http://13.229.173.84:8545"));
         //加载转账所需的凭证，用私钥
         Credentials credentials = Credentials.create(privateKey);
         //获取nonce，交易笔数
