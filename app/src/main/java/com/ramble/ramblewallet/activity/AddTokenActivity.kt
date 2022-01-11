@@ -27,8 +27,12 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_token)
-        binding.scrollAddToken.post { binding.scrollAddToken.fullScroll(ScrollView.FOCUS_UP) } //初始值
+//        binding.scrollAddToken.post { binding.scrollAddToken.fullScroll(ScrollView.FOCUS_UP) } //初始值
+        initView()
+        initListener()
+    }
 
+    private fun initView() {
         myDataBeansMyAssets.add(MyDataBean(1, "TFT", ""))
         myDataBeansMyAssets.add(MyDataBean(2, "WBTC", ""))
         myDataBeansMyAssets.add(MyDataBean(3, "DAI", ""))
@@ -51,17 +55,23 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         myDataBeansRecommendToken.add(MyDataBean(8, "UNI", ""))
         recommendTokenAdapter = RecommendTokenAdapter(myDataBeansRecommendToken)
         binding.rvTokenManageCurrency.adapter = recommendTokenAdapter
+    }
 
-
+    private fun initListener() {
         binding.ivBack.setOnClickListener(this)
         binding.ivTokenManage.setOnClickListener(this)
         binding.llMyTokenCurrencyConstriction.setOnClickListener(this)
+        binding.search.setOnClickListener(this)
     }
+
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.iv_back -> {
                 finish()
+            }
+            R.id.search->{//搜索代币
+
             }
             R.id.iv_token_manage -> {
                 startActivity(Intent(this, TokenManageActivity::class.java))
