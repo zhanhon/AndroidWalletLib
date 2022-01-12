@@ -17,6 +17,7 @@ import com.ramble.ramblewallet.item.AddTokenItem
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.applyIo
+import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.QuickItemDecoration
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
@@ -26,10 +27,11 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityAddTokenBinding
 
     private val adapter = RecyclerAdapter()
-    private var myDataBeansMyAssets: ArrayList<MyDataBean> = arrayListOf()
+    private var myDataBeansMyAssets: ArrayList<StoreInfo> = arrayListOf()
     private  val recommendTokenAdapter=RecyclerAdapter()
     private var myDataBeansRecommendToken: ArrayList<StoreInfo> = arrayListOf()
     private var isSpread = false
+    private var lastString=""
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,21 +42,12 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        myDataBeansMyAssets.add(MyDataBean(1, "TFT", ""))
-        myDataBeansMyAssets.add(MyDataBean(2, "WBTC", ""))
-        myDataBeansMyAssets.add(MyDataBean(3, "DAI", ""))
-        myDataBeansMyAssets.add(MyDataBean(4, "USDC", ""))
-        myDataBeansMyAssets.add(MyDataBean(5, "USDT", ""))
-        myDataBeansMyAssets.add(MyDataBean(6, "LINK", ""))
-        myDataBeansMyAssets.add(MyDataBean(7, "YFI", ""))
-        myDataBeansMyAssets.add(MyDataBean(8, "UNI", ""))
-       // myAssetsAdapter = MyAssetsAdapter(myDataBeansMyAssets)
         LinearLayoutManager(this).apply {
             binding.rvMyTokenCurrency.layoutManager = this
         }
         binding.rvMyTokenCurrency.addItemDecoration(
             QuickItemDecoration.builder(this)
-                .color(R.color.driver_gray, R.dimen.dp_04)
+                .color(R.color.driver_gray, R.dimen.dp_08)
                 .build()
         )
         binding.rvMyTokenCurrency.adapter = adapter
@@ -65,7 +58,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         }
         binding.rvTokenManageCurrency.addItemDecoration(
             QuickItemDecoration.builder(this)
-                .color(R.color.driver_gray, R.dimen.dp_04)
+                .color(R.color.driver_gray, R.dimen.dp_08)
                 .build()
         )
         binding.rvTokenManageCurrency.adapter = recommendTokenAdapter
@@ -105,12 +98,12 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         binding.ivTokenManage.setOnClickListener(this)
         binding.llMyTokenCurrencyConstriction.setOnClickListener(this)
         binding.search.setOnClickListener(this)
+        recommendTokenAdapter.onClickListener = this
     }
 
     @SuppressLint("CheckResult")
     private fun searchData(condition:String){
         var req= StoreInfo.Req()
-
         req.convertId=""
         req.symbol=condition
         req.platformId=1027
@@ -119,6 +112,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 it.data()?.let { data ->
                     ArrayList<SimpleRecyclerItem>().apply {
                         data.forEach { o -> this.add(AddTokenItem(o)) }
+                        trimDuplicate(this)
                         recommendTokenAdapter.addAll(this.toList())
                     }
                 }
@@ -132,14 +126,40 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         )
     }
 
+    /***
+     * 过滤重复信息
+     */
+    private fun trimDuplicate(data: ArrayList<SimpleRecyclerItem>) {
+        val duplicates = ArrayList<SimpleRecyclerItem>()
+        data.forEach { obj ->
+            if (obj is AddTokenItem) {
+                findExistMsgItem(obj.data.name)?.let {
+                    duplicates.add(obj)
+                }
+            }
+        }
+        duplicates.forEach { data.remove(it) }
+    }
+
+    private fun findExistMsgItem(id: String): AddTokenItem? {
+        recommendTokenAdapter.all.forEach {
+            if (it is AddTokenItem && it.data.name == id) {
+                return it
+            }
+        }
+        return null
+    }
+
+
     override fun onClick(v: View) {
         when (v.id) {
             R.id.iv_back -> {
                 finish()
             }
             R.id.search->{//搜索代币
-                if (binding.etSearch.text.toString().isNullOrEmpty())return
-                searchData(binding.etSearch.text.toString())
+                if (binding.etSearch.text.toString().isNullOrEmpty()||lastString==binding.etSearch.text.toString().trim())return
+                lastString=binding.etSearch.text.toString().trim()
+                searchData(lastString)
             }
             R.id.iv_token_manage -> {
                 startActivity(Intent(this, TokenManageActivity::class.java))
@@ -155,6 +175,18 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                     binding.tvMyTokenCurrencyConstriction.text = getString(R.string.pack_up)
                     binding.ivMyTokenCurrencyConstriction.setBackgroundResource(R.drawable.vector_solid_triangle_up)
                     isSpread = true
+                }
+            }
+            R.id.add_view->{//增加到我的
+                myDataBeansMyAssets.clear()
+                val item = AdapterUtils.getHolder(v).getItem<AddTokenItem>()
+                myDataBeansMyAssets.add(item.data)
+                recommendTokenAdapter.remove(item)
+                recommendTokenAdapter.notifyDataSetChanged()
+                ArrayList<SimpleRecyclerItem>().apply {
+                    myDataBeansMyAssets.forEach { o -> this.add(AddTokenItem(o)) }
+                    trimDuplicate(this)
+                    adapter.addAll(this.toList())
                 }
             }
         }

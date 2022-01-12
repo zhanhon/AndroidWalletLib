@@ -214,7 +214,6 @@ class ProclamationFragment : BaseFragment(){
                 }else{
                     mutableListOf()
                 }
-                list.size
                 if (list.isNotEmpty()){
                     if (!list.contains(itemBean.id)){
                         list.add(itemBean.id)
@@ -222,7 +221,6 @@ class ProclamationFragment : BaseFragment(){
                 }else{
                     list.add(itemBean.id)
                 }
-                list.size
                 var addId = SharedPreferencesUtils.SceneList2String(list)
                 SharedPreferencesUtils.saveString(myActivity, READ_ID_NEW, addId)
                 itemBean.isRead=1

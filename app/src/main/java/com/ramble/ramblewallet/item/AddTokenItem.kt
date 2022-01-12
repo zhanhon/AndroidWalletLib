@@ -30,7 +30,7 @@ class AddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
             else->binding.ivTokenIcon.setImageResource( R.drawable.vector_dai)
         }
         binding.tvTokenName.text = data.name
-//        holder.attachOnClickListener(R.id.iv_menu)
+        holder.attachOnClickListener(R.id.add_view)
 //        holder.attachOnClickListener(R.id.iv_reduce)
     }
 }
