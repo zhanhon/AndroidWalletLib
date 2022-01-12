@@ -10,10 +10,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.MyDataBean
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.databinding.ActivityAddTokenBinding
 import com.ramble.ramblewallet.item.AddTokenItem
+import com.ramble.ramblewallet.item.UnAddTokenItem
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.applyIo
@@ -28,10 +28,10 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
 
     private val adapter = RecyclerAdapter()
     private var myDataBeansMyAssets: ArrayList<StoreInfo> = arrayListOf()
-    private  val recommendTokenAdapter=RecyclerAdapter()
+    private val recommendTokenAdapter = RecyclerAdapter()
     private var myDataBeansRecommendToken: ArrayList<StoreInfo> = arrayListOf()
     private var isSpread = false
-    private var lastString=""
+    private var lastString = ""
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,22 +62,22 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 .build()
         )
         binding.rvTokenManageCurrency.adapter = recommendTokenAdapter
-        var r1=StoreInfo()
-        r1.name="TFT"
-        var r2=StoreInfo()
-        r2.name="WBTC"
-        var r3=StoreInfo()
-        r3.name="DAI"
-        var r4=StoreInfo()
-        r4.name="USDC"
-        var r5=StoreInfo()
-        r5.name="USDT"
-        var r6=StoreInfo()
-        r6.name="LINK"
-        var r7=StoreInfo()
-        r7.name="YFI"
-        var r8=StoreInfo()
-        r8.name="UNI"
+        var r1 = StoreInfo()
+        r1.name = "TFT"
+        var r2 = StoreInfo()
+        r2.name = "WBTC"
+        var r3 = StoreInfo()
+        r3.name = "DAI"
+        var r4 = StoreInfo()
+        r4.name = "USDC"
+        var r5 = StoreInfo()
+        r5.name = "USDT"
+        var r6 = StoreInfo()
+        r6.name = "LINK"
+        var r7 = StoreInfo()
+        r7.name = "YFI"
+        var r8 = StoreInfo()
+        r8.name = "UNI"
         myDataBeansRecommendToken.add(r1)
         myDataBeansRecommendToken.add(r2)
         myDataBeansRecommendToken.add(r3)
@@ -99,14 +99,15 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         binding.llMyTokenCurrencyConstriction.setOnClickListener(this)
         binding.search.setOnClickListener(this)
         recommendTokenAdapter.onClickListener = this
+        adapter.onClickListener = this
     }
 
     @SuppressLint("CheckResult")
-    private fun searchData(condition:String){
-        var req= StoreInfo.Req()
-        req.convertId=""
-        req.symbol=condition
-        req.platformId=1027
+    private fun searchData(condition: String) {
+        var req = StoreInfo.Req()
+        req.convertId = ""
+        req.symbol = condition
+        req.platformId = 1027
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
                 it.data()?.let { data ->
@@ -156,9 +157,11 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_back -> {
                 finish()
             }
-            R.id.search->{//搜索代币
-                if (binding.etSearch.text.toString().isNullOrEmpty()||lastString==binding.etSearch.text.toString().trim())return
-                lastString=binding.etSearch.text.toString().trim()
+            R.id.search -> {//搜索代币
+                if (binding.etSearch.text.toString()
+                        .isNullOrEmpty() || lastString == binding.etSearch.text.toString().trim()
+                ) return
+                lastString = binding.etSearch.text.toString().trim()
                 searchData(lastString)
             }
             R.id.iv_token_manage -> {
@@ -177,17 +180,32 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                     isSpread = true
                 }
             }
-            R.id.add_view->{//增加到我的
-                myDataBeansMyAssets.clear()
-                val item = AdapterUtils.getHolder(v).getItem<AddTokenItem>()
-                myDataBeansMyAssets.add(item.data)
-                recommendTokenAdapter.remove(item)
-                recommendTokenAdapter.notifyDataSetChanged()
-                ArrayList<SimpleRecyclerItem>().apply {
-                    myDataBeansMyAssets.forEach { o -> this.add(AddTokenItem(o)) }
-                    trimDuplicate(this)
-                    adapter.addAll(this.toList())
+            R.id.add_view -> {//增加代币到我的
+                when (val item = AdapterUtils.getHolder(v).getItem<SimpleRecyclerItem>()) {
+                    is AddTokenItem -> {
+                        myDataBeansMyAssets.clear()
+                        myDataBeansMyAssets.add(item.data)
+                        recommendTokenAdapter.remove(item)
+                        recommendTokenAdapter.notifyDataSetChanged()
+                        ArrayList<SimpleRecyclerItem>().apply {
+                            myDataBeansMyAssets.forEach { o -> this.add(UnAddTokenItem(o)) }
+                            trimDuplicate(this)
+                            adapter.addAll(this.toList())
+                        }
+                    }
+                    is UnAddTokenItem->{
+                        myDataBeansMyAssets.clear()
+                        myDataBeansMyAssets.add(item.data)
+                        adapter.remove(item)
+                        adapter.notifyDataSetChanged()
+                        ArrayList<SimpleRecyclerItem>().apply {
+                            myDataBeansMyAssets.forEach { o -> this.add(AddTokenItem(o)) }
+                            trimDuplicate(this)
+                            recommendTokenAdapter.addAll(this.toList())
+                        }
+                    }
                 }
+
             }
         }
     }

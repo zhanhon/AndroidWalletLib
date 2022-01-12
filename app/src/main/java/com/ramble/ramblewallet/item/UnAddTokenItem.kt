@@ -1,6 +1,5 @@
 package com.ramble.ramblewallet.item
 
-
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.databinding.ItemAddTokenBinding
@@ -8,11 +7,11 @@ import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
 import com.ramble.ramblewallet.wight.adapter.ViewHolder
 
 /**
- * 时间　: 2022/1/11 17:34
+ * 时间　: 2022/1/12 15:15
  * 作者　: potato
  * 描述　:
  */
-class AddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
+class UnAddTokenItem (val data: StoreInfo) : SimpleRecyclerItem() {
 
     override fun getLayout(): Int = R.layout.item_add_token
 
@@ -29,7 +28,7 @@ class AddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
             "UNI" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_uni)
             else->binding.ivTokenIcon.setImageResource(R.drawable.vector_dai)
         }
-        binding.ivTokenStatus.setImageResource( R.drawable.vector_token_add)
+        binding.ivTokenStatus.setImageResource( R.drawable.vector_token_reduce)
         binding.tvTokenName.text = data.name
         holder.attachOnClickListener(R.id.add_view)
 //        holder.attachOnClickListener(R.id.iv_reduce)
