@@ -75,6 +75,7 @@
                             android:layout_width="@dimen/dp_35"
                             android:layout_height="@dimen/dp_35" />
                         <EditText
+                            android:id="@+id/et_search"
                             android:hint="@string/search"
                             android:layout_weight="1"
                             android:layout_width="wrap_content"
