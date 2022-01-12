@@ -5,19 +5,15 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.ScrollView
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
-import com.ramble.ramblewallet.adapter.MyAssetsAdapter
-import com.ramble.ramblewallet.adapter.RecommendTokenAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MyDataBean
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.databinding.ActivityAddTokenBinding
 import com.ramble.ramblewallet.item.AddTokenItem
-import com.ramble.ramblewallet.item.Help
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.applyIo
@@ -115,6 +111,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
     private fun searchData(condition:String){
         var req= StoreInfo.Req()
         req.condition=condition
+        req.convertId=""
         req.symbol="ETH"
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
