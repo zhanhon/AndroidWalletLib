@@ -110,9 +110,10 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("CheckResult")
     private fun searchData(condition:String){
         var req= StoreInfo.Req()
-        req.condition=condition
+
         req.convertId=""
-        req.symbol="ETH"
+        req.symbol=condition
+        req.platformId=1027
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
                 it.data()?.let { data ->
