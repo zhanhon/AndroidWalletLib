@@ -16,11 +16,11 @@ import com.ramble.ramblewallet.bean.MyDataBean
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityContributingWordsBinding
 import com.ramble.ramblewallet.ethereum.MnemonicUtils
-import com.ramble.ramblewallet.ethereum.WalleETHManager
 import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.ethereum.WalletETHUtils
+import com.ramble.ramblewallet.ethereum.WalletETHUtils.isETHValidAddress
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.tron.Wallet
 import com.ramble.ramblewallet.tron.bip32.Bip32ECKeyPair
 import com.ramble.ramblewallet.tron.bip32.Bip32ECKeyPair.HARDENED_BIT
 import com.ramble.ramblewallet.utils.ClipboardUtils
@@ -28,7 +28,6 @@ import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 import org.tron.common.crypto.ECKey
 import org.tron.walletserver.WalletTron
-import org.tron.walletserver.WalletTronManager
 
 
 class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
@@ -63,7 +62,7 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
         binding.vChinese.setBackgroundResource(R.color.color_9598AA)
         // 生成钱包助记词
         when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
-            EN,CN -> {
+            EN, CN -> {
                 mnemonicList = MnemonicUtils.generateMnemonicEnglishChinese()
             }
             TW -> {
@@ -144,29 +143,35 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
         val masterKeypair: Bip32ECKeyPair = Bip32ECKeyPair.generateKeyPair(seed)
         val bip44Keypair: Bip32ECKeyPair? = generateBip44KeyPair(masterKeypair, false)
         val mECKey: ECKey = ECKey.fromPrivate(bip44Keypair?.privateKeyBytes33)
-        val wallet = WalletTron(mECKey)
-        println("-=-=-=->wallestTRONAddress:${wallet.address}")
-        println("-=-=-=->walletTRONMnemonic:${wallet.publicKey}")
-        println("-=-=-=->walletTRONPrivateKey:${wallet.privateKey}")
+        val walletTRX = WalletTron(mECKey)
+        println("-=-=-=->wallestTRONAddress:${walletTRX.address}")
+        println("-=-=-=->walletTRONMnemonic:${walletTRX.publicKey}")
+        println("-=-=-=->walletTRONPrivateKey:${walletTRX.privateKey}")
         println("-=-=-=->walletTRONKeystore:${walletETHString.trim()}")
 
 
-        //1、助记词生成keystore
-        var walletETHKeyStore: WalletETH =
-            WalleETHManager.generateWalletKeystore(walletPassword, walletETHString.trim())
-        walletETHKeyStore.walletName = walletName
-        walletETHKeyStore.walletPassword = walletPassword
-        walletETHKeyStore.walletType = 1 //链类型|0:BTC|1:ETH|2:TRX
-        println("-=-=-=->wallestETHAddress:${walletETHKeyStore.address}")
-        println("-=-=-=->walletETHMnemonic:${walletETHKeyStore.mnemonic}")
-        println("-=-=-=->walletETHPrivateKey:${walletETHKeyStore.privateKey}")
-        println("-=-=-=->walletETHKeystore:${walletETHKeyStore.keystore}")
-
-        var walletTronKeyStore = WalletETH(
-            walletName, walletPassword, walletETHKeyStore.mnemonic,
-            wallet.address, wallet.privateKey.toString(), wallet.publicKey.toString(), "", 2, false
+        var walletETH: WalletETH = WalletETHUtils.generateWalletByMnemonic(
+            walletPassword,
+            walletPassword,
+            walletETHString.trim()
         )
-        putAddress(walletETHKeyStore, walletTronKeyStore)
+        println("-=-=-=->wallestETHAddress:${walletETH.address}")
+        println("-=-=-=->walletETHMnemonic:${walletETH.mnemonic}")
+        println("-=-=-=->walletETHPrivateKey:${walletETH.privateKey}")
+        println("-=-=-=->walletETHKeystore:${walletETH.keystore}")
+
+        var walletTron = WalletETH(
+            walletName,
+            walletPassword,
+            walletETH.mnemonic,
+            walletTRX.address,
+            walletTRX.privateKey.toString(),
+            walletTRX.publicKey.toString(),
+            "",
+            2,
+            false
+        )
+        putAddress(walletETH, walletTron)
 
         if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
             saveWalletList =
@@ -175,14 +180,14 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
                     object : TypeToken<ArrayList<WalletETH>>() {}.type
                 )
         }
-        saveWalletList.add(walletETHKeyStore)
-        saveWalletList.add(walletTronKeyStore)
+        saveWalletList.add(walletETH)
+        saveWalletList.add(walletTron)
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
 
 
         //2、之后地址校验
-        var isValidSuccess = WalleETHManager.isETHValidAddress(walletETHKeyStore.address)
+        var isValidSuccess = isETHValidAddress(walletETH.address)
         if (isValidSuccess) {
             println("-=-=-=->isValidSuccess:$isValidSuccess")
             startActivity(Intent(this, MainETHActivity::class.java))
@@ -191,7 +196,12 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
 
     private fun putAddress(walletETHKeyStore: WalletETH, walletTRON: WalletETH) {
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
-        detailsList.add(AddressReport.DetailsList(walletETHKeyStore.address, 1)) //链类型|0:ETC|1:ETH|2:TRON
+        detailsList.add(
+            AddressReport.DetailsList(
+                walletETHKeyStore.address,
+                1
+            )
+        ) //链类型|0:ETC|1:ETH|2:TRON
         detailsList.add(AddressReport.DetailsList(walletTRON.address, 2))
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
         val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")

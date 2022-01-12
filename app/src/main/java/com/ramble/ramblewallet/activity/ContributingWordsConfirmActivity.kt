@@ -18,8 +18,8 @@ import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.custom.AutoLineFeedLayoutManager
 import com.ramble.ramblewallet.databinding.ActivityContributingWordsConfirmBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
-import com.ramble.ramblewallet.ethereum.WalleETHManager.generateWalletKeystore
-import com.ramble.ramblewallet.ethereum.WalleETHManager.isETHValidAddress
+import com.ramble.ramblewallet.ethereum.WalletETHUtils
+import com.ramble.ramblewallet.ethereum.WalletETHUtils.isETHValidAddress
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
@@ -62,18 +62,17 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                 mnemonicETHChoose.forEach {
                     walletETHString = "$walletETHString$it "
                 }
-                //1、助记词生成keystore
-                var walletETHKeyStore: WalletETH =
-                    generateWalletKeystore(walletPassword, walletETHString.trim())
-                walletETHKeyStore.walletName = walletName
-                walletETHKeyStore.walletPassword = walletPassword
-                walletETHKeyStore.walletType = 1
-                println("-=-=-=->wallestETHAddress:${walletETHKeyStore.address}")
-                println("-=-=-=->walletETHMnemonic:${walletETHKeyStore.mnemonic}")
-                println("-=-=-=->walletETHPrivateKey:${walletETHKeyStore.privateKey}")
-                println("-=-=-=->walletETHKeystore:${walletETHKeyStore.keystore}")
+                var walletETH: WalletETH = WalletETHUtils.generateWalletByMnemonic(
+                    walletName,
+                    walletPassword,
+                    walletETHString.trim()
+                )
+                println("-=-=-=->wallestETHAddress:${walletETH.address}")
+                println("-=-=-=->walletETHMnemonic:${walletETH.mnemonic}")
+                println("-=-=-=->walletETHPrivateKey:${walletETH.privateKey}")
+                println("-=-=-=->walletETHKeystore:${walletETH.keystore}")
 
-                putAddress(walletETHKeyStore)
+                putAddress(walletETH)
 
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
                     saveWalletList =
@@ -82,13 +81,13 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                             object : TypeToken<ArrayList<WalletETH>>() {}.type
                         )
                 }
-                saveWalletList.add(walletETHKeyStore)
+                saveWalletList.add(walletETH)
                 println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
 
 
                 //2、之后地址校验
-                var isValidSuccess = isETHValidAddress(walletETHKeyStore.address)
+                var isValidSuccess = isETHValidAddress(walletETH.address)
                 if (isValidSuccess) {
                     println("-=-=-=->isValidSuccess:$isValidSuccess")
                     startActivity(Intent(this, MainETHActivity::class.java))

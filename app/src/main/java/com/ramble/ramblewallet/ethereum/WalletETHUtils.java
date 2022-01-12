@@ -16,6 +16,7 @@ import org.web3j.utils.Numeric;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -134,20 +135,63 @@ public class WalletETHUtils {
     }
 
     /**
-     * 通过助记词 bip32 生成钱包 (不创建文件，只返回keystore数据)
+     * 通过助记词生成钱包
      *
-     * @param password
+     * @param walletname
+     * @param walletPassword
      * @param mnemonic
      * @return
      */
-    public static WalletETH generateBip32Wallet(String password, String mnemonic) throws CipherException, IOException {
-        ECKeyPair ecKeyPair = WalletETHUtils.generateBip32ECKeyPair(mnemonic);
-        WalletFile walletFile = createWalletFile(password, ecKeyPair, false);
-        String json = objectMapper.writeValueAsString(walletFile);
-        String privateKey = EthUtils.getPrivateKey(ecKeyPair);
-        String publicKey = EthUtils.getPublicKey(ecKeyPair);
+    public static WalletETH generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic) throws CipherException, IOException {
+        ECKeyPair keyPair = WalletETHUtils.generateBip32ECKeyPair(mnemonic);
+        WalletFile walletFile = createWalletFile(walletPassword, keyPair, false);
 
-        return new WalletETH(mnemonic, EthUtils.getAddress(ecKeyPair), privateKey, publicKey, json);
+        String address = EthUtils.getAddress(keyPair);
+        String privateKey = EthUtils.getPrivateKey(keyPair);
+        String publicKey = EthUtils.getPublicKey(keyPair);
+        String keyStore = objectMapper.writeValueAsString(walletFile);
+        //链类型|0:BTC|1:ETH|2:TRX
+        return new WalletETH(walletname, walletPassword, mnemonic, address, privateKey, publicKey, keyStore, 1);
+    }
+
+    /**
+     * 通过privateKey生成钱包
+     *
+     * @param walletname
+     * @param walletPassword
+     * @param privateKey
+     * @return
+     */
+    public static WalletETH generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey) throws CipherException, IOException {
+        BigInteger pk = Numeric.toBigIntNoPrefix(privateKey);
+        byte[] privateKeyByte = pk.toByteArray();
+        ECKeyPair keyPair = ECKeyPair.create(privateKeyByte);
+        WalletFile walletFile = createWalletFile(walletPassword, keyPair, false);
+
+        String address = EthUtils.getAddress(keyPair);
+        String publicKey = EthUtils.getPublicKey(keyPair);
+        String keyStore = objectMapper.writeValueAsString(walletFile);
+        //由于通过privateKey无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
+        return new WalletETH(walletname, walletPassword, null, address, privateKey, publicKey, keyStore, 1);
+    }
+
+    /**
+     * 通过keystore生成钱包
+     *
+     * @param walletname
+     * @param walletPassword
+     * @param keystore
+     * @return
+     */
+    public static WalletETH generateWalletByKeyStore(String walletname, String walletPassword, String keystore) throws CipherException, IOException {
+        WalletFile walletFile = objectMapper.readValue(keystore, WalletFile.class);
+        ECKeyPair keyPair = org.web3j.crypto.Wallet.decrypt(walletPassword, walletFile);
+
+        String address = EthUtils.getAddress(keyPair);
+        String publicKey = EthUtils.getPublicKey(keyPair);
+        String keyStore = objectMapper.writeValueAsString(walletFile);
+        //由于通过keyStore无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
+        return new WalletETH(walletname, walletPassword, null, address, keystore, publicKey, keyStore, 1);
     }
 
     /**
@@ -204,13 +248,17 @@ public class WalletETHUtils {
         }
     }
 
-    public static String getTestnetKeyDirectory() {
-        return String.format(
-                "%s%stestnet%skeystore", getDefaultKeyDirectory(), File.separator, File.separator);
-    }
-
-    public static String getMainnetKeyDirectory() {
-        return String.format("%s%skeystore", getDefaultKeyDirectory(), File.separator);
+    /**
+     * 校验是否是以太坊地址
+     *
+     * @param input
+     * @return
+     */
+    public static boolean isETHValidAddress(String input) {
+        if (input.isEmpty() || !input.startsWith("0x")) {
+            return false;
+        }
+        return isValidAddress(input);
     }
 
     /**

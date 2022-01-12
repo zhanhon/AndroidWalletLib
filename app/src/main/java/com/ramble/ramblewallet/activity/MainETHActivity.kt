@@ -30,7 +30,6 @@ import com.ramble.ramblewallet.bean.RateBeen
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
-import com.ramble.ramblewallet.ethereum.WalleETHManager.getTokenBalance
 import com.ramble.ramblewallet.network.rateInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.ClipboardUtils
@@ -98,9 +97,9 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
-        Thread {
-            binding.tvBalanceTotal.text = getTokenBalance(saveWalletList[0].address)
-        }
+//        Thread {
+//            binding.tvBalanceTotal.text = getTokenBalance(saveWalletList[0].address)
+//        }
         binding.tvEthAddress.text = addressHandle(saveWalletList[0].address)
 
         setOnClickListener()
