@@ -105,7 +105,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("CheckResult")
     private fun searchData(condition: String) {
         var req = StoreInfo.Req()
-        req.convertId = ""
+        req.condition = "symbol"
         req.symbol = condition
         req.platformId = 1027
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
