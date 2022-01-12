@@ -22,6 +22,7 @@ import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.ethereum.WalletETHUtils.isETHValidAddress
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 
@@ -67,12 +68,16 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                     walletPassword,
                     walletETHString.trim()
                 )
-                println("-=-=-=->wallestETHAddress:${walletETH.address}")
-                println("-=-=-=->walletETHMnemonic:${walletETH.mnemonic}")
-                println("-=-=-=->walletETHPrivateKey:${walletETH.privateKey}")
-                println("-=-=-=->walletETHKeystore:${walletETH.keystore}")
 
-                putAddress(walletETH)
+                val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
+                    walletPassword,
+                    walletPassword,
+                    walletETHString.trim()
+                )
+                println("-=-=-=->wallestTRONAddress:${walletTRX.address}")
+                println("-=-=-=->walletTRONMnemonic:${walletTRX.publicKey}")
+                println("-=-=-=->walletTRONPrivateKey:${walletTRX.privateKey}")
+                println("-=-=-=->walletTRONKeystore:${walletETHString.trim()}")
 
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
                     saveWalletList =
@@ -82,14 +87,14 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                         )
                 }
                 saveWalletList.add(walletETH)
+                saveWalletList.add(walletTRX)
                 println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
-
+                putAddress(walletETH, walletTRX)
 
                 //2、之后地址校验
                 var isValidSuccess = isETHValidAddress(walletETH.address)
                 if (isValidSuccess) {
-                    println("-=-=-=->isValidSuccess:$isValidSuccess")
                     startActivity(Intent(this, MainETHActivity::class.java))
                 }
 
@@ -136,9 +141,15 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
     }
 
     @SuppressLint("CheckResult")
-    private fun putAddress(walletETHKeyStore: WalletETH) {
+    private fun putAddress(walletETHKeyStore: WalletETH, walletTRON: WalletETH) {
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
-        detailsList.add(AddressReport.DetailsList(walletETHKeyStore.address, 1)) //ETH
+        detailsList.add(
+            AddressReport.DetailsList(
+                walletETHKeyStore.address,
+                1
+            )
+        ) //链类型|0:ETC|1:ETH|2:TRON
+        detailsList.add(AddressReport.DetailsList(walletTRON.address, 2))
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
         val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
         mApiService.putAddress(
@@ -148,7 +159,7 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                 if (it.code() == 1) {
                     it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
                 } else {
-                    putAddress(walletETHKeyStore)
+                    putAddress(walletETHKeyStore, walletTRON)
                     println("-=-=-=->putAddress:${it.message()}")
                 }
             }, {

@@ -20,6 +20,7 @@ import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.ethereum.WalletETHUtils.isETHValidAddress
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.utils.toastDefault
@@ -27,7 +28,8 @@ import com.ramble.ramblewallet.utils.toastDefault
 class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityRecoverWalletBinding
-    private var chooseMode = 0
+    private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX
+    private var chooseMode = 0 //选择方式|1:助记词|2:私钥|3:keystore
     private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
 
 
@@ -108,8 +110,8 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initData() {
-        chooseMode = intent.getIntExtra(ARG_PARAM1, 0)
-        println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
+        walletType = intent.getIntExtra(ARG_PARAM1, 0)
+        chooseMode = intent.getIntExtra(ARG_PARAM2, 0)
         when (chooseMode) {
             1 -> {
                 binding.tvRecoverTitle.text = getString(R.string.import_mnemonic_words)
@@ -151,27 +153,59 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     toastDefault(getString(R.string.different_password))
                     return
                 }
-                when (chooseMode) {
-                    1 -> {
-                        if (binding.edtContributingWords.text.isEmpty()) {
-                            toastDefault(getString(R.string.input_mnemonic_words))
-                            return
+                when (walletType) {
+                    1 -> { //以太坊
+                        when (chooseMode) {
+                            1 -> {
+                                if (binding.edtContributingWords.text.isEmpty()) {
+                                    toastDefault(getString(R.string.input_mnemonic_words))
+                                    return
+                                }
+                                recoverWalletETH(1)
+                            }
+                            2 -> {
+                                if (binding.edtContributingWords.text.isEmpty()) {
+                                    toastDefault(getString(R.string.input_secret_key))
+                                    return
+                                }
+                                recoverWalletETH(2)
+                            }
+                            3 -> {
+                                if (binding.edtContributingWords.text.isEmpty()) {
+                                    toastDefault(getString(R.string.input_keystore))
+                                    return
+                                }
+                                recoverWalletETH(3)
+                            }
                         }
-                        recoverWalletETH(1)
                     }
-                    2 -> {
-                        if (binding.edtContributingWords.text.isEmpty()) {
-                            toastDefault(getString(R.string.input_secret_key))
-                            return
+                    2 -> { //波场
+                        when (chooseMode) {
+                            1 -> {
+                                if (binding.edtContributingWords.text.isEmpty()) {
+                                    toastDefault(getString(R.string.input_mnemonic_words))
+                                    return
+                                }
+                                recoverWalletTRX(1)
+                            }
+                            2 -> {
+                                if (binding.edtContributingWords.text.isEmpty()) {
+                                    toastDefault(getString(R.string.input_secret_key))
+                                    return
+                                }
+                                recoverWalletTRX(2)
+                            }
+                            3 -> {
+                                if (binding.edtContributingWords.text.isEmpty()) {
+                                    toastDefault(getString(R.string.input_keystore))
+                                    return
+                                }
+                                recoverWalletTRX(3)
+                            }
                         }
-                        recoverWalletETH(2)
                     }
-                    3 -> {
-                        if (binding.edtContributingWords.text.isEmpty()) {
-                            toastDefault(getString(R.string.input_keystore))
-                            return
-                        }
-                        recoverWalletETH(3)
+                    0 -> { //比特币
+
                     }
                 }
             }
@@ -213,7 +247,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         saveWalletList.add(walletETH)
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
-        putAddress(walletETH)
+        putAddress(walletETH, 1)
         if (isETHValidAddress(walletETH.address)) {
             startActivity(Intent(this, MainETHActivity::class.java))
         } else {
@@ -221,14 +255,70 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun putAddress(walletETHKeyStore: WalletETH) {
+    private fun recoverWalletTRX(chooseMode: Int) {
+        lateinit var walletTRX: WalletETH
+        when (chooseMode) {
+            1 -> {
+                walletTRX = WalletTRXUtils.generateWalletByMnemonic(
+                    binding.edtWalletName.text.trim().toString(),
+                    binding.edtWalletPassword.text.trim().toString(),
+                    binding.edtContributingWords.text.toString()
+                )
+            }
+            2 -> {
+                walletTRX = WalletETHUtils.generateWalletByPrivateKey(
+                    binding.edtWalletName.text.trim().toString(),
+                    binding.edtWalletPassword.text.trim().toString(),
+                    binding.edtContributingWords.text.toString()
+                )
+            }
+            3 -> {
+                walletTRX = WalletETHUtils.generateWalletByKeyStore(
+                    binding.edtWalletName.text.trim().toString(),
+                    binding.edtWalletPassword.text.trim().toString(),
+                    binding.edtContributingWords.text.toString()
+                )
+            }
+        }
+        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+            saveWalletList =
+                Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                    object : TypeToken<ArrayList<WalletETH>>() {}.type
+                )
+        }
+        saveWalletList.add(walletTRX)
+        println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
+        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        putAddress(walletTRX, 2)
+        startActivity(Intent(this, MainETHActivity::class.java))
+//        if (isETHValidAddress(walletTRX.address)) {
+//            startActivity(Intent(this, MainETHActivity::class.java))
+//        } else {
+//            toastDefault(getString(R.string.input_correct_mnemonic_words))
+//        }
+    }
+
+    private fun putAddress(wallet: WalletETH, walletType: Int) {
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
-        detailsList.add(
-            AddressReport.DetailsList(
-                walletETHKeyStore.address,
-                1
-            )
-        ) //链类型|0:ETC|1:ETH|2:TRON
+        when (walletType) {
+            1 -> {
+                detailsList.add(
+                    AddressReport.DetailsList(
+                        wallet.address,
+                        1
+                    )
+                ) //链类型|0:ETC|1:ETH|2:TRON
+            }
+            2 -> {
+                detailsList.add(
+                    AddressReport.DetailsList(
+                        wallet.address,
+                        2
+                    )
+                ) //链类型|0:ETC|1:ETH|2:TRON
+            }
+        }
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
         val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
         mApiService.putAddress(
@@ -238,7 +328,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 if (it.code() == 1) {
                     it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
                 } else {
-                    putAddress(walletETHKeyStore)
+                    putAddress(wallet, walletType)
                     println("-=-=-=->putAddress:${it.message()}")
                 }
             }, {
@@ -246,4 +336,5 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             }
         )
     }
+
 }
