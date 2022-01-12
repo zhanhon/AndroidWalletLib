@@ -57,9 +57,12 @@ public class WalletManageAdapter extends BaseQuickAdapter<WalletETH, BaseViewHol
     }
 
     private String addressHandle(String str) {
-        String subStr1 = str.substring(0,6);
+        if (str.isEmpty()) {
+            return null;
+        }
+        String subStr1 = str.substring(0, 6);
         int strLength = str.length();
-        String subStr2 = str.substring(strLength-4, strLength);
+        String subStr2 = str.substring(strLength - 4, strLength);
         return subStr1 + "..." + subStr2;
     }
 

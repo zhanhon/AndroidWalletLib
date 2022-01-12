@@ -1,5 +1,6 @@
 package com.ramble.ramblewallet.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -21,13 +22,12 @@ import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.ethereum.WalletETHUtils.isETHValidAddress
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.tron.bip32.Bip32ECKeyPair
 import com.ramble.ramblewallet.tron.bip32.Bip32ECKeyPair.HARDENED_BIT
 import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
-import org.tron.common.crypto.ECKey
-import org.tron.walletserver.WalletTron
 
 
 class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
@@ -134,44 +134,21 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
-        val seed: ByteArray = org.web3j.crypto.MnemonicUtils.generateSeed(
-            walletETHString.trim(),
-            null
-        )
-
-
-        val masterKeypair: Bip32ECKeyPair = Bip32ECKeyPair.generateKeyPair(seed)
-        val bip44Keypair: Bip32ECKeyPair? = generateBip44KeyPair(masterKeypair, false)
-        val mECKey: ECKey = ECKey.fromPrivate(bip44Keypair?.privateKeyBytes33)
-        val walletTRX = WalletTron(mECKey)
-        println("-=-=-=->wallestTRONAddress:${walletTRX.address}")
-        println("-=-=-=->walletTRONMnemonic:${walletTRX.publicKey}")
-        println("-=-=-=->walletTRONPrivateKey:${walletTRX.privateKey}")
-        println("-=-=-=->walletTRONKeystore:${walletETHString.trim()}")
-
-
-        var walletETH: WalletETH = WalletETHUtils.generateWalletByMnemonic(
+        var walletETH = WalletETHUtils.generateWalletByMnemonic(
             walletPassword,
             walletPassword,
             walletETHString.trim()
         )
-        println("-=-=-=->wallestETHAddress:${walletETH.address}")
-        println("-=-=-=->walletETHMnemonic:${walletETH.mnemonic}")
-        println("-=-=-=->walletETHPrivateKey:${walletETH.privateKey}")
-        println("-=-=-=->walletETHKeystore:${walletETH.keystore}")
 
-        var walletTron = WalletETH(
-            walletName,
+        val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
             walletPassword,
-            walletETH.mnemonic,
-            walletTRX.address,
-            walletTRX.privateKey.toString(),
-            walletTRX.publicKey.toString(),
-            "",
-            2,
-            false
+            walletPassword,
+            walletETHString.trim()
         )
-        putAddress(walletETH, walletTron)
+        println("-=-=-=->wallestTRONAddress:${walletTRX.address}")
+        println("-=-=-=->walletTRONMnemonic:${walletTRX.publicKey}")
+        println("-=-=-=->walletTRONPrivateKey:${walletTRX.privateKey}")
+        println("-=-=-=->walletTRONKeystore:${walletETHString.trim()}")
 
         if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
             saveWalletList =
@@ -181,19 +158,19 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
                 )
         }
         saveWalletList.add(walletETH)
-        saveWalletList.add(walletTron)
+        saveWalletList.add(walletTRX)
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
-
+        putAddress(walletETH, walletTRX)
 
         //2、之后地址校验
         var isValidSuccess = isETHValidAddress(walletETH.address)
         if (isValidSuccess) {
-            println("-=-=-=->isValidSuccess:$isValidSuccess")
             startActivity(Intent(this, MainETHActivity::class.java))
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun putAddress(walletETHKeyStore: WalletETH, walletTRON: WalletETH) {
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
         detailsList.add(

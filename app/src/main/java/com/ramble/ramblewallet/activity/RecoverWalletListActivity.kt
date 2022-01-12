@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.databinding.ActivityRecoverWalletListBinding
 
 class RecoverWalletListActivity : BaseActivity(), View.OnClickListener {
@@ -38,7 +39,7 @@ class RecoverWalletListActivity : BaseActivity(), View.OnClickListener {
         binding.rlBtc.setOnClickListener(this)
     }
 
-    private fun showDialog(title: String) {
+    private fun showDialog(title: String, walletType: Int) {
         var dialog = AlertDialog.Builder(this).create()
         dialog.show()
         val window: Window? = dialog.window
@@ -56,21 +57,24 @@ class RecoverWalletListActivity : BaseActivity(), View.OnClickListener {
 
             window.findViewById<RelativeLayout>(R.id.rl_contributing_words).setOnClickListener {
                 startActivity(Intent(this, RecoverWalletActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, 1)
+                    putExtra(ARG_PARAM1, walletType)
+                    putExtra(ARG_PARAM2, 1)
                 })
                 dialog.dismiss()
             }
 
             window.findViewById<RelativeLayout>(R.id.rl_secret_key).setOnClickListener {
                 startActivity(Intent(this, RecoverWalletActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, 2)
+                    putExtra(ARG_PARAM1, walletType)
+                    putExtra(ARG_PARAM2, 2)
                 })
                 dialog.dismiss()
             }
 
             window.findViewById<RelativeLayout>(R.id.rl_keystore).setOnClickListener {
                 startActivity(Intent(this, RecoverWalletActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, 3)
+                    putExtra(ARG_PARAM1, walletType)
+                    putExtra(ARG_PARAM2, 3)
                 })
                 dialog.dismiss()
             }
@@ -83,13 +87,13 @@ class RecoverWalletListActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.rl_eth -> {
-                showDialog(binding.tvEthCurrencyName.text.toString())
+                showDialog(binding.tvEthCurrencyName.text.toString(), 1)
             }
             R.id.rl_trx -> {
-                showDialog(binding.tvTrxCurrencyName.text.toString())
+                showDialog(binding.tvTrxCurrencyName.text.toString(), 2)
             }
             R.id.rl_btc -> {
-                showDialog(binding.tvBtcCurrencyName.text.toString())
+                showDialog(binding.tvBtcCurrencyName.text.toString(), 0)
             }
         }
     }
