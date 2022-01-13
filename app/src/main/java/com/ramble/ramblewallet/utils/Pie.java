@@ -37,7 +37,7 @@ public class Pie {
      */
     public static final int EVENT_ADD_TOKEN = 2004;
     /**
-     * jian代币
+     * 管理代币
      */
     public static final int EVENT_MINUS_TOKEN = 2005;
 

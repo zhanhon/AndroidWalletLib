@@ -149,6 +149,55 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         return null
     }
 
+    override fun onRxBus(event: RxBus.Event) {
+        super.onRxBus(event)
+        when (event.id()) {
+            Pie.EVENT_MINUS_TOKEN -> {
+                myDataBeansMyAssets = arrayListOf()
+                adapter.clear()
+                recommendTokenAdapter.clear()
+                myDataBeansMyAssets = SharedPreferencesUtils.String2SceneList(
+                    SharedPreferencesUtils.getString(
+                        this,
+                        TOKEN_INFO_NO,
+                        ""
+                    )
+                ) as ArrayList<StoreInfo>
+                var isOpen = false
+                myDataBeansMyAssets.forEach {
+                    if (it.id == event.data<StoreInfo>().id) {
+                        it.isMyToken = event.data<StoreInfo>().isMyToken
+                        isOpen = true
+                    }
+                }
+                if (!isOpen) {
+                    myDataBeansMyAssets.add(event.data())
+                }
+                var addId = SharedPreferencesUtils.SceneList2String(myDataBeansMyAssets)
+                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, addId)
+
+                ArrayList<SimpleRecyclerItem>().apply {
+                    myDataBeansMyAssets.forEach { o ->
+                        if (o.isMyToken == 0) {
+                            this.add(AddTokenItem(o))
+                        }
+                    }
+                    trimDuplicate(this)
+                    recommendTokenAdapter.addAll(this.toList())
+                }
+                ArrayList<SimpleRecyclerItem>().apply {
+                    myDataBeansMyAssets.forEach { o ->
+                        if (o.isMyToken == 1) {
+                            this.add(UnAddTokenItem(o))
+                        }
+                    }
+                    adapter.addAll(this.toList())
+                }
+            }
+
+        }
+    }
+
 
     override fun onClick(v: View) {
         when (v.id) {
