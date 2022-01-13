@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.StoreInfo
+import com.ramble.ramblewallet.constant.TOKEN_INFO_NO
 import com.ramble.ramblewallet.databinding.ActivityAddTokenBinding
 import com.ramble.ramblewallet.item.AddTokenItem
 import com.ramble.ramblewallet.item.UnAddTokenItem
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.QuickItemDecoration
@@ -25,7 +27,6 @@ import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
 class AddTokenActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityAddTokenBinding
-
     private val adapter = RecyclerAdapter()
     private var myDataBeansMyAssets: ArrayList<StoreInfo> = arrayListOf()
     private val recommendTokenAdapter = RecyclerAdapter()
@@ -62,30 +63,13 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 .build()
         )
         binding.rvTokenManageCurrency.adapter = recommendTokenAdapter
-        var r1 = StoreInfo()
-        r1.name = "TFT"
-        var r2 = StoreInfo()
-        r2.name = "WBTC"
-        var r3 = StoreInfo()
-        r3.name = "DAI"
-        var r4 = StoreInfo()
-        r4.name = "USDC"
-        var r5 = StoreInfo()
-        r5.name = "USDT"
-        var r6 = StoreInfo()
-        r6.name = "LINK"
-        var r7 = StoreInfo()
-        r7.name = "YFI"
-        var r8 = StoreInfo()
-        r8.name = "UNI"
-        myDataBeansRecommendToken.add(r1)
-        myDataBeansRecommendToken.add(r2)
-        myDataBeansRecommendToken.add(r3)
-        myDataBeansRecommendToken.add(r4)
-        myDataBeansRecommendToken.add(r5)
-        myDataBeansRecommendToken.add(r6)
-        myDataBeansRecommendToken.add(r7)
-        myDataBeansRecommendToken.add(r8)
+        myDataBeansRecommendToken = SharedPreferencesUtils.String2SceneList(
+            SharedPreferencesUtils.getString(
+                this,
+                TOKEN_INFO_NO,
+                ""
+            )
+        ) as ArrayList<StoreInfo>
         ArrayList<SimpleRecyclerItem>().apply {
             myDataBeansRecommendToken.forEach { o -> this.add(AddTokenItem(o)) }
             recommendTokenAdapter.addAll(this.toList())
@@ -184,6 +168,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 when (val item = AdapterUtils.getHolder(v).getItem<SimpleRecyclerItem>()) {
                     is AddTokenItem -> {
                         myDataBeansMyAssets.clear()
+                        item.data.isMyToken=1
                         myDataBeansMyAssets.add(item.data)
                         recommendTokenAdapter.remove(item)
                         recommendTokenAdapter.notifyDataSetChanged()
@@ -195,6 +180,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                     }
                     is UnAddTokenItem->{
                         myDataBeansMyAssets.clear()
+                        item.data.isMyToken=0
                         myDataBeansMyAssets.add(item.data)
                         adapter.remove(item)
                         adapter.notifyDataSetChanged()

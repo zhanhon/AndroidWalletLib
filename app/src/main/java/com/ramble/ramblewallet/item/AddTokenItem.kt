@@ -27,9 +27,13 @@ class AddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
             "LINK" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_link)
             "YFI" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_yfi)
             "UNI" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_uni)
-            else->binding.ivTokenIcon.setImageResource(R.drawable.vector_dai)
+            else -> binding.ivTokenIcon.setImageResource(R.drawable.vector_dai)
         }
-        binding.ivTokenStatus.setImageResource( R.drawable.vector_token_add)
+        when (data.isMyToken) {
+            0 -> binding.ivTokenStatus.setImageResource(R.drawable.vector_token_add)
+            1 -> binding.ivTokenStatus.setImageResource(R.drawable.vector_token_reduce)
+        }
+
         binding.tvTokenName.text = data.name
         holder.attachOnClickListener(R.id.add_view)
 //        holder.attachOnClickListener(R.id.iv_reduce)

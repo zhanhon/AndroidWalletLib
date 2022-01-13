@@ -9,7 +9,7 @@ import java.io.Serializable
  * 作者　: potato
  * 描述　:
  */
-class StoreInfo @SuppressWarnings("unused") constructor() {
+class StoreInfo @SuppressWarnings("unused") constructor() :  Serializable{
 
 
     @Json(name = "contractAddress")
@@ -48,6 +48,8 @@ class StoreInfo @SuppressWarnings("unused") constructor() {
 
     @Json(name = "updateTime")
     var updateTime: String = ""//修改时间
+
+    var isMyToken: Int = 0//是否我的资产0,不是 1 是的
 
     class Record: Serializable {
         @Json(name = "cryptoId")
