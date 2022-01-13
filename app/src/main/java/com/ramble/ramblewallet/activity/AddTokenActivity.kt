@@ -17,6 +17,8 @@ import com.ramble.ramblewallet.item.AddTokenItem
 import com.ramble.ramblewallet.item.UnAddTokenItem
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.utils.Pie
+import com.ramble.ramblewallet.utils.RxBus
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
@@ -71,10 +73,22 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
             )
         ) as ArrayList<StoreInfo>
         ArrayList<SimpleRecyclerItem>().apply {
-            myDataBeansRecommendToken.forEach { o -> this.add(AddTokenItem(o)) }
+            myDataBeansRecommendToken.forEach { o ->
+                if (o.isMyToken == 0) {
+                    this.add(AddTokenItem(o))
+                }
+            }
+            trimDuplicate(this)
             recommendTokenAdapter.addAll(this.toList())
         }
-
+        ArrayList<SimpleRecyclerItem>().apply {
+            myDataBeansRecommendToken.forEach { o ->
+                if (o.isMyToken == 1) {
+                    this.add(UnAddTokenItem(o))
+                }
+            }
+            adapter.addAll(this.toList())
+        }
     }
 
     private fun initListener() {
@@ -164,11 +178,11 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                     isSpread = true
                 }
             }
-            R.id.add_view -> {//增加代币到我的
+            R.id.add_view -> {
                 when (val item = AdapterUtils.getHolder(v).getItem<SimpleRecyclerItem>()) {
-                    is AddTokenItem -> {
+                    is AddTokenItem -> {//增加代币到我的
                         myDataBeansMyAssets.clear()
-                        item.data.isMyToken=1
+                        item.data.isMyToken = 1
                         myDataBeansMyAssets.add(item.data)
                         recommendTokenAdapter.remove(item)
                         recommendTokenAdapter.notifyDataSetChanged()
@@ -177,10 +191,12 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                             trimDuplicate(this)
                             adapter.addAll(this.toList())
                         }
+                        RxBus.emitEvent(Pie.EVENT_ADD_TOKEN, item.data)
                     }
-                    is UnAddTokenItem->{
+                    is UnAddTokenItem -> {//减到代币到我的
                         myDataBeansMyAssets.clear()
-                        item.data.isMyToken=0
+                        item.data.isMyToken = 0
+                        RxBus.emitEvent(Pie.EVENT_ADD_TOKEN,  item.data)
                         myDataBeansMyAssets.add(item.data)
                         adapter.remove(item)
                         adapter.notifyDataSetChanged()

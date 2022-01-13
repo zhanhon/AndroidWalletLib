@@ -32,4 +32,13 @@ public class Pie {
      */
     public static final int EVENT_ADDRESS_BOOK_ADD = 2003;
 
+    /**
+     * 新增代币
+     */
+    public static final int EVENT_ADD_TOKEN = 2004;
+    /**
+     * jian代币
+     */
+    public static final int EVENT_MINUS_TOKEN = 2005;
+
 }

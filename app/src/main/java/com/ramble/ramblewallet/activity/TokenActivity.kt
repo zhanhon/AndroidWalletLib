@@ -15,8 +15,10 @@ import com.ramble.ramblewallet.constant.TOKEN_INFO_NO
 import com.ramble.ramblewallet.databinding.ActivityTokenBinding
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.item.AddTokenItem
+import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.QuickItemDecoration
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
@@ -56,11 +58,12 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                 .build()
         )
         binding.rvTokenCurrency.adapter = adapter
-        if ( SharedPreferencesUtils.getString(
+        if (SharedPreferencesUtils.getString(
                 this,
                 TOKEN_INFO_NO,
                 ""
-            ).isNotEmpty()){
+            ).isNotEmpty()
+        ) {
             myStores = SharedPreferencesUtils.String2SceneList(
                 SharedPreferencesUtils.getString(
                     this,
@@ -68,23 +71,31 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                     ""
                 )
             ) as ArrayList<StoreInfo>
-        }else{
+        } else {
             var r1 = StoreInfo()
+            r1.id = 1
             r1.name = "TFT"
             var r2 = StoreInfo()
+            r2.id = 2
             r2.name = "WBTC"
             var r3 = StoreInfo()
+            r3.id = 3
             r3.name = "DAI"
             var r4 = StoreInfo()
             r4.name = "USDC"
+            r4.id = 4
             var r5 = StoreInfo()
             r5.name = "USDT"
+            r5.id = 5
             var r6 = StoreInfo()
             r6.name = "LINK"
+            r6.id = 6
             var r7 = StoreInfo()
             r7.name = "YFI"
+            r7.id = 7
             var r8 = StoreInfo()
             r8.name = "UNI"
+            r8.id = 8
             myStores.add(r1)
             myStores.add(r2)
             myStores.add(r3)
@@ -107,10 +118,41 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
         binding.ivBack.setOnClickListener(this)
         binding.ivTokenRight.setOnClickListener(this)
         binding.ivAddToken.setOnClickListener(this)
+        adapter.onClickListener = this
     }
 
     override fun onRxBus(event: RxBus.Event) {
         super.onRxBus(event)
+        when (event.id()) {
+            Pie.EVENT_ADD_TOKEN -> {
+                myStores = arrayListOf()
+                adapter.clear()
+                myStores = SharedPreferencesUtils.String2SceneList(
+                    SharedPreferencesUtils.getString(
+                        this,
+                        TOKEN_INFO_NO,
+                        ""
+                    )
+                ) as ArrayList<StoreInfo>
+                var isOpen = false
+                myStores.forEach {
+                    if (it.id == event.data<StoreInfo>().id) {
+                        it.isMyToken = event.data<StoreInfo>().isMyToken
+                        isOpen = true
+                    }
+                }
+                if (!isOpen) {
+                    myStores.add(event.data())
+                }
+                var addId = SharedPreferencesUtils.SceneList2String(myStores)
+                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, addId)
+                ArrayList<SimpleRecyclerItem>().apply {
+                    myStores.forEach { o -> this.add(AddTokenItem(o as StoreInfo)) }
+                    adapter.addAll(this.toList())
+                }
+            }
+
+        }
     }
 
     override fun onClick(v: View) {
@@ -119,10 +161,24 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.iv_token_right -> {
-                start( TokenManageActivity::class.java)
+                start(TokenManageActivity::class.java)
             }
             R.id.iv_add_token -> {
-                start( AddTokenActivity::class.java)
+                start(AddTokenActivity::class.java)
+            }
+            R.id.add_view -> {
+                val position = AdapterUtils.getHolder(v).adapterPosition
+                val item = AdapterUtils.getHolder(v).getItem<AddTokenItem>().data
+                if (item.isMyToken==0){
+                    item.isMyToken=1
+                }else{
+                    item.isMyToken=0
+                }
+                myStores[position] = item
+                var addId = SharedPreferencesUtils.SceneList2String(myStores)
+                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, addId)
+                adapter.replaceAt(position,AddTokenItem(item))
+                adapter.notifyDataSetChanged()
             }
         }
     }
