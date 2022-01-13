@@ -267,14 +267,14 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 )
             }
             2 -> {
-                walletTRX = WalletETHUtils.generateWalletByPrivateKey(
+                walletTRX = WalletTRXUtils.generateWalletByPrivateKey(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString()
                 )
             }
             3 -> {
-                walletTRX = WalletETHUtils.generateWalletByKeyStore(
+                walletTRX = WalletTRXUtils.generateWalletByKeyStore(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString()
