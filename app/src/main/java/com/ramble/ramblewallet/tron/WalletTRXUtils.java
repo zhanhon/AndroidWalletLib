@@ -11,7 +11,7 @@ import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.crypto.HDKeyDerivation;
 import org.bitcoinj.crypto.HDUtils;
 import org.tron.TronWalletApi;
-import org.tron.common.utils.ByteArray;
+import org.tron.wallet.util.ByteArray;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.MnemonicUtils;
 import org.web3j.crypto.WalletFile;

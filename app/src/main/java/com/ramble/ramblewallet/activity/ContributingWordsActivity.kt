@@ -24,8 +24,6 @@ import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.tron.WalletTRXUtils.isTrxValidAddress
-import com.ramble.ramblewallet.tron.bip32.Bip32ECKeyPair
-import com.ramble.ramblewallet.tron.bip32.Bip32ECKeyPair.HARDENED_BIT
 import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
@@ -199,16 +197,5 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
             }
         )
     }
-
-    private fun generateBip44KeyPair(master: Bip32ECKeyPair?, testNet: Boolean): Bip32ECKeyPair? {
-        return if (testNet) {
-            val path = intArrayOf(44 or HARDENED_BIT, 0 or HARDENED_BIT, 0 or HARDENED_BIT, 0)
-            Bip32ECKeyPair.deriveKeyPair(master, path)
-        } else {
-            val path = intArrayOf(44 or HARDENED_BIT, 195 or HARDENED_BIT, 0 or HARDENED_BIT, 0, 0)
-            Bip32ECKeyPair.deriveKeyPair(master, path)
-        }
-    }
-
 
 }
