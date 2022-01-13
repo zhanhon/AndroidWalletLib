@@ -34,7 +34,8 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityTokenManageBinding
 
     private var myStores: ArrayList<StoreInfo> = arrayListOf()
-    private var saveTokenList: ArrayList<String> = arrayListOf()
+    private var saveTokenList: ArrayList<TokenManageItem> = arrayListOf()
+    private var saveList: ArrayList<Int> = arrayListOf()
     private lateinit var saveTokenListJson: String
     private lateinit var itemTouchHelper: ItemTouchHelperImpl
     private val adapter = RecyclerAdapter()
@@ -45,11 +46,6 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_token_manage)
-        saveTokenList = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, SELECTED_TOKENS, ""),
-            object : TypeToken<ArrayList<String>>() {}.type
-        )
-        saveTokenListJson = SharedPreferencesUtils.getString(this, SELECTED_TOKENS, "")
 
         initView()
         initListener()
@@ -182,6 +178,20 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
         adapter.notifyItemRangeChanged(0, adapter.itemCount, isEditable)
     }
 
+    private fun setIDlist() {
+        if (saveList!!.size > 0) {
+            saveList!!.clear()
+        }
+        adapter.all.forEach {
+            if (it is TokenManageItem) {
+                if (it.isChecked) {
+                    saveList!!.add(it.data.id)
+                    saveTokenList!!.add(it)
+                }
+            }
+        }
+    }
+
     override fun onClick(v: View) {
         when (v.id) {
             R.id.iv_back -> {
@@ -193,7 +203,13 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                     setAdapterEditable(isShowCheck)
                     isFirst=true
                 }else{
-
+                    setIDlist()
+                     if (saveList.isNotEmpty()){
+                         saveTokenList.forEach {
+                             adapter.remove(it)
+                         }
+                         adapter.notifyDataSetChanged()
+                     }
                 }
             }
             R.id.iv_token_status ->{
@@ -211,9 +227,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                 RxBus.emitEvent(Pie.EVENT_MINUS_TOKEN, item)
 
             }
-            R.id.ivDelete ->{
 
-            }
         }
     }
 }
