@@ -26,6 +26,11 @@ import com.ramble.ramblewallet.wight.adapter.QuickItemDecoration
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
 
+/***
+ * 时间　: 2022/1/13 8:45
+ * 作者　: potato
+ * 描述　: 新增代币
+ */
 class AddTokenActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityAddTokenBinding
@@ -194,6 +199,37 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                     adapter.addAll(this.toList())
                 }
             }
+            Pie.EVENT_DEL_TOKEN->{
+                myDataBeansMyAssets = arrayListOf()
+                adapter.clear()
+                recommendTokenAdapter.clear()
+                myDataBeansMyAssets = SharedPreferencesUtils.String2SceneList(
+                    SharedPreferencesUtils.getString(
+                        this,
+                        TOKEN_INFO_NO,
+                        ""
+                    )
+                ) as ArrayList<StoreInfo>
+
+                ArrayList<SimpleRecyclerItem>().apply {
+                    myDataBeansMyAssets.forEach { o ->
+                        if (o.isMyToken == 0) {
+                            this.add(AddTokenItem(o))
+                        }
+                    }
+                    trimDuplicate(this)
+                    recommendTokenAdapter.addAll(this.toList())
+                }
+                ArrayList<SimpleRecyclerItem>().apply {
+                    myDataBeansMyAssets.forEach { o ->
+                        if (o.isMyToken == 1) {
+                            this.add(UnAddTokenItem(o))
+                        }
+                    }
+                    adapter.addAll(this.toList())
+                }
+
+            }
 
         }
     }
@@ -245,7 +281,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                     is UnAddTokenItem -> {//减到代币到我的
                         myDataBeansMyAssets.clear()
                         item.data.isMyToken = 0
-                        RxBus.emitEvent(Pie.EVENT_ADD_TOKEN,  item.data)
+                        RxBus.emitEvent(Pie.EVENT_ADD_TOKEN, item.data)
                         myDataBeansMyAssets.add(item.data)
                         adapter.remove(item)
                         adapter.notifyDataSetChanged()

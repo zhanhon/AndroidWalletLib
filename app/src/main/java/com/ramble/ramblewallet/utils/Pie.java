@@ -40,5 +40,9 @@ public class Pie {
      * 管理代币
      */
     public static final int EVENT_MINUS_TOKEN = 2005;
+    /**
+     * 删除代币
+     */
+    public static final int EVENT_DEL_TOKEN = 2006;
 
 }

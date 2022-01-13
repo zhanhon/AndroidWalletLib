@@ -151,6 +151,22 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                     adapter.addAll(this.toList())
                 }
             }
+            Pie.EVENT_DEL_TOKEN->{
+                myStores = arrayListOf()
+                adapter.clear()
+                myStores = SharedPreferencesUtils.String2SceneList(
+                    SharedPreferencesUtils.getString(
+                        this,
+                        TOKEN_INFO_NO,
+                        ""
+                    )
+                ) as ArrayList<StoreInfo>
+
+                ArrayList<SimpleRecyclerItem>().apply {
+                    myStores.forEach { o -> this.add(AddTokenItem(o as StoreInfo)) }
+                    adapter.addAll(this.toList())
+                }
+            }
 
         }
     }
