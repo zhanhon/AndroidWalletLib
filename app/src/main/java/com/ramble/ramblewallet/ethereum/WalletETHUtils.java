@@ -254,7 +254,7 @@ public class WalletETHUtils {
      * @param input
      * @return
      */
-    public static boolean isETHValidAddress(String input) {
+    public static boolean isEthValidAddress(String input) {
         if (input.isEmpty() || !input.startsWith("0x")) {
             return false;
         }

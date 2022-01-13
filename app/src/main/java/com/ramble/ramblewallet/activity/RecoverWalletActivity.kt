@@ -17,10 +17,11 @@ import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityRecoverWalletBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
-import com.ramble.ramblewallet.ethereum.WalletETHUtils.isETHValidAddress
+import com.ramble.ramblewallet.ethereum.WalletETHUtils.isEthValidAddress
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.tron.WalletTRXUtils
+import com.ramble.ramblewallet.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.utils.toastDefault
@@ -248,7 +249,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
         putAddress(walletETH, 1)
-        if (isETHValidAddress(walletETH.address)) {
+        if (isEthValidAddress(walletETH.address)) {
             startActivity(Intent(this, MainETHActivity::class.java))
         } else {
             toastDefault(getString(R.string.input_correct_mnemonic_words))
@@ -292,11 +293,11 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
         putAddress(walletTRX, 2)
         startActivity(Intent(this, MainETHActivity::class.java))
-//        if (isETHValidAddress(walletTRX.address)) {
-//            startActivity(Intent(this, MainETHActivity::class.java))
-//        } else {
-//            toastDefault(getString(R.string.input_correct_mnemonic_words))
-//        }
+        if (isTrxValidAddress(walletTRX.address)) {
+            startActivity(Intent(this, MainETHActivity::class.java))
+        } else {
+            toastDefault(getString(R.string.input_correct_mnemonic_words))
+        }
     }
 
     private fun putAddress(wallet: WalletETH, walletType: Int) {

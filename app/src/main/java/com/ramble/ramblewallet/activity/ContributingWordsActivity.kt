@@ -19,10 +19,11 @@ import com.ramble.ramblewallet.databinding.ActivityContributingWordsBinding
 import com.ramble.ramblewallet.ethereum.MnemonicUtils
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
-import com.ramble.ramblewallet.ethereum.WalletETHUtils.isETHValidAddress
+import com.ramble.ramblewallet.ethereum.WalletETHUtils.isEthValidAddress
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.tron.WalletTRXUtils
+import com.ramble.ramblewallet.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.tron.bip32.Bip32ECKeyPair
 import com.ramble.ramblewallet.tron.bip32.Bip32ECKeyPair.HARDENED_BIT
 import com.ramble.ramblewallet.utils.ClipboardUtils
@@ -135,13 +136,13 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
         }
 
         var walletETH = WalletETHUtils.generateWalletByMnemonic(
-            walletPassword,
+            walletName,
             walletPassword,
             walletETHString.trim()
         )
 
         val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
-            walletPassword,
+            walletName,
             walletPassword,
             walletETHString.trim()
         )
@@ -164,8 +165,9 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
         putAddress(walletETH, walletTRX)
 
         //2、之后地址校验
-        var isValidSuccess = isETHValidAddress(walletETH.address)
-        if (isValidSuccess) {
+        var isValidEthSuccess = isEthValidAddress(walletETH.address)
+        var isValidTrxSuccess = isTrxValidAddress(walletTRX.address)
+        if (isValidEthSuccess && isValidTrxSuccess) {
             startActivity(Intent(this, MainETHActivity::class.java))
         }
     }
