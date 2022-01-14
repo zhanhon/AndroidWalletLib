@@ -65,6 +65,7 @@ fun setupArchLibrary(
 }
 
 const val WALLETINFO = "wallet_info"
+const val WALLETSELECTED = "wallet_selected"
 const val RATEINFO = "rate_info"
 const val ADDRESS_BOOK_INFO = "address_book_info"
 const val SELECTED_TOKENS = "selected_tokens"

@@ -32,6 +32,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX
     private var chooseMode = 0 //选择方式|1:助记词|2:私钥|3:keystore
     private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
+    private lateinit var saveWalletSelected: WalletETH
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -250,6 +251,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
         putAddress(walletETH, 1)
         if (isEthValidAddress(walletETH.address)) {
+            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
             startActivity(Intent(this, MainETHActivity::class.java))
         } else {
             toastDefault(getString(R.string.input_correct_mnemonic_words))
@@ -294,7 +296,8 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         putAddress(walletTRX, 2)
         startActivity(Intent(this, MainETHActivity::class.java))
         if (isTrxValidAddress(walletTRX.address)) {
-            startActivity(Intent(this, MainETHActivity::class.java))
+            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletTRX))
+            startActivity(Intent(this, MainTRXActivity::class.java))
         } else {
             toastDefault(getString(R.string.input_correct_mnemonic_words))
         }

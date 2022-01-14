@@ -14,6 +14,7 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.WalletManageAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.constant.WALLETINFO
+import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityWalletManageBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.utils.ClipboardUtils
@@ -73,11 +74,28 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         binding.ivBack.setOnClickListener(this)
         binding.ivManageWalletRight.setOnClickListener(this)
         binding.ivAddWallet.setOnClickListener(this)
+
     }
 
     private fun loadData(walletManageBean: ArrayList<WalletETH>) {
         walletManageAdapter = WalletManageAdapter(walletManageBean, isDeletePage)
         binding.rvMainCurrency.adapter = walletManageAdapter
+        walletManageAdapter.setOnItemClickListener { adapter, view, position ->
+            if (adapter.getItem(position) is WalletETH) {
+                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(adapter.getItem(position) as WalletETH))
+                when ((adapter.getItem(position) as WalletETH).walletType) {
+                    1 -> {
+                        startActivity(Intent(this, MainETHActivity::class.java))
+                    }
+                    2 -> {
+                        startActivity(Intent(this, MainTRXActivity::class.java))
+                    }
+                    0 -> {
+                        startActivity(Intent(this, MainBTCActivity::class.java))
+                    }
+                }
+            }
+        }
         walletManageAdapter.addChildClickViewIds(R.id.iv_copy_address)
         walletManageAdapter.addChildClickViewIds(R.id.iv_wallet_more)
         walletManageAdapter.addChildClickViewIds(R.id.cl_delete)
