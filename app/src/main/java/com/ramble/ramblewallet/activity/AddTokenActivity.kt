@@ -1,6 +1,6 @@
 package com.ramble.ramblewallet.activity
 
-import android.annotation.SuppressLint
+
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -13,14 +13,12 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.constant.TOKEN_INFO_NO
 import com.ramble.ramblewallet.databinding.ActivityAddTokenBinding
+import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.item.AddTokenItem
 import com.ramble.ramblewallet.item.UnAddTokenItem
-import com.ramble.ramblewallet.network.getStoreUrl
-import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.QuickItemDecoration
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
@@ -105,30 +103,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         adapter.onClickListener = this
     }
 
-    @SuppressLint("CheckResult")
-    private fun searchData(condition: String) {
-        var req = StoreInfo.Req()
-        req.condition = "symbol"
-        req.symbol = condition
-        req.platformId = 1027
-        mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
-            if (it.code() == 1) {
-                it.data()?.let { data ->
-                    ArrayList<SimpleRecyclerItem>().apply {
-                        data.forEach { o -> this.add(AddTokenItem(o)) }
-                        trimDuplicate(this)
-                        recommendTokenAdapter.addAll(this.toList())
-                    }
-                }
 
-            } else {
-                println("==================>getTransferInfo1:${it.message()}")
-            }
-        }, {
-            println("==================>getTransferInfo1:${it.printStackTrace()}")
-        }
-        )
-    }
 
     /***
      * 过滤重复信息
@@ -241,11 +216,8 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.search -> {//搜索代币
-                if (binding.etSearch.text.toString()
-                        .isNullOrEmpty() || lastString == binding.etSearch.text.toString().trim()
-                ) return
-                lastString = binding.etSearch.text.toString().trim()
-                searchData(lastString)
+                start(SearchTokenActivity::class.java)
+
             }
             R.id.iv_token_manage -> {
                 startActivity(Intent(this, TokenManageActivity::class.java))

@@ -32,6 +32,7 @@
         <activity android:name=".activity.AddTokenActivity" />
         <activity android:name=".activity.TokenManageActivity" />
         <activity android:name=".activity.TokenActivity" />
+        <activity android:name=".activity.SearchTokenActivity" />
         <activity android:name=".activity.RecoverWalletListActivity" />
         <activity android:name=".activity.GatheringActivity" />
         <activity android:name=".activity.TransferActivity" />
