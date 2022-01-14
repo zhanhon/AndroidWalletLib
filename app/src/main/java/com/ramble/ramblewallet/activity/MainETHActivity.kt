@@ -13,12 +13,11 @@ import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.RelativeLayout
-import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
@@ -73,23 +72,25 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         )
 
 
-        binding.scroll01.post { binding.scroll01.fullScroll(ScrollView.FOCUS_UP) } //初始值
-        findViewById<RelativeLayout>(R.id.toolbar).setBackgroundResource(0)
-        binding.scroll01.setOnScrollChangeListener { view, x, y, oldx, oldy ->
-            if (y > 64) {
-                binding.txtTitle.visibility = View.INVISIBLE
-                binding.linearBtns.visibility = View.INVISIBLE
-                binding.relBtns.visibility = View.VISIBLE
-                binding.card01.visibility = View.VISIBLE
-                binding.toolbar.background = getDrawable(R.mipmap.ic_home_bg_eth_small)
-            } else {
-                binding.txtTitle.visibility = View.VISIBLE
-                binding.linearBtns.visibility = View.VISIBLE
-                binding.relBtns.visibility = View.INVISIBLE
-                binding.card01.visibility = View.GONE
-                binding.toolbar.setBackgroundResource(0)
+        binding.appbarLayout.addOnOffsetChangedListener(object :
+            AppBarLayout.OnOffsetChangedListener {
+            var isShow = false
+            var scrollRange = -1
+            override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.totalScrollRange
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    binding.toolbarLeft.visibility = View.VISIBLE
+                    binding.txtTitle.visibility = View.INVISIBLE
+                    isShow = true
+                } else if (isShow) {
+                    binding.toolbarLeft.visibility = View.GONE
+                    binding.txtTitle.visibility = View.VISIBLE
+                    isShow = false
+                }
             }
-        }
+        })
 
         binding.tvWalletName.text = saveWalletList[0].walletName
         when (currencyUnit) {
@@ -116,8 +117,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         if (animator != null) {
             return
         }
-        animator = binding.ivBalanceRefresh1.asyncAnimator()
-        animator = binding.ivBalanceRefresh2.asyncAnimator()
+        animator = binding.ivBalanceRefresh.asyncAnimator()
     }
 
     private fun cancelSyncAnimation() {
@@ -145,10 +145,8 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         binding.llScan.setOnClickListener(this)
 
         binding.ivTokenManageClick.setOnClickListener(this)
-        binding.ivTokenManageClick01.setOnClickListener(this)
 
-        binding.ivBalanceRefresh1.setOnClickListener(this)
-        binding.ivBalanceRefresh2.setOnClickListener(this)
+        binding.ivBalanceRefresh.setOnClickListener(this)
         binding.ivEyes.setOnClickListener(this)
         binding.ivCopy.setOnClickListener(this)
 
@@ -223,7 +221,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                     putExtra(ARG_PARAM1, "ETH")
                 })
             }
-            R.id.iv_balance_refresh_1, R.id.iv_balance_refresh_2 -> {
+            R.id.iv_balance_refresh -> {
                 startSyncAnimation()
                 Handler().postDelayed({
                     refreshData()

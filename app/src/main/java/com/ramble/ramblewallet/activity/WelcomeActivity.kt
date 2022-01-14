@@ -8,10 +8,12 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EmptyReq
 import com.ramble.ramblewallet.constant.*
+import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.MyPreferences
 import com.ramble.ramblewallet.network.rateInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -23,6 +25,8 @@ import com.umeng.message.PushAgent
 import java.util.*
 
 class WelcomeActivity : BaseActivity() {
+
+    private lateinit var wallet: WalletETH
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,8 +40,26 @@ class WelcomeActivity : BaseActivity() {
             showAgreement()
         }
         Handler().postDelayed({
-//            startActivity(Intent(this, MainETHActivity::class.java)) //暂时测试用
-            startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
+            if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isEmpty()) {
+                startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
+            } else {
+                wallet =
+                    Gson().fromJson(
+                        SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+                        object : TypeToken<WalletETH>() {}.type
+                    )
+                when (wallet.walletType) {
+                    1 -> {
+                        startActivity(Intent(this, MainETHActivity::class.java))
+                    }
+                    2 -> {
+                        startActivity(Intent(this, MainTRXActivity::class.java))
+                    }
+                    0 -> {
+                        startActivity(Intent(this, MainBTCActivity::class.java))
+                    }
+                }
+            }
         }, 3000)
 
     }
