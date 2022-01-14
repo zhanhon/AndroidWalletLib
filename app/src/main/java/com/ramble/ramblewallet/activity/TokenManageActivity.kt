@@ -120,7 +120,8 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                 it.isEditable = isEditable
             }
         }
-        adapter.notifyItemRangeChanged(0, adapter.itemCount, isEditable)
+        adapter.notifyDataSetChanged()
+//        adapter.notifyItemRangeChanged(0, adapter.itemCount, isEditable)
     }
 
     private fun setIDlist() {
@@ -167,6 +168,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             R.id.iv_token_status -> {
+                if (isShowCheck)return
                 val position = AdapterUtils.getHolder(v).adapterPosition
                 val item = AdapterUtils.getHolder(v).getItem<TokenManageItem>().data
                 if (item.isMyToken == 0) {
