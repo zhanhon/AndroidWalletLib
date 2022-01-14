@@ -154,9 +154,10 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                             adapter.remove(it)
                         }
                         adapter.notifyDataSetChanged()
-                        myStores.forEach {
+                        var list=myStores.iterator()
+                        list.forEach {
                             if (saveList.contains(it.id)){
-                                myStores.remove(it)
+                                list.remove()
                             }
                         }
                         var addId = SharedPreferencesUtils.SceneList2String(myStores)

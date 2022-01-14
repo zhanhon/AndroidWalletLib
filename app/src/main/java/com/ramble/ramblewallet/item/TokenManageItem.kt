@@ -23,7 +23,15 @@ class TokenManageItem(val data: StoreInfo) : CheckableSimpleRecyclerItem(), View
         val binding: TokenManageItemBinding = holder.binding()
         binding.tvTokenName.text = data.name
         binding.ivDelete.isVisible = isEditable
-
+        if (isEditable){
+            binding.ivTokenStatus.setImageResource(R.drawable.vector_token_move)
+        }else{
+            if (data.isMyToken == 1) {
+                binding.ivTokenStatus.setImageResource(R.drawable.vector_token_reduce)
+            } else {
+                binding.ivTokenStatus.setImageResource(R.drawable.vector_token_add)
+            }
+        }
         binding.ivDelete.isChecked = isChecked
         binding.ivDelete.setOnClickListener(this)
         when (data.name) {
@@ -37,14 +45,7 @@ class TokenManageItem(val data: StoreInfo) : CheckableSimpleRecyclerItem(), View
             "UNI" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_uni)
             else -> binding.ivTokenIcon.setImageResource(R.drawable.vector_dai)
         }
-        if (!isEditable){
-            if (data.isMyToken == 1) {
-               binding.ivTokenStatus .setImageResource(R.drawable.vector_token_reduce)
-            } else {
-                binding.ivTokenStatus .setImageResource(R.drawable.vector_token_add)
-            }
 
-        }
         holder.attachOnClickListener(R.id.iv_token_status)
     }
 
