@@ -26,6 +26,7 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EmptyReq
 import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.RateBeen
+import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
@@ -48,6 +49,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private var isClickEyes = false
     private var saveTokenList: ArrayList<String> = arrayListOf()
     private var animator: ObjectAnimator? = null
+    private var myDataBeansRecommendToken: ArrayList<StoreInfo> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -57,10 +59,24 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_eth)
         saveTokenList.add("ETH")
         SharedPreferencesUtils.saveString(this, SELECTED_TOKENS, Gson().toJson(saveTokenList))
-        saveTokenList = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, SELECTED_TOKENS, ""),
-            object : TypeToken<ArrayList<String>>() {}.type
-        )
+        myDataBeansRecommendToken = SharedPreferencesUtils.String2SceneList(
+            SharedPreferencesUtils.getString(
+                this,
+                TOKEN_INFO_NO,
+                ""
+            )
+        ) as ArrayList<StoreInfo>
+        var list = myDataBeansRecommendToken.iterator()
+        list.forEach {
+            if (it.isMyToken == 0) {
+                list.remove()
+            }
+        }
+
+//        saveTokenList = Gson().fromJson(
+//            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+//            object : TypeToken<ArrayList<String>>() {}.type
+//        )
         rateBean = Gson().fromJson(
             SharedPreferencesUtils.getString(this, RATEINFO, ""),
             object : TypeToken<ArrayList<RateBeen>>() {}.type
@@ -258,14 +274,28 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                             )
                             println("-=-=-=->${Gson().toJson(data)}")
                             mainETHTokenBean.clear()
-                            saveTokenList = Gson().fromJson(
-                                SharedPreferencesUtils.getString(this, SELECTED_TOKENS, ""),
-                                object : TypeToken<ArrayList<String>>() {}.type
-                            )
-                            if (rateBean.isNotEmpty() && saveTokenList.isNotEmpty()) {
-                                saveTokenList.forEach { saveToken ->
+
+                            myDataBeansRecommendToken = SharedPreferencesUtils.String2SceneList(
+                                SharedPreferencesUtils.getString(
+                                    this,
+                                    TOKEN_INFO_NO,
+                                    ""
+                                )
+                            ) as ArrayList<StoreInfo>
+                            var list = myDataBeansRecommendToken.iterator()
+                            list.forEach {
+                                if (it.isMyToken == 0) {
+                                    list.remove()
+                                }
+                            }
+//                            saveTokenList = Gson().fromJson(
+//                                SharedPreferencesUtils.getString(this, SELECTED_TOKENS, ""),
+//                                object : TypeToken<ArrayList<String>>() {}.type
+//                            )
+                            if (rateBean.isNotEmpty() && myDataBeansRecommendToken.isNotEmpty()) {
+                                myDataBeansRecommendToken.forEach { saveToken ->
                                     rateBean.forEach { rateBean ->
-                                        if (saveToken == rateBean.currencyType) {
+                                        if (saveToken.name == rateBean.currencyType) {
                                             mainETHTokenBean.add(
                                                 MainETHTokenBean(
                                                     rateBean.currencyType,
