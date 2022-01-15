@@ -65,7 +65,7 @@
             android:layout_marginLeft="@dimen/dp_10"
             android:gravity="center"
             android:text="@string/delete_book"
-            android:textColor="@color/qmui_config_color_red"
+            android:textColor="@color/account_change_win"
             android:textSize="@dimen/sp_15" />
 
         <View
