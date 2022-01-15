@@ -4,12 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
+import com.ramble.ramblewallet.activity.TransactionQueryActivity;
 import com.ramble.ramblewallet.activity.WelcomeActivity;
 import com.umeng.message.UTrack;
 import com.umeng.message.entity.UMessage;
 
 import org.json.JSONObject;
+
+
 
 public class NotificationBroadcast extends BroadcastReceiver {
     public static final String EXTRA_KEY_ACTION = "ACTION";
@@ -37,7 +39,17 @@ public class NotificationBroadcast extends BroadcastReceiver {
                     MyNotificationService.oldMessage = null;
                     UTrack.getInstance(context).trackMsgClick(msg);
                     Intent data = new Intent(intent);
-                    data.setClass(context, WelcomeActivity.class);
+                    /**根据主题返回不同页面**/
+                    if (msg.extra.get("message_type").equals("201")) {//消息
+                        data.setClass(context, WelcomeActivity.class);
+                    } else if (msg.extra.get("message_type").equals("202")) {//公告
+                        data.setClass(context, WelcomeActivity.class);
+                    } else if (msg.extra.get("message_type").equals("1")||msg.extra.get("message_type").equals("2")||
+                            msg.extra.get("message_type").equals("3")||msg.extra.get("message_type").equals("4")) {//交易记录
+                        data.setClass(context, TransactionQueryActivity.class);
+                    } else {//其它
+                        data.setClass(context, WelcomeActivity.class);
+                    }
                     data.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//需为Intent添加Flag：Intent.FLAG_ACTIVITY_NEW_TASK，否则无法启动Activity。
                     context.startActivity(data);
                     break;

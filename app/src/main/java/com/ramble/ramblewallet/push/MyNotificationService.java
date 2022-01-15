@@ -11,6 +11,8 @@ import android.os.Build;
 import android.os.IBinder;
 
 import com.ramble.ramblewallet.R;
+import com.ramble.ramblewallet.activity.WelcomeActivity;
+import com.ramble.ramblewallet.bean.Page;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UTrack;
 import com.umeng.message.UmengMessageHandler;
@@ -18,6 +20,7 @@ import com.umeng.message.entity.UMessage;
 
 
 import org.json.JSONObject;
+import org.threeten.bp.LocalDateTime;
 
 import java.util.Random;
 
@@ -38,6 +41,23 @@ public class MyNotificationService extends Service {
         String message = intent.getStringExtra("UmengMsg");
         try {
             UMessage msg = new UMessage(new JSONObject(message));
+            /**根据主题返回不同页面**/
+            if (msg.extra.get("message_type").equals("201")) {//消息 保存本地
+                Page.Record a = new Page.Record();
+                LocalDateTime tiem= LocalDateTime.now();
+                a.setId(1);
+                a.setTitle(msg.title);
+                a.setContent(msg.text);
+                a.setCreateTime(tiem.toString());
+
+            } else if (msg.extra.get("message_type").equals("202")) {//公告
+
+            } else if (msg.extra.get("message_type").equals("1")||msg.extra.get("message_type").equals("2")||
+                    msg.extra.get("message_type").equals("3")||msg.extra.get("message_type").equals("4")) {//交易记录
+
+            } else {//其它
+
+            }
             if (oldMessage != null) {
                 UTrack.getInstance(getApplicationContext()).trackMsgDismissed(oldMessage);
             }

@@ -35,7 +35,7 @@ const val READ_ID = "read_ID"
 const val READ_ID_NEW = "read_ID_new"
 
 const val TOKEN_INFO_NO = "token_info_no"
-const val TOKEN_INFO = "token_info"
+const val STATION_INFO = "station_info"
 
 const val REQUEST_CODE_1025 = 1025
 const val REQUEST_CODE_1029 = 1029
