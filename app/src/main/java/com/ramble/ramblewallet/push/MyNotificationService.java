@@ -69,7 +69,7 @@ public class MyNotificationService extends Service {
                     );
 
                 } else{
-                   records =   null;
+                   records =  new  ArrayList<Page.Record>();
                 }
                 records.add(a);
                 String addId = SharedPreferencesUtils.SceneList2String(records);
