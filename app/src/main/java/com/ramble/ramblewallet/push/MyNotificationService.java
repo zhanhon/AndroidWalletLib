@@ -50,6 +50,7 @@ public class MyNotificationService extends Service {
             if (msg.extra.get("message_type").equals("201")) {//消息 保存本地
                 Page.Record a = new Page.Record();
                 LocalDateTime tiem= LocalDateTime.now();
+                //msg.extra.get("id")
                 a.setId(1);
                 a.setTitle(msg.title);
                 a.setContent(msg.text);
