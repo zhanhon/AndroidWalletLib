@@ -11,8 +11,9 @@ import android.os.Build;
 import android.os.IBinder;
 
 import com.ramble.ramblewallet.R;
-import com.ramble.ramblewallet.activity.WelcomeActivity;
+
 import com.ramble.ramblewallet.bean.Page;
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UTrack;
 import com.umeng.message.UmengMessageHandler;
@@ -22,12 +23,16 @@ import com.umeng.message.entity.UMessage;
 import org.json.JSONObject;
 import org.threeten.bp.LocalDateTime;
 
+
+import java.util.ArrayList;
 import java.util.Random;
+
+import static com.ramble.ramblewallet.constant.ConstantsKt.STATION_INFO;
 
 public class MyNotificationService extends Service {
     private static final String TAG = UmengNotificationService.class.getName();
     public static UMessage oldMessage = null;
-
+    private ArrayList<Page.Record> records = null;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -49,6 +54,26 @@ public class MyNotificationService extends Service {
                 a.setTitle(msg.title);
                 a.setContent(msg.text);
                 a.setCreateTime(tiem.toString());
+               Boolean isP= SharedPreferencesUtils.getString(
+                        this,
+                        STATION_INFO,
+                        ""
+                ).isEmpty();
+               if (!isP) {
+                   records = (ArrayList<Page.Record>) SharedPreferencesUtils.String2SceneList(
+                            SharedPreferencesUtils.getString(
+                                    this,
+                                    STATION_INFO,
+                                    ""
+                            )
+                    );
+
+                } else{
+                   records =   null;
+                }
+                records.add(a);
+                String addId = SharedPreferencesUtils.SceneList2String(records);
+                SharedPreferencesUtils.saveString(this, STATION_INFO, addId);
 
             } else if (msg.extra.get("message_type").equals("202")) {//公告
 
