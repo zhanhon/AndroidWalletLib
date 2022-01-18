@@ -92,7 +92,8 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                 println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
                 putAddress(walletETH, walletTRX)
-
+                //设置选择默认
+                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
                 //2、之后地址校验
                 var isValidEthSuccess = isEthValidAddress(walletETH.address)
                 var isValidTrxSuccess = isTrxValidAddress(walletTRX.address)

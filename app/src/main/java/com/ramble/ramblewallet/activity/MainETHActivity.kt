@@ -60,19 +60,22 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_eth)
         saveTokenList.add("ETH")
         SharedPreferencesUtils.saveString(this, SELECTED_TOKENS, Gson().toJson(saveTokenList))
-        myDataBeansRecommendToken = SharedPreferencesUtils.String2SceneList(
-            SharedPreferencesUtils.getString(
-                this,
-                TOKEN_INFO_NO,
-                ""
-            )
-        ) as ArrayList<StoreInfo>
-        var list = myDataBeansRecommendToken.iterator()
-        list.forEach {
-            if (it.isMyToken == 0) {
-                list.remove()
+        if (myDataBeansRecommendToken.isNotEmpty()) {
+            myDataBeansRecommendToken = SharedPreferencesUtils.String2SceneList(
+                SharedPreferencesUtils.getString(
+                    this,
+                    TOKEN_INFO_NO,
+                    ""
+                )
+            ) as ArrayList<StoreInfo>
+            var list = myDataBeansRecommendToken.iterator()
+            list.forEach {
+                if (it.isMyToken == 0) {
+                    list.remove()
+                }
             }
         }
+
 
 
 //        saveTokenList = Gson().fromJson(

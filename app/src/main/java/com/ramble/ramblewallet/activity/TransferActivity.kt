@@ -34,8 +34,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityTransferBinding
     private var transferTitle: String = "ETH"
-    private var transferAddress: String = "0x23flwrf2232wafrwerqwr2rlsf23r23"
-    private var transferName: String = "小猫的钱包"
     private var transferBalance: String = "26.232323"
     private var transferUnit: String = "USDT"
     private var transferGwei: String = "161"
