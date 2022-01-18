@@ -41,9 +41,10 @@ class AddressBookItem(val data: MyAddressBean) : SimpleRecyclerItem() {
                 binding.tvMainCurrencyName.text = "TRX"
             }
         }
-        binding.tvWalletAddress.text =data.address
-        binding.tvWalletName.text =data.userName
+        binding.tvWalletAddress.text = data.address
+        binding.tvWalletName.text = data.userName
         holder.attachOnClickListener(R.id.iv_menu)
         holder.attachOnClickListener(R.id.iv_reduce)
+        holder.attachOnClickListener(R.id.item_address)
     }
 }

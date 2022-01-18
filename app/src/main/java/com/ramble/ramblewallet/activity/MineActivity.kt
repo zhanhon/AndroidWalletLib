@@ -47,35 +47,55 @@ class MineActivity : BaseActivity(), View.OnClickListener {
      */
     private fun initView() {
         binding.tvMineTitle.text = getString(R.string.personal_management)
-        binding.incManageWallet.findViewById<TextView>(R.id.tv_mine_title).text = getString(R.string.wallet_management)
-        binding.incManageWallet.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_manag)
-        binding.incAddressBook.findViewById<TextView>(R.id.tv_mine_title).text = getString(R.string.address_book)
-        binding.incAddressBook.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_address_book)
-        binding.incTransactionQuery.findViewById<TextView>(R.id.tv_mine_title).text = getString(R.string.transaction_query)
-        binding.incTransactionQuery.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_transaction_query)
-        binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_title).text = getString(R.string.multi_language)
-        binding.incMultiLanguage.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_multi_language)
-        binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text = when (language) {
-            TW -> getString(R.string.language_traditional_chinese)
-            EN -> getString(R.string.language_english)
-            else->getString(R.string.language_simplified_chinese)
-        }
-        binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_title).text = getString(R.string.currency_unit)
-        binding.incCurrencyUnit.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_currency)
-        binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = when (currency) {
-            HKD -> getString(R.string.hk_dollar)
-            USD ->  getString(R.string.usd_dollar)
-            else -> getString(R.string.cny_dollar)
+        binding.incManageWallet.findViewById<TextView>(R.id.tv_mine_title).text =
+            getString(R.string.wallet_management)
+        binding.incManageWallet.findViewById<ImageView>(R.id.iv_mine_icon)
+            .setImageResource(R.drawable.ic_manag)
+        binding.incAddressBook.findViewById<TextView>(R.id.tv_mine_title).text =
+            getString(R.string.address_book)
+        binding.incAddressBook.findViewById<ImageView>(R.id.iv_mine_icon)
+            .setImageResource(R.drawable.ic_address_book)
+        binding.incTransactionQuery.findViewById<TextView>(R.id.tv_mine_title).text =
+            getString(R.string.transaction_query)
+        binding.incTransactionQuery.findViewById<ImageView>(R.id.iv_mine_icon)
+            .setImageResource(R.drawable.ic_transaction_query)
+        binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_title).text =
+            getString(R.string.multi_language)
+        binding.incMultiLanguage.findViewById<ImageView>(R.id.iv_mine_icon)
+            .setImageResource(R.drawable.ic_multi_language)
+        binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text =
+            when (language) {
+                TW -> getString(R.string.language_traditional_chinese)
+                EN -> getString(R.string.language_english)
+                else -> getString(R.string.language_simplified_chinese)
+            }
+        binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_title).text =
+            getString(R.string.currency_unit)
+        binding.incCurrencyUnit.findViewById<ImageView>(R.id.iv_mine_icon)
+            .setImageResource(R.drawable.ic_currency)
+        binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text =
+            when (currency) {
+                HKD -> getString(R.string.hk_dollar)
+                USD -> getString(R.string.usd_dollar)
+                else -> getString(R.string.cny_dollar)
 
-        }
-        binding.incHelpFeedback.findViewById<TextView>(R.id.tv_mine_title).text = getString(R.string.help_feedback)
-        binding.incHelpFeedback.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_help_feedback)
-        binding.incServiceAgreement.findViewById<TextView>(R.id.tv_mine_title).text = getString(R.string.service_agreement)
-        binding.incServiceAgreement.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_service)
-        binding.incPrivacyStatement.findViewById<TextView>(R.id.tv_mine_title).text = getString(R.string.privacy_statement)
-        binding.incPrivacyStatement.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_privacy_statement)
-        binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_title).text = getString(R.string.about_us)
-        binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_icon).setImageResource(R.drawable.ic_about)
+            }
+        binding.incHelpFeedback.findViewById<TextView>(R.id.tv_mine_title).text =
+            getString(R.string.help_feedback)
+        binding.incHelpFeedback.findViewById<ImageView>(R.id.iv_mine_icon)
+            .setImageResource(R.drawable.ic_help_feedback)
+        binding.incServiceAgreement.findViewById<TextView>(R.id.tv_mine_title).text =
+            getString(R.string.service_agreement)
+        binding.incServiceAgreement.findViewById<ImageView>(R.id.iv_mine_icon)
+            .setImageResource(R.drawable.ic_service)
+        binding.incPrivacyStatement.findViewById<TextView>(R.id.tv_mine_title).text =
+            getString(R.string.privacy_statement)
+        binding.incPrivacyStatement.findViewById<ImageView>(R.id.iv_mine_icon)
+            .setImageResource(R.drawable.ic_privacy_statement)
+        binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_title).text =
+            getString(R.string.about_us)
+        binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_icon)
+            .setImageResource(R.drawable.ic_about)
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).visibility = View.INVISIBLE
         binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text = "v2.1"
     }
@@ -133,7 +153,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 start(WalletManageActivity::class.java)
             }
             R.id.inc_address_book -> {
-                start(AddressBookActivity::class.java)
+                start(AddressBookActivity::class.java, Bundle().also {
+                    it.putBoolean(ARG_PARAM1, false)
+                })
             }
             R.id.inc_help_feedback -> {
                 start(HelpActivity::class.java)
@@ -228,15 +250,18 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     private fun setLanguage() {
         when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
             CN -> {
-                binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text = getString(R.string.language_simplified_chinese)
+                binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text =
+                    getString(R.string.language_simplified_chinese)
                 LanguageSetting.setLanguage(applicationContext, 1)
             }
             TW -> {
-                binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text = getString(R.string.language_traditional_chinese)
+                binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text =
+                    getString(R.string.language_traditional_chinese)
                 LanguageSetting.setLanguage(applicationContext, 2)
             }
             EN -> {
-                binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text = getString(R.string.language_english)
+                binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text =
+                    getString(R.string.language_english)
                 LanguageSetting.setLanguage(applicationContext, 3)
             }
         }
@@ -245,13 +270,16 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     private fun setCurrency() {
         when (SharedPreferencesUtils.getString(this, CURRENCY, RMB)) {
             RMB -> {
-                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = getString(R.string.cny_dollar)
+                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text =
+                    getString(R.string.cny_dollar)
             }
             HKD -> {
-                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = getString(R.string.hk_dollar)
+                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text =
+                    getString(R.string.hk_dollar)
             }
             USD -> {
-                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = getString(R.string.usd_dollar)
+                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text =
+                    getString(R.string.usd_dollar)
             }
         }
     }

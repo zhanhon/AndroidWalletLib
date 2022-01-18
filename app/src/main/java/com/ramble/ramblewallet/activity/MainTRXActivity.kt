@@ -50,6 +50,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     private var saveTokenList: ArrayList<String> = arrayListOf()
     private var animator: ObjectAnimator? = null
     private var myDataBeansRecommendToken: ArrayList<StoreInfo> = arrayListOf()
+    private lateinit var walletSelleted: WalletETH
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -58,7 +59,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_E11334)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_trx)
         saveTokenList.add("TRX")
-        SharedPreferencesUtils.saveString(this, SELECTED_TOKENS, Gson().toJson(saveTokenList))
+        putSaveInfo(saveTokenList)
         myDataBeansRecommendToken = SharedPreferencesUtils.String2SceneList(
             SharedPreferencesUtils.getString(
                 this,
@@ -87,6 +88,10 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             object : TypeToken<ArrayList<WalletETH>>() {}.type
         )
 
+        walletSelleted = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            object : TypeToken<WalletETH>() {}.type
+        )
 
         binding.appbarLayout.addOnOffsetChangedListener(object :
             AppBarLayout.OnOffsetChangedListener {
@@ -108,18 +113,27 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             }
         })
 
-        binding.tvWalletName.text = saveWalletList[0].walletName
+        binding.tvWalletName.text = walletSelleted.walletName
         when (currencyUnit) {
             RMB -> binding.tvCurrencyUnit.text = "￥"
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
-//        Thread {
-//            binding.tvBalanceTotal.text = getTokenBalance(saveWalletList[0].address)
-//        }
-        binding.tvTrxAddress.text = addressHandle(saveWalletList[0].address)
+
+        binding.tvTrxAddress.text = addressHandle(walletSelleted.address)
 
         setOnClickListener()
+    }
+
+    private fun <T> putSaveInfo(data: T) {
+        SharedPreferencesUtils.saveString(this, SELECTED_TOKENS, Gson().toJson(data))
+    }
+
+    private fun <T> getSaveInfo(type: String, t: T): T {
+        return Gson().fromJson(
+            SharedPreferencesUtils.getString(this, type, ""),
+            object : TypeToken<ArrayList<T>>() {}.type
+        )
     }
 
     private fun addressHandle(str: String): String? {
@@ -189,8 +203,8 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             }
             tvGathering.setOnClickListener { v1: View? ->
                 startActivity(Intent(this, GatheringActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "ETH")
-                    putExtra(ARG_PARAM2, saveWalletList[0].address)
+                    putExtra(ARG_PARAM1, "TRX")
+                    putExtra(ARG_PARAM2, walletSelleted.address)
                 })
                 dialog.dismiss()
             }
@@ -222,8 +236,8 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.iv_gathering_top, R.id.ll_gathering -> {
                 startActivity(Intent(this, GatheringActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "ETH")
-                    putExtra(ARG_PARAM2, saveWalletList[0].address)
+                    putExtra(ARG_PARAM1, "TRX")
+                    putExtra(ARG_PARAM2, walletSelleted.address)
                 })
             }
             R.id.iv_transfer_top, R.id.ll_transfer -> {
@@ -234,7 +248,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.iv_token_manage_click, R.id.iv_token_manage_click_01 -> {
                 startActivity(Intent(this, TokenActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "ETH")
+                    putExtra(ARG_PARAM1, "TRX")
                 })
             }
             R.id.iv_balance_refresh -> {

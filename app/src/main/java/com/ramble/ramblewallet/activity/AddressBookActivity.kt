@@ -1,9 +1,9 @@
 package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.RadioGroup
 import androidx.annotation.RequiresApi
@@ -16,12 +16,14 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MyAddressBean
 import com.ramble.ramblewallet.constant.ADDRESS_BOOK_INFO
+import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.databinding.ActivityAddressBookBinding
 import com.ramble.ramblewallet.item.AddressBookItem
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.OnDataSetChanged
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
+import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
 
 class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     View.OnClickListener, OnDataSetChanged {
@@ -30,13 +32,15 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     private var myDataBeans: ArrayList<MyAddressBean> = arrayListOf()
     private var myData: ArrayList<MyAddressBean> = arrayListOf()
     private val adapter = RecyclerAdapter()
-    private var pos=-1
-    private var bean=MyAddressBean()
+    private var pos = -1
+    private var bean = MyAddressBean()
+    private var isFromTransfer: Boolean = false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_address_book)
+        isFromTransfer = intent.getBooleanExtra(ARG_PARAM1, false)
         initView()
         initListener()
     }
@@ -50,6 +54,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         linearLayoutManager.orientation = OrientationHelper.VERTICAL
         binding.rvMainCurrency.layoutManager = linearLayoutManager
         binding.rvMainCurrency.adapter = adapter
+
         if (SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
             myDataBeans =
                 Gson().fromJson(
@@ -128,18 +133,17 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     override fun onRxBus(event: RxBus.Event) {
         super.onRxBus(event)
         when (event.id()) {
-            Pie.EVENT_ADDRESS_BOOK_SCAN ->{
-
+            Pie.EVENT_ADDRESS_BOOK_SCAN -> {
                 mOnResultsListener!!.onResultsClick(event.data())
             }
-            Pie.EVENT_ADDRESS_BOOK_UPDATA->{
-                myDataBeans.set(pos,event.data())
-                myData.set(pos,event.data())
+            Pie.EVENT_ADDRESS_BOOK_UPDATA -> {
+                myDataBeans.set(pos, event.data())
+                myData.set(pos, event.data())
                 SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
-                adapter.replaceAt(pos,AddressBookItem(event.data()))
+                adapter.replaceAt(pos, AddressBookItem(event.data()))
                 adapter.notifyDataSetChanged()
             }
-            Pie.EVENT_ADDRESS_BOOK_ADD->{
+            Pie.EVENT_ADDRESS_BOOK_ADD -> {
                 if (SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
                     myDataBeans =
                         Gson().fromJson(
@@ -184,16 +188,16 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             R.id.iv_back -> finish()
             R.id.iv_menu -> {//更多
                 val position = AdapterUtils.getHolder(v).adapterPosition
-                pos=position
+                pos = position
                 val itemBean = AdapterUtils.getHolder(v).getItem<AddressBookItem>().data
-                bean=itemBean
+                bean = itemBean
                 showBottomDialog(this,
                     itemBean.userName,
                     copeListener = View.OnClickListener {//复制
                         ClipboardUtils.copy(itemBean.address)
                     },
                     editListener = View.OnClickListener {//编辑
-                        showBottomDialog2(this, itemBean.userName,1)
+                        showBottomDialog2(this, itemBean.userName, 1)
                     },
                     delListener = View.OnClickListener {//删除
                         myDataBeans.removeAt(position)
@@ -216,7 +220,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 adapter.notifyDataSetChanged()
             }
             R.id.add -> {
-                showBottomDialog2(this, "",2)
+                showBottomDialog2(this, "", 2)
                 if (myDataBeans.isNullOrEmpty()) return
                 myDataBeans.forEach {
                     it.isNeedDelete = false
@@ -229,6 +233,18 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     it.isNeedDelete = true
                 }
                 loadData()
+            }
+            R.id.item_address -> {
+                if (isFromTransfer) {
+                    val holder = AdapterUtils.getHolder(v)
+                    when (val item = holder.getItem<SimpleRecyclerItem>()) {
+                        is AddressBookItem -> {
+                            startActivity(Intent(this, TransferActivity::class.java).apply {
+                                putExtra(ARG_PARAM1, item.data.address)
+                            })
+                        }
+                    }
+                }
             }
         }
     }

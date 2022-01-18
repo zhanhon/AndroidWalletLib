@@ -3,360 +3,427 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/color_F5F6F9"
-        tools:context=".activity.TransferActivity">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_FFFFFF"
-            android:padding="@dimen/dp_10"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:background="@color/color_F5F6F9"
+            tools:context=".activity.TransferActivity">
 
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginStart="@dimen/dp_5"
-                android:background="@drawable/vector_left_back"
-                android:textColor="@color/color_000000"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_transfer_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/dp_10"
-                android:textColor="@color/color_000000"
-                android:textSize="@dimen/sp_16"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="25323232323" />
-
-            <ImageView
-                android:id="@+id/iv_transfer_scan"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/dp_10"
-                android:background="@drawable/vector_scan_icon"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_address_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_10"
-            android:background="@color/color_FFFFFF"
-            android:padding="@dimen/dp_10"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cl_toolbar">
-
-            <LinearLayout
-                android:id="@+id/ll_address_input_up"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_10"
-                android:orientation="horizontal"
+                android:background="@color/color_FFFFFF"
+                android:padding="@dimen/dp_10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_sender"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/sender"
-                        android:textColor="@color/color_000000"
-                        android:textSize="@dimen/sp_14" />
-
-                    <TextView
-                        android:id="@+id/tv_wallet_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/sp_13"
-                        tools:text="1111" />
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginStart="@dimen/dp_5"
+                    android:background="@drawable/vector_left_back"
+                    android:textColor="@color/color_000000"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_wallet_address"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:textSize="@dimen/sp_12"
-                    tools:text="1111111111111111111111111111111111111" />
-            </LinearLayout>
+                    android:id="@+id/tv_transfer_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:textColor="@color/color_000000"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="25323232323" />
 
-            <View
-                android:id="@+id/v_address_input_middle"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_05"
-                android:background="@color/color_9598AA"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_address_input_up" />
+                <ImageView
+                    android:id="@+id/iv_transfer_scan"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:background="@drawable/vector_scan_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:id="@+id/ll_address_input_down"
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_address_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp_10"
-                android:orientation="vertical"
+                android:background="@drawable/shape_white_bottom_btn"
+                android:padding="@dimen/dp_10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/v_address_input_middle">
+                app:layout_constraintTop_toBottomOf="@id/cl_toolbar">
 
-                <TextView
-                    android:id="@+id/tv_receiver_address"
+                <LinearLayout
+                    android:id="@+id/ll_address_input_up"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_0"
-                    android:layout_weight="1"
-                    android:text="@string/receiver_address"
-                    android:textSize="@dimen/sp_14" />
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp_10"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_sender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sending_address"
+                            android:textColor="@color/color_000000"
+                            android:textSize="@dimen/sp_15" />
+
+                        <TextView
+                            android:id="@+id/tv_wallet_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:textSize="@dimen/sp_14"
+                            tools:text="1111" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_wallet_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:textColor="@color/color_9598AA"
+                        android:textSize="@dimen/sp_12"
+                        tools:text="1111111111111111111111111111111111111" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/v_address_input_middle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_05"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="@color/color_E7ECFD"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ll_address_input_up" />
+
+                <LinearLayout
+                    android:id="@+id/ll_address_input_down"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp_10"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/v_address_input_middle">
+
+                    <TextView
+                        android:id="@+id/tv_receiver_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_0"
+                        android:layout_weight="1"
+                        android:text="@string/receive_address"
+                        android:textColor="@color/color_000000"
+                        android:textSize="@dimen/sp_14" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_0"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/edt_receiver_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_margin="@dimen/dp_5"
+                            android:background="@null"
+                            android:hint="0xxxxxxxxxxxxxxxxxx"
+                            android:inputType="numberDecimal"
+                            android:longClickable="false"
+                            android:text=""
+                            android:textColor="@color/color_9598AA"
+                            android:textSize="@dimen/sp_12" />
+
+                        <ImageView
+                            android:id="@+id/iv_address_book"
+                            android:layout_width="@dimen/dp_20"
+                            android:layout_height="@dimen/dp_20"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/vector_contacts"
+                            tools:text="1111" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:background="@drawable/shape_white_bottom_btn"
+                android:padding="@dimen/dp_10"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_address_input">
 
                 <RelativeLayout
+                    android:id="@+id/rl_quantity_up"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_0"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp_10"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/tv_quantity_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/quantity"
+                        android:textColor="@color/color_000000"
+                        android:textSize="@dimen/sp_15" />
+
+                    <TextView
+                        android:id="@+id/tv_quantity_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_weight="1"
+                        android:textColor="@color/color_9598AA"
+                        android:textSize="@dimen/sp_12"
+                        tools:text="1111111111111111111111111111111111111" />
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/v_quantity_middle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_05"
+                    android:background="@color/color_E7ECFD"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rl_quantity_up" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_quantity_down"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp_20"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/v_quantity_middle">
 
                     <EditText
-                        android:id="@+id/edt_receiver_address"
+                        android:id="@+id/edt_input_quantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:background="@null"
-                        android:hint="0xxxxxxx"
+                        android:hint="0.00"
                         android:inputType="numberDecimal"
                         android:longClickable="false"
-                        android:text=""
-                        android:textSize="@dimen/sp_18"
+                        android:textColor="@color/color_9598AA"
+                        android:textSize="@dimen/sp_30"
                         android:textStyle="bold" />
 
-                    <ImageView
-                        android:id="@+id/iv_address_book"
-                        android:layout_width="@dimen/dp_20"
+                    <Button
+                        android:id="@+id/tv_select_all"
+                        android:layout_width="@dimen/dp_40"
                         android:layout_height="@dimen/dp_20"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:background="@drawable/vector_contacts"
-                        tools:text="1111" />
+                        android:background="@drawable/shape_white_bottom_blue_line_btn"
+                        android:outlineProvider="none"
+                        android:text="@string/btn_all"
+                        android:textColor="@color/color_3F5E94"
+                        android:textSize="@dimen/sp_12" />
                 </RelativeLayout>
-            </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_quantity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_10"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginEnd="@dimen/dp_10"
-            android:background="@color/color_FFFFFF"
-            android:padding="@dimen/dp_10"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cl_address_input">
-
-            <RelativeLayout
-                android:id="@+id/rl_quantity_up"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_transfer_remarks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:background="@drawable/shape_white_bottom_btn"
                 android:padding="@dimen/dp_10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/cl_quantity">
 
                 <TextView
-                    android:id="@+id/tv_quantity_name"
+                    android:id="@+id/tv_transfer_remarks"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/quantity"
+                    android:padding="@dimen/dp_10"
+                    android:text="@string/transfer_remark"
                     android:textColor="@color/color_000000"
-                    android:textSize="@dimen/sp_14" />
+                    android:textSize="@dimen/sp_15"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/tv_quantity_balance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_weight="1"
-                    android:textSize="@dimen/sp_12"
-                    tools:text="1111111111111111111111111111111111111" />
-            </RelativeLayout>
-
-            <View
-                android:id="@+id/v_quantity_middle"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_05"
-                android:background="@color/color_9598AA"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rl_quantity_up" />
-
-            <RelativeLayout
-                android:id="@+id/rl_quantity_down"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_20"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/v_quantity_middle">
+                <View
+                    android:id="@+id/v_transfer_remarks_middle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_05"
+                    android:background="@color/color_E7ECFD"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_transfer_remarks" />
 
                 <EditText
-                    android:id="@+id/edt_input_quantity"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/edt_input_transfer_remarks"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:background="@null"
-                    android:hint="0.00"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="@drawable/shape_light_bottom_btn"
+                    android:hint="@string/choose_fill"
                     android:inputType="numberDecimal"
                     android:longClickable="false"
-                    android:textSize="@dimen/sp_18"
-                    android:textStyle="bold" />
+                    android:padding="@dimen/dp_10"
+                    android:textColor="@color/color_9598AA"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/v_transfer_remarks_middle" />
 
-                <Button
-                    android:id="@+id/tv_select_all"
-                    android:layout_width="@dimen/dp_40"
-                    android:layout_height="@dimen/dp_20"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/shape_white_bottom_blue_line_btn"
-                    android:outlineProvider="none"
-                    android:text="@string/btn_all"
-                    android:textColor="@color/color_3F5E94"
-                    android:textSize="@dimen/sp_12" />
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_miner_fee"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_10"
-            android:layout_marginTop="@dimen/dp_10"
-            android:background="@color/color_FFFFFF"
-            android:padding="@dimen/dp_10"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cl_quantity">
-
-            <LinearLayout
-                android:id="@+id/ll_miner_fee_up"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_miner_fee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_margin="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/shape_white_bottom_btn"
+                android:padding="@dimen/dp_10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/cl_transfer_remarks">
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="9"
-                    android:orientation="vertical"
-                    android:padding="@dimen/dp_10">
+                    android:id="@+id/ll_miner_fee_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="9"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dp_10">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tv_miner_fee_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/miner_fee"
+                                android:textColor="@color/color_000000"
+                                android:textSize="@dimen/sp_14" />
+
+                            <TextView
+                                android:id="@+id/tv_miner_fee_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:textColor="@color/color_000000"
+                                android:textSize="@dimen/sp_15"
+                                tools:text="1111" />
+                        </RelativeLayout>
 
                         <TextView
-                            android:id="@+id/tv_miner_fee_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/miner_fee"
-                            android:textColor="@color/color_000000"
-                            android:textSize="@dimen/sp_14" />
-
-                        <TextView
-                            android:id="@+id/tv_miner_fee_value"
+                            android:id="@+id/tv_miner_fee_value_convert"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="right"
-                            android:textColor="@color/color_000000"
                             android:textSize="@dimen/sp_14"
                             tools:text="1111" />
-                    </RelativeLayout>
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_miner_fee_value_convert"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:textSize="@dimen/sp_14"
-                        tools:text="1111" />
+                        android:layout_gravity="right|center_vertical"
+                        android:padding="@dimen/dp_20"
+                        android:src="@mipmap/ic_arrow_right"
+                        android:textColor="@color/color_000000" />
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <View
+                    android:id="@+id/v_miner_fee_middle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_05"
+                    android:background="@color/color_E7ECFD"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ll_miner_fee_up" />
+
+                <TextView
+                    android:id="@+id/tv_tips"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
-                    android:padding="@dimen/dp_20"
-                    android:src="@mipmap/ic_arrow_right"
-                    android:textColor="@color/color_000000" />
-            </LinearLayout>
+                    android:gravity="right"
+                    android:padding="@dimen/dp_10"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/v_miner_fee_middle"
+                    tools:text="161 GWEI * GAS (21,000)" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <View
-                android:id="@+id/v_miner_fee_middle"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_05"
-                android:background="@color/color_9598AA"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_miner_fee_up" />
-
-            <TextView
-                android:id="@+id/tv_tips"
+            <Button
+                android:id="@+id/btn_confirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
-                android:padding="@dimen/dp_10"
-                android:textSize="@dimen/sp_12"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_80"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_marginBottom="@dimen/dp_20"
+                android:background="@drawable/shape_green_bottom_btn"
+                android:outlineProvider="none"
+                android:text="@string/confirm"
+                android:textColor="@color/color_FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/v_miner_fee_middle"
-                tools:text="161 GWEI * GAS (21,000)" />
+                app:layout_constraintTop_toBottomOf="@id/cl_miner_fee" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
-            android:id="@+id/btn_confirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_100"
-            android:layout_marginEnd="@dimen/dp_20"
-            android:background="@drawable/shape_green_bottom_btn"
-            android:outlineProvider="none"
-            android:text="@string/confirm"
-            android:textColor="@color/color_FFFFFF"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cl_miner_fee" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

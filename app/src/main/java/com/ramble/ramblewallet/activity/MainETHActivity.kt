@@ -50,6 +50,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private var saveTokenList: ArrayList<String> = arrayListOf()
     private var animator: ObjectAnimator? = null
     private var myDataBeansRecommendToken: ArrayList<StoreInfo> = arrayListOf()
+    private lateinit var walletSelleted: WalletETH
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -73,6 +74,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
+
 //        saveTokenList = Gson().fromJson(
 //            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
 //            object : TypeToken<ArrayList<String>>() {}.type
@@ -85,6 +87,12 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         saveWalletList = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
             object : TypeToken<ArrayList<WalletETH>>() {}.type
+        )
+
+
+        walletSelleted = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            object : TypeToken<WalletETH>() {}.type
         )
 
 
@@ -108,16 +116,13 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             }
         })
 
-        binding.tvWalletName.text = saveWalletList[0].walletName
+        binding.tvWalletName.text = walletSelleted.walletName
         when (currencyUnit) {
             RMB -> binding.tvCurrencyUnit.text = "￥"
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
-//        Thread {
-//            binding.tvBalanceTotal.text = getTokenBalance(saveWalletList[0].address)
-//        }
-        binding.tvEthAddress.text = addressHandle(saveWalletList[0].address)
+        binding.tvEthAddress.text = addressHandle(walletSelleted.address)
 
         setOnClickListener()
     }
@@ -190,7 +195,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             tvGathering.setOnClickListener { v1: View? ->
                 startActivity(Intent(this, GatheringActivity::class.java).apply {
                     putExtra(ARG_PARAM1, "ETH")
-                    putExtra(ARG_PARAM2, saveWalletList[0].address)
+                    putExtra(ARG_PARAM2, walletSelleted.address)
                 })
                 dialog.dismiss()
             }
@@ -223,7 +228,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_gathering_top, R.id.ll_gathering -> {
                 startActivity(Intent(this, GatheringActivity::class.java).apply {
                     putExtra(ARG_PARAM1, "ETH")
-                    putExtra(ARG_PARAM2, saveWalletList[0].address)
+                    putExtra(ARG_PARAM2, walletSelleted.address)
                 })
             }
             R.id.iv_transfer_top, R.id.ll_transfer -> {

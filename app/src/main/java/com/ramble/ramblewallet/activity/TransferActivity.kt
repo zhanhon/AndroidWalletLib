@@ -14,13 +14,19 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EthMinerConfig
+import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils
+import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.network.getEthMinerConfigUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 
 
@@ -42,11 +48,20 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private var transferGasSlow: String = "21000"
     private var transferSpeedSlow: String = "0.90"
     private var isCustom = false
+    private lateinit var walletSelleted: WalletETH
+    private var transferReceiverAddress: String? = null
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_transfer)
+
+        walletSelleted = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            object : TypeToken<WalletETH>() {}.type
+        )
+        transferReceiverAddress = intent.getStringExtra(ARG_PARAM1)
+        binding.edtReceiverAddress.setText(transferReceiverAddress)
 
         setOnClickListener()
 
@@ -68,8 +83,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         )
 
         binding.tvTransferTitle.text = transferTitle + " " + getString(R.string.transfer)
-        binding.tvWalletAddress.text = transferAddress
-        binding.tvWalletName.text = transferName
+        binding.tvWalletAddress.text = walletSelleted.address
+        binding.tvWalletName.text = walletSelleted.walletName
         binding.tvQuantityBalance.text =
             getString(R.string.transfer_balance) + " " + transferBalance + " " + transferUnit
         binding.tvMinerFeeValue.text =
@@ -252,7 +267,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, ScanActivity::class.java))
             }
             R.id.iv_address_book -> {
-                startActivity(Intent(this, AddressBookActivity::class.java))
+                startActivity(Intent(this, AddressBookActivity::class.java).apply {
+                    putExtra(ARG_PARAM1, true)
+                })
             }
             R.id.cl_miner_fee -> {
                 showDialog()
