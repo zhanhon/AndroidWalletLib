@@ -16,8 +16,10 @@ import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EmptyReq
 import com.ramble.ramblewallet.bean.MainETHTokenBean
+import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.RATEINFO
 import com.ramble.ramblewallet.databinding.ActivityMainBtcBinding
+import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.rateInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
@@ -171,7 +173,9 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, TransferActivity::class.java))
             }
             R.id.iv_scan_top, R.id.ll_scan -> {
-                startActivity(Intent(this, ScanActivity::class.java))
+                start(ScanActivity::class.java, Bundle().also {
+                    it.putInt(ARG_PARAM1, 2)
+                })
             }
             R.id.iv_token_manage_click, R.id.iv_token_manage_click_01 -> {
                 startActivity(Intent(this, TokenActivity::class.java))

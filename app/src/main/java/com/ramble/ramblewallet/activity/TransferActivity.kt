@@ -24,6 +24,7 @@ import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils
 import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getEthMinerConfigUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
@@ -262,7 +263,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.iv_transfer_scan -> {
-                startActivity(Intent(this, ScanActivity::class.java))
+                start(ScanActivity::class.java, Bundle().also {
+                    it.putInt(ARG_PARAM1, 2)
+                })
             }
             R.id.iv_address_book -> {
                 startActivity(Intent(this, AddressBookActivity::class.java).apply {

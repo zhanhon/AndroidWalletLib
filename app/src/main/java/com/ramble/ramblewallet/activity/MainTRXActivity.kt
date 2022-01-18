@@ -30,6 +30,7 @@ import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainTrxBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.rateInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.ClipboardUtils
@@ -244,7 +245,9 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, TransferActivity::class.java))
             }
             R.id.iv_scan_top, R.id.ll_scan -> {
-                startActivity(Intent(this, ScanActivity::class.java))
+                start(ScanActivity::class.java, Bundle().also {
+                    it.putInt(ARG_PARAM1, 2)
+                })
             }
             R.id.iv_token_manage_click, R.id.iv_token_manage_click_01 -> {
                 startActivity(Intent(this, TokenActivity::class.java).apply {
