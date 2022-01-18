@@ -60,7 +60,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_eth)
         saveTokenList.add("ETH")
         SharedPreferencesUtils.saveString(this, SELECTED_TOKENS, Gson().toJson(saveTokenList))
-        if (myDataBeansRecommendToken.isNotEmpty()) {
+        if (SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, "").isNotEmpty()) {
             myDataBeansRecommendToken = SharedPreferencesUtils.String2SceneList(
                 SharedPreferencesUtils.getString(
                     this,
@@ -82,15 +82,20 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 //            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
 //            object : TypeToken<ArrayList<String>>() {}.type
 //        )
-        rateBean = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, RATEINFO, ""),
-            object : TypeToken<ArrayList<RateBeen>>() {}.type
-        )
+        if (SharedPreferencesUtils.getString(this, RATEINFO, "").isNotEmpty()) {
+            rateBean = Gson().fromJson(
+                SharedPreferencesUtils.getString(this, RATEINFO, ""),
+                object : TypeToken<ArrayList<RateBeen>>() {}.type
+            )
+        }
+
         currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, RMB)
-        saveWalletList = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-            object : TypeToken<ArrayList<WalletETH>>() {}.type
-        )
+        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+            saveWalletList = Gson().fromJson(
+                SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                object : TypeToken<ArrayList<WalletETH>>() {}.type
+            )
+        }
 
 
         walletSelleted = Gson().fromJson(
