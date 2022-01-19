@@ -268,6 +268,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         when (event.id()) {
             Pie.EVENT_ADDRESS_TRANS_SCAN -> {
                 binding.edtReceiverAddress.text = event.data()
+
             }
         }
     }
@@ -294,6 +295,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 binding.edtInputQuantity.setText(transferBalance)
             }
             R.id.btn_confirm -> {
+                transferReceiverAddress= binding.edtReceiverAddress.text.toString()
                 TransferEthUtils.transferMain(
                     walletSelleted.address,
                     transferReceiverAddress,
