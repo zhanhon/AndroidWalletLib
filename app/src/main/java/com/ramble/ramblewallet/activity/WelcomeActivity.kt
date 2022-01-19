@@ -11,15 +11,11 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.EmptyReq
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.MyPreferences
-import com.ramble.ramblewallet.network.rateInfoUrl
-import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.push.UmInitConfig
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.applyIo
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.message.PushAgent
 import java.util.*
@@ -95,26 +91,6 @@ class WelcomeActivity : BaseActivity() {
                 SharedPreferencesUtils.saveString(this, LANGUAGE, EN)
             }
         }
-
-        mApiService.getRateInfo(EmptyReq().toApiRequest(rateInfoUrl))
-            .applyIo().subscribe(
-                {
-                    if (it.code() == 1) {
-                        it.data()?.let { data ->
-                            SharedPreferencesUtils.saveString(
-                                this,
-                                RATEINFO,
-                                Gson().toJson(data)
-                            )
-                            println("-=-=-=->${Gson().toJson(data)}")
-                        }
-                    } else {
-                        println("-=-=-=->${it.message()}")
-                    }
-                }, {
-                    println("-=-=-=->${it.printStackTrace()}")
-                }
-            )
     }
 
 }

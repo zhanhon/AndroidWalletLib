@@ -10,21 +10,18 @@ import android.widget.ScrollView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import com.google.gson.Gson
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EmptyReq
 import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.constant.RATEINFO
 import com.ramble.ramblewallet.databinding.ActivityMainBtcBinding
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.rateInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 
 class MainBTCActivity : BaseActivity(), View.OnClickListener {
@@ -87,11 +84,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                             {
                                 if (it.code() == 1) {
                                     it.data()?.let { data ->
-                                        SharedPreferencesUtils.saveString(
-                                            this,
-                                            RATEINFO,
-                                            Gson().toJson(data)
-                                        )
+
                                     }
                                 } else {
                                     println("-=-=-=->${it.message()}")

@@ -45,9 +45,8 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private lateinit var currencyUnit: String
     private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
     private var isClickEyes = false
-    private var saveTokenList: ArrayList<String> = arrayListOf()
     private var animator: ObjectAnimator? = null
-    private var myDataBeansRecommendToken: ArrayList<StoreInfo> = arrayListOf()
+    private var saveTokenList: ArrayList<StoreInfo> = arrayListOf()
     private lateinit var walletSelleted: WalletETH
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -56,55 +55,82 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_078DC2)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_eth)
-        saveTokenList.add("ETH")
-        SharedPreferencesUtils.saveString(this, SELECTED_TOKENS, Gson().toJson(saveTokenList))
-        if (SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, "").isNotEmpty()) {
-            myDataBeansRecommendToken = SharedPreferencesUtils.String2SceneList(
-                SharedPreferencesUtils.getString(
-                    this,
-                    TOKEN_INFO_NO,
-                    ""
-                )
-            ) as ArrayList<StoreInfo>
-            var list = myDataBeansRecommendToken.iterator()
-            list.forEach {
-                if (it.isMyToken == 0) {
-                    list.remove()
-                }
+
+        initClick()
+        initData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshData()
+    }
+
+    override fun onRxBus(event: RxBus.Event) {
+        super.onRxBus(event)
+        when (event.id()) {
+            Pie.EVENT_ADDRESS_TRANS_SCAN -> {
+                start(TransferActivity::class.java, Bundle().also {
+                    it.putString(ARG_PARAM1, event.data())
+                })
             }
         }
+    }
 
-
-//        saveTokenList = Gson().fromJson(
-//            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
-//            object : TypeToken<ArrayList<String>>() {}.type
-//        )
-        if (SharedPreferencesUtils.getString(this, RATEINFO, "").isNotEmpty()) {
-            rateBean = Gson().fromJson(
-                SharedPreferencesUtils.getString(this, RATEINFO, ""),
-                object : TypeToken<ArrayList<RateBeen>>() {}.type
-            )
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.btnMenu -> {
+                startActivity(Intent(this, WalletManageActivity::class.java))
+            }
+            R.id.iv_notice_top -> {
+                startActivity(Intent(this, MessageCenterActivity::class.java))
+            }
+            R.id.iv_mine_top -> {
+                startActivity(Intent(this, MineActivity::class.java))
+            }
+            R.id.iv_gathering_top, R.id.ll_gathering -> {
+                startActivity(Intent(this, GatheringActivity::class.java).apply {
+                    putExtra(ARG_PARAM1, "ETH")
+                    putExtra(ARG_PARAM2, walletSelleted.address)
+                })
+            }
+            R.id.iv_transfer_top, R.id.ll_transfer -> {
+                startActivity(Intent(this, TransferActivity::class.java))
+            }
+            R.id.iv_scan_top, R.id.ll_scan -> {
+                startActivity(Intent(this, ScanActivity::class.java).apply {
+                    putExtra(ARG_PARAM1, 3)
+                })
+            }
+            R.id.iv_token_manage_click, R.id.iv_token_manage_click_01 -> {
+                startActivity(Intent(this, TokenActivity::class.java).apply {
+                    putExtra(ARG_PARAM1, "ETH")
+                })
+            }
+            R.id.iv_balance_refresh -> {
+                startSyncAnimation()
+                Handler().postDelayed({
+                    refreshData()
+                }, 2000)
+            }
+            R.id.iv_eyes -> {
+                if (isClickEyes) {
+                    binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_open)
+                    binding.tvBalanceTotal.text = "1212323"
+                    isClickEyes = false
+                } else {
+                    binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_close)
+                    binding.tvBalanceTotal.text = "******"
+                    isClickEyes = true
+                }
+            }
+            R.id.iv_copy -> {
+                ClipboardUtils.copy(binding.tvEthAddress.text.toString())
+            }
         }
+    }
 
-        currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, RMB)
-        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
-            saveWalletList = Gson().fromJson(
-                SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                object : TypeToken<ArrayList<WalletETH>>() {}.type
-            )
-        }
-
-        if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isNotEmpty()) {
-            walletSelleted = Gson().fromJson(
-                SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-                object : TypeToken<WalletETH>() {}.type
-            )
-            binding.tvWalletName.text = walletSelleted.walletName
-            binding.tvEthAddress.text = addressHandle(walletSelleted.address)
-        }
-
-
-
+    private fun initClick() {
         binding.appbarLayout.addOnOffsetChangedListener(object :
             AppBarLayout.OnOffsetChangedListener {
             var isShow = false
@@ -125,42 +151,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             }
         })
 
-
-        when (currencyUnit) {
-            RMB -> binding.tvCurrencyUnit.text = "￥"
-            HKD -> binding.tvCurrencyUnit.text = "HK$"
-            USD -> binding.tvCurrencyUnit.text = "$"
-        }
-
-
-        setOnClickListener()
-    }
-
-    private fun addressHandle(str: String): String? {
-        val subStr1 = str.substring(0, 6)
-        val strLength = str.length
-        val subStr2 = str.substring(strLength - 4, strLength)
-        return "$subStr1...$subStr2"
-    }
-
-    private fun startSyncAnimation() {
-        if (animator != null) {
-            return
-        }
-        animator = binding.ivBalanceRefresh.asyncAnimator()
-    }
-
-    private fun cancelSyncAnimation() {
-        animator?.cancel()
-        animator = null
-    }
-
-    override fun onResume() {
-        super.onResume()
-        refreshData()
-    }
-
-    private fun setOnClickListener() {
         binding.btnMenu.setOnClickListener(this)
         binding.ivNoticeTop.setOnClickListener(this)
         binding.ivMineTop.setOnClickListener(this)
@@ -180,6 +170,44 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         binding.ivEyes.setOnClickListener(this)
         binding.ivCopy.setOnClickListener(this)
 
+    }
+
+    private fun initData() {
+        currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, RMB)
+        saveWalletList = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+            object : TypeToken<ArrayList<WalletETH>>() {}.type
+        )
+        walletSelleted = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            object : TypeToken<WalletETH>() {}.type
+        )
+        binding.tvWalletName.text = walletSelleted.walletName
+        when (currencyUnit) {
+            RMB -> binding.tvCurrencyUnit.text = "￥"
+            HKD -> binding.tvCurrencyUnit.text = "HK$"
+            USD -> binding.tvCurrencyUnit.text = "$"
+        }
+        binding.tvEthAddress.text = addressHandle(walletSelleted.address)
+    }
+
+    private fun addressHandle(str: String): String? {
+        val subStr1 = str.substring(0, 6)
+        val strLength = str.length
+        val subStr2 = str.substring(strLength - 4, strLength)
+        return "$subStr1...$subStr2"
+    }
+
+    private fun startSyncAnimation() {
+        if (animator != null) {
+            return
+        }
+        animator = binding.ivBalanceRefresh.asyncAnimator()
+    }
+
+    private fun cancelSyncAnimation() {
+        animator?.cancel()
+        animator = null
     }
 
     private fun showTransferGatheringDialog(tokenName: String) {
@@ -222,72 +250,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    override fun onRxBus(event: RxBus.Event) {
-        super.onRxBus(event)
-        when (event.id()) {
-            Pie.EVENT_ADDRESS_TRANS_SCAN -> {
-                start(TransferActivity::class.java, Bundle().also {
-                    it.putString(ARG_PARAM1, event.data())
-                })
-            }
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.btnMenu -> {
-                startActivity(Intent(this, WalletManageActivity::class.java))
-            }
-            R.id.iv_notice_top -> {
-                startActivity(Intent(this, MessageCenterActivity::class.java))
-            }
-            R.id.iv_mine_top -> {
-                startActivity(Intent(this, MineActivity::class.java))
-            }
-            R.id.iv_gathering_top, R.id.ll_gathering -> {
-                startActivity(Intent(this, GatheringActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "ETH")
-                    putExtra(ARG_PARAM2, walletSelleted.address)
-                })
-            }
-            R.id.iv_transfer_top, R.id.ll_transfer -> {
-                startActivity(Intent(this, TransferActivity::class.java))
-            }
-            R.id.iv_scan_top, R.id.ll_scan -> {
-                start(ScanActivity::class.java, Bundle().also {
-                    it.putInt(ARG_PARAM1, 3)
-                })
-
-            }
-            R.id.iv_token_manage_click, R.id.iv_token_manage_click_01 -> {
-                startActivity(Intent(this, TokenActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "ETH")
-                })
-            }
-            R.id.iv_balance_refresh -> {
-                startSyncAnimation()
-                Handler().postDelayed({
-                    refreshData()
-                }, 2000)
-            }
-            R.id.iv_eyes -> {
-                if (isClickEyes) {
-                    binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_open)
-                    binding.tvBalanceTotal.text = "1212323"
-                    isClickEyes = false
-                } else {
-                    binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_close)
-                    binding.tvBalanceTotal.text = "******"
-                    isClickEyes = true
-                }
-            }
-            R.id.iv_copy -> {
-                ClipboardUtils.copy(binding.tvEthAddress.text.toString())
-            }
-        }
-    }
-
     @SuppressLint("CheckResult")
     private fun refreshData() {
         mApiService.getRateInfo(EmptyReq().toApiRequest(rateInfoUrl))
@@ -295,53 +257,59 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 {
                     if (it.code() == 1) {
                         it.data()?.let { data ->
-                            SharedPreferencesUtils.saveString(
-                                this,
-                                RATEINFO,
-                                Gson().toJson(data)
-                            )
-                            println("-=-=-=->${Gson().toJson(data)}")
+                            rateBean = data
                             mainETHTokenBean.clear()
-
-                            myDataBeansRecommendToken = SharedPreferencesUtils.String2SceneList(
+                            saveTokenList = SharedPreferencesUtils.String2SceneList(
                                 SharedPreferencesUtils.getString(
                                     this,
                                     TOKEN_INFO_NO,
                                     ""
                                 )
                             ) as ArrayList<StoreInfo>
-                            var list = myDataBeansRecommendToken.iterator()
+                            val list = saveTokenList.iterator()
                             list.forEach {
                                 if (it.isMyToken == 0) {
                                     list.remove()
                                 }
                             }
-//                            saveTokenList = Gson().fromJson(
-//                                SharedPreferencesUtils.getString(this, SELECTED_TOKENS, ""),
-//                                object : TypeToken<ArrayList<String>>() {}.type
-//                            )
-                            if (rateBean.isNotEmpty() && myDataBeansRecommendToken.isNotEmpty()) {
-                                myDataBeansRecommendToken.forEach { saveToken ->
-                                    rateBean.forEach { rateBean ->
-                                        if (saveToken.name == rateBean.currencyType) {
-                                            mainETHTokenBean.add(
-                                                MainETHTokenBean(
-                                                    rateBean.currencyType,
-                                                    BigDecimal(10.12123),
-                                                    BigDecimal(rateBean.rateUsd),
-                                                    currencyUnit,
-                                                    BigDecimal(rateBean.change)
-                                                )
+                            if (rateBean.isNotEmpty()) {
+                                rateBean.forEach { //标题：ETH
+                                    if (it.currencyType == "ETH") {
+                                        mainETHTokenBean.add(
+                                            MainETHTokenBean(
+                                                it.currencyType,
+                                                BigDecimal(10.12123),
+                                                BigDecimal(it.rateUsd),
+                                                currencyUnit,
+                                                BigDecimal(it.change)
                                             )
+                                        )
+                                    }
+                                }
+                                if (saveTokenList.isNotEmpty()) {
+                                    rateBean.forEach { rateBean ->
+                                        saveTokenList.forEach { saveToken ->
+                                            if (saveToken.name == rateBean.currencyType) {
+                                                mainETHTokenBean.add(
+                                                    MainETHTokenBean(
+                                                        rateBean.currencyType,
+                                                        BigDecimal(10.12123),
+                                                        BigDecimal(rateBean.rateUsd),
+                                                        currencyUnit,
+                                                        BigDecimal(rateBean.change)
+                                                    )
+                                                )
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            mainAdapter = MainAdapter(mainETHTokenBean)
-                            binding.rvCurrency.adapter = mainAdapter
-                            mainAdapter.setOnItemClickListener { adapter, view, position ->
-                                if (adapter.getItem(position) is MainETHTokenBean) {
-                                    showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean).name)
+
+                                mainAdapter = MainAdapter(mainETHTokenBean)
+                                binding.rvCurrency.adapter = mainAdapter
+                                mainAdapter.setOnItemClickListener { adapter, view, position ->
+                                    if (adapter.getItem(position) is MainETHTokenBean) {
+                                        showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean).name)
+                                    }
                                 }
                             }
                         }

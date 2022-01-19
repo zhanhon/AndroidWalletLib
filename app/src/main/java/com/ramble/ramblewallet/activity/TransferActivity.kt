@@ -31,6 +31,7 @@ import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
+import java.math.BigInteger
 
 
 class TransferActivity : BaseActivity(), View.OnClickListener {
@@ -64,7 +65,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initData() {
-        if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isNotEmpty()){
+        if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isNotEmpty()) {
             walletSelleted = Gson().fromJson(
                 SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
                 object : TypeToken<WalletETH>() {}.type
@@ -266,7 +267,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         super.onRxBus(event)
         when (event.id()) {
             Pie.EVENT_ADDRESS_TRANS_SCAN -> {
-                binding.edtReceiverAddress.text=event.data()
+                binding.edtReceiverAddress.text = event.data()
             }
         }
     }
@@ -293,8 +294,15 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 binding.edtInputQuantity.setText(transferBalance)
             }
             R.id.btn_confirm -> {
-                TransferEthUtils.transferTest()
-                //doTransaction()
+                TransferEthUtils.transferMain(
+                    walletSelleted.address,
+                    transferReceiverAddress,
+                    walletSelleted.privateKey,
+                    binding.edtInputQuantity.toString(),
+                    BigInteger(transferGas),
+                    BigInteger(transferGwei),
+                    binding.edtInputTransferRemarks.toString()
+                )
             }
         }
     }
