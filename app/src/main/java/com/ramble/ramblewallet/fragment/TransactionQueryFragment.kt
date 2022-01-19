@@ -156,7 +156,7 @@ class TransactionQueryFragment : BaseFragment(),
         }
         var req = QueryTransferRecord.Req(
             currentPage,
-            2,
+            20,
             "0x90d51f90fdf0722f1d621820ca9f45547221fdd9",
             1,
             changeCurrencyType,

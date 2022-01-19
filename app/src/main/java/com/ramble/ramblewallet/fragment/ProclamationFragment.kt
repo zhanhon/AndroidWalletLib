@@ -104,7 +104,7 @@ class ProclamationFragment : BaseFragment(){
                3
             }
         }
-        var req = Page.Req(currentPage, 2, lang)
+        var req = Page.Req(currentPage, 20, lang)
         myActivity.mApiService.getNotice(
             req.toApiRequest(noticeInfoUrl)
         ).applyIo().subscribe(
