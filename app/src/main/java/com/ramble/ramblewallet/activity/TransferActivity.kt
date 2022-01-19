@@ -56,11 +56,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_transfer)
-
-        walletSelleted = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-            object : TypeToken<WalletETH>() {}.type
-        )
         transferReceiverAddress = intent.getStringExtra(ARG_PARAM1)
         binding.edtReceiverAddress.setText(transferReceiverAddress)
 
@@ -69,6 +64,15 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initData() {
+        if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isNotEmpty()){
+            walletSelleted = Gson().fromJson(
+                SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+                object : TypeToken<WalletETH>() {}.type
+            )
+            binding.tvWalletAddress.text = walletSelleted.address
+            binding.tvWalletName.text = walletSelleted.walletName
+        }
+
         mApiService.getEthMinerConfig(
             EthMinerConfig.Req(transferTitle).toApiRequest(getEthMinerConfigUrl)
         ).applyIo().subscribe(
@@ -84,8 +88,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         )
 
         binding.tvTransferTitle.text = transferTitle + " " + getString(R.string.transfer)
-        binding.tvWalletAddress.text = walletSelleted.address
-        binding.tvWalletName.text = walletSelleted.walletName
+
         binding.tvQuantityBalance.text =
             getString(R.string.transfer_balance) + " " + transferBalance + " " + transferUnit
         binding.tvMinerFeeValue.text =
