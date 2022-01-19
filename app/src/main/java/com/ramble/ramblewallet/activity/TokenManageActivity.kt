@@ -125,14 +125,14 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setIDlist() {
-        if (saveList!!.size > 0) {
-            saveList!!.clear()
+        if (saveList.size > 0) {
+            saveList.clear()
         }
         adapter.all.forEach {
             if (it is TokenManageItem) {
                 if (it.isChecked) {
-                    saveList!!.add(it.data.id)
-                    saveTokenList!!.add(it)
+                    saveList.add(it.data.id)
+                    saveTokenList.add(it)
                 }
             }
         }

@@ -48,5 +48,9 @@ public class Pie {
      * 转账地址扫描二维码
      */
     public static final int EVENT_ADDRESS_TRANS_SCAN = 2007;
+    /**
+     * 消除消息
+     */
+    public static final int EVENT_DELETE_MSG = 2008;
 
 }

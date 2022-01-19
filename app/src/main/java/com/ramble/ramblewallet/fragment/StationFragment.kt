@@ -23,7 +23,6 @@ import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import java.util.*
 
@@ -39,9 +38,10 @@ open class StationFragment : BaseFragment() {
     var isShowCheck: Boolean = false
     var isShowALLCheck: Boolean = false
     var isEmpty: Boolean = false
-    private var dlist: ArrayList<Int>? = ArrayList()
     private var list = mutableListOf<Any?>()
+    private var saveList: ArrayList<Int> = arrayListOf()
     private var records: ArrayList<Page.Record> = arrayListOf()
+    private var saveTokenList: ArrayList<StationItem> = arrayListOf()
     private val adapter = RecyclerAdapter()
 
     override fun onAttach(context: Context) {
@@ -63,24 +63,14 @@ open class StationFragment : BaseFragment() {
         if (reusedView == null) {
             binding = inflater.dataBinding(R.layout.fragment_proclamation, container)
             binding.lyPullRefresh.setRefreshHeader(ClassicsHeader(myActivity))
-//            binding.lyPullRefresh.setRefreshFooter(ClassicsFooter(myActivity))
+
             //刷新的监听事件
             binding.lyPullRefresh.setOnRefreshListener {
                 binding.lyPullRefresh.finishRefresh() //刷新完成
                 ProgressItem.addTo(adapter)
                 reFreshData()
             }
-            //加载的监听事件
-//            binding.lyPullRefresh.setOnLoadMoreListener {
-//                if (currentPage<totalPage){
-//                    binding.lyPullRefresh.finishLoadMore() //加载完成
-//                    ProgressItem.addTo(adapter)
-//                    currentPage += 1
-//                    loadData()
-//                }else{
-//                    binding.lyPullRefresh.finishLoadMoreWithNoMoreData()
-//                }
-//            }
+
             binding.recycler.adapter = adapter
             reusedView = binding.root
         }
@@ -164,33 +154,10 @@ open class StationFragment : BaseFragment() {
         reFreshData()
     }
 
+
     override fun onClick(v: View?) {
         when (v!!.id) {
-//            R.id.tv_cancel -> {//全选
-//                selectTvCancel()
-//            }
-//            R.id.tv_delete -> {//删除
-//                setIDlist()
-//                if (dlist!!.isEmpty()) {
-//                    toastDefault("未选中")
-//                    return
-//                }
-//                model.getUserLetterRemove(Remove.Req(dlist!!)).subscribe(
-//                    {
-//                        if (it.status()) {
-//                            myActivity.dismissLoading()
-//                            setInitChecked()
-//                            init()//刷新
-//                        } else {
-//                            myActivity.dismissLoading()
-//                            toastDefault(it.message())
-//                        }
-//
-//                    }, {
-//                        it.toast()
-//                    }
-//                ).addTo(onDestroyComposite)
-//            }
+
             R.id.item_msg_notic -> {
                 if (isShowCheck) {
 //                    toastDefault("处于编辑状态不可查看")
@@ -213,7 +180,6 @@ open class StationFragment : BaseFragment() {
                 } else {
                     mutableListOf()
                 }
-                list.size
                 if (list.isNotEmpty()) {
                     if (!list.contains(itemBean.id)) {
                         list.add(itemBean.id)
@@ -221,7 +187,6 @@ open class StationFragment : BaseFragment() {
                 } else {
                     list.add(itemBean.id)
                 }
-                list.size
                 var addId = SharedPreferencesUtils.SceneList2String(list)
                 itemBean.isRead = 1
                 SharedPreferencesUtils.saveString(myActivity, READ_ID, addId)
@@ -244,13 +209,14 @@ open class StationFragment : BaseFragment() {
     }
 
     private fun setIDlist() {
-        if (dlist!!.size > 0) {
-            dlist!!.clear()
+        if (saveList.size > 0) {
+            saveList.clear()
         }
         adapter.all.forEach {
             if (it is StationItem) {
                 if (it.isChecked) {
-                    dlist!!.add(it.data.id)
+                    saveList.add(it.data.id)
+                    saveTokenList.add(it)
                 }
             }
         }
@@ -267,15 +233,6 @@ open class StationFragment : BaseFragment() {
         adapter.notifyItemRangeChanged(0, adapter.itemCount, isEditable)
     }
 
-    private fun setInitChecked() {
-        adapter.all.forEach {
-            if (it is StationItem) {
-                it.isEditable = false
-                it.isChecked = false
-            }
-        }
-        adapter.notifyItemRangeChanged(0, adapter.itemCount)
-    }
 
     override fun onRxBus(event: RxBus.Event) {
         super.onRxBus(event)
@@ -283,19 +240,30 @@ open class StationFragment : BaseFragment() {
             Pie.EVENT_CHECK_MSG -> {
                 passStatus(event.data())
             }
+            Pie.EVENT_DELETE_MSG -> {
+                    setIDlist()
+                    if (saveList.isNotEmpty()) {
+                        saveTokenList.forEach {
+                            adapter.remove(it)
+                        }
+                        adapter.notifyDataSetChanged()
+                        var list = records.iterator()
+                        list.forEach {
+                            if (saveList.contains(it.id)) {
+                                list.remove()
+                            }
+                        }
+                        var addId = SharedPreferencesUtils.SceneList2String(records)
+                        SharedPreferencesUtils.saveString(myActivity, STATION_INFO, addId)
+                        apply(adapter.itemCount)
+                    }
+                passStatus(event.data())
+            }
             else -> return
         }
     }
 
-    private fun setAdapterALLChecked(isChecked: Boolean) {
-        isShowALLCheck = isChecked
-        adapter.all.forEach {
-            if (it is StationItem) {
-                it.isChecked = isChecked
-            }
-        }
-        adapter.notifyItemRangeChanged(0, adapter.itemCount)
-    }
+
 
     private fun passStatus(isedit: Boolean) {
         setAdapterEditable(isedit)

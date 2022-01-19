@@ -73,7 +73,7 @@ class MessageCenterActivity : BaseActivity(), View.OnClickListener {
                     binding.ivRight.setImageResource(R.drawable.ic_confirm)
                     binding.tvRight.text = "取消"
                 } else {
-                    RxBus.emitEvent(Pie.EVENT_CHECK_MSG, false)
+                    RxBus.emitEvent(Pie.EVENT_DELETE_MSG, false)
                     binding.ivRight.setImageResource(R.drawable.ic_delelet_line)
                     binding.tvRight.text = "编辑"
                 }
