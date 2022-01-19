@@ -98,11 +98,15 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             )
         }
 
+        if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isNotEmpty()){
+            walletSelleted = Gson().fromJson(
+                SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+                object : TypeToken<WalletETH>() {}.type
+            )
+            binding.tvWalletName.text = walletSelleted.walletName
+            binding.tvEthAddress.text = addressHandle(walletSelleted.address)
+        }
 
-        walletSelleted = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-            object : TypeToken<WalletETH>() {}.type
-        )
 
 
         binding.appbarLayout.addOnOffsetChangedListener(object :
@@ -125,13 +129,13 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             }
         })
 
-        binding.tvWalletName.text = walletSelleted.walletName
+
         when (currencyUnit) {
             RMB -> binding.tvCurrencyUnit.text = "￥"
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
-        binding.tvEthAddress.text = addressHandle(walletSelleted.address)
+
 
         setOnClickListener()
     }
