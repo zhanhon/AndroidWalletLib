@@ -194,6 +194,10 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
                 RxBus.emitEvent(Pie.EVENT_ADDRESS_TRANS_SCAN, result)
                 finish()
             }
+            3->{
+                RxBus.emitEvent(Pie.EVENT_ADDRESS_TRANS_SCAN, result)
+                finish()
+            }
             else->transDialog(result)
         }
 

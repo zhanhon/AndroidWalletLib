@@ -33,10 +33,7 @@ import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.rateInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.utils.ClipboardUtils
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.applyIo
-import com.ramble.ramblewallet.utils.asyncAnimator
+import com.ramble.ramblewallet.utils.*
 import java.math.BigDecimal
 
 class MainETHActivity : BaseActivity(), View.OnClickListener {
@@ -78,7 +75,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         }
 
 
-
 //        saveTokenList = Gson().fromJson(
 //            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
 //            object : TypeToken<ArrayList<String>>() {}.type
@@ -98,7 +94,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             )
         }
 
-        if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isNotEmpty()){
+        if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isNotEmpty()) {
             walletSelleted = Gson().fromJson(
                 SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
                 object : TypeToken<WalletETH>() {}.type
@@ -226,6 +222,17 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    override fun onRxBus(event: RxBus.Event) {
+        super.onRxBus(event)
+        when (event.id()) {
+            Pie.EVENT_ADDRESS_TRANS_SCAN -> {
+                start(TransferActivity::class.java, Bundle().also {
+                    it.putString(ARG_PARAM1, event.data())
+                })
+            }
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onClick(v: View) {
         when (v.id) {
@@ -249,7 +256,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.iv_scan_top, R.id.ll_scan -> {
                 start(ScanActivity::class.java, Bundle().also {
-                    it.putInt(ARG_PARAM1, 2)
+                    it.putInt(ARG_PARAM1, 3)
                 })
 
             }

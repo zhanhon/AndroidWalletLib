@@ -22,6 +22,8 @@ import com.ramble.ramblewallet.databinding.ActivityMainBtcBinding
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.rateInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.utils.Pie
+import com.ramble.ramblewallet.utils.RxBus
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 
@@ -155,6 +157,17 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
 //        }
 //    }
 
+    override fun onRxBus(event: RxBus.Event) {
+        super.onRxBus(event)
+        when (event.id()) {
+            Pie.EVENT_ADDRESS_TRANS_SCAN -> {
+                start(TransferActivity::class.java, Bundle().also {
+                    it.putString(ARG_PARAM1, event.data())
+                })
+            }
+        }
+    }
+
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btnMenu -> {
@@ -174,7 +187,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.iv_scan_top, R.id.ll_scan -> {
                 start(ScanActivity::class.java, Bundle().also {
-                    it.putInt(ARG_PARAM1, 2)
+                    it.putInt(ARG_PARAM1, 3)
                 })
             }
             R.id.iv_token_manage_click, R.id.iv_token_manage_click_01 -> {
