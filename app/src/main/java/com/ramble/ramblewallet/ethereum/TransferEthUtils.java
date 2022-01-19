@@ -40,7 +40,7 @@ public class TransferEthUtils {
         int gasLimit = 210000;
         String desc = "aaaaaaaaas";
         //transferMain(from, to, privateKey, number, BigInteger.valueOf(gasPrice), BigInteger.valueOf(gasLimit), desc);
-        transferToken(from, to, privateKey, BigDecimal.valueOf(number).toBigInteger(), BigInteger.valueOf(gasPrice), BigInteger.valueOf(gasLimit), desc);
+        //transferToken(from, to, privateKey, BigDecimal.valueOf(number).toBigInteger(), BigInteger.valueOf(gasPrice), BigInteger.valueOf(gasLimit), desc);
     }
 
     @SuppressLint("LongLogTag")
@@ -72,7 +72,7 @@ public class TransferEthUtils {
     }
 
     @SuppressLint("LongLogTag")
-    public static void transferToken(String fromAddress, String toAddress, String privateKey, BigInteger number,
+    public static void transferToken(String fromAddress, String toAddress, String contractAddress, String privateKey, BigInteger number,
                                      BigInteger gasPrice, BigInteger gasLimit, String desc) throws Exception {
         Web3j web3j = Web3j.build(new HttpService("http://13.229.173.84:8545"));
         //加载转账所需的凭证，用私钥
@@ -91,7 +91,7 @@ public class TransferEthUtils {
         String encodedFunction = FunctionEncoder.encode(function);
         //创建RawTransaction交易对象
         RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, gasPrice,
-                gasLimit, "0x245A86D04C678E1Ab7e5a8FbD5901C12361Ea308", encodedFunction); //USDT合约地址，暂时写死用于测试
+                gasLimit, contractAddress, encodedFunction); //USDT合约地址，暂时写死用于测试
 
         //签名Transaction，这里要对交易做签名
         byte[] signMessage = TransactionEncoder.signMessage(rawTransaction, credentials);

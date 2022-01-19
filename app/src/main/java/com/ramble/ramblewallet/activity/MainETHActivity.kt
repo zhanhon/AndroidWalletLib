@@ -97,6 +97,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_transfer_top, R.id.ll_transfer -> {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(ARG_PARAM2, "ETH")
+                    putExtra(ARG_PARAM3, false)
                 })
             }
             R.id.iv_scan_top, R.id.ll_scan -> {
@@ -212,7 +213,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         animator = null
     }
 
-    private fun showTransferGatheringDialog(tokenName: String) {
+    private fun showTransferGatheringDialog(tokenName: String, contractAddress: String) {
         var dialog = AlertDialog.Builder(this).create()
         dialog.show()
         val window: Window? = dialog.window
@@ -228,7 +229,10 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             tvTokenTitle.text = tokenName
 
             tvTransfer.setOnClickListener { v1: View? ->
-                startActivity(Intent(this, TransferActivity::class.java))
+                startActivity(Intent(this, TransferActivity::class.java).apply {
+                    putExtra(ARG_PARAM3, true)
+                    putExtra(ARG_PARAM4, contractAddress)
+                })
                 dialog.dismiss()
             }
             tvGathering.setOnClickListener { v1: View? ->
@@ -310,7 +314,9 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                 binding.rvCurrency.adapter = mainAdapter
                                 mainAdapter.setOnItemClickListener { adapter, view, position ->
                                     if (adapter.getItem(position) is MainETHTokenBean) {
-                                        showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean).name)
+                                        if ((adapter.getItem(position) as MainETHTokenBean).name != "ETH") {
+                                            //showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean).name)
+                                        }
                                     }
                                 }
                             }

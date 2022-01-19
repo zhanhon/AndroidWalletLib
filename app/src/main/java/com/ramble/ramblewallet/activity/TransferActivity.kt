@@ -21,6 +21,7 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EthMinerConfig
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
+import com.ramble.ramblewallet.constant.ARG_PARAM3
 import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils
@@ -50,6 +51,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private lateinit var walletSelleted: WalletETH
     private lateinit var transferTitle: String
     private var transferReceiverAddress: String? = null
+    private var isToken: Boolean = false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +59,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_transfer)
         transferReceiverAddress = intent.getStringExtra(ARG_PARAM1)
         transferTitle = intent.getStringExtra(ARG_PARAM2)
+        isToken = intent.getBooleanExtra(ARG_PARAM3, false)
         binding.edtReceiverAddress.setText(transferReceiverAddress)
 
         initClick()
@@ -91,6 +94,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, AddressBookActivity::class.java).apply {
                     putExtra(ARG_PARAM1, true)
                     putExtra(ARG_PARAM2, transferTitle)
+                    putExtra(ARG_PARAM3, isToken)
                 })
             }
             R.id.cl_miner_fee -> {
@@ -187,6 +191,31 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             btnConfirm.setOnClickListener {
                 if (edtWalletPassword.text.trim() == walletSelleted.walletPassword) {
                     transferReceiverAddress = binding.edtReceiverAddress.text.toString()
+                    transfer()
+                    dialog.dismiss()
+                } else {
+                    toastDefault(getString(R.string.input_correct_wallet_password))
+                }
+            }
+
+        }
+    }
+
+    private fun transfer() {
+        when (walletSelleted.walletType) { //链类型|0:BTC|1:ETH|2:TRX
+            1 -> {
+                if (isToken) {
+                    TransferEthUtils.transferToken( //暂时是USDT合约
+                        walletSelleted.address,
+                        transferReceiverAddress,
+                        "0x245A86D04C678E1Ab7e5a8FbD5901C12361Ea308",
+                        walletSelleted.privateKey,
+                        BigInteger(binding.edtInputQuantity.toString()),
+                        BigInteger(transferGas),
+                        BigInteger(transferGwei),
+                        binding.edtInputTransferRemarks.toString()
+                    )
+                } else {
                     TransferEthUtils.transferMain(
                         walletSelleted.address,
                         transferReceiverAddress,
@@ -196,12 +225,14 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         BigInteger(transferGwei),
                         binding.edtInputTransferRemarks.toString()
                     )
-                    dialog.dismiss()
-                } else {
-                    toastDefault(getString(R.string.input_correct_wallet_password))
                 }
             }
+            2 -> {
 
+            }
+            0 -> {
+
+            }
         }
     }
 
