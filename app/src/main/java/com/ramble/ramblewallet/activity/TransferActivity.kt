@@ -27,6 +27,8 @@ import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getEthMinerConfigUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.utils.Pie
+import com.ramble.ramblewallet.utils.RxBus
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 
@@ -254,6 +256,15 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             transferGwei = transferGweiFast
             transferGas = transferGasFast
             isCustom = false
+        }
+    }
+
+    override fun onRxBus(event: RxBus.Event) {
+        super.onRxBus(event)
+        when (event.id()) {
+            Pie.EVENT_ADDRESS_TRANS_SCAN -> {
+                binding.edtReceiverAddress.text=event.data()
+            }
         }
     }
 

@@ -44,5 +44,9 @@ public class Pie {
      * 删除代币
      */
     public static final int EVENT_DEL_TOKEN = 2006;
+    /**
+     * 转账地址扫描二维码
+     */
+    public static final int EVENT_ADDRESS_TRANS_SCAN = 2007;
 
 }
