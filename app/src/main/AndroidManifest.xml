@@ -27,6 +27,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppMainTheme"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="allowBackup">
         <activity android:name=".activity.WalletMoreOperateActivity"></activity>
         <activity android:name=".activity.AddTokenActivity" />
