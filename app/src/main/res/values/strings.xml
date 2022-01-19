@@ -87,6 +87,7 @@
     <string name="input_correct_keystore">请输入正确的Keystore</string>
     <string name="input_correct_secret_key">请输入正确的密钥</string>
     <string name="input_correct_mnemonic_words">请输入正确的助记词</string>
+    <string name="input_correct_wallet_password">请输入正确的密码</string>
     <string name="address">地址</string>
     <string name="initiate_transfer">发起转帐或建立Wallet Connet连接</string>
     <string name="sending_address">发送地址</string>
@@ -126,7 +127,6 @@
     <string name="confirm_delete">确认删除</string>
     <string name="generate_QR_code_store">生成二维码并储存</string>
     <string name="fail">失败</string>
-    <string name="receive_address">收款地址</string>
     <string name="pack_up">收起</string>
     <string name="search">搜索</string>
     <string name="search_result">搜索结果</string>
@@ -162,6 +162,7 @@
     <string name="delete_wallet">删除钱包</string>
     <string name="different_password">密码不一致</string>
     <string name="password_less_six_tips">密码不小于6位</string>
+    <string name="confirm_transaction">确认交易</string>
 
     <string name="refresh_pull_down">下拉更新</string>
     <string name="refresh_time">最后更新于{key}</string>

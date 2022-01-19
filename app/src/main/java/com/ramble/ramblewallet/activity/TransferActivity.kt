@@ -20,6 +20,7 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EthMinerConfig
 import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils
@@ -27,17 +28,13 @@ import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getEthMinerConfigUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.utils.Pie
-import com.ramble.ramblewallet.utils.RxBus
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.applyIo
+import com.ramble.ramblewallet.utils.*
 import java.math.BigInteger
 
 
 class TransferActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityTransferBinding
-    private var transferTitle: String = "ETH"
     private var transferBalance: String = "26.232323"
     private var transferUnit: String = "USDT"
     private var transferGwei: String = "161"
@@ -51,6 +48,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private var transferSpeedSlow: String = "0.90"
     private var isCustom = false
     private lateinit var walletSelleted: WalletETH
+    private lateinit var transferTitle: String
     private var transferReceiverAddress: String? = null
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -58,10 +56,64 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_transfer)
         transferReceiverAddress = intent.getStringExtra(ARG_PARAM1)
+        transferTitle = intent.getStringExtra(ARG_PARAM2)
         binding.edtReceiverAddress.setText(transferReceiverAddress)
 
-        setOnClickListener()
+        initClick()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        initData()
+    }
+
+    override fun onRxBus(event: RxBus.Event) {
+        super.onRxBus(event)
+        when (event.id()) {
+            Pie.EVENT_ADDRESS_TRANS_SCAN -> {
+                binding.edtReceiverAddress.text = event.data()
+
+            }
+        }
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.iv_back -> {
+                finish()
+            }
+            R.id.iv_transfer_scan -> {
+                start(ScanActivity::class.java, Bundle().also {
+                    it.putInt(ARG_PARAM1, 2)
+                })
+            }
+            R.id.iv_address_book -> {
+                startActivity(Intent(this, AddressBookActivity::class.java).apply {
+                    putExtra(ARG_PARAM1, true)
+                    putExtra(ARG_PARAM2, transferTitle)
+                })
+            }
+            R.id.cl_miner_fee -> {
+                showDialog()
+            }
+            R.id.tv_select_all -> {
+                binding.edtInputQuantity.setText(transferBalance)
+            }
+            R.id.btn_confirm -> {
+                transactionConfirmationDialog()
+            }
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
+    private fun initClick() {
+        binding.ivBack.setOnClickListener(this)
+        binding.ivTransferScan.setOnClickListener(this)
+        binding.ivAddressBook.setOnClickListener(this)
+        binding.clMinerFee.setOnClickListener(this)
+        binding.tvSelectAll.setOnClickListener(this)
+        binding.btnConfirm.setOnClickListener(this)
     }
 
     private fun initData() {
@@ -99,18 +151,71 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        initData()
+    private fun transactionConfirmationDialog() {
+        var dialog = AlertDialog.Builder(this).create()
+        dialog.show()
+        val window: Window? = dialog.window
+        if (window != null) {
+            window.setContentView(R.layout.dialog_transaction_confirmation)
+            dialogTheme(window)
+
+            val edtSendingAddress = window.findViewById<EditText>(R.id.edt_sending_address)
+            edtSendingAddress.setText(binding.tvWalletAddress.text.trim().toString())
+            val edtReceivingAdreess = window.findViewById<EditText>(R.id.edt_receiving_address)
+            edtReceivingAdreess.setText(binding.edtReceiverAddress.text.trim().toString())
+            val btnNext = window.findViewById<Button>(R.id.btn_confirm)
+            btnNext.setOnClickListener {
+                passwordConfirmationDialog()
+                dialog.dismiss()
+            }
+
+        }
     }
 
-    private fun setOnClickListener() {
-        binding.ivBack.setOnClickListener(this)
-        binding.ivTransferScan.setOnClickListener(this)
-        binding.ivAddressBook.setOnClickListener(this)
-        binding.clMinerFee.setOnClickListener(this)
-        binding.tvSelectAll.setOnClickListener(this)
-        binding.btnConfirm.setOnClickListener(this)
+    private fun passwordConfirmationDialog() {
+        var dialog = AlertDialog.Builder(this).create()
+        dialog.show()
+        val window: Window? = dialog.window
+        if (window != null) {
+            window.setContentView(R.layout.dialog_password_confirmation)
+            dialogTheme(window)
+
+            val tvTransferTile = window.findViewById<TextView>(R.id.tv_transfer_tile)
+            tvTransferTile.text = transferTitle + getString(R.string.transfer)
+            val edtWalletPassword = window.findViewById<TextView>(R.id.edt_wallet_password)
+            val btnConfirm = window.findViewById<Button>(R.id.btn_confirm)
+            btnConfirm.setOnClickListener {
+                if (edtWalletPassword.text.trim() == walletSelleted.walletPassword) {
+                    transferReceiverAddress = binding.edtReceiverAddress.text.toString()
+                    TransferEthUtils.transferMain(
+                        walletSelleted.address,
+                        transferReceiverAddress,
+                        walletSelleted.privateKey,
+                        binding.edtInputQuantity.toString(),
+                        BigInteger(transferGas),
+                        BigInteger(transferGwei),
+                        binding.edtInputTransferRemarks.toString()
+                    )
+                    dialog.dismiss()
+                } else {
+                    toastDefault(getString(R.string.input_correct_wallet_password))
+                }
+            }
+
+        }
+    }
+
+    private fun dialogTheme(window: Window) {
+        //设置属性
+        val params = window.attributes
+        params.width = WindowManager.LayoutParams.MATCH_PARENT
+        //弹出一个窗口，让背后的窗口变暗一点
+        params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        //dialog背景层
+        params.dimAmount = 0.5f
+        window.attributes = params
+        window.setGravity(Gravity.BOTTOM)
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     @SuppressLint("SetTextI18n", "ResourceAsColor")
@@ -262,52 +367,5 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             isCustom = false
         }
     }
-
-    override fun onRxBus(event: RxBus.Event) {
-        super.onRxBus(event)
-        when (event.id()) {
-            Pie.EVENT_ADDRESS_TRANS_SCAN -> {
-                binding.edtReceiverAddress.text = event.data()
-
-            }
-        }
-    }
-
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.iv_back -> {
-                finish()
-            }
-            R.id.iv_transfer_scan -> {
-                start(ScanActivity::class.java, Bundle().also {
-                    it.putInt(ARG_PARAM1, 2)
-                })
-            }
-            R.id.iv_address_book -> {
-                startActivity(Intent(this, AddressBookActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, true)
-                })
-            }
-            R.id.cl_miner_fee -> {
-                showDialog()
-            }
-            R.id.tv_select_all -> {
-                binding.edtInputQuantity.setText(transferBalance)
-            }
-            R.id.btn_confirm -> {
-                transferReceiverAddress= binding.edtReceiverAddress.text.toString()
-                TransferEthUtils.transferMain(
-                    walletSelleted.address,
-                    transferReceiverAddress,
-                    walletSelleted.privateKey,
-                    binding.edtInputQuantity.toString(),
-                    BigInteger(transferGas),
-                    BigInteger(transferGwei),
-                    binding.edtInputTransferRemarks.toString()
-                )
-            }
-        }
-    }
-
 
 }

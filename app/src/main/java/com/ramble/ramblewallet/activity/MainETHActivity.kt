@@ -95,14 +95,16 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 })
             }
             R.id.iv_transfer_top, R.id.ll_transfer -> {
-                startActivity(Intent(this, TransferActivity::class.java))
+                startActivity(Intent(this, TransferActivity::class.java).apply {
+                    putExtra(ARG_PARAM2, "ETH")
+                })
             }
             R.id.iv_scan_top, R.id.ll_scan -> {
                 startActivity(Intent(this, ScanActivity::class.java).apply {
                     putExtra(ARG_PARAM1, 3)
                 })
             }
-            R.id.iv_token_manage_click, R.id.iv_token_manage_click_01 -> {
+            R.id.iv_token_manage_click -> {
                 startActivity(Intent(this, TokenActivity::class.java).apply {
                     putExtra(ARG_PARAM1, "ETH")
                 })

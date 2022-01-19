@@ -17,6 +17,7 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MyAddressBean
 import com.ramble.ramblewallet.constant.ADDRESS_BOOK_INFO
 import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.databinding.ActivityAddressBookBinding
 import com.ramble.ramblewallet.item.AddressBookItem
 import com.ramble.ramblewallet.utils.*
@@ -35,12 +36,14 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     private var pos = -1
     private var bean = MyAddressBean()
     private var isFromTransfer: Boolean = false
+    private lateinit var transferTitle: String
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_address_book)
         isFromTransfer = intent.getBooleanExtra(ARG_PARAM1, false)
+        transferTitle = intent.getStringExtra(ARG_PARAM2)
         initView()
         initListener()
     }
@@ -241,6 +244,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                         is AddressBookItem -> {
                             startActivity(Intent(this, TransferActivity::class.java).apply {
                                 putExtra(ARG_PARAM1, item.data.address)
+                                putExtra(ARG_PARAM2, transferTitle)
                             })
                         }
                     }
