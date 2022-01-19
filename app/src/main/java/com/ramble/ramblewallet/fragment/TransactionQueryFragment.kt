@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.DealDetailActivity
 import com.ramble.ramblewallet.activity.TransactionQueryActivity
@@ -16,6 +18,7 @@ import com.ramble.ramblewallet.base.BaseFragment
 import com.ramble.ramblewallet.bean.QueryTransferRecord
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.FragmentTransactionQueryBinding
+import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.TransferItem
@@ -55,6 +58,8 @@ class TransactionQueryFragment : BaseFragment(),
     private var currentPage = 1
     private var totalPage = 1
     private val adapter = RecyclerAdapter()
+    private lateinit var walletSelleted: WalletETH
+    private var address=""
 
 
     override fun onAttach(context: Context) {
@@ -154,10 +159,18 @@ class TransactionQueryFragment : BaseFragment(),
                3
             }
         }
+        if (SharedPreferencesUtils.getString(myActivity, WALLETSELECTED, "").isNotEmpty()) {
+            walletSelleted = Gson().fromJson(
+                SharedPreferencesUtils.getString(myActivity, WALLETSELECTED, ""),
+                object : TypeToken<WalletETH>() {}.type
+            )
+            address = walletSelleted.address
+        }
+//        "0x90d51f90fdf0722f1d621820ca9f45547221fdd9"
         var req = QueryTransferRecord.Req(
             currentPage,
             20,
-            "0x90d51f90fdf0722f1d621820ca9f45547221fdd9",
+            address,
             1,
             changeCurrencyType,
             endTime,
