@@ -10,16 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.QueryFaqInfos
-import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.constant.ARG_PARAM2
-import com.ramble.ramblewallet.constant.ARG_PARAM3
-import com.ramble.ramblewallet.constant.ARG_PARAM4
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityHelpBinding
 import com.ramble.ramblewallet.helper.getExtras
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.item.Help
 import com.ramble.ramblewallet.network.queryFaqInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.QuickItemDecoration
@@ -31,7 +29,7 @@ import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
  * 作者　: potato
  * 描述　:
  */
-class HelpFaqActivity: BaseActivity(), View.OnClickListener {
+class HelpFaqActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityHelpBinding
     private val adapter = RecyclerAdapter()
     private var title = ""
@@ -63,21 +61,33 @@ class HelpFaqActivity: BaseActivity(), View.OnClickListener {
 
     @SuppressLint("CheckResult")
     private fun loadData() {
-        mApiService.queryAllFaqByType(QueryFaqInfos.Req(id,1).toApiRequest(queryFaqInfoUrl)).applyIo().subscribe({
-            if (it.code() == 1) {
-                it.data()?.let { data ->
-                    ArrayList<SimpleRecyclerItem>().apply {
-                        data.forEach { o -> this.add(Help.FaqAllTypeList(o)) }
-                        adapter.addAll(this.toList())
-                    }
-                }
-            } else {
-                println("==================>getTransferInfo1:${it.message()}")
+        var lang = when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
+            CN -> {
+                1
             }
-        }, {
-            println("==================>getTransferInfo1:${it.printStackTrace()}")
+            TW -> {
+                2
+            }
+            else -> {
+                3
+            }
         }
-        )
+        mApiService.queryAllFaqByType(QueryFaqInfos.Req(id, lang).toApiRequest(queryFaqInfoUrl))
+            .applyIo().subscribe({
+                if (it.code() == 1) {
+                    it.data()?.let { data ->
+                        ArrayList<SimpleRecyclerItem>().apply {
+                            data.forEach { o -> this.add(Help.FaqAllTypeList(o)) }
+                            adapter.addAll(this.toList())
+                        }
+                    }
+                } else {
+                    println("==================>getTransferInfo1:${it.message()}")
+                }
+            }, {
+                println("==================>getTransferInfo1:${it.printStackTrace()}")
+            }
+            )
     }
 
 
