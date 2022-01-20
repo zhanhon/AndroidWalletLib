@@ -205,4 +205,5 @@
     <string name="umeng_msg_secret">50bb050a3c372095dfbb6610b89bc987</string>
     <string name="edit_book">编辑</string>
     <string name="delete_book">删除</string>
+    <string name="message_center_title">消息</string>
 </resources>

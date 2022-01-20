@@ -84,6 +84,7 @@ open class StationFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
+
     }
 
     private fun loadData() {
@@ -101,43 +102,43 @@ open class StationFragment : BaseFragment() {
                 )
             ) as ArrayList<Page.Record>
 
-        } else{
+        } else {
             arrayListOf()
         }
-         if (records.isNotEmpty()){
-             ArrayList<SimpleRecyclerItem>().apply {
-                 records.forEach { item ->
-                     if (SharedPreferencesUtils.getString(myActivity, READ_ID, "").isNotEmpty()) {
-                         if (SharedPreferencesUtils.String2SceneList(
-                                 SharedPreferencesUtils.getString(
-                                     myActivity,
-                                     READ_ID,
-                                     ""
-                                 )
-                             ).contains(item.id)
-                         ) {
-                             item.isRead = 1
-                         } else {
-                             item.isRead = 0
-                         }
+        if (records.isNotEmpty()) {
+            ArrayList<SimpleRecyclerItem>().apply {
+                records.forEach { item ->
+                    if (SharedPreferencesUtils.getString(myActivity, READ_ID, "").isNotEmpty()) {
+                        if (SharedPreferencesUtils.String2SceneList(
+                                SharedPreferencesUtils.getString(
+                                    myActivity,
+                                    READ_ID,
+                                    ""
+                                )
+                            ).contains(item.id)
+                        ) {
+                            item.isRead = 1
+                        } else {
+                            item.isRead = 0
+                        }
 
-                     } else {
-                         item.isRead = 0
-                     }
-                     add(StationItem(item))
-                 }
+                    } else {
+                        item.isRead = 0
+                    }
+                    add(StationItem(item))
+                }
 
-                 forEach {
-                     if (it is StationItem) {
-                         it.isEditable = isShowCheck
-                         it.isChecked = isShowALLCheck
-                     }
-                 }
-                 adapter.replaceAll(this.toList())
+                forEach {
+                    if (it is StationItem) {
+                        it.isEditable = isShowCheck
+                        it.isChecked = isShowALLCheck
+                    }
+                }
+                adapter.replaceAll(this.toList())
 
-             }
+            }
 
-         }
+        }
 
         apply(adapter.itemCount)
         onLoaded()
@@ -241,28 +242,27 @@ open class StationFragment : BaseFragment() {
                 passStatus(event.data())
             }
             Pie.EVENT_DELETE_MSG -> {
-                    setIDlist()
-                    if (saveList.isNotEmpty()) {
-                        saveTokenList.forEach {
-                            adapter.remove(it)
-                        }
-                        adapter.notifyDataSetChanged()
-                        var list = records.iterator()
-                        list.forEach {
-                            if (saveList.contains(it.id)) {
-                                list.remove()
-                            }
-                        }
-                        var addId = SharedPreferencesUtils.SceneList2String(records)
-                        SharedPreferencesUtils.saveString(myActivity, STATION_INFO, addId)
-                        apply(adapter.itemCount)
+                setIDlist()
+                if (saveList.isNotEmpty()) {
+                    saveTokenList.forEach {
+                        adapter.remove(it)
                     }
+                    adapter.notifyDataSetChanged()
+                    var list = records.iterator()
+                    list.forEach {
+                        if (saveList.contains(it.id)) {
+                            list.remove()
+                        }
+                    }
+                    var addId = SharedPreferencesUtils.SceneList2String(records)
+                    SharedPreferencesUtils.saveString(myActivity, STATION_INFO, addId)
+                    apply(adapter.itemCount)
+                }
                 passStatus(event.data())
             }
             else -> return
         }
     }
-
 
 
     private fun passStatus(isedit: Boolean) {

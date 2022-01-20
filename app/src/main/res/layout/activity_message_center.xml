@@ -64,51 +64,48 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_switch"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_48"
-            android:background="@color/color_F9F9F9"
-            android:orientation="horizontal"
-            android:padding="8dp">
+        <androidx.constraintlayout.widget.ConstraintLayout style="@style/MatchMatch">
 
-            <RadioGroup
-                android:id="@+id/rg_tab"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.9"
-                android:gravity="center"
-                android:orientation="horizontal">
+            <com.ramble.ramblewallet.wight.MySmartTabLayout
+                android:id="@+id/layout_tab"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_45"
+                android:background="@color/color_FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:stl_clickable="true"
+                app:stl_defaultTabBackground="?attr/selectableItemBackground"
+                app:stl_defaultTabTextAllCaps="true"
+                app:stl_defaultTabTextColor="@color/color_activity_tab_text"
+                app:stl_defaultTabTextSize="@dimen/sp_15"
+                app:stl_distributeEvenly="true"
+                app:stl_dividerColor="@android:color/transparent"
+                app:stl_dividerThickness="@dimen/dp_0"
+                app:stl_drawDecorationAfterTab="false"
+                app:stl_indicatorAlwaysInCenter="false"
+                app:stl_indicatorColor="@color/tab_selected_text"
+                app:stl_indicatorCornerRadius="@dimen/dp_2"
+                app:stl_indicatorGravity="bottom"
+                app:stl_indicatorInFront="false"
+                app:stl_indicatorInterpolation="smart"
+                app:stl_indicatorThickness="@dimen/dp_3"
+                app:stl_indicatorWidth="@dimen/dp_70"
+                app:stl_indicatorWithoutPadding="false"
+                app:stl_overlineColor="@android:color/transparent"
+                app:stl_overlineThickness="@dimen/dp_0"
+                app:stl_titleOffset="auto_center"
+                app:stl_underlineColor="@android:color/transparent"
+                app:stl_underlineThickness="@dimen/dp_08" />
 
-                <RadioButton
-                    android:id="@+id/rb_left"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:button="@null"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:text="公告"
+            <com.ramble.ramblewallet.wight.DeadViewPager
+                android:id="@+id/pager"
+                style="@style/ConCon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_tab" />
 
-                    android:textSize="13dp" />
-
-
-                <RadioButton
-                    android:id="@+id/rb_right"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="消息"
-                    android:textSize="13dp" />
-
-            </RadioGroup>
-        </LinearLayout>
-
-        <com.ramble.ramblewallet.wight.CustomViewPager
-            android:id="@+id/pager"
-            style="@style/MatchMatch"
-            android:background="@color/bg_gray2" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>

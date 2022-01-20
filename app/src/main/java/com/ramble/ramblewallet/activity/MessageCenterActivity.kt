@@ -3,7 +3,6 @@ package com.ramble.ramblewallet.activity
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -14,7 +13,6 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.databinding.ActivityMessageCenterBinding
 import com.ramble.ramblewallet.fragment.ProclamationFragment
 import com.ramble.ramblewallet.fragment.StationFragment
-import com.ramble.ramblewallet.helper.replaceFragment
 import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
 import com.ramble.ramblewallet.wight.adapter.FragmentPagerAdapter2
@@ -40,24 +38,27 @@ class MessageCenterActivity : BaseActivity(), View.OnClickListener {
 
 
     /**************初始化view**********/
-    private fun initView() {
-        binding.pager.adapter = MyAdapter(supportFragmentManager)
-        binding.rgTab.setOnCheckedChangeListener { _, checkedId ->
-            if (checkedId == R.id.rb_left) {
-                binding.tvRight.text = "编辑"
-                binding.ivMineRight.isVisible = false
-                binding.pager.currentItem = 0
-            }
-            if (checkedId == R.id.rb_right) {
-                binding.tvRight.text = "编辑"
-                binding.ivRight.setImageResource(R.drawable.ic_delelet_line)
-                RxBus.emitEvent(Pie.EVENT_CHECK_MSG, false)
-                binding.ivMineRight.isVisible = true
-                binding.pager.currentItem = 1
-            }
 
+    private fun initView() {
+        binding.pager.adapter = MyAdapter(supportFragmentManager, this)
+        binding.layoutTab.setViewPager(binding.pager)
+        binding.layoutTab.setOnTabClickListener {
+            when (it) {
+                0 -> {
+                    binding.tvRight.text = "编辑"
+                    binding.ivMineRight.isVisible = false
+
+                }
+                else -> {
+                    binding.tvRight.text = "编辑"
+                    binding.ivRight.setImageResource(R.drawable.ic_delelet_line)
+                    RxBus.emitEvent(Pie.EVENT_CHECK_MSG, false)
+                    binding.ivMineRight.isVisible = true
+                }
+            }
         }
     }
+
 
     private fun initListener() {
         binding.ivBack.setOnClickListener(this)
@@ -82,8 +83,12 @@ class MessageCenterActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    class MyAdapter(fm: FragmentManager) : FragmentPagerAdapter2(fm) {
-
+    class MyAdapter(fm: FragmentManager, activity: MessageCenterActivity) :
+        FragmentPagerAdapter2(fm) {
+        private val titles: Array<String> = arrayOf(
+            activity.getString(R.string.announcement),
+            activity.getString(R.string.message_center_title)
+        )
         val fragment by lazy { ProclamationFragment.newInstance() }
         val fragment2 by lazy { StationFragment.newInstance() }
 
@@ -99,7 +104,9 @@ class MessageCenterActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
-        override fun getCount(): Int = 2
+        override fun getCount(): Int = titles.size
 
+        override fun getPageTitle(position: Int): CharSequence? = titles[position]
     }
+
 }

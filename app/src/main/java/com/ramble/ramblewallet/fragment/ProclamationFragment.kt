@@ -20,9 +20,7 @@ import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.StationItem
 import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.utils.LanguageSetting
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.applyIo
+import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
@@ -37,13 +35,13 @@ import java.util.ArrayList
  * 作者　: potato
  * 描述　:公告
  */
-class ProclamationFragment : BaseFragment(){
+class ProclamationFragment : BaseFragment() {
     private lateinit var binding: FragmentProclamationBinding
     lateinit var myActivity: MessageCenterActivity
         private set
     var isShowCheck: Boolean = false
     var isShowALLCheck: Boolean = false
-    private  var list= mutableListOf<Any?>()
+    private var list = mutableListOf<Any?>()
     private var currentPage = 1
     private var totalPage = 1
     private val adapter = RecyclerAdapter()
@@ -76,12 +74,12 @@ class ProclamationFragment : BaseFragment(){
             }
             //加载的监听事件
             binding.lyPullRefresh.setOnLoadMoreListener {
-                if (currentPage<totalPage){
+                if (currentPage < totalPage) {
                     binding.lyPullRefresh.finishLoadMore() //加载完成
                     ProgressItem.addTo(adapter)
                     currentPage += 1
                     loadData()
-                }else{
+                } else {
                     binding.lyPullRefresh.finishLoadMoreWithNoMoreData()
                 }
             }
@@ -93,15 +91,15 @@ class ProclamationFragment : BaseFragment(){
 
     @SuppressLint("CheckResult")
     private fun loadData() {
-       var lang= when (SharedPreferencesUtils.getString(myActivity, LANGUAGE, CN)) {
+        var lang = when (SharedPreferencesUtils.getString(myActivity, LANGUAGE, CN)) {
             CN -> {
-               1
+                1
             }
             TW -> {
-               2
+                2
             }
             else -> {
-               3
+                3
             }
         }
         var req = Page.Req(currentPage, 20, lang)
@@ -115,16 +113,19 @@ class ProclamationFragment : BaseFragment(){
                         println("==================>getTransferInfo:${data}")
                         ArrayList<SimpleRecyclerItem>().apply {
                             data.records.forEach { item ->
-                                if (SharedPreferencesUtils.getString(myActivity, READ_ID_NEW, "").isNotEmpty()) {
-                                    if (  SharedPreferencesUtils.String2SceneList(
+                                if (SharedPreferencesUtils.getString(myActivity, READ_ID_NEW, "")
+                                        .isNotEmpty()
+                                ) {
+                                    if (SharedPreferencesUtils.String2SceneList(
                                             SharedPreferencesUtils.getString(
                                                 myActivity,
                                                 READ_ID_NEW,
                                                 ""
                                             )
-                                        ).contains(item.id)){
+                                        ).contains(item.id)
+                                    ) {
                                         item.isRead = 1
-                                    }else{
+                                    } else {
                                         item.isRead = 0
                                     }
 
@@ -183,9 +184,10 @@ class ProclamationFragment : BaseFragment(){
         totalPage = 1
         loadData()
     }
+
     override fun onResume() {
         super.onResume()
-//        reFreshData()
+
     }
 
 
@@ -199,11 +201,12 @@ class ProclamationFragment : BaseFragment(){
         when (v!!.id) {
             R.id.item_msg_notic -> {
                 val itemBean = AdapterUtils.getHolder(v).getItem<StationItem>().data
-                list = if ( SharedPreferencesUtils.getString(
+                list = if (SharedPreferencesUtils.getString(
                         myActivity,
                         READ_ID_NEW,
                         ""
-                    ).isNotEmpty()){
+                    ).isNotEmpty()
+                ) {
                     SharedPreferencesUtils.String2SceneList(
                         SharedPreferencesUtils.getString(
                             myActivity,
@@ -211,19 +214,19 @@ class ProclamationFragment : BaseFragment(){
                             ""
                         )
                     )
-                }else{
+                } else {
                     mutableListOf()
                 }
-                if (list.isNotEmpty()){
-                    if (!list.contains(itemBean.id)){
+                if (list.isNotEmpty()) {
+                    if (!list.contains(itemBean.id)) {
                         list.add(itemBean.id)
                     }
-                }else{
+                } else {
                     list.add(itemBean.id)
                 }
                 var addId = SharedPreferencesUtils.SceneList2String(list)
                 SharedPreferencesUtils.saveString(myActivity, READ_ID_NEW, addId)
-                itemBean.isRead=1
+                itemBean.isRead = 1
                 adapter.notifyItemChanged(AdapterUtils.getHolder(v).adapterPosition)
                 start2(MsgDetailsActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, itemBean.title)
