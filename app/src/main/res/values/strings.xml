@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
-    <item name="tag_key_data" type="id" />
-    <item name="tag_key_position" type="id" />
-
     <string name="app_name">漫步钱包</string>
     <string name="create_recover_wallet_tips">轻松存取 自由来去</string>
     <string name="recover_wallet">恢复钱包</string>
@@ -206,4 +203,5 @@
     <string name="edit_book">编辑</string>
     <string name="delete_book">删除</string>
     <string name="message_center_title">消息</string>
+
 </resources>

@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
-    <item name="tag_key_data" type="id" />
-    <item name="tag_key_position" type="id" />
-
     <string name="app_name">漫步钱包</string>
     <string name="create_recover_wallet_tips">轻松存取 自由来去</string>
     <string name="recover_wallet">恢复钱包</string>
@@ -59,6 +56,10 @@
     <string name="language_traditional_chinese">繁體中文</string>
     <string name="language_english">English</string>
     <string name="choose_language">选择语言</string>
+    <string name="language_choose">语言选择</string>
+    <string name="currency_choose">货币选择</string>
+    <string name="transfer_remark">转账备注</string>
+    <string name="choose_fill">选填</string>
 
     <string name="within_1_year">1年内</string>
     <string name="within_30_days">30日之内</string>
@@ -74,9 +75,16 @@
     <string name="token_management">代币管理</string>
     <string name="token_list_management">代币列表管理</string>
     <string name="import_keystore">导入KEYSTORE</string>
-    <string name="import_secret_key">导入秘钥</string>
+    <string name="import_secret_key">导入密钥</string>
     <string name="import_wallet">导入钱包</string>
     <string name="import_mnemonic_words">导入助记词</string>
+    <string name="input_keystore">请输入Keystore</string>
+    <string name="input_secret_key">请输入密钥</string>
+    <string name="input_mnemonic_words">请输入助记词并按照原有助记词顺序进行输入</string>
+    <string name="input_correct_keystore">请输入正确的Keystore</string>
+    <string name="input_correct_secret_key">请输入正确的密钥</string>
+    <string name="input_correct_mnemonic_words">请输入正确的助记词</string>
+    <string name="input_correct_wallet_password">请输入正确的密码</string>
     <string name="address">地址</string>
     <string name="initiate_transfer">发起转帐或建立Wallet Connet连接</string>
     <string name="sending_address">发送地址</string>
@@ -97,15 +105,18 @@
     <string name="coming_soon">敬请期待</string>
     <string name="miner_costs">矿工费用</string>
     <string name="immediately_query">立即查询</string>
-    <string name="secret_key">秘钥</string>
-    <string name="secret_key_backup">秘钥备份</string>
+    <string name="secret_key">密钥</string>
+    <string name="secret_key_backup">密钥备份</string>
     <string name="name">名称</string>
     <string name="private_key_characters">明文私钥字符</string>
     <string name="error_tips">您已输入错误超过三次,是否取消此次创建,或跳过此次助记词记录</string>
     <string name="wallet_management">钱包管理</string>
     <string name="waiting_complete">请耐心等待交易完成信息</string>
     <string name="confirm_delete_cat_wallet">请确认删除小猫的钱包</string>
-    <string name="input_password">请输入密码</string>
+    <string name="please_input_password">请输入密码</string>
+    <string name="input_password">输入密码</string>
+    <string name="please_input_wallet_name">请输入钱包名称</string>
+    <string name="input_wallet_name">输入名称</string>
     <string name="block_number">区块编号</string>
     <string name="cancel">取消</string>
     <string name="cancel_this_creation">取消此次创建</string>
@@ -113,7 +124,6 @@
     <string name="confirm_delete">确认删除</string>
     <string name="generate_QR_code_store">生成二维码并储存</string>
     <string name="fail">失败</string>
-    <string name="receive_address">收款地址</string>
     <string name="pack_up">收起</string>
     <string name="search">搜索</string>
     <string name="search_result">搜索结果</string>
@@ -122,6 +132,7 @@
     <string name="recommend_tokens">推荐代币</string>
     <string name="my_address">我的地址</string>
     <string name="my_assets">我的资产</string>
+    <string name="my_wallet">我的钱包</string>
     <string name="detail">详细内容</string>
     <string name="disappear">消失</string>
     <string name="message_content">消息内容</string>
@@ -144,6 +155,11 @@
     <string name="cash_in">转入</string>
     <string name="asset">资产</string>
     <string name="minimum_miner_fee">最低矿工费</string>
+    <string name="wallet_status_selected">已选择</string>
+    <string name="delete_wallet">删除钱包</string>
+    <string name="different_password">密码不一致</string>
+    <string name="password_less_six_tips">密码不小于6位</string>
+    <string name="confirm_transaction">确认交易</string>
 
     <string name="refresh_pull_down">下拉更新</string>
     <string name="refresh_time">最后更新于{key}</string>
@@ -155,4 +171,37 @@
     <string name="help_center">帮助中心</string>
     <string name="help_door_sister">新手入门须知</string>
     <string name="help_sever_sister">客服中心</string>
+    <string name="transaction_query_all">全部</string>
+    <string name="transaction_query_chu">转出</string>
+    <string name="transaction_query_ru">转入</string>
+    <string name="transaction_query_fail">失败</string>
+    <string name="game_today_order_no_log2"></string>
+    <string name="transaction_query_all2">全部交易</string>
+    <string name="transaction_query_week">7日内</string>
+    <string name="transaction_query_month">30日内</string>
+    <string name="transaction_query_year">1年内</string>
+    <string name="transaction_ing">交易中</string>
+    <string name="transaction_failed">交易失败</string>
+    <string name="transaction_success">交易成功</string>
+    <string name="miner_fees">矿工费用</string>
+    <string name="receiving_address">收款地址</string>
+    <string name="transaction_code">交易代号</string>
+    <string name="enquire_now">立即查询</string>
+    <string name="transaction_details">详细内容</string>
+    <string name="hk_dollar">港币（HK$）</string>
+    <string name="cny_dollar">人民币（CNY）</string>
+    <string name="usd_dollar">美元（USD）</string>
+    <string name="up_data">更新</string>
+    <string name="up_data_currency">修改计价币种</string>
+    <string name="up_data_language">修改显示语言</string>
+    <string name="no_records">暂无记录</string>
+    <string name="address_page">地址页</string>
+    <string name="alert_request_permission">为了保证本程序能正常运行，现在开始向您申请必要权限。</string>
+    <string name="put_barcode_in_box">将条码放入框内，即可自动扫描</string>
+    <string name="put_qrcode_in_box">将二维码放入框内，即可自动扫描</string>
+    <string name="umeng_msg_secret">50bb050a3c372095dfbb6610b89bc987</string>
+    <string name="edit_book">编辑</string>
+    <string name="delete_book">删除</string>
+    <string name="message_center_title">消息</string>
+
 </resources>
