@@ -248,7 +248,7 @@
                                 android:layout_width="@dimen/dp_20"
                                 android:layout_height="@dimen/dp_20"
                                 android:layout_marginStart="@dimen/dp_20"
-                                android:src="@mipmap/ic_launcher" />
+                                android:src="@drawable/vector_green_copy" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -283,7 +283,7 @@
                                 android:layout_width="@dimen/dp_20"
                                 android:layout_height="@dimen/dp_20"
                                 android:layout_marginStart="@dimen/dp_20"
-                                android:src="@mipmap/ic_launcher" />
+                                android:src="@drawable/vector_green_copy" />
                         </LinearLayout>
 
                         <View
@@ -357,7 +357,7 @@
                                 android:layout_width="@dimen/dp_20"
                                 android:layout_height="@dimen/dp_20"
                                 android:layout_marginStart="@dimen/dp_20"
-                                android:src="@mipmap/ic_launcher" />
+                                android:src="@drawable/vector_green_copy" />
                         </LinearLayout>
 
                         <View
