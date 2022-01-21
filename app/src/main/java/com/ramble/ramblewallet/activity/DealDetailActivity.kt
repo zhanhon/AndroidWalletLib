@@ -49,7 +49,7 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
         binding.tvTime.text= TimeUtils.dateToWeek(trans?.createTime) +"  "+trans?.createTime
         when (trans?.status) {
             1 ->{
-                binding.ivStatus.setImageResource(R.drawable.ic_success)
+                binding.ivStatus.setImageResource(R.drawable.ic_transing)
             }
             2 -> {
                 binding.ivStatus.setImageResource(R.drawable.ic_success)
