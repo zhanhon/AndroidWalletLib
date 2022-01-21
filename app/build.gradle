@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.protobuf'
 }
 
 android {
@@ -62,15 +63,39 @@ android {
 
 }
 
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.0.0'
+    }
+    plugins {
+        javalite {
+            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
+        }
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.9.0'
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                javalite {}
+                grpc {
+                    // Options added to --grpc_out
+                    option 'lite'
+                }
+            }
+        }
+    }
+}
+
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
-    implementation files('libs\\tron-sdk-1.jar')
+    //implementation files('libs\\tron-sdk-1.jar')
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
@@ -110,6 +135,37 @@ dependencies {
         exclude group: 'org.bouncycastle'
         exclude group: 'com.google.protobuf'
     }
+
+//    implementation 'com.google.protobuf:protobuf-java:3.6.1'
+//    implementation 'org.fusesource.leveldbjni:leveldbjni-all:1.8'
+//    implementation 'com.googlecode.protobuf-java-format:protobuf-java-format:1.4'
+//    implementation 'org.apache.commons:commons-lang3:3.4'
+//    implementation 'org.fusesource.leveldbjni:leveldbjni-all:1.8'
+//    implementation 'com.googlecode.protobuf-java-format:protobuf-java-format:1.4'
+//    implementation 'commons-lang:commons-lang:2.6'
+//    implementation 'org.json:json:20170516'
+//    implementation 'org.projectlombok:lombok:1.18.6'
+//    implementation 'com.alibaba:fastjson:1.2.56'
+//    implementation 'io.grpc:grpc-okhttp:1.9.0'
+//    implementation 'io.grpc:grpc-protobuf-lite:1.9.0'
+//    implementation 'io.grpc:grpc-stub:1.9.0'
+//    implementation 'javax.annotation:javax.annotation-api:1.2'
+    implementation 'io.grpc:grpc-okhttp:1.9.0'
+//    implementation ('io.grpc:grpc-protobuf-lite:1.9.0'){
+//        exclude group: 'com.google.protobuf:protobuf-lite', module: 'protobuf-lite'
+//    }
+    implementation 'io.grpc:grpc-stub:1.9.0'
+    implementation 'javax.annotation:javax.annotation-api:1.2'
+
+    implementation 'com.google.api.grpc:googleapis-common-protos:0.0.3'
+    implementation "com.madgag.spongycastle:core:1.53.0.0"
+    implementation "com.madgag.spongycastle:prov:1.53.0.0"
+
+    implementation "org.apache.commons:commons-collections4:4.0"
+    implementation "org.apache.commons:commons-lang3:3.5"
+    implementation 'com.alibaba:fastjson:1.2.47'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.8.5'
 
     //友盟推送
     implementation project(':UMLibrary')

@@ -10,8 +10,8 @@ import org.bitcoinj.crypto.DeterministicHierarchy;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.crypto.HDKeyDerivation;
 import org.bitcoinj.crypto.HDUtils;
-import org.tron.TronWalletApi;
-import org.tron.wallet.util.ByteArray;
+//import org.tron.TronWalletApi;
+//import org.tron.wallet.util.ByteArray;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.MnemonicUtils;
 import org.web3j.crypto.WalletFile;
@@ -20,6 +20,9 @@ import org.web3j.utils.Numeric;
 
 import java.math.BigInteger;
 import java.util.List;
+
+import core.common.StringTronUtil;
+import core.common.common.utils.ByteArray;
 
 import static org.web3j.crypto.Wallet.createLight;
 import static org.web3j.crypto.Wallet.decrypt;
@@ -98,7 +101,7 @@ public class WalletTRXUtils {
     }
 
     public static String fromHexAddress(String address) {
-        return TronWalletApi.encode58Check(ByteArray.fromHexString(address));
+        return StringTronUtil.encode58Check(ByteArray.fromHexString(address));
     }
 
     /**
