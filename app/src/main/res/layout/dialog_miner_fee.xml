@@ -59,11 +59,12 @@
                         android:id="@+id/tv_transfer_fast"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
                         android:text="@string/miner_fee_fast"
-                        android:textColor="@color/color_3BB7A5" />
+                        android:textColor="@color/color_000000" />
 
                     <TextView
-                        android:id="@+id/tv_transfer_gwei_fast"
+                        android:id="@+id/tv_transfer_gas_price_fast"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_10"
@@ -71,14 +72,6 @@
                         android:textSize="@dimen/dp_10"
                         tools:text="(166 GWEI)" />
 
-                    <TextView
-                        android:id="@+id/tv_transfer_gas_fast"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_5"
-                        android:textColor="@color/color_3BB7A5"
-                        android:textSize="@dimen/dp_10"
-                        tools:text="0.0003486 ETH" />
                 </LinearLayout>
 
                 <RelativeLayout
@@ -91,7 +84,7 @@
                     android:padding="@dimen/dp_5">
 
                     <TextView
-                        android:id="@+id/tv_transfer_speed_fast"
+                        android:id="@+id/tv_transfer_gas_fast"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -124,11 +117,12 @@
                         android:id="@+id/tv_transfer_slow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
                         android:text="@string/miner_fee_slow"
                         android:textColor="@color/color_000000" />
 
                     <TextView
-                        android:id="@+id/tv_transfer_gwei_slow"
+                        android:id="@+id/tv_transfer_gas_price_slow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_10"
@@ -136,14 +130,6 @@
                         android:textSize="@dimen/dp_10"
                         tools:text="(166 GWEI)" />
 
-                    <TextView
-                        android:id="@+id/tv_transfer_gas_slow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_5"
-                        android:textColor="@color/color_9598AA"
-                        android:textSize="@dimen/dp_10"
-                        tools:text="0.0003486 ETH" />
                 </LinearLayout>
 
                 <RelativeLayout
@@ -156,7 +142,7 @@
                     android:padding="@dimen/dp_5">
 
                     <TextView
-                        android:id="@+id/tv_transfer_speed_slow"
+                        android:id="@+id/tv_transfer_gas_slow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"

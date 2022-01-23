@@ -29,6 +29,7 @@ import com.ramble.ramblewallet.bean.RateBeen
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainTrxBinding
+import com.ramble.ramblewallet.ethereum.TransferEthUtils.getBalanceETH
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.rateInfoUrl
@@ -55,7 +56,6 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_E11334)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_trx)
-
         initClick()
         initData()
     }
@@ -95,14 +95,17 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                 })
             }
             R.id.iv_transfer_top, R.id.ll_transfer -> {
-                startActivity(Intent(this, TransferActivity::class.java))
+                startActivity(Intent(this, TransferActivity::class.java).apply {
+                    putExtra(ARG_PARAM2, "TRX")
+                    putExtra(ARG_PARAM3, false)
+                })
             }
             R.id.iv_scan_top, R.id.ll_scan -> {
                 startActivity(Intent(this, ScanActivity::class.java).apply {
                     putExtra(ARG_PARAM1, 3)
                 })
             }
-            R.id.iv_token_manage_click, R.id.iv_token_manage_click_01 -> {
+            R.id.iv_token_manage_click -> {
                 startActivity(Intent(this, TokenActivity::class.java).apply {
                     putExtra(ARG_PARAM1, "TRX")
                 })
@@ -188,6 +191,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
+        binding.tvBalanceTotal.text = getBalanceETH(walletSelleted.address).toPlainString()
         binding.tvTrxAddress.text = addressHandle(walletSelleted.address)
     }
 
@@ -226,7 +230,10 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             tvTokenTitle.text = tokenName
 
             tvTransfer.setOnClickListener { v1: View? ->
-                startActivity(Intent(this, TransferActivity::class.java))
+                startActivity(Intent(this, TransferActivity::class.java).apply {
+                    putExtra(ARG_PARAM2, tokenName)
+                    putExtra(ARG_PARAM3, true)
+                })
                 dialog.dismiss()
             }
             tvGathering.setOnClickListener { v1: View? ->
@@ -259,21 +266,8 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                         it.data()?.let { data ->
                             rateBean = data
                             mainETHTokenBean.clear()
-                            saveTokenList = SharedPreferencesUtils.String2SceneList(
-                                SharedPreferencesUtils.getString(
-                                    this,
-                                    TOKEN_INFO_NO,
-                                    ""
-                                )
-                            ) as ArrayList<StoreInfo>
-                            val list = saveTokenList.iterator()
-                            list.forEach {
-                                if (it.isMyToken == 0) {
-                                    list.remove()
-                                }
-                            }
                             if (rateBean.isNotEmpty()) {
-                                rateBean.forEach { //标题：TRX
+                                rateBean.forEach { //标题：ETH
                                     if (it.currencyType == "TRX") {
                                         mainETHTokenBean.add(
                                             MainETHTokenBean(
@@ -284,6 +278,19 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                                 BigDecimal(it.change)
                                             )
                                         )
+                                    }
+                                }
+                                saveTokenList = SharedPreferencesUtils.String2SceneList(
+                                    SharedPreferencesUtils.getString(
+                                        this,
+                                        TOKEN_INFO_NO,
+                                        ""
+                                    )
+                                ) as ArrayList<StoreInfo>
+                                val list = saveTokenList.iterator()
+                                list.forEach {
+                                    if (it.isMyToken == 0) {
+                                        list.remove()
                                     }
                                 }
                                 if (saveTokenList.isNotEmpty()) {
@@ -303,12 +310,13 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                         }
                                     }
                                 }
-
                                 mainAdapter = MainAdapter(mainETHTokenBean)
                                 binding.rvCurrency.adapter = mainAdapter
                                 mainAdapter.setOnItemClickListener { adapter, view, position ->
                                     if (adapter.getItem(position) is MainETHTokenBean) {
-                                        showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean).name)
+                                        if ((adapter.getItem(position) as MainETHTokenBean).name != "TRX") {
+                                            showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean).name)
+                                        }
                                     }
                                 }
                             }

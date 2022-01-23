@@ -246,7 +246,7 @@
                         android:inputType="numberDecimal"
                         android:longClickable="false"
                         android:textColor="@color/color_9598AA"
-                        android:textSize="@dimen/sp_30"
+                        android:textSize="@dimen/sp_20"
                         android:textStyle="bold" />
 
                     <Button
@@ -342,7 +342,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="9"
                         android:orientation="vertical"
-                        android:padding="@dimen/dp_10">
+                        android:padding="@dimen/dp_8">
 
                         <RelativeLayout
                             android:layout_width="match_parent"

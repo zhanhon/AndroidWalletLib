@@ -15,10 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.constant.CN
-import com.ramble.ramblewallet.constant.EN
-import com.ramble.ramblewallet.constant.LANGUAGE
-import com.ramble.ramblewallet.constant.TW
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityCreateRecoverWalletBinding
 import com.ramble.ramblewallet.utils.LanguageSetting
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
@@ -53,7 +50,9 @@ class CreateRecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, RecoverWalletListActivity::class.java))
             }
             R.id.btn_create_wallet -> {
-                startActivity(Intent(this, CreateWalletActivity::class.java))
+                startActivity(Intent(this, CreateWalletActivity::class.java).apply {
+                    putExtra(ARG_PARAM1, 3)
+                })
             }
         }
     }

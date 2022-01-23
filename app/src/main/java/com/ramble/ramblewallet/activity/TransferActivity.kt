@@ -1,12 +1,15 @@
 package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -18,40 +21,42 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.base.Fragment
 import com.ramble.ramblewallet.bean.EthMinerConfig
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.constant.ARG_PARAM3
 import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
-import com.ramble.ramblewallet.ethereum.TransferEthUtils
+import com.ramble.ramblewallet.ethereum.TransferEthUtils.*
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getEthMinerConfigUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
+import java.math.BigDecimal
 import java.math.BigInteger
 
 
 class TransferActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityTransferBinding
-    private var transferBalance: String = "26.232323"
+    private lateinit var transferBalance: BigDecimal
     private var transferUnit: String = "USDT"
-    private var transferGwei: String = "161"
-    private var transferGas: String = "21000"
-    private var transferGweiDefaultConvert: String = "0.13"
-    private var transferGweiFast: String = "16"
-    private var transferGasFast: String = "2000"
-    private var transferSpeedFast: String = "0.75"
-    private var transferGweiSlow: String = "161"
-    private var transferGasSlow: String = "21000"
-    private var transferSpeedSlow: String = "0.90"
+    private var transferGweiDefaultConvert: String = "6455"
+
+    private var gasLimit: String? = ""
+    private var fastGasPrice: String? = ""
+    private var slowGasPrice: String? = ""
+    private var gasPrice: String? = ""
+    private var gas: String? = ""
+
     private var isCustom = false
     private lateinit var walletSelleted: WalletETH
     private lateinit var transferTitle: String
     private var transferReceiverAddress: String? = null
     private var isToken: Boolean = false
+    private var contractAddress = "0x97fd68AaEaaEb64BD3f5D1EDC26dbbc70B548896" //暂时ERC-USDT合约地址
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +65,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         transferReceiverAddress = intent.getStringExtra(ARG_PARAM1)
         transferTitle = intent.getStringExtra(ARG_PARAM2)
         isToken = intent.getBooleanExtra(ARG_PARAM3, false)
+        transferUnit = transferTitle
         binding.edtReceiverAddress.setText(transferReceiverAddress)
 
         initClick()
@@ -101,7 +107,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 showDialog()
             }
             R.id.tv_select_all -> {
-                binding.edtInputQuantity.setText(transferBalance)
+                binding.edtInputQuantity.setText(transferBalance.toPlainString())
             }
             R.id.btn_confirm -> {
                 transactionConfirmationDialog()
@@ -120,6 +126,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         binding.btnConfirm.setOnClickListener(this)
     }
 
+    @SuppressLint("SetTextI18n", "CheckResult")
     private fun initData() {
         if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isNotEmpty()) {
             walletSelleted = Gson().fromJson(
@@ -135,7 +142,15 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         ).applyIo().subscribe(
             {
                 if (it.code() == 1) {
-                    it.data()?.let { data -> println("-=-=-=->ETH:${data.currencyType}") }
+                    it.data()?.let { data ->
+                        gasLimit = data.gasLimit
+                        fastGasPrice = data.fastGasPrice
+                        slowGasPrice = data.slowGasPrice
+
+                        //默认
+                        gasPrice = fastGasPrice
+                        setMinerFee()
+                    }
                 } else {
                     println("-=-=-=->ETH:${it.message()}")
                 }
@@ -144,15 +159,88 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
         )
 
+
         binding.tvTransferTitle.text = transferTitle + " " + getString(R.string.transfer)
 
-        binding.tvQuantityBalance.text =
-            getString(R.string.transfer_balance) + " " + transferBalance + " " + transferUnit
-        binding.tvMinerFeeValue.text =
-            "${transferGwei.toDouble() * transferGas.toDouble()} $transferUnit"
-        binding.tvMinerFeeValueConvert.text = "≈USD$$transferGweiDefaultConvert"
-        binding.tvTips.text = "$transferGwei GWEI * GAS ($transferGas)"
+        if (isToken) {
+            Thread {
+                transferBalance = getBalanceToken(walletSelleted.address, contractAddress)
+                if (transferBalance != BigDecimal("0.000000")) {
+                    setBalance(transferBalance)
+                }
+            }.start()
+        } else {
+            transferBalance = getBalanceETH(walletSelleted.address)
+            binding.tvQuantityBalance.text = getString(R.string.transfer_balance) + " " + transferBalance + " " + transferUnit
+        }
 
+    }
+
+    private fun setMinerFee() {
+        when (walletSelleted.walletType) {
+            1 -> {
+                binding.tvMinerFeeValue.text = "${
+                    DecimalFormatUtil.format8.format(
+                        (BigDecimal(gasPrice)
+                                * BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
+                    )
+                } ETH"
+                binding.tvMinerFeeValueConvert.text = "≈USD$${
+                    DecimalFormatUtil.format6.format(
+                        BigDecimal(transferGweiDefaultConvert).multiply(
+                            (BigDecimal(gasPrice)
+                                    * BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
+                        )
+                    )
+                }"
+            }
+            2 -> {
+
+            }
+            0 -> {
+
+            }
+        }
+        binding.tvTips.text = "$gasPrice GWEI * GAS ($gasLimit)"
+    }
+
+    private fun setBalance(balance: BigDecimal) {
+        postUI {
+            binding.tvQuantityBalance.text =
+                getString(R.string.transfer_balance) + " " + balance + " " + transferUnit
+        }
+    }
+
+    fun <T> T.postUI(action: () -> Unit) {
+
+        // Fragment
+        if (this is Fragment) {
+            val fragment = this
+            if (!fragment.isAdded) return
+
+            val activity = fragment.activity ?: return
+            if (activity.isFinishing) return
+
+            activity.runOnUiThread(action)
+            return
+        }
+
+        // Activity
+        if (this is Activity) {
+            if (this.isFinishing) return
+
+            this.runOnUiThread(action)
+            return
+        }
+
+        // 主线程
+        if (Looper.getMainLooper() === Looper.myLooper()) {
+            action()
+            return
+        }
+
+        // 子线程，使用handler
+        Handler().post { action() }
     }
 
     private fun transactionConfirmationDialog() {
@@ -205,24 +293,24 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         when (walletSelleted.walletType) { //链类型|0:BTC|1:ETH|2:TRX
             1 -> {
                 if (isToken) {
-                    TransferEthUtils.transferToken( //暂时是USDT合约
+                    transferToken( //暂时是USDT合约
                         walletSelleted.address,
                         transferReceiverAddress,
-                        "0x245A86D04C678E1Ab7e5a8FbD5901C12361Ea308",
+                        contractAddress,
                         walletSelleted.privateKey,
                         BigInteger(binding.edtInputQuantity.toString()),
-                        BigInteger(transferGas),
-                        BigInteger(transferGwei),
+                        (BigInteger(gasPrice) * BigInteger("1000000000")), //GWEI → WEI
+                        BigInteger(gasLimit),
                         binding.edtInputTransferRemarks.toString()
                     )
                 } else {
-                    TransferEthUtils.transferMain(
+                    transferETH(
                         walletSelleted.address,
                         transferReceiverAddress,
                         walletSelleted.privateKey,
                         binding.edtInputQuantity.toString(),
-                        BigInteger(transferGas),
-                        BigInteger(transferGwei),
+                        (BigInteger(gasPrice) * BigInteger("1000000000")), //GWEI → WEI
+                        BigInteger(gasLimit),
                         binding.edtInputTransferRemarks.toString()
                     )
                 }
@@ -264,18 +352,40 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             params.dimAmount = 0.5f   //dialog背景层
             window.attributes = params
 
-            window.findViewById<TextView>(R.id.tv_transfer_gwei_fast).text =
-                "($transferGweiFast GWEI)"
-            window.findViewById<TextView>(R.id.tv_transfer_gas_fast).text =
-                "$transferGasFast $transferUnit"
-            window.findViewById<TextView>(R.id.tv_transfer_speed_fast).text =
-                "<${transferSpeedFast}min"
-            window.findViewById<TextView>(R.id.tv_transfer_gwei_slow).text =
-                "($transferGweiSlow GWEI)"
-            window.findViewById<TextView>(R.id.tv_transfer_gas_slow).text =
-                "$transferGasSlow $transferUnit"
-            window.findViewById<TextView>(R.id.tv_transfer_speed_slow).text =
-                "<${transferSpeedSlow}min"
+            window.findViewById<TextView>(R.id.tv_transfer_gas_price_fast).text =
+                "($fastGasPrice GWEI)"
+            window.findViewById<TextView>(R.id.tv_transfer_gas_price_slow).text =
+                "($slowGasPrice GWEI)"
+
+            when (walletSelleted.walletType) {
+                1 -> {
+                    DecimalFormatUtil.format8.format(
+                        (BigInteger(gasPrice) * BigInteger(gasLimit)) / BigInteger(
+                            "1000000000"
+                        )
+                    )
+                    window.findViewById<TextView>(R.id.tv_transfer_gas_fast).text =
+                        "${
+                            DecimalFormatUtil.format8.format(
+                                (BigDecimal(fastGasPrice)
+                                        * BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
+                            )
+                        } ETH"
+                    window.findViewById<TextView>(R.id.tv_transfer_gas_slow).text =
+                        "${
+                            DecimalFormatUtil.format8.format(
+                                (BigDecimal(slowGasPrice)
+                                        * BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
+                            )
+                        } ETH"
+                }
+                2 -> {
+
+                }
+                0 -> {
+
+                }
+            }
 
             onClickTransferFast(window)
             onClickTransferSlow(window)
@@ -283,15 +393,12 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 if (isCustom) {
-                    transferGwei =
+                    gasPrice =
                         window.findViewById<EditText>(R.id.miner_fee_gas_price).text.toString()
-                    transferGas =
+                    gasLimit =
                         window.findViewById<EditText>(R.id.miner_fee_limit_title).text.toString()
                 }
-                binding.tvMinerFeeValue.text =
-                    "${transferGwei.toDouble() * transferGas.toDouble()} $transferUnit"
-                binding.tvMinerFeeValueConvert.text = "≈USD$$transferGweiDefaultConvert"
-                binding.tvTips.text = "$transferGwei GWEI * GAS ($transferGas)"
+                setMinerFee()
                 dialog.dismiss()
             }
         }
@@ -312,18 +419,10 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<RelativeLayout>(R.id.rl_transfer_slow_bottom)
                 .setBackgroundResource(R.drawable.shape_half_radius_gray_bottom_btn)
 
-            window.findViewById<TextView>(R.id.tv_transfer_fast)
-                .setTextColor(resources.getColor(R.color.color_000000))
+
             window.findViewById<TextView>(R.id.tv_transfer_gas_fast)
                 .setTextColor(resources.getColor(R.color.color_9598AA))
-            window.findViewById<TextView>(R.id.tv_transfer_speed_fast)
-                .setTextColor(resources.getColor(R.color.color_9598AA))
-
-            window.findViewById<TextView>(R.id.tv_transfer_slow)
-                .setTextColor(resources.getColor(R.color.color_000000))
             window.findViewById<TextView>(R.id.tv_transfer_gas_slow)
-                .setTextColor(resources.getColor(R.color.color_9598AA))
-            window.findViewById<TextView>(R.id.tv_transfer_speed_slow)
                 .setTextColor(resources.getColor(R.color.color_9598AA))
             isCustom = true
         }
@@ -344,22 +443,12 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<RelativeLayout>(R.id.rl_transfer_slow_bottom)
                 .setBackgroundResource(R.drawable.shape_half_radius_green_bottom_btn)
 
-            window.findViewById<TextView>(R.id.tv_transfer_fast)
-                .setTextColor(resources.getColor(R.color.color_000000))
             window.findViewById<TextView>(R.id.tv_transfer_gas_fast)
                 .setTextColor(resources.getColor(R.color.color_9598AA))
-            window.findViewById<TextView>(R.id.tv_transfer_speed_fast)
-                .setTextColor(resources.getColor(R.color.color_9598AA))
-
-            window.findViewById<TextView>(R.id.tv_transfer_slow)
-                .setTextColor(resources.getColor(R.color.color_3BB7A5))
             window.findViewById<TextView>(R.id.tv_transfer_gas_slow)
-                .setTextColor(resources.getColor(R.color.color_3BB7A5))
-            window.findViewById<TextView>(R.id.tv_transfer_speed_slow)
                 .setTextColor(resources.getColor(R.color.color_FFFFFF))
 
-            transferGwei = transferGweiSlow
-            transferGas = transferGasSlow
+            gasPrice = slowGasPrice
             isCustom = false
         }
     }
@@ -379,22 +468,12 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<RelativeLayout>(R.id.rl_transfer_slow_bottom)
                 .setBackgroundResource(R.drawable.shape_half_radius_gray_bottom_btn)
 
-            window.findViewById<TextView>(R.id.tv_transfer_fast)
-                .setTextColor(resources.getColor(R.color.color_3BB7A5))
             window.findViewById<TextView>(R.id.tv_transfer_gas_fast)
-                .setTextColor(resources.getColor(R.color.color_3BB7A5))
-            window.findViewById<TextView>(R.id.tv_transfer_speed_fast)
                 .setTextColor(resources.getColor(R.color.color_FFFFFF))
-
-            window.findViewById<TextView>(R.id.tv_transfer_slow)
-                .setTextColor(resources.getColor(R.color.color_000000))
             window.findViewById<TextView>(R.id.tv_transfer_gas_slow)
                 .setTextColor(resources.getColor(R.color.color_9598AA))
-            window.findViewById<TextView>(R.id.tv_transfer_speed_slow)
-                .setTextColor(resources.getColor(R.color.color_9598AA))
 
-            transferGwei = transferGweiFast
-            transferGas = transferGasFast
+            gasPrice = fastGasPrice
             isCustom = false
         }
     }

@@ -15,6 +15,10 @@ public class WalletETH {
     private int walletType; //链类型|0:BTC|1:ETH|2:TRX
     private boolean isClickDelete;
 
+    public WalletETH() {
+
+    }
+
     public WalletETH(String mnemonic, String address, String privateKey, String publicKey) {
         this.mnemonic = mnemonic;
         this.address = address;

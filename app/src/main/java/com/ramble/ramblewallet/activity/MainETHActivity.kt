@@ -29,6 +29,7 @@ import com.ramble.ramblewallet.bean.RateBeen
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
+import com.ramble.ramblewallet.ethereum.TransferEthUtils.getBalanceETH
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.rateInfoUrl
@@ -55,7 +56,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_078DC2)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_eth)
-
         initClick()
         initData()
     }
@@ -191,6 +191,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
+        binding.tvBalanceTotal.text = getBalanceETH(walletSelleted.address).toPlainString()
         binding.tvEthAddress.text = addressHandle(walletSelleted.address)
     }
 
@@ -213,7 +214,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         animator = null
     }
 
-    private fun showTransferGatheringDialog(tokenName: String, contractAddress: String) {
+    private fun showTransferGatheringDialog(tokenName: String) {
         var dialog = AlertDialog.Builder(this).create()
         dialog.show()
         val window: Window? = dialog.window
@@ -230,8 +231,8 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 
             tvTransfer.setOnClickListener { v1: View? ->
                 startActivity(Intent(this, TransferActivity::class.java).apply {
+                    putExtra(ARG_PARAM2, tokenName)
                     putExtra(ARG_PARAM3, true)
-                    putExtra(ARG_PARAM4, contractAddress)
                 })
                 dialog.dismiss()
             }
@@ -265,19 +266,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                         it.data()?.let { data ->
                             rateBean = data
                             mainETHTokenBean.clear()
-                            saveTokenList = SharedPreferencesUtils.String2SceneList(
-                                SharedPreferencesUtils.getString(
-                                    this,
-                                    TOKEN_INFO_NO,
-                                    ""
-                                )
-                            ) as ArrayList<StoreInfo>
-                            val list = saveTokenList.iterator()
-                            list.forEach {
-                                if (it.isMyToken == 0) {
-                                    list.remove()
-                                }
-                            }
                             if (rateBean.isNotEmpty()) {
                                 rateBean.forEach { //标题：ETH
                                     if (it.currencyType == "ETH") {
@@ -290,6 +278,19 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                                 BigDecimal(it.change)
                                             )
                                         )
+                                    }
+                                }
+                                saveTokenList = SharedPreferencesUtils.String2SceneList(
+                                    SharedPreferencesUtils.getString(
+                                        this,
+                                        TOKEN_INFO_NO,
+                                        ""
+                                    )
+                                ) as ArrayList<StoreInfo>
+                                val list = saveTokenList.iterator()
+                                list.forEach {
+                                    if (it.isMyToken == 0) {
+                                        list.remove()
                                     }
                                 }
                                 if (saveTokenList.isNotEmpty()) {
@@ -309,13 +310,12 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                         }
                                     }
                                 }
-
                                 mainAdapter = MainAdapter(mainETHTokenBean)
                                 binding.rvCurrency.adapter = mainAdapter
                                 mainAdapter.setOnItemClickListener { adapter, view, position ->
                                     if (adapter.getItem(position) is MainETHTokenBean) {
                                         if ((adapter.getItem(position) as MainETHTokenBean).name != "ETH") {
-                                            //showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean).name)
+                                            showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean).name)
                                         }
                                     }
                                 }

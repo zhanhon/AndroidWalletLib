@@ -12,17 +12,20 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
+import com.ramble.ramblewallet.constant.ARG_PARAM3
 import com.ramble.ramblewallet.databinding.ActivityCreateWalletBinding
 import com.ramble.ramblewallet.utils.toastDefault
 
 class CreateWalletActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityCreateWalletBinding
+    private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX|3：BTC、ETH、TRX
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_wallet)
+        walletType = intent.getIntExtra(ARG_PARAM1, 0)
         initClick()
     }
 
@@ -107,6 +110,7 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, ContributingWordsActivity::class.java).apply {
                     putExtra(ARG_PARAM1, binding.edtWalletName.text.toString())
                     putExtra(ARG_PARAM2, binding.edtWalletPassword.text.toString())
+                    putExtra(ARG_PARAM3, walletType)
                 })
             }
         }
