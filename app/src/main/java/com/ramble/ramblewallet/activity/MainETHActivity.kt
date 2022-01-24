@@ -29,6 +29,7 @@ import com.ramble.ramblewallet.bean.RateBeen
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
+import com.ramble.ramblewallet.ethereum.TransferEthUtils
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.getBalanceETH
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.start
@@ -49,6 +50,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private var animator: ObjectAnimator? = null
     private var saveTokenList: ArrayList<StoreInfo> = arrayListOf()
     private lateinit var walletSelleted: WalletETH
+    private lateinit var ethBalance: BigDecimal
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -191,8 +193,19 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
-        binding.tvBalanceTotal.text = getBalanceETH(walletSelleted.address).toPlainString()
+        Thread {
+            ethBalance = getBalanceETH(walletSelleted.address)
+            if (ethBalance != BigDecimal("0.00000000")) {
+                setBalanceETH(ethBalance)
+            }
+        }.start()
         binding.tvEthAddress.text = addressHandle(walletSelleted.address)
+    }
+
+    private fun setBalanceETH(balance: BigDecimal) {
+        postUI {
+            binding.tvBalanceTotal.text = balance.toPlainString()
+        }
     }
 
     private fun addressHandle(str: String): String? {

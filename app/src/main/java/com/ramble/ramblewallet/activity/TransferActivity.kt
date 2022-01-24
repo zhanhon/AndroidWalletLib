@@ -41,7 +41,7 @@ import java.math.BigInteger
 class TransferActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityTransferBinding
-    private lateinit var transferBalance: BigDecimal
+    private var transferBalance: BigDecimal = BigDecimal("0.00")
     private var transferUnit: String = "USDT"
     private var transferGweiDefaultConvert: String = "6455"
 
@@ -171,8 +171,12 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 }
             }.start()
         } else {
-            transferBalance = getBalanceETH(walletSelleted.address)
-            binding.tvQuantityBalance.text = getString(R.string.transfer_balance) + " " + transferBalance + " " + transferUnit
+            Thread {
+                transferBalance = getBalanceETH(walletSelleted.address)
+                if (transferBalance != BigDecimal("0.00000000")) {
+                    setBalance(transferBalance)
+                }
+            }.start()
         }
 
     }
@@ -212,37 +216,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    fun <T> T.postUI(action: () -> Unit) {
-
-        // Fragment
-        if (this is Fragment) {
-            val fragment = this
-            if (!fragment.isAdded) return
-
-            val activity = fragment.activity ?: return
-            if (activity.isFinishing) return
-
-            activity.runOnUiThread(action)
-            return
-        }
-
-        // Activity
-        if (this is Activity) {
-            if (this.isFinishing) return
-
-            this.runOnUiThread(action)
-            return
-        }
-
-        // 主线程
-        if (Looper.getMainLooper() === Looper.myLooper()) {
-            action()
-            return
-        }
-
-        // 子线程，使用handler
-        Handler().post { action() }
-    }
 
     private fun transactionConfirmationDialog() {
         var dialog = AlertDialog.Builder(this).create()

@@ -5,10 +5,14 @@ package com.ramble.ramblewallet.utils
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.*
 import android.widget.Toast
 import com.ramble.ramblewallet.R
+import com.ramble.ramblewallet.base.Fragment
 
 
 fun View.asyncAnimator(): ObjectAnimator {
@@ -21,4 +25,36 @@ fun View.asyncAnimator(): ObjectAnimator {
 
 fun Context.toastDefault(content: String) {
     Toast.makeText(this, content, Toast.LENGTH_SHORT).show()
+}
+
+fun <T> T.postUI(action: () -> Unit) {
+
+    // Fragment
+    if (this is Fragment) {
+        val fragment = this
+        if (!fragment.isAdded) return
+
+        val activity = fragment.activity ?: return
+        if (activity.isFinishing) return
+
+        activity.runOnUiThread(action)
+        return
+    }
+
+    // Activity
+    if (this is Activity) {
+        if (this.isFinishing) return
+
+        this.runOnUiThread(action)
+        return
+    }
+
+    // 主线程
+    if (Looper.getMainLooper() === Looper.myLooper()) {
+        action()
+        return
+    }
+
+    // 子线程，使用handler
+    Handler().post { action() }
 }

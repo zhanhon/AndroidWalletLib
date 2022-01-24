@@ -49,6 +49,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     private var animator: ObjectAnimator? = null
     private var saveTokenList: ArrayList<StoreInfo> = arrayListOf()
     private lateinit var walletSelleted: WalletETH
+    private lateinit var trxBalance: BigDecimal
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -191,8 +192,19 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
-        binding.tvBalanceTotal.text = getBalanceETH(walletSelleted.address).toPlainString()
+        Thread {
+            trxBalance = getBalanceETH(walletSelleted.address)
+            if (trxBalance != BigDecimal("0.00000000")) {
+                setBalanceTrx(trxBalance)
+            }
+        }.start()
         binding.tvTrxAddress.text = addressHandle(walletSelleted.address)
+    }
+
+    private fun setBalanceTrx(balance: BigDecimal) {
+        postUI {
+            binding.tvBalanceTotal.text = balance.toPlainString()
+        }
     }
 
     private fun addressHandle(str: String): String? {
