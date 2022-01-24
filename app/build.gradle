@@ -37,9 +37,9 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'china'
+            keyAlias 'ramble'
             keyPassword 's123456'
-            storeFile file('../config/signature')
+            storeFile file('../config/keystore')
             storePassword 's123456'
             v2SigningEnabled true
         }
