@@ -6,11 +6,10 @@ import androidx.multidex.MultiDex
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.ramble.ramblewallet.constant.setupArchLibrary
 import com.ramble.ramblewallet.helper.MyPreferences
-import com.ramble.ramblewallet.push.PushConstants
 import com.ramble.ramblewallet.push.UmInitConfig
 import com.umeng.commonsdk.UMConfigure
-import com.umeng.commonsdk.utils.UMUtils
-import com.umeng.message.PushAgent
+
+
 
 /**
  * 时间　: 2021/12/15 9:50
