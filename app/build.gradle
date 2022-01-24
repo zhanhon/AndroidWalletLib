@@ -35,12 +35,34 @@ android {
         compile.exclude group: 'org.jetbrains.kotlin', module: 'kotlin-compiler-embeddable'
     }
 
-    buildTypes {
+    signingConfigs {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            keyAlias 'china'
+            keyPassword 's123456'
+            storeFile file('../config/signature')
+            storePassword 's123456'
+            v2SigningEnabled true
         }
     }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            testCoverageEnabled false
+            proguardFiles 'proguard-rules.pro'
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true //混淆
+            shrinkResources true //移除无用的resource文件
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
