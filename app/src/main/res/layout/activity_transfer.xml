@@ -304,7 +304,7 @@
                     android:layout_marginTop="@dimen/dp_10"
                     android:background="@drawable/shape_light_bottom_btn"
                     android:hint="@string/choose_fill"
-                    android:inputType="numberDecimal"
+                    android:inputType="textEmailAddress"
                     android:longClickable="false"
                     android:padding="@dimen/dp_10"
                     android:textColor="@color/color_9598AA"

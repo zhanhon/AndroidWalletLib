@@ -57,11 +57,11 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_E11334)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_trx)
         initClick()
-        initData()
     }
 
     override fun onResume() {
         super.onResume()
+        initData()
         refreshData()
     }
 
@@ -280,20 +280,24 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                         )
                                     }
                                 }
-                                saveTokenList = SharedPreferencesUtils.String2SceneList(
-                                    SharedPreferencesUtils.getString(
+                                if (SharedPreferencesUtils.getString(
                                         this,
                                         TOKEN_INFO_NO,
                                         ""
-                                    )
-                                ) as ArrayList<StoreInfo>
-                                val list = saveTokenList.iterator()
-                                list.forEach {
-                                    if (it.isMyToken == 0) {
-                                        list.remove()
+                                    ).isNotEmpty()) {
+                                    saveTokenList = SharedPreferencesUtils.String2SceneList(
+                                        SharedPreferencesUtils.getString(
+                                            this,
+                                            TOKEN_INFO_NO,
+                                            ""
+                                        )
+                                    ) as ArrayList<StoreInfo>
+                                    val list = saveTokenList.iterator()
+                                    list.forEach {
+                                        if (it.isMyToken == 0) {
+                                            list.remove()
+                                        }
                                     }
-                                }
-                                if (saveTokenList.isNotEmpty()) {
                                     rateBean.forEach { rateBean ->
                                         saveTokenList.forEach { saveToken ->
                                             if (saveToken.name == rateBean.currencyType) {
