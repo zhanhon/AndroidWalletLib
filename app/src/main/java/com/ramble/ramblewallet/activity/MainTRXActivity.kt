@@ -125,7 +125,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_eyes -> {
                 if (isClickEyes) {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_open)
-                    binding.tvBalanceTotal.text = "1212323"
+                    binding.tvBalanceTotal.text = trxBalance.toString()
                     isClickEyes = false
                 } else {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_close)
