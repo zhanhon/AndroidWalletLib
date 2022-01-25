@@ -17,13 +17,13 @@ class RateBeen @SuppressWarnings("unused") constructor() {
     var currencyType: String? = ""//币种
 
     @Json(name = "rateCny")//人民币汇率
-    var rateCny: Double = 0.0
+    var rateCny: String = ""
 
     @Json(name = "rateHkd")
-    var rateHkd: Double = 0.0//港元汇率
+    var rateHkd: String = ""//港元汇率
 
     @Json(name = "rateUsd")//美元汇率
-    var rateUsd: Double = 0.0
+    var rateUsd: String = ""
 
 
     class Req @SuppressWarnings("unused") constructor() : ApiRequest.Body()

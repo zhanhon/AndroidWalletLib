@@ -29,7 +29,6 @@ import com.ramble.ramblewallet.bean.RateBeen
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
-import com.ramble.ramblewallet.ethereum.TransferEthUtils
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.getBalanceETH
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.start
@@ -51,6 +50,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private var saveTokenList: ArrayList<StoreInfo> = arrayListOf()
     private lateinit var walletSelleted: WalletETH
     private var ethBalance: BigDecimal = BigDecimal("0.00000000")
+    private var rate: String? = ""
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -73,6 +73,9 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             Pie.EVENT_ADDRESS_TRANS_SCAN -> {
                 start(TransferActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, event.data())
+                    it.putString(ARG_PARAM2, "ETH")
+                    it.putBoolean(ARG_PARAM3, false)
+                    it.putString(ARG_PARAM4, rate)
                 })
             }
         }
@@ -100,6 +103,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(ARG_PARAM2, "ETH")
                     putExtra(ARG_PARAM3, false)
+                    putExtra(ARG_PARAM4, rate)
                 })
             }
             R.id.iv_scan_top, R.id.ll_scan -> {
@@ -247,6 +251,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(ARG_PARAM2, tokenName)
                     putExtra(ARG_PARAM3, true)
+                    putExtra(ARG_PARAM4, rate)
                 })
                 dialog.dismiss()
             }
@@ -282,12 +287,17 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                             mainETHTokenBean.clear()
                             if (rateBean.isNotEmpty()) {
                                 rateBean.forEach { //标题：ETH
+                                    when (currencyUnit) {
+                                        RMB -> rate = it.rateCny
+                                        HKD -> rate = it.rateHkd
+                                        USD -> rate = it.rateUsd
+                                    }
                                     if (it.currencyType == "ETH") {
                                         mainETHTokenBean.add(
                                             MainETHTokenBean(
                                                 it.currencyType,
                                                 ethBalance,
-                                                BigDecimal(it.rateUsd),
+                                                BigDecimal(rate),
                                                 currencyUnit,
                                                 BigDecimal(it.change)
                                             )
@@ -298,7 +308,8 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                         this,
                                         TOKEN_INFO_NO,
                                         ""
-                                    ).isNotEmpty()) {
+                                    ).isNotEmpty()
+                                ) {
                                     saveTokenList = SharedPreferencesUtils.String2SceneList(
                                         SharedPreferencesUtils.getString(
                                             this,
@@ -319,7 +330,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                                     MainETHTokenBean(
                                                         rateBean.currencyType,
                                                         BigDecimal(10.12123),
-                                                        BigDecimal(rateBean.rateUsd),
+                                                        BigDecimal(rate),
                                                         currencyUnit,
                                                         BigDecimal(rateBean.change)
                                                     )

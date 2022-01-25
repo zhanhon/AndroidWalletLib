@@ -1,15 +1,12 @@
 package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -21,12 +18,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.base.Fragment
 import com.ramble.ramblewallet.bean.EthMinerConfig
-import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.constant.ARG_PARAM2
-import com.ramble.ramblewallet.constant.ARG_PARAM3
-import com.ramble.ramblewallet.constant.WALLETSELECTED
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.*
 import com.ramble.ramblewallet.ethereum.WalletETH
@@ -42,20 +35,21 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityTransferBinding
     private var transferBalance: BigDecimal = BigDecimal("0.00")
-    private var transferUnit: String = "USDT"
-    private var transferGweiDefaultConvert: String = "6455"
-
+    private var transferUnit: String? = ""
+    private lateinit var currencyUnit: String
+    private lateinit var currencySymbol: String
     private var gasLimit: String? = ""
     private var fastGasPrice: String? = ""
     private var slowGasPrice: String? = ""
     private var gasPrice: String? = ""
-    private var gas: String? = ""
+    private var rate: String? = ""
 
     private var isCustom = false
     private lateinit var walletSelleted: WalletETH
     private lateinit var transferTitle: String
     private var transferReceiverAddress: String? = null
     private var isToken: Boolean = false
+
     //private var contractAddress = "0x97fd68AaEaaEb64BD3f5D1EDC26dbbc70B548896" //旧ERC-USDT合约地址
     private var contractAddress = "0x65621670b5EFAD0414852Cc37317663e0721e577" //新ERC-USDT合约地址
 
@@ -66,6 +60,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         transferReceiverAddress = intent.getStringExtra(ARG_PARAM1)
         transferTitle = intent.getStringExtra(ARG_PARAM2)
         isToken = intent.getBooleanExtra(ARG_PARAM3, false)
+        rate = intent.getStringExtra(ARG_PARAM4)
         transferUnit = transferTitle
         binding.edtReceiverAddress.setText(transferReceiverAddress)
 
@@ -129,6 +124,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n", "CheckResult")
     private fun initData() {
+        currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, RMB)
         if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isNotEmpty()) {
             walletSelleted = Gson().fromJson(
                 SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
@@ -136,6 +132,12 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             )
             binding.tvWalletAddress.text = walletSelleted.address
             binding.tvWalletName.text = walletSelleted.walletName
+        }
+
+        when (currencyUnit) {
+            RMB -> currencySymbol = "￥"
+            HKD -> currencySymbol = "HK$"
+            USD -> currencySymbol = "$"
         }
 
         mApiService.getEthMinerConfig(
@@ -190,9 +192,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                                 * BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
                     )
                 } ETH"
-                binding.tvMinerFeeValueConvert.text = "≈USD$${
+                binding.tvMinerFeeValueConvert.text = "≈${currencySymbol}${
                     DecimalFormatUtil.format6.format(
-                        BigDecimal(transferGweiDefaultConvert).multiply(
+                        BigDecimal(rate).multiply(
                             (BigDecimal(gasPrice)
                                     * BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
                         )

@@ -50,6 +50,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     private var saveTokenList: ArrayList<StoreInfo> = arrayListOf()
     private lateinit var walletSelleted: WalletETH
     private var trxBalance: BigDecimal = BigDecimal("0.00000000")
+    private var rate: String? = ""
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -72,6 +73,9 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             Pie.EVENT_ADDRESS_TRANS_SCAN -> {
                 start(TransferActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, event.data())
+                    it.putString(ARG_PARAM2, "ETH")
+                    it.putBoolean(ARG_PARAM3, false)
+                    it.putString(ARG_PARAM4, rate)
                 })
             }
         }
@@ -99,6 +103,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(ARG_PARAM2, "TRX")
                     putExtra(ARG_PARAM3, false)
+                    putExtra(ARG_PARAM4, rate)
                 })
             }
             R.id.iv_scan_top, R.id.ll_scan -> {
@@ -246,6 +251,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(ARG_PARAM2, tokenName)
                     putExtra(ARG_PARAM3, true)
+                    putExtra(ARG_PARAM4, rate)
                 })
                 dialog.dismiss()
             }
@@ -281,12 +287,17 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                             mainETHTokenBean.clear()
                             if (rateBean.isNotEmpty()) {
                                 rateBean.forEach { //标题：ETH
+                                    when (currencyUnit) {
+                                        RMB -> rate = it.rateCny
+                                        HKD -> rate = it.rateHkd
+                                        USD -> rate = it.rateUsd
+                                    }
                                     if (it.currencyType == "TRX") {
                                         mainETHTokenBean.add(
                                             MainETHTokenBean(
                                                 it.currencyType,
                                                 trxBalance,
-                                                BigDecimal(it.rateUsd),
+                                                BigDecimal(rate),
                                                 currencyUnit,
                                                 BigDecimal(it.change)
                                             )
@@ -297,7 +308,8 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                         this,
                                         TOKEN_INFO_NO,
                                         ""
-                                    ).isNotEmpty()) {
+                                    ).isNotEmpty()
+                                ) {
                                     saveTokenList = SharedPreferencesUtils.String2SceneList(
                                         SharedPreferencesUtils.getString(
                                             this,
@@ -318,7 +330,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                                     MainETHTokenBean(
                                                         rateBean.currencyType,
                                                         BigDecimal(10.12123),
-                                                        BigDecimal(rateBean.rateUsd),
+                                                        BigDecimal(rate),
                                                         currencyUnit,
                                                         BigDecimal(rateBean.change)
                                                     )
