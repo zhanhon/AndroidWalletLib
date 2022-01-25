@@ -385,8 +385,12 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-
     private fun contributingWordsConfirmClick() {
+        if (myDataBeans.size == 12) {
+            binding.btnContributingWordsCompleted.background = getDrawable(R.drawable.shape_green_bottom_btn)
+        } else {
+            binding.btnContributingWordsCompleted.background = getDrawable(R.drawable.shape_gray_bottom_btn)
+        }
         contributingWordsConfirmAdapter.setOnItemClickListener { adapter, view, position ->
             when (position) {
                 0 -> {
