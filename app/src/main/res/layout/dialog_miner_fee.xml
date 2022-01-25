@@ -259,6 +259,7 @@
             android:layout_marginEnd="@dimen/dp_20"
             android:background="@drawable/shape_green_bottom_btn"
             android:outlineProvider="none"
+            android:textAllCaps="false"
             android:text="@string/confirm"
             android:textColor="@color/color_FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"

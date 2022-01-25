@@ -55,6 +55,7 @@
         android:layout_marginBottom="@dimen/dp_20"
         android:background="@drawable/shape_gray_bottom_btn"
         android:gravity="center"
+        android:textAllCaps="false"
         android:outlineProvider="none"
         android:text="@string/confirm"
         android:textColor="@color/color_FFFFFF"

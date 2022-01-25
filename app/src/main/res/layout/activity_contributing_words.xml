@@ -97,6 +97,7 @@
                 android:layout_marginStart="@dimen/dp_20"
                 android:layout_marginEnd="@dimen/dp_20"
                 android:layout_weight="1"
+                android:textAllCaps="false"
                 android:background="@drawable/shape_white_bottom_green_line_btn"
                 android:gravity="center"
                 android:outlineProvider="none"
@@ -112,6 +113,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_green_bottom_btn"
                 android:gravity="center"
+                android:textAllCaps="false"
                 android:outlineProvider="none"
                 android:text="@string/contributing_words_confirm"
                 android:textColor="@color/color_FFFFFF" />
@@ -126,6 +128,7 @@
             android:layout_marginEnd="@dimen/dp_30"
             android:background="@drawable/shape_white_bottom_green_line_btn"
             android:gravity="center"
+            android:textAllCaps="false"
             android:outlineProvider="none"
             android:text="@string/skip_this_step"
             android:textColor="@color/color_3BB7A5"

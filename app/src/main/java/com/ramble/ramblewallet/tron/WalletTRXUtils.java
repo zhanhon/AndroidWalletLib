@@ -1,7 +1,5 @@
 package com.ramble.ramblewallet.tron;
 
-import android.util.Log;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ramble.ramblewallet.ethereum.WalletETH;
 
@@ -21,8 +19,8 @@ import org.web3j.utils.Numeric;
 import java.math.BigInteger;
 import java.util.List;
 
-import core.common.StringTronUtil;
-import core.common.common.utils.ByteArray;
+import com.ramble.ramblewallet.tronsdk.StringTronUtil;
+import com.ramble.ramblewallet.tronsdk.common.utils.ByteArray;
 
 import static org.web3j.crypto.Wallet.createLight;
 import static org.web3j.crypto.Wallet.decrypt;
