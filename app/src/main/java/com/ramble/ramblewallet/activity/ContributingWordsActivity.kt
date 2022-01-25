@@ -59,6 +59,7 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
+        currentTab = "english"//默认英文
         binding.vEnglish.setBackgroundResource(R.color.color_3F5E94)
         binding.vChinese.setBackgroundResource(R.color.color_9598AA)
         // 生成钱包助记词

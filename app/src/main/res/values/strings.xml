@@ -160,6 +160,7 @@
     <string name="different_password">密码不一致</string>
     <string name="password_less_six_tips">密码不小于6位</string>
     <string name="confirm_transaction">确认交易</string>
+    <string name="confirm_contributing_words_error">确认助记词有误</string>
 
     <string name="refresh_pull_down">下拉更新</string>
     <string name="refresh_time">最后更新于{key}</string>

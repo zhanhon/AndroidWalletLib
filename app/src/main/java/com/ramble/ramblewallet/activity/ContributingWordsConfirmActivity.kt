@@ -26,6 +26,7 @@ import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
+import com.ramble.ramblewallet.utils.toastDefault
 
 
 class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
@@ -54,14 +55,12 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
         currentTab = intent.getStringExtra(ARG_PARAM4)
         walletType = intent.getIntExtra(ARG_PARAM5, 0)
 
-        initData()
-        initMnmonicETH()
+        initData(true)
         mnmonicETHClick()
 
         binding.llEnglish.setOnClickListener(this)
         binding.llChinese.setOnClickListener(this)
         binding.btnContributingWordsCompleted.setOnClickListener {
-            println("-=-=-=->mnemonicETHChoose:${mnemonicETHChoose}")
             if (mnemonicETHChoose == mnemonicETHOriginal) {
                 mnemonicETHChoose.forEach {
                     walletETHString = "$walletETHString$it "
@@ -172,44 +171,52 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
 
+            } else {
+                toastDefault(getString(R.string.confirm_contributing_words_error))
             }
         }
     }
 
-    private fun initData() {
+    private var mnemonicETHOriginalEnglish: ArrayList<String> = arrayListOf()
+    private var mnemonicETHOriginalChinese: ArrayList<String> = arrayListOf()
+    private var mnemonicETHShuffledEnglish: ArrayList<String> = arrayListOf()
+    private var mnemonicETHShuffledChinese: ArrayList<String> = arrayListOf()
+    private fun initData(isFirstEnter: Boolean) {
+        if (isFirstEnter) {
+            mnemonicETHOriginalEnglish = mnemonicETH[0].split(" ") as ArrayList<String>
+            mnemonicETHShuffledEnglish = mnemonicETH[0].split(" ") as ArrayList<String>
+            mnemonicETHShuffledEnglish.shuffle()
+
+            mnemonicETHOriginalChinese = mnemonicETH[1].split(" ") as ArrayList<String>
+            mnemonicETHShuffledChinese = mnemonicETH[1].split(" ") as ArrayList<String>
+            mnemonicETHShuffledChinese.shuffle()
+        }
         when (currentTab) {
             "english" -> {
                 binding.vEnglish.setBackgroundResource(R.color.color_3F5E94)
                 binding.vChinese.setBackgroundResource(R.color.color_9598AA)
-                mnemonicETHOriginal = mnemonicETH[0].split(" ") as ArrayList<String>
-                mnemonicETHShuffled = mnemonicETH[0].split(" ") as ArrayList<String>
-                println("-=-=-=->before:$mnemonicETH")
-                mnemonicETHShuffled.shuffle()
-                println("-=-=-=->after:$mnemonicETHShuffled")
+                mnemonicETHOriginal = mnemonicETHOriginalEnglish
+                mnemonicETHShuffled = mnemonicETHShuffledEnglish
             }
             "chinese" -> {
                 binding.vEnglish.setBackgroundResource(R.color.color_9598AA)
                 binding.vChinese.setBackgroundResource(R.color.color_3F5E94)
-                mnemonicETHOriginal = mnemonicETH[1].split(" ") as ArrayList<String>
-                mnemonicETHShuffled = mnemonicETH[1].split(" ") as ArrayList<String>
-                println("-=-=-=->before:$mnemonicETH")
-                mnemonicETHShuffled.shuffle()
-                println("-=-=-=->after:$mnemonicETHShuffled")
+                mnemonicETHOriginal = mnemonicETHShuffledChinese
+                mnemonicETHShuffled = mnemonicETHShuffledChinese
             }
         }
+        initMnmonicETH(mnemonicETHShuffled)
     }
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.ll_english -> {
                 currentTab = "english"
-                initData()
-                initMnmonicETH()
+                initData(false)
             }
             R.id.ll_chinese -> {
                 currentTab = "chinese"
-                initData()
-                initMnmonicETH()
+                initData(false)
             }
         }
     }
@@ -234,7 +241,7 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
         )
     }
 
-    private fun initMnmonicETH() {
+    private fun initMnmonicETH(mnemonicETHShuffled: ArrayList<String>) {
         binding.tvContributingWordsName1.text = mnemonicETHShuffled[0]
         binding.tvContributingWordsName2.text = mnemonicETHShuffled[1]
         binding.tvContributingWordsName3.text = mnemonicETHShuffled[2]
@@ -387,9 +394,11 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
 
     private fun contributingWordsConfirmClick() {
         if (myDataBeans.size == 12) {
-            binding.btnContributingWordsCompleted.background = getDrawable(R.drawable.shape_green_bottom_btn)
+            binding.btnContributingWordsCompleted.background =
+                getDrawable(R.drawable.shape_green_bottom_btn)
         } else {
-            binding.btnContributingWordsCompleted.background = getDrawable(R.drawable.shape_gray_bottom_btn)
+            binding.btnContributingWordsCompleted.background =
+                getDrawable(R.drawable.shape_gray_bottom_btn)
         }
         contributingWordsConfirmAdapter.setOnItemClickListener { adapter, view, position ->
             when (position) {
