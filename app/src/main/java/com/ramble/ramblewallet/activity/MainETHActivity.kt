@@ -50,7 +50,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private var animator: ObjectAnimator? = null
     private var saveTokenList: ArrayList<StoreInfo> = arrayListOf()
     private lateinit var walletSelleted: WalletETH
-    private lateinit var ethBalance: BigDecimal
+    private var ethBalance: BigDecimal = BigDecimal("0.00000000")
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -205,6 +205,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private fun setBalanceETH(balance: BigDecimal) {
         postUI {
             binding.tvBalanceTotal.text = balance.toPlainString()
+            refreshData()
         }
     }
 
@@ -285,7 +286,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                         mainETHTokenBean.add(
                                             MainETHTokenBean(
                                                 it.currencyType,
-                                                BigDecimal(10.12123),
+                                                ethBalance,
                                                 BigDecimal(it.rateUsd),
                                                 currencyUnit,
                                                 BigDecimal(it.change)

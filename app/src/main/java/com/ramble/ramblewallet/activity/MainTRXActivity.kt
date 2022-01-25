@@ -49,7 +49,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     private var animator: ObjectAnimator? = null
     private var saveTokenList: ArrayList<StoreInfo> = arrayListOf()
     private lateinit var walletSelleted: WalletETH
-    private lateinit var trxBalance: BigDecimal
+    private var trxBalance: BigDecimal = BigDecimal("0.00000000")
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -204,6 +204,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     private fun setBalanceTrx(balance: BigDecimal) {
         postUI {
             binding.tvBalanceTotal.text = balance.toPlainString()
+            refreshData()
         }
     }
 
@@ -284,7 +285,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                         mainETHTokenBean.add(
                                             MainETHTokenBean(
                                                 it.currencyType,
-                                                BigDecimal(10.12123),
+                                                trxBalance,
                                                 BigDecimal(it.rateUsd),
                                                 currencyUnit,
                                                 BigDecimal(it.change)
