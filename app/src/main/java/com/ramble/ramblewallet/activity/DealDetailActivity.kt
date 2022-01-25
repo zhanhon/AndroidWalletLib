@@ -1,6 +1,8 @@
 package com.ramble.ramblewallet.activity
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -85,6 +87,7 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
         binding.addCopy.setOnClickListener(this)
         binding.payCopy.setOnClickListener(this)
         binding.numberCopy.setOnClickListener(this)
+        binding.btnDetail.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -101,6 +104,12 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.number_copy -> {
                 ClipboardUtils.copy(binding.transactionCode.text.toString())
+            }
+            R.id.btn_detail ->{
+                var intent = Intent()
+                intent.action = "android.intent.action.VIEW"
+                intent.data = Uri.parse("https://etherscan.io/tx/${trans?.txHash}")
+                startActivity(intent)
             }
         }
     }
