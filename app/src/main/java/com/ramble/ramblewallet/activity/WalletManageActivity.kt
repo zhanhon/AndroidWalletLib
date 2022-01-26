@@ -19,6 +19,7 @@ import com.ramble.ramblewallet.databinding.ActivityWalletManageBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.toastDefault
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 
@@ -74,7 +75,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         binding.ivBack.setOnClickListener(this)
         binding.ivManageWalletRight.setOnClickListener(this)
         binding.ivAddWallet.setOnClickListener(this)
-
+        binding.tvDefaultWallet.setOnClickListener(this)
     }
 
     private fun loadData(walletManageBean: ArrayList<WalletETH>) {
@@ -82,7 +83,11 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         binding.rvMainCurrency.adapter = walletManageAdapter
         walletManageAdapter.setOnItemClickListener { adapter, view, position ->
             if (adapter.getItem(position) is WalletETH) {
-                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(adapter.getItem(position) as WalletETH))
+                SharedPreferencesUtils.saveString(
+                    this,
+                    WALLETSELECTED,
+                    Gson().toJson(adapter.getItem(position) as WalletETH)
+                )
                 when ((adapter.getItem(position) as WalletETH).walletType) {
                     1 -> {
                         startActivity(Intent(this, MainETHActivity::class.java))
@@ -136,9 +141,8 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                                     (adapter.getItem(position) as WalletETH).publicKey,
                                     (adapter.getItem(position) as WalletETH).keystore,
                                     (adapter.getItem(position) as WalletETH).walletType,
-                                    false
+                                    true
                                 )
-                            walletManageAdapter.notifyItemChanged(position)
                             walletManageAdapter.notifyItemChanged(position)
                         }
                     }
@@ -185,19 +189,51 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> {
-                if (isDeletePage) {
-                    isDeletePage = false
-                    loadData(walletManageBean)
+                if (saveWalletList.size == 0) {
+                    toastDefault("需要创建钱包")
                 } else {
-                    finish()
+                    if (isDeletePage) {
+                        isDeletePage = false
+                        binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
+                        binding.ivAddWallet.visibility = View.VISIBLE
+                        loadData(walletManageBean)
+                    } else {
+                        finish()
+                    }
                 }
             }
             R.id.iv_add_wallet -> {
                 startActivity(Intent(this, CreateWalletListActivity::class.java))
             }
             R.id.iv_manage_wallet_right -> {
-                isDeletePage = true
-                loadData(walletManageBean)
+                if (isDeletePage) {
+                    val list = walletManageBean.iterator()
+                    list.forEach {
+                        if (it.clickDelete) {
+                            list.remove()
+                        }
+                    }
+                    saveWalletList = walletManageBean
+                    SharedPreferencesUtils.saveString(
+                        this,
+                        WALLETINFO,
+                        Gson().toJson(saveWalletList)
+                    )
+                    loadData(walletManageBean)
+                    if (walletManageBean.size == 0) {
+                        binding.tvDefaultWallet.visibility = View.VISIBLE
+                        binding.lyPullRefresh.visibility = View.GONE
+                        binding.ivAddWallet.visibility = View.VISIBLE
+                    }
+                } else {
+                    isDeletePage = true
+                    binding.ivManageWalletRight.setBackgroundResource(R.drawable.ic_delelet_line)
+                    binding.ivAddWallet.visibility = View.INVISIBLE
+                    loadData(walletManageBean)
+                }
+            }
+            R.id.tv_default_wallet -> {
+                //startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
             }
         }
     }

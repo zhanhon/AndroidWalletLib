@@ -80,6 +80,11 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                                 )
                         }
                         saveWalletList.add(walletETH)
+                        SharedPreferencesUtils.saveString(
+                            this,
+                            WALLETINFO,
+                            Gson().toJson(saveWalletList)
+                        )
                         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                         detailsList.add(AddressReport.DetailsList(walletETH.address, 1))
                         putAddress(detailsList)
@@ -107,6 +112,11 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                                 )
                         }
                         saveWalletList.add(walletTRX)
+                        SharedPreferencesUtils.saveString(
+                            this,
+                            WALLETINFO,
+                            Gson().toJson(saveWalletList)
+                        )
                         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                         detailsList.add(AddressReport.DetailsList(walletTRX.address, 2))
                         putAddress(detailsList)
