@@ -60,9 +60,9 @@ public class WalletManageAdapter extends BaseQuickAdapter<WalletETH, BaseViewHol
         if (str.isEmpty()) {
             return null;
         }
-        String subStr1 = str.substring(0, 6);
+        String subStr1 = str.substring(0, 10);
         int strLength = str.length();
-        String subStr2 = str.substring(strLength - 4, strLength);
+        String subStr2 = str.substring(strLength - 6, strLength);
         return subStr1 + "..." + subStr2;
     }
 

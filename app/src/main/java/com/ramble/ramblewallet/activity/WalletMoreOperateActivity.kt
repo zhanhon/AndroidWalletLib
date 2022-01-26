@@ -11,18 +11,34 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.WALLETINFO
 import com.ramble.ramblewallet.databinding.ActivityWalletMoreOperateBinding
+import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 
 class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityWalletMoreOperateBinding
+    private lateinit var walletCurrent: WalletETH
+    private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_wallet_more_operate)
+        walletCurrent = Gson().fromJson(
+            intent.getStringExtra(ARG_PARAM1),
+            object : TypeToken<WalletETH>() {}.type
+        )
+        saveWalletList = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+            object : TypeToken<ArrayList<WalletETH>>() {}.type
+        )
 
         initClick()
     }
@@ -54,7 +70,14 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 keystoreDialog()
             }
             R.id.tv_delete_wallet -> {
-                //删除钱包
+                val list = saveWalletList.iterator()
+                list.forEach {
+                    if (it.address == walletCurrent.address) {
+                        list.remove()
+                    }
+                }
+                SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+                finish()
             }
         }
     }

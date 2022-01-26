@@ -134,7 +134,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             R.id.iv_copy -> {
-                ClipboardUtils.copy(binding.tvTrxAddress.text.toString())
+                ClipboardUtils.copy(walletSelleted.address)
             }
         }
     }
@@ -214,9 +214,9 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun addressHandle(str: String): String? {
-        val subStr1 = str.substring(0, 6)
+        val subStr1 = str.substring(0, 10)
         val strLength = str.length
-        val subStr2 = str.substring(strLength - 4, strLength)
+        val subStr2 = str.substring(strLength - 6, strLength)
         return "$subStr1...$subStr2"
     }
 
