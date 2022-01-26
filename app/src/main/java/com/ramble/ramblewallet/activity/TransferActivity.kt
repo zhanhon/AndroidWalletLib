@@ -50,8 +50,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private var transferReceiverAddress: String? = null
     private var isToken: Boolean = false
 
-    //private var contractAddress = "0x97fd68AaEaaEb64BD3f5D1EDC26dbbc70B548896" //旧ERC-USDT合约地址
-    private var contractAddress = "0x65621670b5EFAD0414852Cc37317663e0721e577" //新ERC-USDT合约地址
+    private var contractAddress = "0x16aFDD5dfE386052766b798bFA37DAec4b81155a" //测试节点ERC-USDT合约地址
+    //private var contractAddress = "0xd95371A0550cF47aB9519105300707a82b0640Db" //开发节点ERC-USDT合约地址
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {

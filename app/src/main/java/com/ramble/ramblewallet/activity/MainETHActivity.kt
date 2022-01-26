@@ -356,6 +356,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                     cancelSyncAnimation()
                 }, {
                     cancelSyncAnimation()
+                    toastDefault(it.stackTraceToString())
                     println("-=-=-=->${it.printStackTrace()}")
                 }
             )

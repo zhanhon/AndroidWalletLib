@@ -37,8 +37,8 @@ import java.util.concurrent.Future;
  */
 public class TransferEthUtils {
     private static final String DATA_PREFIX = "0x70a08231000000000000000000000000";
-    //private static final String ETH_NODE = "http://13.229.173.84:8545";//旧节点
-    private static final String ETH_NODE = "http://18.141.62.32:8545";//新节点
+    private static final String ETH_NODE = "http://122.248.244.178:8545";//测试节点
+    //private static final String ETH_NODE = "http://18.141.62.32:8545";//开发节点
 
     public static void transferTest() throws Exception {
         String from = "0x5273c93c4aa6f857cd805644339cf8990bc71b50";
