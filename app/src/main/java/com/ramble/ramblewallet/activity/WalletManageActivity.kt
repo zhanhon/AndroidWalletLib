@@ -187,6 +187,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     binding.ivAddWallet.visibility = View.GONE
                     loadData(walletManageCurrencyBean)
                 }
+                //walletManageBean = walletManageCurrencyBean
             }
             R.id.check_eth -> {
                 walletManageCurrencyBean.clear()
@@ -205,6 +206,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     binding.ivAddWallet.visibility = View.GONE
                     loadData(walletManageCurrencyBean)
                 }
+                //walletManageBean = walletManageCurrencyBean
             }
             R.id.check_trx -> {
                 walletManageCurrencyBean.clear()
@@ -223,6 +225,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     binding.ivAddWallet.visibility = View.GONE
                     loadData(walletManageCurrencyBean)
                 }
+                //walletManageBean = walletManageCurrencyBean
             }
         }
     }

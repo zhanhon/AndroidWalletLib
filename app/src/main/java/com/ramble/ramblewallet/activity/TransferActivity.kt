@@ -193,7 +193,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     )
                 } ETH"
                 binding.tvMinerFeeValueConvert.text = "≈${currencySymbol}${
-                    DecimalFormatUtil.format6.format(
+                    DecimalFormatUtil.format8.format(
                         BigDecimal(rate).multiply(
                             (BigDecimal(gasPrice)
                                     * BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
@@ -253,7 +253,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             val edtWalletPassword = window.findViewById<TextView>(R.id.edt_wallet_password)
             val btnConfirm = window.findViewById<Button>(R.id.btn_confirm)
             btnConfirm.setOnClickListener {
-                if (edtWalletPassword.text.trim() == walletSelleted.walletPassword) {
+                if (edtWalletPassword.text.trim().toString() == walletSelleted.walletPassword) {
                     transferReceiverAddress = binding.edtReceiverAddress.text.toString()
                     transfer()
                     dialog.dismiss()
