@@ -34,6 +34,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     private lateinit var walletManageAdapter: WalletManageAdapter
     private var isDeletePage = false
     private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
+    private lateinit var walletSelleted: WalletETH
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -60,6 +61,10 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
             object : TypeToken<ArrayList<WalletETH>>() {}.type
         )
+        walletSelleted = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            object : TypeToken<WalletETH>() {}.type
+        )
         initView()
     }
 
@@ -83,6 +88,9 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     }
 
     private fun loadData(walletManageBean: ArrayList<WalletETH>) {
+        walletManageBean.forEach {
+            it.isChoose = it.address == walletSelleted.address
+        }
         walletManageAdapter = WalletManageAdapter(walletManageBean, isDeletePage)
         binding.rvMainCurrency.adapter = walletManageAdapter
         walletManageAdapter.setOnItemClickListener { adapter, view, position ->
@@ -174,6 +182,9 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     binding.lyPullRefresh.visibility = View.GONE
                     binding.ivAddWallet.visibility = View.VISIBLE
                 } else {
+                    binding.tvDefaultWallet.visibility = View.GONE
+                    binding.lyPullRefresh.visibility = View.VISIBLE
+                    binding.ivAddWallet.visibility = View.GONE
                     loadData(walletManageCurrencyBean)
                 }
             }
@@ -189,6 +200,9 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     binding.lyPullRefresh.visibility = View.GONE
                     binding.ivAddWallet.visibility = View.VISIBLE
                 } else {
+                    binding.tvDefaultWallet.visibility = View.GONE
+                    binding.lyPullRefresh.visibility = View.VISIBLE
+                    binding.ivAddWallet.visibility = View.GONE
                     loadData(walletManageCurrencyBean)
                 }
             }
@@ -204,6 +218,9 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     binding.lyPullRefresh.visibility = View.GONE
                     binding.ivAddWallet.visibility = View.VISIBLE
                 } else {
+                    binding.tvDefaultWallet.visibility = View.GONE
+                    binding.lyPullRefresh.visibility = View.VISIBLE
+                    binding.ivAddWallet.visibility = View.GONE
                     loadData(walletManageCurrencyBean)
                 }
             }

@@ -35,8 +35,11 @@ public class WalletManageAdapter extends BaseQuickAdapter<WalletETH, BaseViewHol
         } else {
             baseViewHolder.itemView.findViewById(R.id.cl_delete).setVisibility(View.GONE);
         }
-
-
+        if (walletManageBean.isChoose()) {
+            baseViewHolder.itemView.findViewById(R.id.tv_is_choose).setVisibility(View.VISIBLE);
+        } else {
+            baseViewHolder.itemView.findViewById(R.id.tv_is_choose).setVisibility(View.GONE);
+        }
         baseViewHolder.setText(R.id.tv_wallet_name, walletManageBean.getWalletName());
         baseViewHolder.setText(R.id.tv_currency_address, addressHandle(walletManageBean.getAddress()));
 

@@ -14,6 +14,7 @@ public class WalletETH {
     private String filename;
     private int walletType; //链类型|0:BTC|1:ETH|2:TRX
     private boolean isClickDelete;
+    private boolean isChoose;
 
     public WalletETH() {
 
@@ -43,6 +44,18 @@ public class WalletETH {
                      String privateKey, String publicKey, String keystore, int walletType, boolean isClickDelete) {
         this(walletName, walletPassword, mnemonic, address, privateKey, publicKey, keystore, walletType);
         this.isClickDelete = isClickDelete;
+    }
+
+    public boolean isClickDelete() {
+        return isClickDelete;
+    }
+
+    public boolean isChoose() {
+        return isChoose;
+    }
+
+    public void setChoose(boolean choose) {
+        isChoose = choose;
     }
 
     public String getWalletName() {
