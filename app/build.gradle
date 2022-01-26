@@ -172,17 +172,15 @@ dependencies {
 //    implementation 'io.grpc:grpc-protobuf-lite:1.9.0'
 //    implementation 'io.grpc:grpc-stub:1.9.0'
 //    implementation 'javax.annotation:javax.annotation-api:1.2'
-    implementation 'io.grpc:grpc-okhttp:1.9.0'
 //    implementation ('io.grpc:grpc-protobuf-lite:1.9.0'){
 //        exclude group: 'com.google.protobuf:protobuf-lite', module: 'protobuf-lite'
 //    }
+    implementation 'io.grpc:grpc-okhttp:1.9.0'
     implementation 'io.grpc:grpc-stub:1.9.0'
     implementation 'javax.annotation:javax.annotation-api:1.2'
-
     implementation 'com.google.api.grpc:googleapis-common-protos:0.0.3'
     implementation "com.madgag.spongycastle:core:1.53.0.0"
     implementation "com.madgag.spongycastle:prov:1.53.0.0"
-
     implementation "org.apache.commons:commons-collections4:4.0"
     implementation "org.apache.commons:commons-lang3:3.5"
     implementation 'com.alibaba:fastjson:1.2.47'
