@@ -274,20 +274,20 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         transferReceiverAddress,
                         contractAddress,
                         walletSelleted.privateKey,
-                        BigInteger(binding.edtInputQuantity.toString()),
+                        BigInteger(binding.edtInputQuantity.text.trim().toString()),
                         (BigInteger(gasPrice) * BigInteger("1000000000")), //GWEI → WEI
                         BigInteger(gasLimit),
-                        binding.edtInputTransferRemarks.toString()
+                        binding.edtInputTransferRemarks.text.trim().toString()
                     )
                 } else {
                     transferETH(
                         walletSelleted.address,
                         transferReceiverAddress,
                         walletSelleted.privateKey,
-                        binding.edtInputQuantity.toString(),
-                        (BigInteger(gasPrice) * BigInteger("1000000000")), //GWEI → WEI
+                        binding.edtInputQuantity.text.trim().toString(),
+                        BigInteger(gasPrice), //GWEI → WEI
                         BigInteger(gasLimit),
-                        binding.edtInputTransferRemarks.toString()
+                        binding.edtInputTransferRemarks.text.trim().toString()
                     )
                 }
             }

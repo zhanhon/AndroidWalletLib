@@ -47,10 +47,11 @@ public class TransferEthUtils {
         //String contractAddress = "0x245A86D04C678E1Ab7e5a8FbD5901C12361Ea308";
         String contractAddress = "0x97fd68AaEaaEb64BD3f5D1EDC26dbbc70B548896";
         BigInteger number = new BigInteger("100000000000000000");  //100000000=100ERC
-        BigInteger gasPrice = new BigInteger("200000000000000");
+        //BigInteger gasPrice = new BigInteger("200000000000000");
+        BigInteger gasPrice = new BigInteger("121");
         BigInteger gasLimit = new BigInteger("210000");
         String desc = "aaaaaaaaas";
-        //transferMain(from, to, privateKey, number, BigInteger.valueOf(gasPrice), BigInteger.valueOf(gasLimit), desc);
+        transferETH(from, to, privateKey, "1", gasPrice, gasLimit, desc);
         //transferToken(from, to, contractAddress, privateKey, number, gasPrice, gasLimit, desc);
         Log.v("-=-=-=->代币余额:", getBalanceToken(to, contractAddress).toPlainString());
     }
