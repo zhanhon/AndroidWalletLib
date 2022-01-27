@@ -164,10 +164,11 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             }
         }
     }
-
+    private var isWalletCurrency = false
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
         when (checkedId) {
             R.id.check_all -> {
+                isWalletCurrency = false
                 loadData(walletManageBean)
             }
             R.id.check_btc -> {
@@ -187,7 +188,6 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     binding.ivAddWallet.visibility = View.GONE
                     loadData(walletManageCurrencyBean)
                 }
-                //walletManageBean = walletManageCurrencyBean
             }
             R.id.check_eth -> {
                 walletManageCurrencyBean.clear()
@@ -206,7 +206,6 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     binding.ivAddWallet.visibility = View.GONE
                     loadData(walletManageCurrencyBean)
                 }
-                //walletManageBean = walletManageCurrencyBean
             }
             R.id.check_trx -> {
                 walletManageCurrencyBean.clear()
@@ -225,7 +224,6 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     binding.ivAddWallet.visibility = View.GONE
                     loadData(walletManageCurrencyBean)
                 }
-                //walletManageBean = walletManageCurrencyBean
             }
         }
     }
@@ -247,21 +245,21 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             }
             R.id.iv_manage_wallet_right -> {
                 if (isDeletePage) {
-                    val list = walletManageBean.iterator()
-                    var isAllClickDelete: Boolean = true
-                    list.forEach {
+                    var isAllClickDelete = true
+                    walletManageBean.iterator().forEach {
                         isAllClickDelete = isAllClickDelete && it.clickDelete
                     }
                     if (isAllClickDelete) {
                         toastDefault(getString(R.string.least_save_wallet))
-                        walletManageBean = saveWalletList
                     } else {
+                        val list = walletManageBean.iterator()
                         list.forEach {
                             if (it.clickDelete) {
                                 list.remove()
                             }
                         }
                         saveWalletList = walletManageBean
+                        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
                         loadData(walletManageBean)
                     }
                 } else {
