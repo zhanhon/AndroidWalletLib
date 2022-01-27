@@ -11,6 +11,7 @@ import org.web3j.crypto.Credentials;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Hash;
 import org.web3j.crypto.Keys;
+import org.web3j.crypto.Wallet;
 import org.web3j.crypto.WalletFile;
 import org.web3j.utils.Numeric;
 
@@ -147,7 +148,7 @@ public class WalletETHUtils {
         WalletFile walletFile = createWalletFile(walletPassword, keyPair, false);
 
         String address = EthUtils.getAddress(keyPair);
-        String privateKey = EthUtils.getPrivateKey(keyPair);
+        String privateKey = Numeric.toHexStringNoPrefix(keyPair.getPrivateKey());
         String publicKey = EthUtils.getPublicKey(keyPair);
         String keyStore = objectMapper.writeValueAsString(walletFile);
         //链类型|0:BTC|1:ETH|2:TRX
@@ -162,11 +163,10 @@ public class WalletETHUtils {
      * @param privateKey
      * @return
      */
-    public static WalletETH generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey) throws CipherException, IOException {
-        BigInteger pk = Numeric.toBigIntNoPrefix(privateKey);
-        byte[] privateKeyByte = pk.toByteArray();
-        ECKeyPair keyPair = ECKeyPair.create(privateKeyByte);
-        WalletFile walletFile = createWalletFile(walletPassword, keyPair, false);
+    public static WalletETH generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey) throws Exception {
+        BigInteger pk = new BigInteger(privateKey, 16);
+        ECKeyPair keyPair = ECKeyPair.create(pk);
+        WalletFile walletFile = Wallet.createLight(walletPassword, keyPair);
 
         String address = EthUtils.getAddress(keyPair);
         String publicKey = EthUtils.getPublicKey(keyPair);
