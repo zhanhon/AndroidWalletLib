@@ -206,5 +206,7 @@
     <string name="edit_book">编辑</string>
     <string name="delete_book">删除</string>
     <string name="message_center_title">消息</string>
-
+    <string name="address_already_exists">地址本已经保存</string>
+    <string name="address_already_null">地址和昵称不能为空</string>
+    <string name="address_already_err">地址不正确，请重新输入</string>
 </resources>

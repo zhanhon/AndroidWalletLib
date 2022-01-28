@@ -7,11 +7,16 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.AddressBookActivity
 import com.ramble.ramblewallet.activity.ScanActivity
 import com.ramble.ramblewallet.bean.MyAddressBean
+import com.ramble.ramblewallet.constant.ADDRESS_BOOK_INFO
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.databinding.BottomNoticeDialog2Binding
 import com.ramble.ramblewallet.databinding.BottomNoticeDialogBinding
@@ -99,7 +104,31 @@ fun showBottomDialog2(
             dismiss()
         }
         binding.tvUpdata.setOnClickListener {
-            if (binding.editName.text.isNullOrEmpty() || binding.editAddress.text.isNullOrEmpty()) return@setOnClickListener
+            if (binding.editName.text.isNullOrEmpty() || binding.editAddress.text.isNullOrEmpty()){
+                Toast.makeText(
+                    MyApp.sInstance,
+                    MyApp.sInstance.getString(R.string.address_already_null),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+            if (SharedPreferencesUtils.getString( MyApp.sInstance, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
+                var myData: ArrayList<MyAddressBean> =
+                    Gson().fromJson(
+                        SharedPreferencesUtils.getString( MyApp.sInstance, ADDRESS_BOOK_INFO, ""),
+                        object : TypeToken<ArrayList<MyAddressBean>>() {}.type
+                    )
+                myData.forEach {
+                    if (it.userName == binding.editName.text.toString() && it.address == binding.editAddress.text.toString()) {
+                        Toast.makeText(
+                            MyApp.sInstance,
+                            MyApp.sInstance.getString(R.string.address_already_exists),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setOnClickListener
+                    }
+                }
+            }
             editListener?.onClick(it)
             var data = MyAddressBean()
             data.address = binding.editAddress.text.toString()
@@ -112,6 +141,49 @@ fun showBottomDialog2(
                 3
             } else {
                 4
+            }
+            if (data.address.startsWith("1") || data.address.startsWith("3")) {
+                if (data.address.length<26){
+                    Toast.makeText(
+                        MyApp.sInstance,
+                        MyApp.sInstance.getString(R.string.address_already_err),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+            } else if (data.address.startsWith("0")) {
+                if (data.address.length<41){
+                    Toast.makeText(
+                        MyApp.sInstance,
+                        MyApp.sInstance.getString(R.string.address_already_err),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+            } else if (data.address.startsWith("T") || data.address.startsWith("t")) {
+                if (data.address.length<34){
+                    Toast.makeText(
+                        MyApp.sInstance,
+                        MyApp.sInstance.getString(R.string.address_already_err),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+            } else {
+                Toast.makeText(
+                    MyApp.sInstance,
+                    MyApp.sInstance.getString(R.string.address_already_err),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+            if ( data.type ==4){
+                Toast.makeText(
+                    MyApp.sInstance,
+                    MyApp.sInstance.getString(R.string.address_already_err),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
             }
             when (type) {
                 1 -> RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_UPDATA, data)
