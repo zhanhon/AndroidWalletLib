@@ -41,10 +41,20 @@ class AddressBookItem(val data: MyAddressBean) : SimpleRecyclerItem() {
                 binding.tvMainCurrencyName.text = "TRX"
             }
         }
-        binding.tvWalletAddress.text = data.address
+        binding.tvWalletAddress.text = addressHandle(data.address)
         binding.tvWalletName.text = data.userName
         holder.attachOnClickListener(R.id.iv_menu)
         holder.attachOnClickListener(R.id.iv_reduce)
         holder.attachOnClickListener(R.id.item_address)
+    }
+
+    private fun addressHandle(str: String): String? {
+        if (str.isEmpty()) {
+            return null
+        }
+        val subStr1 = str.substring(0, 10)
+        val strLength = str.length
+        val subStr2 = str.substring(strLength - 6, strLength)
+        return "$subStr1...$subStr2"
     }
 }
