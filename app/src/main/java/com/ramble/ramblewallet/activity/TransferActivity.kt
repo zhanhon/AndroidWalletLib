@@ -166,22 +166,24 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
         binding.tvTransferTitle.text = transferTitle + " " + getString(R.string.transfer)
 
-        if (isToken) {
-            Thread {
-                transferBalance = getBalanceToken(walletSelleted.address, contractAddress)
-                if (transferBalance != BigDecimal("0.000000")) {
-                    setBalance(transferBalance)
-                }
-            }.start()
-        } else {
-            Thread {
-                transferBalance = getBalanceETH(walletSelleted.address)
-                if (transferBalance != BigDecimal("0.00000000")) {
-                    setBalance(transferBalance)
-                }
-            }.start()
-        }
+        if (transferTitle == "ETH") {
+            if (isToken) {
+                Thread {
+                    transferBalance = getBalanceToken(walletSelleted.address, contractAddress)
+                    if (transferBalance != BigDecimal("0.000000")) {
+                        setBalance(transferBalance)
+                    }
+                }.start()
+            } else {
+                Thread {
+                    transferBalance = getBalanceETH(walletSelleted.address)
+                    if (transferBalance != BigDecimal("0.00000000")) {
+                        setBalance(transferBalance)
+                    }
+                }.start()
+            }
 
+        }
     }
 
     private fun setMinerFee() {

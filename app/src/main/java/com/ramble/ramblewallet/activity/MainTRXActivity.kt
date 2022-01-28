@@ -203,18 +203,18 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             USD -> binding.tvCurrencyUnit.text = "$"
         }
         Thread {
-            trxBalance = getBalanceETH(walletSelleted.address)
-            if (trxBalance != BigDecimal("0.00000000")) {
-                refreshData()
-            }
-            tokenUsdtBalance = TransferEthUtils.getBalanceToken(walletSelleted.address, contractAddress)
-            if (tokenUsdtBalance != BigDecimal("0.000000")) {
-                refreshData()
-            }
-            if ((trxBalance != BigDecimal("0.00000000")) && (tokenUsdtBalance != BigDecimal("0.000000"))) {
-                totalBalance = trxBalance.add(tokenUsdtBalance)
-                setBalanceTrx(totalBalance)
-            }
+//            trxBalance = getBalanceETH(walletSelleted.address)
+//            if (trxBalance != BigDecimal("0.00000000")) {
+//                refreshData()
+//            }
+//            tokenUsdtBalance = TransferEthUtils.getBalanceToken(walletSelleted.address, contractAddress)
+//            if (tokenUsdtBalance != BigDecimal("0.000000")) {
+//                refreshData()
+//            }
+//            if ((trxBalance != BigDecimal("0.00000000")) && (tokenUsdtBalance != BigDecimal("0.000000"))) {
+//                totalBalance = trxBalance.add(tokenUsdtBalance)
+//                setBalanceTrx(totalBalance)
+//            }
         }.start()
         binding.tvTrxAddress.text = addressHandle(walletSelleted.address)
     }
