@@ -131,7 +131,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_eyes -> {
                 if (isClickEyes) {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_open)
-                    binding.tvBalanceTotal.text = ethBalance.toString()
+                    binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(totalBalance)
                     isClickEyes = false
                 } else {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_close)
