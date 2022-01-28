@@ -98,6 +98,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     putExtra(ARG_PARAM1, true)
                     putExtra(ARG_PARAM2, transferTitle)
                     putExtra(ARG_PARAM3, isToken)
+                    putExtra(ARG_PARAM4, rate)
                 })
             }
             R.id.cl_miner_fee -> {

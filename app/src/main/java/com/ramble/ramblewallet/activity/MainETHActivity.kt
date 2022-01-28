@@ -212,10 +212,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             if (tokenUsdtBalance != BigDecimal("0.000000")) {
                 refreshData()
             }
-            if ((ethBalance != BigDecimal("0.00000000")) && (tokenUsdtBalance != BigDecimal("0.000000"))) {
-                totalBalance = ethLegal.add(tokenUsdtLegal)
-                setBalanceETH(totalBalance)
-            }
         }.start()
         binding.tvEthAddress.text = addressHandle(walletSelleted.address)
     }
@@ -339,6 +335,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                             list.remove()
                                         }
                                     }
+                                    tokenUsdtLegal = BigDecimal("0.00")
                                     rateBean.forEach { rateBean ->
                                         saveTokenList.forEach { saveToken ->
                                             if (saveToken.name == rateBean.currencyType) {
@@ -366,6 +363,10 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                     }
                                 }
                             }
+                        }
+                        if ((ethBalance != BigDecimal("0.00000000")) && (tokenUsdtBalance != BigDecimal("0.000000"))) {
+                            totalBalance = ethLegal.add(tokenUsdtLegal)
+                            setBalanceETH(totalBalance)
                         }
                     } else {
                         println("-=-=-=->${it.message()}")
