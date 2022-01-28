@@ -29,6 +29,7 @@ import com.ramble.ramblewallet.bean.RateBeen
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
+import com.ramble.ramblewallet.ethereum.TransferEthUtils
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.getBalanceETH
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.start
@@ -50,7 +51,11 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private var saveTokenList: ArrayList<StoreInfo> = arrayListOf()
     private lateinit var walletSelleted: WalletETH
     private var ethBalance: BigDecimal = BigDecimal("0.00000000")
+    private var tokenUsdtBalance: BigDecimal = BigDecimal("0.00000000")
+    private var totalBalance: BigDecimal = BigDecimal("0.00000000")
     private var rate: String? = ""
+    //DAI:4 0x16aFDD5dfE386052766b798bFA37DAec4b81155a
+    private var contractAddress = "0xb319d1A045ffe108D14195F7C5d60Be220436a34" //测试节点ERC-USDT:6合约地址
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -200,7 +205,15 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         Thread {
             ethBalance = getBalanceETH(walletSelleted.address)
             if (ethBalance != BigDecimal("0.00000000")) {
-                setBalanceETH(ethBalance)
+                refreshData()
+            }
+            tokenUsdtBalance = TransferEthUtils.getBalanceToken(walletSelleted.address, contractAddress)
+            if (tokenUsdtBalance != BigDecimal("0.000000")) {
+                refreshData()
+            }
+            if ((ethBalance != BigDecimal("0.00000000")) && (tokenUsdtBalance != BigDecimal("0.000000"))) {
+                totalBalance = ethBalance.add(tokenUsdtBalance)
+                setBalanceETH(totalBalance)
             }
         }.start()
         binding.tvEthAddress.text = addressHandle(walletSelleted.address)
@@ -208,8 +221,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 
     private fun setBalanceETH(balance: BigDecimal) {
         postUI {
-            binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(balance)
-            refreshData()
+            binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(balance.multiply(BigDecimal(rate)))
         }
     }
 
@@ -329,7 +341,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                                 mainETHTokenBean.add(
                                                     MainETHTokenBean(
                                                         rateBean.currencyType,
-                                                        BigDecimal(10.12123),
+                                                        tokenUsdtBalance,
                                                         BigDecimal(rate),
                                                         currencyUnit,
                                                         BigDecimal(rateBean.change)
