@@ -34,6 +34,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     private var pos = -1
     private var bean = MyAddressBean()
     private var isFromTransfer: Boolean = false
+    private var idButton = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,6 +94,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
         when (checkedId) {
             R.id.check_all -> {
+                idButton = 0
                 myDataBeans = arrayListOf()
                 myData.forEach {
                     myDataBeans.add(it)
@@ -100,6 +102,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 loadData()
             }
             R.id.check_bt -> {
+                idButton = 1
                 myDataBeans = arrayListOf()
                 myData.forEach {
                     if (it.type == 2) {
@@ -109,6 +112,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 loadData()
             }
             R.id.check_eth -> {
+                idButton = 2
                 myDataBeans = arrayListOf()
                 myData.forEach {
                     if (it.type == 1) {
@@ -118,6 +122,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 loadData()
             }
             R.id.check_trx -> {
+                idButton = 3
                 myDataBeans = arrayListOf()
                 myData.forEach {
                     if (it.type == 3) {
@@ -144,15 +149,6 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             }
             Pie.EVENT_ADDRESS_BOOK_ADD -> {
                 if (SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
-                    myDataBeans =
-                        Gson().fromJson(
-                            SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, ""),
-                            object : TypeToken<ArrayList<MyAddressBean>>() {}.type
-                        )
-                }
-                myDataBeans.add(event.data())
-
-                if (SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
                     myData =
                         Gson().fromJson(
                             SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, ""),
@@ -161,6 +157,38 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 }
                 myData.add(event.data())
                 SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
+                when (idButton) {
+                    0 -> {
+                        myDataBeans = arrayListOf()
+                        myData.forEach {
+                            myDataBeans.add(it)
+                        }
+                    }
+                    1 -> {
+                        myDataBeans = arrayListOf()
+                        myData.forEach {
+                            if (it.type == 2) {
+                                myDataBeans.add(it)
+                            }
+                        }
+                    }
+                    2 -> {
+                        myDataBeans = arrayListOf()
+                        myData.forEach {
+                            if (it.type == 1) {
+                                myDataBeans.add(it)
+                            }
+                        }
+                    }
+                    3 -> {
+                        myDataBeans = arrayListOf()
+                        myData.forEach {
+                            if (it.type == 3) {
+                                myDataBeans.add(it)
+                            }
+                        }
+                    }
+                }
                 loadData()
             }
             else -> return
