@@ -105,7 +105,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 showDialog()
             }
             R.id.tv_select_all -> {
-                binding.edtInputQuantity.setText(transferBalance.toPlainString())
+                binding.edtInputQuantity.setText(DecimalFormatUtil.format8.format(transferBalance))
             }
             R.id.btn_confirm -> {
                 transactionConfirmationDialog()
