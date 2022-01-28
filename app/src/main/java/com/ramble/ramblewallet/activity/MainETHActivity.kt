@@ -208,7 +208,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 
     private fun setBalanceETH(balance: BigDecimal) {
         postUI {
-            binding.tvBalanceTotal.text = balance.toPlainString()
+            binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(balance)
             refreshData()
         }
     }

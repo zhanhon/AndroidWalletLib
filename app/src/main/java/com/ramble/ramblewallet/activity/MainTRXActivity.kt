@@ -208,7 +208,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
 
     private fun setBalanceTrx(balance: BigDecimal) {
         postUI {
-            binding.tvBalanceTotal.text = balance.toPlainString()
+            binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(balance)
             refreshData()
         }
     }

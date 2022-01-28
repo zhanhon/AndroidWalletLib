@@ -223,7 +223,7 @@
                             android:id="@+id/tv_balance_total"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="23232343"
+                            android:text="0"
                             android:textColor="@color/color_FFFFFF"
                             android:textSize="@dimen/dp_17" />
 

@@ -49,6 +49,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private lateinit var transferTitle: String
     private var transferReceiverAddress: String? = null
     private var isToken: Boolean = false
+
     //DAI:4 0x16aFDD5dfE386052766b798bFA37DAec4b81155a
     private var contractAddress = "0xb319d1A045ffe108D14195F7C5d60Be220436a34" //测试节点ERC-USDT:6合约地址
     //private var contractAddress = "0xd95371A0550cF47aB9519105300707a82b0640Db" //开发节点ERC-USDT合约地址
@@ -193,7 +194,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     )
                 } ETH"
                 binding.tvMinerFeeValueConvert.text = "≈${currencySymbol}${
-                    DecimalFormatUtil.format8.format(
+                    DecimalFormatUtil.format2.format(
                         BigDecimal(rate).multiply(
                             (BigDecimal(gasPrice)
                                     * BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
@@ -214,7 +215,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private fun setBalance(balance: BigDecimal) {
         postUI {
             binding.tvQuantityBalance.text =
-                getString(R.string.transfer_balance) + " " + balance + " " + transferUnit
+                getString(R.string.transfer_balance) + " " + DecimalFormatUtil.format8.format(
+                    balance
+                ) + " " + transferUnit
         }
     }
 
@@ -274,7 +277,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         transferReceiverAddress,
                         contractAddress,
                         walletSelleted.privateKey,
-                        BigInteger(binding.edtInputQuantity.text.trim().toString()).multiply(BigInteger("1000000")) ,
+                        BigInteger(binding.edtInputQuantity.text.trim().toString()).multiply(
+                            BigInteger("1000000")
+                        ),
                         (BigInteger(gasPrice).multiply(BigInteger("100000000"))), //GWEI → WEI
                         BigInteger(gasLimit),
                         binding.edtInputTransferRemarks.text.trim().toString()
