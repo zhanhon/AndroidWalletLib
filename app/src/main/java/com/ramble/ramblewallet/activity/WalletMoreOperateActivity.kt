@@ -9,6 +9,8 @@ import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Button
+import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
@@ -19,6 +21,7 @@ import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.WALLETINFO
 import com.ramble.ramblewallet.databinding.ActivityWalletMoreOperateBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 
 class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
@@ -109,7 +112,10 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
         if (window != null) {
             window.setContentView(R.layout.dialog_secret_key)
             dialogTheme(window)
-
+            window.findViewById<EditText>(R.id.edt_secret_key).setText(walletCurrent.privateKey.toString())
+            window.findViewById<Button>(R.id.btn_create_wallet).setOnClickListener {
+                ClipboardUtils.copy(walletCurrent.privateKey.toString())
+            }
         }
     }
 
