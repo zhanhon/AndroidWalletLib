@@ -135,7 +135,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                         "我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个"
                     )
                     it.putString(ARG_PARAM3, "1111111111111111111111111")
-                    it.putString(ARG_PARAM4, getString(R.string.service_agreement))
+                    it.putInt(ARG_PARAM4, 4)
                 })
             }
             R.id.inc_privacy_statement -> {
@@ -146,7 +146,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                         "我是隐私声明，我要打10个，我是隐私声明，我要打10个，我是隐私声明，我要打10个，我是隐私声明，我要打10个，我是隐私声明，我要打10个，我是隐私声明，我要打10个"
                     )
                     it.putString(ARG_PARAM3, "1111111111111111111111111")
-                    it.putString(ARG_PARAM4, getString(R.string.privacy_statement))
+                    it.putInt(ARG_PARAM4, 3)
                 })
             }
             R.id.inc_manage_wallet -> {

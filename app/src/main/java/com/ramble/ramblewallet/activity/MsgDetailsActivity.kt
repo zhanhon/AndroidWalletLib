@@ -47,6 +47,14 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
                 binding.ivRight.visibility=View.GONE
                 getString(R.string.message_details)
             }
+            3 -> {
+                binding.ivRight.visibility=View.GONE
+                getString(R.string.privacy_statement)
+            }
+            4 -> {
+                binding.ivRight.visibility=View.GONE
+                getString(R.string.service_agreement)
+            }
             else -> getString(R.string.message_details)
         }
         binding.title1.text = title
