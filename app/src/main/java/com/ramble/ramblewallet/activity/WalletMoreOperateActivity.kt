@@ -112,8 +112,9 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
         if (window != null) {
             window.setContentView(R.layout.dialog_secret_key)
             dialogTheme(window)
+
             window.findViewById<EditText>(R.id.edt_secret_key).setText(walletCurrent.privateKey.toString())
-            window.findViewById<Button>(R.id.btn_create_wallet).setOnClickListener {
+            window.findViewById<Button>(R.id.btn_copy).setOnClickListener {
                 ClipboardUtils.copy(walletCurrent.privateKey.toString())
             }
         }
@@ -127,6 +128,10 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             window.setContentView(R.layout.dialog_keystore)
             dialogTheme(window)
 
+            window.findViewById<EditText>(R.id.edt_keystore).setText(walletCurrent.keystore.toString())
+            window.findViewById<Button>(R.id.btn_copy).setOnClickListener{
+                ClipboardUtils.copy(walletCurrent.keystore.toString())
+            }
         }
     }
 

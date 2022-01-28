@@ -124,6 +124,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_balance_refresh -> {
                 startSyncAnimation()
                 Handler().postDelayed({
+                    initData()
                     refreshData()
                 }, 2000)
             }
@@ -212,7 +213,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 refreshData()
             }
             if ((ethBalance != BigDecimal("0.00000000")) && (tokenUsdtBalance != BigDecimal("0.000000"))) {
-                totalBalance = ethBalance.add(tokenUsdtBalance)
+                totalBalance = ethLegal.add(tokenUsdtLegal)
                 setBalanceETH(totalBalance)
             }
         }.start()
@@ -221,7 +222,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 
     private fun setBalanceETH(balance: BigDecimal) {
         postUI {
-            binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(balance.multiply(BigDecimal(rate)))
+            binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(balance)
         }
     }
 
@@ -288,6 +289,8 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    private var ethLegal = BigDecimal("0.00")
+    private var tokenUsdtLegal = BigDecimal("0.00")
     @SuppressLint("CheckResult")
     private fun refreshData() {
         mApiService.getRateInfo(EmptyReq().toApiRequest(rateInfoUrl))
@@ -305,6 +308,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                         USD -> rate = it.rateUsd
                                     }
                                     if (it.currencyType == "ETH") {
+                                        ethLegal = ethBalance.multiply(BigDecimal(rate))
                                         mainETHTokenBean.add(
                                             MainETHTokenBean(
                                                 it.currencyType,
@@ -338,6 +342,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                     rateBean.forEach { rateBean ->
                                         saveTokenList.forEach { saveToken ->
                                             if (saveToken.name == rateBean.currencyType) {
+                                                tokenUsdtLegal = tokenUsdtBalance.multiply(BigDecimal(rate))
                                                 mainETHTokenBean.add(
                                                     MainETHTokenBean(
                                                         rateBean.currencyType,
