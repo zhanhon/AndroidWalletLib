@@ -1,10 +1,14 @@
 package com.ramble.ramblewallet.ethereum;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+
+import com.ramble.ramblewallet.activity.TransferActivity;
 
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.TypeReference;
@@ -51,7 +55,7 @@ public class TransferEthUtils {
         BigInteger gasPrice = new BigInteger("121");
         BigInteger gasLimit = new BigInteger("210000");
         String desc = "aaaaaaaaas";
-        transferETH(from, to, privateKey, "1", gasPrice, gasLimit, desc);
+        //transferETH(from, to, privateKey, "1", gasPrice, gasLimit, desc);
         //transferToken(from, to, contractAddress, privateKey, number, gasPrice, gasLimit, desc);
         Log.v("-=-=-=->代币余额:", getBalanceToken(to, contractAddress).toPlainString());
     }
@@ -87,7 +91,7 @@ public class TransferEthUtils {
     }
 
     @SuppressLint("LongLogTag")
-    public static void transferETH(String fromAddress, String toAddress, String privateKey, String number,
+    public static void transferETH(Activity context, String fromAddress, String toAddress, String privateKey, String number,
                                    BigInteger gasPrice, BigInteger gasLimit, String desc) throws Exception {
         Web3j web3j = Web3j.build(new HttpService(ETH_NODE));
         BigInteger value = Convert.toWei(number, Convert.Unit.ETHER).toBigInteger();
@@ -107,15 +111,19 @@ public class TransferEthUtils {
         //发送交易
         EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexValue).sendAsync().get();
         if (ethSendTransaction.hasError()) {
-            Log.v("-=-=-=->Transfer Error:", ethSendTransaction.getError().getMessage());
+            if (context instanceof TransferActivity) {
+                ((TransferActivity) context).transferFail(ethSendTransaction.getError().getMessage());
+            }
         } else {
             String transactionHash = ethSendTransaction.getTransactionHash();
-            Log.v("-=-=-=->Transfer TransactionHash:", transactionHash);
+            if (context instanceof TransferActivity) {
+                ((TransferActivity) context).transferSuccess(transactionHash);
+            }
         }
     }
 
     @SuppressLint("LongLogTag")
-    public static void transferToken(String fromAddress, String toAddress, String contractAddress, String privateKey, BigInteger number,
+    public static void transferToken(Context context, String fromAddress, String toAddress, String contractAddress, String privateKey, BigInteger number,
                                      BigInteger gasPrice, BigInteger gasLimit, String desc) throws Exception {
         Web3j web3j = Web3j.build(new HttpService(ETH_NODE));
         //加载转账所需的凭证，用私钥
@@ -143,10 +151,14 @@ public class TransferEthUtils {
         //发送交易
         EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexValue).sendAsync().get();
         if (ethSendTransaction.hasError()) {
-            Log.v("-=-=-=->Transfer Error:", ethSendTransaction.getError().getMessage());
+            if (context instanceof TransferActivity) {
+                ((TransferActivity) context).transferFail(ethSendTransaction.getError().getMessage());
+            }
         } else {
             String transactionHash = ethSendTransaction.getTransactionHash();
-            Log.v("-=-=-=->Transfer TransactionHash:", transactionHash);
+            if (context instanceof TransferActivity) {
+                ((TransferActivity) context).transferSuccess(transactionHash);
+            }
         }
     }
 

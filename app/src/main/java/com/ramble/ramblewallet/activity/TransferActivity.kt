@@ -23,6 +23,7 @@ import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.*
 import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.helper.dismiss
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getEthMinerConfigUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -276,6 +277,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             1 -> {
                 if (isToken) {
                     transferToken( //暂时是USDT合约
+                        this,
                         walletSelleted.address,
                         transferReceiverAddress,
                         contractAddress,
@@ -289,6 +291,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     )
                 } else {
                     transferETH(
+                        this,
                         walletSelleted.address,
                         transferReceiverAddress,
                         walletSelleted.privateKey,
@@ -306,6 +309,57 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
             }
         }
+    }
+
+    fun transferSuccess(transactionHash: String) {
+        transactionFinishConfirmDialog(transactionHash)
+    }
+
+    fun transferFail(strFail: String) {
+        transactionFailDialog(strFail)
+    }
+
+    private fun transactionFinishConfirmDialog(transactionHash: String) {
+        var dialog = AlertDialog.Builder(this).create()
+        dialog.show()
+        val window: Window? = dialog.window
+        if (window != null) {
+            window.setContentView(R.layout.dialog_transfer_confirm)
+            dialogCenterTheme(window)
+
+            window.findViewById<TextView>(R.id.tv_transaction_code).text = transactionHash
+            window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
+                dismiss()
+                startActivity(Intent(this, TransactionQueryActivity::class.java))
+            }
+        }
+    }
+
+    private fun transactionFailDialog(transactionHash: String) {
+        var dialog = AlertDialog.Builder(this).create()
+        dialog.show()
+        val window: Window? = dialog.window
+        if (window != null) {
+            window.setContentView(R.layout.dialog_transfer_fail)
+            dialogCenterTheme(window)
+
+            window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
+                dismiss()
+            }
+        }
+    }
+
+    private fun dialogCenterTheme(window: Window) {
+        //设置属性
+        val params = window.attributes
+        params.width = WindowManager.LayoutParams.MATCH_PARENT
+        //弹出一个窗口，让背后的窗口变暗一点
+        params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        //dialog背景层
+        params.dimAmount = 0.5f
+        window.attributes = params
+        window.setGravity(Gravity.CENTER)
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private fun dialogTheme(window: Window) {
