@@ -163,6 +163,12 @@
     <string name="password_less_six_tips">密码不小于6位</string>
     <string name="confirm_transaction">确认交易</string>
     <string name="confirm_contributing_words_error">确认助记词有误</string>
+    <string name="miner_fee_low_tips">您输入的矿工费过低，将有可能造成交易失败或交易时间过长，请慎重输入！</string>
+    <string name="miner_fee_high_tips">矿工费过高，请慎重输入</string>
+    <string name="tips">提示</string>
+    <string name="btn_confirm">确定</string>
+    <string name="transaction_tips">请耐心等待交易完成信息！</string>
+
 
     <string name="refresh_pull_down">下拉更新</string>
     <string name="refresh_time">最后更新于{key}</string>

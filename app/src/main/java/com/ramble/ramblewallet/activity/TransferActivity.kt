@@ -316,7 +316,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun transferFail(strFail: String) {
-        transactionFailDialog(strFail)
+        toastDefault(getString(R.string.failure_transaction))
+        println("-=-=-=->交易失败：${strFail}")
     }
 
     private fun transactionFinishConfirmDialog(transactionHash: String) {
@@ -329,13 +330,13 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
             window.findViewById<TextView>(R.id.tv_transaction_code).text = transactionHash
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
-                dismiss()
+                dialog.dismiss()
                 startActivity(Intent(this, TransactionQueryActivity::class.java))
             }
         }
     }
 
-    private fun transactionFailDialog(transactionHash: String) {
+    private fun transactionFailDialog(content: String) {
         var dialog = AlertDialog.Builder(this).create()
         dialog.show()
         val window: Window? = dialog.window
@@ -343,8 +344,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             window.setContentView(R.layout.dialog_transfer_fail)
             dialogCenterTheme(window)
 
+            window.findViewById<TextView>(R.id.tv_content).text = content
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
-                dismiss()
+                dialog.dismiss()
             }
         }
     }
@@ -438,6 +440,16 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 }
                 setMinerFee()
                 dialog.dismiss()
+                if ((BigDecimal(gasPrice) < BigDecimal(slowGasPrice))
+                    || (BigDecimal(gasLimit) < BigDecimal("210000"))){
+                    transactionFailDialog(getString(R.string.miner_fee_low_tips))
+                    return@setOnClickListener
+                }
+                if ((BigDecimal(gasPrice) > BigDecimal(fastGasPrice))
+                    || (BigDecimal(gasLimit) < BigDecimal("1000000"))) {
+                    transactionFailDialog(getString(R.string.miner_fee_high_tips))
+                    return@setOnClickListener
+                }
             }
         }
     }
