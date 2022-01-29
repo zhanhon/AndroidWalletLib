@@ -224,7 +224,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                         ClipboardUtils.copy(itemBean.address)
                     },
                     editListener = View.OnClickListener {//编辑
-                        showBottomDialog2(this, itemBean.userName, 1)
+                        showBottomDialog2(this, itemBean.userName, itemBean.address,1)
                     },
                     delListener = View.OnClickListener {//删除
                         myDataBeans.removeAt(position)
@@ -247,7 +247,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 adapter.notifyDataSetChanged()
             }
             R.id.add -> {
-                showBottomDialog2(this, "", 2)
+                showBottomDialog2(this, "", "",2)
                 if (myDataBeans.isNullOrEmpty()) return
                 myDataBeans.forEach {
                     it.isNeedDelete = false

@@ -69,6 +69,7 @@ fun showBottomDialog(
 fun showBottomDialog2(
     activity: AddressBookActivity,
     tvName: String,
+    address: String,
     type: Int,
     editListener: View.OnClickListener? = null
 ): Dialog {
@@ -83,6 +84,7 @@ fun showBottomDialog2(
         show()
         setContentView(binding.root)
         binding.editName.setText(tvName)
+        binding.editAddress.setText(address)
         when (type) {
             1 -> {
                 binding.tvTitle.text = "编辑地址"
