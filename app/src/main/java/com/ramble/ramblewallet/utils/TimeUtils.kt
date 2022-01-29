@@ -21,7 +21,7 @@ object TimeUtils {
     fun dateToWeek(dateString: String?): String? {
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        var data=sdf.parse(dateString)
+        var data = sdf.parse(dateString)
         val weekDays = arrayOf("周日", "周一", "周二", "周三", "周四", "周五", "周六")
         val cal: Calendar = Calendar.getInstance()
         cal.time = data

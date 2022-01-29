@@ -54,6 +54,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private var tokenUsdtBalance: BigDecimal = BigDecimal("0.00000000")
     private var totalBalance: BigDecimal = BigDecimal("0.00000000")
     private var rate: String? = ""
+
     //DAI:4 0x16aFDD5dfE386052766b798bFA37DAec4b81155a
     private var contractAddress = "0xb319d1A045ffe108D14195F7C5d60Be220436a34" //测试节点ERC-USDT:6合约地址
 
@@ -208,7 +209,8 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             if (ethBalance != BigDecimal("0.00000000")) {
                 refreshData()
             }
-            tokenUsdtBalance = TransferEthUtils.getBalanceToken(walletSelleted.address, contractAddress)
+            tokenUsdtBalance =
+                TransferEthUtils.getBalanceToken(walletSelleted.address, contractAddress)
             if (tokenUsdtBalance != BigDecimal("0.000000")) {
                 refreshData()
             }
@@ -287,6 +289,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 
     private var ethLegal = BigDecimal("0.00")
     private var tokenUsdtLegal = BigDecimal("0.00")
+
     @SuppressLint("CheckResult")
     private fun refreshData() {
         mApiService.getRateInfo(EmptyReq().toApiRequest(rateInfoUrl))
@@ -339,7 +342,8 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                     rateBean.forEach { rateBean ->
                                         saveTokenList.forEach { saveToken ->
                                             if (saveToken.name == rateBean.currencyType) {
-                                                tokenUsdtLegal = tokenUsdtBalance.multiply(BigDecimal(rate))
+                                                tokenUsdtLegal =
+                                                    tokenUsdtBalance.multiply(BigDecimal(rate))
                                                 mainETHTokenBean.add(
                                                     MainETHTokenBean(
                                                         rateBean.currencyType,
@@ -364,7 +368,10 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                 }
                             }
                         }
-                        if ((ethBalance != BigDecimal("0.00000000")) && (tokenUsdtBalance != BigDecimal("0.000000"))) {
+                        if ((ethBalance != BigDecimal("0.00000000")) && (tokenUsdtBalance != BigDecimal(
+                                "0.000000"
+                            ))
+                        ) {
                             totalBalance = ethLegal.add(tokenUsdtLegal)
                             setBalanceETH(totalBalance)
                         }

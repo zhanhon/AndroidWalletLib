@@ -27,7 +27,7 @@
             android:background="@drawable/ic_unread"
             app:layout_constraintBottom_toBottomOf="@+id/cardview"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/cardview"/>
+            app:layout_constraintTop_toTopOf="@+id/cardview" />
 
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/ck_delete"
@@ -89,7 +89,7 @@
             android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/title1"
             app:layout_constraintTop_toTopOf="@+id/title1"
-            app:layout_constraintBottom_toBottomOf="@+id/title1"/>
+            app:layout_constraintBottom_toBottomOf="@+id/title1" />
 
         <View
             android:id="@+id/view"

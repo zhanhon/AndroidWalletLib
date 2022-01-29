@@ -59,6 +59,6 @@
         android:textAllCaps="false"
         android:text="@string/confirm"
         android:textColor="@color/color_FFFFFF"
-        android:textSize="@dimen/dp_18"/>
+        android:textSize="@dimen/dp_18" />
 
 </LinearLayout>

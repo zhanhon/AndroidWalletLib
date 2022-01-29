@@ -33,10 +33,10 @@ class StationItem(val data: Page.Record) : CheckableSimpleRecyclerItem(), View.O
         }
         binding.ckDelete.isChecked = isChecked
         binding.ckDelete.setOnClickListener(this)
-        binding.badge.isVisible=data.isRead==0
-        if (data.isRead==0){
+        binding.badge.isVisible = data.isRead == 0
+        if (data.isRead == 0) {
             binding.bells.setBackgroundResource(R.drawable.ic_unread)
-        }else{
+        } else {
             binding.bells.setBackgroundResource(R.drawable.ic_read)
         }
         holder.attachOnClickListener(R.id.item_msg_notic)

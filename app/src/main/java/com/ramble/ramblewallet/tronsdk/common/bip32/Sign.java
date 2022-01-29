@@ -108,8 +108,8 @@ public class Sign {
      * 0 to 3, and if the output is null OR a key that is not the one you expect, you try again
      * with the next recId.</p>
      *
-     * @param recId Which possible key to recover.
-     * @param sig the R and S components of the signature, wrapped.
+     * @param recId   Which possible key to recover.
+     * @param sig     the R and S components of the signature, wrapped.
      * @param message Hash of the data that was signed.
      * @return An ECKey containing only the public part, or null if recovery wasn't possible.
      */
@@ -171,11 +171,13 @@ public class Sign {
         return new BigInteger(1, Arrays.copyOfRange(qBytes, 1, qBytes.length));
     }
 
-    /** Decompress a compressed public key (x co-ord and low-bit of y-coord). */
+    /**
+     * Decompress a compressed public key (x co-ord and low-bit of y-coord).
+     */
     private static ECPoint decompressKey(BigInteger xBN, boolean yBit) {
         X9IntegerConverter x9 = new X9IntegerConverter();
         byte[] compEnc = x9.integerToBytes(xBN, 1 + x9.getByteLength(CURVE.getCurve()));
-        compEnc[0] = (byte)(yBit ? 0x03 : 0x02);
+        compEnc[0] = (byte) (yBit ? 0x03 : 0x02);
         return CURVE.getCurve().decodePoint(compEnc);
     }
 
@@ -184,11 +186,11 @@ public class Sign {
      * returns the public key that was used to sign it. This can then be compared to the expected
      * public key to determine if the signature was correct.
      *
-     * @param message RLP encoded message.
+     * @param message       RLP encoded message.
      * @param signatureData The message signature components
      * @return the public key used to sign the message
      * @throws SignatureException If the public key could not be recovered or if there was a
-     *     signature format error.
+     *                            signature format error.
      */
     public static BigInteger signedMessageToKey(
             byte[] message, SignatureData signatureData) throws SignatureException {
@@ -200,11 +202,11 @@ public class Sign {
      * returns the public key that was used to sign it. This can then be compared to the
      * expected public key to determine if the signature was correct.
      *
-     * @param message The message.
+     * @param message       The message.
      * @param signatureData The message signature components
      * @return the public key used to sign the message
      * @throws SignatureException If the public key could not be recovered or if there was a
-     *     signature format error.
+     *                            signature format error.
      */
     public static BigInteger signedPrefixedMessageToKey(
             byte[] message, SignatureData signatureData) throws SignatureException {

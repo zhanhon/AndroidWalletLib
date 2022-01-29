@@ -104,7 +104,7 @@ fun showBottomDialog2(
             dismiss()
         }
         binding.tvUpdata.setOnClickListener {
-            if (binding.editName.text.isNullOrEmpty() || binding.editAddress.text.isNullOrEmpty()){
+            if (binding.editName.text.isNullOrEmpty() || binding.editAddress.text.isNullOrEmpty()) {
                 Toast.makeText(
                     MyApp.sInstance,
                     MyApp.sInstance.getString(R.string.address_already_null),
@@ -112,10 +112,12 @@ fun showBottomDialog2(
                 ).show()
                 return@setOnClickListener
             }
-            if (SharedPreferencesUtils.getString( MyApp.sInstance, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
+            if (SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
+                    .isNotEmpty()
+            ) {
                 var myData: ArrayList<MyAddressBean> =
                     Gson().fromJson(
-                        SharedPreferencesUtils.getString( MyApp.sInstance, ADDRESS_BOOK_INFO, ""),
+                        SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, ""),
                         object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                     )
                 myData.forEach {
@@ -143,7 +145,7 @@ fun showBottomDialog2(
                 4
             }
             if (data.address.startsWith("1") || data.address.startsWith("3")) {
-                if (data.address.length<26){
+                if (data.address.length < 26) {
                     Toast.makeText(
                         MyApp.sInstance,
                         MyApp.sInstance.getString(R.string.address_already_err),
@@ -152,7 +154,7 @@ fun showBottomDialog2(
                     return@setOnClickListener
                 }
             } else if (data.address.startsWith("0")) {
-                if (data.address.length<41){
+                if (data.address.length < 41) {
                     Toast.makeText(
                         MyApp.sInstance,
                         MyApp.sInstance.getString(R.string.address_already_err),
@@ -161,7 +163,7 @@ fun showBottomDialog2(
                     return@setOnClickListener
                 }
             } else if (data.address.startsWith("T") || data.address.startsWith("t")) {
-                if (data.address.length<34){
+                if (data.address.length < 34) {
                     Toast.makeText(
                         MyApp.sInstance,
                         MyApp.sInstance.getString(R.string.address_already_err),
@@ -177,7 +179,7 @@ fun showBottomDialog2(
                 ).show()
                 return@setOnClickListener
             }
-            if ( data.type ==4){
+            if (data.type == 4) {
                 Toast.makeText(
                     MyApp.sInstance,
                     MyApp.sInstance.getString(R.string.address_already_err),

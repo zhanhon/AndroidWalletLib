@@ -1,10 +1,9 @@
 package com.ramble.ramblewallet.push;
 
 /**
- *
- *  时间　: 2021/12/15
- *  作者　: potato
- *  描述　: Sample相关的常量定义类
+ * 时间　: 2021/12/15
+ * 作者　: potato
+ * 描述　: Sample相关的常量定义类
  */
 public class PushConstants {
     /**

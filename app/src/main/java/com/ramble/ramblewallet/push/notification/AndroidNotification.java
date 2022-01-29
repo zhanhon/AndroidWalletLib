@@ -8,22 +8,26 @@ import java.util.HashSet;
 public abstract class AndroidNotification extends UmengNotification {
 
     // Keys can be set in the payload level
-    protected static final HashSet<String> PAYLOAD_KEYS = new HashSet<String>(Arrays.asList(new String[] {
-        "display_type"}));
+    protected static final HashSet<String> PAYLOAD_KEYS = new HashSet<String>(Arrays.asList(new String[]{
+            "display_type"}));
 
     // Keys can be set in the body level
-    protected static final HashSet<String> BODY_KEYS = new HashSet<String>(Arrays.asList(new String[] {
-        "ticker", "title", "text", "builder_id", "icon", "largeIcon", "img", "play_vibrate", "play_lights",
-        "play_sound",
-        "sound", "after_open", "url", "activity", "custom"}));
+    protected static final HashSet<String> BODY_KEYS = new HashSet<String>(Arrays.asList(new String[]{
+            "ticker", "title", "text", "builder_id", "icon", "largeIcon", "img", "play_vibrate", "play_lights",
+            "play_sound",
+            "sound", "after_open", "url", "activity", "custom"}));
 
     public enum DisplayType {
         NOTIFICATION {
-            public String getValue() {return "notification";}
+            public String getValue() {
+                return "notification";
+            }
         },
         ///通知:消息送达到用户设备后，由友盟SDK接管处理并在通知栏上显示通知内容。
         MESSAGE {
-            public String getValue() {return "message";}
+            public String getValue() {
+                return "message";
+            }
         };///消息:消息送达到用户设备后，消息内容透传给应用自身进行解析处理。
 
         public abstract String getValue();
@@ -88,7 +92,7 @@ public abstract class AndroidNotification extends UmengNotification {
         } else {
             if (key == "payload" || key == "body" || key == "policy" || key == "extra") {
                 throw new Exception(
-                    "You don't need to set value for " + key + " , just set values for the sub keys in it.");
+                        "You don't need to set value for " + key + " , just set values for the sub keys in it.");
             } else {
                 throw new Exception("Unknown key: " + key);
             }

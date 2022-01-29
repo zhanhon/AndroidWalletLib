@@ -90,6 +90,7 @@ fun Fragment.showDialogFragment(dialogFragment: DialogFragment) {
         dialogFragment
     )
 }
+
 fun Activity.showAlertWhioutNo(title: String, message: String) {
     android.app.AlertDialog.Builder(this).setTitle(title)
         .setMessage(message)
@@ -99,6 +100,7 @@ fun Activity.showAlertWhioutNo(title: String, message: String) {
         .show()
 
 }
+
 fun FragmentActivity.showDialogFragmentAllowingStateLoss(dialogFragment: DialogFragment) {
     showDialogFragmentAllowingStateLoss(
         this.supportFragmentManager,
@@ -117,19 +119,37 @@ fun FragmentActivity.addFragment(fragment: Fragment, isAddBack: Boolean, @IdRes 
     addFragment(this.supportFragmentManager, fragment, isAddBack, container)
 }
 
-fun FragmentActivity.replaceFragment(fragment: Fragment, isAddBack: Boolean, @IdRes container: Int) {
+fun FragmentActivity.replaceFragment(
+    fragment: Fragment,
+    isAddBack: Boolean,
+    @IdRes container: Int
+) {
     replaceFragment(this.supportFragmentManager, fragment, isAddBack, container)
 }
 
-fun FragmentActivity.forceReplaceFragment(fragment: Fragment, isAddBack: Boolean, @IdRes container: Int) {
+fun FragmentActivity.forceReplaceFragment(
+    fragment: Fragment,
+    isAddBack: Boolean,
+    @IdRes container: Int
+) {
     forceReplaceFragment(this.supportFragmentManager, fragment, isAddBack, container)
 }
 
-fun FragmentActivity.forceAddFragment(fragment: Fragment, isAddBack: Boolean, @IdRes container: Int, tag: String) {
+fun FragmentActivity.forceAddFragment(
+    fragment: Fragment,
+    isAddBack: Boolean,
+    @IdRes container: Int,
+    tag: String
+) {
     forceAddFragment(this.supportFragmentManager, fragment, isAddBack, container, tag)
 }
 
-fun FragmentActivity.forceReplaceFragment(fragment: Fragment, isAddBack: Boolean, @IdRes container: Int, tag: String) {
+fun FragmentActivity.forceReplaceFragment(
+    fragment: Fragment,
+    isAddBack: Boolean,
+    @IdRes container: Int,
+    tag: String
+) {
     forceReplaceFragment(this.supportFragmentManager, fragment, isAddBack, container, tag)
 }
 
@@ -153,11 +173,21 @@ fun Fragment.replaceFragment(fragment: Fragment, isAddBack: Boolean, @IdRes cont
     replaceFragment(this.childFragmentManager, fragment, isAddBack, container)
 }
 
-fun Fragment.forceAddFragment(fragment: Fragment, isAddBack: Boolean, @IdRes container: Int, tag: String) {
+fun Fragment.forceAddFragment(
+    fragment: Fragment,
+    isAddBack: Boolean,
+    @IdRes container: Int,
+    tag: String
+) {
     forceAddFragment(this.childFragmentManager, fragment, isAddBack, container, tag)
 }
 
-fun Fragment.forceReplaceFragment(fragment: Fragment, isAddBack: Boolean, @IdRes container: Int, tag: String) {
+fun Fragment.forceReplaceFragment(
+    fragment: Fragment,
+    isAddBack: Boolean,
+    @IdRes container: Int,
+    tag: String
+) {
     forceReplaceFragment(this.childFragmentManager, fragment, isAddBack, container, tag)
 }
 

@@ -59,7 +59,7 @@ class TransactionQueryFragment : BaseFragment(),
     private val adapter = RecyclerAdapter()
     private lateinit var wallet: WalletETH
     private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
-    private var address=""
+    private var address = ""
 
 
     override fun onAttach(context: Context) {
@@ -94,12 +94,12 @@ class TransactionQueryFragment : BaseFragment(),
             }
             //加载的监听事件
             binding.lyPullRefresh.setOnLoadMoreListener {
-                if (currentPage<totalPage){
+                if (currentPage < totalPage) {
                     binding.lyPullRefresh.finishLoadMore() //加载完成
                     ProgressItem.addTo(adapter)
                     currentPage += 1
                     loadData()
-                }else{
+                } else {
                     binding.lyPullRefresh.finishLoadMoreWithNoMoreData()
                 }
             }
@@ -134,33 +134,34 @@ class TransactionQueryFragment : BaseFragment(),
             endTime = chooseDay.toJdk7Date().time
             startTime = startDay.toJdk7Date().time
         }
-        status=  when(gameType){
+        status = when (gameType) {
             2 -> 3
-            else->null
+            else -> null
         }
-        transferType=when(gameType){ //交易类型|1:转出|2:转入|其它null
+        transferType = when (gameType) { //交易类型|1:转出|2:转入|其它null
             4 -> 1
             3 -> 2
-            else->null
+            else -> null
         }
 
-       var changeCurrencyType= when (SharedPreferencesUtils.getString(myActivity, CURRENCY, RMB)) {
-           RMB -> {
-               1
-           }
-           HKD -> {
-               2
-           }
-            else -> {
-               3
+        var changeCurrencyType =
+            when (SharedPreferencesUtils.getString(myActivity, CURRENCY, RMB)) {
+                RMB -> {
+                    1
+                }
+                HKD -> {
+                    2
+                }
+                else -> {
+                    3
+                }
             }
-        }
 
         saveWalletList = Gson().fromJson(
             SharedPreferencesUtils.getString(myActivity, WALLETINFO, ""),
             object : TypeToken<ArrayList<WalletETH>>() {}.type
         )
-        address=saveData(saveWalletList)
+        address = saveData(saveWalletList)
 //        "0x90d51f90fdf0722f1d621820ca9f45547221fdd9"
         var req = QueryTransferRecord.Req(
             currentPage,
@@ -202,20 +203,21 @@ class TransactionQueryFragment : BaseFragment(),
         )
 
     }
-    private fun saveData(list:ArrayList<WalletETH>): String {
+
+    private fun saveData(list: ArrayList<WalletETH>): String {
         wallet =
             Gson().fromJson(
                 SharedPreferencesUtils.getString(myActivity, WALLETSELECTED, ""),
                 object : TypeToken<WalletETH>() {}.type
             )
         var sb = StringBuffer()
-         list.forEach {
-             if (wallet.walletType==it.walletType){
-                 sb.append(it.address).append(",")
-             }
-         }
+        list.forEach {
+            if (wallet.walletType == it.walletType) {
+                sb.append(it.address).append(",")
+            }
+        }
         var addStr = sb.deleteCharAt(sb.length - 1).toString()
-        return  addStr
+        return addStr
     }
 
     private fun onLoaded() {

@@ -1,13 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="28px"
+    height="28px"
+    viewBox="0 0 28 28"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg">
     <title>图标/代币增减-增</title>
-    <g id="图标/代币增减-增" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <rect id="矩形" fill="#D8D8D8" opacity="0" x="0" y="0" width="32" height="32"></rect>
+    <g
+        id="图标/代币增减-增"
+        stroke="none"
+        stroke-width="1"
+        fill="none"
+        fill-rule="evenodd">
+        <rect
+            id="矩形"
+            fill="#D8D8D8"
+            opacity="0"
+            x="0"
+            y="0"
+            width="32"
+            height="32"></rect>
         <g id="编组">
-            <circle id="椭圆形" fill="#44D7B6" cx="14" cy="14" r="14"></circle>
-            <g id="tianjia-" transform="translate(4.941176, 4.941176)" fill="#FFFFFF">
-                <rect id="矩形" x="0" y="7.04575163" width="18.1176471" height="4.02614379" rx="2.0130719"></rect>
-                <path d="M2.0130719,7.04575163 L16.1045752,7.04575163 C17.2163641,7.04575163 18.1176471,7.94703462 18.1176471,9.05882353 C18.1176471,10.1706124 17.2163641,11.0718954 16.1045752,11.0718954 L2.0130719,11.0718954 C0.901282987,11.0718954 1.07942959e-14,10.1706124 1.0658141e-14,9.05882353 C1.05219862e-14,7.94703462 0.901282987,7.04575163 2.0130719,7.04575163 Z" id="矩形" transform="translate(9.058824, 9.058824) rotate(90.000000) translate(-9.058824, -9.058824) "></path>
+            <circle
+                id="椭圆形"
+                fill="#44D7B6"
+                cx="14"
+                cy="14"
+                r="14"></circle>
+            <g
+                id="tianjia-"
+                transform="translate(4.941176, 4.941176)"
+                fill="#FFFFFF">
+                <rect
+                    id="矩形"
+                    x="0"
+                    y="7.04575163"
+                    width="18.1176471"
+                    height="4.02614379"
+                    rx="2.0130719"></rect>
+                <path
+                    d="M2.0130719,7.04575163 L16.1045752,7.04575163 C17.2163641,7.04575163 18.1176471,7.94703462 18.1176471,9.05882353 C18.1176471,10.1706124 17.2163641,11.0718954 16.1045752,11.0718954 L2.0130719,11.0718954 C0.901282987,11.0718954 1.07942959e-14,10.1706124 1.0658141e-14,9.05882353 C1.05219862e-14,7.94703462 0.901282987,7.04575163 2.0130719,7.04575163 Z"
+                    id="矩形"
+                    transform="translate(9.058824, 9.058824) rotate(90.000000) translate(-9.058824, -9.058824) "></path>
             </g>
         </g>
     </g>

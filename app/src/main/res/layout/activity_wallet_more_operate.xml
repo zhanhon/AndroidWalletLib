@@ -87,6 +87,7 @@
             android:visibility="gone"
             android:background="@color/color_FFFFFF"
             android:paddingLeft="@dimen/dp_20">
+
             <TextView
                 android:id="@+id/tv_contributing_words_backups"
                 android:layout_width="wrap_content"
@@ -177,6 +178,7 @@
                 android:src="@mipmap/ic_arrow_right"
                 android:textColor="@color/color_000000" />
         </RelativeLayout>
+
         <TextView
             android:id="@+id/tv_delete_wallet"
             android:layout_width="match_parent"
@@ -187,6 +189,6 @@
             android:text="@string/delete_wallet"
             android:textSize="@dimen/sp_14"
             android:textColor="@color/color_E11334"
-            android:background="@color/color_FFFFFF"/>
+            android:background="@color/color_FFFFFF" />
     </LinearLayout>
 </layout>

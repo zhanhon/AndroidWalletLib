@@ -38,6 +38,7 @@
                 tools:text="25323232323" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             style="@style/MatchMatch"

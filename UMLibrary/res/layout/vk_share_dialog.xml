@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context="com.vk.sdk.dialogs.VKShareDialog"
     tools:ignore="RtlHardcoded">
+
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -24,8 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/sendButtonLayout"
-            >
+            android:layout_toLeftOf="@+id/sendButtonLayout">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
                 android:layout_marginLeft="@dimen/vk_share_top_image_margin"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_ab_app"
-                android:contentDescription="@string/vk_name"/>
+                android:contentDescription="@string/vk_name" />
 
             <TextView
                 android:layout_width="match_parent"

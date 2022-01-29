@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <LinearLayout
         android:id="@+id/item_transfer"
         android:layout_width="match_parent"
@@ -78,10 +79,11 @@
             </LinearLayout>
 
         </LinearLayout>
+
         <View
             android:layout_marginStart="@dimen/dp_60"
             android:background="@color/path_game_item_selected"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_08"/>
+            android:layout_height="@dimen/dp_08" />
     </LinearLayout>
 </layout>

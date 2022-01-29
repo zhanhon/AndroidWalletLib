@@ -31,119 +31,93 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-public class BIP39
-{
-    public static byte[] decode (String mnemonic, String passphrase) throws ValidationException
-    {
+public class BIP39 {
+    public static byte[] decode(String mnemonic, String passphrase) throws ValidationException {
         StringTokenizer tokenizer = new StringTokenizer(mnemonic);
-        int nt = tokenizer.countTokens ();
-        if ( nt % 6 != 0 )
-        {
-            throw new ValidationException ("invalid mnemonic - word cound not divisible by 6");
+        int nt = tokenizer.countTokens();
+        if (nt % 6 != 0) {
+            throw new ValidationException("invalid mnemonic - word cound not divisible by 6");
         }
         boolean[] bits = new boolean[11 * nt];
         int i = 0;
-        while ( tokenizer.hasMoreElements () )
-        {
-            int c = Arrays.binarySearch (english, tokenizer.nextToken ());
-            for ( int j = 0; j < 11; ++j )
-            {
+        while (tokenizer.hasMoreElements()) {
+            int c = Arrays.binarySearch(english, tokenizer.nextToken());
+            for (int j = 0; j < 11; ++j) {
                 bits[i++] = (c & (1 << (10 - j))) > 0;
             }
         }
         byte[] data = new byte[bits.length / 33 * 4];
-        for ( i = 0; i < bits.length / 33 * 32; ++i )
-        {
+        for (i = 0; i < bits.length / 33 * 32; ++i) {
             data[i / 8] |= (bits[i] ? 1 : 0) << (7 - (i % 8));
         }
-        byte[] check = Hash.sha256 (data);
-        for ( i = bits.length / 33 * 32; i < bits.length; ++i )
-        {
-            if ( (check[(i - bits.length / 33 * 32) / 8] & (1 << (7 - (i % 8))) ^ (bits[i] ? 1 : 0) << (7 - (i % 8))) != 0 )
-            {
-                throw new ValidationException ("invalid mnemonic - checksum failed");
+        byte[] check = Hash.sha256(data);
+        for (i = bits.length / 33 * 32; i < bits.length; ++i) {
+            if ((check[(i - bits.length / 33 * 32) / 8] & (1 << (7 - (i % 8))) ^ (bits[i] ? 1 : 0) << (7 - (i % 8))) != 0) {
+                throw new ValidationException("invalid mnemonic - checksum failed");
             }
         }
-        try
-        {
-            SecretKey seedkey = new SecretKeySpec(("mnemonic" + passphrase).getBytes ("UTF-8"), "Blowfish");
-            Cipher cipher = Cipher.getInstance ("BlowFish/ECB/NoPadding");
-            cipher.init (Cipher.DECRYPT_MODE, seedkey);
-            for ( i = 0; i < 1000; ++i )
-            {
-                data = cipher.doFinal (data);
+        try {
+            SecretKey seedkey = new SecretKeySpec(("mnemonic" + passphrase).getBytes("UTF-8"), "Blowfish");
+            Cipher cipher = Cipher.getInstance("BlowFish/ECB/NoPadding");
+            cipher.init(Cipher.DECRYPT_MODE, seedkey);
+            for (i = 0; i < 1000; ++i) {
+                data = cipher.doFinal(data);
             }
-        }
-        catch ( UnsupportedEncodingException | NoSuchAlgorithmException |
-                NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e )
-        {
-            throw new ValidationException ("can not decrypt mnemonic", e);
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException |
+                NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+            throw new ValidationException("can not decrypt mnemonic", e);
         }
         return data;
     }
 
-    public static String encode (byte[] data, String passphrase) throws ValidationException
-    {
-        if ( data.length % 8 != 0 )
-        {
-            throw new ValidationException ("can nor encode - data length not divisible with 8");
+    public static String encode(byte[] data, String passphrase) throws ValidationException {
+        if (data.length % 8 != 0) {
+            throw new ValidationException("can nor encode - data length not divisible with 8");
         }
-        try
-        {
-            SecretKey seedkey = new SecretKeySpec(("mnemonic" + passphrase).getBytes ("UTF-8"), "Blowfish");
-            Cipher cipher = Cipher.getInstance ("BlowFish/ECB/NoPadding");
-            cipher.init (Cipher.ENCRYPT_MODE, seedkey);
-            for ( int i = 0; i < 1000; ++i )
-            {
-                data = cipher.doFinal (data);
+        try {
+            SecretKey seedkey = new SecretKeySpec(("mnemonic" + passphrase).getBytes("UTF-8"), "Blowfish");
+            Cipher cipher = Cipher.getInstance("BlowFish/ECB/NoPadding");
+            cipher.init(Cipher.ENCRYPT_MODE, seedkey);
+            for (int i = 0; i < 1000; ++i) {
+                data = cipher.doFinal(data);
             }
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException |
+                NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+            throw new ValidationException("can not decrypt mnemonic", e);
         }
-        catch ( UnsupportedEncodingException | NoSuchAlgorithmException |
-                NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e )
-        {
-            throw new ValidationException ("can not decrypt mnemonic", e);
-        }
-        return getMnemonic (data);
+        return getMnemonic(data);
     }
 
-    public static String getMnemonic (byte[] data) throws ValidationException
-    {
-        if ( data.length % 4 != 0 )
-        {
-            throw new ValidationException ("Invalid data length for mnemonic");
+    public static String getMnemonic(byte[] data) throws ValidationException {
+        if (data.length % 4 != 0) {
+            throw new ValidationException("Invalid data length for mnemonic");
         }
-        byte[] check = Hash.sha256 (data);
+        byte[] check = Hash.sha256(data);
 
         boolean[] bits = new boolean[data.length * 8 + data.length / 4];
 
-        for ( int i = 0; i < data.length; i++ )
-        {
-            for ( int j = 0; j < 8; j++ )
-            {
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < 8; j++) {
                 bits[8 * i + j] = (data[i] & (1 << (7 - j))) > 0;
             }
         }
-        for ( int i = 0; i < data.length / 4; i++ )
-        {
+        for (int i = 0; i < data.length / 4; i++) {
             bits[8 * data.length + i] = (check[i / 8] & (1 << (7 - (i % 8)))) > 0;
         }
 
         int mlen = data.length * 3 / 4;
         StringBuffer mnemo = new StringBuffer();
-        for ( int i = 0; i < mlen; i++ )
-        {
+        for (int i = 0; i < mlen; i++) {
             int idx = 0;
-            for ( int j = 0; j < 11; j++ )
-            {
+            for (int j = 0; j < 11; j++) {
                 idx += (bits[i * 11 + j] ? 1 : 0) << (10 - j);
             }
-            mnemo.append (english[idx]);
-            if ( i < mlen - 1 )
-            {
-                mnemo.append (" ");
+            mnemo.append(english[idx]);
+            if (i < mlen - 1) {
+                mnemo.append(" ");
             }
         }
-        return mnemo.toString ();
+        return mnemo.toString();
     }
 
     public final static String[] english = {

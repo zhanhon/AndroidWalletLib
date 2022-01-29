@@ -370,6 +370,7 @@ public class AbiUtil {
         }
         return ret;
     }
+
     public static long decodeABI(String input) {
         byte[] data;
         data = Hex.decode(input);

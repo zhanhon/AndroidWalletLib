@@ -9,9 +9,8 @@ import android.app.Activity
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.view.*
+import android.view.View
 import android.widget.Toast
-import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.Fragment
 
 

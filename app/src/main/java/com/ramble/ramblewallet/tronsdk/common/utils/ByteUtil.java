@@ -246,10 +246,11 @@ public class ByteUtil {
         }
         return -1;
     }
+
     public static byte[] copyToArray(BigInteger value) {
         byte[] dest = ByteBuffer.allocate(32).array();
         byte[] src = ByteUtil.bigIntegerToBytes(value);
-        if(src != null) {
+        if (src != null) {
             System.arraycopy(src, 0, dest, dest.length - src.length, src.length);
         }
         return dest;

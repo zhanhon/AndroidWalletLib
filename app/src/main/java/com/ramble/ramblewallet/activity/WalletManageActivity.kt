@@ -164,6 +164,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             }
         }
     }
+
     private var isWalletCurrency = false
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
         when (checkedId) {
@@ -259,7 +260,11 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                             }
                         }
                         saveWalletList = walletManageBean
-                        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+                        SharedPreferencesUtils.saveString(
+                            this,
+                            WALLETINFO,
+                            Gson().toJson(saveWalletList)
+                        )
                         loadData(walletManageBean)
                     }
                 } else {

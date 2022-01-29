@@ -185,7 +185,8 @@ public class GrpcClient {
             return blockingStubFull.getAccountById(request);
         }
     }
-    public GrpcAPI.DelegatedResourceList queryDgList(String fromAddress, String toAddress){
+
+    public GrpcAPI.DelegatedResourceList queryDgList(String fromAddress, String toAddress) {
 
         GrpcAPI.DelegatedResourceMessage drm = GrpcAPI.DelegatedResourceMessage.newBuilder().setFromAddress(ByteString.copyFrom(fromAddress.getBytes()))
                 .setToAddress(ByteString.copyFrom(toAddress.getBytes())).build();
@@ -195,6 +196,7 @@ public class GrpcClient {
             return blockingStubFull.getDelegatedResource(drm);
         }
     }
+
     //Warning: do not invoke this interface provided by others.
     @SuppressWarnings("unchecked")
     public Transaction signTransaction(Protocol.TransactionSign transactionSign) {
@@ -595,7 +597,6 @@ public class GrpcClient {
             return assetIssueList;
         }
     }
-
 
 
     @SuppressWarnings("unchecked")

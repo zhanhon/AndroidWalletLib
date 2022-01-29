@@ -40,25 +40,25 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
         typeText = getExtras().getInt(ARG_PARAM4, 0)
         binding.tvMineTitle.text = when (typeText) {
             1 -> {
-                binding.ivRight.visibility=View.GONE
+                binding.ivRight.visibility = View.GONE
                 getString(R.string.help_center_content)
             }
             2 -> {
-                binding.ivRight.visibility=View.GONE
+                binding.ivRight.visibility = View.GONE
                 getString(R.string.message_details)
             }
             3 -> {
-                binding.ivRight.visibility=View.GONE
+                binding.ivRight.visibility = View.GONE
                 getString(R.string.privacy_statement)
             }
             4 -> {
-                binding.ivRight.visibility=View.GONE
+                binding.ivRight.visibility = View.GONE
                 getString(R.string.service_agreement)
             }
             else -> getString(R.string.message_details)
         }
         binding.title1.text = title
-        binding.time2.text =if(createTime.isNotEmpty())"发布日期：$createTime"   else createTime
+        binding.time2.text = if (createTime.isNotEmpty()) "发布日期：$createTime" else createTime
         isCheckContent(content, title)
         initListener()
 

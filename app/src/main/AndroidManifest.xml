@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ramble.ramblewallet">
+
     <queries>
         <package android:name="com.instagram.android" />
         <package android:name="com.tencent.mm" />
@@ -65,14 +66,14 @@
         <activity android:name=".activity.MainETHActivity" />
         <activity android:name=".activity.MainTRXActivity" />
         <activity android:name=".activity.MainBTCActivity" />
-<!--        <meta-data-->
-<!--            android:name="UMENG_APPKEY"-->
-<!--            android:value="@string/umeng_msg_secret" >-->
-<!--        </meta-data>-->
+        <!--        <meta-data-->
+        <!--            android:name="UMENG_APPKEY"-->
+        <!--            android:value="@string/umeng_msg_secret" >-->
+        <!--        </meta-data>-->
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="@string/umeng_msg_secret" >
-        </meta-data>
+            android:value="@string/umeng_msg_secret"></meta-data>
+
         <service android:name=".push.MyNotificationService" />
         <service
             android:name=".push.UmengNotificationService"
@@ -80,6 +81,7 @@
 
         <receiver android:name=".push.NotificationBroadcast" />
     </application>
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />

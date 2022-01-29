@@ -23,9 +23,9 @@ class TokenManageItem(val data: StoreInfo) : CheckableSimpleRecyclerItem(), View
         val binding: TokenManageItemBinding = holder.binding()
         binding.tvTokenName.text = data.name
         binding.ivDelete.isVisible = isEditable
-        if (isEditable){
+        if (isEditable) {
             binding.ivTokenStatus.setImageResource(R.drawable.vector_token_move)
-        }else{
+        } else {
             if (data.isMyToken == 1) {
                 binding.ivTokenStatus.setImageResource(R.drawable.vector_token_reduce)
             } else {

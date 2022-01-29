@@ -9,14 +9,13 @@
     android:background="@color/white">
 
 
-
-        <ImageView
-            android:id="@+id/cl_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/vector_trx_selecter"
-            android:paddingLeft="@dimen/dp_10"
-            android:paddingRight="@dimen/dp_10"/>
+    <ImageView
+        android:id="@+id/cl_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/vector_trx_selecter"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -79,6 +78,6 @@
             android:src="@drawable/vector_reduce_address"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

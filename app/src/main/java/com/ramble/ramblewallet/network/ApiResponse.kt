@@ -7,7 +7,7 @@ import com.squareup.moshi.Json
  * 作者　: potato
  * 描述　:
  */
-class ApiResponse <T>(
+class ApiResponse<T>(
     @Json(name = "header") val header: Header?,
     @Json(name = "body") val body: Body<T>
 ) {

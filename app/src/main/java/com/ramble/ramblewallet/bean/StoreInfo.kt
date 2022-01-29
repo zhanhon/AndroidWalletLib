@@ -9,7 +9,7 @@ import java.io.Serializable
  * 作者　: potato
  * 描述　:
  */
-class StoreInfo @SuppressWarnings("unused") constructor() :  Serializable{
+class StoreInfo @SuppressWarnings("unused") constructor() : Serializable {
 
 
     @Json(name = "contractAddress")
@@ -25,14 +25,14 @@ class StoreInfo @SuppressWarnings("unused") constructor() :  Serializable{
     var name: String = ""//代币
 
     @Json(name = "platform")
-    var platform:Platform? = null//主链币
+    var platform: Platform? = null//主链币
 
 
     @Json(name = "platformId")
     var platformId: Int = -1//platformId
 
     @Json(name = "quote")
-    var quote:  List<Record> = listOf()
+    var quote: List<Record> = listOf()
 
     @Json(name = "rank")
     var rank: Int = 0//rank
@@ -51,26 +51,33 @@ class StoreInfo @SuppressWarnings("unused") constructor() :  Serializable{
 
     var isMyToken: Int = 0//是否我的资产0,不是 1 是的
 
-    class Record: Serializable {
+    class Record : Serializable {
         @Json(name = "cryptoId")
         var cryptoId: Int = -1//交易数量
+
         @Json(name = "symbol")
         var symbol: String = ""//币种
+
         @Json(name = "price")
         var price: Double = 0.00//转换金额
+
         @Json(name = "lastUpdated")
-        var lastUpdated:Long = -1//转换单位
+        var lastUpdated: Long = -1//转换单位
     }
 
-    class Platform: Serializable {
+    class Platform : Serializable {
         @Json(name = "id")
         var id: Int = 0//主键ID
+
         @Json(name = "name")
         var name: String = ""//代币
+
         @Json(name = "symbol")
         var symbol: String = ""//
+
         @Json(name = "slug")
         var slug: String = ""//
+
         @Json(name = "token_address")
         var token_address: String = ""//
     }

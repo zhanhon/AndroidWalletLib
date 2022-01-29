@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/ly_pull_refresh"
             android:layout_width="match_parent"
@@ -18,9 +20,10 @@
                 android:background="@color/color_FFFFFF"
                 android:scrollbars="vertical"
                 android:paddingBottom="@dimen/dp_10"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
         <RelativeLayout
             android:id="@+id/txt_empty"
             android:layout_width="match_parent"

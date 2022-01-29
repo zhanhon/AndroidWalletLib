@@ -46,7 +46,7 @@
             android:paddingHorizontal="@dimen/dp_5"
             android:textColor="@color/color_000000"
             android:textSize="@dimen/sp_14"
-            tools:text="@string/miner_fee_low_tips"/>
+            tools:text="@string/miner_fee_low_tips" />
 
         <Button
             android:id="@+id/btn_confirm"

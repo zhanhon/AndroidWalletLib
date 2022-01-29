@@ -3,9 +3,7 @@ package com.ramble.ramblewallet.utils;
 import android.text.TextUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,7 +46,6 @@ public class DateUtil {
         list.addAll(set);
         return list;
     }
-
 
 
 }

@@ -4,13 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
 import com.ramble.ramblewallet.activity.TransactionQueryActivity;
 import com.ramble.ramblewallet.activity.WelcomeActivity;
 import com.umeng.message.UTrack;
 import com.umeng.message.entity.UMessage;
 
 import org.json.JSONObject;
-
 
 
 public class NotificationBroadcast extends BroadcastReceiver {
@@ -44,8 +44,8 @@ public class NotificationBroadcast extends BroadcastReceiver {
                         data.setClass(context, WelcomeActivity.class);
                     } else if (msg.extra.get("message_type").equals("202")) {//公告
                         data.setClass(context, WelcomeActivity.class);
-                    } else if (msg.extra.get("message_type").equals("1")||msg.extra.get("message_type").equals("2")||
-                            msg.extra.get("message_type").equals("3")||msg.extra.get("message_type").equals("4")) {//交易记录
+                    } else if (msg.extra.get("message_type").equals("1") || msg.extra.get("message_type").equals("2") ||
+                            msg.extra.get("message_type").equals("3") || msg.extra.get("message_type").equals("4")) {//交易记录
                         data.setClass(context, TransactionQueryActivity.class);
                     } else {//其它
                         data.setClass(context, WelcomeActivity.class);

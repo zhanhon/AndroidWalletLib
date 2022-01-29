@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="@dimen/dp_10"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -12,12 +11,13 @@
         android:layout_height="@dimen/dp_80"
         android:background="@color/color_FFFFFF"
         android:padding="@dimen/dp_10">
+
         <ImageView
             android:id="@+id/iv_delete"
             android:layout_width="@dimen/dp_20"
             android:layout_height="@dimen/dp_20"
             android:layout_centerInParent="true"
-            android:background="@drawable/vector_not_deleted"/>
+            android:background="@drawable/vector_not_deleted" />
     </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,7 +47,7 @@
             android:textSize="@dimen/sp_13"
             android:layout_marginStart="@dimen/dp_10"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_currency_name"  />
+            app:layout_constraintStart_toEndOf="@id/tv_currency_name" />
 
         <TextView
             android:id="@+id/tv_is_choose"
@@ -60,7 +60,7 @@
             android:layout_marginStart="@dimen/dp_10"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/tv_currency_name"
-            app:layout_constraintStart_toEndOf="@id/tv_wallet_name"  />
+            app:layout_constraintStart_toEndOf="@id/tv_wallet_name" />
 
         <ImageView
             android:id="@+id/iv_wallet_more"
@@ -69,7 +69,7 @@
             android:layout_marginEnd="@dimen/dp_5"
             android:background="@drawable/vector_wallet_more"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/tv_currency_address"
@@ -89,7 +89,7 @@
             android:layout_marginEnd="@dimen/dp_5"
             android:background="@drawable/vector_home_copy"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -155,9 +155,9 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                             adapter.remove(it)
                         }
                         adapter.notifyDataSetChanged()
-                        var list=myStores.iterator()
+                        var list = myStores.iterator()
                         list.forEach {
-                            if (saveList.contains(it.id)){
+                            if (saveList.contains(it.id)) {
                                 list.remove()
                             }
                         }
@@ -168,7 +168,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             R.id.iv_token_status -> {
-                if (isShowCheck)return
+                if (isShowCheck) return
                 val position = AdapterUtils.getHolder(v).adapterPosition
                 val item = AdapterUtils.getHolder(v).getItem<TokenManageItem>().data
                 if (item.isMyToken == 0) {

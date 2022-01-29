@@ -10,7 +10,6 @@ import com.ramble.ramblewallet.push.UmInitConfig
 import com.umeng.commonsdk.UMConfigure
 
 
-
 /**
  * 时间　: 2021/12/15 9:50
  * 作者　: potato

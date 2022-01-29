@@ -25,7 +25,6 @@ import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.*
 import com.ramble.ramblewallet.ethereum.WalletETH
-import com.ramble.ramblewallet.helper.dismiss
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getEthMinerConfigUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -264,13 +263,20 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
                 override fun afterTextChanged(s: Editable?) {
                     if (edtWalletPassword.text.isNotEmpty()) {
-                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_green_bottom_btn)
+                        window.findViewById<Button>(R.id.btn_confirm).background =
+                            getDrawable(R.drawable.shape_green_bottom_btn)
                     } else {
-                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_gray_bottom_btn)
+                        window.findViewById<Button>(R.id.btn_confirm).background =
+                            getDrawable(R.drawable.shape_gray_bottom_btn)
                     }
                 }
 
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -459,12 +465,14 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 setMinerFee()
                 dialog.dismiss()
                 if ((BigDecimal(gasPrice) < BigDecimal(slowGasPrice))
-                    || (BigDecimal(gasLimit) < BigDecimal("210000"))){
+                    || (BigDecimal(gasLimit) < BigDecimal("210000"))
+                ) {
                     transactionFailDialog(getString(R.string.miner_fee_low_tips))
                     return@setOnClickListener
                 }
                 if ((BigDecimal(gasPrice) > BigDecimal(fastGasPrice))
-                    || (BigDecimal(gasLimit) < BigDecimal("1000000"))) {
+                    || (BigDecimal(gasLimit) < BigDecimal("1000000"))
+                ) {
                     transactionFailDialog(getString(R.string.miner_fee_high_tips))
                     return@setOnClickListener
                 }

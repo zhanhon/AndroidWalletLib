@@ -35,7 +35,7 @@ class Help {
         }
     }
 
-//    class adviceList(val data: String) : SimpleRecyclerItem() {
+    //    class adviceList(val data: String) : SimpleRecyclerItem() {
 //        override fun getLayout(): Int = R.layout.item_help_todo
 //
 //        override fun bind(holder: ViewHolder) {
@@ -64,7 +64,8 @@ class Help {
             holder.attachOnClickListener(R.id.item_help_todo)
         }
     }
-//
+
+    //
 //    class HotFaqMainList(val data: Faq) : SimpleRecyclerItem() {
 //        override fun getLayout(): Int = R.layout.item_sub_help_todo
 //

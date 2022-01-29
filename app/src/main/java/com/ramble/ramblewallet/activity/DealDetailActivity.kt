@@ -47,26 +47,26 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
         binding.mark.text = trans?.remark
         binding.transactionCode.text = trans?.txHash
         binding.blockNumber.text = trans?.blockNumber.toString()
-        binding.tvStatus.text=trans?.statusDesc
-        binding.tvTime.text= TimeUtils.dateToWeek(trans?.createTime) +"  "+trans?.createTime
+        binding.tvStatus.text = trans?.statusDesc
+        binding.tvTime.text = TimeUtils.dateToWeek(trans?.createTime) + "  " + trans?.createTime
         when (trans?.status) {
-            1 ->{
+            1 -> {
                 binding.ivStatus.setImageResource(R.drawable.ic_transing)
             }
             2 -> {
                 binding.ivStatus.setImageResource(R.drawable.ic_success)
-                when(trans?.transferType){
-                    2->{//转入
-                        binding.tvMoneyCount.text = "+"+trans?.amount
+                when (trans?.transferType) {
+                    2 -> {//转入
+                        binding.tvMoneyCount.text = "+" + trans?.amount
                         binding.tvMoneyType.text = trans?.unit
-                        binding.tvMoneyCount.setTextColor( Color.parseColor("#009474"))
-                        binding.tvMoneyType.setTextColor( Color.parseColor("#009474"))
+                        binding.tvMoneyCount.setTextColor(Color.parseColor("#009474"))
+                        binding.tvMoneyType.setTextColor(Color.parseColor("#009474"))
                     }
-                    1->{//转出
-                        binding.tvMoneyCount.text = "-"+trans?.amount
+                    1 -> {//转出
+                        binding.tvMoneyCount.text = "-" + trans?.amount
                         binding.tvMoneyType.text = trans?.unit
-                        binding.tvMoneyCount.setTextColor( Color.parseColor("#e11334"))
-                        binding.tvMoneyType.setTextColor( Color.parseColor("#e11334"))
+                        binding.tvMoneyCount.setTextColor(Color.parseColor("#e11334"))
+                        binding.tvMoneyType.setTextColor(Color.parseColor("#e11334"))
                     }
                 }
             }
@@ -74,8 +74,8 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
                 binding.ivStatus.setImageResource(R.drawable.ic_fail)
                 binding.tvMoneyCount.text = trans?.amount.toString()
                 binding.tvMoneyType.text = trans?.unit
-                binding.tvMoneyCount.setTextColor( Color.parseColor("#333333"))
-                binding.tvMoneyType.setTextColor( Color.parseColor("#333333"))
+                binding.tvMoneyCount.setTextColor(Color.parseColor("#333333"))
+                binding.tvMoneyType.setTextColor(Color.parseColor("#333333"))
             }
         }
 
@@ -105,7 +105,7 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
             R.id.number_copy -> {
                 ClipboardUtils.copy(binding.transactionCode.text.toString())
             }
-            R.id.btn_detail ->{
+            R.id.btn_detail -> {
                 var intent = Intent()
                 intent.action = "android.intent.action.VIEW"
                 intent.data = Uri.parse("https://etherscan.io/tx/${trans?.txHash}")

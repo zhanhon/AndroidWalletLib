@@ -25,21 +25,23 @@ class Page @SuppressWarnings("unused") constructor() {
     @Json(name = "totalPage")
     var totalPage: Int = 0
 
-    class Record:  Serializable{
+    class Record : Serializable {
         @Json(name = "content")
         var content: String = ""//公告内容
+
         @Json(name = "createTime")
         var createTime: String = ""//公告内容
+
         @Json(name = "title")
         var title: String = ""//标题
+
         @Json(name = "id")
         var id: Int = 0//公告ID
         var isRead: Int = 0//是否已读
+
         @Json(name = "lang")
         var lang: Int = 0//公告语言1:简体中文|2:繁体中文|3:英文
     }
-
-
 
 
     class Req(

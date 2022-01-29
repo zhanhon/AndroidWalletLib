@@ -18,7 +18,7 @@ import com.ramble.ramblewallet.wight.adapter.FragmentPagerAdapter2
  * 作者　: potato
  * 描述　: 交易查询
  */
-class TransactionQueryActivity : BaseActivity(), View.OnClickListener{
+class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
     private lateinit var adapter: MyAdapter
     private lateinit var binding: ActivityTransactionQueryBinding
 
@@ -34,7 +34,7 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener{
 
     private fun initView() {
         binding.tvMineTitle.text = getString(R.string.transaction_query)
-        adapter = MyAdapter(supportFragmentManager,this)
+        adapter = MyAdapter(supportFragmentManager, this)
         binding.pager.adapter = adapter
         binding.layoutTab.setViewPager(binding.pager)
     }
@@ -51,8 +51,15 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener{
         }
     }
 
-    class MyAdapter(fm: FragmentManager,activity: TransactionQueryActivity) : FragmentPagerAdapter2(fm) {
-        private val titles: Array<String> = arrayOf(activity.getString(R.string.transaction_query_all), activity.getString(R.string.transaction_query_chu), activity.getString(R.string.transaction_query_ru),activity.getString(R.string.transaction_query_fail))
+    class MyAdapter(fm: FragmentManager, activity: TransactionQueryActivity) :
+        FragmentPagerAdapter2(fm) {
+        private val titles: Array<String> = arrayOf(
+            activity.getString(R.string.transaction_query_all),
+            activity.getString(R.string.transaction_query_chu),
+            activity.getString(R.string.transaction_query_ru),
+            activity.getString(R.string.transaction_query_fail)
+        )
+
         override fun getItem(position: Int): Fragment {
             val gameType = when (position) {
                 0 -> 1

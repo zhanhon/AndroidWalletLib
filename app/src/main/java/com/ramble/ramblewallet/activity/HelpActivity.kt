@@ -13,7 +13,6 @@ import com.ramble.ramblewallet.bean.FaqInfos
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityHelpBinding
 import com.ramble.ramblewallet.helper.start
-import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.Help
 import com.ramble.ramblewallet.network.faqInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -58,7 +57,7 @@ class HelpActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("CheckResult")
     private fun loadData() {
-        var lang= when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
+        var lang = when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
             CN -> {
                 1
             }

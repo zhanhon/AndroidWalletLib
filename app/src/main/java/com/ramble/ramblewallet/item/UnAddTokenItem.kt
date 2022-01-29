@@ -11,7 +11,7 @@ import com.ramble.ramblewallet.wight.adapter.ViewHolder
  * 作者　: potato
  * 描述　:
  */
-class UnAddTokenItem (val data: StoreInfo) : SimpleRecyclerItem() {
+class UnAddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
 
     override fun getLayout(): Int = R.layout.item_add_token
 
@@ -26,9 +26,9 @@ class UnAddTokenItem (val data: StoreInfo) : SimpleRecyclerItem() {
             "LINK" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_link)
             "YFI" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_yfi)
             "UNI" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_uni)
-            else->binding.ivTokenIcon.setImageResource(R.drawable.vector_dai)
+            else -> binding.ivTokenIcon.setImageResource(R.drawable.vector_dai)
         }
-        binding.ivTokenStatus.setImageResource( R.drawable.vector_token_reduce)
+        binding.ivTokenStatus.setImageResource(R.drawable.vector_token_reduce)
         binding.tvTokenName.text = data.name
         holder.attachOnClickListener(R.id.add_view)
 //        holder.attachOnClickListener(R.id.iv_reduce)

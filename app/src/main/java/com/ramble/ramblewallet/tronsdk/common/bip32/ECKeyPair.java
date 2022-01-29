@@ -36,7 +36,8 @@ public class ECKeyPair {
 
     /**
      * Sign a hash with the private key of this key pair.
-     * @param transactionHash   the hash to sign
+     *
+     * @param transactionHash the hash to sign
      */
     public ECKey.ECDSASignature sign(byte[] transactionHash) {
         ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));

@@ -76,7 +76,8 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
             && (binding.edtWalletPassword.text.isNotEmpty())
             && (binding.edtPasswordConfirm.text.isNotEmpty())
             && (binding.edtWalletPassword.text.length >= 6)
-            && (binding.edtWalletPassword.text.trim().toString() == binding.edtPasswordConfirm.text.trim().toString())
+            && (binding.edtWalletPassword.text.trim()
+                .toString() == binding.edtPasswordConfirm.text.trim().toString())
         ) {
             binding.btnConfirm.background = getDrawable(R.drawable.shape_green_bottom_btn)
         } else {
@@ -103,7 +104,9 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
                     toastDefault(getString(R.string.password_less_six_tips))
                     return
                 }
-                if (binding.edtWalletPassword.text.trim().toString() != binding.edtPasswordConfirm.text.trim().toString()) {
+                if (binding.edtWalletPassword.text.trim()
+                        .toString() != binding.edtPasswordConfirm.text.trim().toString()
+                ) {
                     toastDefault(getString(R.string.different_password))
                     return
                 }

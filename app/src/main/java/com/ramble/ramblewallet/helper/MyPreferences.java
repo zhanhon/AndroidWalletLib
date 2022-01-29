@@ -4,10 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- *  时间　: 2021/12/15 11:43
- *  作者　: potato
- *  描述　:数据持久化类
- *
+ * 时间　: 2021/12/15 11:43
+ * 作者　: potato
+ * 描述　:数据持久化类
  */
 public class MyPreferences {
 

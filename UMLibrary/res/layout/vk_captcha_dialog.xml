@@ -1,6 +1,4 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/vk_grey_color"
@@ -16,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:id="@+id/progressBar"/>
+            android:id="@+id/progressBar" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -24,7 +22,7 @@
             android:id="@+id/imageView"
             android:layout_alignParentTop="true"
             android:visibility="gone"
-            android:contentDescription="@string/vk_enter_captcha_text"/>
+            android:contentDescription="@string/vk_enter_captcha_text" />
 
     </RelativeLayout>
 
@@ -38,5 +36,5 @@
         android:textColor="@color/vk_color"
         android:textColorHint="@color/vk_light_color"
         android:imeOptions="actionSend"
-        android:inputType="textFilter|textNoSuggestions|textVisiblePassword"/>
+        android:inputType="textFilter|textNoSuggestions|textVisiblePassword" />
 </RelativeLayout>

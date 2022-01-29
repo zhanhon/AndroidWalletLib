@@ -39,7 +39,7 @@ public class TransactionUtils {
         Transaction.Builder tmp = transaction.toBuilder();
         //tmp.clearId();
 
-        return  Sha256Hash.hash(tmp.build().toByteArray());
+        return Sha256Hash.hash(tmp.build().toByteArray());
     }
 
     //---------------

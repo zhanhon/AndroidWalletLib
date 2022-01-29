@@ -12,7 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
  * 作者　: potato
  * 描述　:
  */
-abstract class BaseFragment  : Fragment(), View.OnClickListener {
+abstract class BaseFragment : Fragment(), View.OnClickListener {
     @JvmField
     protected val onPauseComposite = CompositeDisposable()
 

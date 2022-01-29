@@ -63,7 +63,6 @@ public class Wallet {
     }
 
 
-
     public boolean isOpen() {
         return mECKey != null && mECKey.getPrivKeyBytes() != null;
     }

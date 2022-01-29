@@ -74,9 +74,9 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
                 ""
             )
         ) as ArrayList<StoreInfo>
-        var list=myDataBeansMyAssets.iterator()
+        var list = myDataBeansMyAssets.iterator()
         list.forEach {
-            if (it.isMyToken==0){
+            if (it.isMyToken == 0) {
                 list.remove()
             }
         }
@@ -87,10 +87,10 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
                 it.data()?.let { data ->
-                    data.forEach { info->
-                        myDataBeansMyAssets.forEach {  bean->
-                            if (info.id==bean.id){
-                                info.isMyToken=1
+                    data.forEach { info ->
+                        myDataBeansMyAssets.forEach { bean ->
+                            if (info.id == bean.id) {
+                                info.isMyToken = 1
                             }
                         }
                     }
@@ -111,8 +111,6 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
     }
 
 
-
-
     override fun onClick(v: View) {
         when (v.id) {
             R.id.iv_back, R.id.tv_clear -> {
@@ -126,16 +124,16 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
                 searchData(lastString)
             }
             R.id.iv_delete -> {
-                binding.etSearch.text=null
+                binding.etSearch.text = null
             }
 
             R.id.add_view -> {
                 val position = AdapterUtils.getHolder(v).adapterPosition
                 val item = AdapterUtils.getHolder(v).getItem<AddTokenItem>().data
-                if (item.isMyToken==0){
-                    item.isMyToken=1
-                }else{
-                    item.isMyToken=0
+                if (item.isMyToken == 0) {
+                    item.isMyToken = 1
+                } else {
+                    item.isMyToken = 0
                 }
                 adapter.notifyItemChanged(position)
                 RxBus.emitEvent(Pie.EVENT_MINUS_TOKEN, item)

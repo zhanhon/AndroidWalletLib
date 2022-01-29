@@ -85,7 +85,7 @@
         android:text="@string/import_wallet"
         android:textSize="@dimen/sp_14"
         android:textColor="@color/color_000000"
-        android:background="@color/color_F9F9F9"/>
+        android:background="@color/color_F9F9F9" />
 
     <RelativeLayout
         android:id="@+id/rl_contributing_words"

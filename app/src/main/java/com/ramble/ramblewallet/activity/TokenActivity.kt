@@ -124,7 +124,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
     override fun onRxBus(event: RxBus.Event) {
         super.onRxBus(event)
         when (event.id()) {
-            Pie.EVENT_ADD_TOKEN,Pie.EVENT_MINUS_TOKEN -> {
+            Pie.EVENT_ADD_TOKEN, Pie.EVENT_MINUS_TOKEN -> {
                 myStores = arrayListOf()
                 adapter.clear()
                 myStores = SharedPreferencesUtils.String2SceneList(
@@ -151,7 +151,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                     adapter.addAll(this.toList())
                 }
             }
-            Pie.EVENT_DEL_TOKEN->{
+            Pie.EVENT_DEL_TOKEN -> {
                 myStores = arrayListOf()
                 adapter.clear()
                 myStores = SharedPreferencesUtils.String2SceneList(
@@ -185,10 +185,10 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
             R.id.add_view -> {
                 val position = AdapterUtils.getHolder(v).adapterPosition
                 val item = AdapterUtils.getHolder(v).getItem<AddTokenItem>().data
-                if (item.isMyToken==0){
-                    item.isMyToken=1
-                }else{
-                    item.isMyToken=0
+                if (item.isMyToken == 0) {
+                    item.isMyToken = 1
+                } else {
+                    item.isMyToken = 0
                 }
                 myStores[position] = item
                 var addId = SharedPreferencesUtils.SceneList2String(myStores)

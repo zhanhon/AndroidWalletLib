@@ -68,6 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <RadioButton
                         android:id="@+id/check_all"
                         android:layout_width="wrap_content"
@@ -79,6 +80,7 @@
                         android:background="@drawable/selector_check_meun"
                         android:button="@null"
                         android:gravity="center" />
+
                     <RadioButton
                         android:id="@+id/check_bt"
                         android:layout_width="wrap_content"
@@ -90,6 +92,7 @@
                         android:background="@drawable/selector_check_bt"
                         android:button="@null"
                         android:gravity="center" />
+
                     <RadioButton
                         android:id="@+id/check_eth"
                         android:layout_width="wrap_content"
@@ -101,6 +104,7 @@
                         android:background="@drawable/selector_check_eth"
                         android:button="@null"
                         android:gravity="center" />
+
                     <RadioButton
                         android:id="@+id/check_trx"
                         android:layout_width="wrap_content"
@@ -138,13 +142,14 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/my_address"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black" />
 
                     <ImageView
                         android:id="@+id/add"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/vector_add_address" />
+
                     <ImageView
                         android:id="@+id/delete"
                         android:layout_marginStart="@dimen/dp_22"

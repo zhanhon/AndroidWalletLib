@@ -48,13 +48,13 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
     private var isLight = false
     private var zxingview: ZXingView? = null
     var isChecked: Boolean = false
-    private var type=0
+    private var type = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scan)
-        type=getExtras().getInt(ARG_PARAM1,0)
+        type = getExtras().getInt(ARG_PARAM1, 0)
         zxingview = findViewById(R.id.zxingview)
         zxingview?.setDelegate(this)
         initView()
@@ -76,7 +76,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
         if (!EasyPermissions.hasPermissions(this, *perms)) {
             EasyPermissions.requestPermissions(
                 this,
-                 getString(R.string.alert_request_permission),
+                getString(R.string.alert_request_permission),
                 1,
                 *perms
             )
@@ -85,10 +85,10 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if ( requestCode == REQUEST_CODE_1029 && resultCode == Activity.RESULT_OK) {
-            if (Matisse.obtainPathResult(data).isNotEmpty()){
+        if (requestCode == REQUEST_CODE_1029 && resultCode == Activity.RESULT_OK) {
+            if (Matisse.obtainPathResult(data).isNotEmpty()) {
                 val uris = Matisse.obtainResult(data)
-                val uri: Uri? =uris[0]
+                val uri: Uri? = uris[0]
                 try {
                     val result: Result? = scanningImage(uri)
                     if (result != null) {
@@ -185,20 +185,20 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
     override fun onScanQRCodeSuccess(result: String?) {
         vibrate()
         zxingview?.stopSpot()
-        when(type){
-            1->{
+        when (type) {
+            1 -> {
                 RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_SCAN, result)
                 finish()
             }
-            2->{
+            2 -> {
                 RxBus.emitEvent(Pie.EVENT_ADDRESS_TRANS_SCAN, result)
                 finish()
             }
-            3->{
+            3 -> {
                 RxBus.emitEvent(Pie.EVENT_ADDRESS_TRANS_SCAN, result)
                 finish()
             }
-            else->transDialog(result)
+            else -> transDialog(result)
         }
 
     }
@@ -222,7 +222,8 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
             window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             window.findViewById<View>(R.id.tv_address)
                 .findViewById<TextView>(R.id.tv_address).text = result
-            window.findViewById<View>(R.id.tv_check).findViewById<AppCompatCheckBox>(R.id.tv_check).isChecked = isChecked
+            window.findViewById<View>(R.id.tv_check)
+                .findViewById<AppCompatCheckBox>(R.id.tv_check).isChecked = isChecked
             window.findViewById<View>(R.id.ok).setOnClickListener { v1: View? ->
                 dialogLanguage.dismiss()
                 finish()

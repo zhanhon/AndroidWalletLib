@@ -5,7 +5,7 @@ package com.ramble.ramblewallet.bean
  * 作者　: potato
  * 描述　:
  */
-class MyAddressBean@SuppressWarnings("unused") constructor()  {
+class MyAddressBean @SuppressWarnings("unused") constructor() {
 
     var userName: String = ""
 

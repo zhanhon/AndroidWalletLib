@@ -99,13 +99,20 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
                 override fun afterTextChanged(s: Editable?) {
                     if (edtWalletPassword.text.isNotEmpty()) {
-                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_green_bottom_btn)
+                        window.findViewById<Button>(R.id.btn_confirm).background =
+                            getDrawable(R.drawable.shape_green_bottom_btn)
                     } else {
-                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_gray_bottom_btn)
+                        window.findViewById<Button>(R.id.btn_confirm).background =
+                            getDrawable(R.drawable.shape_gray_bottom_btn)
                     }
                 }
 
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -146,13 +153,20 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
                 override fun afterTextChanged(s: Editable?) {
                     if (edtWalletName.text.isNotEmpty()) {
-                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_green_bottom_btn)
+                        window.findViewById<Button>(R.id.btn_confirm).background =
+                            getDrawable(R.drawable.shape_green_bottom_btn)
                     } else {
-                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_gray_bottom_btn)
+                        window.findViewById<Button>(R.id.btn_confirm).background =
+                            getDrawable(R.drawable.shape_gray_bottom_btn)
                     }
                 }
 
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -174,7 +188,8 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             dialogTheme(window)
 
             window.findViewById<TextView>(R.id.tv_title).text = title
-            window.findViewById<EditText>(R.id.edt_secret_key).setText(walletCurrent.privateKey.toString())
+            window.findViewById<EditText>(R.id.edt_secret_key)
+                .setText(walletCurrent.privateKey.toString())
             window.findViewById<Button>(R.id.btn_copy).setOnClickListener {
                 ClipboardUtils.copy(walletCurrent.privateKey.toString())
             }
@@ -183,13 +198,20 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
                 override fun afterTextChanged(s: Editable?) {
                     if (edtWalletName.text.isNotEmpty()) {
-                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_green_bottom_btn)
+                        window.findViewById<Button>(R.id.btn_confirm).background =
+                            getDrawable(R.drawable.shape_green_bottom_btn)
                     } else {
-                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_gray_bottom_btn)
+                        window.findViewById<Button>(R.id.btn_confirm).background =
+                            getDrawable(R.drawable.shape_gray_bottom_btn)
                     }
                 }
 
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -211,8 +233,9 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             dialogTheme(window)
 
             window.findViewById<TextView>(R.id.tv_title).text = title
-            window.findViewById<EditText>(R.id.edt_keystore).setText(walletCurrent.keystore.toString())
-            window.findViewById<Button>(R.id.btn_copy).setOnClickListener{
+            window.findViewById<EditText>(R.id.edt_keystore)
+                .setText(walletCurrent.keystore.toString())
+            window.findViewById<Button>(R.id.btn_copy).setOnClickListener {
                 ClipboardUtils.copy(walletCurrent.keystore.toString())
             }
             val edtWalletName = window.findViewById<TextView>(R.id.edt_wallet_name)
@@ -220,15 +243,24 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
                 override fun afterTextChanged(s: Editable?) {
                     if (edtWalletName.text.isNotEmpty()) {
-                        window.findViewById<Button>(R.id.btn_generate_qr_code).background = getDrawable(R.drawable.shape_green_bottom_btn)
-                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_green_bottom_btn)
+                        window.findViewById<Button>(R.id.btn_generate_qr_code).background =
+                            getDrawable(R.drawable.shape_green_bottom_btn)
+                        window.findViewById<Button>(R.id.btn_confirm).background =
+                            getDrawable(R.drawable.shape_green_bottom_btn)
                     } else {
-                        window.findViewById<Button>(R.id.btn_generate_qr_code).background = getDrawable(R.drawable.shape_gray_bottom_btn)
-                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_gray_bottom_btn)
+                        window.findViewById<Button>(R.id.btn_generate_qr_code).background =
+                            getDrawable(R.drawable.shape_gray_bottom_btn)
+                        window.findViewById<Button>(R.id.btn_confirm).background =
+                            getDrawable(R.drawable.shape_gray_bottom_btn)
                     }
                 }
 
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {

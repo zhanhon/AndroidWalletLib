@@ -104,7 +104,6 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
     }
 
 
-
     /***
      * 过滤重复信息
      */
@@ -174,7 +173,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                     adapter.addAll(this.toList())
                 }
             }
-            Pie.EVENT_DEL_TOKEN->{
+            Pie.EVENT_DEL_TOKEN -> {
                 myDataBeansMyAssets = arrayListOf()
                 adapter.clear()
                 recommendTokenAdapter.clear()
