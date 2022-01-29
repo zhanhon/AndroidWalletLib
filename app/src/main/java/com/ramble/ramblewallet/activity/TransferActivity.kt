@@ -45,6 +45,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private var slowGasPrice: String? = ""
     private var gasPrice: String? = ""
     private var rate: String? = ""
+    private var gas: BigDecimal= BigDecimal("0.00")
 
     private var isCustom = false
     private lateinit var walletSelleted: WalletETH
@@ -190,21 +191,12 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setMinerFee() {
+        gas = BigDecimal(gasPrice).multiply(BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
         when (walletSelleted.walletType) {
             1 -> {
-                binding.tvMinerFeeValue.text = "${
-                    DecimalFormatUtil.format8.format(
-                        (BigDecimal(gasPrice)
-                                * BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
-                    )
-                } ETH"
+                binding.tvMinerFeeValue.text = "${DecimalFormatUtil.format8.format(gas)} ETH"
                 binding.tvMinerFeeValueConvert.text = "≈${currencySymbol}${
-                    DecimalFormatUtil.format2.format(
-                        BigDecimal(rate).multiply(
-                            (BigDecimal(gasPrice)
-                                    * BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
-                        )
-                    )
+                    DecimalFormatUtil.format2.format(BigDecimal(rate).multiply(gas))
                 }"
             }
             2 -> {
@@ -423,23 +415,17 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
             when (walletSelleted.walletType) {
                 1 -> {
-                    DecimalFormatUtil.format8.format(
-                        (BigInteger(gasPrice) * BigInteger(gasLimit)) / BigInteger(
-                            "1000000000"
-                        )
-                    )
+                    gas = BigDecimal(gasPrice).multiply(BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
                     window.findViewById<TextView>(R.id.tv_transfer_gas_fast).text =
                         "${
                             DecimalFormatUtil.format8.format(
-                                (BigDecimal(fastGasPrice)
-                                        * BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
+                                BigDecimal(fastGasPrice).multiply(BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
                             )
                         } ETH"
                     window.findViewById<TextView>(R.id.tv_transfer_gas_slow).text =
                         "${
                             DecimalFormatUtil.format8.format(
-                                (BigDecimal(slowGasPrice)
-                                        * BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
+                                BigDecimal(slowGasPrice).multiply(BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
                             )
                         } ETH"
                 }
@@ -465,7 +451,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 setMinerFee()
                 dialog.dismiss()
                 if ((BigDecimal(gasPrice) < BigDecimal(slowGasPrice))
-                    || (BigDecimal(gasLimit) < BigDecimal("210000"))
+                    || (BigDecimal(gasLimit) < BigDecimal("21000"))
                 ) {
                     transactionFailDialog(getString(R.string.miner_fee_low_tips))
                     return@setOnClickListener

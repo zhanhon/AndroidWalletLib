@@ -53,7 +53,8 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private var ethBalance: BigDecimal = BigDecimal("0.00000000")
     private var tokenUsdtBalance: BigDecimal = BigDecimal("0.00000000")
     private var totalBalance: BigDecimal = BigDecimal("0.00000000")
-    private var rate: String? = ""
+    private var rateETH: String? = ""
+    private var rateToken: String? = ""
 
     //DAI:4 0x16aFDD5dfE386052766b798bFA37DAec4b81155a
     private var contractAddress = "0xb319d1A045ffe108D14195F7C5d60Be220436a34" //测试节点ERC-USDT:6合约地址
@@ -81,7 +82,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                     it.putString(ARG_PARAM1, event.data())
                     it.putString(ARG_PARAM2, "ETH")
                     it.putBoolean(ARG_PARAM3, false)
-                    it.putString(ARG_PARAM4, rate)
+                    it.putString(ARG_PARAM4, rateETH)
                 })
             }
         }
@@ -109,7 +110,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(ARG_PARAM2, "ETH")
                     putExtra(ARG_PARAM3, false)
-                    putExtra(ARG_PARAM4, rate)
+                    putExtra(ARG_PARAM4, rateETH)
                 })
             }
             R.id.iv_scan_top, R.id.ll_scan -> {
@@ -243,7 +244,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         animator = null
     }
 
-    private fun showTransferGatheringDialog(tokenName: String) {
+    private fun showTransferGatheringDialog(mainETHTokenBean: MainETHTokenBean) {
         var dialog = AlertDialog.Builder(this).create()
         dialog.show()
         val window: Window? = dialog.window
@@ -256,13 +257,13 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             val tvTransfer = window.findViewById<TextView>(R.id.tv_transfer)
             val tvGathering = window.findViewById<TextView>(R.id.tv_gathering)
 
-            tvTokenTitle.text = tokenName
+            tvTokenTitle.text = mainETHTokenBean.name
 
             tvTransfer.setOnClickListener { v1: View? ->
                 startActivity(Intent(this, TransferActivity::class.java).apply {
-                    putExtra(ARG_PARAM2, tokenName)
+                    putExtra(ARG_PARAM2, mainETHTokenBean.name)
                     putExtra(ARG_PARAM3, true)
-                    putExtra(ARG_PARAM4, rate)
+                    putExtra(ARG_PARAM4, rateETH)
                 })
                 dialog.dismiss()
             }
@@ -301,18 +302,18 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                             mainETHTokenBean.clear()
                             if (rateBean.isNotEmpty()) {
                                 rateBean.forEach { //标题：ETH
-                                    when (currencyUnit) {
-                                        RMB -> rate = it.rateCny
-                                        HKD -> rate = it.rateHkd
-                                        USD -> rate = it.rateUsd
-                                    }
                                     if (it.currencyType == "ETH") {
-                                        ethLegal = ethBalance.multiply(BigDecimal(rate))
+                                        when (currencyUnit) {
+                                            RMB -> rateETH = it.rateCny
+                                            HKD -> rateETH = it.rateHkd
+                                            USD -> rateETH = it.rateUsd
+                                        }
+                                        ethLegal = ethBalance.multiply(BigDecimal(rateETH))
                                         mainETHTokenBean.add(
                                             MainETHTokenBean(
                                                 it.currencyType,
                                                 ethBalance,
-                                                BigDecimal(rate),
+                                                BigDecimal(rateETH),
                                                 currencyUnit,
                                                 BigDecimal(it.change)
                                             )
@@ -342,13 +343,18 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                     rateBean.forEach { rateBean ->
                                         saveTokenList.forEach { saveToken ->
                                             if (saveToken.name == rateBean.currencyType) {
+                                                when (currencyUnit) {
+                                                    RMB -> rateToken = rateBean.rateCny
+                                                    HKD -> rateToken = rateBean.rateHkd
+                                                    USD -> rateToken = rateBean.rateUsd
+                                                }
                                                 tokenUsdtLegal =
-                                                    tokenUsdtBalance.multiply(BigDecimal(rate))
+                                                    tokenUsdtBalance.multiply(BigDecimal(rateToken))
                                                 mainETHTokenBean.add(
                                                     MainETHTokenBean(
                                                         rateBean.currencyType,
                                                         tokenUsdtBalance,
-                                                        BigDecimal(rate),
+                                                        BigDecimal(rateToken),
                                                         currencyUnit,
                                                         BigDecimal(rateBean.change)
                                                     )
@@ -362,7 +368,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                 mainAdapter.setOnItemClickListener { adapter, view, position ->
                                     if (adapter.getItem(position) is MainETHTokenBean) {
                                         if ((adapter.getItem(position) as MainETHTokenBean).name != "ETH") {
-                                            showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean).name)
+                                            showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
                                         }
                                     }
                                 }
