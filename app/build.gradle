@@ -18,8 +18,6 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
-        buildConfigField "long", "PLATFORM_ID", '1'
-        buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.229.173.84:8095/"}'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //flavorDimensions "default"
         ndk {//PushSDK目前只支持4种架构

@@ -5,12 +5,15 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
@@ -23,6 +26,7 @@ import com.ramble.ramblewallet.databinding.ActivityWalletMoreOperateBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.toastDefault
 
 class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
 
@@ -49,7 +53,6 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
     private fun initClick() {
         binding.ivBack.setOnClickListener(this)
         binding.rlEditWallet.setOnClickListener(this)
-        binding.rlContributingWordsBackups.setOnClickListener(this)
         binding.rlSecretKeyBackups.setOnClickListener(this)
         binding.rlKeystoreBackups.setOnClickListener(this)
         binding.tvDeleteWallet.setOnClickListener(this)
@@ -61,16 +64,13 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.rl_edit_wallet -> {
-                editWalletDialog()
-            }
-            R.id.rl_contributing_words_backups -> {
-                contributingWordsDialog()
+                inputPasswordDialog(getString(R.string.edit_wallet))
             }
             R.id.rl_secret_key_backups -> {
-                secretKeyDialog()
+                inputPasswordDialog(getString(R.string.secret_key_backup))
             }
             R.id.rl_keystore_backups -> {
-                keystoreDialog()
+                inputPasswordDialog(getString(R.string.keystore_backup))
             }
             R.id.tv_delete_wallet -> {
                 val list = saveWalletList.iterator()
@@ -85,52 +85,158 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun editWalletDialog() {
-        var dialogEditWallet = AlertDialog.Builder(this).create()
-        dialogEditWallet.show()
-        val window: Window? = dialogEditWallet.window
+    private fun inputPasswordDialog(title: String) {
+        var dialog = AlertDialog.Builder(this).create()
+        dialog.show()
+        val window: Window? = dialog.window
         if (window != null) {
-            window.setContentView(R.layout.dialog_edit_wallet)
-            dialogTheme(window)
-        }
-    }
-
-    private fun contributingWordsDialog() {
-        var dialogContributingWords = AlertDialog.Builder(this).create()
-        dialogContributingWords.show()
-        val window: Window? = dialogContributingWords.window
-        if (window != null) {
-            window.setContentView(R.layout.dialog_contributing_words)
-            dialogTheme(window)
-        }
-    }
-
-    private fun secretKeyDialog() {
-        var dialogcSecretKey = AlertDialog.Builder(this).create()
-        dialogcSecretKey.show()
-        val window: Window? = dialogcSecretKey.window
-        if (window != null) {
-            window.setContentView(R.layout.dialog_secret_key)
+            window.setContentView(R.layout.dialog_input_password)
             dialogTheme(window)
 
-            window.findViewById<EditText>(R.id.edt_secret_key).setText(walletCurrent.privateKey.toString())
-            window.findViewById<Button>(R.id.btn_copy).setOnClickListener {
-                ClipboardUtils.copy(walletCurrent.privateKey.toString())
+            window.findViewById<TextView>(R.id.tv_title).text = title
+            val edtWalletPassword = window.findViewById<TextView>(R.id.edt_wallet_password)
+            edtWalletPassword.addTextChangedListener(object : TextWatcher {
+                @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+                override fun afterTextChanged(s: Editable?) {
+                    if (edtWalletPassword.text.isNotEmpty()) {
+                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_green_bottom_btn)
+                    } else {
+                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_gray_bottom_btn)
+                    }
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            })
+            window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
+                if (edtWalletPassword.text.trim().toString() == walletCurrent.walletPassword) {
+                    when (title) {
+                        getString(R.string.edit_wallet) -> {
+                            editWalletDialog(title)
+                        }
+                        getString(R.string.secret_key_backup) -> {
+                            secretKeyDialog(title)
+                        }
+                        getString(R.string.keystore_backup) -> {
+                            keystoreDialog(title)
+                        }
+                    }
+                    dialog.dismiss()
+                } else {
+                    toastDefault(getString(R.string.input_correct_wallet_password))
+                }
             }
         }
     }
 
-    private fun keystoreDialog() {
-        var dialogKeystore = AlertDialog.Builder(this).create()
-        dialogKeystore.show()
-        val window: Window? = dialogKeystore.window
+    private fun editWalletDialog(title: String) {
+        var dialog = AlertDialog.Builder(this).create()
+        dialog.show()
+        val window: Window? = dialog.window
+        if (window != null) {
+            window.setContentView(R.layout.dialog_edit_wallet)
+            dialogTheme(window)
+
+            window.findViewById<TextView>(R.id.tv_title).text = title
+            val edtWalletName = window.findViewById<TextView>(R.id.edt_wallet_name)
+            edtWalletName.addTextChangedListener(object : TextWatcher {
+                @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+                override fun afterTextChanged(s: Editable?) {
+                    if (edtWalletName.text.isNotEmpty()) {
+                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_green_bottom_btn)
+                    } else {
+                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_gray_bottom_btn)
+                    }
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            })
+            window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
+                dialog.dismiss()
+            }
+
+        }
+    }
+
+    private fun secretKeyDialog(title: String) {
+        var dialog = AlertDialog.Builder(this).create()
+        dialog.show()
+        val window: Window? = dialog.window
+        if (window != null) {
+            window.setContentView(R.layout.dialog_secret_key)
+            dialogTheme(window)
+
+            window.findViewById<TextView>(R.id.tv_title).text = title
+            window.findViewById<EditText>(R.id.edt_secret_key).setText(walletCurrent.privateKey.toString())
+            window.findViewById<Button>(R.id.btn_copy).setOnClickListener {
+                ClipboardUtils.copy(walletCurrent.privateKey.toString())
+            }
+            val edtWalletName = window.findViewById<TextView>(R.id.edt_wallet_name)
+            edtWalletName.addTextChangedListener(object : TextWatcher {
+                @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+                override fun afterTextChanged(s: Editable?) {
+                    if (edtWalletName.text.isNotEmpty()) {
+                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_green_bottom_btn)
+                    } else {
+                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_gray_bottom_btn)
+                    }
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            })
+
+            window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+    }
+
+    private fun keystoreDialog(title: String) {
+        var dialog = AlertDialog.Builder(this).create()
+        dialog.show()
+        val window: Window? = dialog.window
         if (window != null) {
             window.setContentView(R.layout.dialog_keystore)
             dialogTheme(window)
 
+            window.findViewById<TextView>(R.id.tv_title).text = title
             window.findViewById<EditText>(R.id.edt_keystore).setText(walletCurrent.keystore.toString())
             window.findViewById<Button>(R.id.btn_copy).setOnClickListener{
                 ClipboardUtils.copy(walletCurrent.keystore.toString())
+            }
+            val edtWalletName = window.findViewById<TextView>(R.id.edt_wallet_name)
+            edtWalletName.addTextChangedListener(object : TextWatcher {
+                @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+                override fun afterTextChanged(s: Editable?) {
+                    if (edtWalletName.text.isNotEmpty()) {
+                        window.findViewById<Button>(R.id.btn_generate_qr_code).background = getDrawable(R.drawable.shape_green_bottom_btn)
+                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_green_bottom_btn)
+                    } else {
+                        window.findViewById<Button>(R.id.btn_generate_qr_code).background = getDrawable(R.drawable.shape_gray_bottom_btn)
+                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_gray_bottom_btn)
+                    }
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            })
+
+            window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
+                dialog.dismiss()
             }
         }
     }

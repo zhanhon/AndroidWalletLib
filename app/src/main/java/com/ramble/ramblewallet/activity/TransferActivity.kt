@@ -7,6 +7,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -258,6 +260,22 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             val tvTransferTile = window.findViewById<TextView>(R.id.tv_transfer_tile)
             tvTransferTile.text = transferTitle + getString(R.string.transfer)
             val edtWalletPassword = window.findViewById<TextView>(R.id.edt_wallet_password)
+            edtWalletPassword.addTextChangedListener(object : TextWatcher {
+                @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+                override fun afterTextChanged(s: Editable?) {
+                    if (edtWalletPassword.text.isNotEmpty()) {
+                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_green_bottom_btn)
+                    } else {
+                        window.findViewById<Button>(R.id.btn_confirm).background = getDrawable(R.drawable.shape_gray_bottom_btn)
+                    }
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            })
             val btnConfirm = window.findViewById<Button>(R.id.btn_confirm)
             btnConfirm.setOnClickListener {
                 if (edtWalletPassword.text.trim().toString() == walletSelleted.walletPassword) {
