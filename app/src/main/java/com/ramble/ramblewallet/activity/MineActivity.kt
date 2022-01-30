@@ -130,22 +130,16 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             R.id.inc_service_agreement -> {
                 start(MsgDetailsActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, getString(R.string.service_agreement))
-                    it.putString(
-                        ARG_PARAM2,
-                        "我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个，我是服务协议，我要打10个"
-                    )
-                    it.putString(ARG_PARAM3, "1111111111111111111111111")
+                    it.putString(ARG_PARAM2, "")
+                    it.putString(ARG_PARAM3, "")
                     it.putInt(ARG_PARAM4, 4)
                 })
             }
             R.id.inc_privacy_statement -> {
                 start(MsgDetailsActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, getString(R.string.privacy_statement))
-                    it.putString(
-                        ARG_PARAM2,
-                        "我是隐私声明，我要打10个，我是隐私声明，我要打10个，我是隐私声明，我要打10个，我是隐私声明，我要打10个，我是隐私声明，我要打10个，我是隐私声明，我要打10个"
-                    )
-                    it.putString(ARG_PARAM3, "1111111111111111111111111")
+                    it.putString(ARG_PARAM2, "")
+                    it.putString(ARG_PARAM3, "")
                     it.putInt(ARG_PARAM4, 3)
                 })
             }
