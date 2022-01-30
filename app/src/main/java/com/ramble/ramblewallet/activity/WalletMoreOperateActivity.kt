@@ -1,19 +1,24 @@
 package com.ramble.ramblewallet.activity
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
@@ -24,15 +29,19 @@ import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.WALLETINFO
 import com.ramble.ramblewallet.databinding.ActivityWalletMoreOperateBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
-import com.ramble.ramblewallet.utils.ClipboardUtils
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.toastDefault
+import com.ramble.ramblewallet.utils.*
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 
 class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityWalletMoreOperateBinding
     private lateinit var walletCurrent: WalletETH
     private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
+    private val sdCardDir =
+        Environment.getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DCIM
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -266,7 +275,10 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 }
             })
-
+            window.findViewById<Button>(R.id.btn_generate_qr_code).setOnClickListener { v1: View? ->
+                showSaveDialog()
+                dialog.dismiss()
+            }
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 dialog.dismiss()
             }
@@ -284,6 +296,125 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
         window.attributes = params
         window.setGravity(Gravity.BOTTOM)
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    private fun showSaveDialog() {
+        var dialog = AlertDialog.Builder(this).create()
+        dialog.show()
+        val window: Window? = dialog.window
+        if (window != null) {
+            window.setContentView(R.layout.dialog_common)
+            window.setGravity(Gravity.CENTER)
+            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            //设置属性
+            val params = window.attributes
+            params.width = WindowManager.LayoutParams.MATCH_PARENT
+            //弹出一个窗口，让背后的窗口变暗一点
+            params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+            //dialog背景层
+            params.dimAmount = 0.5f
+            window.attributes = params
+            val tvContent = window.findViewById<TextView>(R.id.tv_content)
+            tvContent.text = getText(R.string.save_scan)
+            val ivImg = window.findViewById<ImageView>(R.id.iv_img)
+            ivImg.visibility = View.VISIBLE
+            try {
+                ivImg.setImageBitmap(
+                    QRCodeUtil.createQRCode(
+                        walletCurrent.keystore.toString(),
+                        DisplayHelper.dpToPx(200)
+                    )
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            val btnNext = window.findViewById<Button>(R.id.btn_next)
+            btnNext.text = getText(R.string.gathering_save)
+            val btnCancel = window.findViewById<Button>(R.id.btn_cancel)
+            btnCancel.setOnClickListener { v1: View? -> dialog.dismiss() }
+            btnNext.setOnClickListener { v1: View? ->
+                requestRuntimePermission(
+                    arrayOf(
+                        "android.permission.CAMERA",
+                        "android.permission.WRITE_EXTERNAL_STORAGE",
+                        "android.permission.READ_EXTERNAL_STORAGE"
+                    ), object : PermissionListener {
+                        override
+                        fun onGranted() {
+                            try {
+                                val bitmap: Bitmap = viewConversionBitmap(ivImg)
+                                if (bitmap != null) {
+                                    saveBitmap(bitmap)
+                                    bitmap.recycle()
+                                }
+                            } catch (e: Exception) {
+                            }
+                        }
+
+                        override
+                        fun onDenied(deniedPermissions: List<String?>?) {
+                        }
+                    })
+                dialog.dismiss()
+            }
+        }
+    }
+
+    //生成图片
+    fun viewConversionBitmap(v: View): Bitmap {
+        val w = v.width
+        val h = v.height
+        val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val c = Canvas(bmp)
+        c.drawColor(Color.WHITE)
+        /** 如果不设置canvas画布为白色，则生成透明  */
+        v.layout(0, 0, w, h)
+        v.draw(c)
+        return bmp
+    }
+
+    /**
+     * 保存图片
+     *
+     * @param bitmap
+     */
+    @SuppressLint("ShowToast")
+    private fun saveBitmap(bitmap: Bitmap) {
+        var file: File? = null
+        try {
+            val dirFile: File = File(sdCardDir)
+            if (!dirFile.exists()) {              //如果不存在，那就建立这个文件夹
+                dirFile.mkdirs()
+            }
+            file = File(sdCardDir, System.currentTimeMillis().toString() + ".jpg")
+            val fos = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+            fos.flush()
+            fos.close()
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        // 把文件插入到系统图库
+        try {
+            MediaStore.Images.Media.insertImage(
+                this.contentResolver,
+                file!!.absolutePath, file.name, null
+            )
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        }
+        // 通知图库更新
+        this.sendBroadcast(
+            Intent(
+                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                Uri.parse("file://" + "/sdcard/namecard/")
+            )
+        )
+        println("-=-=-=->save:${getString(R.string.save_success)}")
+        Toast.makeText(this, getString(R.string.save_success), Toast.LENGTH_LONG)
     }
 
 }
