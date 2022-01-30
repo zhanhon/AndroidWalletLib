@@ -20,6 +20,7 @@ const val noticeInfoUrl = "wallet-decentralized-api/sys/getNotice"
 const val faqInfoUrl = "wallet-decentralized-api/faq/getFaqInfos"
 const val queryFaqInfoUrl = "wallet-decentralized-api/faq/queryAllFaqByType"
 const val getStoreUrl = "wallet-decentralized-api/storeCoinmarketcap/getStore"
+const val getPrivacyInfo = "wallet-decentralized-api/sys/getPrivacyPolicy"
 
 interface ApiService {
 
@@ -31,7 +32,7 @@ interface ApiService {
     @POST(transferInfoUrl)
     fun getTransferInfo(@Body req: ApiRequest<QueryTransferRecord.Req>): Observable<ApiResponse<QueryTransferRecord>>
 
-    /** 查询公告列表 */
+    /** 查询帮助中心列表 */
     @POST(faqInfoUrl)
     fun getFaqInfos(@Body req: ApiRequest<FaqInfos.Req>): Observable<ApiResponse<FaqInfos>>
 
@@ -42,6 +43,10 @@ interface ApiService {
     /** 代币查询 */
     @POST(getStoreUrl)
     fun getStore(@Body req: ApiRequest<StoreInfo.Req>): Observable<ApiResponse<List<StoreInfo>>>
+
+    /** 查询隐私条款 */
+    @POST(getPrivacyInfo)
+    fun getPrivacyPolicy(@Body req: ApiRequest<PrivacyPolicyInfo.Req>): Observable<ApiResponse<PrivacyPolicyInfo>>
 
     /** APP端地址上传 */
     @POST(reportAddressUrl)
