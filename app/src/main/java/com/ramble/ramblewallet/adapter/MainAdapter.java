@@ -40,12 +40,12 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
                 break;
         }
 
-        baseViewHolder.setText(R.id.tv_converted_token_balance, DecimalFormatUtil.format2.format(mainETHTokenBean.getBalance().multiply(mainETHTokenBean.getRate())));
-        if (mainETHTokenBean.getChange().toString().contains("-")) {
-            baseViewHolder.setTextColor(R.id.tv_increase_change, getContext().getResources().getColor(R.color.color_E11334));
-        } else {
-            baseViewHolder.setTextColor(R.id.tv_increase_change, getContext().getResources().getColor(R.color.color_009272));
-        }
+        baseViewHolder.setText(R.id.tv_converted_token_balance, DecimalFormatUtil.format2.format(mainETHTokenBean.getRate()));
+//        if (mainETHTokenBean.getChange().toString().contains("-")) {
+//            baseViewHolder.setTextColor(R.id.tv_increase_change, getContext().getResources().getColor(R.color.color_E11334));
+//        } else {
+//            baseViewHolder.setTextColor(R.id.tv_increase_change, getContext().getResources().getColor(R.color.color_009272));
+//        }
         baseViewHolder.setText(R.id.tv_increase_change, mainETHTokenBean.getChange() + "%");
     }
 
