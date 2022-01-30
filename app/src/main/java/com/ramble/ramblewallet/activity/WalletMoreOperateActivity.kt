@@ -27,6 +27,7 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.WALLETINFO
+import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityWalletMoreOperateBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.utils.*
@@ -42,6 +43,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
     private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
     private val sdCardDir =
         Environment.getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DCIM
+    private lateinit var walletSelleted: WalletETH
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +56,10 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
         saveWalletList = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
             object : TypeToken<ArrayList<WalletETH>>() {}.type
+        )
+        walletSelleted = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            object : TypeToken<WalletETH>() {}.type
         )
 
         initClick()
@@ -182,6 +188,24 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 }
             })
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
+                saveWalletList.forEach {
+                    if (it.address == walletCurrent.address) {
+                        it.walletName = edtWalletName.text.trim().toString()
+                    }
+                }
+                SharedPreferencesUtils.saveString(
+                    this,
+                    WALLETINFO,
+                    Gson().toJson(saveWalletList)
+                )
+                if (walletCurrent.address == walletSelleted.address) {
+                    walletSelleted.walletName = edtWalletName.text.trim().toString()
+                    SharedPreferencesUtils.saveString(
+                        this,
+                        WALLETSELECTED,
+                        Gson().toJson(walletSelleted)
+                    )
+                }
                 dialog.dismiss()
             }
 
