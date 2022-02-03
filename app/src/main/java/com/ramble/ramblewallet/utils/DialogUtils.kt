@@ -206,6 +206,7 @@ fun showBottomDialog2(
 
     }
 }
+
 /**
  * 时间　: 2022/2/3 9:52
  * 作者　: potato
@@ -225,45 +226,45 @@ fun showTopTranDialog(
         setCanceledOnTouchOutside(false)
         show()
         setContentView(binding.root)
-        var wallet :WalletETH= Gson().fromJson(
+        var wallet: WalletETH = Gson().fromJson(
             SharedPreferencesUtils.getString(activity, WALLETSELECTED, ""),
             object : TypeToken<WalletETH>() {}.type
         )
-       var currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
-        if (currencyUnit.isNotEmpty()){
-            when(currencyUnit){
-                "ETH"->{
-                    binding.ivEth.visibility=View.VISIBLE
-                    binding.ivBtc.visibility=View.INVISIBLE
-                    binding.ivTrx.visibility=View.INVISIBLE
+        var currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
+        if (currencyUnit.isNotEmpty()) {
+            when (currencyUnit) {
+                "ETH" -> {
+                    binding.ivEth.visibility = View.VISIBLE
+                    binding.ivBtc.visibility = View.INVISIBLE
+                    binding.ivTrx.visibility = View.INVISIBLE
                 }
-                "BTC"->{
-                    binding.ivEth.visibility=View.INVISIBLE
-                    binding.ivBtc.visibility=View.VISIBLE
-                    binding.ivTrx.visibility=View.INVISIBLE
+                "BTC" -> {
+                    binding.ivEth.visibility = View.INVISIBLE
+                    binding.ivBtc.visibility = View.VISIBLE
+                    binding.ivTrx.visibility = View.INVISIBLE
                 }
-                "TRX"->{
-                    binding.ivEth.visibility=View.INVISIBLE
-                    binding.ivBtc.visibility=View.INVISIBLE
-                    binding.ivTrx.visibility=View.VISIBLE
+                "TRX" -> {
+                    binding.ivEth.visibility = View.INVISIBLE
+                    binding.ivBtc.visibility = View.INVISIBLE
+                    binding.ivTrx.visibility = View.VISIBLE
                 }
             }
-        }else{
-            when(wallet.walletType){
-                1->{
-                    binding.ivEth.visibility=View.VISIBLE
-                    binding.ivBtc.visibility=View.INVISIBLE
-                    binding.ivTrx.visibility=View.INVISIBLE
+        } else {
+            when (wallet.walletType) {
+                1 -> {
+                    binding.ivEth.visibility = View.VISIBLE
+                    binding.ivBtc.visibility = View.INVISIBLE
+                    binding.ivTrx.visibility = View.INVISIBLE
                 }
-                0->{
-                    binding.ivEth.visibility=View.INVISIBLE
-                    binding.ivBtc.visibility=View.VISIBLE
-                    binding.ivTrx.visibility=View.INVISIBLE
+                0 -> {
+                    binding.ivEth.visibility = View.INVISIBLE
+                    binding.ivBtc.visibility = View.VISIBLE
+                    binding.ivTrx.visibility = View.INVISIBLE
                 }
-                2->{
-                    binding.ivEth.visibility=View.INVISIBLE
-                    binding.ivBtc.visibility=View.INVISIBLE
-                    binding.ivTrx.visibility=View.VISIBLE
+                2 -> {
+                    binding.ivEth.visibility = View.INVISIBLE
+                    binding.ivBtc.visibility = View.INVISIBLE
+                    binding.ivTrx.visibility = View.VISIBLE
                 }
             }
         }

@@ -219,18 +219,18 @@ class TransactionQueryFragment : BaseFragment(),
             )
         var currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
         var sb = StringBuffer()
-        if (currencyUnit.isNotEmpty()){
-           var walletType= when(currencyUnit){
-                "ETH"->1
-                "BTC"->0
-                else->2
+        if (currencyUnit.isNotEmpty()) {
+            var walletType = when (currencyUnit) {
+                "ETH" -> 1
+                "BTC" -> 0
+                else -> 2
             }
             list.forEach {
                 if (walletType == it.walletType) {
                     sb.append(it.address).append(",")
                 }
             }
-        }else{
+        } else {
             list.forEach {
                 if (wallet.walletType == it.walletType) {
                     sb.append(it.address).append(",")
@@ -238,7 +238,8 @@ class TransactionQueryFragment : BaseFragment(),
             }
         }
 
-        var addStr = if (sb.isNotEmpty()) sb.deleteCharAt(sb.length - 1).toString()  else sb.toString()
+        var addStr =
+            if (sb.isNotEmpty()) sb.deleteCharAt(sb.length - 1).toString() else sb.toString()
         return addStr
     }
 

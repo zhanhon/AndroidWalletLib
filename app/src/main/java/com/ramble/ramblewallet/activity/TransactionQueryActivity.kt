@@ -46,34 +46,34 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
         adapter = MyAdapter(supportFragmentManager, this)
         binding.pager.adapter = adapter
         binding.layoutTab.setViewPager(binding.pager)
-        var wallet : WalletETH = Gson().fromJson(
+        var wallet: WalletETH = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
             object : TypeToken<WalletETH>() {}.type
         )
         var currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY_TRAN, "")
-        if (currencyUnit.isNotEmpty()){
-            when(currencyUnit){
-                "ETH"->{
-                    binding.tvMyCurrency.text="ETH"
+        if (currencyUnit.isNotEmpty()) {
+            when (currencyUnit) {
+                "ETH" -> {
+                    binding.tvMyCurrency.text = "ETH"
 
                 }
-                "BTC"->{
-                    binding.tvMyCurrency.text="BTC"
+                "BTC" -> {
+                    binding.tvMyCurrency.text = "BTC"
                 }
-                "TRX"->{
-                    binding.tvMyCurrency.text="TRX"
+                "TRX" -> {
+                    binding.tvMyCurrency.text = "TRX"
                 }
             }
-        }else{
-            when(wallet.walletType){
-                1->{
-                    binding.tvMyCurrency.text="ETH"
+        } else {
+            when (wallet.walletType) {
+                1 -> {
+                    binding.tvMyCurrency.text = "ETH"
                 }
-                0->{
-                    binding.tvMyCurrency.text="BTC"
+                0 -> {
+                    binding.tvMyCurrency.text = "BTC"
                 }
-                2->{
-                    binding.tvMyCurrency.text="TRX"
+                2 -> {
+                    binding.tvMyCurrency.text = "TRX"
                 }
             }
         }
@@ -84,22 +84,23 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
         binding.ivBack.setOnClickListener(this)
         binding.llMyCurrency.setOnClickListener(this)
     }
+
     override fun onRxBus(event: RxBus.Event) {
         super.onRxBus(event)
         when (event.id()) {
             Pie.EVENT_TRAN_TYPE -> {
-                when(event.data<Int>()){
-                    1->{
+                when (event.data<Int>()) {
+                    1 -> {
                         binding.tvMineTitle.text = getString(R.string.transaction_query_eth)
-                        binding.tvMyCurrency.text="ETH"
+                        binding.tvMyCurrency.text = "ETH"
                     }
-                    0->{
+                    0 -> {
                         binding.tvMineTitle.text = getString(R.string.transaction_query_btc)
-                        binding.tvMyCurrency.text="BTC"
+                        binding.tvMyCurrency.text = "BTC"
                     }
-                    2->{
+                    2 -> {
                         binding.tvMineTitle.text = getString(R.string.transaction_query_trx)
-                        binding.tvMyCurrency.text="TRX"
+                        binding.tvMyCurrency.text = "TRX"
                     }
                 }
                 binding.ivMyCurrency.setBackgroundResource(R.drawable.vector_three_down)
@@ -107,10 +108,11 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
             }
         }
     }
+
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> finish()
-            R.id.ll_my_currency->{
+            R.id.ll_my_currency -> {
                 if (isSpread) {
                     binding.ivMyCurrency.setBackgroundResource(R.drawable.vector_three_down)
                     isSpread = false

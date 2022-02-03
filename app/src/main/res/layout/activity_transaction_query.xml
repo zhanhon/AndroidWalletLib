@@ -26,7 +26,6 @@
 
             <TextView
                 android:id="@+id/tv_mine_title"
-                tools:text="25323232323"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -35,14 +34,16 @@
                 android:textColor="@color/color_000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="25323232323" />
+
             <LinearLayout
                 android:id="@+id/ll_my_currency"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:background="@drawable/shape_white_bottom_black_line_btn"
                 android:layout_centerVertical="true"
+                android:background="@drawable/shape_white_bottom_black_line_btn"
+                android:gravity="center"
                 android:paddingLeft="@dimen/dp_5"
                 android:paddingRight="@dimen/dp_5"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -52,8 +53,8 @@
                     android:id="@+id/tv_my_currency"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ETH"
                     android:layout_marginEnd="@dimen/dp_4"
+                    android:text="ETH"
                     android:textSize="@dimen/sp_12" />
 
                 <ImageView
