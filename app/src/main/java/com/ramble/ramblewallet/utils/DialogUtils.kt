@@ -16,10 +16,11 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.AddressBookActivity
 import com.ramble.ramblewallet.activity.ScanActivity
 import com.ramble.ramblewallet.bean.MyAddressBean
-import com.ramble.ramblewallet.constant.ADDRESS_BOOK_INFO
-import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.BottomNoticeDialog2Binding
 import com.ramble.ramblewallet.databinding.BottomNoticeDialogBinding
+import com.ramble.ramblewallet.databinding.TopNoticeDialogBinding
+import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start
 
@@ -203,5 +204,85 @@ fun showBottomDialog2(
 
         })
 
+    }
+}
+/**
+ * 时间　: 2022/2/3 9:52
+ * 作者　: potato
+ * 描述　:历史记录上部弹窗
+ */
+fun showTopTranDialog(
+    activity: Activity
+): Dialog {
+    val binding: TopNoticeDialogBinding =
+        LayoutInflater.from(activity).dataBinding(
+            R.layout.top_notice_dialog
+        )
+
+    return AlertDialog.Builder(activity).create().apply {
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setGravity(Gravity.TOP)
+        setCanceledOnTouchOutside(false)
+        show()
+        setContentView(binding.root)
+        var wallet :WalletETH= Gson().fromJson(
+            SharedPreferencesUtils.getString(activity, WALLETSELECTED, ""),
+            object : TypeToken<WalletETH>() {}.type
+        )
+       var currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
+        if (currencyUnit.isNotEmpty()){
+            when(currencyUnit){
+                "ETH"->{
+                    binding.ivEth.visibility=View.VISIBLE
+                    binding.ivBtc.visibility=View.INVISIBLE
+                    binding.ivTrx.visibility=View.INVISIBLE
+                }
+                "BTC"->{
+                    binding.ivEth.visibility=View.INVISIBLE
+                    binding.ivBtc.visibility=View.VISIBLE
+                    binding.ivTrx.visibility=View.INVISIBLE
+                }
+                "TRX"->{
+                    binding.ivEth.visibility=View.INVISIBLE
+                    binding.ivBtc.visibility=View.INVISIBLE
+                    binding.ivTrx.visibility=View.VISIBLE
+                }
+            }
+        }else{
+            when(wallet.walletType){
+                1->{
+                    binding.ivEth.visibility=View.VISIBLE
+                    binding.ivBtc.visibility=View.INVISIBLE
+                    binding.ivTrx.visibility=View.INVISIBLE
+                }
+                0->{
+                    binding.ivEth.visibility=View.INVISIBLE
+                    binding.ivBtc.visibility=View.VISIBLE
+                    binding.ivTrx.visibility=View.INVISIBLE
+                }
+                2->{
+                    binding.ivEth.visibility=View.INVISIBLE
+                    binding.ivBtc.visibility=View.INVISIBLE
+                    binding.ivTrx.visibility=View.VISIBLE
+                }
+            }
+        }
+
+
+        binding.rlEth.setOnClickListener {
+            SharedPreferencesUtils.saveString(activity, CURRENCY_TRAN, "ETH")
+            RxBus.emitEvent(Pie.EVENT_TRAN_TYPE, 1)
+            dismiss()
+        }
+        binding.rlBtc.setOnClickListener {
+            SharedPreferencesUtils.saveString(activity, CURRENCY_TRAN, "BTC")
+            RxBus.emitEvent(Pie.EVENT_TRAN_TYPE, 0)
+            dismiss()
+        }
+        binding.rlTrx.setOnClickListener {
+            SharedPreferencesUtils.saveString(activity, CURRENCY_TRAN, "TRX")
+            RxBus.emitEvent(Pie.EVENT_TRAN_TYPE, 2)
+            dismiss()
+        }
     }
 }

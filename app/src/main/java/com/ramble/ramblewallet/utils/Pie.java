@@ -53,4 +53,9 @@ public class Pie {
      */
     public static final int EVENT_DELETE_MSG = 2008;
 
+    /**
+     * 历史筛选
+     */
+    public static final int EVENT_TRAN_TYPE = 2009;
+
 }

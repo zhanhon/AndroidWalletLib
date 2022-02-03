@@ -23,9 +23,7 @@ import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.TransferItem
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.network.transferInfoUrl
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.applyIo
-import com.ramble.ramblewallet.utils.toJdk7Date
+import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
@@ -204,19 +202,43 @@ class TransactionQueryFragment : BaseFragment(),
 
     }
 
+    override fun onRxBus(event: RxBus.Event) {
+        super.onRxBus(event)
+        when (event.id()) {
+            Pie.EVENT_TRAN_TYPE -> {
+                reFreshData()
+            }
+        }
+    }
+
     private fun saveData(list: ArrayList<WalletETH>): String {
         wallet =
             Gson().fromJson(
                 SharedPreferencesUtils.getString(myActivity, WALLETSELECTED, ""),
                 object : TypeToken<WalletETH>() {}.type
             )
+        var currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
         var sb = StringBuffer()
-        list.forEach {
-            if (wallet.walletType == it.walletType) {
-                sb.append(it.address).append(",")
+        if (currencyUnit.isNotEmpty()){
+           var walletType= when(currencyUnit){
+                "ETH"->1
+                "BTC"->0
+                else->2
+            }
+            list.forEach {
+                if (walletType == it.walletType) {
+                    sb.append(it.address).append(",")
+                }
+            }
+        }else{
+            list.forEach {
+                if (wallet.walletType == it.walletType) {
+                    sb.append(it.address).append(",")
+                }
             }
         }
-        var addStr = sb.deleteCharAt(sb.length - 1).toString()
+
+        var addStr = if (sb.isNotEmpty()) sb.deleteCharAt(sb.length - 1).toString()  else sb.toString()
         return addStr
     }
 

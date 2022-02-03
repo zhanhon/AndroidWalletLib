@@ -30,7 +30,7 @@ const val RMB = "rmb"
 const val HKD = "hkd"
 const val USD = "usd"
 const val CURRENCY = "currency"
-
+const val CURRENCY_TRAN = "currency_tran"
 const val READ_ID = "read_ID"
 const val READ_ID_NEW = "read_ID_new"
 

@@ -7,10 +7,19 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.constant.CURRENCY_TRAN
+import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityTransactionQueryBinding
+import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.fragment.TransactionQueryFragment
+import com.ramble.ramblewallet.utils.Pie
+import com.ramble.ramblewallet.utils.RxBus
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.showTopTranDialog
 import com.ramble.ramblewallet.wight.adapter.FragmentPagerAdapter2
 
 /**
@@ -21,7 +30,7 @@ import com.ramble.ramblewallet.wight.adapter.FragmentPagerAdapter2
 class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
     private lateinit var adapter: MyAdapter
     private lateinit var binding: ActivityTransactionQueryBinding
-
+    private var isSpread = false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,17 +46,80 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
         adapter = MyAdapter(supportFragmentManager, this)
         binding.pager.adapter = adapter
         binding.layoutTab.setViewPager(binding.pager)
+        var wallet : WalletETH = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            object : TypeToken<WalletETH>() {}.type
+        )
+        var currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY_TRAN, "")
+        if (currencyUnit.isNotEmpty()){
+            when(currencyUnit){
+                "ETH"->{
+                    binding.tvMyCurrency.text="ETH"
+
+                }
+                "BTC"->{
+                    binding.tvMyCurrency.text="BTC"
+                }
+                "TRX"->{
+                    binding.tvMyCurrency.text="TRX"
+                }
+            }
+        }else{
+            when(wallet.walletType){
+                1->{
+                    binding.tvMyCurrency.text="ETH"
+                }
+                0->{
+                    binding.tvMyCurrency.text="BTC"
+                }
+                2->{
+                    binding.tvMyCurrency.text="TRX"
+                }
+            }
+        }
+
     }
 
     private fun initListener() {
         binding.ivBack.setOnClickListener(this)
-
+        binding.llMyCurrency.setOnClickListener(this)
     }
-
+    override fun onRxBus(event: RxBus.Event) {
+        super.onRxBus(event)
+        when (event.id()) {
+            Pie.EVENT_TRAN_TYPE -> {
+                when(event.data<Int>()){
+                    1->{
+                        binding.tvMineTitle.text = getString(R.string.transaction_query_eth)
+                        binding.tvMyCurrency.text="ETH"
+                    }
+                    0->{
+                        binding.tvMineTitle.text = getString(R.string.transaction_query_btc)
+                        binding.tvMyCurrency.text="BTC"
+                    }
+                    2->{
+                        binding.tvMineTitle.text = getString(R.string.transaction_query_trx)
+                        binding.tvMyCurrency.text="TRX"
+                    }
+                }
+                binding.ivMyCurrency.setBackgroundResource(R.drawable.vector_three_down)
+                isSpread = false
+            }
+        }
+    }
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> finish()
-
+            R.id.ll_my_currency->{
+                if (isSpread) {
+                    binding.ivMyCurrency.setBackgroundResource(R.drawable.vector_three_down)
+                    isSpread = false
+                } else {
+                    binding.ivMyCurrency.setBackgroundResource(R.drawable.vector_three_up)
+                    isSpread = true
+                    showTopTranDialog(this)
+                }
+            }
         }
     }
 
