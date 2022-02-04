@@ -18,8 +18,7 @@ import com.ramble.ramblewallet.constant.WALLETINFO
 import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityWalletManageBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
-import com.ramble.ramblewallet.tron.TransferTrxUtils.balanceOf
-import com.ramble.ramblewallet.tron.TransferTrxUtils.transferTrx
+import com.ramble.ramblewallet.tron.TransferTrxUtils.*
 import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.toastDefault
@@ -45,11 +44,12 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_wallet_manage)
         Thread {
+            balanceOfTrc20("TCZeHYbiAfeeenuoLcJueadgY3UW45dPLm")
             //balanceOf("TCZeHYbiAfeeenuoLcJueadgY3UW45dPLm")
-            transferTrx("TCZeHYbiAfeeenuoLcJueadgY3UW45dPLm", "TS5VY4Ps1jJ1ysajdsRxJsoBeM1WSp5aC1",
-                "909507dc00a064c1b05f7727ef2e48b5453d5b3264ef811df89e2f68f5170106",
-                2000000.0
-            )
+//            transferTrx("TCZeHYbiAfeeenuoLcJueadgY3UW45dPLm", "TS5VY4Ps1jJ1ysajdsRxJsoBeM1WSp5aC1",
+//                "909507dc00a064c1b05f7727ef2e48b5453d5b3264ef811df89e2f68f5170106",
+//                2000000.0
+//            )
         }.start()
 
         binding.lyPullRefresh.setRefreshHeader(ClassicsHeader(this))

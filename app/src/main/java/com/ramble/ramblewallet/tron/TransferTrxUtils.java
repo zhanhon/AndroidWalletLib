@@ -14,9 +14,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.tron.TronWalletApi;
 import org.tron.protos.Protocol;
+import org.web3j.abi.FunctionEncoder;
+import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.Type;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -60,26 +66,40 @@ public class TransferTrxUtils {
     /**
      * 查询trc20数量
      */
-//    public BigDecimal balanceOfTrc20(String address) throws JSONException {
-//        String url = tronUrl +"/wallet/triggerconstantcontract";
-//        JSONObject param = new JSONObject();
-//        param.put("owner_address", TronUtils.toHexAddress(address));
-//        param.put("contract_address", TronUtils.toHexAddress(contract));
-//        param.put("function_selector", "balanceOf(address)");
-//        List<Type> inputParameters = new ArrayList<>();
-//        inputParameters.add(new Address(TronUtils.toHexAddress(address).substring(2)));
-//        param.put("parameter", FunctionEncoder.encodeConstructor(inputParameters));
-//        String result = HttpClientUtils.postJson(url, param.toJSONString());
-//        if (StringUtils.isNotEmpty(result)) {
-//            JSONObject obj = JSONObject.parseObject(result);
-//            JSONArray results = obj.getJSONArray("constant_result");
-//            if (results != null && results.size() > 0) {
-//                BigInteger amount = new BigInteger(results.getString(0), 16);
-//                return new BigDecimal(amount).divide(decimal, 6, RoundingMode.FLOOR);
-//            }
-//        }
-//        return BigDecimal.ZERO;
-//    }
+    public static BigDecimal balanceOfTrc20(String address) throws JSONException {
+
+        String url = tronUrl +"/wallet/triggersmartcontract";
+        JSONObject param = new JSONObject();
+        param.put("owner_address", toHexAddress(address));
+        param.put("contract_address", toHexAddress("TU9iBgEEv9qsc6m7EBPLJ3x5vSNKfyxWW5"));
+        param.put("function_selector", "balanceOf(address)");
+        List<Type> inputParameters = new ArrayList<>();
+        inputParameters.add(new Address(toHexAddress(address).substring(2)));
+        param.put("parameter", FunctionEncoder.encodeConstructor(inputParameters));
+        Call call = getCall(url, param);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.v("-=-=->failure：", e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String string = response.body().string();
+                try {
+                    JSONObject json = new JSONObject(string);
+                    String constant_result = json.optString("constant_result");
+                    String constantResult = constant_result.substring(2, constant_result.length()-2).replaceAll("^(0+)", "");
+                    String balance = (new BigInteger(constantResult, 16)).toString();
+                    Log.v("-=-=->success：余额：", String.valueOf(new BigDecimal(balance).divide(new BigDecimal("1000000"))));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        return null;
+    }
+
     public static void transferTrx(String fromAddress, String toAddress, String privateKey, double number) throws JSONException {
         String url = tronUrl + "/wallet/createtransaction";
         JSONObject param = new JSONObject();
