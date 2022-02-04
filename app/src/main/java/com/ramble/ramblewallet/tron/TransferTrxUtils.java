@@ -7,8 +7,10 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.ramble.ramblewallet.tronsdk.common.crypto.ECKey;
 import com.ramble.ramblewallet.tronsdk.common.utils.ByteArray;
 import com.ramble.ramblewallet.tronsdk.common.utils.Sha256Hash;
+import com.ramble.ramblewallet.trx.TrxApi;
 import com.ramble.ramblewallet.trx.Util;
 
+import org.bouncycastle.util.encoders.Hex;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +39,7 @@ public class TransferTrxUtils {
     //主网
     private static final String tronUrl = "https://api.nileex.io";
 
-    public static BigDecimal balanceOf(String address) throws JSONException {
+    public static BigDecimal balanceOfTrx(String address) throws JSONException {
         String url = tronUrl + "/wallet/getaccount";
         JSONObject param = new JSONObject();
         param.put("address", toHexAddress(address));
@@ -45,7 +47,7 @@ public class TransferTrxUtils {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.v("-=-=->failure：", e.getMessage());
+                Log.v("-=-=->balanceOfTrc20,failure：", e.getMessage());
             }
 
             @Override
@@ -54,7 +56,7 @@ public class TransferTrxUtils {
                 try {
                     JSONObject json = new JSONObject(string);
                     String balance = json.optString("balance");
-                    Log.v("-=-=->success：余额：", String.valueOf(new BigDecimal(balance).divide(new BigDecimal("1000000"))));
+                    Log.v("-=-=->balanceOfTrc20,success：余额：", String.valueOf(new BigDecimal(balance).divide(new BigDecimal("1000000"))));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -68,7 +70,7 @@ public class TransferTrxUtils {
      */
     public static BigDecimal balanceOfTrc20(String address) throws JSONException {
 
-        String url = tronUrl +"/wallet/triggersmartcontract";
+        String url = tronUrl + "/wallet/triggersmartcontract";
         JSONObject param = new JSONObject();
         param.put("owner_address", toHexAddress(address));
         param.put("contract_address", toHexAddress("TU9iBgEEv9qsc6m7EBPLJ3x5vSNKfyxWW5"));
@@ -80,7 +82,7 @@ public class TransferTrxUtils {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.v("-=-=->failure：", e.getMessage());
+                Log.v("-=-=->balanceOfTrc20,failure：", e.getMessage());
             }
 
             @Override
@@ -89,9 +91,9 @@ public class TransferTrxUtils {
                 try {
                     JSONObject json = new JSONObject(string);
                     String constant_result = json.optString("constant_result");
-                    String constantResult = constant_result.substring(2, constant_result.length()-2).replaceAll("^(0+)", "");
+                    String constantResult = constant_result.substring(2, constant_result.length() - 2).replaceAll("^(0+)", "");
                     String balance = (new BigInteger(constantResult, 16)).toString();
-                    Log.v("-=-=->success：余额：", String.valueOf(new BigDecimal(balance).divide(new BigDecimal("1000000"))));
+                    Log.v("-=-=->balanceOfTrc20,success：余额：", String.valueOf(new BigDecimal(balance).divide(new BigDecimal("1000000"))));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -110,7 +112,7 @@ public class TransferTrxUtils {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.v("-=-=->failure：", e.getMessage());
+                Log.v("-=-=->transferTrx,failure：", e.getMessage());
             }
 
             @Override
@@ -135,12 +137,12 @@ public class TransferTrxUtils {
                     call2.enqueue(new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            Log.v("-=-=->failure2：", e.getMessage());
+                            Log.v("-=-=->transferTrx,failure2：", e.getMessage());
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            Log.v("-=-=->success2：", "");
+                            Log.v("-=-=->transferTrx,success2：", "");
                         }
                     });
 
@@ -151,6 +153,58 @@ public class TransferTrxUtils {
         });
     }
 
+    //TRC20
+    public static void transferToken(String fromAddress, String toAddress, String contractAddress, String privateKey, String number) throws JSONException {
+        BigInteger amount = new BigInteger(number);
+        String remark = "T";
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("contract_address", toHexAddress(contractAddress));
+        jsonObject.put("function_selector", "transfer(address,uint256)");
+        String parameter = TrxApi.encoderAbi(TrxApi.toHexAddress(toAddress).substring(2), amount);
+        jsonObject.put("parameter", parameter);
+        jsonObject.put("owner_address", TrxApi.toHexAddress(fromAddress));
+        jsonObject.put("call_value", 0);
+        jsonObject.put("fee_limit", "10000000");
+        Call call = getCall(tronUrl + "/wallet/triggersmartcontract", jsonObject);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.v("-=-=->transferToken,failure：", e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String string = response.body().string();
+                try {
+                    JSONObject trans = new JSONObject(string);
+                    JSONObject tx = trans.getJSONObject("transaction");
+                    if (remark != null) {
+                        tx.getJSONObject("raw_data").put("data", Hex.toHexString(remark.getBytes()));
+                    }
+                    org.tron.protos.Protocol.Transaction transaction = Util.packTransaction(tx.toString(), false);
+                    byte[] bytes = TrxApi.signTransaction2Byte(transaction.toByteArray(), ByteArray.fromHexString(privateKey));
+                    String signTransation = ByteArray.toHexString(bytes);
+                    // 广播交易
+                    JSONObject jsonObjectGB = new JSONObject();
+                    jsonObjectGB.put("transaction", signTransation);
+                    Call call2 = getCall(tronUrl + "/wallet/broadcasthex", jsonObjectGB);
+                    call2.enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            Log.v("-=-=->transferToken,failure2：", e.getMessage());
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            Log.v("-=-=->transferToken,success2：", "");
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     @NotNull
     private static Call getCall(String url, JSONObject param) {
@@ -178,29 +232,4 @@ public class TransferTrxUtils {
         return transaction1.toBuilder().addSignature(ByteString.copyFrom(sign)).build().toByteArray();
     }
 
-    public static void transferToken(String fromAddress, String toAddress, String contractAddress, String privateKey, String number) {
-//        //trx20
-//        String[] parameters = new String[]{contractAddress,
-//                "transfer(address,uint256)", toAddress, "false", "100000000", "0"};
-//        GrpcAPI.TransactionExtention transactionExtention = null;
-//        try {
-//            transactionExtention = TronAPI.triggerContract(parameters, decodeFromBase58Check(fromAddress));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (CipherException e) {
-//            e.printStackTrace();
-//        } catch (CancelException e) {
-//            e.printStackTrace();
-//        } catch (EncodingException e) {
-//            e.printStackTrace();
-//        }
-//        if (transactionExtention.hasResult()) {
-//            Protocol.Transaction transactionTRX20 = transactionExtention.getTransaction();
-//            //sign
-//            Protocol.Transaction mTransactionSigned = TransactionUtils.setTimestamp(transactionTRX20);
-//            mTransactionSigned = TransactionUtils.sign(mTransactionSigned, ECKey.fromPrivate(new BigInteger(privateKey)));
-//            //broadcastTransaction
-//            boolean sent = TronAPI.broadcastTransaction(mTransactionSigned);
-//        }
-    }
 }
