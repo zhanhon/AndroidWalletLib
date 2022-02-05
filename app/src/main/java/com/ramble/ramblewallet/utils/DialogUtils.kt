@@ -2,6 +2,7 @@ package com.ramble.ramblewallet.utils
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -23,6 +24,7 @@ import com.ramble.ramblewallet.databinding.TopNoticeDialogBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start
+
 
 /**
  * 时间　: 2022/1/5 15:52
@@ -213,7 +215,8 @@ fun showBottomDialog2(
  * 描述　:历史记录上部弹窗
  */
 fun showTopTranDialog(
-    activity: Activity
+    activity: Activity,
+    textView:View
 ): Dialog {
     val binding: TopNoticeDialogBinding =
         LayoutInflater.from(activity).dataBinding(
@@ -222,7 +225,18 @@ fun showTopTranDialog(
 
     return AlertDialog.Builder(activity).create().apply {
         window?.setBackgroundDrawableResource(android.R.color.transparent)
-        window?.setGravity(Gravity.TOP)
+        val wlp: WindowManager.LayoutParams? = window?.attributes
+        val notificationBar: Int = Resources.getSystem().getDimensionPixelSize(
+            Resources.getSystem().getIdentifier("status_bar_height", "dimen", "android")
+        )
+        val location = IntArray(2)
+        textView.getLocationInWindow(location) //获取在当前窗体内的绝对坐标
+        textView.getLocationOnScreen(location) //获取在整个屏幕内的绝对坐标
+        wlp?.x=0 //对 dialog 设置 x 轴坐标
+        wlp?.y = location[1] + textView.height - notificationBar//对dialog设置y轴坐标
+        wlp?.gravity = Gravity.TOP
+        wlp?.width = WindowManager.LayoutParams.MATCH_PARENT
+        window?.attributes = wlp
         setCanceledOnTouchOutside(false)
         show()
         setContentView(binding.root)

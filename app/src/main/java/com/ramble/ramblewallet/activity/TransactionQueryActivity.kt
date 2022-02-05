@@ -119,7 +119,7 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
                 } else {
                     binding.ivMyCurrency.setBackgroundResource(R.drawable.vector_three_up)
                     isSpread = true
-                    showTopTranDialog(this)
+                    showTopTranDialog(this, binding.topView)
                 }
             }
         }
