@@ -33,6 +33,8 @@ import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.rateInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.tron.TransferTrxUtils.balanceOfTrc20
+import com.ramble.ramblewallet.tron.TransferTrxUtils.balanceOfTrx
 import com.ramble.ramblewallet.utils.*
 import java.math.BigDecimal
 
@@ -48,13 +50,16 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     private var animator: ObjectAnimator? = null
     private var saveTokenList: ArrayList<StoreInfo> = arrayListOf()
     private lateinit var walletSelleted: WalletETH
-    private var trxBalance: BigDecimal = BigDecimal("0.00000000")
-    private var tokenUsdtBalance: BigDecimal = BigDecimal("0.00000000")
-    private var totalBalance: BigDecimal = BigDecimal("0.00000000")
-    private var rate: String? = ""
+    private var trxBalance: BigDecimal = BigDecimal("0")
+    private var tokenBalance: BigDecimal = BigDecimal("0")
+    private var totalBalance: BigDecimal = BigDecimal("0")
+    private var rateTRX: String? = ""
+    private var rateToken: String? = ""
+    private var ethLegal = BigDecimal("0")
+    private var tokenLegal = BigDecimal("0")
 
-    //DAI:4 0x16aFDD5dfE386052766b798bFA37DAec4b81155a
-    private var contractAddress = "0xb319d1A045ffe108D14195F7C5d60Be220436a34" //测试节点ERC-USDT:6合约地址
+    //YING
+    private var contractAddress = "TU9iBgEEv9qsc6m7EBPLJ3x5vSNKfyxWW5" //官方Nile测试节点YING
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -79,7 +84,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                     it.putString(ARG_PARAM1, event.data())
                     it.putString(ARG_PARAM2, "ETH")
                     it.putBoolean(ARG_PARAM3, false)
-                    it.putString(ARG_PARAM4, rate)
+                    it.putString(ARG_PARAM4, rateTRX)
                 })
             }
         }
@@ -107,7 +112,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(ARG_PARAM2, "TRX")
                     putExtra(ARG_PARAM3, false)
-                    putExtra(ARG_PARAM4, rate)
+                    putExtra(ARG_PARAM4, rateTRX)
                 })
             }
             R.id.iv_scan_top, R.id.ll_scan -> {
@@ -201,27 +206,24 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
-        Thread {
-//            trxBalance = getBalanceETH(walletSelleted.address)
-//            if (trxBalance != BigDecimal("0.00000000")) {
-//                refreshData()
-//            }
-//            tokenUsdtBalance = TransferEthUtils.getBalanceToken(walletSelleted.address, contractAddress)
-//            if (tokenUsdtBalance != BigDecimal("0.000000")) {
-//                refreshData()
-//            }
-//            if ((trxBalance != BigDecimal("0.00000000")) && (tokenUsdtBalance != BigDecimal("0.000000"))) {
-//                totalBalance = trxBalance.add(tokenUsdtBalance)
-//                setBalanceTrx(totalBalance)
-//            }
-        }.start()
+        balanceOfTrx(this, walletSelleted.address)
+        balanceOfTrc20(this, walletSelleted.address, contractAddress)
         binding.tvTrxAddress.text = addressHandle(walletSelleted.address)
     }
 
-    private fun setBalanceTrx(balance: BigDecimal) {
+    fun setTrxBalance(balance: BigDecimal) {
+        trxBalance = balance
+        refreshData()
+    }
+
+    fun setTokenBalance(balance: BigDecimal) {
+        tokenBalance = balance
+        refreshData()
+    }
+
+    private fun setBalanceTRX(balance: BigDecimal) {
         postUI {
-            binding.tvBalanceTotal.text =
-                DecimalFormatUtil.format2.format(balance.multiply(BigDecimal(rate)))
+            binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(balance)
         }
     }
 
@@ -263,7 +265,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(ARG_PARAM2, tokenName)
                     putExtra(ARG_PARAM3, true)
-                    putExtra(ARG_PARAM4, rate)
+                    putExtra(ARG_PARAM4, rateTRX)
                 })
                 dialog.dismiss()
             }
@@ -299,17 +301,18 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                             mainETHTokenBean.clear()
                             if (rateBean.isNotEmpty()) {
                                 rateBean.forEach { //标题：ETH
-                                    when (currencyUnit) {
-                                        RMB -> rate = it.rateCny
-                                        HKD -> rate = it.rateHkd
-                                        USD -> rate = it.rateUsd
-                                    }
                                     if (it.currencyType == "TRX") {
+                                        when (currencyUnit) {
+                                            RMB -> rateTRX = it.rateCny
+                                            HKD -> rateTRX = it.rateHkd
+                                            USD -> rateTRX = it.rateUsd
+                                        }
+                                        ethLegal = trxBalance.multiply(BigDecimal(rateTRX))
                                         mainETHTokenBean.add(
                                             MainETHTokenBean(
                                                 it.currencyType,
                                                 trxBalance,
-                                                BigDecimal(rate),
+                                                BigDecimal(rateTRX),
                                                 currencyUnit,
                                                 BigDecimal(it.change)
                                             )
@@ -335,14 +338,22 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                             list.remove()
                                         }
                                     }
+                                    tokenLegal = BigDecimal("0")
                                     rateBean.forEach { rateBean ->
                                         saveTokenList.forEach { saveToken ->
                                             if (saveToken.name == rateBean.currencyType) {
+                                                when (currencyUnit) {
+                                                    RMB -> rateToken = rateBean.rateCny
+                                                    HKD -> rateToken = rateBean.rateHkd
+                                                    USD -> rateToken = rateBean.rateUsd
+                                                }
+                                                tokenLegal =
+                                                    tokenBalance.multiply(BigDecimal(rateToken))
                                                 mainETHTokenBean.add(
                                                     MainETHTokenBean(
                                                         rateBean.currencyType,
-                                                        trxBalance,
-                                                        BigDecimal(rate),
+                                                        tokenBalance,
+                                                        BigDecimal(rateToken),
                                                         currencyUnit,
                                                         BigDecimal(rateBean.change)
                                                     )
@@ -361,6 +372,10 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                     }
                                 }
                             }
+                        }
+                        if ((trxBalance != BigDecimal("0")) && (tokenBalance != BigDecimal("0"))) {
+                            totalBalance = ethLegal.add(tokenLegal)
+                            setBalanceTRX(totalBalance)
                         }
                     } else {
                         println("-=-=-=->${it.message()}")

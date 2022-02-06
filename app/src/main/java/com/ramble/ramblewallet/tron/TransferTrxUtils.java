@@ -1,9 +1,11 @@
 package com.ramble.ramblewallet.tron;
 
+import android.app.Activity;
 import android.util.Log;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.ramble.ramblewallet.activity.MainTRXActivity;
 import com.ramble.ramblewallet.tronsdk.common.crypto.ECKey;
 import com.ramble.ramblewallet.tronsdk.common.utils.ByteArray;
 import com.ramble.ramblewallet.tronsdk.common.utils.Sha256Hash;
@@ -39,7 +41,7 @@ public class TransferTrxUtils {
     //主网
     private static final String tronUrl = "https://api.nileex.io";
 
-    public static BigDecimal balanceOfTrx(String address) throws JSONException {
+    public static void balanceOfTrx(Activity context, String address) throws JSONException {
         String url = tronUrl + "/wallet/getaccount";
         JSONObject param = new JSONObject();
         param.put("address", toHexAddress(address));
@@ -47,7 +49,12 @@ public class TransferTrxUtils {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.v("-=-=->balanceOfTrc20,failure：", e.getMessage());
+                if (context instanceof MainTRXActivity) {
+                    ((MainTRXActivity) context).setTrxBalance(new BigDecimal("0"));
+                }
+//                if (context instanceof TransferActivity) {
+//                    ((TransferActivity) context).setTrxBalance(new BigDecimal(0.00000000));
+//                }
             }
 
             @Override
@@ -55,25 +62,31 @@ public class TransferTrxUtils {
                 String string = response.body().string();
                 try {
                     JSONObject json = new JSONObject(string);
-                    String balance = json.optString("balance");
-                    Log.v("-=-=->balanceOfTrc20,success：余额：", String.valueOf(new BigDecimal(balance).divide(new BigDecimal("1000000"))));
+                    String balanceBefore = json.optString("balance");
+                    if (context instanceof MainTRXActivity) {
+                        ((MainTRXActivity) context).setTrxBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
+                    }
+//                    if (context instanceof TransferActivity) {
+//                        ((TransferActivity) context).setTrxBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
+//                    }
                 } catch (Exception e) {
+                    if (context instanceof MainTRXActivity) {
+                        ((MainTRXActivity) context).setTrxBalance(new BigDecimal("0"));
+                    }
                     e.printStackTrace();
                 }
             }
         });
-        return null;
     }
 
     /**
      * 查询trc20数量
      */
-    public static BigDecimal balanceOfTrc20(String address) throws JSONException {
-
+    public static void balanceOfTrc20(Activity context, String address, String contractAddress) throws JSONException {
         String url = tronUrl + "/wallet/triggersmartcontract";
         JSONObject param = new JSONObject();
         param.put("owner_address", toHexAddress(address));
-        param.put("contract_address", toHexAddress("TU9iBgEEv9qsc6m7EBPLJ3x5vSNKfyxWW5"));
+        param.put("contract_address", toHexAddress(contractAddress));
         param.put("function_selector", "balanceOf(address)");
         List<Type> inputParameters = new ArrayList<>();
         inputParameters.add(new Address(toHexAddress(address).substring(2)));
@@ -82,7 +95,9 @@ public class TransferTrxUtils {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.v("-=-=->balanceOfTrc20,failure：", e.getMessage());
+                if (context instanceof MainTRXActivity) {
+                    ((MainTRXActivity) context).setTokenBalance(new BigDecimal("0"));
+                }
             }
 
             @Override
@@ -92,14 +107,18 @@ public class TransferTrxUtils {
                     JSONObject json = new JSONObject(string);
                     String constant_result = json.optString("constant_result");
                     String constantResult = constant_result.substring(2, constant_result.length() - 2).replaceAll("^(0+)", "");
-                    String balance = (new BigInteger(constantResult, 16)).toString();
-                    Log.v("-=-=->balanceOfTrc20,success：余额：", String.valueOf(new BigDecimal(balance).divide(new BigDecimal("1000000"))));
+                    String balanceBefore = (new BigInteger(constantResult, 16)).toString();
+                    if (context instanceof MainTRXActivity) {
+                        ((MainTRXActivity) context).setTokenBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
+                    }
                 } catch (Exception e) {
+                    if (context instanceof MainTRXActivity) {
+                        ((MainTRXActivity) context).setTokenBalance(new BigDecimal("0"));
+                    }
                     e.printStackTrace();
                 }
             }
         });
-        return null;
     }
 
     public static void transferTrx(String fromAddress, String toAddress, String privateKey, double number) throws JSONException {
