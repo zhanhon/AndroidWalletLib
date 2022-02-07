@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.RadioGroup
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
@@ -79,6 +80,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         binding.ivBack.setOnClickListener(this)
         binding.delete.setOnClickListener(this)
         binding.add.setOnClickListener(this)
+        binding.confirmButton.setOnClickListener(this)
         adapter.onClickListener = this
         adapter.onDataSetChanged = this
     }
@@ -262,9 +264,21 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 loadData()
             }
             R.id.delete -> {
+                binding.add.isVisible=false
+                binding.delete.isVisible=false
+                binding.confirmButton.isVisible=true
                 if (myDataBeans.isNullOrEmpty()) return
                 myDataBeans.forEach {
                     it.isNeedDelete = true
+                }
+                loadData()
+            }
+            R.id.confirm_button->{
+                binding.add.isVisible=true
+                binding.delete.isVisible=true
+                binding.confirmButton.isVisible=false
+                myDataBeans.forEach {
+                    it.isNeedDelete = false
                 }
                 loadData()
             }
