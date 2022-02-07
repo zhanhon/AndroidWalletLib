@@ -19,7 +19,6 @@ import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.entity.UMessage;
 
 import org.json.JSONObject;
-import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -47,11 +46,10 @@ public class MyNotificationService extends Service {
             /**根据主题返回不同页面**/
             if (msg.extra.get("message_type").equals("201")) {//消息 保存本地
                 Page.Record a = new Page.Record();
-                LocalDateTime tiem = LocalDateTime.now();
                 a.setId(Integer.parseInt(msg.extra.get("id")));
                 a.setTitle(msg.title);
                 a.setContent(msg.text);
-                a.setCreateTime(tiem.toString());
+                a.setCreateTime(msg.extra.get("time"));
                 Boolean isP = SharedPreferencesUtils.getString(
                         this,
                         STATION_INFO,

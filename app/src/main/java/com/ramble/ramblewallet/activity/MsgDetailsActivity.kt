@@ -30,6 +30,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
     private var content = ""
     private var createTime = ""
     private var typeText = 0
+    private var id=0
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -40,6 +41,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
         content = getExtras().getString(ARG_PARAM2, "")
         createTime = getExtras().getString(ARG_PARAM3, "")
         typeText = getExtras().getInt(ARG_PARAM4, 0)
+        id== getExtras().getInt(ARG_PARAM5, 0)
         when (typeText) {
             1 -> {
                 binding.ivRight.visibility = View.GONE
