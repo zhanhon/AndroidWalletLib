@@ -89,7 +89,7 @@ class StoreInfo @SuppressWarnings("unused") constructor() : Serializable {
     class Req(
         @Json(name = "condition") var condition: String? = null,//查询条件 name|symbol
         @Json(name = "convertId") var convertId: String? = null,//代币转换 2781,2787,2792
-        @Json(name = "list") var list: ArrayList<Int>? = null,//代币
+        @Json(name = "list") var list: ArrayList<String>? = null,//代币
         @Json(name = "name") var name: String? = null,//代币
         @Json(name = "platformId") var platformId: Int? = null,//主链币
         @Json(name = "sourceType") var sourceType: String? = null,//
