@@ -19,7 +19,7 @@ const val transferInfoUrl = "wallet-decentralized-api/transfer/info"
 const val noticeInfoUrl = "wallet-decentralized-api/sys/getNotice"
 const val faqInfoUrl = "wallet-decentralized-api/faq/getFaqInfos"
 const val queryFaqInfoUrl = "wallet-decentralized-api/faq/queryAllFaqByType"
-const val getStoreUrl = "wallet-decentralized-api/storeCoinmarketcap/getStore"
+const val getStoreUrl = "wallet-decentralized-api/sys/listStoreCoinmarketcap"
 const val getPrivacyInfo = "wallet-decentralized-api/sys/getPrivacyPolicy"
 
 interface ApiService {

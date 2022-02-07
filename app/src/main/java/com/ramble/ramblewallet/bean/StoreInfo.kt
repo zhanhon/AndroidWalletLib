@@ -3,6 +3,7 @@ package com.ramble.ramblewallet.bean
 import com.ramble.ramblewallet.network.ApiRequest
 import com.squareup.moshi.Json
 import java.io.Serializable
+import java.util.ArrayList
 
 /**
  * 时间　: 2022/1/11 16:19
@@ -17,6 +18,9 @@ class StoreInfo @SuppressWarnings("unused") constructor() : Serializable {
 
     @Json(name = "createTime")
     var createTime: String = ""//创建时间
+
+    @Json(name = "decimalPoints")
+    var decimalPoints: Int = 0//精度
 
     @Json(name = "id")
     var id: Int = 0//主键ID
@@ -85,8 +89,10 @@ class StoreInfo @SuppressWarnings("unused") constructor() : Serializable {
     class Req(
         @Json(name = "condition") var condition: String? = null,//查询条件 name|symbol
         @Json(name = "convertId") var convertId: String? = null,//代币转换 2781,2787,2792
+        @Json(name = "list") var list: ArrayList<Int>? = null,//代币
         @Json(name = "name") var name: String? = null,//代币
         @Json(name = "platformId") var platformId: Int? = null,//主链币
+        @Json(name = "sourceType") var sourceType: String? = null,//
         @Json(name = "symbol") var symbol: String? = null//代币标识
     ) : ApiRequest.Body()
 
