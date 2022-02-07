@@ -218,4 +218,6 @@
     <string name="transaction_query_eth">ETH交易</string>
     <string name="transaction_query_btc">BTC交易</string>
     <string name="transaction_query_trx">TRX交易</string>
+    <string name="contributing_address_hint">请输入地址</string>
+    <string name="contributing_name_hint">请输入名称</string>
 </resources>
