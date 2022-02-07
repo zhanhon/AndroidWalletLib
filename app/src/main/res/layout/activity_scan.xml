@@ -64,8 +64,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/scan"
+                android:textStyle="bold"
                 android:textColor="@color/color_FFFFFF"
-                android:textSize="@dimen/sp_16" />
+                android:textSize="@dimen/sp_17" />
 
             <ImageView
                 android:id="@+id/imv_gallery"
