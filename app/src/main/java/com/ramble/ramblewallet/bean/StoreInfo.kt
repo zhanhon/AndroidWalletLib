@@ -12,46 +12,44 @@ import java.util.ArrayList
  */
 class StoreInfo @SuppressWarnings("unused") constructor() : Serializable {
 
-
-    @Json(name = "contractAddress")
-    var contractAddress: String = ""//contractAddress
-
-    @Json(name = "createTime")
-    var createTime: String = ""//创建时间
-
-    @Json(name = "decimalPoints")
-    var decimalPoints: Int = 0//精度
-
     @Json(name = "id")
     var id: Int = 0//主键ID
 
     @Json(name = "name")
     var name: String = ""//代币
 
-    @Json(name = "platform")
-    var platform: Platform? = null//主链币
-
-
-    @Json(name = "platformId")
-    var platformId: Int = -1//platformId
-
-    @Json(name = "quote")
-    var quote: List<Record> = listOf()
-
-    @Json(name = "rank")
-    var rank: Int = 0//rank
+    @Json(name = "symbol")
+    var symbol: String = ""//
 
     @Json(name = "slug")
     var slug: String = ""//
 
+    @Json(name = "rank")
+    var rank: Int = 0//rank
+
+    @Json(name = "decimalPoints")
+    var decimalPoints: Int = 0//精度
+
+    @Json(name = "contractAddress")
+    var contractAddress: String = ""//contractAddress
+
+    @Json(name = "platformId")
+    var platformId: Int = 0//platformId
+
+    @Json(name = "platform")
+    var platform: Platform? = null//主链币
+
     @Json(name = "sourceType")
     var sourceType: String = ""//
 
-    @Json(name = "symbol")
-    var symbol: String = ""//
+    @Json(name = "createTime")
+    var createTime: String = ""//创建时间
 
     @Json(name = "updateTime")
     var updateTime: String = ""//修改时间
+
+    @Json(name = "quote")
+    var quote: List<Record> = listOf()
 
     var isMyToken: Int = 0//是否我的资产0,不是 1 是的
 
@@ -63,7 +61,7 @@ class StoreInfo @SuppressWarnings("unused") constructor() : Serializable {
         var symbol: String = ""//币种
 
         @Json(name = "price")
-        var price: Double = 0.00//转换金额
+        var price: String = ""//转换金额
 
         @Json(name = "lastUpdated")
         var lastUpdated: Long = -1//转换单位
