@@ -13,6 +13,7 @@ import com.ramble.ramblewallet.tronsdk.common.utils.Sha256Hash;
 import com.ramble.ramblewallet.trx.TrxApi;
 import com.ramble.ramblewallet.trx.Util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.util.encoders.Hex;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -131,12 +132,16 @@ public class TransferTrxUtils {
         });
     }
 
-    public static void transferTRX(Activity context, String fromAddress, String toAddress, String privateKey, BigDecimal number) throws JSONException {
+    public static void transferTRX(Activity context, String fromAddress, String toAddress,
+                                   String privateKey, BigDecimal number, String remark) throws JSONException {
         String url = tronUrl + "/wallet/createtransaction";
         JSONObject param = new JSONObject();
         param.put("owner_address", toHexAddress(fromAddress));
         param.put("to_address", toHexAddress(toAddress));
         param.put("amount", number);
+        if (StringUtils.isNotEmpty(remark)) {
+            param.put("data", Hex.toHexString(remark.getBytes()));
+        }
         Call call = getCall(url, param);
         call.enqueue(new Callback() {
             @Override
@@ -197,9 +202,9 @@ public class TransferTrxUtils {
     }
 
     //TRC20
-    public static void transferTRXToken(Activity context, String fromAddress, String toAddress, String contractAddress, String privateKey, String number) throws JSONException {
-        BigInteger amount = new BigInteger(number);
-        String remark = "T";
+    public static void transferTRXToken(Activity context, String fromAddress, String toAddress,
+                                        String contractAddress, String privateKey, String number, String remark) throws JSONException {
+        BigInteger amount = new BigInteger(number.replaceAll("\"",""));
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("contract_address", toHexAddress(contractAddress));
         jsonObject.put("function_selector", "transfer(address,uint256)");
