@@ -8,10 +8,11 @@ import com.ramble.ramblewallet.utils.DecimalFormatUtil;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import static com.ramble.ramblewallet.constant.ConstantsKt.CNY;
 import static com.ramble.ramblewallet.constant.ConstantsKt.HKD;
-import static com.ramble.ramblewallet.constant.ConstantsKt.RMB;
 import static com.ramble.ramblewallet.constant.ConstantsKt.USD;
 
 /**
@@ -29,7 +30,7 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
         baseViewHolder.setText(R.id.tv_token_name, mainETHTokenBean.getName());
         baseViewHolder.setText(R.id.tv_token_balance, DecimalFormatUtil.format8.format(mainETHTokenBean.getBalance()));
         switch (mainETHTokenBean.getCurrencyUnit()) {
-            case RMB:
+            case CNY:
                 baseViewHolder.setText(R.id.tv_converted_token_unit, "￥");
                 break;
             case HKD:
@@ -39,14 +40,7 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
                 baseViewHolder.setText(R.id.tv_converted_token_unit, "$");
                 break;
         }
-
-        baseViewHolder.setText(R.id.tv_converted_token_balance, DecimalFormatUtil.format2.format(mainETHTokenBean.getRate()));
-//        if (mainETHTokenBean.getChange().toString().contains("-")) {
-//            baseViewHolder.setTextColor(R.id.tv_increase_change, getContext().getResources().getColor(R.color.color_E11334));
-//        } else {
-//            baseViewHolder.setTextColor(R.id.tv_increase_change, getContext().getResources().getColor(R.color.color_009272));
-//        }
-        baseViewHolder.setText(R.id.tv_increase_change, mainETHTokenBean.getChange() + "%");
+        baseViewHolder.setText(R.id.tv_unit_price, DecimalFormatUtil.format8.format(new BigDecimal(mainETHTokenBean.getUnitPrice())));
     }
 
     private void tokenIcon(@NotNull BaseViewHolder baseViewHolder, MainETHTokenBean mainETHTokenBean) {
@@ -83,6 +77,9 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
                 break;
             case "UNI":
                 baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_uni);
+                break;
+            default:
+                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_dai);
                 break;
         }
     }

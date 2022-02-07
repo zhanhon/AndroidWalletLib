@@ -29,7 +29,6 @@ import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getEthMinerConfigUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.tron.TransferTrxUtils
 import com.ramble.ramblewallet.tron.TransferTrxUtils.*
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.utils.*
@@ -136,7 +135,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n", "CheckResult")
     private fun initData() {
-        currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, RMB)
+        currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, CNY)
         if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isNotEmpty()) {
             walletSelleted = Gson().fromJson(
                 SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
@@ -147,7 +146,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }
 
         when (currencyUnit) {
-            RMB -> currencySymbol = "￥"
+            CNY -> currencySymbol = "￥"
             HKD -> currencySymbol = "HK$"
             USD -> currencySymbol = "$"
         }

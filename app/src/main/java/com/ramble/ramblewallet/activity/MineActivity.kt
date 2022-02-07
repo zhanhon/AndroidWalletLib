@@ -37,7 +37,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_mine)
         language = SharedPreferencesUtils.getString(this, LANGUAGE, CN)
-        currency = SharedPreferencesUtils.getString(this, CURRENCY, RMB)
+        currency = SharedPreferencesUtils.getString(this, CURRENCY, CNY)
         initView()
         initListener()
     }
@@ -208,7 +208,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             window.setContentView(R.layout.dialog_currency)
 
             window.findViewById<View>(R.id.tv_language1).setOnClickListener { v1: View? ->
-                SharedPreferencesUtils.saveString(this, CURRENCY, RMB)
+                SharedPreferencesUtils.saveString(this, CURRENCY, CNY)
                 setCurrency()
                 dialogCurrency.dismiss()
             }
@@ -262,8 +262,8 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setCurrency() {
-        when (SharedPreferencesUtils.getString(this, CURRENCY, RMB)) {
-            RMB -> {
+        when (SharedPreferencesUtils.getString(this, CURRENCY, CNY)) {
+            CNY -> {
                 binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text =
                     getString(R.string.cny_dollar)
             }

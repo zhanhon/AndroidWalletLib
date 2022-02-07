@@ -9,6 +9,7 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import com.ramble.ramblewallet.activity.TransferActivity;
+import com.ramble.ramblewallet.ethereum.utils.StringHexUtils;
 
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.TypeReference;
@@ -32,6 +33,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.Future;
 
@@ -91,7 +93,7 @@ public class TransferEthUtils {
 
     @SuppressLint("LongLogTag")
     public static void transferETH(Activity context, String fromAddress, String toAddress, String privateKey, String number,
-                                   BigInteger gasPrice, BigInteger gasLimit, String desc) throws Exception {
+                                   BigInteger gasPrice, BigInteger gasLimit, String remark) throws Exception {
         Web3j web3j = Web3j.build(new HttpService(ETH_NODE));
         BigInteger value = Convert.toWei(number, Convert.Unit.ETHER).toBigInteger();
         //加载转账所需的凭证，用私钥
@@ -101,8 +103,11 @@ public class TransferEthUtils {
         BigInteger nonce = transactionCount.getTransactionCount();
         //Log.i(TAG, "transfer nonce : " + nonce);
 
+        if (remark != null) {
+            remark = StringHexUtils.byte2HexString(remark.getBytes(StandardCharsets.UTF_8));
+        }
         //创建RawTransaction交易对象
-        RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, gasPrice, gasLimit, toAddress, value, desc);
+        RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, gasPrice, gasLimit, toAddress, value, remark);
         //签名Transaction，这里要对交易做签名
         byte[] signMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
         String hexValue = Numeric.toHexString(signMessage);
@@ -123,7 +128,7 @@ public class TransferEthUtils {
 
     @SuppressLint("LongLogTag")
     public static void transferETHToken(Context context, String fromAddress, String toAddress, String contractAddress, String privateKey, BigInteger number,
-                                        BigInteger gasPrice, BigInteger gasLimit, String desc) throws Exception {
+                                        BigInteger gasPrice, BigInteger gasLimit, String remark) throws Exception {
         Web3j web3j = Web3j.build(new HttpService(ETH_NODE));
         //加载转账所需的凭证，用私钥
         Credentials credentials = Credentials.create(privateKey);

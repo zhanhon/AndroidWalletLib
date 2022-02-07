@@ -143,8 +143,8 @@ class TransactionQueryFragment : BaseFragment(),
         }
 
         var changeCurrencyType =
-            when (SharedPreferencesUtils.getString(myActivity, CURRENCY, RMB)) {
-                RMB -> {
+            when (SharedPreferencesUtils.getString(myActivity, CURRENCY, CNY)) {
+                CNY -> {
                     1
                 }
                 HKD -> {

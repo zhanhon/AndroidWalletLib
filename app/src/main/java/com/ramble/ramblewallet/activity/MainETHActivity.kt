@@ -23,9 +23,7 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.EmptyReq
 import com.ramble.ramblewallet.bean.MainETHTokenBean
-import com.ramble.ramblewallet.bean.RateBeen
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
@@ -34,7 +32,7 @@ import com.ramble.ramblewallet.ethereum.TransferEthUtils.getBalanceETH
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.helper.start
-import com.ramble.ramblewallet.network.rateInfoUrl
+import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
 import java.math.BigDecimal
@@ -44,7 +42,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityMainEthBinding
     private var mainETHTokenBean: ArrayList<MainETHTokenBean> = arrayListOf()
     private lateinit var mainAdapter: MainAdapter
-    private var rateBean: List<RateBeen> = arrayListOf()
     private lateinit var currencyUnit: String
     private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
     private var isClickEyes = false
@@ -53,9 +50,10 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private lateinit var walletSelleted: WalletETH
     private var ethBalance: BigDecimal = BigDecimal("0.00000000")
     private var tokenBalance: BigDecimal = BigDecimal("0.00000000")
-    private var totalBalance: BigDecimal = BigDecimal("0.00000000")
+    private var totalBalance: BigDecimal = BigDecimal("0.00")
     private var rateETH: String? = ""
-    private var rateToken: String? = ""
+    private var unitPrice = ""
+
 
     //DAI:4 0x16aFDD5dfE386052766b798bFA37DAec4b81155a
     private var contractAddress = "0xb319d1A045ffe108D14195F7C5d60Be220436a34" //测试节点ERC-USDT:6合约地址
@@ -191,7 +189,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initData() {
-        currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, RMB)
+        currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, CNY)
         saveWalletList = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
             object : TypeToken<ArrayList<WalletETH>>() {}.type
@@ -202,7 +200,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         )
         binding.tvWalletName.text = walletSelleted.walletName
         when (currencyUnit) {
-            RMB -> binding.tvCurrencyUnit.text = "￥"
+            CNY -> binding.tvCurrencyUnit.text = "￥"
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
@@ -291,105 +289,66 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private var ethLegal = BigDecimal("0.00")
-    private var tokenLegal = BigDecimal("0.00")
-
     @SuppressLint("CheckResult")
     private fun refreshData() {
-        mApiService.getRateInfo(EmptyReq().toApiRequest(rateInfoUrl))
-            .applyIo().subscribe(
-                {
-                    if (it.code() == 1) {
-                        it.data()?.let { data ->
-                            rateBean = data
-                            mainETHTokenBean.clear()
-                            if (rateBean.isNotEmpty()) {
-                                rateBean.forEach { //标题：ETH
-                                    if (it.currencyType == "ETH") {
-                                        when (currencyUnit) {
-                                            RMB -> rateETH = it.rateCny
-                                            HKD -> rateETH = it.rateHkd
-                                            USD -> rateETH = it.rateUsd
-                                        }
-                                        ethLegal = ethBalance.multiply(BigDecimal(rateETH))
-                                        mainETHTokenBean.add(
-                                            MainETHTokenBean(
-                                                it.currencyType,
-                                                ethBalance,
-                                                BigDecimal(rateETH),
-                                                currencyUnit,
-                                                BigDecimal(it.change)
-                                            )
-                                        )
-                                    }
-                                }
-                                if (SharedPreferencesUtils.getString(
-                                        this,
-                                        TOKEN_INFO_NO,
-                                        ""
-                                    ).isNotEmpty()
-                                ) {
-                                    saveTokenList = Gson().fromJson(
-                                        SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
-                                        object : TypeToken<ArrayList<StoreInfo>>() {}.type
-                                    )
-                                    val list = saveTokenList.iterator()
-                                    list.forEach {
-                                        if (it.isMyToken == 0) {
-                                            list.remove()
-                                        }
-                                    }
-                                    tokenLegal = BigDecimal("0.00")
-                                    rateBean.forEach { rateBean ->
-                                        saveTokenList.forEach { saveToken ->
-                                            if (saveToken.name == rateBean.currencyType) {
-                                                when (currencyUnit) {
-                                                    RMB -> rateToken = rateBean.rateCny
-                                                    HKD -> rateToken = rateBean.rateHkd
-                                                    USD -> rateToken = rateBean.rateUsd
-                                                }
-                                                tokenLegal =
-                                                    tokenBalance.multiply(BigDecimal(rateToken))
-                                                mainETHTokenBean.add(
-                                                    MainETHTokenBean(
-                                                        rateBean.currencyType,
-                                                        tokenBalance,
-                                                        BigDecimal(rateToken),
-                                                        currencyUnit,
-                                                        BigDecimal(rateBean.change)
-                                                    )
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-                                mainAdapter = MainAdapter(mainETHTokenBean)
-                                binding.rvCurrency.adapter = mainAdapter
-                                mainAdapter.setOnItemClickListener { adapter, view, position ->
-                                    if (adapter.getItem(position) is MainETHTokenBean) {
-                                        if ((adapter.getItem(position) as MainETHTokenBean).name != "ETH") {
-                                            showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
-                                        }
-                                    }
+        var list: ArrayList<String> = arrayListOf()
+        list.add("ETH")
+        list.add("TESTERC") //暂时固定TESTERC
+        var req = StoreInfo.Req()
+        req.list = list
+        req.convertId = "2787,2792,2781" //人民币、港币、美元
+        req.platformId = 1027 //BTC 1,ETH 1027,TRX 1958
+        mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
+            if (it.code() == 1) {
+                it.data()?.let { data ->
+                    mainETHTokenBean.clear()
+                    totalBalance = BigDecimal("0.00")
+                    data.forEach { storeInfo ->
+                        storeInfo.quote.forEach { quote ->
+                            if (quote.symbol == currencyUnit) {
+                                unitPrice = quote.price
+                            }
+                        }
+                        if (storeInfo.symbol == "ETH") {
+                            mainETHTokenBean.add(
+                                MainETHTokenBean(
+                                    storeInfo.symbol,
+                                    ethBalance,
+                                    unitPrice,
+                                    currencyUnit
+                                )
+                            )
+                            totalBalance += ethBalance.multiply(BigDecimal(unitPrice))
+                        } else {
+                            mainETHTokenBean.add(
+                                MainETHTokenBean(
+                                    storeInfo.symbol,
+                                    tokenBalance,
+                                    unitPrice,
+                                    currencyUnit
+                                )
+                            )
+                            totalBalance += tokenBalance.multiply(BigDecimal(unitPrice))
+                        }
+                        mainAdapter = MainAdapter(mainETHTokenBean)
+                        binding.rvCurrency.adapter = mainAdapter
+                        mainAdapter.setOnItemClickListener { adapter, view, position ->
+                            if (adapter.getItem(position) is MainETHTokenBean) {
+                                if ((adapter.getItem(position) as MainETHTokenBean).name != "ETH") {
+                                    showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
                                 }
                             }
                         }
-                        if ((ethBalance != BigDecimal("0.00000000")) && (tokenBalance != BigDecimal(
-                                "0.000000"
-                            ))
-                        ) {
-                            totalBalance = ethLegal.add(tokenLegal)
-                            setBalanceETH(totalBalance)
-                        }
-                    } else {
-                        println("-=-=-=->${it.message()}")
                     }
-                    cancelSyncAnimation()
-                }, {
-                    cancelSyncAnimation()
-                    println("-=-=-=->${it.printStackTrace()}")
+                    setBalanceETH(totalBalance)
                 }
-            )
+            } else {
+                println("-=-=-=->${it.message()}")
+            }
+            cancelSyncAnimation()
+        }, {
+            println("-=-=-=->${it.printStackTrace()}")
+            cancelSyncAnimation()
+        })
     }
-
 }

@@ -13,16 +13,12 @@ import androidx.databinding.DataBindingUtil
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.EmptyReq
 import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.databinding.ActivityMainBtcBinding
 import com.ramble.ramblewallet.helper.start
-import com.ramble.ramblewallet.network.rateInfoUrl
-import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
-import com.ramble.ramblewallet.utils.applyIo
 
 class MainBTCActivity : BaseActivity(), View.OnClickListener {
 
@@ -71,33 +67,6 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         }
 
         setOnClickListener()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Thread {
-            while (true) {
-                try {
-                    Thread.sleep(10000)
-                    mApiService.getRateInfo(EmptyReq().toApiRequest(rateInfoUrl))
-                        .applyIo().subscribe(
-                            {
-                                if (it.code() == 1) {
-                                    it.data()?.let { data ->
-
-                                    }
-                                } else {
-                                    println("-=-=-=->${it.message()}")
-                                }
-                            }, {
-                                println("-=-=-=->${it.printStackTrace()}")
-                            }
-                        )
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }.start()
     }
 
     private fun setOnClickListener() {

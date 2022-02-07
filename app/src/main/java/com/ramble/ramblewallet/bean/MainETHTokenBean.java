@@ -10,16 +10,14 @@ public class MainETHTokenBean {
 
     private String name;
     private BigDecimal balance;
-    private BigDecimal rate;
+    private String unitPrice;
     private String currencyUnit;
-    private BigDecimal change;
 
-    public MainETHTokenBean(String name, BigDecimal balance, BigDecimal rate, String currencyUnit, BigDecimal change) {
+    public MainETHTokenBean(String name, BigDecimal balance, String unitPrice, String currencyUnit) {
         this.name = name;
         this.balance = balance;
-        this.rate = rate;
+        this.unitPrice = unitPrice;
         this.currencyUnit = currencyUnit;
-        this.change = change;
     }
 
     public String getName() {
@@ -38,12 +36,12 @@ public class MainETHTokenBean {
         this.balance = balance;
     }
 
-    public BigDecimal getRate() {
-        return rate;
+    public String getUnitPrice() {
+        return unitPrice;
     }
 
-    public void setRate(BigDecimal rate) {
-        this.rate = rate;
+    public void setUnitPrice(String unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
     public String getCurrencyUnit() {
@@ -54,11 +52,4 @@ public class MainETHTokenBean {
         this.currencyUnit = currencyUnit;
     }
 
-    public BigDecimal getChange() {
-        return change;
-    }
-
-    public void setChange(BigDecimal change) {
-        this.change = change;
-    }
 }
