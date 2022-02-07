@@ -141,9 +141,9 @@ fun showBottomDialog2(
             data.address = binding.editAddress.text.toString()
             data.userName = binding.editName.text.toString()
             data.type = if (data.address.startsWith("1") || data.address.startsWith("3")) {
-                1
-            } else if (data.address.startsWith("0")) {
                 2
+            } else if (data.address.startsWith("0")) {
+                1
             } else if (data.address.startsWith("T") || data.address.startsWith("t")) {
                 3
             } else {
