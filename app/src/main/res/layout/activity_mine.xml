@@ -10,7 +10,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_46"
             android:background="@color/color_FFFFFF"
             android:padding="@dimen/dp_10">
 
@@ -30,6 +30,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/dp_10"
+                android:textSize="@dimen/sp_17"
+                android:textStyle="bold"
                 android:textColor="@color/color_000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,8 +40,8 @@
 
             <ImageView
                 android:id="@+id/iv_mine_right"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/dp_10"
                 android:src="@drawable/ic_bell_unread"

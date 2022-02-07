@@ -23,7 +23,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dp_17"
         android:textColor="@color/color_000000"
-        android:textSize="@dimen/sp_15"
+        android:textSize="@dimen/sp_16"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_mine_icon"
         app:layout_constraintTop_toTopOf="parent"
