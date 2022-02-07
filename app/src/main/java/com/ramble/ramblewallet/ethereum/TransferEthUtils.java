@@ -123,8 +123,8 @@ public class TransferEthUtils {
     }
 
     @SuppressLint("LongLogTag")
-    public static void transferToken(Context context, String fromAddress, String toAddress, String contractAddress, String privateKey, BigInteger number,
-                                     BigInteger gasPrice, BigInteger gasLimit, String desc) throws Exception {
+    public static void transferETHToken(Context context, String fromAddress, String toAddress, String contractAddress, String privateKey, BigInteger number,
+                                        BigInteger gasPrice, BigInteger gasLimit, String desc) throws Exception {
         Web3j web3j = Web3j.build(new HttpService(ETH_NODE));
         //加载转账所需的凭证，用私钥
         Credentials credentials = Credentials.create(privateKey);

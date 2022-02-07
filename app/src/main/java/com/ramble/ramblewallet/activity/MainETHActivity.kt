@@ -261,7 +261,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 
             tvTransfer.setOnClickListener { v1: View? ->
                 startActivity(Intent(this, TransferActivity::class.java).apply {
-                    putExtra(ARG_PARAM2, mainETHTokenBean.name)
+                    putExtra(ARG_PARAM2, "ETH-${mainETHTokenBean.name}")
                     putExtra(ARG_PARAM3, true)
                     putExtra(ARG_PARAM4, rateETH)
                 })
@@ -269,7 +269,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             }
             tvGathering.setOnClickListener { v1: View? ->
                 startActivity(Intent(this, GatheringActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "ETH")
+                    putExtra(ARG_PARAM1, "ETH-${mainETHTokenBean.name}")
                     putExtra(ARG_PARAM2, walletSelleted.address)
                 })
                 dialog.dismiss()

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.ramble.ramblewallet.activity.MainTRXActivity;
+import com.ramble.ramblewallet.activity.TransferActivity;
 import com.ramble.ramblewallet.tronsdk.common.crypto.ECKey;
 import com.ramble.ramblewallet.tronsdk.common.utils.ByteArray;
 import com.ramble.ramblewallet.tronsdk.common.utils.Sha256Hash;
@@ -52,9 +53,9 @@ public class TransferTrxUtils {
                 if (context instanceof MainTRXActivity) {
                     ((MainTRXActivity) context).setTrxBalance(new BigDecimal("0"));
                 }
-//                if (context instanceof TransferActivity) {
-//                    ((TransferActivity) context).setTrxBalance(new BigDecimal(0.00000000));
-//                }
+                if (context instanceof TransferActivity) {
+                    ((TransferActivity) context).setTrxBalance(new BigDecimal("0"));
+                }
             }
 
             @Override
@@ -66,9 +67,9 @@ public class TransferTrxUtils {
                     if (context instanceof MainTRXActivity) {
                         ((MainTRXActivity) context).setTrxBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
                     }
-//                    if (context instanceof TransferActivity) {
-//                        ((TransferActivity) context).setTrxBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
-//                    }
+                    if (context instanceof TransferActivity) {
+                        ((TransferActivity) context).setTrxBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
+                    }
                 } catch (Exception e) {
                     if (context instanceof MainTRXActivity) {
                         ((MainTRXActivity) context).setTrxBalance(new BigDecimal("0"));
@@ -98,6 +99,9 @@ public class TransferTrxUtils {
                 if (context instanceof MainTRXActivity) {
                     ((MainTRXActivity) context).setTokenBalance(new BigDecimal("0"));
                 }
+                if (context instanceof TransferActivity) {
+                    ((TransferActivity) context).setTokenBalance(new BigDecimal("0"));
+                }
             }
 
             @Override
@@ -111,9 +115,15 @@ public class TransferTrxUtils {
                     if (context instanceof MainTRXActivity) {
                         ((MainTRXActivity) context).setTokenBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
                     }
+                    if (context instanceof TransferActivity) {
+                        ((TransferActivity) context).setTokenBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
+                    }
                 } catch (Exception e) {
                     if (context instanceof MainTRXActivity) {
                         ((MainTRXActivity) context).setTokenBalance(new BigDecimal("0"));
+                    }
+                    if (context instanceof TransferActivity) {
+                        ((TransferActivity) context).setTokenBalance(new BigDecimal("0"));
                     }
                     e.printStackTrace();
                 }
@@ -121,7 +131,7 @@ public class TransferTrxUtils {
         });
     }
 
-    public static void transferTrx(String fromAddress, String toAddress, String privateKey, double number) throws JSONException {
+    public static void transferTRX(Activity context, String fromAddress, String toAddress, String privateKey, BigDecimal number) throws JSONException {
         String url = tronUrl + "/wallet/createtransaction";
         JSONObject param = new JSONObject();
         param.put("owner_address", toHexAddress(fromAddress));
@@ -131,11 +141,14 @@ public class TransferTrxUtils {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.v("-=-=->transferTrx,failure：", e.getMessage());
+                if (context instanceof TransferActivity) {
+                    ((TransferActivity) context).transferFail(e.getMessage());
+                }
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+
                 String string = response.body().string();
                 try {
                     JSONObject trans = new JSONObject(string);
@@ -156,12 +169,23 @@ public class TransferTrxUtils {
                     call2.enqueue(new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            Log.v("-=-=->transferTrx,failure2：", e.getMessage());
+                            if (context instanceof TransferActivity) {
+                                ((TransferActivity) context).transferFail(e.getMessage());
+                            }
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            Log.v("-=-=->transferTrx,success2：", "");
+                            String string = response.body().string();
+                            try {
+                                JSONObject trans = new JSONObject(string);
+                                String constant_result = trans.optString("txid");
+                                if (context instanceof TransferActivity) {
+                                    ((TransferActivity) context).transferSuccess(constant_result);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
 
@@ -173,7 +197,7 @@ public class TransferTrxUtils {
     }
 
     //TRC20
-    public static void transferToken(String fromAddress, String toAddress, String contractAddress, String privateKey, String number) throws JSONException {
+    public static void transferTRXToken(Activity context, String fromAddress, String toAddress, String contractAddress, String privateKey, String number) throws JSONException {
         BigInteger amount = new BigInteger(number);
         String remark = "T";
         JSONObject jsonObject = new JSONObject();
@@ -188,7 +212,9 @@ public class TransferTrxUtils {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.v("-=-=->transferToken,failure：", e.getMessage());
+                if (context instanceof TransferActivity) {
+                    ((TransferActivity) context).transferFail(e.getMessage());
+                }
             }
 
             @Override
@@ -210,12 +236,23 @@ public class TransferTrxUtils {
                     call2.enqueue(new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            Log.v("-=-=->transferToken,failure2：", e.getMessage());
+                            if (context instanceof TransferActivity) {
+                                ((TransferActivity) context).transferFail(e.getMessage());
+                            }
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            Log.v("-=-=->transferToken,success2：", "");
+                            String string = response.body().string();
+                            try {
+                                JSONObject trans = new JSONObject(string);
+                                String constant_result = trans.optString("txid");
+                                if (context instanceof TransferActivity) {
+                                    ((TransferActivity) context).transferSuccess(constant_result);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 } catch (JSONException e) {

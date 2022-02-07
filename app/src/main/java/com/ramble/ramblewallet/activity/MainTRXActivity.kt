@@ -263,7 +263,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
 
             tvTransfer.setOnClickListener { v1: View? ->
                 startActivity(Intent(this, TransferActivity::class.java).apply {
-                    putExtra(ARG_PARAM2, tokenName)
+                    putExtra(ARG_PARAM2, "TRX-$tokenName")
                     putExtra(ARG_PARAM3, true)
                     putExtra(ARG_PARAM4, rateTRX)
                 })
@@ -271,7 +271,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             }
             tvGathering.setOnClickListener { v1: View? ->
                 startActivity(Intent(this, GatheringActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "TRX")
+                    putExtra(ARG_PARAM1, "TRX-$tokenName")
                     putExtra(ARG_PARAM2, walletSelleted.address)
                 })
                 dialog.dismiss()

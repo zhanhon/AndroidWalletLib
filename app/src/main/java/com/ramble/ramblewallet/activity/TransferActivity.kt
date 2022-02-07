@@ -28,6 +28,8 @@ import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getEthMinerConfigUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.tron.TransferTrxUtils
+import com.ramble.ramblewallet.tron.TransferTrxUtils.*
 import com.ramble.ramblewallet.utils.*
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -45,7 +47,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private var slowGasPrice: String? = ""
     private var gasPrice: String? = ""
     private var rate: String? = ""
-    private var gas: BigDecimal= BigDecimal("0.00")
+    private var gas: BigDecimal = BigDecimal("0.00")
 
     private var isCustom = false
     private lateinit var walletSelleted: WalletETH
@@ -54,10 +56,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private var isToken: Boolean = false
 
     //DAI:4 0x16aFDD5dfE386052766b798bFA37DAec4b81155a
-    private var contractAddress = "0xb319d1A045ffe108D14195F7C5d60Be220436a34" //测试节点ERC-USDT:6合约地址
+    private var contractETHAddress =
+        "0xb319d1A045ffe108D14195F7C5d60Be220436a34" //测试节点ERC-USDT:6合约地址
     //private var contractAddress = "0xd95371A0550cF47aB9519105300707a82b0640Db" //开发节点ERC-USDT合约地址
 
-    private var contractAddressToken = "TU9iBgEEv9qsc6m7EBPLJ3x5vSNKfyxWW5"; //YING 合约地址；nile
+    private var contractTRXAddress = "TU9iBgEEv9qsc6m7EBPLJ3x5vSNKfyxWW5" //YING 合约地址；nile
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -172,24 +175,50 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
         binding.tvTransferTitle.text = transferTitle + " " + getString(R.string.transfer)
 
-        if (transferTitle == "ETH") {
-            if (isToken) {
-                Thread {
-                    transferBalance = getBalanceToken(walletSelleted.address, contractAddress)
-                    if (transferBalance != BigDecimal("0.000000")) {
-                        setBalance(transferBalance)
-                    }
-                }.start()
-            } else {
-                Thread {
-                    transferBalance = getBalanceETH(walletSelleted.address)
-                    if (transferBalance != BigDecimal("0.00000000")) {
-                        setBalance(transferBalance)
-                    }
-                }.start()
+        when (walletSelleted.walletType) {
+            1 -> {
+                if (isToken) {
+                    Thread {
+                        transferBalance =
+                            getBalanceToken(walletSelleted.address, contractETHAddress)
+                        if (transferBalance != BigDecimal("0.000000")) {
+                            setBalance(transferBalance)
+                        }
+                    }.start()
+                } else {
+                    Thread {
+                        transferBalance = getBalanceETH(walletSelleted.address)
+                        if (transferBalance != BigDecimal("0.00000000")) {
+                            setBalance(transferBalance)
+                        }
+                    }.start()
+                }
             }
+            2 -> {
+                if (isToken) {
+                    TransferTrxUtils.balanceOfTrc20(
+                        this,
+                        walletSelleted.address,
+                        contractTRXAddress
+                    )
+                } else {
+                    TransferTrxUtils.balanceOfTrx(this, walletSelleted.address)
+                }
+            }
+            0 -> {
 
+            }
         }
+    }
+
+    fun setTrxBalance(balance: BigDecimal) {
+        transferBalance = balance
+        setBalance(transferBalance)
+    }
+
+    fun setTokenBalance(balance: BigDecimal) {
+        transferBalance = balance
+        setBalance(transferBalance)
     }
 
     private fun setMinerFee() {
@@ -294,11 +323,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         when (walletSelleted.walletType) { //链类型|0:BTC|1:ETH|2:TRX
             1 -> {
                 if (isToken) {
-                    transferToken( //暂时是USDT合约
+                    transferETHToken( //暂时是USDT合约
                         this,
                         walletSelleted.address,
                         transferReceiverAddress,
-                        contractAddress,
+                        contractETHAddress,
                         walletSelleted.privateKey,
                         BigInteger(binding.edtInputQuantity.text.trim().toString()).multiply(
                             BigInteger("1000000")
@@ -321,7 +350,28 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             2 -> {
-
+                if (isToken) {
+                    transferTRXToken(
+                        this,
+                        walletSelleted.address,
+                        transferReceiverAddress,
+                        contractTRXAddress,
+                        walletSelleted.privateKey,
+                        BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
+                            BigDecimal("1000000")
+                        ).toString()
+                    )
+                } else {
+                    transferTRX(
+                        this,
+                        walletSelleted.address,
+                        transferReceiverAddress,
+                        walletSelleted.privateKey,
+                        BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
+                            BigDecimal("1000000")
+                        )
+                    )
+                }
             }
             0 -> {
 
@@ -330,12 +380,15 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun transferSuccess(transactionHash: String) {
-        transactionFinishConfirmDialog(transactionHash)
+        postUI {
+            transactionFinishConfirmDialog(transactionHash)
+        }
     }
 
     fun transferFail(strFail: String) {
-        toastDefault(getString(R.string.failure_transaction))
-        println("-=-=-=->交易失败：${strFail}")
+        postUI {
+            toastDefault(getString(R.string.failure_transaction))
+        }
     }
 
     private fun transactionFinishConfirmDialog(transactionHash: String) {
@@ -417,17 +470,20 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
             when (walletSelleted.walletType) {
                 1 -> {
-                    gas = BigDecimal(gasPrice).multiply(BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
+                    gas = BigDecimal(gasPrice).multiply(BigDecimal(gasLimit))
+                        .divide(BigDecimal("1000000000"))
                     window.findViewById<TextView>(R.id.tv_transfer_gas_fast).text =
                         "${
                             DecimalFormatUtil.format8.format(
-                                BigDecimal(fastGasPrice).multiply(BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
+                                BigDecimal(fastGasPrice).multiply(BigDecimal(gasLimit))
+                                    .divide(BigDecimal("1000000000"))
                             )
                         } ETH"
                     window.findViewById<TextView>(R.id.tv_transfer_gas_slow).text =
                         "${
                             DecimalFormatUtil.format8.format(
-                                BigDecimal(slowGasPrice).multiply(BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
+                                BigDecimal(slowGasPrice).multiply(BigDecimal(gasLimit))
+                                    .divide(BigDecimal("1000000000"))
                             )
                         } ETH"
                 }
