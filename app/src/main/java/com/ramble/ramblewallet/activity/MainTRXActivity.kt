@@ -35,6 +35,7 @@ import com.ramble.ramblewallet.network.rateInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.tron.TransferTrxUtils.balanceOfTrc20
 import com.ramble.ramblewallet.tron.TransferTrxUtils.balanceOfTrx
+import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.utils.*
 import java.math.BigDecimal
 
@@ -206,8 +207,10 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
-        balanceOfTrx(this, walletSelleted.address)
-        balanceOfTrc20(this, walletSelleted.address, contractAddress)
+        if (WalletTRXUtils.isTrxValidAddress(walletSelleted.address)) {
+            balanceOfTrx(this, walletSelleted.address)
+            balanceOfTrc20(this, walletSelleted.address, contractAddress)
+        }
         binding.tvTrxAddress.text = addressHandle(walletSelleted.address)
     }
 
