@@ -133,7 +133,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="@dimen/dp_10"
-                        android:visibility="gone"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -154,14 +153,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/dp_10"
-                            android:text="@string/spread" />
+                            android:text="@string/pack_up" />
 
                         <ImageView
                             android:id="@+id/iv_my_token_currency_constriction"
                             android:layout_width="@dimen/dp_20"
                             android:layout_height="@dimen/dp_20"
                             android:layout_alignParentRight="true"
-                            android:background="@drawable/vector_solid_triangle_down" />
+                            android:background="@drawable/vector_solid_triangle_up" />
                     </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

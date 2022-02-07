@@ -223,14 +223,14 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.ll_my_token_currency_constriction -> {
                 if (isSpread) {
-                    binding.rvMyTokenCurrency.visibility = View.GONE
-                    binding.tvMyTokenCurrencyConstriction.text = getString(R.string.spread)
-                    binding.ivMyTokenCurrencyConstriction.setBackgroundResource(R.drawable.vector_solid_triangle_down)
-                    isSpread = false
-                } else {
                     binding.rvMyTokenCurrency.visibility = View.VISIBLE
                     binding.tvMyTokenCurrencyConstriction.text = getString(R.string.pack_up)
                     binding.ivMyTokenCurrencyConstriction.setBackgroundResource(R.drawable.vector_solid_triangle_up)
+                    isSpread = false
+                } else {
+                    binding.rvMyTokenCurrency.visibility = View.GONE
+                    binding.tvMyTokenCurrencyConstriction.text = getString(R.string.spread)
+                    binding.ivMyTokenCurrencyConstriction.setBackgroundResource(R.drawable.vector_solid_triangle_down)
                     isSpread = true
                 }
             }
