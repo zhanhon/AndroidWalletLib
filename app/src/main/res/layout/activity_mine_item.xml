@@ -3,26 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/color_FFFFFF"
-    android:padding="@dimen/dp_10">
+    android:layout_height="@dimen/dp_60"
+    android:background="@color/color_FFFFFF">
 
     <ImageView
         android:id="@+id/iv_mine_icon"
-        android:layout_width="@dimen/dp_24"
-        android:layout_height="@dimen/dp_24"
-        android:layout_marginStart="@dimen/dp_10"
-        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_17"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:background="@drawable/ic_launcher_background" />
+        tools:src="@drawable/ic_currency" />
 
     <TextView
         android:id="@+id/tv_mine_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginStart="@dimen/dp_17"
         android:textColor="@color/color_000000"
         android:textSize="@dimen/sp_15"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -35,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_16"
         android:textColor="@color/color_9598AA"
         android:textSize="@dimen/sp_13"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,10 +44,10 @@
 
     <ImageView
         android:id="@+id/iv_mine_next"
-        android:layout_width="@dimen/dp_16"
-        android:layout_height="@dimen/dp_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_20"
         android:src="@drawable/ic_right"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
