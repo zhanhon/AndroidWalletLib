@@ -5,13 +5,14 @@
     <LinearLayout
         android:id="@+id/item_transfer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_86"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center_vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:padding="@dimen/dp_20">
 
@@ -24,7 +25,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_25"
+                android:layout_marginLeft="@dimen/dp_10"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -75,13 +76,14 @@
                     android:drawablePadding="@dimen/dp_5"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_15"
-                    tools:text="usdt" />
+                    tools:text="usdt"
+                    android:visibility="gone"/>
             </LinearLayout>
 
         </LinearLayout>
 
         <View
-            android:layout_marginStart="@dimen/dp_60"
+            android:layout_marginStart="@dimen/dp_55"
             android:background="@color/path_game_item_selected"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_08" />
