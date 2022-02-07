@@ -57,7 +57,6 @@ public class TransferEthUtils {
         String desc = "aaaaaaaaas";
         //transferETH(from, to, privateKey, "1", gasPrice, gasLimit, desc);
         //transferToken(from, to, contractAddress, privateKey, number, gasPrice, gasLimit, desc);
-        Log.v("-=-=-=->代币余额:", getBalanceToken(to, contractAddress).toPlainString());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

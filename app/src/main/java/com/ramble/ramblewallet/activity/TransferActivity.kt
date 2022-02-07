@@ -25,11 +25,13 @@ import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.*
 import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getEthMinerConfigUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.tron.TransferTrxUtils
 import com.ramble.ramblewallet.tron.TransferTrxUtils.*
+import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.utils.*
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -177,32 +179,36 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
         when (walletSelleted.walletType) {
             1 -> {
-                if (isToken) {
-                    Thread {
-                        transferBalance =
-                            getBalanceToken(walletSelleted.address, contractETHAddress)
-                        if (transferBalance != BigDecimal("0.000000")) {
-                            setBalance(transferBalance)
-                        }
-                    }.start()
-                } else {
-                    Thread {
-                        transferBalance = getBalanceETH(walletSelleted.address)
-                        if (transferBalance != BigDecimal("0.00000000")) {
-                            setBalance(transferBalance)
-                        }
-                    }.start()
+                if (WalletETHUtils.isEthValidAddress(walletSelleted.address)) {
+                    if (isToken) {
+                        Thread {
+                            transferBalance =
+                                getBalanceToken(walletSelleted.address, contractETHAddress)
+                            if (transferBalance != BigDecimal("0.000000")) {
+                                setBalance(transferBalance)
+                            }
+                        }.start()
+                    } else {
+                        Thread {
+                            transferBalance = getBalanceETH(walletSelleted.address)
+                            if (transferBalance != BigDecimal("0.00000000")) {
+                                setBalance(transferBalance)
+                            }
+                        }.start()
+                    }
                 }
             }
             2 -> {
-                if (isToken) {
-                    TransferTrxUtils.balanceOfTrc20(
-                        this,
-                        walletSelleted.address,
-                        contractTRXAddress
-                    )
-                } else {
-                    TransferTrxUtils.balanceOfTrx(this, walletSelleted.address)
+                if (WalletTRXUtils.isTrxValidAddress(walletSelleted.address)) {
+                    if (isToken) {
+                        balanceOfTrc20(
+                            this,
+                            walletSelleted.address,
+                            contractTRXAddress
+                        )
+                    } else {
+                        balanceOfTrx(this, walletSelleted.address)
+                    }
                 }
             }
             0 -> {

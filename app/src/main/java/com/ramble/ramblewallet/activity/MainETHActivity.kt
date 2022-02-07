@@ -32,6 +32,7 @@ import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.getBalanceETH
 import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.rateInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -205,17 +206,19 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
-        Thread {
-            ethBalance = getBalanceETH(walletSelleted.address)
-            if (ethBalance != BigDecimal("0.00000000")) {
-                refreshData()
-            }
-            tokenBalance =
-                TransferEthUtils.getBalanceToken(walletSelleted.address, contractAddress)
-            if (tokenBalance != BigDecimal("0.000000")) {
-                refreshData()
-            }
-        }.start()
+        if (WalletETHUtils.isEthValidAddress(walletSelleted.address)) {
+            Thread {
+                ethBalance = getBalanceETH(walletSelleted.address)
+                if (ethBalance != BigDecimal("0.00000000")) {
+                    refreshData()
+                }
+                tokenBalance =
+                    TransferEthUtils.getBalanceToken(walletSelleted.address, contractAddress)
+                if (tokenBalance != BigDecimal("0.000000")) {
+                    refreshData()
+                }
+            }.start()
+        }
         binding.tvEthAddress.text = addressHandle(walletSelleted.address)
     }
 
