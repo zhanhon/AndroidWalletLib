@@ -18,6 +18,7 @@ import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.HtmlWebView
+import java.util.ArrayList
 
 /**
  * 时间　: 2021/12/16 13:54
@@ -31,7 +32,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
     private var createTime = ""
     private var typeText = 0
     private var id=0
-
+    private var list = mutableListOf<Any?>()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +53,33 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
                 binding.ivRight.visibility = View.GONE
                 binding.tvMineTitle.text = getString(R.string.message_details)
                 isCheckContent(content, title)
+                if (id!=0){
+                    list = if (SharedPreferencesUtils.getString(
+                            this,
+                            READ_ID,
+                            ""
+                        ).isNotEmpty()
+                    ) {
+                        SharedPreferencesUtils.String2SceneList(
+                            SharedPreferencesUtils.getString(
+                                this,
+                                READ_ID,
+                                ""
+                            )
+                        )
+                    } else {
+                        mutableListOf()
+                    }
+                    if (list.isNotEmpty()) {
+                        if (!list.contains(id)) {
+                            list.add(id)
+                        }
+                    } else {
+                        list.add(id)
+                    }
+                    var addId = SharedPreferencesUtils.SceneList2String(list)
+                    SharedPreferencesUtils.saveString(this, READ_ID, addId)
+                }
             }
             3 -> {
                 binding.ivRight.visibility = View.GONE
