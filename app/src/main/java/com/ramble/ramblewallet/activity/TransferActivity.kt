@@ -359,7 +359,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         walletSelleted.privateKey,
                         BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
                             BigDecimal("1000000")
-                        ).toString()
+                        ).toString(),
+                        binding.edtInputTransferRemarks.text.trim().toString()
                     )
                 } else {
                     transferTRX(
@@ -369,7 +370,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         walletSelleted.privateKey,
                         BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
                             BigDecimal("1000000")
-                        )
+                        ),
+                        binding.edtInputTransferRemarks.text.trim().toString()
                     )
                 }
             }
