@@ -1,6 +1,7 @@
 package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -13,7 +14,9 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.constant.TOKEN_INFO_NO
+import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivitySearchTokenBinding
+import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.item.AddTokenItem
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -38,6 +41,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
     private val adapter = RecyclerAdapter()
     private var myDataBeansMyAssets: ArrayList<StoreInfo> = arrayListOf()
     private var lastString = ""
+    private lateinit var wallet: WalletETH
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,10 +83,27 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
                 list.remove()
             }
         }
+        wallet =
+            Gson().fromJson(
+                SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+                object : TypeToken<WalletETH>() {}.type
+            )
+
         var req = StoreInfo.Req()
         req.condition = "symbol"
         req.symbol = condition
-        req.platformId = 1027
+        req.platformId =when (wallet.walletType) {
+            2 -> {
+                1958
+            }
+            0 -> {
+                1
+            }
+            else -> {
+                1027
+            }
+        }
+
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
                 it.data()?.let { data ->

@@ -196,6 +196,7 @@ open class StationFragment : BaseFragment() {
                     it.putString(ARG_PARAM1, itemBean.title)
                     it.putString(ARG_PARAM2, itemBean.content)
                     it.putString(ARG_PARAM3, itemBean.createTime)
+                    it.putInt(ARG_PARAM4, 2)
                 })
 
 
