@@ -34,9 +34,9 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/dp_10"
                 android:text="@string/token_management"
-                android:textStyle="bold"
-                android:textSize="@dimen/sp_17"
                 android:textColor="@color/color_000000"
+                android:textSize="@dimen/sp_17"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -64,30 +64,38 @@
                 <RelativeLayout
                     android:id="@+id/rl_token_title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/dp_50"
                     android:padding="@dimen/dp_10">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/dp_20"
-                        android:text="@string/recommend_tokens"
-                        android:textColor="@color/color_000000" />
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/list_tokens_manage"
+                        android:textColor="@color/color_000000"
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/iv_delete_token"
-                        android:layout_width="@dimen/dp_20"
-                        android:layout_height="@dimen/dp_20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:background="@drawable/ic_delelet_line" />
                 </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_08"
+                    android:background="@color/driver_gray" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_token_manage_currency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:orientation="vertical"
                     android:padding="@dimen/dp_10"
-                    android:layout_marginBottom="20dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </LinearLayout>
