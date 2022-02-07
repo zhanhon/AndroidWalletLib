@@ -328,13 +328,10 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                         ""
                                     ).isNotEmpty()
                                 ) {
-                                    saveTokenList = SharedPreferencesUtils.String2SceneList(
-                                        SharedPreferencesUtils.getString(
-                                            this,
-                                            TOKEN_INFO_NO,
-                                            ""
-                                        )
-                                    ) as ArrayList<StoreInfo>
+                                    saveTokenList = Gson().fromJson(
+                                        SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                                        object : TypeToken<ArrayList<StoreInfo>>() {}.type
+                                    )
                                     val list = saveTokenList.iterator()
                                     list.forEach {
                                         if (it.isMyToken == 0) {

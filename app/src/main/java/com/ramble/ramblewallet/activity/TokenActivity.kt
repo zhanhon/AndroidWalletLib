@@ -7,6 +7,8 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.StoreInfo
@@ -64,13 +66,10 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                 ""
             ).isNotEmpty()
         ) {
-            myStores = SharedPreferencesUtils.String2SceneList(
-                SharedPreferencesUtils.getString(
-                    this,
-                    TOKEN_INFO_NO,
-                    ""
-                )
-            ) as ArrayList<StoreInfo>
+            myStores = Gson().fromJson(
+                SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                object : TypeToken<ArrayList<StoreInfo>>() {}.type
+            )
         } else {
             var r1 = StoreInfo()
             r1.id = 1
@@ -104,8 +103,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
             myStores.add(r6)
             myStores.add(r7)
             myStores.add(r8)
-            var addId = SharedPreferencesUtils.SceneList2String(myStores)
-            SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, addId)
+            SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myStores))
         }
         ArrayList<SimpleRecyclerItem>().apply {
             myStores.forEach { o -> this.add(AddTokenItem(o as StoreInfo)) }
@@ -127,13 +125,10 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
             Pie.EVENT_ADD_TOKEN, Pie.EVENT_MINUS_TOKEN -> {
                 myStores = arrayListOf()
                 adapter.clear()
-                myStores = SharedPreferencesUtils.String2SceneList(
-                    SharedPreferencesUtils.getString(
-                        this,
-                        TOKEN_INFO_NO,
-                        ""
-                    )
-                ) as ArrayList<StoreInfo>
+                myStores = Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                    object : TypeToken<ArrayList<StoreInfo>>() {}.type
+                )
                 var isOpen = false
                 myStores.forEach {
                     if (it.id == event.data<StoreInfo>().id) {
@@ -144,8 +139,8 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                 if (!isOpen) {
                     myStores.add(event.data())
                 }
-                var addId = SharedPreferencesUtils.SceneList2String(myStores)
-                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, addId)
+
+                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myStores))
                 ArrayList<SimpleRecyclerItem>().apply {
                     myStores.forEach { o -> this.add(AddTokenItem(o as StoreInfo)) }
                     adapter.addAll(this.toList())
@@ -154,13 +149,10 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
             Pie.EVENT_DEL_TOKEN -> {
                 myStores = arrayListOf()
                 adapter.clear()
-                myStores = SharedPreferencesUtils.String2SceneList(
-                    SharedPreferencesUtils.getString(
-                        this,
-                        TOKEN_INFO_NO,
-                        ""
-                    )
-                ) as ArrayList<StoreInfo>
+                myStores = Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                    object : TypeToken<ArrayList<StoreInfo>>() {}.type
+                )
 
                 ArrayList<SimpleRecyclerItem>().apply {
                     myStores.forEach { o -> this.add(AddTokenItem(o as StoreInfo)) }
@@ -191,8 +183,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                     item.isMyToken = 0
                 }
                 myStores[position] = item
-                var addId = SharedPreferencesUtils.SceneList2String(myStores)
-                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, addId)
+                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myStores))
                 adapter.notifyItemChanged(position)
             }
         }

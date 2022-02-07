@@ -7,6 +7,8 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.StoreInfo
@@ -67,13 +69,10 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("CheckResult")
     private fun searchData(condition: String) {
-        myDataBeansMyAssets = SharedPreferencesUtils.String2SceneList(
-            SharedPreferencesUtils.getString(
-                this,
-                TOKEN_INFO_NO,
-                ""
-            )
-        ) as ArrayList<StoreInfo>
+        myDataBeansMyAssets = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+            object : TypeToken<ArrayList<StoreInfo>>() {}.type
+        )
         var list = myDataBeansMyAssets.iterator()
         list.forEach {
             if (it.isMyToken == 0) {

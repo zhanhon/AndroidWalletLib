@@ -8,6 +8,8 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.StoreInfo
@@ -68,13 +70,10 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 .build()
         )
         binding.rvTokenManageCurrency.adapter = recommendTokenAdapter
-        myDataBeansRecommendToken = SharedPreferencesUtils.String2SceneList(
-            SharedPreferencesUtils.getString(
-                this,
-                TOKEN_INFO_NO,
-                ""
-            )
-        ) as ArrayList<StoreInfo>
+        myDataBeansRecommendToken = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+            object : TypeToken<ArrayList<StoreInfo>>() {}.type
+        )
         ArrayList<SimpleRecyclerItem>().apply {
             myDataBeansRecommendToken.forEach { o ->
                 if (o.isMyToken == 0) {
@@ -135,13 +134,10 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 myDataBeansMyAssets = arrayListOf()
                 adapter.clear()
                 recommendTokenAdapter.clear()
-                myDataBeansMyAssets = SharedPreferencesUtils.String2SceneList(
-                    SharedPreferencesUtils.getString(
-                        this,
-                        TOKEN_INFO_NO,
-                        ""
-                    )
-                ) as ArrayList<StoreInfo>
+                myDataBeansMyAssets =Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                    object : TypeToken<ArrayList<StoreInfo>>() {}.type
+                )
                 var isOpen = false
                 myDataBeansMyAssets.forEach {
                     if (it.id == event.data<StoreInfo>().id) {
@@ -152,8 +148,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 if (!isOpen) {
                     myDataBeansMyAssets.add(event.data())
                 }
-                var addId = SharedPreferencesUtils.SceneList2String(myDataBeansMyAssets)
-                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, addId)
+                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myDataBeansMyAssets) )
 
                 ArrayList<SimpleRecyclerItem>().apply {
                     myDataBeansMyAssets.forEach { o ->
@@ -177,14 +172,10 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 myDataBeansMyAssets = arrayListOf()
                 adapter.clear()
                 recommendTokenAdapter.clear()
-                myDataBeansMyAssets = SharedPreferencesUtils.String2SceneList(
-                    SharedPreferencesUtils.getString(
-                        this,
-                        TOKEN_INFO_NO,
-                        ""
-                    )
-                ) as ArrayList<StoreInfo>
-
+                myDataBeansMyAssets = Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                    object : TypeToken<ArrayList<StoreInfo>>() {}.type
+                )
                 ArrayList<SimpleRecyclerItem>().apply {
                     myDataBeansMyAssets.forEach { o ->
                         if (o.isMyToken == 0) {

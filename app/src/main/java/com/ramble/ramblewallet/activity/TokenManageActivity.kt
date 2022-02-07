@@ -8,6 +8,8 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.StoreInfo
@@ -56,13 +58,10 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
 
     private fun initView() {
         //初始化推荐代币
-        myStores = SharedPreferencesUtils.String2SceneList(
-            SharedPreferencesUtils.getString(
-                this,
-                TOKEN_INFO_NO,
-                ""
-            )
-        ) as ArrayList<StoreInfo>
+        myStores = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+            object : TypeToken<ArrayList<StoreInfo>>() {}.type
+        )
         LinearLayoutManager(this).apply {
             binding.rvTokenManageCurrency.layoutManager = this
         }
@@ -161,8 +160,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                                 list.remove()
                             }
                         }
-                        var addId = SharedPreferencesUtils.SceneList2String(myStores)
-                        SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, addId)
+                        SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myStores))
                         RxBus.emitEvent(Pie.EVENT_DEL_TOKEN, saveList)
                     }
                 }
@@ -177,8 +175,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                     item.isMyToken = 0
                 }
                 myStores[position] = item
-                var addId = SharedPreferencesUtils.SceneList2String(myStores)
-                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, addId)
+                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myStores))
                 adapter.notifyItemChanged(position)
                 RxBus.emitEvent(Pie.EVENT_MINUS_TOKEN, item)
 
