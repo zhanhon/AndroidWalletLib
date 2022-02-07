@@ -58,9 +58,8 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="@dimen/dp_0"
+                android:layout_width="@dimen/dp_60"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -75,10 +74,10 @@
                         android:id="@+id/check_all"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_5"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:layout_marginRight="@dimen/dp_2"
-                        android:layout_marginBottom="@dimen/dp_10"
+                        android:layout_marginLeft="@dimen/dp_13"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:layout_marginRight="@dimen/dp_13"
+                        android:layout_marginBottom="@dimen/dp_29"
                         android:background="@drawable/selector_check_meun"
                         android:button="@null"
                         android:gravity="center" />
@@ -87,10 +86,9 @@
                         android:id="@+id/check_bt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_5"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:layout_marginRight="@dimen/dp_2"
-                        android:layout_marginBottom="@dimen/dp_10"
+                        android:layout_marginLeft="@dimen/dp_13"
+                        android:layout_marginRight="@dimen/dp_13"
+                        android:layout_marginBottom="@dimen/dp_29"
                         android:background="@drawable/selector_check_bt"
                         android:button="@null"
                         android:gravity="center" />
@@ -99,10 +97,9 @@
                         android:id="@+id/check_eth"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_5"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:layout_marginRight="@dimen/dp_2"
-                        android:layout_marginBottom="@dimen/dp_10"
+                        android:layout_marginLeft="@dimen/dp_13"
+                        android:layout_marginRight="@dimen/dp_13"
+                        android:layout_marginBottom="@dimen/dp_29"
                         android:background="@drawable/selector_check_eth"
                         android:button="@null"
                         android:gravity="center" />
@@ -111,9 +108,8 @@
                         android:id="@+id/check_trx"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_5"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:layout_marginRight="@dimen/dp_2"
+                        android:layout_marginLeft="@dimen/dp_13"
+                        android:layout_marginRight="@dimen/dp_13"
                         android:layout_marginBottom="@dimen/dp_10"
                         android:background="@drawable/selector_check_trx"
                         android:button="@null"
@@ -126,7 +122,7 @@
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/dp_10"
-                android:layout_weight="7"
+                android:layout_weight="1"
                 android:background="@color/color_FFFFFF"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/dp_25"
@@ -144,6 +140,7 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/my_address"
+                        android:textStyle="bold"
                         android:textColor="@color/black" />
 
                     <ImageView
