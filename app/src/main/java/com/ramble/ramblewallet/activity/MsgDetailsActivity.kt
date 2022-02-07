@@ -88,7 +88,6 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
                 3
             }
         }
-        req.status = 1
         req.type = when (typeText) {
             3 -> "privacy"
             else -> "service"
