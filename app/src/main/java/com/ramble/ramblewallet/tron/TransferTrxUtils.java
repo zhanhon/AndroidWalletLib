@@ -23,6 +23,7 @@ import org.tron.protos.Protocol;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Type;
+import org.web3j.utils.Convert;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -203,8 +204,7 @@ public class TransferTrxUtils {
 
     //TRC20
     public static void transferTRXToken(Activity context, String fromAddress, String toAddress,
-                                        String contractAddress, String privateKey, String number, String remark) throws JSONException {
-        BigInteger amount = new BigInteger(number.replaceAll("\"",""));
+                                        String contractAddress, String privateKey, BigInteger amount, String remark) throws JSONException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("contract_address", toHexAddress(contractAddress));
         jsonObject.put("function_selector", "transfer(address,uint256)");
