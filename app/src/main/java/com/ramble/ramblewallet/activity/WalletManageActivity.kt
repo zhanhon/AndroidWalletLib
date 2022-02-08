@@ -264,6 +264,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                         loadData(walletManageBean)
                     }
                 } else {
+                    binding.checkAll.performClick()
                     isDeletePage = true
                     binding.ivManageWalletRight.setBackgroundResource(R.drawable.ic_delelet_line)
                     binding.ivAddWallet.visibility = View.INVISIBLE
