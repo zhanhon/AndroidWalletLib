@@ -257,11 +257,6 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             }
             R.id.add -> {
                 showBottomDialog2(this, "", "",2)
-                if (myDataBeans.isNullOrEmpty()) return
-                myDataBeans.forEach {
-                    it.isNeedDelete = false
-                }
-                loadData()
             }
             R.id.delete -> {
                 binding.add.isVisible=false
