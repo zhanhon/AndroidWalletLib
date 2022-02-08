@@ -81,7 +81,8 @@
             android:maxLines="1"
             android:text="111111111"
             android:textColor="@color/front_one"
-            android:textSize="@dimen/sp_15"
+            android:textSize="@dimen/sp_16"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/img_first"
             app:layout_constraintTop_toTopOf="@+id/img_first" />
 
@@ -117,7 +118,7 @@
             android:ellipsize="end"
             android:gravity="left"
             android:maxEms="20"
-            android:maxLines="1"
+            android:maxLines="2"
             android:padding="@dimen/dp_5"
             android:text="@string/abc"
             android:textColor="@color/front_three"

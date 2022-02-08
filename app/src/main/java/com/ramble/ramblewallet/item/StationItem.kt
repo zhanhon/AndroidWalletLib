@@ -1,5 +1,6 @@
 package com.ramble.ramblewallet.item
 
+import android.graphics.Color
 import android.view.View
 import android.widget.CheckBox
 import androidx.core.view.isVisible
@@ -19,6 +20,7 @@ class StationItem(val data: Page.Record) : CheckableSimpleRecyclerItem(), View.O
 
     override fun getLayout(): Int = R.layout.item_notice
 
+
     override fun bind(holder: ViewHolder) {
         val binding: ItemNoticeBinding = holder.binding()
         binding.title1.text = data.title
@@ -36,8 +38,12 @@ class StationItem(val data: Page.Record) : CheckableSimpleRecyclerItem(), View.O
         binding.badge.isVisible = data.isRead == 0
         if (data.isRead == 0) {
             binding.bells.setBackgroundResource(R.drawable.ic_unread)
+            binding.title1.setTextColor(Color.parseColor("#222222"))
+            binding.tvContent.setTextColor(Color.parseColor("#666666"))
         } else {
             binding.bells.setBackgroundResource(R.drawable.ic_read)
+            binding.title1.setTextColor(Color.parseColor("#8d8d8d"))
+            binding.tvContent.setTextColor(Color.parseColor("#a1a1a1"))
         }
         holder.attachOnClickListener(R.id.item_msg_notic)
     }
