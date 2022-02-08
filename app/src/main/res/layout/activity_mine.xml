@@ -30,9 +30,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/dp_10"
+                android:textColor="@color/color_000000"
                 android:textSize="@dimen/sp_17"
                 android:textStyle="bold"
-                android:textColor="@color/color_000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -50,73 +50,84 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:id="@+id/v_1"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_10"
-            android:background="@color/color_F9F9F9" />
+            android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/inc_manage_wallet"
-            layout="@layout/activity_mine_item" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <View
-            android:id="@+id/v_2"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_10"
-            android:background="@color/color_F9F9F9" />
 
-        <include
-            android:id="@+id/inc_address_book"
-            layout="@layout/activity_mine_item" />
+                <View
+                    android:id="@+id/v_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_10"
+                    android:background="@color/color_F9F9F9" />
 
-        <include
-            android:id="@+id/inc_transaction_query"
-            layout="@layout/activity_mine_item" />
+                <include
+                    android:id="@+id/inc_manage_wallet"
+                    layout="@layout/activity_mine_item" />
 
-        <include
-            android:id="@+id/inc_multi_language"
-            layout="@layout/activity_mine_item" />
+                <View
+                    android:id="@+id/v_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_10"
+                    android:background="@color/color_F9F9F9" />
 
-        <include
-            android:id="@+id/inc_currency_unit"
-            layout="@layout/activity_mine_item" />
+                <include
+                    android:id="@+id/inc_address_book"
+                    layout="@layout/activity_mine_item" />
 
-        <View
-            android:id="@+id/v_3"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_10" />
+                <include
+                    android:id="@+id/inc_transaction_query"
+                    layout="@layout/activity_mine_item" />
 
-        <include
-            android:id="@+id/inc_help_feedback"
-            layout="@layout/activity_mine_item" />
+                <include
+                    android:id="@+id/inc_multi_language"
+                    layout="@layout/activity_mine_item" />
 
-        <View
-            android:id="@+id/v_4"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_10"
-            android:background="@color/color_F9F9F9" />
+                <include
+                    android:id="@+id/inc_currency_unit"
+                    layout="@layout/activity_mine_item" />
 
-        <include
-            android:id="@+id/inc_service_agreement"
-            layout="@layout/activity_mine_item" />
+                <View
+                    android:id="@+id/v_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_10" />
 
-        <include
-            android:id="@+id/inc_privacy_statement"
-            layout="@layout/activity_mine_item" />
+                <include
+                    android:id="@+id/inc_help_feedback"
+                    layout="@layout/activity_mine_item" />
 
-        <include
-            android:id="@+id/inc_about_us"
-            layout="@layout/activity_mine_item" />
+                <View
+                    android:id="@+id/v_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_10"
+                    android:background="@color/color_F9F9F9" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp_100"
-            android:text="@string/clear_cache"
-            android:textColor="@color/color_9598AA"
-            android:textSize="@dimen/sp_13" />
+                <include
+                    android:id="@+id/inc_service_agreement"
+                    layout="@layout/activity_mine_item" />
 
+                <include
+                    android:id="@+id/inc_privacy_statement"
+                    layout="@layout/activity_mine_item" />
+
+                <include
+                    android:id="@+id/inc_about_us"
+                    layout="@layout/activity_mine_item" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dp_100"
+                    android:text="@string/clear_cache"
+                    android:textColor="@color/color_9598AA"
+                    android:textSize="@dimen/sp_13" />
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </layout>
