@@ -53,6 +53,18 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             intent.getStringExtra(ARG_PARAM1),
             object : TypeToken<WalletETH>() {}.type
         )
+        when (walletCurrent.walletType) {
+            1 -> {
+                binding.tvRecoverWalletTitle.text = "ETH" + " " + walletCurrent.walletName
+            }
+            2 -> {
+                binding.tvRecoverWalletTitle.text = "TRX" + " " + walletCurrent.walletName
+            }
+            0 -> {
+                binding.tvRecoverWalletTitle.text = "BTC" + " " + walletCurrent.walletName
+            }
+        }
+
         saveWalletList = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
             object : TypeToken<ArrayList<WalletETH>>() {}.type
@@ -68,6 +80,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
     private fun initClick() {
         binding.ivBack.setOnClickListener(this)
         binding.rlEditWallet.setOnClickListener(this)
+        binding.rlContributingWordsBackups.setOnClickListener(this)
         binding.rlSecretKeyBackups.setOnClickListener(this)
         binding.rlKeystoreBackups.setOnClickListener(this)
         binding.tvDeleteWallet.setOnClickListener(this)
@@ -80,6 +93,9 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.rl_edit_wallet -> {
                 inputPasswordDialog(getString(R.string.edit_wallet))
+            }
+            R.id.rl_contributing_words_backups -> {
+                inputPasswordDialog(getString(R.string.backup_memorization_words))
             }
             R.id.rl_secret_key_backups -> {
                 inputPasswordDialog(getString(R.string.secret_key_backup))
