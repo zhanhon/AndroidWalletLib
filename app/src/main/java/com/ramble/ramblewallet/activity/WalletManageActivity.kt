@@ -170,6 +170,8 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         when (checkedId) {
             R.id.check_all -> {
                 isWalletCurrency = false
+                binding.tvDefaultWallet.visibility = View.GONE
+                binding.lyPullRefresh.visibility = View.VISIBLE
                 loadData(walletManageBean)
             }
             R.id.check_btc -> {
@@ -182,11 +184,9 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 if (walletManageCurrencyBean.size == 0) {
                     binding.tvDefaultWallet.visibility = View.VISIBLE
                     binding.lyPullRefresh.visibility = View.GONE
-                    binding.ivAddWallet.visibility = View.VISIBLE
                 } else {
                     binding.tvDefaultWallet.visibility = View.GONE
                     binding.lyPullRefresh.visibility = View.VISIBLE
-                    binding.ivAddWallet.visibility = View.GONE
                     loadData(walletManageCurrencyBean)
                 }
             }
@@ -200,11 +200,9 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 if (walletManageCurrencyBean.size == 0) {
                     binding.tvDefaultWallet.visibility = View.VISIBLE
                     binding.lyPullRefresh.visibility = View.GONE
-                    binding.ivAddWallet.visibility = View.VISIBLE
                 } else {
                     binding.tvDefaultWallet.visibility = View.GONE
                     binding.lyPullRefresh.visibility = View.VISIBLE
-                    binding.ivAddWallet.visibility = View.GONE
                     loadData(walletManageCurrencyBean)
                 }
             }
@@ -218,11 +216,9 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 if (walletManageCurrencyBean.size == 0) {
                     binding.tvDefaultWallet.visibility = View.VISIBLE
                     binding.lyPullRefresh.visibility = View.GONE
-                    binding.ivAddWallet.visibility = View.VISIBLE
                 } else {
                     binding.tvDefaultWallet.visibility = View.GONE
                     binding.lyPullRefresh.visibility = View.VISIBLE
-                    binding.ivAddWallet.visibility = View.GONE
                     loadData(walletManageCurrencyBean)
                 }
             }
