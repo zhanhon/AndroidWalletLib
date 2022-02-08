@@ -23,6 +23,17 @@ class TransferItem(val data: QueryTransferRecord.Record) : SimpleRecyclerItem() 
         binding.tvAddress.text = data.fromAddress
         binding.tvTime.text = dateToWeek(data.createTime) + "  " + data.createTime
         binding.tvMoneyType.isVisible = false
+        when(data.addressType){
+            1->{
+                binding.ivMoneyType.setImageResource(R.drawable.vector_eth_selecet)
+            }
+            2->{
+                binding.ivMoneyType.setImageResource(R.drawable.vector_trx_selecter)
+            }
+            3->{
+                binding.ivMoneyType.setImageResource(R.drawable.vector_bt_selecter)
+            }
+        }
         when (data.status) {
             1 -> {
                 binding.tvMoney.setText(R.string.transaction_ing)

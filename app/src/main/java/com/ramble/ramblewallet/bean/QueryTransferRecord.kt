@@ -29,6 +29,9 @@ class QueryTransferRecord @SuppressWarnings("unused") constructor() {
 
 
     class Record : Serializable {
+        @Json(name = "addressType")
+        var addressType: Int = 0//主链类型（链）|1:ETH以太坊地址|2:TRX波场地址|3:比特币地址
+
         @Json(name = "amount")
         var amount: Double = 0.00//交易数量
 
