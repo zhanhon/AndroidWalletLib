@@ -71,8 +71,8 @@
             <com.ramble.ramblewallet.wight.MySmartTabLayout
                 android:id="@+id/layout_tab"
                 android:layout_width="@dimen/dp_0"
-                android:layout_height="@dimen/dp_45"
-                android:background="@color/color_FFFFFF"
+                android:layout_height="@dimen/dp_48"
+                android:background="@color/color_F9F9F9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
