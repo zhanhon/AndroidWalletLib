@@ -4,82 +4,96 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/item_address"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_76"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="@color/white">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
 
-        <ImageView
-            android:id="@+id/cl_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/vector_trx_selecter"
-            android:paddingLeft="@dimen/dp_10"
-            android:paddingRight="@dimen/dp_10" />
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
+            android:id="@+id/item_address"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/dp_10">
+            android:layout_height="@dimen/dp_76"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_main_currency_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="ETH" />
-
-            <TextView
-                android:id="@+id/tv_wallet_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_10"
-                android:layout_marginEnd="@dimen/dp_10"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@id/tv_main_currency_name"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="2232eweDS" />
 
             <ImageView
-                android:id="@+id/iv_menu"
+                android:id="@+id/cl_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:src="@drawable/vector_more_address"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                android:src="@drawable/vector_trx_selecter" />
 
-            <TextView
-                android:id="@+id/tv_wallet_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
-                android:layout_marginEnd="@dimen/dp_10"
-                android:textColor="@color/front_five"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_main_currency_name"
-                tools:text="0x2232sdower...2323s" />
 
-            <ImageView
-                android:id="@+id/iv_reduce"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/dp_10"
-                android:visibility="gone"
-                android:src="@drawable/vector_reduce_address"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/dp_10">
+
+                <TextView
+                    android:id="@+id/tv_main_currency_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="ETH" />
+
+                <TextView
+                    android:id="@+id/tv_wallet_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@id/tv_main_currency_name"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="2232eweDS" />
+
+                <ImageView
+                    android:id="@+id/iv_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/vector_more_address"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_wallet_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:textColor="@color/front_five"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_main_currency_name"
+                    tools:text="0x2232sdower...2323s" />
+
+                <ImageView
+                    android:id="@+id/iv_reduce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:src="@drawable/vector_reduce_address"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_08"
+            android:layout_marginLeft="@dimen/dp_67"
+            android:background="@color/driver_gray"
+            app:layout_constraintTop_toBottomOf="parent" />
     </LinearLayout>
-
 </layout>

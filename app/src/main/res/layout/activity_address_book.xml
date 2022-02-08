@@ -168,7 +168,7 @@
                     android:id="@+id/rv_main_currency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_F0EFF4" />
+                    android:background="@drawable/shape_white_bottom_btn" />
 
             </LinearLayout>
 
