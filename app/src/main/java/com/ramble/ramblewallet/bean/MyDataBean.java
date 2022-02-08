@@ -7,17 +7,17 @@ package com.ramble.ramblewallet.bean;
 public class MyDataBean {
     private int index;
     private String name;
-    private String age;
+    private boolean isWrong;
 
     public MyDataBean(int index, String name) {
         this.index = index;
         this.name = name;
     }
 
-    public MyDataBean(int index, String name, String age) {
+    public MyDataBean(int index, String name, boolean isWrong) {
         this.index = index;
         this.name = name;
-        this.age = age;
+        this.isWrong = isWrong;
     }
 
     public int getIndex() {
@@ -36,11 +36,11 @@ public class MyDataBean {
         this.name = name;
     }
 
-    public String getAge() {
-        return age;
+    public boolean getIsWrong() {
+        return isWrong;
     }
 
-    public void setAge(String age) {
-        this.age = age;
+    public void setIsWrong(boolean isWrong) {
+        this.isWrong = isWrong;
     }
 }

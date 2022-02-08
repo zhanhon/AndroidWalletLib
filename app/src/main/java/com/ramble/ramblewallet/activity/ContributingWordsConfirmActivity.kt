@@ -1,10 +1,17 @@
 package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
@@ -266,13 +273,67 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
         binding.tvContributingWordsName12.text = mnemonicETHShuffled[11]
     }
 
+    private fun contributingWordsFailDialog() {
+        var dialog = AlertDialog.Builder(this).create()
+        dialog.show()
+        val window: Window? = dialog.window
+        if (window != null) {
+            window.setContentView(R.layout.dialog_contributing_words_fail)
+            dialogCenterTheme(window)
+
+            window.findViewById<Button>(R.id.btn_cancel_create).setOnClickListener {
+                finish()
+                //跳转首页或者、CreateRecoverWalletActivity
+                //startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
+                dialog.dismiss()
+            }
+            window.findViewById<Button>(R.id.btn_skip).setOnClickListener {
+                finish()
+                //需要创建钱包，在跳转
+                //startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
+                dialog.dismiss()
+            }
+            window.findViewById<Button>(R.id.btn_back_last_page).setOnClickListener {
+                finish()
+                dialog.dismiss()
+            }
+        }
+    }
+
+    private fun dialogCenterTheme(window: Window) {
+        //设置属性
+        val params = window.attributes
+        params.width = WindowManager.LayoutParams.MATCH_PARENT
+        //弹出一个窗口，让背后的窗口变暗一点
+        params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        //dialog背景层
+        params.dimAmount = 0.5f
+        window.attributes = params
+        window.setGravity(Gravity.CENTER)
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    private var clickErrorCount = 0
     private fun mnmonicETHClick() {
         binding.tvContributingWordsName1.setOnClickListener {
+            if (clickErrorCount >= 3) {
+                contributingWordsFailDialog()
+            }
+            myDataBeans.forEach {
+                if (it.isWrong) {
+                    return@setOnClickListener
+                }
+            }
             binding.tvContributingWordsName1.visibility = View.INVISIBLE
             binding.tvContributingWordsConfirmTips.visibility = View.GONE
-
-            myDataBeans.add(MyDataBean(0, binding.tvContributingWordsName1.text.toString(), ""))
+            myDataBeans.add(MyDataBean(0, binding.tvContributingWordsName1.text.toString(), false))
             mnemonicETHChoose.add(binding.tvContributingWordsName1.text.toString())
+            mnemonicETHChoose.forEachIndexed { index, element ->
+                if (element != mnemonicETHOriginal[index]) {
+                    myDataBeans[index].isWrong = true
+                    clickErrorCount++
+                }
+            }
 
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
             binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
@@ -280,121 +341,287 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName2.setOnClickListener {
+            if (clickErrorCount >= 3) {
+                contributingWordsFailDialog()
+            }
+            myDataBeans.forEach {
+                if (it.isWrong) {
+                    return@setOnClickListener
+                }
+            }
             binding.tvContributingWordsName2.visibility = View.INVISIBLE
             binding.tvContributingWordsConfirmTips.visibility = View.GONE
 
-            myDataBeans.add(MyDataBean(1, binding.tvContributingWordsName2.text.toString(), ""))
+            myDataBeans.add(MyDataBean(1, binding.tvContributingWordsName2.text.toString(), false))
             mnemonicETHChoose.add(binding.tvContributingWordsName2.text.toString())
+            mnemonicETHChoose.forEachIndexed { index, element ->
+                if (element != mnemonicETHOriginal[index]) {
+                    myDataBeans[index].isWrong = true
+                    clickErrorCount++
+                }
+            }
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
             binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName3.setOnClickListener {
+            if (clickErrorCount >= 3) {
+                contributingWordsFailDialog()
+            }
+            myDataBeans.forEach {
+                if (it.isWrong) {
+                    return@setOnClickListener
+                }
+            }
             binding.tvContributingWordsName3.visibility = View.INVISIBLE
             binding.tvContributingWordsConfirmTips.visibility = View.GONE
 
-            myDataBeans.add(MyDataBean(2, binding.tvContributingWordsName3.text.toString(), ""))
+            myDataBeans.add(MyDataBean(2, binding.tvContributingWordsName3.text.toString(), false))
             mnemonicETHChoose.add(binding.tvContributingWordsName3.text.toString())
+            mnemonicETHChoose.forEachIndexed { index, element ->
+                if (element != mnemonicETHOriginal[index]) {
+                    myDataBeans[index].isWrong = true
+                    clickErrorCount++
+                }
+            }
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
             binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName4.setOnClickListener {
+            if (clickErrorCount >= 3) {
+                contributingWordsFailDialog()
+            }
+            myDataBeans.forEach {
+                if (it.isWrong) {
+                    return@setOnClickListener
+                }
+            }
             binding.tvContributingWordsName4.visibility = View.INVISIBLE
             binding.tvContributingWordsConfirmTips.visibility = View.GONE
 
-            myDataBeans.add(MyDataBean(3, binding.tvContributingWordsName4.text.toString(), ""))
+            myDataBeans.add(MyDataBean(3, binding.tvContributingWordsName4.text.toString(), false))
             mnemonicETHChoose.add(binding.tvContributingWordsName4.text.toString())
+            mnemonicETHChoose.forEachIndexed { index, element ->
+                if (element != mnemonicETHOriginal[index]) {
+                    myDataBeans[index].isWrong = true
+                    clickErrorCount++
+                }
+            }
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
             binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName5.setOnClickListener {
+            if (clickErrorCount >= 3) {
+                contributingWordsFailDialog()
+            }
+            myDataBeans.forEach {
+                if (it.isWrong) {
+                    return@setOnClickListener
+                }
+            }
             binding.tvContributingWordsName5.visibility = View.INVISIBLE
             binding.tvContributingWordsConfirmTips.visibility = View.GONE
 
-            myDataBeans.add(MyDataBean(4, binding.tvContributingWordsName5.text.toString(), ""))
+            myDataBeans.add(MyDataBean(4, binding.tvContributingWordsName5.text.toString(), false))
             mnemonicETHChoose.add(binding.tvContributingWordsName5.text.toString())
+            mnemonicETHChoose.forEachIndexed { index, element ->
+                if (element != mnemonicETHOriginal[index]) {
+                    myDataBeans[index].isWrong = true
+                    clickErrorCount++
+                }
+            }
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
             binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName6.setOnClickListener {
+            if (clickErrorCount >= 3) {
+                contributingWordsFailDialog()
+            }
+            myDataBeans.forEach {
+                if (it.isWrong) {
+                    return@setOnClickListener
+                }
+            }
             binding.tvContributingWordsName6.visibility = View.INVISIBLE
             binding.tvContributingWordsConfirmTips.visibility = View.GONE
 
-            myDataBeans.add(MyDataBean(5, binding.tvContributingWordsName6.text.toString(), ""))
+            myDataBeans.add(MyDataBean(5, binding.tvContributingWordsName6.text.toString(), false))
             mnemonicETHChoose.add(binding.tvContributingWordsName6.text.toString())
+            mnemonicETHChoose.forEachIndexed { index, element ->
+                if (element != mnemonicETHOriginal[index]) {
+                    myDataBeans[index].isWrong = true
+                    clickErrorCount++
+                }
+            }
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
             binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName7.setOnClickListener {
+            if (clickErrorCount >= 3) {
+                contributingWordsFailDialog()
+            }
+            myDataBeans.forEach {
+                if (it.isWrong) {
+                    return@setOnClickListener
+                }
+            }
             binding.tvContributingWordsName7.visibility = View.INVISIBLE
             binding.tvContributingWordsConfirmTips.visibility = View.GONE
 
-            myDataBeans.add(MyDataBean(6, binding.tvContributingWordsName7.text.toString(), ""))
+            myDataBeans.add(MyDataBean(6, binding.tvContributingWordsName7.text.toString(), false))
             mnemonicETHChoose.add(binding.tvContributingWordsName7.text.toString())
+            mnemonicETHChoose.forEachIndexed { index, element ->
+                if (element != mnemonicETHOriginal[index]) {
+                    myDataBeans[index].isWrong = true
+                    clickErrorCount++
+                }
+            }
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
             binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName8.setOnClickListener {
+            if (clickErrorCount >= 3) {
+                contributingWordsFailDialog()
+            }
+            myDataBeans.forEach {
+                if (it.isWrong) {
+                    return@setOnClickListener
+                }
+            }
             binding.tvContributingWordsName8.visibility = View.INVISIBLE
             binding.tvContributingWordsConfirmTips.visibility = View.GONE
 
-            myDataBeans.add(MyDataBean(7, binding.tvContributingWordsName8.text.toString(), ""))
+            myDataBeans.add(MyDataBean(7, binding.tvContributingWordsName8.text.toString(), false))
             mnemonicETHChoose.add(binding.tvContributingWordsName8.text.toString())
+            mnemonicETHChoose.forEachIndexed { index, element ->
+                if (element != mnemonicETHOriginal[index]) {
+                    myDataBeans[index].isWrong = true
+                    clickErrorCount++
+                }
+            }
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
             binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName9.setOnClickListener {
+            if (clickErrorCount >= 3) {
+                contributingWordsFailDialog()
+            }
+            myDataBeans.forEach {
+                if (it.isWrong) {
+                    return@setOnClickListener
+                }
+            }
             binding.tvContributingWordsName9.visibility = View.INVISIBLE
             binding.tvContributingWordsConfirmTips.visibility = View.GONE
 
-            myDataBeans.add(MyDataBean(8, binding.tvContributingWordsName9.text.toString(), ""))
+            myDataBeans.add(MyDataBean(8, binding.tvContributingWordsName9.text.toString(), false))
             mnemonicETHChoose.add(binding.tvContributingWordsName9.text.toString())
+            mnemonicETHChoose.forEachIndexed { index, element ->
+                if (element != mnemonicETHOriginal[index]) {
+                    myDataBeans[index].isWrong = true
+                    clickErrorCount++
+                }
+            }
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
             binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName10.setOnClickListener {
+            if (clickErrorCount >= 3) {
+                contributingWordsFailDialog()
+            }
+            myDataBeans.forEach {
+                if (it.isWrong) {
+                    return@setOnClickListener
+                }
+            }
             binding.tvContributingWordsName10.visibility = View.INVISIBLE
             binding.tvContributingWordsConfirmTips.visibility = View.GONE
 
-            myDataBeans.add(MyDataBean(9, binding.tvContributingWordsName10.text.toString(), ""))
+            myDataBeans.add(MyDataBean(9, binding.tvContributingWordsName10.text.toString(), false))
             mnemonicETHChoose.add(binding.tvContributingWordsName10.text.toString())
+            mnemonicETHChoose.forEachIndexed { index, element ->
+                if (element != mnemonicETHOriginal[index]) {
+                    myDataBeans[index].isWrong = true
+                    clickErrorCount++
+                }
+            }
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
             binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName11.setOnClickListener {
+            if (clickErrorCount >= 3) {
+                contributingWordsFailDialog()
+            }
+            myDataBeans.forEach {
+                if (it.isWrong) {
+                    return@setOnClickListener
+                }
+            }
             binding.tvContributingWordsName11.visibility = View.INVISIBLE
             binding.tvContributingWordsConfirmTips.visibility = View.GONE
 
-            myDataBeans.add(MyDataBean(10, binding.tvContributingWordsName11.text.toString(), ""))
+            myDataBeans.add(
+                MyDataBean(
+                    10,
+                    binding.tvContributingWordsName11.text.toString(),
+                    false
+                )
+            )
             mnemonicETHChoose.add(binding.tvContributingWordsName11.text.toString())
+            mnemonicETHChoose.forEachIndexed { index, element ->
+                if (element != mnemonicETHOriginal[index]) {
+                    myDataBeans[index].isWrong = true
+                    clickErrorCount++
+                }
+            }
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
             binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName12.setOnClickListener {
+            if (clickErrorCount >= 3) {
+                contributingWordsFailDialog()
+            }
+            myDataBeans.forEach {
+                if (it.isWrong) {
+                    return@setOnClickListener
+                }
+            }
             binding.tvContributingWordsName12.visibility = View.INVISIBLE
             binding.tvContributingWordsConfirmTips.visibility = View.GONE
 
-            myDataBeans.add(MyDataBean(11, binding.tvContributingWordsName12.text.toString(), ""))
+            myDataBeans.add(
+                MyDataBean(
+                    11,
+                    binding.tvContributingWordsName12.text.toString(),
+                    false
+                )
+            )
             mnemonicETHChoose.add(binding.tvContributingWordsName12.text.toString())
+            mnemonicETHChoose.forEachIndexed { index, element ->
+                if (element != mnemonicETHOriginal[index]) {
+                    myDataBeans[index].isWrong = true
+                    clickErrorCount++
+                }
+            }
             contributingWordsConfirmAdapter = ContributingWordsConfirmAdapter(myDataBeans)
             binding.rvContributingWords.layoutManager = AutoLineFeedLayoutManager()
             binding.rvContributingWords.adapter = contributingWordsConfirmAdapter

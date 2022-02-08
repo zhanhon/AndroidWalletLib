@@ -168,6 +168,9 @@
     <string name="tips">提示</string>
     <string name="btn_confirm">确定</string>
     <string name="transaction_tips">请耐心等待交易完成信息！</string>
+    <string name="cancel_create">取消创建</string>
+    <string name="skip_backup_directly_create">跳过备份直接创建</string>
+    <string name="back_last_page">返回上页</string>
 
 
     <string name="refresh_pull_down">下拉更新</string>

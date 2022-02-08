@@ -34,6 +34,7 @@
         android:layout_height="@dimen/dp_15"
         android:background="@drawable/vector_token_reduce"
         android:gravity="right|top"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints"
         tools:text="1" />

@@ -111,7 +111,7 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
         myDataBeans.clear()
         mnemonicETH = mnemonicString.split(" ") as ArrayList<String>
         mnemonicETH.forEachIndexed { index, element ->
-            myDataBeans.add(MyDataBean(index + 1, element, ""))
+            myDataBeans.add(MyDataBean(index + 1, element, false))
         }
         contributingWordsAdapter = ContributingWordsAdapter(myDataBeans)
         binding.rvContributingWords.adapter = contributingWordsAdapter

@@ -100,7 +100,7 @@ public class ApiRetrofit {
         //开发环境：http://13.229.173.84:8095/
         //测试环境：http://13.214.207.185:8095/
         mRetrofit = new Retrofit.Builder()
-                .baseUrl("http://13.229.173.84:8095/")
+                .baseUrl("http://13.214.207.185:8095/")
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//支持RxJava
