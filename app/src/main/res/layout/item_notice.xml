@@ -2,13 +2,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/item_msg_notic"
-        style="@style/MatchWrap"
-        android:background="@drawable/img_frame"
-        android:paddingLeft="@dimen/dp_10"
-        android:paddingRight="@dimen/dp_10">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_100">
 
         <ImageView
             android:id="@+id/cardview"
@@ -22,8 +25,11 @@
 
         <ImageView
             android:id="@+id/bells"
-            android:layout_width="@dimen/dp_30"
-            android:layout_height="@dimen/dp_30"
+            android:layout_marginStart="@dimen/dp_15"
+            android:layout_marginEnd="@dimen/dp_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
             android:background="@drawable/ic_unread"
             app:layout_constraintBottom_toBottomOf="@+id/cardview"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -32,8 +38,10 @@
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/ck_delete"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:button="@drawable/checkbox_selector"
+            android:layout_marginStart="@dimen/dp_25"
+            android:layout_marginEnd="@dimen/dp_25"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/cardview"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -65,8 +73,8 @@
             android:id="@+id/title1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginTop="@dimen/dp_15"
             android:ellipsize="end"
             android:gravity="left"
             android:maxEms="18"
@@ -82,7 +90,7 @@
             elevation="2dp"
             android:layout_width="14dp"
             android:layout_height="14dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="15dp"
             android:background="@drawable/shape_home_badge"
             android:gravity="center"
             android:textColor="@color/white"
@@ -103,7 +111,6 @@
             android:id="@+id/tv_content"
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="@dimen/dp_5"
@@ -147,5 +154,13 @@
             app:layout_constraintEnd_toEndOf="@+id/cardview"
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:layout_marginStart="@dimen/dp_67"
+            android:background="@color/driver_gray"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_08"
+            app:layout_constraintTop_toBottomOf="parent" />
+    </LinearLayout>
 </layout>

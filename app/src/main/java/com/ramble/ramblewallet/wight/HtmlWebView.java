@@ -100,7 +100,7 @@ public class HtmlWebView extends WebView {
      */
     public void loadDataWithHtml(String htmlText) {
         this.htmlText = htmlText;
-        loadDataWithBaseURL(baseUrl, HtmlUtils.getNewContent(htmlText, defaultImage), mineType, null, null);
+        loadDataWithBaseURL(baseUrl,htmlText, mineType, null, null);
     }
 
     /**
