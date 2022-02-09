@@ -36,6 +36,7 @@ import com.ramble.ramblewallet.tron.TransferTrxUtils.balanceOfTrx
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.utils.*
 import java.math.BigDecimal
+import java.text.DecimalFormat
 
 class MainTRXActivity : BaseActivity(), View.OnClickListener {
 
@@ -221,7 +222,11 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
 
     private fun setBalanceTRX(balance: BigDecimal) {
         postUI {
-            binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(balance)
+            if (DecimalFormatUtil.format2.format(balance) == "0") {
+                binding.tvBalanceTotal.text = ""
+            } else {
+                binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(balance)
+            }
         }
     }
 

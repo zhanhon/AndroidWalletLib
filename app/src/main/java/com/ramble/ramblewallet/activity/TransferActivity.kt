@@ -173,6 +173,17 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
         )
 
+        when (walletSelleted.walletType) { //链类型|0:BTC|1:ETH|2:TRX
+            1 -> {
+                binding.clMinerFee.visibility = View.VISIBLE
+            }
+            2 -> {
+                binding.clMinerFee.visibility = View.GONE
+            }
+            0 -> {
+
+            }
+        }
 
         binding.tvTransferTitle.text = transferTitle + " " + getString(R.string.transfer)
 

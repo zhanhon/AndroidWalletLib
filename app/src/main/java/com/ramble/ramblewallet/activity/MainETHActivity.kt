@@ -222,7 +222,11 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 
     private fun setBalanceETH(balance: BigDecimal) {
         postUI {
-            binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(balance)
+            if (DecimalFormatUtil.format2.format(balance) == "0") {
+                binding.tvBalanceTotal.text = ""
+            } else {
+                binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(balance)
+            }
         }
     }
 
