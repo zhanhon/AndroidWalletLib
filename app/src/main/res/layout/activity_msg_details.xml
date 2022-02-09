@@ -93,6 +93,8 @@
                     android:layout_marginEnd="8dp"
                     android:gravity="left"
                     android:textStyle="bold"
+                    android:maxLength="30"
+                    android:ellipsize="end"
                     android:textColor="@color/front_one"
                     android:textSize="@dimen/sp_16"
                     app:layout_constraintEnd_toEndOf="parent"
