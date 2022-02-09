@@ -268,7 +268,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(ARG_PARAM2, "ETH-${mainETHTokenBean.name}")
                     putExtra(ARG_PARAM3, true)
-                    putExtra(ARG_PARAM4, rateETH)
+                    putExtra(ARG_PARAM4, mainETHTokenBean.unitPrice)
                 })
                 dialog.dismiss()
             }
@@ -322,6 +322,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                     currencyUnit
                                 )
                             )
+                            rateETH = unitPrice
                             totalBalance += ethBalance.multiply(BigDecimal(unitPrice))
                         } else {
                             mainETHTokenBean.add(
