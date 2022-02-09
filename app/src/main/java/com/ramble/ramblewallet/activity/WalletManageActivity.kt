@@ -1,10 +1,17 @@
 package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.widget.Button
 import android.widget.RadioGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
@@ -249,19 +256,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     if (isAllClickDelete) {
                         toastDefault(getString(R.string.least_save_wallet))
                     } else {
-                        val list = walletManageBean.iterator()
-                        list.forEach {
-                            if (it.clickDelete) {
-                                list.remove()
-                            }
-                        }
-                        saveWalletList = walletManageBean
-                        SharedPreferencesUtils.saveString(
-                            this,
-                            WALLETINFO,
-                            Gson().toJson(saveWalletList)
-                        )
-                        loadData(walletManageBean)
+                        deleteConfirmTipsDialog()
                     }
                 } else {
                     binding.checkAll.performClick()
@@ -275,6 +270,49 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 startActivity(Intent(this, CreateWalletListActivity::class.java))
             }
         }
+    }
+
+    private fun deleteConfirmTipsDialog() {
+        var dialog = AlertDialog.Builder(this).create()
+        dialog.show()
+        val window: Window? = dialog.window
+        if (window != null) {
+            window.setContentView(R.layout.dialog_delete_confirm_tips)
+            dialogCenterTheme(window)
+
+            window.findViewById<Button>(R.id.btn_cancel).setOnClickListener {
+                dialog.dismiss()
+            }
+            window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
+                val list = walletManageBean.iterator()
+                list.forEach {
+                    if (it.clickDelete) {
+                        list.remove()
+                    }
+                }
+                saveWalletList = walletManageBean
+                SharedPreferencesUtils.saveString(
+                    this,
+                    WALLETINFO,
+                    Gson().toJson(saveWalletList)
+                )
+                loadData(walletManageBean)
+                dialog.dismiss()
+            }
+        }
+    }
+
+    private fun dialogCenterTheme(window: Window) {
+        //设置属性
+        val params = window.attributes
+        params.width = WindowManager.LayoutParams.MATCH_PARENT
+        //弹出一个窗口，让背后的窗口变暗一点
+        params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        //dialog背景层
+        params.dimAmount = 0.5f
+        window.attributes = params
+        window.setGravity(Gravity.CENTER)
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
 }
