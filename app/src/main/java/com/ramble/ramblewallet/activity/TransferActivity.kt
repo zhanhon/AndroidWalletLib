@@ -71,7 +71,13 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         transferTitle = intent.getStringExtra(ARG_PARAM2)
         isToken = intent.getBooleanExtra(ARG_PARAM3, false)
         rate = intent.getStringExtra(ARG_PARAM4)
-        transferUnit = transferTitle
+        if (transferTitle.contains("-"))  {
+            val index = transferTitle.indexOf("-")
+            transferUnit = transferTitle.substring(index + 1, transferTitle.length)
+        } else {
+            transferUnit = transferTitle
+        }
+
         binding.edtReceiverAddress.setText(transferReceiverAddress)
 
         initClick()
@@ -274,6 +280,12 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             window.setContentView(R.layout.dialog_transaction_confirmation)
             dialogTheme(window)
 
+            val tvAmount = window.findViewById<TextView>(R.id.tv_amount)
+            if (binding.edtInputQuantity.text.trim().toString().isNotEmpty()) {
+                tvAmount.text = DecimalFormatUtil.format8.format(
+                    BigDecimal(binding.edtInputQuantity.text.trim().toString())
+                ) + " " + transferUnit
+            }
             val edtSendingAddress = window.findViewById<EditText>(R.id.edt_sending_address)
             edtSendingAddress.setText(binding.tvWalletAddress.text.trim().toString())
             val edtReceivingAdreess = window.findViewById<EditText>(R.id.edt_receiving_address)
