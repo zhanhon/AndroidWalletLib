@@ -3,7 +3,7 @@ package com.ramble.ramblewallet.bean
 import com.ramble.ramblewallet.network.ApiRequest
 import com.squareup.moshi.Json
 import java.io.Serializable
-import java.util.ArrayList
+import java.util.*
 
 /**
  * 时间　: 2022/1/11 16:19

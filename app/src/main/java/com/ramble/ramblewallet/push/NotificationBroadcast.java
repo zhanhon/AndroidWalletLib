@@ -49,18 +49,18 @@ public class NotificationBroadcast extends BroadcastReceiver {
                     /**根据主题返回不同页面**/
                     if (msg.extra.get("message_type").equals("201")) {//消息
                         data.setClass(context, MsgDetailsActivity.class);
-                        data.putExtra(ARG_PARAM1,msg.title);
-                        data.putExtra(ARG_PARAM2,msg.text);
-                        data.putExtra(ARG_PARAM3,msg.extra.get("time"));
-                        data.putExtra(ARG_PARAM4,2);
-                        data.putExtra(ARG_PARAM5,Integer.parseInt(msg.extra.get("id")));
+                        data.putExtra(ARG_PARAM1, msg.title);
+                        data.putExtra(ARG_PARAM2, msg.text);
+                        data.putExtra(ARG_PARAM3, msg.extra.get("time"));
+                        data.putExtra(ARG_PARAM4, 2);
+                        data.putExtra(ARG_PARAM5, Integer.parseInt(msg.extra.get("id")));
                     } else if (msg.extra.get("message_type").equals("202")) {//公告
                         data.setClass(context, MsgDetailsActivity.class);
-                        data.putExtra(ARG_PARAM1,msg.title);
-                        data.putExtra(ARG_PARAM2,msg.text);
-                        data.putExtra(ARG_PARAM3,msg.extra.get("time"));
-                        data.putExtra(ARG_PARAM4,2);
-                        data.putExtra(ARG_PARAM5,Integer.parseInt(msg.extra.get("id")));
+                        data.putExtra(ARG_PARAM1, msg.title);
+                        data.putExtra(ARG_PARAM2, msg.text);
+                        data.putExtra(ARG_PARAM3, msg.extra.get("time"));
+                        data.putExtra(ARG_PARAM4, 2);
+                        data.putExtra(ARG_PARAM5, Integer.parseInt(msg.extra.get("id")));
                     } else if (msg.extra.get("message_type").equals("1") || msg.extra.get("message_type").equals("2") ||
                             msg.extra.get("message_type").equals("3") || msg.extra.get("message_type").equals("4")) {//交易记录
                         data.setClass(context, TransactionQueryActivity.class);

@@ -216,7 +216,7 @@ fun showBottomDialog2(
  */
 fun showTopTranDialog(
     activity: Activity,
-    textView:View
+    textView: View
 ): Dialog {
     val binding: TopNoticeDialogBinding =
         LayoutInflater.from(activity).dataBinding(
@@ -232,7 +232,7 @@ fun showTopTranDialog(
         val location = IntArray(2)
         textView.getLocationInWindow(location) //获取在当前窗体内的绝对坐标
         textView.getLocationOnScreen(location) //获取在整个屏幕内的绝对坐标
-        wlp?.x=0 //对 dialog 设置 x 轴坐标
+        wlp?.x = 0 //对 dialog 设置 x 轴坐标
         wlp?.y = location[1] + textView.height - notificationBar//对dialog设置y轴坐标
         wlp?.gravity = Gravity.TOP
         wlp?.width = WindowManager.LayoutParams.MATCH_PARENT

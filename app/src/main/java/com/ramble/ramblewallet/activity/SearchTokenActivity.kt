@@ -1,7 +1,6 @@
 package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -92,7 +91,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
         var req = StoreInfo.Req()
         req.condition = "symbol"
         req.symbol = condition
-        req.platformId =when (wallet.walletType) {
+        req.platformId = when (wallet.walletType) {
             2 -> {
                 1958
             }

@@ -1,6 +1,7 @@
 package com.ramble.ramblewallet.trx;
 
 import com.google.protobuf.GeneratedMessageV3;
+
 import org.tron.protos.Contract;
 import org.tron.protos.Protocol.Transaction.Contract.ContractType;
 

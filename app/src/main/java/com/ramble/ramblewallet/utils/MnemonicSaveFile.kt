@@ -26,7 +26,8 @@ class MnemonicSaveFile {
         hour = calendar.get(Calendar.HOUR_OF_DAY) //24小时制
         min = calendar.get(Calendar.MINUTE)
         sec = calendar.get(Calendar.SECOND)
-        savePath = Environment.getExternalStorageDirectory().absolutePath + File.separator + "RambleWallet/"
+        savePath =
+            Environment.getExternalStorageDirectory().absolutePath + File.separator + "RambleWallet/"
         logFile = walletName + "_" + "mnemonic.txt"
 
         hour = calendar.get(Calendar.HOUR_OF_DAY) //24小时制

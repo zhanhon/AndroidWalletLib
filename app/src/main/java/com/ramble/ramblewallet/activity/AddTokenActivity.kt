@@ -134,7 +134,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 myDataBeansMyAssets = arrayListOf()
                 adapter.clear()
                 recommendTokenAdapter.clear()
-                myDataBeansMyAssets =Gson().fromJson(
+                myDataBeansMyAssets = Gson().fromJson(
                     SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
                     object : TypeToken<ArrayList<StoreInfo>>() {}.type
                 )
@@ -148,7 +148,11 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 if (!isOpen) {
                     myDataBeansMyAssets.add(event.data())
                 }
-                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myDataBeansMyAssets) )
+                SharedPreferencesUtils.saveString(
+                    this,
+                    TOKEN_INFO_NO,
+                    Gson().toJson(myDataBeansMyAssets)
+                )
 
                 ArrayList<SimpleRecyclerItem>().apply {
                     myDataBeansMyAssets.forEach { o ->

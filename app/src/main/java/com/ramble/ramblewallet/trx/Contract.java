@@ -2,6 +2,7 @@ package com.ramble.ramblewallet.trx;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -16,36 +17,28 @@ public class Contract {
     private String type;
 
     /**
-     *
-     * @return
-     *     The parameter
+     * @return The parameter
      */
     public Parameter getParameter() {
         return parameter;
     }
 
     /**
-     * 
-     * @param parameter
-     *     The parameter
+     * @param parameter The parameter
      */
     public void setParameter(Parameter parameter) {
         this.parameter = parameter;
     }
 
     /**
-     * 
-     * @return
-     *     The type
+     * @return The type
      */
     public String getType() {
         return type;
     }
 
     /**
-     * 
-     * @param type
-     *     The type
+     * @param type The type
      */
     public void setType(String type) {
         this.type = type;

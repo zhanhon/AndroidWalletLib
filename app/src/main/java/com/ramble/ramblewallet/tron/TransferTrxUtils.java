@@ -23,7 +23,6 @@ import org.tron.protos.Protocol;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Type;
-import org.web3j.utils.Convert;
 
 import java.io.IOException;
 import java.math.BigDecimal;

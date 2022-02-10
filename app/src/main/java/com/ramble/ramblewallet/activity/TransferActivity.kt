@@ -71,7 +71,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         transferTitle = intent.getStringExtra(ARG_PARAM2)
         isToken = intent.getBooleanExtra(ARG_PARAM3, false)
         rate = intent.getStringExtra(ARG_PARAM4)
-        if (transferTitle.contains("-"))  {
+        if (transferTitle.contains("-")) {
             val index = transferTitle.indexOf("-")
             transferUnit = transferTitle.substring(index + 1, transferTitle.length)
         } else {

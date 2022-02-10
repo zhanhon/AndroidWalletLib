@@ -2,8 +2,6 @@ package com.ramble.ramblewallet.ethereum.utils;
 
 import org.web3j.utils.Numeric;
 
-import java.nio.charset.StandardCharsets;
-
 public class StringHexUtils {
 
     /**

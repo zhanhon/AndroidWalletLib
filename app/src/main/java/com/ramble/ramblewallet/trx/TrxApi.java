@@ -2,7 +2,7 @@ package com.ramble.ramblewallet.trx;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-import lombok.Data;
+
 import org.tron.TronWalletApi;
 import org.tron.protos.Protocol;
 import org.tron.wallet.crypto.ECKey;
@@ -16,6 +16,8 @@ import org.web3j.abi.datatypes.generated.Uint256;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.Data;
 
 @Data
 public class TrxApi {

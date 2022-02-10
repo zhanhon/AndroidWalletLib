@@ -289,9 +289,9 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                 walletManageBean.forEach {
                     if (it.clickDelete) {
-                        detailsList.add(AddressReport.DetailsList(it.address, 2,it.walletType))
+                        detailsList.add(AddressReport.DetailsList(it.address, 2, it.walletType))
                     } else {
-                        detailsList.add(AddressReport.DetailsList(it.address, 0,it.walletType))
+                        detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
                     }
                 }
                 putAddress(detailsList)

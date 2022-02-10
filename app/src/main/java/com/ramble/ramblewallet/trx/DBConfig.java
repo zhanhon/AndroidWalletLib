@@ -1,12 +1,13 @@
 package com.ramble.ramblewallet.trx;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.json.Property;
 
 import java.io.File;
 import java.util.Map;
 import java.util.Set;
+
+import lombok.Getter;
+import lombok.Setter;
 
 
 public class DBConfig {

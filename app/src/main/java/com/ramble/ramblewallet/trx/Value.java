@@ -2,6 +2,7 @@ package com.ramble.ramblewallet.trx;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -42,54 +43,42 @@ public class Value {
     private String toAddress;
 
     /**
-     * 
-     * @return
-     *     The data
+     * @return The data
      */
     public String getData() {
         return data;
     }
 
     /**
-     * 
-     * @param data
-     *     The data
+     * @param data The data
      */
     public void setData(String data) {
         this.data = data;
     }
 
     /**
-     * 
-     * @return
-     *     The ownerAddress
+     * @return The ownerAddress
      */
     public String getOwnerAddress() {
         return ownerAddress;
     }
 
     /**
-     * 
-     * @param ownerAddress
-     *     The owner_address
+     * @param ownerAddress The owner_address
      */
     public void setOwnerAddress(String ownerAddress) {
         this.ownerAddress = ownerAddress;
     }
 
     /**
-     * 
-     * @return
-     *     The contractAddress
+     * @return The contractAddress
      */
     public String getContractAddress() {
         return contractAddress;
     }
 
     /**
-     * 
-     * @param contractAddress
-     *     The contract_address
+     * @param contractAddress The contract_address
      */
     public void setContractAddress(String contractAddress) {
         this.contractAddress = contractAddress;

@@ -18,7 +18,6 @@ import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.HtmlWebView
-import java.util.ArrayList
 
 /**
  * 时间　: 2021/12/16 13:54
@@ -31,7 +30,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
     private var content = ""
     private var createTime = ""
     private var typeText = 0
-    private var id=0
+    private var id = 0
     private var list = mutableListOf<Any?>()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -42,7 +41,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
         content = getExtras().getString(ARG_PARAM2, "")
         createTime = getExtras().getString(ARG_PARAM3, "")
         typeText = getExtras().getInt(ARG_PARAM4, 0)
-        id== getExtras().getInt(ARG_PARAM5, 0)
+        id == getExtras().getInt(ARG_PARAM5, 0)
         when (typeText) {
             1 -> {
                 binding.ivRight.visibility = View.GONE
@@ -53,7 +52,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
                 binding.ivRight.visibility = View.GONE
                 binding.tvMineTitle.text = getString(R.string.message_details)
                 isCheckContent(content, title)
-                if (id!=0){
+                if (id != 0) {
                     list = if (SharedPreferencesUtils.getString(
                             this,
                             READ_ID,
@@ -124,9 +123,9 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
         }
         mApiService.getPrivacyPolicy(req.toApiRequest(getPrivacyInfo)).applyIo().subscribe({
             if (it.code() == 1) {
-                content=it.data()!!.content
-                title=it.data()!!.title
-                createTime=it.data()!!.createTime
+                content = it.data()!!.content
+                title = it.data()!!.title
+                createTime = it.data()!!.createTime
                 isCheckContent(content, title)
             } else {
                 println("==================>getTransferInfo1:${it.message()}")

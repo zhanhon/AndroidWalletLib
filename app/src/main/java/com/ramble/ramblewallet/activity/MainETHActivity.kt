@@ -303,7 +303,8 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         var list: ArrayList<String> = arrayListOf()
         list.add("ETH")
         if (tokenInfo.isNotEmpty()) {
-            saveTokenList = Gson().fromJson(tokenInfo, object : TypeToken<ArrayList<StoreInfo>>() {}.type)
+            saveTokenList =
+                Gson().fromJson(tokenInfo, object : TypeToken<ArrayList<StoreInfo>>() {}.type)
             val list = saveTokenList.iterator()
             list.forEach {
                 if (it.isMyToken == 0) {

@@ -36,7 +36,6 @@ import com.ramble.ramblewallet.tron.TransferTrxUtils.balanceOfTrx
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.utils.*
 import java.math.BigDecimal
-import java.text.DecimalFormat
 
 class MainTRXActivity : BaseActivity(), View.OnClickListener {
 

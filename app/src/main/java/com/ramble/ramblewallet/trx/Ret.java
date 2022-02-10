@@ -2,6 +2,7 @@ package com.ramble.ramblewallet.trx;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -13,18 +14,14 @@ public class Ret {
     private String contractRet;
 
     /**
-     * 
-     * @return
-     *     The contractRet
+     * @return The contractRet
      */
     public String getContractRet() {
         return contractRet;
     }
 
     /**
-     * 
-     * @param contractRet
-     *     The contractRet
+     * @param contractRet The contractRet
      */
     public void setContractRet(String contractRet) {
         this.contractRet = contractRet;

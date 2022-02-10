@@ -2,6 +2,7 @@ package com.ramble.ramblewallet.trx;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -16,36 +17,28 @@ public class Parameter {
     private String typeUrl;
 
     /**
-     * 
-     * @return
-     *     The value
+     * @return The value
      */
     public Value getValue() {
         return value;
     }
 
     /**
-     * 
-     * @param value
-     *     The value
+     * @param value The value
      */
     public void setValue(Value value) {
         this.value = value;
     }
 
     /**
-     * 
-     * @return
-     *     The typeUrl
+     * @return The typeUrl
      */
     public String getTypeUrl() {
         return typeUrl;
     }
 
     /**
-     * 
-     * @param typeUrl
-     *     The type_url
+     * @param typeUrl The type_url
      */
     public void setTypeUrl(String typeUrl) {
         this.typeUrl = typeUrl;

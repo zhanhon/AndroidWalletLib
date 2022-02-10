@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.protobuf.Any;
 import com.google.protobuf.GeneratedMessageV3;
 import com.google.protobuf.Message;
-import lombok.extern.slf4j.Slf4j;
+
 import org.tron.protos.Contract;
 import org.tron.protos.Protocol;
 import org.tron.protos.Protocol.Transaction;
@@ -15,6 +15,8 @@ import org.tron.protos.Protocol.Transaction.Contract.ContractType;
 import org.tron.wallet.util.JsonFormat;
 
 import java.lang.reflect.Constructor;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j(topic = "API")

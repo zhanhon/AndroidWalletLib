@@ -8,7 +8,7 @@ import com.squareup.moshi.Json
  * 作者　: potato
  * 描述　:
  */
-class PrivacyPolicyInfo  @SuppressWarnings("unused") constructor() {
+class PrivacyPolicyInfo @SuppressWarnings("unused") constructor() {
 
     @Json(name = "id")
     var id: Int = 0//公告ID

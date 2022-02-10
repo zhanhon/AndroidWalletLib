@@ -112,9 +112,9 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                 saveWalletList.forEach {
                     if (it.clickDelete) {
-                        detailsList.add(AddressReport.DetailsList(it.address, 2,it.walletType))
+                        detailsList.add(AddressReport.DetailsList(it.address, 2, it.walletType))
                     } else {
-                        detailsList.add(AddressReport.DetailsList(it.address, 0,it.walletType))
+                        detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
                     }
                 }
                 putAddress(detailsList)
@@ -177,7 +177,10 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                         }
                         else -> {
                             if (walletCurrent.mnemonic.toString() != null) {
-                                MnemonicSaveFile.saveFile.content(walletCurrent.walletName, walletCurrent.mnemonic)
+                                MnemonicSaveFile.saveFile.content(
+                                    walletCurrent.walletName,
+                                    walletCurrent.mnemonic
+                                )
                             }
                         }
                     }
@@ -288,7 +291,10 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
 
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 if (walletCurrent.privateKey.toString() != null) {
-                    PrivateKeySaveFile.saveFile.content(walletCurrent.walletName, walletCurrent.privateKey)
+                    PrivateKeySaveFile.saveFile.content(
+                        walletCurrent.walletName,
+                        walletCurrent.privateKey
+                    )
                 }
                 dialog.dismiss()
             }
@@ -343,7 +349,10 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             }
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 if (walletCurrent.keystore.toString() != null) {
-                    KeyStoreSaveFile.saveFile.content(walletCurrent.walletName, walletCurrent.keystore.toString())
+                    KeyStoreSaveFile.saveFile.content(
+                        walletCurrent.walletName,
+                        walletCurrent.keystore.toString()
+                    )
                 }
                 dialog.dismiss()
             }
@@ -403,7 +412,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                         "android.permission.CAMERA",
                         "android.permission.WRITE_EXTERNAL_STORAGE",
                         "android.permission.READ_EXTERNAL_STORAGE"
-                    ), object :  PermissionListener {
+                    ), object : PermissionListener {
                         override
                         fun onGranted() {
                             try {

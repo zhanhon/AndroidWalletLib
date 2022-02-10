@@ -1,11 +1,12 @@
 package com.ramble.ramblewallet.trx;
 
-import lombok.Getter;
 import org.tron.protos.Protocol;
 
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+
+import lombok.Getter;
 
 public class GenesisBlock implements Serializable {
 

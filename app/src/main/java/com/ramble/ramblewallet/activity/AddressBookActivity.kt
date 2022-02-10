@@ -159,9 +159,9 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                         )
                 }
                 myData11.add(event.data())
-                myData= arrayListOf()
+                myData = arrayListOf()
                 myData11.stream().forEach {
-                    if (!myData.contains(it)){
+                    if (!myData.contains(it)) {
                         myData.add(it)
                     }
                 }
@@ -233,7 +233,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                         ClipboardUtils.copy(itemBean.address)
                     },
                     editListener = View.OnClickListener {//编辑
-                        showBottomDialog2(this, itemBean.userName, itemBean.address,1)
+                        showBottomDialog2(this, itemBean.userName, itemBean.address, 1)
                     },
                     delListener = View.OnClickListener {//删除
                         myDataBeans.removeAt(position)
@@ -256,22 +256,22 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 adapter.notifyDataSetChanged()
             }
             R.id.add -> {
-                showBottomDialog2(this, "", "",2)
+                showBottomDialog2(this, "", "", 2)
             }
             R.id.delete -> {
-                binding.add.isVisible=false
-                binding.delete.isVisible=false
-                binding.confirmButton.isVisible=true
+                binding.add.isVisible = false
+                binding.delete.isVisible = false
+                binding.confirmButton.isVisible = true
                 if (myDataBeans.isNullOrEmpty()) return
                 myDataBeans.forEach {
                     it.isNeedDelete = true
                 }
                 loadData()
             }
-            R.id.confirm_button->{
-                binding.add.isVisible=true
-                binding.delete.isVisible=true
-                binding.confirmButton.isVisible=false
+            R.id.confirm_button -> {
+                binding.add.isVisible = true
+                binding.delete.isVisible = true
+                binding.confirmButton.isVisible = false
                 myDataBeans.forEach {
                     it.isNeedDelete = false
                 }

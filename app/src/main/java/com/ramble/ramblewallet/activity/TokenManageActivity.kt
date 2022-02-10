@@ -160,7 +160,11 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                                 list.remove()
                             }
                         }
-                        SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myStores))
+                        SharedPreferencesUtils.saveString(
+                            this,
+                            TOKEN_INFO_NO,
+                            Gson().toJson(myStores)
+                        )
                         RxBus.emitEvent(Pie.EVENT_DEL_TOKEN, saveList)
                     }
                 }
