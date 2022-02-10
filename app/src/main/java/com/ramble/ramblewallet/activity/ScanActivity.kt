@@ -92,7 +92,8 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
                 try {
                     val result: Result? = scanningImage(uri)
                     if (result != null) {
-                        transDialog(result.text)
+                        downScanQRCodeSuccess(result.text)
+//                        transDialog(result.text)
                     } else {
                         println("====-=->11111111111111111111识别失败，请试试其它二维码")
                     }
@@ -183,6 +184,27 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
     }
 
     override fun onScanQRCodeSuccess(result: String?) {
+        vibrate()
+        zxingview?.stopSpot()
+        when (type) {
+            1 -> {
+                RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_SCAN, result)
+                finish()
+            }
+            2 -> {
+                RxBus.emitEvent(Pie.EVENT_ADDRESS_TRANS_SCAN, result)
+                finish()
+            }
+            3 -> {
+                RxBus.emitEvent(Pie.EVENT_ADDRESS_TRANS_SCAN, result)
+                finish()
+            }
+            else -> transDialog(result)
+        }
+
+    }
+
+    private fun downScanQRCodeSuccess(result: String?) {
         vibrate()
         zxingview?.stopSpot()
         when (type) {
