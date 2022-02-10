@@ -283,6 +283,10 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             dialogCenterTheme(window)
 
             window.findViewById<Button>(R.id.btn_cancel).setOnClickListener {
+                isDeletePage = false
+                binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
+                binding.ivAddWallet.visibility = View.VISIBLE
+                loadData(walletManageBean)
                 dialog.dismiss()
             }
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
