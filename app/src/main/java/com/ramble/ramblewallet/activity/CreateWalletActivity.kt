@@ -20,13 +20,23 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityCreateWalletBinding
     private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX|3：BTC、ETH、TRX
+    private var walletSource = 1
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_wallet)
         walletType = intent.getIntExtra(ARG_PARAM1, 0)
+        walletSource = intent.getIntExtra(ARG_PARAM1, 1)
         initClick()
+        when (walletSource) {
+            1 -> {
+                binding.tvCreateWalletTitle.text = getString(R.string.create_wallet)
+            }
+            2 -> {
+                binding.tvCreateWalletTitle.text = getString(R.string.new_wallet)
+            }
+        }
     }
 
     private fun initClick() {

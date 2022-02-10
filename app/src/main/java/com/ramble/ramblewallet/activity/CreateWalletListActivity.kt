@@ -59,6 +59,7 @@ class CreateWalletListActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<RelativeLayout>(R.id.rl_create_wallet).setOnClickListener {
                 startActivity(Intent(this, CreateWalletActivity::class.java).apply {
                     putExtra(ARG_PARAM1, walletType)
+                    putExtra(ARG_PARAM2, 2)
                 })
                 dialog.dismiss()
             }
