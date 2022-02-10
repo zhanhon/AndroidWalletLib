@@ -85,6 +85,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:hint="@string/contributing_address_hint"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:background="@drawable/shape_light_green_bottom_btn"
                 android:maxLength="50"
                 android:textColor="@color/front_one"
