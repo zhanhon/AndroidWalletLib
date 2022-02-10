@@ -69,127 +69,130 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
         binding.llChinese.setOnClickListener(this)
         binding.btnContributingWordsCompleted.setOnClickListener {
             if (mnemonicETHChoose == mnemonicETHOriginal) {
-                mnemonicETHChoose.forEach {
-                    walletETHString = "$walletETHString$it "
-                }
-                when (walletType) {
-                    1 -> { //ETH
-                        var walletETH = WalletETHUtils.generateWalletByMnemonic(
-                            walletName,
-                            walletPassword,
-                            walletETHString.trim()
-                        )
-                        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
-                            saveWalletList =
-                                Gson().fromJson(
-                                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                                    object : TypeToken<ArrayList<WalletETH>>() {}.type
-                                )
-                        }
-                        saveWalletList.add(walletETH)
-                        SharedPreferencesUtils.saveString(
-                            this,
-                            WALLETINFO,
-                            Gson().toJson(saveWalletList)
-                        )
-                        var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
-                        detailsList.add(AddressReport.DetailsList(walletETH.address, 1))
-                        putAddress(detailsList)
-                        SharedPreferencesUtils.saveString(
-                            this,
-                            WALLETSELECTED,
-                            Gson().toJson(walletETH)
-                        )
-                        var isValidEthSuccess = isEthValidAddress(walletETH.address)
-                        if (isValidEthSuccess) {
-                            startActivity(Intent(this, MainETHActivity::class.java))
-                        }
-                    }
-                    2 -> { //TRON
-                        val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
-                            walletName,
-                            walletPassword,
-                            walletETHString.trim()
-                        )
-                        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
-                            saveWalletList =
-                                Gson().fromJson(
-                                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                                    object : TypeToken<ArrayList<WalletETH>>() {}.type
-                                )
-                        }
-                        saveWalletList.add(walletTRX)
-                        SharedPreferencesUtils.saveString(
-                            this,
-                            WALLETINFO,
-                            Gson().toJson(saveWalletList)
-                        )
-                        var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
-                        detailsList.add(AddressReport.DetailsList(walletTRX.address, 2))
-                        putAddress(detailsList)
-                        SharedPreferencesUtils.saveString(
-                            this,
-                            WALLETSELECTED,
-                            Gson().toJson(walletTRX)
-                        )
-                        var isValidTrxSuccess = isTrxValidAddress(walletTRX.address)
-                        if (isValidTrxSuccess) {
-                            startActivity(Intent(this, MainTRXActivity::class.java))
-                        }
-                    }
-                    3 -> { //ALL
-                        var walletETH = WalletETHUtils.generateWalletByMnemonic(
-                            walletName,
-                            walletPassword,
-                            walletETHString.trim()
-                        )
-
-                        val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
-                            walletName,
-                            walletPassword,
-                            walletETHString.trim()
-                        )
-
-                        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
-                            saveWalletList =
-                                Gson().fromJson(
-                                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                                    object : TypeToken<ArrayList<WalletETH>>() {}.type
-                                )
-                        }
-                        saveWalletList.add(walletETH)
-                        saveWalletList.add(walletTRX)
-                        println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
-                        SharedPreferencesUtils.saveString(
-                            this,
-                            WALLETINFO,
-                            Gson().toJson(saveWalletList)
-                        )
-                        var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
-                        detailsList.add(AddressReport.DetailsList(walletETH.address, 1))
-                        detailsList.add(AddressReport.DetailsList(walletTRX.address, 2))
-                        putAddress(detailsList)
-                        //设置选择默认
-                        SharedPreferencesUtils.saveString(
-                            this,
-                            WALLETSELECTED,
-                            Gson().toJson(walletETH)
-                        )
-
-                        //2、之后地址校验
-                        var isValidEthSuccess = isEthValidAddress(walletETH.address)
-                        var isValidTrxSuccess = isTrxValidAddress(walletTRX.address)
-                        if (isValidEthSuccess && isValidTrxSuccess) {
-                            startActivity(Intent(this, MainETHActivity::class.java))
-                        }
-                    }
-                    0 -> { //BTC
-
-                    }
-                }
-
+                createWallet()
             } else {
                 toastDefault(getString(R.string.confirm_contributing_words_error))
+            }
+        }
+    }
+
+    private fun createWallet() {
+        mnemonicETHOriginal.forEach {
+            walletETHString = "$walletETHString$it "
+        }
+        when (walletType) {
+            1 -> { //ETH
+                var walletETH = WalletETHUtils.generateWalletByMnemonic(
+                    walletName,
+                    walletPassword,
+                    walletETHString.trim()
+                )
+                if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+                    saveWalletList =
+                        Gson().fromJson(
+                            SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                            object : TypeToken<ArrayList<WalletETH>>() {}.type
+                        )
+                }
+                saveWalletList.add(walletETH)
+                SharedPreferencesUtils.saveString(
+                    this,
+                    WALLETINFO,
+                    Gson().toJson(saveWalletList)
+                )
+                var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+                detailsList.add(AddressReport.DetailsList(walletETH.address, 1))
+                putAddress(detailsList)
+                SharedPreferencesUtils.saveString(
+                    this,
+                    WALLETSELECTED,
+                    Gson().toJson(walletETH)
+                )
+                var isValidEthSuccess = isEthValidAddress(walletETH.address)
+                if (isValidEthSuccess) {
+                    startActivity(Intent(this, MainETHActivity::class.java))
+                }
+            }
+            2 -> { //TRON
+                val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
+                    walletName,
+                    walletPassword,
+                    walletETHString.trim()
+                )
+                if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+                    saveWalletList =
+                        Gson().fromJson(
+                            SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                            object : TypeToken<ArrayList<WalletETH>>() {}.type
+                        )
+                }
+                saveWalletList.add(walletTRX)
+                SharedPreferencesUtils.saveString(
+                    this,
+                    WALLETINFO,
+                    Gson().toJson(saveWalletList)
+                )
+                var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+                detailsList.add(AddressReport.DetailsList(walletTRX.address, 2))
+                putAddress(detailsList)
+                SharedPreferencesUtils.saveString(
+                    this,
+                    WALLETSELECTED,
+                    Gson().toJson(walletTRX)
+                )
+                var isValidTrxSuccess = isTrxValidAddress(walletTRX.address)
+                if (isValidTrxSuccess) {
+                    startActivity(Intent(this, MainTRXActivity::class.java))
+                }
+            }
+            3 -> { //ALL
+                var walletETH = WalletETHUtils.generateWalletByMnemonic(
+                    walletName,
+                    walletPassword,
+                    walletETHString.trim()
+                )
+
+                val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
+                    walletName,
+                    walletPassword,
+                    walletETHString.trim()
+                )
+
+                if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+                    saveWalletList =
+                        Gson().fromJson(
+                            SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                            object : TypeToken<ArrayList<WalletETH>>() {}.type
+                        )
+                }
+                saveWalletList.add(walletETH)
+                saveWalletList.add(walletTRX)
+                println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
+                SharedPreferencesUtils.saveString(
+                    this,
+                    WALLETINFO,
+                    Gson().toJson(saveWalletList)
+                )
+                var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+                detailsList.add(AddressReport.DetailsList(walletETH.address, 1))
+                detailsList.add(AddressReport.DetailsList(walletTRX.address, 2))
+                putAddress(detailsList)
+                //设置选择默认
+                SharedPreferencesUtils.saveString(
+                    this,
+                    WALLETSELECTED,
+                    Gson().toJson(walletETH)
+                )
+
+                //2、之后地址校验
+                var isValidEthSuccess = isEthValidAddress(walletETH.address)
+                var isValidTrxSuccess = isTrxValidAddress(walletTRX.address)
+                if (isValidEthSuccess && isValidTrxSuccess) {
+                    startActivity(Intent(this, MainETHActivity::class.java))
+                }
+            }
+            0 -> { //BTC
+
             }
         }
     }
@@ -283,14 +286,25 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
 
             window.findViewById<Button>(R.id.btn_cancel_create).setOnClickListener {
                 finish()
-                //跳转首页或者、CreateRecoverWalletActivity
-                //startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
+                when (walletType) {
+                    1 -> {
+                        startActivity(Intent(this, MainETHActivity::class.java))
+                    }
+                    2 -> {
+                        startActivity(Intent(this, MainTRXActivity::class.java))
+                    }
+                    3 -> {
+                        startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
+                    }
+                    0 -> {
+                        startActivity(Intent(this, MainBTCActivity::class.java))
+                    }
+                }
                 dialog.dismiss()
             }
             window.findViewById<Button>(R.id.btn_skip).setOnClickListener {
                 finish()
-                //需要创建钱包，在跳转
-                //startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
+                createWallet()
                 dialog.dismiss()
             }
             window.findViewById<Button>(R.id.btn_back_last_page).setOnClickListener {
