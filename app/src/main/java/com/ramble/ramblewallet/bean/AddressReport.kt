@@ -20,6 +20,7 @@ class AddressReport @SuppressWarnings("unused") constructor() {
 
     class DetailsList(
         var address: String = "", //地址
+        var addressStatus: Int = 0, //地址状态|0:启用|1:停用|2:删除
         var addressType: Int = 0 //链类型|0:ETC|1:ETH|2:TRON
     )
 }

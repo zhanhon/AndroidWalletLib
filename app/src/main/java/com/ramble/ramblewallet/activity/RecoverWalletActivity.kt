@@ -313,6 +313,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 detailsList.add(
                     AddressReport.DetailsList(
                         wallet.address,
+                        0,
                         1
                     )
                 ) //链类型|0:ETC|1:ETH|2:TRON
@@ -321,6 +322,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 detailsList.add(
                     AddressReport.DetailsList(
                         wallet.address,
+                        0,
                         2
                     )
                 ) //链类型|0:ETC|1:ETH|2:TRON

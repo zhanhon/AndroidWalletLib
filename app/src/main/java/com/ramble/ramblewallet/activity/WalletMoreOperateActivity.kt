@@ -28,11 +28,12 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.constant.WALLETINFO
-import com.ramble.ramblewallet.constant.WALLETSELECTED
+import com.ramble.ramblewallet.bean.AddressReport
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityWalletMoreOperateBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.network.reportAddressUrl
+import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
 import java.io.File
 import java.io.FileNotFoundException
@@ -108,6 +109,15 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 inputPasswordDialog(getString(R.string.keystore_backup))
             }
             R.id.tv_delete_wallet -> {
+                var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+                saveWalletList.forEach {
+                    if (it.clickDelete) {
+                        detailsList.add(AddressReport.DetailsList(it.address, 2,it.walletType))
+                    } else {
+                        detailsList.add(AddressReport.DetailsList(it.address, 0,it.walletType))
+                    }
+                }
+                putAddress(detailsList)
                 val list = saveWalletList.iterator()
                 list.forEach {
                     if (it.address == walletCurrent.address) {
@@ -527,6 +537,26 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    @SuppressLint("CheckResult")
+    private fun putAddress(detailsList: ArrayList<AddressReport.DetailsList>) {
+        val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
+        val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
+        mApiService.putAddress(
+            AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)
+        ).applyIo().subscribe(
+            {
+                if (it.code() == 1) {
+                    it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
+                } else {
+                    putAddress(detailsList)
+                    println("-=-=-=->putAddress:${it.message()}")
+                }
+            }, {
+                println("-=-=-=->putAddress:${it.printStackTrace()}")
+            }
+        )
     }
 
 }

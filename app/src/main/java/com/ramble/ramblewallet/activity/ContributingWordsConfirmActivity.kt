@@ -101,7 +101,7 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                     Gson().toJson(saveWalletList)
                 )
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
-                detailsList.add(AddressReport.DetailsList(walletETH.address, 1))
+                detailsList.add(AddressReport.DetailsList(walletETH.address, 0, 1))
                 putAddress(detailsList)
                 SharedPreferencesUtils.saveString(
                     this,
@@ -133,7 +133,7 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                     Gson().toJson(saveWalletList)
                 )
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
-                detailsList.add(AddressReport.DetailsList(walletTRX.address, 2))
+                detailsList.add(AddressReport.DetailsList(walletTRX.address, 0, 2))
                 putAddress(detailsList)
                 SharedPreferencesUtils.saveString(
                     this,
@@ -174,8 +174,8 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                     Gson().toJson(saveWalletList)
                 )
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
-                detailsList.add(AddressReport.DetailsList(walletETH.address, 1))
-                detailsList.add(AddressReport.DetailsList(walletTRX.address, 2))
+                detailsList.add(AddressReport.DetailsList(walletETH.address, 0,1))
+                detailsList.add(AddressReport.DetailsList(walletTRX.address, 0,2))
                 putAddress(detailsList)
                 //设置选择默认
                 SharedPreferencesUtils.saveString(

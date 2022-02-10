@@ -20,13 +20,15 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.WalletManageAdapter
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.constant.WALLETINFO
-import com.ramble.ramblewallet.constant.WALLETSELECTED
+import com.ramble.ramblewallet.bean.AddressReport
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityWalletManageBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.network.reportAddressUrl
+import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.utils.toastDefault
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -284,6 +286,15 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 dialog.dismiss()
             }
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
+                var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+                walletManageBean.forEach {
+                    if (it.clickDelete) {
+                        detailsList.add(AddressReport.DetailsList(it.address, 2,it.walletType))
+                    } else {
+                        detailsList.add(AddressReport.DetailsList(it.address, 0,it.walletType))
+                    }
+                }
+                putAddress(detailsList)
                 val list = walletManageBean.iterator()
                 list.forEach {
                     if (it.clickDelete) {
@@ -313,6 +324,26 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         window.attributes = params
         window.setGravity(Gravity.CENTER)
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    @SuppressLint("CheckResult")
+    private fun putAddress(detailsList: ArrayList<AddressReport.DetailsList>) {
+        val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
+        val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
+        mApiService.putAddress(
+            AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)
+        ).applyIo().subscribe(
+            {
+                if (it.code() == 1) {
+                    it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
+                } else {
+                    putAddress(detailsList)
+                    println("-=-=-=->putAddress:${it.message()}")
+                }
+            }, {
+                println("-=-=-=->putAddress:${it.printStackTrace()}")
+            }
+        )
     }
 
 }
