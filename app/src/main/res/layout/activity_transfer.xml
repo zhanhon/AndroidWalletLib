@@ -249,7 +249,7 @@
                         android:maxLength="22"
                         android:inputType="numberDecimal"
                         android:longClickable="false"
-                        android:textColor="@color/color_9598AA"
+                        android:textColor="@color/color_000000"
                         android:textSize="@dimen/sp_18"
                         android:textStyle="bold" />
 
