@@ -128,6 +128,19 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun btnIsClick() {
+        if ((binding.edtReceiverAddress.text.isNotEmpty())
+            && (binding.edtInputQuantity.text.isNotEmpty())
+        ) {
+            binding.btnConfirm.isEnabled = true
+            binding.btnConfirm.background = getDrawable(R.drawable.shape_green_bottom_btn)
+        } else {
+            binding.btnConfirm.isEnabled = false
+            binding.btnConfirm.background = getDrawable(R.drawable.shape_gray_bottom_btn)
+        }
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////////
 
     private fun initClick() {
@@ -178,6 +191,31 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 println("-=-=-=->ETH:${it.printStackTrace()}")
             }
         )
+
+        binding.edtReceiverAddress.addTextChangedListener(object : TextWatcher {
+            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+            override fun afterTextChanged(s: Editable?) {
+                btnIsClick()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+        binding.edtInputQuantity.addTextChangedListener(object : TextWatcher {
+            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+            override fun afterTextChanged(s: Editable?) {
+                btnIsClick()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
 
         when (walletSelleted.walletType) { //链类型|0:BTC|1:ETH|2:TRX
             1 -> {
