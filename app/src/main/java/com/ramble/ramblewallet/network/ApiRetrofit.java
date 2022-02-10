@@ -3,6 +3,7 @@ package com.ramble.ramblewallet.network;
 import android.util.Log;
 
 import com.google.gson.GsonBuilder;
+import com.ramble.ramblewallet.BuildConfig;
 import com.ramble.ramblewallet.MyApp;
 import com.ramble.ramblewallet.utils.Md5Util;
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils;
@@ -97,10 +98,8 @@ public class ApiRetrofit {
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
                 .build();
-        //开发环境：http://13.229.173.84:8095/
-        //测试环境：http://13.214.207.185:8095/
         mRetrofit = new Retrofit.Builder()
-                .baseUrl("http://13.214.207.185:8095/")
+                .baseUrl(BuildConfig.BASE_SERVER_URL[0])
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//支持RxJava

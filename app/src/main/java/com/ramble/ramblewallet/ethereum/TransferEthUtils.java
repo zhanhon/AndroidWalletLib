@@ -7,6 +7,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.ramble.ramblewallet.BuildConfig;
 import com.ramble.ramblewallet.activity.TransferActivity;
 import com.ramble.ramblewallet.ethereum.utils.StringHexUtils;
 
@@ -41,29 +42,13 @@ import java.util.concurrent.Future;
  * @创建时间： 2021/12/19
  */
 public class TransferEthUtils {
-    private static final String DATA_PREFIX = "0x70a08231000000000000000000000000";
-    private static final String ETH_NODE = "http://122.248.244.178:8545";//测试节点
-    //private static final String ETH_NODE = "http://18.141.62.32:8545";//开发节点
 
-    public static void transferTest() throws Exception {
-        String from = "0x5273c93c4aa6f857cd805644339cf8990bc71b50";
-        String to = "0xd46e597892f81e9fff5b3caefc476488eda2995f";
-        String privateKey = "ea2ed39bd5b4dfec655c77f1b28a6c1f823d4a5868056f61db815d080e94acae";
-        //String contractAddress = "0x245A86D04C678E1Ab7e5a8FbD5901C12361Ea308";
-        String contractAddress = "0x97fd68AaEaaEb64BD3f5D1EDC26dbbc70B548896";
-        BigInteger number = new BigInteger("100000000000000000");  //100000000=100ERC
-        //BigInteger gasPrice = new BigInteger("200000000000000");
-        BigInteger gasPrice = new BigInteger("121");
-        BigInteger gasLimit = new BigInteger("210000");
-        String desc = "aaaaaaaaas";
-        //transferETH(from, to, privateKey, "1", gasPrice, gasLimit, desc);
-        //transferToken(from, to, contractAddress, privateKey, number, gasPrice, gasLimit, desc);
-    }
+    private static final String DATA_PREFIX = "0x70a08231000000000000000000000000";
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static BigDecimal getBalanceETH(String address) throws Exception {
         try {
-            Web3j web3 = Web3j.build(new HttpService(ETH_NODE));
+            Web3j web3 = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0]));
             Future<EthGetBalance> ethGetBalanceFuture = web3.ethGetBalance(address, DefaultBlockParameterName.LATEST).sendAsync();
             return Convert.fromWei(ethGetBalanceFuture.get().getBalance().toString(),
                     Convert.Unit.ETHER);
@@ -75,7 +60,7 @@ public class TransferEthUtils {
 
     public static BigDecimal getBalanceToken(String address, String contractAddress) throws IOException {
         try {
-            String value = Web3j.build(new HttpService(ETH_NODE))
+            String value = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0]))
                     .ethCall(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(address,
                             contractAddress, DATA_PREFIX + address.substring(2)), DefaultBlockParameterName.PENDING).send().getValue();
             String s = new BigInteger(value.substring(2), 16).toString();
@@ -93,7 +78,7 @@ public class TransferEthUtils {
     @SuppressLint("LongLogTag")
     public static void transferETH(Activity context, String fromAddress, String toAddress, String privateKey, String number,
                                    BigInteger gasPrice, BigInteger gasLimit, String remark) throws Exception {
-        Web3j web3j = Web3j.build(new HttpService(ETH_NODE));
+        Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0]));
         BigInteger value = Convert.toWei(number, Convert.Unit.ETHER).toBigInteger();
         //加载转账所需的凭证，用私钥
         Credentials credentials = Credentials.create(privateKey);
@@ -128,7 +113,7 @@ public class TransferEthUtils {
     @SuppressLint("LongLogTag")
     public static void transferETHToken(Context context, String fromAddress, String toAddress, String contractAddress, String privateKey, BigInteger number,
                                         BigInteger gasPrice, BigInteger gasLimit, String remark) throws Exception {
-        Web3j web3j = Web3j.build(new HttpService(ETH_NODE));
+        Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0]));
         //加载转账所需的凭证，用私钥
         Credentials credentials = Credentials.create(privateKey);
         //获取nonce，交易笔数

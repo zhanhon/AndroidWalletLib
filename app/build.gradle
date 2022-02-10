@@ -12,14 +12,14 @@ android {
         configurations.all {
             resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
         }
-        applicationId "com.ramble.ramblewallet"
+        //applicationId "com.ramble.ramblewallet"
         minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        //flavorDimensions "default"
+        flavorDimensions "default"
         ndk {//PushSDK目前只支持4种架构
             abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86'
         }
@@ -74,13 +74,28 @@ android {
         dataBinding = true
     }
 
-//    productFlavors {
-//        pre_test {
-//            applicationId "com.ramble.ramblewallet"
-//            buildConfigField "long", "PLATFORM_ID", '1'
-//            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.229.173.84:8095/"}'
-//        }
-//    }
+    productFlavors {
+        //开发环境：http://13.229.173.84:8095/
+        //ETH开发节点：http://18.141.62.32:8545
+        //TRX节点nile：https://api.nileex.io
+        pre_dev {
+            applicationId "com.ramble.ramblewallet"
+            buildConfigField "long", "PLATFORM_ID", '1'
+            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.229.173.84:8095/"}'
+            buildConfigField "String[]", "RPC_ETH_NODE", '{"http://18.141.62.32:8545"}'
+            buildConfigField "String[]", "RPC_TRX_NODE", '{"https://api.nileex.io"}'
+        }
+        //测试环境：http://13.214.207.185:8095/
+        //ETH测试节点：http://122.248.244.178:8545
+        //TRX节点nile：https://api.nileex.io
+        pre_test {
+            applicationId "com.ramble.ramblewallet"
+            buildConfigField "long", "PLATFORM_ID", '1'
+            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.214.207.185:8095/"}'
+            buildConfigField "String[]", "RPC_ETH_NODE", '{"http://122.248.244.178:8545"}'
+            buildConfigField "String[]", "RPC_TRX_NODE", '{"https://api.nileex.io"}'
+        }
+    }
 
 }
 
