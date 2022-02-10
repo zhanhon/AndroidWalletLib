@@ -109,6 +109,23 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 inputPasswordDialog(getString(R.string.keystore_backup))
             }
             R.id.tv_delete_wallet -> {
+                deleteConfirmTipsDialog()
+            }
+        }
+    }
+
+    private fun deleteConfirmTipsDialog() {
+        var dialog = AlertDialog.Builder(this).create()
+        dialog.show()
+        val window: Window? = dialog.window
+        if (window != null) {
+            window.setContentView(R.layout.dialog_delete_confirm_tips)
+            dialogCenterTheme(window)
+
+            window.findViewById<Button>(R.id.btn_cancel).setOnClickListener {
+                dialog.dismiss()
+            }
+            window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                 saveWalletList.forEach {
                     if (it.clickDelete) {
@@ -125,9 +142,23 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+                dialog.dismiss()
                 finish()
             }
         }
+    }
+
+    private fun dialogCenterTheme(window: Window) {
+        //设置属性
+        val params = window.attributes
+        params.width = WindowManager.LayoutParams.MATCH_PARENT
+        //弹出一个窗口，让背后的窗口变暗一点
+        params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        //dialog背景层
+        params.dimAmount = 0.5f
+        window.attributes = params
+        window.setGravity(Gravity.CENTER)
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private fun inputPasswordDialog(title: String) {
