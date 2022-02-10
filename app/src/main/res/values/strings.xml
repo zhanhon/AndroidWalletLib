@@ -16,7 +16,7 @@
     <string name="english">英文</string>
     <string name="chinese">中文</string>
     <string name="one_copy">一键复制</string>
-    <string name="contributing_words_confirm">助记确认</string>
+    <string name="contributing_words_confirm">助记词确认</string>
     <string name="skip_this_step">跳过此步骤</string>
     <string name="contributing_words_hint">请输入中文或英文助记词，每个单字中间请加上空白以便系统判定</string>
     <string name="contributing_words_completed">助记词完成</string>

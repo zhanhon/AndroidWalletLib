@@ -23,6 +23,7 @@
                 android:id="@+id/tv_contributing_words_confirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_30"
                 android:text="@string/contributing_words_confirm"
                 android:textColor="@color/color_000000" />
 
@@ -30,6 +31,7 @@
                 android:id="@+id/edt_contributing_words_confirm"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_140"
+                android:layout_marginTop="@dimen/dp_10"
                 android:background="@drawable/shape_white_line_gray_bottom_btn"
                 android:padding="@dimen/dp_5">
 
