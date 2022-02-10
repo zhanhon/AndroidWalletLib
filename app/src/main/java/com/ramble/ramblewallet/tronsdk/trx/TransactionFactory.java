@@ -1,4 +1,4 @@
-package com.ramble.ramblewallet.trx;
+package com.ramble.ramblewallet.tronsdk.trx;
 
 import com.google.protobuf.GeneratedMessageV3;
 

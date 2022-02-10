@@ -1,4 +1,4 @@
-package com.ramble.ramblewallet.trx.exception;
+package com.ramble.ramblewallet.tronsdk.trx.exception;
 
 public class ContractExeException extends TronException {
 

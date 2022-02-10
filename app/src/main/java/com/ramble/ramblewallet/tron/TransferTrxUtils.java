@@ -11,8 +11,8 @@ import com.ramble.ramblewallet.activity.TransferActivity;
 import com.ramble.ramblewallet.tronsdk.common.crypto.ECKey;
 import com.ramble.ramblewallet.tronsdk.common.utils.ByteArray;
 import com.ramble.ramblewallet.tronsdk.common.utils.Sha256Hash;
-import com.ramble.ramblewallet.trx.TrxApi;
-import com.ramble.ramblewallet.trx.Util;
+import com.ramble.ramblewallet.tronsdk.trx.TrxApi;
+import com.ramble.ramblewallet.tronsdk.trx.Util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.util.encoders.Hex;

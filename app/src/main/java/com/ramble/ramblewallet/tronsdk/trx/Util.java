@@ -1,4 +1,4 @@
-package com.ramble.ramblewallet.trx;
+package com.ramble.ramblewallet.tronsdk.trx;
 
 import android.util.Log;
 
