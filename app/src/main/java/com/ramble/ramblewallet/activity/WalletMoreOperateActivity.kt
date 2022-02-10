@@ -525,8 +525,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 Uri.parse("file://" + "/sdcard/namecard/")
             )
         )
-        println("-=-=-=->save:${getString(R.string.save_success)}")
-        Toast.makeText(this, getString(R.string.save_success), Toast.LENGTH_LONG)
+        toastDefault(getString(R.string.save_success))
     }
 
     interface PermissionListener {

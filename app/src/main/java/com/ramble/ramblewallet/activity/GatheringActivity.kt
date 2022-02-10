@@ -34,6 +34,7 @@ import com.ramble.ramblewallet.databinding.ActivityGatheringBinding
 import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.DisplayHelper
 import com.ramble.ramblewallet.utils.QRCodeUtil
+import com.ramble.ramblewallet.utils.toastDefault
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -219,8 +220,7 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
             )
         )
         showScan()
-        println("-=-=-=->save:${getString(R.string.save_success)}")
-        Toast.makeText(this, getString(R.string.save_success), Toast.LENGTH_LONG)
+        toastDefault(getString(R.string.save_success))
     }
 
     interface PermissionListener {
