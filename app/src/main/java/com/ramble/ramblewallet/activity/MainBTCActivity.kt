@@ -83,7 +83,6 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         binding.ivScanTop.setOnClickListener(this)
         binding.llScan.setOnClickListener(this)
 
-        binding.ivTokenManageClick.setOnClickListener(this)
         binding.ivTokenManageClick01.setOnClickListener(this)
 
     }
@@ -151,9 +150,6 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                 start(ScanActivity::class.java, Bundle().also {
                     it.putInt(ARG_PARAM1, 3)
                 })
-            }
-            R.id.iv_token_manage_click, R.id.iv_token_manage_click_01 -> {
-                startActivity(Intent(this, TokenActivity::class.java))
             }
         }
     }

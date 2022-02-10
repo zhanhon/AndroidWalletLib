@@ -117,11 +117,6 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                     putExtra(ARG_PARAM1, 3)
                 })
             }
-            R.id.iv_token_manage_click -> {
-                startActivity(Intent(this, TokenActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "TRX")
-                })
-            }
             R.id.iv_balance_refresh -> {
                 startSyncAnimation()
                 Handler().postDelayed({
@@ -178,8 +173,6 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
 
         binding.ivScanTop.setOnClickListener(this)
         binding.llScan.setOnClickListener(this)
-
-        binding.ivTokenManageClick.setOnClickListener(this)
 
         binding.ivBalanceRefresh.setOnClickListener(this)
         binding.ivEyes.setOnClickListener(this)

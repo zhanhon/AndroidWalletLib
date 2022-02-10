@@ -283,19 +283,6 @@
                             android:text="NTF"
                             android:textColor="@color/color_9598AA" />
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp_24">
-
-                            <ImageView
-                                android:id="@+id/iv_token_manage_click"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginStart="@dimen/dp_20"
-                                android:layout_marginEnd="@dimen/dp_10"
-                                android:background="@drawable/vector_token_manage" />
-                        </RelativeLayout>
                     </LinearLayout>
 
                 </LinearLayout>
