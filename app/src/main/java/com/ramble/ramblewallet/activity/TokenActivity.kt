@@ -49,14 +49,14 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        binding.tvTokenTitle.text = tokenTitle+getString(R.string.token)
+        binding.tvTokenTitle.text = tokenTitle + getString(R.string.token)
 
         LinearLayoutManager(this).apply {
             binding.rvTokenCurrency.layoutManager = this
         }
         binding.rvTokenCurrency.addItemDecoration(
             QuickItemDecoration.builder(this)
-                .color(R.color.driver_gray, R.dimen.dp_08)
+                .color(R.color.driver_gray, R.dimen.dp_08).leftMargin(R.dimen.dp_54)
                 .build()
         )
         binding.rvTokenCurrency.adapter = adapter
