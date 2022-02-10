@@ -160,6 +160,8 @@
                             android:hint="0xxxxxxxxxxxxxxxxxx"
                             android:inputType="textEmailAddress"
                             android:longClickable="false"
+                            android:maxLength="42"
+                            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                             android:text=""
                             android:textColor="@color/color_9598AA"
                             android:textSize="@dimen/sp_12" />
@@ -244,8 +246,7 @@
                         android:layout_alignParentLeft="true"
                         android:background="@null"
                         android:hint="0.00"
-                        android:maxEms="22"
-                        android:maxLines="1"
+                        android:maxLength="22"
                         android:inputType="numberDecimal"
                         android:longClickable="false"
                         android:textColor="@color/color_9598AA"
