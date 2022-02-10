@@ -53,7 +53,7 @@ class RecoverWalletListActivity : BaseActivity(), View.OnClickListener {
             params.dimAmount = 0.5f   //dialog背景层
             window.attributes = params
 
-            window.findViewById<TextView>(R.id.tv_title).text = title
+            window.findViewById<TextView>(R.id.tv_title).text = getString(R.string.import_wallet)
 
             window.findViewById<RelativeLayout>(R.id.rl_contributing_words).setOnClickListener {
                 startActivity(Intent(this, RecoverWalletActivity::class.java).apply {
