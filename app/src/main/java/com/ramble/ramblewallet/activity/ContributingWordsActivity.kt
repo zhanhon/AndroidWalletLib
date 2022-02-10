@@ -93,7 +93,7 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
                     "english" -> {
                         ClipboardUtils.copy(mnemonicList[0])
                     }
-                    "chiese" -> {
+                    "chinese" -> {
                         ClipboardUtils.copy(mnemonicList[1])
                     }
                     else -> {
@@ -131,7 +131,7 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
             "english" -> {
                 walletETHString = mnemonicList[0]
             }
-            "chiese" -> {
+            "chinese" -> {
                 walletETHString = mnemonicList[1]
             }
         }
