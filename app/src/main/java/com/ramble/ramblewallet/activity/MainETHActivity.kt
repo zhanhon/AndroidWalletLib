@@ -143,6 +143,9 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_copy -> {
                 ClipboardUtils.copy(walletSelleted.address)
             }
+            R.id.tv_ntf -> {
+                toastDefault(getString(R.string.coming_soon))
+            }
         }
     }
 
@@ -185,6 +188,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         binding.ivBalanceRefresh.setOnClickListener(this)
         binding.ivEyes.setOnClickListener(this)
         binding.ivCopy.setOnClickListener(this)
+        binding.tvNtf.setOnClickListener(this)
 
     }
 

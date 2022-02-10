@@ -290,6 +290,7 @@
                             android:background="@drawable/shape_gray_endways_bottom_btn" />
 
                         <TextView
+                            android:id="@+id/tv_ntf"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginStart="@dimen/dp_5"
