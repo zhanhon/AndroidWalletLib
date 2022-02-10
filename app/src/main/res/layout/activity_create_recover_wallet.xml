@@ -58,7 +58,8 @@
             android:layout_marginTop="@dimen/dp_60"
             android:text="@string/create_recover_wallet_tips"
             android:textColor="@color/color_000000"
-            android:textSize="@dimen/dp_20"
+            android:textSize="@dimen/dp_25"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_logo" />
