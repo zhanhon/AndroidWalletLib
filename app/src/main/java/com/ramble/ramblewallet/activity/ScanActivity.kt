@@ -18,6 +18,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.CheckBox
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.databinding.DataBindingUtil
@@ -26,6 +27,7 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView
 import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.QRCodeReader
+import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.constant.ARG_PARAM1
@@ -95,7 +97,11 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
                         downScanQRCodeSuccess(result.text)
 //                        transDialog(result.text)
                     } else {
-                        println("====-=->11111111111111111111识别失败，请试试其它二维码")
+                        Toast.makeText(
+                            this@ScanActivity,
+                            MyApp.sInstance.getString(R.string.scan_qr_code_fail),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } catch (e: FileNotFoundException) {
                     e.printStackTrace()
