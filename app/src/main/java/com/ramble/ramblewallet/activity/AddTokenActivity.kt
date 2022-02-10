@@ -55,7 +55,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         }
         binding.rvMyTokenCurrency.addItemDecoration(
             QuickItemDecoration.builder(this)
-                .color(R.color.driver_gray, R.dimen.dp_08)
+                .color(R.color.driver_gray, R.dimen.dp_08).leftMargin(R.dimen.dp_54)
                 .build()
         )
         binding.rvMyTokenCurrency.adapter = adapter
@@ -66,7 +66,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         }
         binding.rvTokenManageCurrency.addItemDecoration(
             QuickItemDecoration.builder(this)
-                .color(R.color.driver_gray, R.dimen.dp_08)
+                .color(R.color.driver_gray, R.dimen.dp_08).leftMargin(R.dimen.dp_54)
                 .build()
         )
         binding.rvTokenManageCurrency.adapter = recommendTokenAdapter
