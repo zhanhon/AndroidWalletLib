@@ -303,7 +303,6 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
                 dialog.dismiss()
             }
             window.findViewById<Button>(R.id.btn_skip).setOnClickListener {
-                finish()
                 createWallet()
                 dialog.dismiss()
             }
