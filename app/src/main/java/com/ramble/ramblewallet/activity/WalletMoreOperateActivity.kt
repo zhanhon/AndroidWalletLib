@@ -79,6 +79,12 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             object : TypeToken<WalletETH>() {}.type
         )
 
+        if (saveWalletList.size == 1) {
+            binding.tvDeleteWallet.visibility = View.GONE
+        } else {
+            binding.tvDeleteWallet.visibility = View.VISIBLE
+        }
+
         initClick()
     }
 
