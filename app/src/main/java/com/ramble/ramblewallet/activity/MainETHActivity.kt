@@ -295,9 +295,21 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("CheckResult")
     private fun refreshData() {
+        val tokenInfo = SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, "")
         var list: ArrayList<String> = arrayListOf()
         list.add("ETH")
-        list.add("TESTERC") //暂时固定TESTERC
+        if (tokenInfo.isNotEmpty()) {
+            saveTokenList = Gson().fromJson(tokenInfo, object : TypeToken<ArrayList<StoreInfo>>() {}.type)
+            val list = saveTokenList.iterator()
+            list.forEach {
+                if (it.isMyToken == 0) {
+                    list.remove()
+                }
+            }
+        }
+        saveTokenList.forEach {
+            list.add(it.symbol)
+        }
         var req = StoreInfo.Req()
         req.list = list
         req.convertId = "2787,2792,2781" //人民币、港币、美元
