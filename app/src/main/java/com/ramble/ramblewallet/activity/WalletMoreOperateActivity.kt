@@ -60,13 +60,13 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
         )
         when (walletCurrent.walletType) {
             1 -> {
-                binding.tvRecoverWalletTitle.text = "ETH" + " " + walletCurrent.walletName
+                binding.tvRecoverWalletTitle.text = "ETH" + " " + walletCurrent.walletName + getString(R.string.di_wallet)
             }
             2 -> {
-                binding.tvRecoverWalletTitle.text = "TRX" + " " + walletCurrent.walletName
+                binding.tvRecoverWalletTitle.text = "TRX" + " " + walletCurrent.walletName + getString(R.string.di_wallet)
             }
             0 -> {
-                binding.tvRecoverWalletTitle.text = "BTC" + " " + walletCurrent.walletName
+                binding.tvRecoverWalletTitle.text = "BTC" + " " + walletCurrent.walletName + getString(R.string.di_wallet)
             }
         }
 

@@ -174,6 +174,7 @@
     <string name="please_confirm_delete_wallet">请确认删除所选钱包</string>
     <string name="please_input_your_wallet_name">请输入您的钱包名称</string>
     <string name="please_confirm_password">请确认密码</string>
+    <string name="di_wallet">的钱包</string>
 
 
     <string name="refresh_pull_down">下拉更新</string>
