@@ -49,7 +49,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        binding.tvTokenTitle.text = tokenTitle
+        binding.tvTokenTitle.text = tokenTitle+getString(R.string.token)
 
         LinearLayoutManager(this).apply {
             binding.rvTokenCurrency.layoutManager = this
