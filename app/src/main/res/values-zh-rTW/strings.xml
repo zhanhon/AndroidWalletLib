@@ -24,7 +24,7 @@
     <string name="personal_management">個人管理</string>
     <string name="manage_wallet">管理錢包</string>
     <string name="address_book">地址本</string>
-    <string name="transaction_query">交易查詢</string>
+    <string name="transaction_query">交易記録</string>
     <string name="multi_language">多語言</string>
     <string name="currency_unit">貨幣單位</string>
     <string name="help_feedback">幫助與反饋</string>

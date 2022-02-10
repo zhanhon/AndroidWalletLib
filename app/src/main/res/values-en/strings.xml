@@ -24,7 +24,7 @@
     <string name="personal_management">Personal Managerment</string>
     <string name="manage_wallet">Wallet Managerment</string>
     <string name="address_book">Address Book</string>
-    <string name="transaction_query">交易查询</string>
+    <string name="transaction_query">交易记录</string>
     <string name="multi_language">Multi Language</string>
     <string name="currency_unit">Unit</string>
     <string name="help_feedback">Help And Feedback</string>

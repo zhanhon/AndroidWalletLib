@@ -75,9 +75,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             .setImageResource(R.drawable.ic_currency)
         binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text =
             when (currency) {
-                HKD -> getString(R.string.hk_dollar)
-                USD -> getString(R.string.usd_dollar)
-                else -> getString(R.string.cny_dollar)
+                HKD -> "HKD"
+                USD -> "USD"
+                else -> "CNY"
 
             }
         binding.incHelpFeedback.findViewById<TextView>(R.id.tv_mine_title).text =
