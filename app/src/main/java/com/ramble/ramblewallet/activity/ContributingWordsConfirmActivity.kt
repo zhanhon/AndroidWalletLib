@@ -221,7 +221,7 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
             "chinese" -> {
                 binding.vEnglish.setBackgroundResource(R.color.color_9598AA)
                 binding.vChinese.setBackgroundResource(R.color.color_3F5E94)
-                mnemonicETHOriginal = mnemonicETHShuffledChinese
+                mnemonicETHOriginal = mnemonicETHOriginalChinese
                 mnemonicETHShuffled = mnemonicETHShuffledChinese
             }
         }
