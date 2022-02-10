@@ -180,7 +180,8 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             edtWalletPassword.addTextChangedListener(object : TextWatcher {
                 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
                 override fun afterTextChanged(s: Editable?) {
-                    if (edtWalletPassword.text.isNotEmpty()) {
+                    if ((edtWalletPassword.text.isNotEmpty())
+                        && (edtWalletPassword.text.length >= 6)){
                         window.findViewById<Button>(R.id.btn_confirm).background =
                             getDrawable(R.drawable.shape_green_bottom_btn)
                     } else {
