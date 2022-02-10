@@ -97,7 +97,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_icon)
             .setImageResource(R.drawable.ic_about)
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).visibility = View.INVISIBLE
-        binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text = "v2.1"
+        binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text = "V1.0.0"
     }
 
 
