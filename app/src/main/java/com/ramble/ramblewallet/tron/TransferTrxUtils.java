@@ -42,7 +42,7 @@ import okhttp3.Response;
 public class TransferTrxUtils {
 
     public static void balanceOfTrx(Activity context, String address) throws JSONException {
-        String url = BuildConfig.RPC_TRX_NODE + "/wallet/getaccount";
+        String url = BuildConfig.RPC_TRX_NODE[0] + "/wallet/getaccount";
         JSONObject param = new JSONObject();
         param.put("address", toHexAddress(address));
         Call call = getCall(url, param);
@@ -83,7 +83,7 @@ public class TransferTrxUtils {
      * 查询trc20数量
      */
     public static void balanceOfTrc20(Activity context, String address, String contractAddress) throws JSONException {
-        String url = BuildConfig.RPC_TRX_NODE + "/wallet/triggersmartcontract";
+        String url = BuildConfig.RPC_TRX_NODE[0] + "/wallet/triggersmartcontract";
         JSONObject param = new JSONObject();
         param.put("owner_address", toHexAddress(address));
         param.put("contract_address", toHexAddress(contractAddress));
@@ -132,7 +132,7 @@ public class TransferTrxUtils {
 
     public static void transferTRX(Activity context, String fromAddress, String toAddress,
                                    String privateKey, BigDecimal number, String remark) throws JSONException {
-        String url = BuildConfig.RPC_TRX_NODE + "/wallet/createtransaction";
+        String url = BuildConfig.RPC_TRX_NODE[0] + "/wallet/createtransaction";
         JSONObject param = new JSONObject();
         param.put("owner_address", toHexAddress(fromAddress));
         param.put("to_address", toHexAddress(toAddress));
@@ -210,7 +210,7 @@ public class TransferTrxUtils {
         jsonObject.put("owner_address", TrxApi.toHexAddress(fromAddress));
         jsonObject.put("call_value", 0);
         jsonObject.put("fee_limit", "10000000");
-        Call call = getCall(BuildConfig.RPC_TRX_NODE + "/wallet/triggersmartcontract", jsonObject);
+        Call call = getCall(BuildConfig.RPC_TRX_NODE[0] + "/wallet/triggersmartcontract", jsonObject);
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -234,7 +234,7 @@ public class TransferTrxUtils {
                     // 广播交易
                     JSONObject jsonObjectGB = new JSONObject();
                     jsonObjectGB.put("transaction", signTransation);
-                    Call call2 = getCall(BuildConfig.RPC_TRX_NODE + "/wallet/broadcasthex", jsonObjectGB);
+                    Call call2 = getCall(BuildConfig.RPC_TRX_NODE[0] + "/wallet/broadcasthex", jsonObjectGB);
                     call2.enqueue(new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
