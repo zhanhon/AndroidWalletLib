@@ -257,6 +257,10 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     }
                     if (isAllClickDelete) {
                         toastDefault(getString(R.string.least_save_wallet))
+                        isDeletePage = false
+                        binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
+                        binding.ivAddWallet.visibility = View.VISIBLE
+                        loadData(walletManageBean)
                     } else {
                         deleteConfirmTipsDialog()
                     }
@@ -283,11 +287,11 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             dialogCenterTheme(window)
 
             window.findViewById<Button>(R.id.btn_cancel).setOnClickListener {
+                dialog.dismiss()
                 isDeletePage = false
                 binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
                 binding.ivAddWallet.visibility = View.VISIBLE
                 loadData(walletManageBean)
-                dialog.dismiss()
             }
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
@@ -311,6 +315,9 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     WALLETINFO,
                     Gson().toJson(saveWalletList)
                 )
+                isDeletePage = false
+                binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
+                binding.ivAddWallet.visibility = View.VISIBLE
                 loadData(walletManageBean)
                 dialog.dismiss()
             }
