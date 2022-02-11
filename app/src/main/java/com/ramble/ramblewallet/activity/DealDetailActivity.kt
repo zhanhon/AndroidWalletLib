@@ -40,13 +40,13 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
     private fun initView() {
         binding.tvMineTitle.text = getString(R.string.transaction_details)
         trans = getExtras().getSerializable(ARG_PARAM1) as QueryTransferRecord.Record?
-        binding.minerFees.text = trans?.miner.toString()
+        binding.minerFees.text = trans?.miner
         binding.minerFeesUsd.text = trans?.minerUnit
         binding.tvToAddress.text = trans?.fromAddress
         binding.tvFromAddress.text = trans?.toAddress
         binding.mark.text = trans?.remark
         binding.transactionCode.text = trans?.txHash
-        binding.blockNumber.text = trans?.blockNumber.toString()
+        binding.blockNumber.text = trans?.blockNumber
         binding.tvStatus.text = trans?.statusDesc
         binding.tvTime.text = TimeUtils.dateToWeek(trans?.createTime) + "  " + trans?.createTime
         when (trans?.status) {
@@ -72,7 +72,7 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
             }
             3 -> {
                 binding.ivStatus.setImageResource(R.drawable.ic_fail)
-                binding.tvMoneyCount.text = trans?.amount.toString()
+                binding.tvMoneyCount.text = trans?.amount
                 binding.tvMoneyType.text = trans?.unit
                 binding.tvMoneyCount.setTextColor(Color.parseColor("#333333"))
                 binding.tvMoneyType.setTextColor(Color.parseColor("#333333"))
