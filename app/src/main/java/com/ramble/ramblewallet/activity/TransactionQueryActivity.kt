@@ -42,7 +42,6 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        binding.tvMineTitle.text = getString(R.string.transaction_query)
         adapter = MyAdapter(supportFragmentManager, this)
         binding.pager.adapter = adapter
         binding.layoutTab.setViewPager(binding.pager)
@@ -55,25 +54,30 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
             when (currencyUnit) {
                 "ETH" -> {
                     binding.tvMyCurrency.text = "ETH"
-
+                    binding.tvMineTitle.text = getString(R.string.transaction_query_eth)
                 }
                 "BTC" -> {
                     binding.tvMyCurrency.text = "BTC"
+                    binding.tvMineTitle.text = getString(R.string.transaction_query_btc)
                 }
                 "TRX" -> {
                     binding.tvMyCurrency.text = "TRX"
+                    binding.tvMineTitle.text = getString(R.string.transaction_query_trx)
                 }
             }
         } else {
             when (wallet.walletType) {
                 1 -> {
                     binding.tvMyCurrency.text = "ETH"
+                    binding.tvMineTitle.text = getString(R.string.transaction_query_eth)
                 }
                 0 -> {
                     binding.tvMyCurrency.text = "BTC"
+                    binding.tvMineTitle.text = getString(R.string.transaction_query_btc)
                 }
                 2 -> {
                     binding.tvMyCurrency.text = "TRX"
+                    binding.tvMineTitle.text = getString(R.string.transaction_query_trx)
                 }
             }
         }
