@@ -73,27 +73,27 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
         } else {
             var r1 = StoreInfo()
             r1.id = 1
-            r1.name = "TFT"
+            r1.symbol = "TFT"
             var r2 = StoreInfo()
             r2.id = 2
-            r2.name = "WBTC"
+            r2.symbol = "WBTC"
             var r3 = StoreInfo()
             r3.id = 3
-            r3.name = "DAI"
+            r3.symbol = "DAI"
             var r4 = StoreInfo()
-            r4.name = "USDC"
+            r4.symbol = "USDC"
             r4.id = 4
             var r5 = StoreInfo()
-            r5.name = "USDT"
+            r5.symbol = "USDT"
             r5.id = 5
             var r6 = StoreInfo()
-            r6.name = "LINK"
+            r6.symbol = "LINK"
             r6.id = 6
             var r7 = StoreInfo()
-            r7.name = "YFI"
+            r7.symbol = "YFI"
             r7.id = 7
             var r8 = StoreInfo()
-            r8.name = "UNI"
+            r8.symbol = "UNI"
             r8.id = 8
             myStores.add(r1)
             myStores.add(r2)
