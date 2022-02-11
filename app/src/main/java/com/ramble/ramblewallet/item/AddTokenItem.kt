@@ -18,7 +18,7 @@ class AddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
 
     override fun bind(holder: ViewHolder) {
         var binding: ItemAddTokenBinding = holder.binding()
-        when (data.name) {
+        when (data.symbol) {
             "TFT" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_tft)
             "WBTC" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_wbtc)
             "DAI" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_dai)

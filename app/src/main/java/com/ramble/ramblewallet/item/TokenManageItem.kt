@@ -21,7 +21,7 @@ class TokenManageItem(val data: StoreInfo) : CheckableSimpleRecyclerItem(), View
 
     override fun bind(holder: ViewHolder) {
         val binding: TokenManageItemBinding = holder.binding()
-        binding.tvTokenName.text = data.name
+        binding.tvTokenName.text = data.symbol
         binding.ivDelete.isVisible = isEditable
         if (isEditable) {
             binding.ivTokenStatus.setImageResource(R.drawable.vector_token_move)
@@ -34,7 +34,7 @@ class TokenManageItem(val data: StoreInfo) : CheckableSimpleRecyclerItem(), View
         }
         binding.ivDelete.isChecked = isChecked
         binding.ivDelete.setOnClickListener(this)
-        when (data.name) {
+        when (data.symbol) {
             "TFT" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_tft)
             "WBTC" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_wbtc)
             "DAI" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_dai)

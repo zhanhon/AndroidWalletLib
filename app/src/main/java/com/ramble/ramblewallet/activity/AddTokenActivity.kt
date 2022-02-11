@@ -110,7 +110,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         val duplicates = ArrayList<SimpleRecyclerItem>()
         data.forEach { obj ->
             if (obj is AddTokenItem) {
-                findExistMsgItem(obj.data.name)?.let {
+                findExistMsgItem(obj.data.symbol)?.let {
                     duplicates.add(obj)
                 }
             }
@@ -120,7 +120,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
 
     private fun findExistMsgItem(id: String): AddTokenItem? {
         recommendTokenAdapter.all.forEach {
-            if (it is AddTokenItem && it.data.name == id) {
+            if (it is AddTokenItem && it.data.symbol == id) {
                 return it
             }
         }

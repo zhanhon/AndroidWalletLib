@@ -17,7 +17,7 @@ class UnAddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
 
     override fun bind(holder: ViewHolder) {
         var binding: ItemAddTokenBinding = holder.binding()
-        when (data.name) {
+        when (data.symbol) {
             "TFT" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_tft)
             "WBTC" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_wbtc)
             "DAI" -> binding.ivTokenIcon.setImageResource(R.drawable.vector_dai)
@@ -29,7 +29,7 @@ class UnAddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
             else -> binding.ivTokenIcon.setImageResource(R.drawable.vector_dai)
         }
         binding.ivTokenStatus.setImageResource(R.drawable.vector_token_reduce)
-        binding.tvTokenName.text = data.name
+        binding.tvTokenName.text = data.symbol
         holder.attachOnClickListener(R.id.add_view)
 //        holder.attachOnClickListener(R.id.iv_reduce)
     }
