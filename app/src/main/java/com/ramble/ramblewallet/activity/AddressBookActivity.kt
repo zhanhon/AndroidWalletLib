@@ -10,7 +10,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.OrientationHelper
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
@@ -20,10 +19,7 @@ import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityAddressBookBinding
 import com.ramble.ramblewallet.item.AddressBookItem
 import com.ramble.ramblewallet.utils.*
-import com.ramble.ramblewallet.wight.adapter.AdapterUtils
-import com.ramble.ramblewallet.wight.adapter.OnDataSetChanged
-import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
-import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
+import com.ramble.ramblewallet.wight.adapter.*
 
 class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     View.OnClickListener, OnDataSetChanged {
@@ -50,11 +46,14 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     @SuppressLint("WrongConstant")
     private fun initView() {
         binding.tvManageWalletTitle.text = getString(R.string.address_page)
-        val linearLayoutManagerIcon = LinearLayoutManager(this)
-        linearLayoutManagerIcon.orientation = OrientationHelper.VERTICAL
-        val linearLayoutManager = LinearLayoutManager(this)
-        linearLayoutManager.orientation = OrientationHelper.VERTICAL
-        binding.rvMainCurrency.layoutManager = linearLayoutManager
+        binding.rvMainCurrency.addItemDecoration(
+            QuickItemDecoration.builder(this)
+                .color(R.color.driver_gray, R.dimen.dp_08).leftMargin(R.dimen.dp_55)
+                .build()
+        )
+        LinearLayoutManager(this).apply {
+            binding.rvMainCurrency.layoutManager = this
+        }
         binding.rvMainCurrency.adapter = adapter
 
         if (SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, "").isNotEmpty()) {

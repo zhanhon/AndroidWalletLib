@@ -68,16 +68,18 @@
                     android:id="@+id/group_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_13"
+                    android:layout_marginRight="@dimen/dp_12"
                     android:orientation="vertical">
 
                     <RadioButton
                         android:id="@+id/check_all"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_13"
+
                         android:layout_marginTop="@dimen/dp_20"
-                        android:layout_marginRight="@dimen/dp_13"
-                        android:layout_marginBottom="@dimen/dp_29"
+
+                        android:layout_marginBottom="@dimen/dp_20"
                         android:background="@drawable/selector_check_meun"
                         android:button="@null"
                         android:gravity="center" />
@@ -86,9 +88,7 @@
                         android:id="@+id/check_bt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_13"
-                        android:layout_marginRight="@dimen/dp_13"
-                        android:layout_marginBottom="@dimen/dp_29"
+                        android:layout_marginBottom="@dimen/dp_20"
                         android:background="@drawable/selector_check_bt"
                         android:button="@null"
                         android:gravity="center" />
@@ -97,9 +97,7 @@
                         android:id="@+id/check_eth"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_13"
-                        android:layout_marginRight="@dimen/dp_13"
-                        android:layout_marginBottom="@dimen/dp_29"
+                        android:layout_marginBottom="@dimen/dp_20"
                         android:background="@drawable/selector_check_eth"
                         android:button="@null"
                         android:gravity="center" />
@@ -108,8 +106,6 @@
                         android:id="@+id/check_trx"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_13"
-                        android:layout_marginRight="@dimen/dp_13"
                         android:layout_marginBottom="@dimen/dp_10"
                         android:background="@drawable/selector_check_trx"
                         android:button="@null"
@@ -126,14 +122,15 @@
                 android:background="@color/color_FFFFFF"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/dp_25"
-                android:paddingRight="@dimen/dp_25"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_66"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:paddingRight="@dimen/dp_25">
 
                     <TextView
                         android:layout_width="@dimen/dp_0"
@@ -162,13 +159,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_3BB7A5"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        android:layout_marginEnd="5dp"/>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_main_currency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/dp_20"
                     android:background="@drawable/shape_white_bottom_btn" />
 
             </LinearLayout>
