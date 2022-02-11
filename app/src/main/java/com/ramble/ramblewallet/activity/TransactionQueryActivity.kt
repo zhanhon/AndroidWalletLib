@@ -31,6 +31,7 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
     private lateinit var adapter: MyAdapter
     private lateinit var binding: ActivityTransactionQueryBinding
     private var isSpread = false
+    private lateinit var wallet:WalletETH
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +46,7 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
         adapter = MyAdapter(supportFragmentManager, this)
         binding.pager.adapter = adapter
         binding.layoutTab.setViewPager(binding.pager)
-        var wallet: WalletETH = Gson().fromJson(
+         wallet = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
             object : TypeToken<WalletETH>() {}.type
         )
@@ -113,9 +114,16 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        SharedPreferencesUtils.saveString(this, CURRENCY_TRAN, "")
+    }
+
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.iv_back -> finish()
+            R.id.iv_back -> {
+                finish()
+            }
             R.id.ll_my_currency -> {
                 if (isSpread) {
                     binding.ivMyCurrency.setBackgroundResource(R.drawable.vector_three_down)
