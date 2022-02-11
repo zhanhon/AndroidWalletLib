@@ -19,7 +19,7 @@ class StoreInfo @SuppressWarnings("unused") constructor() : Serializable {
     var name: String = ""//代币
 
     @Json(name = "symbol")
-    var symbol: String = ""//
+    var symbol: String = ""//代币标识
 
     @Json(name = "slug")
     var slug: String = ""//
