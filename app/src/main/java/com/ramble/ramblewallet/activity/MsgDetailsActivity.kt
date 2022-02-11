@@ -48,9 +48,14 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
                 binding.tvMineTitle.text = getString(R.string.help_center_content)
                 isCheckContent(content, title)
             }
-            2 -> {
+            2,22 -> {
                 binding.ivRight.visibility = View.GONE
-                binding.tvMineTitle.text = getString(R.string.message_details)
+                if (typeText==2){
+                    binding.tvMineTitle.text = getString(R.string.message_details)
+                }else{
+                    binding.tvMineTitle.text = getString(R.string.announcement_content)
+                }
+
                 isCheckContent(content, title)
                 if (id != 0) {
                     list = if (SharedPreferencesUtils.getString(
