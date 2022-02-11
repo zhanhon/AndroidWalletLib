@@ -41,6 +41,7 @@
         android:layout_marginStart="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_15"
+        android:maxLength="20"
         android:background="@drawable/shape_light_green_bottom_btn"
         android:hint="@string/please_input_wallet_name"
         android:textColorHint="@color/color_9598AA"
