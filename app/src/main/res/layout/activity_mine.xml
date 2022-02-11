@@ -129,6 +129,7 @@
                     layout="@layout/activity_mine_item" />
 
                 <TextView
+                    android:id="@+id/clear_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"

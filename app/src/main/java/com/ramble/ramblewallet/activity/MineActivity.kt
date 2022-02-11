@@ -13,8 +13,10 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.constant.*
@@ -116,6 +118,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incMultiLanguage.setOnClickListener(this)
         binding.incCurrencyUnit.setOnClickListener(this)
         binding.incAboutUs.setOnClickListener(this)
+        binding.clearText.setOnClickListener(this)
     }
 
 
@@ -165,6 +168,13 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.inc_about_us -> {
 
+            }
+            R.id.clear_text -> {
+                Toast.makeText(
+                    this,
+                    getString(R.string.clear_suc),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
