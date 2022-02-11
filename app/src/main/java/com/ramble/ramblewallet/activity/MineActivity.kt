@@ -265,15 +265,15 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         when (SharedPreferencesUtils.getString(this, CURRENCY, CNY)) {
             CNY -> {
                 binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text =
-                    getString(R.string.cny_dollar)
+                    "CNY"
             }
             HKD -> {
                 binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text =
-                    getString(R.string.hk_dollar)
+                   "HKD"
             }
             USD -> {
                 binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text =
-                    getString(R.string.usd_dollar)
+                    "USD"
             }
         }
     }
