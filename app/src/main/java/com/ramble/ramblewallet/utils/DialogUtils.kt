@@ -90,11 +90,11 @@ fun showBottomDialog2(
         binding.editAddress.setText(address)
         when (type) {
             1 -> {
-                binding.tvTitle.text = "编辑地址"
+                binding.tvTitle.text =  activity.getString(R.string.edit_address_wallet)
                 binding.tvUpdata.text = activity.getString(R.string.edit)
             }
             2 -> {
-                binding.tvTitle.text = "新增地址"
+                binding.tvTitle.text = activity.getString(R.string.new_address_wallet)
                 binding.tvUpdata.text = activity.getString(R.string.confirm)
             }
         }

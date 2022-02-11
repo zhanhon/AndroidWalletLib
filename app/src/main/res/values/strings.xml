@@ -232,4 +232,6 @@
     <string name="list_tokens_manage">代币列表管理</string>
     <string name="new_tokens_eth">新增ETH代币</string>
     <string name="clear_suc">清除成功</string>
+    <string name="new_address_wallet">添加地址</string>
+    <string name="edit_address_wallet">编辑地址</string>
 </resources>
