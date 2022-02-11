@@ -21,6 +21,7 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EthMinerConfig
+import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.*
@@ -55,6 +56,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private lateinit var transferTitle: String
     private var transferReceiverAddress: String? = null
     private var isToken: Boolean = false
+    private lateinit var tokenBean: MainETHTokenBean
 
     //DAI:4 0x16aFDD5dfE386052766b798bFA37DAec4b81155a
     private var contractETHAddress =
@@ -68,9 +70,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_transfer)
         transferReceiverAddress = intent.getStringExtra(ARG_PARAM1)
-        transferTitle = intent.getStringExtra(ARG_PARAM2)
-        isToken = intent.getBooleanExtra(ARG_PARAM3, false)
-        rate = intent.getStringExtra(ARG_PARAM4)
+        tokenBean = intent.getSerializableExtra(ARG_PARAM2) as MainETHTokenBean
+        rate = tokenBean.unitPrice
+        isToken = tokenBean.isToken
+        transferTitle = tokenBean.title
+
         if (transferTitle.contains("-")) {
             val index = transferTitle.indexOf("-")
             transferUnit = transferTitle.substring(index + 1, transferTitle.length)
@@ -237,7 +241,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     if (isToken) {
                         Thread {
                             transferBalance =
-                                getBalanceToken(walletSelleted.address, contractETHAddress)
+                                getBalanceToken(walletSelleted.address, tokenBean.contractAddress)
                             if (transferBalance != BigDecimal("0.000000")) {
                                 setBalance(transferBalance)
                             }
@@ -258,7 +262,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         balanceOfTrc20(
                             this,
                             walletSelleted.address,
-                            contractTRXAddress
+                            tokenBean.contractAddress
                         )
                     } else {
                         balanceOfTrx(this, walletSelleted.address)
@@ -393,7 +397,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         this,
                         walletSelleted.address,
                         transferReceiverAddress,
-                        contractETHAddress,
+                        tokenBean.contractAddress,
                         walletSelleted.privateKey,
                         BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
                             BigDecimal("1000000")
@@ -421,7 +425,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         this,
                         walletSelleted.address,
                         transferReceiverAddress,
-                        contractTRXAddress,
+                        tokenBean.contractAddress,
                         walletSelleted.privateKey,
                         BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
                             BigDecimal("1000000")

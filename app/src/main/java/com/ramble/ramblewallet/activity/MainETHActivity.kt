@@ -79,9 +79,15 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             Pie.EVENT_ADDRESS_TRANS_SCAN -> {
                 start(TransferActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, event.data())
-                    it.putString(ARG_PARAM2, "ETH")
-                    it.putBoolean(ARG_PARAM3, false)
-                    it.putString(ARG_PARAM4, rateETH)
+                    it.putSerializable(ARG_PARAM2, MainETHTokenBean(
+                        "ETH",
+                        "ETH",
+                        ethBalance,
+                        unitPrice,
+                        currencyUnit,
+                        null,
+                        false
+                    ))
                 })
             }
         }
@@ -107,9 +113,15 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.iv_transfer_top, R.id.ll_transfer -> {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
-                    putExtra(ARG_PARAM2, "ETH")
-                    putExtra(ARG_PARAM3, false)
-                    putExtra(ARG_PARAM4, rateETH)
+                    putExtra(ARG_PARAM2, MainETHTokenBean(
+                        "ETH",
+                        "ETH",
+                        ethBalance,
+                        unitPrice,
+                        currencyUnit,
+                        null,
+                        false
+                    ))
                 })
             }
             R.id.iv_scan_top, R.id.ll_scan -> {
@@ -266,19 +278,17 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             val tvTransfer = window.findViewById<TextView>(R.id.tv_transfer)
             val tvGathering = window.findViewById<TextView>(R.id.tv_gathering)
 
-            tvTokenTitle.text = mainETHTokenBean.name
+            tvTokenTitle.text = mainETHTokenBean.symbol
 
             tvTransfer.setOnClickListener { v1: View? ->
                 startActivity(Intent(this, TransferActivity::class.java).apply {
-                    putExtra(ARG_PARAM2, "ETH-${mainETHTokenBean.name}")
-                    putExtra(ARG_PARAM3, true)
-                    putExtra(ARG_PARAM4, mainETHTokenBean.unitPrice)
+                    putExtra(ARG_PARAM2, mainETHTokenBean)
                 })
                 dialog.dismiss()
             }
             tvGathering.setOnClickListener { v1: View? ->
                 startActivity(Intent(this, GatheringActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "ETH-${mainETHTokenBean.name}")
+                    putExtra(ARG_PARAM1, "ETH-${mainETHTokenBean.symbol}")
                     putExtra(ARG_PARAM2, walletSelleted.address)
                 })
                 dialog.dismiss()
@@ -333,10 +343,13 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                         if (storeInfo.symbol == "ETH") {
                             mainETHTokenBean.add(
                                 MainETHTokenBean(
+                                    "ETH",
                                     storeInfo.symbol,
                                     ethBalance,
                                     unitPrice,
-                                    currencyUnit
+                                    currencyUnit,
+                                    null,
+                                    false
                                 )
                             )
                             rateETH = unitPrice
@@ -344,10 +357,13 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                         } else {
                             mainETHTokenBean.add(
                                 MainETHTokenBean(
+                                    "ETH-${storeInfo.symbol}",
                                     storeInfo.symbol,
                                     tokenBalance,
                                     unitPrice,
-                                    currencyUnit
+                                    currencyUnit,
+                                    storeInfo.contractAddress,
+                                    true
                                 )
                             )
                             totalBalance += tokenBalance.multiply(BigDecimal(unitPrice))
@@ -356,7 +372,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                         binding.rvCurrency.adapter = mainAdapter
                         mainAdapter.setOnItemClickListener { adapter, view, position ->
                             if (adapter.getItem(position) is MainETHTokenBean) {
-                                if ((adapter.getItem(position) as MainETHTokenBean).name != "ETH") {
+                                if ((adapter.getItem(position) as MainETHTokenBean).symbol != "ETH") {
                                     showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
                                 }
                             }

@@ -27,7 +27,7 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, MainETHTokenBean mainETHTokenBean) {
         tokenIcon(baseViewHolder, mainETHTokenBean);
-        baseViewHolder.setText(R.id.tv_token_name, mainETHTokenBean.getName());
+        baseViewHolder.setText(R.id.tv_token_name, mainETHTokenBean.getSymbol());
         baseViewHolder.setText(R.id.tv_token_balance, DecimalFormatUtil.format8.format(mainETHTokenBean.getBalance()));
         switch (mainETHTokenBean.getCurrencyUnit()) {
             case CNY:
@@ -44,7 +44,7 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
     }
 
     private void tokenIcon(@NotNull BaseViewHolder baseViewHolder, MainETHTokenBean mainETHTokenBean) {
-        switch (mainETHTokenBean.getName()) {
+        switch (mainETHTokenBean.getSymbol()) {
             case "ETH":
                 baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_eth);
                 break;

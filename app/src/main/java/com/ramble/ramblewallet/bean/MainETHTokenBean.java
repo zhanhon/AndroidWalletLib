@@ -1,31 +1,47 @@
 package com.ramble.ramblewallet.bean;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * @创建人： Ricky
  * @创建时间： 2021/12/5
  */
-public class MainETHTokenBean {
+public class MainETHTokenBean implements Serializable {
 
-    private String name;
+    private String title;
+    private String symbol;
     private BigDecimal balance;
     private String unitPrice;
     private String currencyUnit;
+    private String contractAddress;
+    private boolean isToken;
 
-    public MainETHTokenBean(String name, BigDecimal balance, String unitPrice, String currencyUnit) {
-        this.name = name;
+    public MainETHTokenBean(String title, String symbol, BigDecimal balance, String unitPrice,
+                            String currencyUnit, String contractAddress, boolean isToken) {
+        this.title = title;
+        this.symbol = symbol;
         this.balance = balance;
         this.unitPrice = unitPrice;
         this.currencyUnit = currencyUnit;
+        this.contractAddress = contractAddress;
+        this.isToken = isToken;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 
     public BigDecimal getBalance() {
@@ -52,4 +68,19 @@ public class MainETHTokenBean {
         this.currencyUnit = currencyUnit;
     }
 
+    public String getContractAddress() {
+        return contractAddress;
+    }
+
+    public void setContractAddress(String contractAddress) {
+        this.contractAddress = contractAddress;
+    }
+
+    public boolean isToken() {
+        return isToken;
+    }
+
+    public void setToken(boolean token) {
+        isToken = token;
+    }
 }

@@ -78,9 +78,15 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             Pie.EVENT_ADDRESS_TRANS_SCAN -> {
                 start(TransferActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, event.data())
-                    it.putString(ARG_PARAM2, "ETH")
-                    it.putBoolean(ARG_PARAM3, false)
-                    it.putString(ARG_PARAM4, rateTRX)
+                    it.putSerializable(ARG_PARAM2, MainETHTokenBean(
+                        "TRX",
+                        "TRX",
+                        trxBalance,
+                        unitPrice,
+                        currencyUnit,
+                        null,
+                        false
+                    ))
                 })
             }
         }
@@ -106,9 +112,15 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.iv_transfer_top, R.id.ll_transfer -> {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
-                    putExtra(ARG_PARAM2, "TRX")
-                    putExtra(ARG_PARAM3, false)
-                    putExtra(ARG_PARAM4, rateTRX)
+                    putExtra(ARG_PARAM2, MainETHTokenBean(
+                        "TRX",
+                        "TRX",
+                        trxBalance,
+                        unitPrice,
+                        currencyUnit,
+                        null,
+                        false
+                    ))
                 })
             }
             R.id.iv_scan_top, R.id.ll_scan -> {
@@ -245,7 +257,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
         animator = null
     }
 
-    private fun showTransferGatheringDialog(tokenName: String) {
+    private fun showTransferGatheringDialog(mainETHTokenBean: MainETHTokenBean) {
         var dialog = AlertDialog.Builder(this).create()
         dialog.show()
         val window: Window? = dialog.window
@@ -258,19 +270,17 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             val tvTransfer = window.findViewById<TextView>(R.id.tv_transfer)
             val tvGathering = window.findViewById<TextView>(R.id.tv_gathering)
 
-            tvTokenTitle.text = tokenName
+            tvTokenTitle.text = mainETHTokenBean.symbol
 
             tvTransfer.setOnClickListener { v1: View? ->
                 startActivity(Intent(this, TransferActivity::class.java).apply {
-                    putExtra(ARG_PARAM2, "TRX-$tokenName")
-                    putExtra(ARG_PARAM3, true)
-                    putExtra(ARG_PARAM4, rateTRX)
+                    putExtra(ARG_PARAM2, mainETHTokenBean)
                 })
                 dialog.dismiss()
             }
             tvGathering.setOnClickListener { v1: View? ->
                 startActivity(Intent(this, GatheringActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "TRX-$tokenName")
+                    putExtra(ARG_PARAM1, "TRX-$mainETHTokenBean.symbol")
                     putExtra(ARG_PARAM2, walletSelleted.address)
                 })
                 dialog.dismiss()
@@ -328,20 +338,26 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                         if (storeInfo.symbol == "TRX") {
                             mainETHTokenBean.add(
                                 MainETHTokenBean(
+                                    "TRX",
                                     storeInfo.symbol,
                                     trxBalance,
                                     unitPrice,
-                                    currencyUnit
+                                    currencyUnit,
+                                    null,
+                                    false
                                 )
                             )
                             totalBalance += trxBalance.multiply(BigDecimal(unitPrice))
                         } else {
                             mainETHTokenBean.add(
                                 MainETHTokenBean(
+                                    "TRX-${storeInfo.symbol}",
                                     storeInfo.symbol,
                                     tokenBalance,
                                     unitPrice,
-                                    currencyUnit
+                                    currencyUnit,
+                                    storeInfo.contractAddress,
+                                    true
                                 )
                             )
                             totalBalance += tokenBalance.multiply(BigDecimal(unitPrice))
@@ -350,8 +366,8 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                         binding.rvCurrency.adapter = mainAdapter
                         mainAdapter.setOnItemClickListener { adapter, view, position ->
                             if (adapter.getItem(position) is MainETHTokenBean) {
-                                if ((adapter.getItem(position) as MainETHTokenBean).name != "TRX") {
-                                    showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean).name)
+                                if ((adapter.getItem(position) as MainETHTokenBean).symbol != "TRX") {
+                                    showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
                                 }
                             }
                         }
