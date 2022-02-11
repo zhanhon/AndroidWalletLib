@@ -20,7 +20,7 @@ class TransferItem(val data: QueryTransferRecord.Record) : SimpleRecyclerItem() 
     override fun bind(holder: ViewHolder) {
         var binding: ItemTransferAccountsBinding = holder.binding()
 
-        binding.tvAddress.text = data.fromAddress
+        binding.tvAddress.text = addressHandle(data.fromAddress)
         binding.tvTime.text = dateToWeek(data.createTime) + "  " + data.createTime
         binding.tvMoneyType.isVisible = false
         when (data.addressType) {
@@ -59,5 +59,15 @@ class TransferItem(val data: QueryTransferRecord.Record) : SimpleRecyclerItem() 
             }
         }
         holder.attachOnClickListener(R.id.item_transfer)
+    }
+
+    private fun addressHandle(str: String): String? {
+        if (str.isEmpty()) {
+            return null
+        }
+        val subStr1 = str.substring(0, 10)
+        val strLength = str.length
+        val subStr2 = str.substring(strLength - 5, strLength)
+        return "$subStr1...$subStr2"
     }
 }

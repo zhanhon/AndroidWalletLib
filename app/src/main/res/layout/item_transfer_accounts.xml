@@ -31,15 +31,12 @@
 
                 <TextView
                     android:id="@+id/tv_address"
-                    android:layout_width="125dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_5"
-                    android:ellipsize="middle"
-                    android:lines="1"
-                    tools:text="0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                    tools:text="0x2232sdower...2323s"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/sp_14"
-                    tools:ignore="EllipsizeMaxLines" />
+                    android:textSize="@dimen/sp_14" />
 
                 <TextView
                     android:id="@+id/tv_time"
