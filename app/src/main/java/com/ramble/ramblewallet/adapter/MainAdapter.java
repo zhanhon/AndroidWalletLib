@@ -54,8 +54,8 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
             case "BTC":
                 baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_btc);
                 break;
-            case "TFT":
-                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_tft);
+            case "WETH":
+                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.ic_weth);
                 break;
             case "WBTC":
                 baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_wbtc);
@@ -79,7 +79,7 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
                 baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_uni);
                 break;
             default:
-                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_dai);
+                baseViewHolder.setImageResource(R.id.iv_token_icon, R.mipmap.def_token_img);
                 break;
         }
     }
