@@ -48,7 +48,7 @@
                 android:layout_weight="1"
                 android:paddingStart="@dimen/dp_16"
                 android:background="@drawable/shape_light_green_bottom_btn"
-                android:maxLength="12"
+                android:maxLength="20"
                 android:hint="@string/contributing_name_hint"
                 android:textColor="@color/front_one"
                 android:textColorHint="@color/front_four" />
