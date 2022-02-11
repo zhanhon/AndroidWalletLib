@@ -31,7 +31,7 @@
 
                 <TextView
                     android:id="@+id/tv_address"
-                    android:layout_width="85dp"
+                    android:layout_width="125dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_5"
                     android:ellipsize="middle"

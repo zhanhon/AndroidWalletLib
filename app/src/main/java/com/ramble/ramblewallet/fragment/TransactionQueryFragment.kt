@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.DealDetailActivity
 import com.ramble.ramblewallet.activity.TransactionQueryActivity
@@ -193,7 +195,7 @@ class TransactionQueryFragment : BaseFragment(),
                     }
 
                 } else {
-                    println("==================>getTransferInfo1:${it.message()}")
+                    apply(0)
                 }
             }, {
                 println("==================>getTransferInfo1:${it.printStackTrace()}")
