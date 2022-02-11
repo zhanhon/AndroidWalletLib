@@ -55,8 +55,9 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private var unitPrice = ""
 
 
-    //DAI:4 0x16aFDD5dfE386052766b798bFA37DAec4b81155a
-    private var contractAddress = "0xb319d1A045ffe108D14195F7C5d60Be220436a34" //测试节点ERC-USDT:6合约地址
+    //DAI:4 0x16aFDD5dfE386052766b798bFA37DAec4b81155a      新：0x0B6558D0C0e06aAdf34428137b7eFF5B9da5974A
+    //private var contractAddress = "0xb319d1A045ffe108D14195F7C5d60Be220436a34" //测试节点ERC-USDT:6合约地址
+    private var contractAddress = "0x40a90Ade8BB2BdF8858b424ccbb90012373e8a41"; //新
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -359,10 +360,10 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                 MainETHTokenBean(
                                     "ETH-${storeInfo.symbol}",
                                     storeInfo.symbol,
-                                    tokenBalance,
+                                    if (storeInfo.symbol == "TESTERC") tokenBalance else BigDecimal("0"),
                                     unitPrice,
                                     currencyUnit,
-                                    storeInfo.contractAddress,
+                                    contractAddress,
                                     true
                                 )
                             )

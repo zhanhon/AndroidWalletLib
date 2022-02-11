@@ -303,23 +303,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     private fun refreshData() {
         var list: ArrayList<String> = arrayListOf()
         list.add("TRX")
-        if (SharedPreferencesUtils.getString(
-                this,
-                TOKEN_INFO_NO,
-                ""
-            ).isNotEmpty()
-        ) {
-            saveTokenList = Gson().fromJson(
-                SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
-                object : TypeToken<ArrayList<StoreInfo>>() {}.type
-            )
-            val list = saveTokenList.iterator()
-            list.forEach {
-                if (it.isMyToken == 0) {
-                    list.remove()
-                }
-            }
-        }
+        list.add("YING")
         var req = StoreInfo.Req()
         req.list = list
         req.convertId = "2787,2792,2781" //人民币、港币、美元
@@ -353,10 +337,10 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                 MainETHTokenBean(
                                     "TRX-${storeInfo.symbol}",
                                     storeInfo.symbol,
-                                    tokenBalance,
+                                    if (storeInfo.symbol == "YING") tokenBalance else BigDecimal("0"),
                                     unitPrice,
                                     currencyUnit,
-                                    storeInfo.contractAddress,
+                                    contractAddress,
                                     true
                                 )
                             )
