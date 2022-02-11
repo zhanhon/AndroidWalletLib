@@ -126,7 +126,7 @@ fun showBottomDialog2(
                         object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                     )
                 myData.forEach {
-                    if (it.userName == binding.editName.text.toString() && it.address == binding.editAddress.text.toString()) {
+                    if ( it.address == binding.editAddress.text.toString()) {
                         Toast.makeText(
                             MyApp.sInstance,
                             MyApp.sInstance.getString(R.string.address_already_exists),
