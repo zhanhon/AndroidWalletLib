@@ -74,7 +74,7 @@
     <string name="token">代币</string>
     <string name="token_management">代币管理</string>
     <string name="token_list_management">代币列表管理</string>
-    <string name="import_keystore">导入KEYSTORE</string>
+    <string name="import_keystore">导入Keystore</string>
     <string name="import_secret_key">导入密钥</string>
     <string name="import_wallet">导入钱包</string>
     <string name="import_mnemonic_words">导入助记词</string>

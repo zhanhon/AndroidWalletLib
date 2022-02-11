@@ -43,7 +43,7 @@
     <string name="miner_fee_tips">矿工费越高 转帐越快</string>
     <string name="miner_fee_gas_price_titile">GAS Price（GWEI）</string>
     <string name="miner_fee_limit_title">矿工费上限</string>
-    <string name="gathering_tips">本地址仅能接受<tools>%s</tools>资产，请勿转入其他公链资产</string>
+    <string name="gathering_tips">本地址仅能接受以太坊<tools>%s</tools>资产，请勿转入其他公链资产</string>
     <string name="gathering_save">存储</string>
     <string name="gathering_copy">复制</string>
     <string name="gathering_wallet_address_title">钱包地址</string>
@@ -76,7 +76,7 @@
     <string name="token">代币</string>
     <string name="token_management">代币管理</string>
     <string name="token_list_management">代币列表管理</string>
-    <string name="import_keystore">导入KEYSTORE</string>
+    <string name="import_keystore">导入Keystore</string>
     <string name="import_secret_key">导入密钥</string>
     <string name="import_wallet">导入钱包</string>
     <string name="import_mnemonic_words">导入助记词</string>
