@@ -44,6 +44,11 @@ import pub.devrel.easypermissions.EasyPermissions
 import java.io.FileNotFoundException
 import java.util.*
 
+/**
+ * 时间　: 2022/1/13 9:45
+ * 作者　: potato
+ * 描述　: 二维码扫码
+ */
 
 class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
     private lateinit var binding: ActivityScanBinding

@@ -12,7 +12,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MyAddressBean
@@ -22,13 +21,18 @@ import com.ramble.ramblewallet.item.AddressBookItem
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.wight.adapter.*
 
+/**
+ * 时间　: 2022/1/13 9:45
+ * 作者　: potato
+ * 描述　: 地址本
+ */
+
 class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     View.OnClickListener, OnDataSetChanged {
 
     private lateinit var binding: ActivityAddressBookBinding
     private var myDataBeans: ArrayList<MyAddressBean> = arrayListOf()
     private var myData: ArrayList<MyAddressBean> = arrayListOf()
-    private var myData11: ArrayList<MyAddressBean> = arrayListOf()
     private val adapter = RecyclerAdapter()
     private var pos = -1
     private var bean = MyAddressBean()
