@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MyAddressBean
@@ -150,21 +151,12 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 adapter.notifyDataSetChanged()
             }
             Pie.EVENT_ADDRESS_BOOK_ADD -> {
-                if (SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
-                    myData11 =
-                        Gson().fromJson(
-                            SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, ""),
-                            object : TypeToken<ArrayList<MyAddressBean>>() {}.type
-                        )
-                }
-                myData11.add(event.data())
+
                 myData = arrayListOf()
-                myData11.stream().forEach {
-                    if (!myData.contains(it)) {
-                        myData.add(it)
-                    }
-                }
-                SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
+                myData=  Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, ""),
+                    object : TypeToken<ArrayList<MyAddressBean>>() {}.type
+                )
                 when (idButton) {
                     0 -> {
                         myDataBeans = arrayListOf()

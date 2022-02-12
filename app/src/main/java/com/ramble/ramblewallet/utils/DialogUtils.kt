@@ -90,7 +90,7 @@ fun showBottomDialog2(
         binding.editAddress.setText(address)
         when (type) {
             1 -> {
-                binding.tvTitle.text =  activity.getString(R.string.edit_address_wallet)
+                binding.tvTitle.text = activity.getString(R.string.edit_address_wallet)
                 binding.tvUpdata.text = activity.getString(R.string.edit)
             }
             2 -> {
@@ -126,7 +126,7 @@ fun showBottomDialog2(
                         object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                     )
                 myData.forEach {
-                    if ( it.address == binding.editAddress.text.toString()) {
+                    if (it.address == binding.editAddress.text.toString()) {
                         Toast.makeText(
                             MyApp.sInstance,
                             MyApp.sInstance.getString(R.string.address_already_exists),
@@ -192,9 +192,24 @@ fun showBottomDialog2(
                 ).show()
                 return@setOnClickListener
             }
+            var myData2: ArrayList<MyAddressBean> = arrayListOf()
+            if (SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
+                    .isNotEmpty()
+            ) {
+                myData2 =
+                    Gson().fromJson(
+                        SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, ""),
+                        object : TypeToken<ArrayList<MyAddressBean>>() {}.type
+                    )
+            }
+            myData2.add(data)
+
             when (type) {
                 1 -> RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_UPDATA, data)
-                2 -> RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_ADD, data)
+                2 -> {
+                    SharedPreferencesUtils.saveString(activity, ADDRESS_BOOK_INFO, Gson().toJson(myData2))
+                    RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_ADD, data)
+                }
             }
 
             dismiss()
