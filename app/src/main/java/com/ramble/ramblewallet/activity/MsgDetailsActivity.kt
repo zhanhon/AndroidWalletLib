@@ -142,7 +142,11 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun isCheckContent(content: String, title: String) {
-        binding.title1.text = title
+        binding.title1.text = if (title.length>=30){
+            title.subSequence(0,30).toString()+"..."
+        }else{
+            title
+        }
         binding.time2.text = if (createTime.isNotEmpty()) "发布日期：$createTime" else createTime
         if (content.contains("<") && content.contains(">")) {
             binding.web.visibility = View.VISIBLE
