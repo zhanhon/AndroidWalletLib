@@ -413,7 +413,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         transferReceiverAddress,
                         walletSelleted.privateKey,
                         binding.edtInputQuantity.text.trim().toString(),
-                        BigInteger(gasPrice), //GWEI → WEI
+                        (BigInteger(gasPrice).multiply(BigInteger("100000000"))), //GWEI → WEI
                         BigInteger(gasLimit),
                         binding.edtInputTransferRemarks.text.trim().toString()
                     )
