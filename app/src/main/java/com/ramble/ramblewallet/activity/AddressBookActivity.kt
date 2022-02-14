@@ -224,6 +224,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 bean = itemBean
                 showBottomDialog(this,
                     itemBean.userName,
+                    itemBean.type,
                     copeListener = View.OnClickListener {//复制
                         ClipboardUtils.copy(itemBean.address)
                     },

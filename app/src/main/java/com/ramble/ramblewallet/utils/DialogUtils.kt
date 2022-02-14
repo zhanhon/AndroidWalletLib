@@ -34,6 +34,7 @@ import com.ramble.ramblewallet.helper.start
 fun showBottomDialog(
     activity: Activity,
     tvName: String,
+    tvType: Int,
     copeListener: View.OnClickListener? = null,
     editListener: View.OnClickListener? = null,
     delListener: View.OnClickListener? = null
@@ -49,6 +50,17 @@ fun showBottomDialog(
         show()
         setContentView(binding.root)
         binding.tvTitle.text = tvName
+        binding.tvType.text = when (tvType) {
+            1 -> {
+                "ETH"
+            }
+            2 -> {
+                "BTC"
+            }
+            else -> {
+                "TRX"
+            }
+        }
         binding.tvCopy.setOnClickListener {
             dismiss()
             copeListener?.onClick(it)
@@ -207,7 +219,11 @@ fun showBottomDialog2(
             when (type) {
                 1 -> RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_UPDATA, data)
                 2 -> {
-                    SharedPreferencesUtils.saveString(activity, ADDRESS_BOOK_INFO, Gson().toJson(myData2))
+                    SharedPreferencesUtils.saveString(
+                        activity,
+                        ADDRESS_BOOK_INFO,
+                        Gson().toJson(myData2)
+                    )
                     RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_ADD, data)
                 }
             }
