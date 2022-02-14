@@ -85,6 +85,12 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             binding.tvDeleteWallet.visibility = View.VISIBLE
         }
 
+        if (walletCurrent.mnemonic != null) {
+            binding.rlContributingWordsBackups.visibility = View.VISIBLE
+        } else {
+            binding.rlContributingWordsBackups.visibility = View.GONE
+        }
+
         initClick()
     }
 
@@ -207,19 +213,24 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                         getString(R.string.edit_wallet) -> {
                             editWalletDialog(title)
                         }
+                        getString(R.string.backup_memorization_words) -> {
+                            startActivity(Intent(this, MnemonicActivity::class.java).apply {
+                                putExtra(ARG_PARAM1, walletCurrent.walletName)
+                                putExtra(ARG_PARAM2, walletCurrent.walletPassword)
+                                putExtra(ARG_PARAM3, walletCurrent.walletType)
+                                putExtra(ARG_PARAM4, true)
+                                putExtra(ARG_PARAM5, walletCurrent.mnemonic)
+                            })
+                            MnemonicSaveFile.saveFile.content(
+                                walletCurrent.walletName,
+                                walletCurrent.mnemonic
+                            )
+                        }
                         getString(R.string.secret_key_backup) -> {
                             secretKeyDialog(title)
                         }
                         getString(R.string.keystore_backup) -> {
                             keystoreDialog(title)
-                        }
-                        else -> {
-                            if (walletCurrent.mnemonic.toString() != null) {
-                                MnemonicSaveFile.saveFile.content(
-                                    walletCurrent.walletName,
-                                    walletCurrent.mnemonic
-                                )
-                            }
                         }
                     }
                     dialog.dismiss()

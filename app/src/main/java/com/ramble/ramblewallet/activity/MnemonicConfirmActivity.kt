@@ -36,7 +36,7 @@ import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.utils.toastDefault
 
 
-class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
+class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var contributingWordsConfirmAdapter: ContributingWordsConfirmAdapter
     private lateinit var binding: ActivityContributingWordsConfirmBinding
@@ -51,6 +51,7 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
     private var currentTab = ""
     private lateinit var mnemonicETH: ArrayList<String>
     private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX|3：BTC、ETH、TRX
+    private var isBackupMnemonic = false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +62,7 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
         walletPassword = intent.getStringExtra(ARG_PARAM3)
         currentTab = intent.getStringExtra(ARG_PARAM4)
         walletType = intent.getIntExtra(ARG_PARAM5, 0)
+        isBackupMnemonic = intent.getBooleanExtra(ARG_PARAM6, false)
 
         initData(true)
         mnmonicETHClick()
@@ -283,23 +285,33 @@ class ContributingWordsConfirmActivity : BaseActivity(), View.OnClickListener {
         if (window != null) {
             window.setContentView(R.layout.dialog_contributing_words_fail)
             dialogCenterTheme(window)
-
+            if (isBackupMnemonic) {
+                window.findViewById<Button>(R.id.btn_cancel_create).setText(R.string.cancel)
+                window.findViewById<Button>(R.id.btn_skip).visibility = View.GONE
+            } else {
+                window.findViewById<Button>(R.id.btn_cancel_create).setText(R.string.cancel_create)
+                window.findViewById<Button>(R.id.btn_skip).visibility = View.VISIBLE
+            }
             window.findViewById<Button>(R.id.btn_cancel_create).setOnClickListener {
                 finish()
-                when (walletType) {
-                    1 -> {
-                        startActivity(Intent(this, MainETHActivity::class.java))
+//                if (isBackupMnemonic) {
+//                    startActivity(Intent(this, WalletMoreOperateActivity::class.java))
+//                } else {
+                    when (walletType) {
+                        1 -> {
+                            startActivity(Intent(this, MainETHActivity::class.java))
+                        }
+                        2 -> {
+                            startActivity(Intent(this, MainTRXActivity::class.java))
+                        }
+                        3 -> {
+                            startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
+                        }
+                        0 -> {
+                            startActivity(Intent(this, MainBTCActivity::class.java))
+                        }
                     }
-                    2 -> {
-                        startActivity(Intent(this, MainTRXActivity::class.java))
-                    }
-                    3 -> {
-                        startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
-                    }
-                    0 -> {
-                        startActivity(Intent(this, MainBTCActivity::class.java))
-                    }
-                }
+//                }
                 dialog.dismiss()
             }
             window.findViewById<Button>(R.id.btn_skip).setOnClickListener {

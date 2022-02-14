@@ -13,6 +13,7 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.constant.ARG_PARAM3
+import com.ramble.ramblewallet.constant.ARG_PARAM4
 import com.ramble.ramblewallet.databinding.ActivityCreateWalletBinding
 import com.ramble.ramblewallet.utils.toastDefault
 
@@ -120,10 +121,11 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
                     toastDefault(getString(R.string.different_password))
                     return
                 }
-                startActivity(Intent(this, ContributingWordsActivity::class.java).apply {
+                startActivity(Intent(this, MnemonicActivity::class.java).apply {
                     putExtra(ARG_PARAM1, binding.edtWalletName.text.toString())
                     putExtra(ARG_PARAM2, binding.edtWalletPassword.text.toString())
                     putExtra(ARG_PARAM3, walletType)
+                    putExtra(ARG_PARAM4, false)
                 })
             }
         }

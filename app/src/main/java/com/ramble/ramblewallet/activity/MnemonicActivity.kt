@@ -29,7 +29,7 @@ import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 
 
-class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
+class MnemonicActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityContributingWordsBinding
     private var myDataBeans: ArrayList<MyDataBean> = arrayListOf()
@@ -42,6 +42,8 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
     private var walletETHString: String = ""
     private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
     private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX|3：BTC、ETH、TRX
+    private var isBackupMnemonic = false
+    private var mnemonic = ""
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +52,8 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
         walletName = intent.getStringExtra(ARG_PARAM1)
         walletPassword = intent.getStringExtra(ARG_PARAM2)
         walletType = intent.getIntExtra(ARG_PARAM3, 0)
+        isBackupMnemonic = intent.getBooleanExtra(ARG_PARAM4, false)
+        mnemonic = intent.getStringExtra(ARG_PARAM5)
 
         binding.llEnglish.setOnClickListener(this)
         binding.llChinese.setOnClickListener(this)
@@ -70,6 +74,11 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
             TW -> {
                 mnemonicList = MnemonicUtils.generateMnemonicChineseTraditional()
             }
+        }
+        if (isBackupMnemonic) {
+            binding.btnSkipThis.visibility = View.GONE
+        } else {
+            binding.btnSkipThis.visibility = View.VISIBLE
         }
         createContributingWordsPage(mnemonicList[0])
     }
@@ -116,12 +125,13 @@ class ContributingWordsActivity : BaseActivity(), View.OnClickListener {
         contributingWordsAdapter = ContributingWordsAdapter(myDataBeans)
         binding.rvContributingWords.adapter = contributingWordsAdapter
         binding.btnContributingWordsConfirm.setOnClickListener {
-            startActivity(Intent(this, ContributingWordsConfirmActivity::class.java).apply {
+            startActivity(Intent(this, MnemonicConfirmActivity::class.java).apply {
                 putStringArrayListExtra(ARG_PARAM1, mnemonicList)
                 putExtra(ARG_PARAM2, walletName)
                 putExtra(ARG_PARAM3, walletPassword)
                 putExtra(ARG_PARAM4, currentTab)
                 putExtra(ARG_PARAM5, walletType)
+                putExtra(ARG_PARAM6, isBackupMnemonic)
             })
         }
     }

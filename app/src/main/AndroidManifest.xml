@@ -49,8 +49,8 @@
         <activity android:name=".activity.HelpFaqActivity" />
         <activity android:name=".activity.DealDetailActivity" />
         <activity android:name=".activity.TransactionQueryActivity" />
-        <activity android:name=".activity.ContributingWordsConfirmActivity" />
-        <activity android:name=".activity.ContributingWordsActivity" />
+        <activity android:name=".activity.MnemonicConfirmActivity" />
+        <activity android:name=".activity.MnemonicActivity" />
         <activity android:name=".base.BaseActivity" />
         <activity android:name=".activity.RecoverWalletActivity" />
         <activity android:name=".activity.CreateWalletActivity" />
