@@ -14,6 +14,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.MyAddressBean
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityAddressBookBinding
@@ -280,9 +281,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                         is AddressBookItem -> {
                             startActivity(Intent(this, TransferActivity::class.java).apply {
                                 putExtra(ARG_PARAM1, item.data.address)
-                                putExtra(ARG_PARAM2, intent.getStringExtra(ARG_PARAM2))
-                                putExtra(ARG_PARAM3, intent.getBooleanExtra(ARG_PARAM3, false))
-                                putExtra(ARG_PARAM4, intent.getStringExtra(ARG_PARAM4))
+                                putExtra(ARG_PARAM2, intent.getSerializableExtra(ARG_PARAM2))
                             })
                         }
                     }

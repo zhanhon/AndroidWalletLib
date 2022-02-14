@@ -168,7 +168,7 @@ public class TransferTrxUtils {
                     // 广播交易
                     JSONObject jsonObjectGB = new JSONObject();
                     jsonObjectGB.put("transaction", signTransation);
-                    Call call2 = getCall(BuildConfig.RPC_TRX_NODE + "/wallet/broadcasthex", jsonObjectGB);
+                    Call call2 = getCall(BuildConfig.RPC_TRX_NODE[0] + "/wallet/broadcasthex", jsonObjectGB);
                     call2.enqueue(new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {

@@ -115,9 +115,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_address_book -> {
                 startActivity(Intent(this, AddressBookActivity::class.java).apply {
                     putExtra(ARG_PARAM1, true)
-                    putExtra(ARG_PARAM2, transferTitle)
-                    putExtra(ARG_PARAM3, isToken)
-                    putExtra(ARG_PARAM4, rate)
+                    putExtra(ARG_PARAM2, tokenBean)
                 })
             }
             R.id.cl_miner_fee -> {
