@@ -35,7 +35,7 @@
                 android:textColor="@color/color_000000"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:maxEms="9"
+                android:maxEms="8"
                 android:textSize="@dimen/sp_15"
                 android:textStyle="bold" />
         </LinearLayout>
