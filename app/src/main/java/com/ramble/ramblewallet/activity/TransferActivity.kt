@@ -158,7 +158,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n", "CheckResult")
     private fun initData() {
-        currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, CNY)
+        currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, USD)
         if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isNotEmpty()) {
             walletSelleted = Gson().fromJson(
                 SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),

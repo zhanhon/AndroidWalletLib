@@ -196,7 +196,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initData() {
-        currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, CNY)
+        currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, USD)
         saveWalletList = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
             object : TypeToken<ArrayList<WalletETH>>() {}.type
