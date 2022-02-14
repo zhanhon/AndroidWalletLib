@@ -48,7 +48,6 @@ object ObjUtils {
         return if (EasyPermissions.hasPermissions(activity, Manifest.permission.CAMERA)) {
             true
         } else {
-
             EasyPermissions.requestPermissions(
                 activity,
                 activity.getString(R.string.alert_request_permission),

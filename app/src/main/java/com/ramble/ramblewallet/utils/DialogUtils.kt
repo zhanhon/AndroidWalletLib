@@ -171,7 +171,7 @@ fun showBottomDialog2(
                     return@setOnClickListener
                 }
             } else if (data.address.startsWith("0")) {
-                if (data.address.length < 41) {
+                if (data.address.length < 42) {
                     Toast.makeText(
                         MyApp.sInstance,
                         MyApp.sInstance.getString(R.string.address_already_err),

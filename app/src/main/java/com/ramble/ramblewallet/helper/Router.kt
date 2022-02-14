@@ -379,7 +379,7 @@ fun Activity.start(to: Class<*>, extras: Bundle? = null) {
 @JvmOverloads
 fun Fragment.start2(to: Class<*>, extras: Bundle? = null) {
     val intent = Intent()
-    intent.setClass(this.activity!!, to)
+    intent.setClass(this.requireActivity(), to)
     if (extras != null) {
         intent.putExtras(extras)
     }
@@ -399,7 +399,7 @@ fun Activity.startForResult(to: Class<*>, requestCode: Int, extras: Bundle? = nu
 @JvmOverloads
 fun Fragment.startForResult2(to: Class<*>, requestCode: Int, extras: Bundle? = null) {
     val intent = Intent()
-    intent.setClass(this.activity!!, to)
+    intent.setClass(this.requireActivity(), to)
     if (extras != null) {
         intent.putExtras(extras)
     }
