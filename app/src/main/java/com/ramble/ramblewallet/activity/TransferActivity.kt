@@ -83,6 +83,32 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }
 
         binding.edtReceiverAddress.setText(transferReceiverAddress)
+        binding.edtInputQuantity.addTextChangedListener(object : TextWatcher {
+            var deleteLastChar = false
+            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+            override fun afterTextChanged(s: Editable?) {
+                if (deleteLastChar) {
+                    //设置新的截取的字符串
+                    binding.edtInputQuantity.setText(
+                        s.toString().substring(0, s.toString().length - 1)
+                    )
+                    //光标强制到末尾
+                    binding.edtInputQuantity.setSelection(binding.edtInputQuantity.text.length)
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.toString().contains(".")) {
+                    if (s != null) {
+                        var length = s.length - s.toString().lastIndexOf(".")
+                        deleteLastChar = length >= 10
+                    }
+                }
+            }
+        });
 
         initClick()
     }

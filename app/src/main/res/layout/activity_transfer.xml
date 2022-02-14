@@ -74,7 +74,7 @@
                     android:id="@+id/ll_address_input_up"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dp_10"
+                    android:layout_margin="@dimen/dp_5"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -84,6 +84,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
+                        android:layout_marginBottom="@dimen/dp_5"
                         android:orientation="horizontal">
 
                         <TextView
@@ -111,7 +112,7 @@
                         android:layout_weight="1"
                         android:gravity="right"
                         android:textColor="@color/color_9598AA"
-                        android:textSize="@dimen/sp_12"
+                        android:textSize="@dimen/sp_11"
                         tools:text="1111111111111111111111111111111111111" />
                 </LinearLayout>
 
@@ -129,7 +130,7 @@
                     android:id="@+id/ll_address_input_down"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dp_10"
+                    android:layout_margin="@dimen/dp_5"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -165,7 +166,7 @@
                             android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                             android:text=""
                             android:textColor="@color/color_9598AA"
-                            android:textSize="@dimen/sp_12" />
+                            android:textSize="@dimen/sp_11" />
 
                         <ImageView
                             android:id="@+id/iv_address_book"
