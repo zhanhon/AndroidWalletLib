@@ -50,7 +50,8 @@ import java.util.*
  * 描述　: 二维码扫码
  */
 
-class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
+class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
+    EasyPermissions.PermissionCallbacks {
     private lateinit var binding: ActivityScanBinding
     private var isLight = false
     private var zxingview: ZXingView? = null
@@ -155,9 +156,29 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate {
     override fun onStart() {
         super.onStart()
         requestCodeQRCodePermissions()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+
+    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
+        // 请求权限被拒绝
+        finish()
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
+        // 请求权限已经被授权
         zxingview?.startCamera()
         zxingview?.startSpotAndShowRect()
     }
+
 
     override fun onStop() {
         super.onStop()
