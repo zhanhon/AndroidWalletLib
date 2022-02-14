@@ -45,12 +45,7 @@ object ObjUtils {
     }
 
     fun isCameraPermission(activity: Activity): Boolean {
-        val perms = arrayOf(
-            Manifest.permission.CAMERA,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-        return if (EasyPermissions.hasPermissions(activity, *perms)) {
+        return if (EasyPermissions.hasPermissions(activity, Manifest.permission.CAMERA)) {
             true
         } else {
 
@@ -58,7 +53,7 @@ object ObjUtils {
                 activity,
                 activity.getString(R.string.alert_request_permission),
                 REQUEST_CODE_1025,
-                *perms
+                Manifest.permission.CAMERA
             )
             false
         }
