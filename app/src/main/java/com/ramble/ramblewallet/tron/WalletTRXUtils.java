@@ -41,17 +41,22 @@ public class WalletTRXUtils {
      * @return
      */
     public static WalletETH generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic) throws Exception {
-        DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(mnemonic, 1);
-        ECKeyPair ecKeyPair = ECKeyPair.create(deterministicKey.getPrivKey());
-        ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
-        WalletFile walletFile = createLight(walletPassword, ecKeyPair);
-        String keystore = objectMapper.writeValueAsString(walletFile);
-        WalletFile walletFile2 = objectMapper.readValue(keystore, WalletFile.class);
-        ECKeyPair ecKeyPair1 = decrypt(walletPassword, walletFile2);
-        String address = fromHexAddress("41" + walletFile.getAddress());
-        String privateKey = ecKeyPair1.getPrivateKey().toString(16);
-        String publicKey = ecKeyPair1.getPublicKey().toString(16);
-        return new WalletETH(walletname, walletPassword, mnemonic, address, privateKey, publicKey, keystore, 2);
+        try {
+            DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(mnemonic, 1);
+            ECKeyPair ecKeyPair = ECKeyPair.create(deterministicKey.getPrivKey());
+            ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
+            WalletFile walletFile = createLight(walletPassword, ecKeyPair);
+            String keystore = objectMapper.writeValueAsString(walletFile);
+            WalletFile walletFile2 = objectMapper.readValue(keystore, WalletFile.class);
+            ECKeyPair ecKeyPair1 = decrypt(walletPassword, walletFile2);
+            String address = fromHexAddress("41" + walletFile.getAddress());
+            String privateKey = ecKeyPair1.getPrivateKey().toString(16);
+            String publicKey = ecKeyPair1.getPublicKey().toString(16);
+            return new WalletETH(walletname, walletPassword, mnemonic, address, privateKey, publicKey, keystore, 2);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new WalletETH("", "", "", "", "", "", "", 2);
+        }
     }
 
     /**
@@ -63,18 +68,23 @@ public class WalletTRXUtils {
      * @return
      */
     public static WalletETH generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey) throws Exception {
-        BigInteger pk = Numeric.toBigIntNoPrefix(privateKey);
-        byte[] privateKeyByte = pk.toByteArray();
-        ECKeyPair ecKeyPair = ECKeyPair.create(privateKeyByte);
-        ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
-        WalletFile walletFile = createLight(walletPassword, ecKeyPair);
-        String keystore = objectMapper.writeValueAsString(walletFile);
-        WalletFile walletFile2 = objectMapper.readValue(keystore, WalletFile.class);
-        ECKeyPair ecKeyPair1 = decrypt(walletPassword, walletFile2);
-        String address = fromHexAddress("41" + walletFile.getAddress());
-        String publicKey = ecKeyPair1.getPublicKey().toString(16);
-        //由于通过privateKey无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
-        return new WalletETH(walletname, walletPassword, null, address, privateKey, publicKey, keystore, 2);
+        try {
+            BigInteger pk = Numeric.toBigIntNoPrefix(privateKey);
+            byte[] privateKeyByte = pk.toByteArray();
+            ECKeyPair ecKeyPair = ECKeyPair.create(privateKeyByte);
+            ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
+            WalletFile walletFile = createLight(walletPassword, ecKeyPair);
+            String keystore = objectMapper.writeValueAsString(walletFile);
+            WalletFile walletFile2 = objectMapper.readValue(keystore, WalletFile.class);
+            ECKeyPair ecKeyPair1 = decrypt(walletPassword, walletFile2);
+            String address = fromHexAddress("41" + walletFile.getAddress());
+            String publicKey = ecKeyPair1.getPublicKey().toString(16);
+            //由于通过privateKey无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
+            return new WalletETH(walletname, walletPassword, null, address, privateKey, publicKey, keystore, 2);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new WalletETH("", "", "", "", "", "", "", 2);
+        }
     }
 
     /**
@@ -86,16 +96,21 @@ public class WalletTRXUtils {
      * @return
      */
     public static WalletETH generateWalletByKeyStore(String walletname, String walletPassword, String keystore) throws Exception {
-        ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
-        WalletFile walletFile2 = objectMapper.readValue(keystore, WalletFile.class);
-        ECKeyPair ecKeyPair = decrypt(walletPassword, walletFile2);
-        WalletFile walletFile1 = createLight(walletPassword, ecKeyPair);
-        ECKeyPair ecKeyPair1 = decrypt(walletPassword, walletFile2);
-        String address = fromHexAddress("41" + walletFile1.getAddress());
-        String privateKey = ecKeyPair1.getPrivateKey().toString(16);
-        String publicKey = ecKeyPair1.getPublicKey().toString(16);
-        //由于通过keystore无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
-        return new WalletETH(walletname, walletPassword, null, address, privateKey, publicKey, keystore, 2);
+        try {
+            ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
+            WalletFile walletFile2 = objectMapper.readValue(keystore, WalletFile.class);
+            ECKeyPair ecKeyPair = decrypt(walletPassword, walletFile2);
+            WalletFile walletFile1 = createLight(walletPassword, ecKeyPair);
+            ECKeyPair ecKeyPair1 = decrypt(walletPassword, walletFile2);
+            String address = fromHexAddress("41" + walletFile1.getAddress());
+            String privateKey = ecKeyPair1.getPrivateKey().toString(16);
+            String publicKey = ecKeyPair1.getPublicKey().toString(16);
+            //由于通过keystore无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
+            return new WalletETH(walletname, walletPassword, null, address, privateKey, publicKey, keystore, 2);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new WalletETH("", "", "", "", "", "", "", 2);
+        }
     }
 
     public static String fromHexAddress(String address) {

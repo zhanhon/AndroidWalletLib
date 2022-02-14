@@ -144,15 +144,20 @@ public class WalletETHUtils {
      * @return
      */
     public static WalletETH generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic) throws CipherException, IOException {
-        ECKeyPair keyPair = WalletETHUtils.generateBip32ECKeyPair(mnemonic);
-        WalletFile walletFile = createWalletFile(walletPassword, keyPair, false);
+        try {
+            ECKeyPair keyPair = WalletETHUtils.generateBip32ECKeyPair(mnemonic);
+            WalletFile walletFile = createWalletFile(walletPassword, keyPair, false);
 
-        String address = EthUtils.getAddress(keyPair);
-        String privateKey = Numeric.toHexStringNoPrefix(keyPair.getPrivateKey());
-        String publicKey = EthUtils.getPublicKey(keyPair);
-        String keyStore = objectMapper.writeValueAsString(walletFile);
-        //链类型|0:BTC|1:ETH|2:TRX
-        return new WalletETH(walletname, walletPassword, mnemonic, address, privateKey, publicKey, keyStore, 1);
+            String address = EthUtils.getAddress(keyPair);
+            String privateKey = Numeric.toHexStringNoPrefix(keyPair.getPrivateKey());
+            String publicKey = EthUtils.getPublicKey(keyPair);
+            String keyStore = objectMapper.writeValueAsString(walletFile);
+            //链类型|0:BTC|1:ETH|2:TRX
+            return new WalletETH(walletname, walletPassword, mnemonic, address, privateKey, publicKey, keyStore, 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new WalletETH("", "", "", "", "", "", "", 1);
+        }
     }
 
     /**
@@ -164,15 +169,20 @@ public class WalletETHUtils {
      * @return
      */
     public static WalletETH generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey) throws Exception {
-        BigInteger pk = new BigInteger(privateKey, 16);
-        ECKeyPair keyPair = ECKeyPair.create(pk);
-        WalletFile walletFile = Wallet.createLight(walletPassword, keyPair);
+        try {
+            BigInteger pk = new BigInteger(privateKey, 16);
+            ECKeyPair keyPair = ECKeyPair.create(pk);
+            WalletFile walletFile = Wallet.createLight(walletPassword, keyPair);
 
-        String address = EthUtils.getAddress(keyPair);
-        String publicKey = EthUtils.getPublicKey(keyPair);
-        String keyStore = objectMapper.writeValueAsString(walletFile);
-        //由于通过privateKey无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
-        return new WalletETH(walletname, walletPassword, null, address, privateKey, publicKey, keyStore, 1);
+            String address = EthUtils.getAddress(keyPair);
+            String publicKey = EthUtils.getPublicKey(keyPair);
+            String keyStore = objectMapper.writeValueAsString(walletFile);
+            //由于通过privateKey无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
+            return new WalletETH(walletname, walletPassword, null, address, privateKey, publicKey, keyStore, 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new WalletETH("", "", "", "", "", "", "", 1);
+        }
     }
 
     /**
@@ -184,14 +194,19 @@ public class WalletETHUtils {
      * @return
      */
     public static WalletETH generateWalletByKeyStore(String walletname, String walletPassword, String keystore) throws CipherException, IOException {
-        WalletFile walletFile = objectMapper.readValue(keystore, WalletFile.class);
-        ECKeyPair keyPair = org.web3j.crypto.Wallet.decrypt(walletPassword, walletFile);
+        try {
+            WalletFile walletFile = objectMapper.readValue(keystore, WalletFile.class);
+            ECKeyPair keyPair = org.web3j.crypto.Wallet.decrypt(walletPassword, walletFile);
 
-        String address = EthUtils.getAddress(keyPair);
-        String publicKey = EthUtils.getPublicKey(keyPair);
-        String keyStore = objectMapper.writeValueAsString(walletFile);
-        //由于通过keyStore无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
-        return new WalletETH(walletname, walletPassword, null, address, keystore, publicKey, keyStore, 1);
+            String address = EthUtils.getAddress(keyPair);
+            String publicKey = EthUtils.getPublicKey(keyPair);
+            String keyStore = objectMapper.writeValueAsString(walletFile);
+            //由于通过keyStore无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
+            return new WalletETH(walletname, walletPassword, null, address, keystore, publicKey, keyStore, 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new WalletETH("", "", "", "", "", "", "", 1);
+        }
     }
 
     /**

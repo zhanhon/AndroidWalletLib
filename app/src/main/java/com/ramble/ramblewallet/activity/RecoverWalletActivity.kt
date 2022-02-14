@@ -252,12 +252,36 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         saveWalletList.add(walletETH)
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
-        putAddress(walletETH, 1)
-        if (isEthValidAddress(walletETH.address)) {
-            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
-            startActivity(Intent(this, MainETHActivity::class.java))
+        if (walletETH.address.isNotEmpty()) {
+            putAddress(walletETH, 1)
+            if (isEthValidAddress(walletETH.address)) {
+                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
+                startActivity(Intent(this, MainETHActivity::class.java))
+            } else {
+                when (chooseMode) {
+                    1 -> {
+                        toastDefault(getString(R.string.input_correct_mnemonic_words))
+                    }
+                    2 -> {
+                        toastDefault(getString(R.string.input_correct_secret_key))
+                    }
+                    3 -> {
+                        toastDefault(getString(R.string.input_correct_keystore))
+                    }
+                }
+            }
         } else {
-            toastDefault(getString(R.string.input_correct_mnemonic_words))
+            when (chooseMode) {
+                1 -> {
+                    toastDefault(getString(R.string.input_correct_mnemonic_words))
+                }
+                2 -> {
+                    toastDefault(getString(R.string.input_correct_secret_key))
+                }
+                3 -> {
+                    toastDefault(getString(R.string.input_correct_keystore))
+                }
+            }
         }
     }
 
@@ -296,13 +320,37 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         saveWalletList.add(walletTRX)
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
-        putAddress(walletTRX, 2)
-        startActivity(Intent(this, MainETHActivity::class.java))
-        if (isTrxValidAddress(walletTRX.address)) {
-            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletTRX))
-            startActivity(Intent(this, MainTRXActivity::class.java))
+        if (walletTRX.address.isNotEmpty()) {
+            putAddress(walletTRX, 2)
+            startActivity(Intent(this, MainETHActivity::class.java))
+            if (isTrxValidAddress(walletTRX.address)) {
+                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletTRX))
+                startActivity(Intent(this, MainTRXActivity::class.java))
+            } else {
+                when (chooseMode) {
+                    1 -> {
+                        toastDefault(getString(R.string.input_correct_mnemonic_words))
+                    }
+                    2 -> {
+                        toastDefault(getString(R.string.input_correct_secret_key))
+                    }
+                    3 -> {
+                        toastDefault(getString(R.string.input_correct_keystore))
+                    }
+                }
+            }
         } else {
-            toastDefault(getString(R.string.input_correct_mnemonic_words))
+            when (chooseMode) {
+                1 -> {
+                    toastDefault(getString(R.string.input_correct_mnemonic_words))
+                }
+                2 -> {
+                    toastDefault(getString(R.string.input_correct_secret_key))
+                }
+                3 -> {
+                    toastDefault(getString(R.string.input_correct_keystore))
+                }
+            }
         }
     }
 
