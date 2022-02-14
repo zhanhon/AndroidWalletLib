@@ -20,7 +20,11 @@ class TransferItem(val data: QueryTransferRecord.Record) : SimpleRecyclerItem() 
     override fun bind(holder: ViewHolder) {
         var binding: ItemTransferAccountsBinding = holder.binding()
 
-        binding.tvAddress.text = addressHandle(data.fromAddress)
+        binding.tvAddress.text = if (data.transferType==1){
+            addressHandle(data.fromAddress)
+        }else{
+            addressHandle(data.toAddress)
+        }
         binding.tvTime.text = dateToWeek(data.createTime) + "  " + data.createTime
         binding.tvMoneyType.isVisible = false
         when (data.addressType) {
