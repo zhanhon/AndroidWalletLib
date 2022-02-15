@@ -83,8 +83,7 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun btnIsClick() {
-        if ((binding.edtWalletName.text.isNotEmpty())
-            && (binding.edtWalletPassword.text.isNotEmpty())
+        if ((binding.edtWalletPassword.text.isNotEmpty())
             && (binding.edtPasswordConfirm.text.isNotEmpty())
             && (binding.edtWalletPassword.text.length >= 6)
             && (binding.edtWalletPassword.text.trim()
@@ -95,7 +94,6 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
             binding.btnConfirm.background = getDrawable(R.drawable.shape_gray_bottom_btn)
         }
     }
-
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onClick(v: View) {
         when (v.id) {
@@ -103,10 +101,6 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.btn_confirm -> {
-                if (binding.edtWalletName.text.isEmpty()) {
-                    toastDefault(getString(R.string.please_input_wallet_name))
-                    return
-                }
                 if (binding.edtWalletPassword.text.isEmpty()) {
                     toastDefault(getString(R.string.please_input_password))
                     return

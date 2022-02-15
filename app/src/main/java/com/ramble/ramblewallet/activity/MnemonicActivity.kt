@@ -160,6 +160,18 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                             object : TypeToken<ArrayList<WalletETH>>() {}.type
                         )
                 }
+                var index = 1
+                if (walletName.isEmpty()) {
+                    walletETH.walletName = "ETH" + String.format("%02d",index)
+                }
+                if (saveWalletList.size > 0) {
+                    saveWalletList.forEach {
+                        if (it.walletName == walletETH.walletName) {
+                            index ++
+                        }
+                    }
+                }
+                walletETH.walletName = "ETH" + String.format("%02d",index)
                 saveWalletList.add(walletETH)
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
@@ -184,6 +196,18 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                             object : TypeToken<ArrayList<WalletETH>>() {}.type
                         )
                 }
+                var index = 1
+                if (walletName.isEmpty()) {
+                    walletTRX.walletName = "TRX" + String.format("%02d",index)
+                }
+                if (saveWalletList.size > 0) {
+                    saveWalletList.forEach {
+                        if (it.walletName == walletTRX.walletName) {
+                            index ++
+                        }
+                    }
+                }
+                walletTRX.walletName = "TRX" + String.format("%02d",index)
                 saveWalletList.add(walletTRX)
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
@@ -215,6 +239,24 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                             object : TypeToken<ArrayList<WalletETH>>() {}.type
                         )
                 }
+                var index1 = 1
+                var index2 = 1
+                if (walletName.isEmpty()) {
+                    walletETH.walletName = "ETH" + String.format("%02d",index1)
+                    walletTRX.walletName = "TRX" + String.format("%02d",index2)
+                }
+                if (saveWalletList.size > 0) {
+                    saveWalletList.forEach {
+                        if (it.walletName == walletETH.walletName) {
+                            index1 ++
+                        }
+                        if (it.walletName == walletTRX.walletName) {
+                            index2 ++
+                        }
+                    }
+                }
+                walletETH.walletName = "ETH" + String.format("%02d",index1)
+                walletTRX.walletName = "TRX" + String.format("%02d",index2)
                 saveWalletList.add(walletETH)
                 saveWalletList.add(walletTRX)
                 println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")

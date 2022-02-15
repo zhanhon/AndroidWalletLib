@@ -30,6 +30,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/dp_10"
+                android:maxEms="8"
+                android:singleLine="true"
                 android:text="ETH"
                 android:textColor="@color/color_000000"
                 app:layout_constraintEnd_toEndOf="parent"
