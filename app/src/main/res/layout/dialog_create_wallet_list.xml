@@ -32,8 +32,8 @@
 
         <ImageView
             android:id="@+id/iv_create_wallet_icon"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_10"
@@ -96,8 +96,8 @@
 
         <ImageView
             android:id="@+id/iv_eth_currency_icon"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_10"
@@ -156,8 +156,8 @@
 
         <ImageView
             android:id="@+id/iv_trx_currency_icon"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_10"
@@ -216,8 +216,8 @@
 
         <ImageView
             android:id="@+id/iv_btc_currency_icon"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_10"
