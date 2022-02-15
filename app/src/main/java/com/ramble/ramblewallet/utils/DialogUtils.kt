@@ -190,16 +190,16 @@ fun showBottomDialog2(
                                     .startsWith("1") || binding.editAddress.text.toString()
                                     .startsWith("3")
                             ) {
-                                "BTC$cout"
+                                "BTC"+String.format("%02d",cout)
                             } else if (binding.editAddress.text.toString().startsWith("0")) {
-                                "ETH$cout"
+                                "ETH"+String.format("%02d",cout)
                             } else if (binding.editAddress.text.toString()
                                     .startsWith("T") || binding.editAddress.text.toString()
                                     .startsWith("t")
                             ) {
-                                "TRX$cout"
+                                "TRX"+String.format("%02d",cout)
                             } else {
-                                "ETH$cout"
+                                "ETH"+String.format("%02d",cout)
                             }
 
                         }
@@ -212,16 +212,16 @@ fun showBottomDialog2(
                                     .startsWith("1") || binding.editAddress.text.toString()
                                     .startsWith("3")
                             ) {
-                                "BTC1"
+                                "BTC01"
                             } else if (binding.editAddress.text.toString().startsWith("0")) {
-                                "ETH1"
+                                "ETH01"
                             } else if (binding.editAddress.text.toString()
                                     .startsWith("T") || binding.editAddress.text.toString()
                                     .startsWith("t")
                             ) {
-                                "TRX1"
+                                "TRX01"
                             } else {
-                                "ETH1"
+                                "ETH01"
                             }
                         }
 
