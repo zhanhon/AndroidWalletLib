@@ -121,13 +121,112 @@ fun showBottomDialog2(
             dismiss()
         }
         binding.tvUpdata.setOnClickListener {
-            if (binding.editName.text.isNullOrEmpty() || binding.editAddress.text.isNullOrEmpty()) {
-                Toast.makeText(
-                    MyApp.sInstance,
-                    MyApp.sInstance.getString(R.string.address_already_null),
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
+            when (type) {
+                1 -> {
+                    if (binding.editName.text.isNullOrEmpty() || binding.editAddress.text.isNullOrEmpty()) {
+                        Toast.makeText(
+                            MyApp.sInstance,
+                            MyApp.sInstance.getString(R.string.address_already_null),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setOnClickListener
+                    }
+                }
+                else -> {
+                    if (binding.editAddress.text.isNullOrEmpty()) {
+                        Toast.makeText(
+                            MyApp.sInstance,
+                            MyApp.sInstance.getString(R.string.address_already_null),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setOnClickListener
+                    }
+                }
+            }
+            var name = when (type) {
+                1 -> {
+                    binding.editName.text.toString()
+                }
+                else -> {
+                    if (SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
+                            .isNotEmpty()
+                    ) {
+
+                        if (binding.editName.text.toString().isNotEmpty()) {
+                            binding.editName.text.toString()
+                        } else {
+                            var myData: ArrayList<MyAddressBean> =
+                                Gson().fromJson(
+                                    SharedPreferencesUtils.getString(
+                                        MyApp.sInstance,
+                                        ADDRESS_BOOK_INFO,
+                                        ""
+                                    ),
+                                    object : TypeToken<ArrayList<MyAddressBean>>() {}.type
+                                )
+                           var number=if (binding.editAddress.text.toString()
+                                    .startsWith("1") || binding.editAddress.text.toString()
+                                    .startsWith("3")
+                            ) {
+                                2
+                            } else if (binding.editAddress.text.toString().startsWith("0")) {
+                                1
+                            } else if (binding.editAddress.text.toString()
+                                    .startsWith("T") || binding.editAddress.text.toString()
+                                    .startsWith("t")
+                            ) {
+                                3
+                            } else {
+                                4
+                            }
+                            var cout= 1
+                                myData.forEach {
+                                if (it.type == number) {
+                                    cout++
+                                }
+                            }
+
+                            if (binding.editAddress.text.toString()
+                                    .startsWith("1") || binding.editAddress.text.toString()
+                                    .startsWith("3")
+                            ) {
+                                "BTC$cout"
+                            } else if (binding.editAddress.text.toString().startsWith("0")) {
+                                "ETH$cout"
+                            } else if (binding.editAddress.text.toString()
+                                    .startsWith("T") || binding.editAddress.text.toString()
+                                    .startsWith("t")
+                            ) {
+                                "TRX$cout"
+                            } else {
+                                "ETH$cout"
+                            }
+
+                        }
+
+                    } else {
+                        if (binding.editName.text.toString().isNotEmpty()) {
+                            binding.editName.text.toString()
+                        } else {
+                            if (binding.editAddress.text.toString()
+                                    .startsWith("1") || binding.editAddress.text.toString()
+                                    .startsWith("3")
+                            ) {
+                                "BTC1"
+                            } else if (binding.editAddress.text.toString().startsWith("0")) {
+                                "ETH1"
+                            } else if (binding.editAddress.text.toString()
+                                    .startsWith("T") || binding.editAddress.text.toString()
+                                    .startsWith("t")
+                            ) {
+                                "TRX1"
+                            } else {
+                                "ETH1"
+                            }
+                        }
+
+                    }
+                }
             }
             if (SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
                     .isNotEmpty()
@@ -137,21 +236,42 @@ fun showBottomDialog2(
                         SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, ""),
                         object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                     )
-                myData.forEach {
-                    if (it.address == binding.editAddress.text.toString()) {
-                        Toast.makeText(
-                            MyApp.sInstance,
-                            MyApp.sInstance.getString(R.string.address_already_exists),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        return@setOnClickListener
+                when (type){
+                    1->{
+                        myData.forEach {
+
+                            if (it.userName!=tvName){
+                                if (it.userName == name|| it.address == binding.editAddress.text.toString() ) {
+                                    Toast.makeText(
+                                        MyApp.sInstance,
+                                        MyApp.sInstance.getString(R.string.address_already_exists),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    return@setOnClickListener
+                                }
+                            }
+
+                        }
+                    }
+                    else->{
+                        myData.forEach {
+                            if (it.address == binding.editAddress.text.toString() || it.userName == name) {
+                                Toast.makeText(
+                                    MyApp.sInstance,
+                                    MyApp.sInstance.getString(R.string.address_already_exists),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                return@setOnClickListener
+                            }
+                        }
                     }
                 }
+
             }
             editListener?.onClick(it)
             var data = MyAddressBean()
             data.address = binding.editAddress.text.toString()
-            data.userName = binding.editName.text.toString()
+            data.userName = name
             data.type = if (data.address.startsWith("1") || data.address.startsWith("3")) {
                 2
             } else if (data.address.startsWith("0")) {

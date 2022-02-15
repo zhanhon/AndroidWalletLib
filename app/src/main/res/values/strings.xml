@@ -222,7 +222,7 @@
     <string name="delete_book">删除</string>
     <string name="message_center_title">消息</string>
     <string name="address_already_exists">已添加过该地址</string>
-    <string name="address_already_null">地址和昵称不能为空</string>
+    <string name="address_already_null">地址或昵称不能为空</string>
     <string name="address_already_err">地址不正确，请重新输入</string>
     <string name="transaction_query_eth">ETH交易</string>
     <string name="transaction_query_btc">BTC交易</string>
