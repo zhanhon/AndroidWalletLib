@@ -33,7 +33,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     private var chooseMode = 0 //选择方式|1:助记词|2:私钥|3:keystore
     private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
     private lateinit var saveWalletSelected: WalletETH
-
+    private var mnemonic: ArrayList<String> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -162,6 +162,11 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     1 -> { //以太坊
                         when (chooseMode) {
                             1 -> {
+                                mnemonic = binding.edtContributingWords.text.split(" ") as ArrayList<String>
+                                if (mnemonic.size != 12) {
+                                    toastDefault(getString(R.string.input_mnemonic_words))
+                                    return
+                                }
                                 if (binding.edtContributingWords.text.isEmpty()) {
                                     toastDefault(getString(R.string.input_mnemonic_words))
                                     return
