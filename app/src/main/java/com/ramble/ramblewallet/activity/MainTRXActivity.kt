@@ -400,7 +400,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             }
             tvGathering.setOnClickListener { v1: View? ->
                 startActivity(Intent(this, GatheringActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "TRX-$mainETHTokenBean.symbol")
+                    putExtra(ARG_PARAM1, "TRX-${mainETHTokenBean.symbol}")
                     putExtra(ARG_PARAM2, walletSelleted.address)
                 })
                 dialog.dismiss()
