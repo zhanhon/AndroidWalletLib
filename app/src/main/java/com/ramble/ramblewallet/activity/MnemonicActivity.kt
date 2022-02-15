@@ -43,7 +43,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
     private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
     private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX|3：BTC、ETH、TRX
     private var isBackupMnemonic = false
-    private var mnemonic = ""
+    private var mnemonic:String? = null
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
