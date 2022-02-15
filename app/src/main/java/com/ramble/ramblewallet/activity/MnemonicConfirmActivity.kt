@@ -64,7 +64,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         walletType = intent.getIntExtra(ARG_PARAM5, 0)
         isBackupMnemonic = intent.getBooleanExtra(ARG_PARAM6, false)
 
-        initData(true)
+        initData()
         mnmonicETHClick()
 
         binding.llEnglish.setOnClickListener(this)
@@ -199,32 +199,21 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private var mnemonicETHOriginalEnglish: ArrayList<String> = arrayListOf()
-    private var mnemonicETHOriginalChinese: ArrayList<String> = arrayListOf()
-    private var mnemonicETHShuffledEnglish: ArrayList<String> = arrayListOf()
-    private var mnemonicETHShuffledChinese: ArrayList<String> = arrayListOf()
-    private fun initData(isFirstEnter: Boolean) {
-        if (isFirstEnter) {
-            mnemonicETHOriginalEnglish = mnemonicETH[0].split(" ") as ArrayList<String>
-            mnemonicETHShuffledEnglish = mnemonicETH[0].split(" ") as ArrayList<String>
-            mnemonicETHShuffledEnglish.shuffle()
-
-            mnemonicETHOriginalChinese = mnemonicETH[1].split(" ") as ArrayList<String>
-            mnemonicETHShuffledChinese = mnemonicETH[1].split(" ") as ArrayList<String>
-            mnemonicETHShuffledChinese.shuffle()
-        }
+    private fun initData() {
         when (currentTab) {
             "english" -> {
                 binding.vEnglish.setBackgroundResource(R.color.color_3F5E94)
                 binding.vChinese.setBackgroundResource(R.color.color_9598AA)
-                mnemonicETHOriginal = mnemonicETHOriginalEnglish
-                mnemonicETHShuffled = mnemonicETHShuffledEnglish
+                mnemonicETHOriginal = mnemonicETH[0].split(" ") as ArrayList<String>
+                mnemonicETHShuffled = mnemonicETH[0].split(" ") as ArrayList<String>
+                mnemonicETHShuffled.shuffle()
             }
             "chinese" -> {
                 binding.vEnglish.setBackgroundResource(R.color.color_9598AA)
                 binding.vChinese.setBackgroundResource(R.color.color_3F5E94)
-                mnemonicETHOriginal = mnemonicETHOriginalChinese
-                mnemonicETHShuffled = mnemonicETHShuffledChinese
+                mnemonicETHOriginal = mnemonicETH[1].split(" ") as ArrayList<String>
+                mnemonicETHShuffled = mnemonicETH[1].split(" ") as ArrayList<String>
+                mnemonicETHShuffled.shuffle()
             }
         }
         initMnmonicETH(mnemonicETHShuffled)
@@ -234,11 +223,11 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         when (v.id) {
             R.id.ll_english -> {
                 currentTab = "english"
-                initData(false)
+                initData()
             }
             R.id.ll_chinese -> {
                 currentTab = "chinese"
-                initData(false)
+                initData()
             }
         }
     }

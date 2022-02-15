@@ -351,7 +351,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     private fun setBalanceTRX(balance: BigDecimal) {
         postUI {
             if (DecimalFormatUtil.format2.format(balance) == "0") {
-                binding.tvBalanceTotal.text = ""
+                binding.tvBalanceTotal.text = "0"
             } else {
                 binding.tvBalanceTotal.text = strAddComma(DecimalFormatUtil.format2.format(balance))
             }
