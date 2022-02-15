@@ -24,6 +24,7 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MainETHTokenBean
+import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
@@ -32,9 +33,12 @@ import com.ramble.ramblewallet.ethereum.TransferEthUtils.getBalanceETH
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.helper.start
+import com.ramble.ramblewallet.item.StationItem
 import com.ramble.ramblewallet.network.getStoreUrl
+import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
+import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
 import java.math.BigDecimal
 
 class MainETHActivity : BaseActivity(), View.OnClickListener {
@@ -72,6 +76,123 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         super.onResume()
         initData()
         refreshData()
+        redPoint()
+    }
+
+    /***
+     * 未读消息红点展示
+     */
+    @SuppressLint("CheckResult")
+    private fun redPoint() {
+        if (SharedPreferencesUtils.getString(this, READ_ID_NEW, "")
+                .isNotEmpty()
+        ) {
+            var lang = when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
+                CN -> {
+                    1
+                }
+                TW -> {
+                    2
+                }
+                else -> {
+                    3
+                }
+            }
+            var redList: ArrayList<Page.Record> = arrayListOf()
+            var records2: ArrayList<Page.Record> = arrayListOf()
+            var req = Page.Req(1, 1000, lang)
+            mApiService.getNotice(
+                req.toApiRequest(noticeInfoUrl)
+            ).applyIo().subscribe(
+                {
+                    if (it.code() == 1) {
+                        it.data()?.let { data ->
+                            println("==================>getTransferInfo:${data}")
+
+                            data.records.forEach { item ->
+
+                                if (SharedPreferencesUtils.String2SceneList(
+                                        SharedPreferencesUtils.getString(
+                                            this,
+                                            READ_ID_NEW,
+                                            ""
+                                        )
+                                    ).contains(item.id)
+                                ) {
+                                    item.isRead = 1
+                                } else {
+                                    item.isRead = 0
+                                    redList.add(item)
+                                }
+                            }
+                            records2 = if (SharedPreferencesUtils.getString(
+                                    this,
+                                    STATION_INFO,
+                                    ""
+                                ).isNotEmpty()
+                            ) {
+                                SharedPreferencesUtils.String2SceneList(
+                                    SharedPreferencesUtils.getString(
+                                        this,
+                                        STATION_INFO,
+                                        ""
+                                    )
+                                ) as ArrayList<Page.Record>
+
+                            } else {
+                                arrayListOf()
+                            }
+                            if (records2.isNotEmpty()) {
+
+                                records2.forEach { item ->
+                                    if (SharedPreferencesUtils.getString(
+                                            this,
+                                            READ_ID,
+                                            ""
+                                        ).isNotEmpty()
+                                    ) {
+                                        if (SharedPreferencesUtils.String2SceneList(
+                                                SharedPreferencesUtils.getString(
+                                                    this,
+                                                    READ_ID,
+                                                    ""
+                                                )
+                                            ).contains(item.id)
+                                        ) {
+                                            item.isRead = 1
+                                        } else {
+                                            item.isRead = 0
+                                            redList.add(item)
+                                        }
+
+                                    } else {
+                                        item.isRead = 0
+                                        redList.add(item)
+                                    }
+
+                                }
+
+
+                            }
+                            if (redList.isNotEmpty()){
+                                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
+                            }else{
+                                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center)
+                            }
+                        }
+                    } else {
+                        println("==================>getTransferInfo1:${it.message()}")
+                    }
+
+                }, {
+
+                    println("==================>getTransferInfo1:${it.printStackTrace()}")
+                }
+            )
+        } else {
+            binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
+        }
+
     }
 
     override fun onRxBus(event: RxBus.Event) {
@@ -80,15 +201,17 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             Pie.EVENT_ADDRESS_TRANS_SCAN -> {
                 start(TransferActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, event.data())
-                    it.putSerializable(ARG_PARAM2, MainETHTokenBean(
-                        "ETH",
-                        "ETH",
-                        ethBalance,
-                        unitPrice,
-                        currencyUnit,
-                        null,
-                        false
-                    ))
+                    it.putSerializable(
+                        ARG_PARAM2, MainETHTokenBean(
+                            "ETH",
+                            "ETH",
+                            ethBalance,
+                            unitPrice,
+                            currencyUnit,
+                            null,
+                            false
+                        )
+                    )
                 })
             }
         }
@@ -114,15 +237,17 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.iv_transfer_top, R.id.ll_transfer -> {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
-                    putExtra(ARG_PARAM2, MainETHTokenBean(
-                        "ETH",
-                        "ETH",
-                        ethBalance,
-                        unitPrice,
-                        currencyUnit,
-                        null,
-                        false
-                    ))
+                    putExtra(
+                        ARG_PARAM2, MainETHTokenBean(
+                            "ETH",
+                            "ETH",
+                            ethBalance,
+                            unitPrice,
+                            currencyUnit,
+                            null,
+                            false
+                        )
+                    )
                 })
             }
             R.id.iv_scan_top, R.id.ll_scan -> {
@@ -360,7 +485,9 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                 MainETHTokenBean(
                                     "ETH-${storeInfo.symbol}",
                                     storeInfo.symbol,
-                                    if (storeInfo.symbol == "TESTERC") tokenBalance else BigDecimal("0"),
+                                    if (storeInfo.symbol == "TESTERC") tokenBalance else BigDecimal(
+                                        "0"
+                                    ),
                                     unitPrice,
                                     currencyUnit,
                                     contractAddress,

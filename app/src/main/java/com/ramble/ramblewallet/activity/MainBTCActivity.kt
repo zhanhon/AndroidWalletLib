@@ -14,11 +14,16 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MainETHTokenBean
-import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.bean.Page
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainBtcBinding
 import com.ramble.ramblewallet.helper.start
+import com.ramble.ramblewallet.network.noticeInfoUrl
+import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.applyIo
 
 class MainBTCActivity : BaseActivity(), View.OnClickListener {
 
@@ -84,6 +89,127 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         binding.llScan.setOnClickListener(this)
 
         binding.ivTokenManageClick01.setOnClickListener(this)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        redPoint()
+    }
+
+    /***
+     * 未读消息红点展示
+     */
+    @SuppressLint("CheckResult")
+    private fun redPoint() {
+        if (SharedPreferencesUtils.getString(this, READ_ID_NEW, "")
+                .isNotEmpty()
+        ) {
+            var lang = when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
+                CN -> {
+                    1
+                }
+                TW -> {
+                    2
+                }
+                else -> {
+                    3
+                }
+            }
+            var redList: ArrayList<Page.Record> = arrayListOf()
+            var records2: ArrayList<Page.Record> = arrayListOf()
+            var req = Page.Req(1, 1000, lang)
+            mApiService.getNotice(
+                req.toApiRequest(noticeInfoUrl)
+            ).applyIo().subscribe(
+                {
+                    if (it.code() == 1) {
+                        it.data()?.let { data ->
+                            println("==================>getTransferInfo:${data}")
+
+                            data.records.forEach { item ->
+
+                                if (SharedPreferencesUtils.String2SceneList(
+                                        SharedPreferencesUtils.getString(
+                                            this,
+                                            READ_ID_NEW,
+                                            ""
+                                        )
+                                    ).contains(item.id)
+                                ) {
+                                    item.isRead = 1
+                                } else {
+                                    item.isRead = 0
+                                    redList.add(item)
+                                }
+                            }
+                            records2 = if (SharedPreferencesUtils.getString(
+                                    this,
+                                    STATION_INFO,
+                                    ""
+                                ).isNotEmpty()
+                            ) {
+                                SharedPreferencesUtils.String2SceneList(
+                                    SharedPreferencesUtils.getString(
+                                        this,
+                                        STATION_INFO,
+                                        ""
+                                    )
+                                ) as ArrayList<Page.Record>
+
+                            } else {
+                                arrayListOf()
+                            }
+                            if (records2.isNotEmpty()) {
+
+                                records2.forEach { item ->
+                                    if (SharedPreferencesUtils.getString(
+                                            this,
+                                            READ_ID,
+                                            ""
+                                        ).isNotEmpty()
+                                    ) {
+                                        if (SharedPreferencesUtils.String2SceneList(
+                                                SharedPreferencesUtils.getString(
+                                                    this,
+                                                    READ_ID,
+                                                    ""
+                                                )
+                                            ).contains(item.id)
+                                        ) {
+                                            item.isRead = 1
+                                        } else {
+                                            item.isRead = 0
+                                            redList.add(item)
+                                        }
+
+                                    } else {
+                                        item.isRead = 0
+                                        redList.add(item)
+                                    }
+
+                                }
+
+
+                            }
+                            if (redList.isNotEmpty()){
+                                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
+                            }else{
+                                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center)
+                            }
+                        }
+                    } else {
+                        println("==================>getTransferInfo1:${it.message()}")
+                    }
+
+                }, {
+
+                    println("==================>getTransferInfo1:${it.printStackTrace()}")
+                }
+            )
+        } else {
+            binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
+        }
 
     }
 
