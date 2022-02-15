@@ -192,6 +192,11 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     2 -> { //波场
                         when (chooseMode) {
                             1 -> {
+                                mnemonic = binding.edtContributingWords.text.split(" ") as ArrayList<String>
+                                if (mnemonic.size != 12) {
+                                    toastDefault(getString(R.string.input_mnemonic_words))
+                                    return
+                                }
                                 if (binding.edtContributingWords.text.isEmpty()) {
                                     toastDefault(getString(R.string.input_mnemonic_words))
                                     return
