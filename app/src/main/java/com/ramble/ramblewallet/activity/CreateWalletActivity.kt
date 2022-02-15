@@ -8,13 +8,14 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.constant.ARG_PARAM2
-import com.ramble.ramblewallet.constant.ARG_PARAM3
-import com.ramble.ramblewallet.constant.ARG_PARAM4
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityCreateWalletBinding
+import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.toastDefault
 
 class CreateWalletActivity : BaseActivity(), View.OnClickListener {
@@ -22,6 +23,7 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityCreateWalletBinding
     private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX|3：BTC、ETH、TRX
     private var walletSource = 1
+    private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +39,13 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
             2 -> {
                 binding.tvCreateWalletTitle.text = getString(R.string.new_wallet)
             }
+        }
+        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+            saveWalletList =
+                Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                    object : TypeToken<ArrayList<WalletETH>>() {}.type
+                )
         }
     }
 
@@ -101,6 +110,14 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.btn_confirm -> {
+                if (saveWalletList.size > 0) {
+                    saveWalletList.forEach {
+                        if (it.walletName == binding.edtWalletName.text.toString()) {
+                            toastDefault(getString(R.string.repeat_wallet_tips))
+                            return
+                        }
+                    }
+                }
                 if (binding.edtWalletPassword.text.isEmpty()) {
                     toastDefault(getString(R.string.please_input_password))
                     return

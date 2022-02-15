@@ -176,6 +176,7 @@
     <string name="please_input_your_wallet_name">请输入您的钱包名称</string>
     <string name="please_confirm_password">请确认密码</string>
     <string name="di_wallet">的钱包</string>
+    <string name="repeat_wallet_tips">与其他钱包名称重复，请重新输入！</string>
 
 
     <string name="refresh_pull_down">下拉更新</string>
