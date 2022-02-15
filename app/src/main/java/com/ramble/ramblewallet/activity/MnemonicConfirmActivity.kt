@@ -52,6 +52,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mnemonicETH: ArrayList<String>
     private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX|3：BTC、ETH、TRX
     private var isBackupMnemonic = false
+    private var mnemonic:String? = null
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +64,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         currentTab = intent.getStringExtra(ARG_PARAM4)
         walletType = intent.getIntExtra(ARG_PARAM5, 0)
         isBackupMnemonic = intent.getBooleanExtra(ARG_PARAM6, false)
+        mnemonic = intent.getStringExtra(ARG_PARAM7)
 
         initData()
         mnmonicETHClick()
@@ -71,7 +73,13 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         binding.llChinese.setOnClickListener(this)
         binding.btnContributingWordsCompleted.setOnClickListener {
             if (mnemonicETHChoose == mnemonicETHOriginal) {
-                createWallet()
+                if (mnemonic != null) {
+                    SharedPreferencesUtils.saveBoolean(this, IS_CONFIRM_MNEMONIC, true)
+                    MnemonicActivity.instance.finish()
+                    finish()
+                } else {
+                    createWallet()
+                }
             } else {
                 toastDefault(getString(R.string.confirm_contributing_words_error))
             }
@@ -324,10 +332,11 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 window.findViewById<Button>(R.id.btn_skip).visibility = View.VISIBLE
             }
             window.findViewById<Button>(R.id.btn_cancel_create).setOnClickListener {
-                finish()
-//                if (isBackupMnemonic) {
-//                    startActivity(Intent(this, WalletMoreOperateActivity::class.java))
-//                } else {
+                if (isBackupMnemonic) {
+                    SharedPreferencesUtils.saveBoolean(this, IS_CONFIRM_MNEMONIC, false)
+                    MnemonicActivity.instance.finish()
+                    finish()
+                } else {
                     when (walletType) {
                         1 -> {
                             startActivity(Intent(this, MainETHActivity::class.java))
@@ -342,7 +351,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                             startActivity(Intent(this, MainBTCActivity::class.java))
                         }
                     }
-//                }
+                }
                 dialog.dismiss()
             }
             window.findViewById<Button>(R.id.btn_skip).setOnClickListener {

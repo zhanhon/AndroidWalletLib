@@ -54,6 +54,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_wallet_more_operate)
+        SharedPreferencesUtils.saveBoolean(this, IS_CONFIRM_MNEMONIC, false)
         walletCurrent = Gson().fromJson(
             intent.getStringExtra(ARG_PARAM1),
             object : TypeToken<WalletETH>() {}.type
@@ -92,6 +93,16 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
         }
 
         initClick()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (SharedPreferencesUtils.getBoolean(this, IS_CONFIRM_MNEMONIC, false)) {
+            MnemonicSaveFile.saveFile.content(
+                walletCurrent.walletName,
+                walletCurrent.mnemonic
+            )
+        }
     }
 
     private fun initClick() {
@@ -221,10 +232,6 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                                 putExtra(ARG_PARAM4, true)
                                 putExtra(ARG_PARAM5, walletCurrent.mnemonic)
                             })
-                            MnemonicSaveFile.saveFile.content(
-                                walletCurrent.walletName,
-                                walletCurrent.mnemonic
-                            )
                         }
                         getString(R.string.secret_key_backup) -> {
                             secretKeyDialog(title)
