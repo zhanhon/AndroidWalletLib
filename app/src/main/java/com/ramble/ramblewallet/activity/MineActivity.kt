@@ -251,7 +251,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> { //区分不同钱包进行跳转
-                startActivity(Intent(this, MainETHActivity::class.java))
+                finish()
             }
             R.id.iv_mine_right -> {
                 start(MessageCenterActivity::class.java)
