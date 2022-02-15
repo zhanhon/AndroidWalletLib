@@ -259,7 +259,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }
 
         binding.tvTransferTitle.text = transferTitle + " " + getString(R.string.transfer)
-
+        binding.tvQuantityBalance.text =
+            getString(R.string.transfer_balance) + " " + "0" + " " + transferUnit
         when (walletSelleted.walletType) {
             1 -> {
                 if (WalletETHUtils.isEthValidAddress(walletSelleted.address)) {
