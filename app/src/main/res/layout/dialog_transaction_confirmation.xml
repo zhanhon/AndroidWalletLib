@@ -91,7 +91,7 @@
         android:background="@drawable/shape_green_bottom_btn"
         android:gravity="center"
         android:outlineProvider="none"
-        android:text="@string/confirm"
+        android:text="@string/next"
         android:textAllCaps="false"
         android:textColor="@color/color_FFFFFF"
         android:textSize="@dimen/dp_18" />
