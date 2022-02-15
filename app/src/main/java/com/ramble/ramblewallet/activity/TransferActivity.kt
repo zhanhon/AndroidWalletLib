@@ -567,7 +567,10 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<TextView>(R.id.tv_transfer_gas_price_slow).text =
                 "($slowGasPrice GWEI)"
 
-            when (walletSelleted.walletType) {
+            window.findViewById<TextView>(R.id.miner_fee_gas_price).text = fastGasPrice
+            window.findViewById<TextView>(R.id.miner_fee_limit_title).text = "21000"
+
+                when (walletSelleted.walletType) {
                 1 -> {
                     gas = BigDecimal(gasPrice).multiply(BigDecimal(gasLimit))
                         .divide(BigDecimal("1000000000"))
@@ -585,12 +588,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                                     .divide(BigDecimal("1000000000"))
                             )
                         } ETH"
-                }
-                2 -> {
-
-                }
-                0 -> {
-
                 }
             }
 
