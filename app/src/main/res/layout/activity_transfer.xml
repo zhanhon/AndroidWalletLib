@@ -413,7 +413,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/v_miner_fee_middle"
-                    tools:text="161 GWEI * GAS (21,000)" />
+                    tools:text="161 Gwei * Gas Limit (21,000)" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <Button

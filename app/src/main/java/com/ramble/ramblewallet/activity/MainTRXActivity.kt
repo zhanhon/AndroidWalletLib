@@ -37,6 +37,7 @@ import com.ramble.ramblewallet.tron.TransferTrxUtils.balanceOfTrc20
 import com.ramble.ramblewallet.tron.TransferTrxUtils.balanceOfTrx
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.utils.*
+import com.ramble.ramblewallet.utils.StringUtils.strAddComma
 import java.math.BigDecimal
 
 class MainTRXActivity : BaseActivity(), View.OnClickListener {
@@ -256,7 +257,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_eyes -> {
                 if (isClickEyes) {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_open)
-                    binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(totalBalance)
+                    binding.tvBalanceTotal.text = strAddComma(DecimalFormatUtil.format2.format(totalBalance))
                     isClickEyes = false
                 } else {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_close)
@@ -352,7 +353,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             if (DecimalFormatUtil.format2.format(balance) == "0") {
                 binding.tvBalanceTotal.text = ""
             } else {
-                binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(balance)
+                binding.tvBalanceTotal.text = strAddComma(DecimalFormatUtil.format2.format(balance))
             }
         }
     }

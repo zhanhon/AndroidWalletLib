@@ -14,6 +14,7 @@ import java.util.List;
 import static com.ramble.ramblewallet.constant.ConstantsKt.CNY;
 import static com.ramble.ramblewallet.constant.ConstantsKt.HKD;
 import static com.ramble.ramblewallet.constant.ConstantsKt.USD;
+import static com.ramble.ramblewallet.utils.StringUtils.strAddComma;
 
 /**
  * @创建人： Ricky
@@ -28,7 +29,7 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
     protected void convert(@NotNull BaseViewHolder baseViewHolder, MainETHTokenBean mainETHTokenBean) {
         tokenIcon(baseViewHolder, mainETHTokenBean);
         baseViewHolder.setText(R.id.tv_token_name, mainETHTokenBean.getSymbol());
-        baseViewHolder.setText(R.id.tv_token_balance, DecimalFormatUtil.format8.format(mainETHTokenBean.getBalance()));
+        baseViewHolder.setText(R.id.tv_token_balance, strAddComma(DecimalFormatUtil.format8.format(mainETHTokenBean.getBalance())));
         switch (mainETHTokenBean.getCurrencyUnit()) {
             case CNY:
                 baseViewHolder.setText(R.id.tv_converted_token_unit, "￥");
@@ -40,7 +41,7 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
                 baseViewHolder.setText(R.id.tv_converted_token_unit, "$");
                 break;
         }
-        baseViewHolder.setText(R.id.tv_unit_price, DecimalFormatUtil.format8.format(new BigDecimal(mainETHTokenBean.getUnitPrice())));
+        baseViewHolder.setText(R.id.tv_unit_price, strAddComma(DecimalFormatUtil.format8.format(new BigDecimal(mainETHTokenBean.getUnitPrice()))));
     }
 
     private void tokenIcon(@NotNull BaseViewHolder baseViewHolder, MainETHTokenBean mainETHTokenBean) {

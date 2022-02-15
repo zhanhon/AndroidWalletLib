@@ -38,6 +38,7 @@ import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
+import com.ramble.ramblewallet.utils.StringUtils.strAddComma
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
 import java.math.BigDecimal
 
@@ -270,7 +271,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_eyes -> {
                 if (isClickEyes) {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_open)
-                    binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(totalBalance)
+                    binding.tvBalanceTotal.text = strAddComma(DecimalFormatUtil.format2.format(totalBalance))
                     isClickEyes = false
                 } else {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_close)
@@ -367,7 +368,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             if (DecimalFormatUtil.format2.format(balance) == "0") {
                 binding.tvBalanceTotal.text = ""
             } else {
-                binding.tvBalanceTotal.text = DecimalFormatUtil.format2.format(balance)
+                binding.tvBalanceTotal.text = strAddComma(DecimalFormatUtil.format2.format(balance))
             }
         }
     }

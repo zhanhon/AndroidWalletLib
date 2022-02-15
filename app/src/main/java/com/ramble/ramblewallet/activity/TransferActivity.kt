@@ -33,6 +33,7 @@ import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.tron.TransferTrxUtils.*
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.utils.*
+import com.ramble.ramblewallet.utils.StringUtils.strAddComma
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -314,7 +315,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         when (walletSelleted.walletType) {
             1 -> {
                 binding.tvMinerFeeValue.text = "${DecimalFormatUtil.format8.format(gas)} ETH"
-                binding.tvMinerFeeValueConvert.text = "≈${currencySymbol}${
+                binding.tvMinerFeeValueConvert.text = "≈${currencyUnit} ${currencySymbol}${
                     DecimalFormatUtil.format2.format(BigDecimal(rate).multiply(gas))
                 }"
             }
@@ -325,7 +326,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
             }
         }
-        binding.tvTips.text = "$gasPrice GWEI * GAS ($gasLimit)"
+        binding.tvTips.text = "$gasPrice Gwei * Gas Limit (${strAddComma(gasLimit)})"
     }
 
     private fun setBalance(balance: BigDecimal) {
