@@ -140,10 +140,10 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
     class MyAdapter(fm: FragmentManager, activity: TransactionQueryActivity) :
         FragmentPagerAdapter2(fm) {
         private val titles: Array<String> = arrayOf(
-            activity.getString(R.string.transaction_query_all),
-            activity.getString(R.string.transaction_query_chu),
-            activity.getString(R.string.transaction_query_ru),
-            activity.getString(R.string.transaction_query_fail)
+            activity.getString(R.string.all),
+            activity.getString(R.string.cash_out),
+            activity.getString(R.string.cash_in),
+            activity.getString(R.string.fail)
         )
 
         override fun getItem(position: Int): Fragment {

@@ -265,7 +265,7 @@
                         android:textAllCaps="false"
                         android:background="@drawable/shape_white_bottom_blue_line_btn"
                         android:outlineProvider="none"
-                        android:text="@string/btn_all"
+                        android:text="@string/all"
                         android:textColor="@color/color_3F5E94"
                         android:textSize="@dimen/sp_12" />
                 </RelativeLayout>

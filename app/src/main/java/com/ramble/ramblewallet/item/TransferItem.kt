@@ -40,7 +40,7 @@ class TransferItem(val data: QueryTransferRecord.Record) : SimpleRecyclerItem() 
         }
         when (data.status) {
             1 -> {
-                binding.tvMoney.setText(R.string.transaction_ing)
+                binding.tvMoney.setText(R.string.in_transaction)
                 binding.tvMoney.setTextColor(Color.parseColor("#333333"))
 
             }

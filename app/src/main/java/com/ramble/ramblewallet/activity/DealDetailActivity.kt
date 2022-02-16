@@ -38,7 +38,7 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
 
 
     private fun initView() {
-        binding.tvMineTitle.text = getString(R.string.transaction_details)
+        binding.tvMineTitle.text = getString(R.string.details)
         trans = getExtras().getSerializable(ARG_PARAM1) as QueryTransferRecord.Record?
         binding.minerFees.text = trans?.miner
         binding.minerFeesUsd.text = trans?.minerUnit

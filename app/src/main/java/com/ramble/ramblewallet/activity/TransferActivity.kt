@@ -486,7 +486,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     fun transferFail(strFail: String) {
         postUI {
-            toastDefault(getString(R.string.failure_transaction))
+            toastDefault(getString(R.string.transaction_failed))
         }
     }
 

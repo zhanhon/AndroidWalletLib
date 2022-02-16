@@ -111,7 +111,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/img_first"
                     app:layout_constraintTop_toBottomOf="@+id/title1"
-                    tools:text="@string/abc" />
+                    tools:text="123" />
 
                 <View
                     android:id="@+id/view"
@@ -131,7 +131,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/img_first"
                     app:layout_constraintTop_toBottomOf="@+id/view"
-                    tools:text="@string/abc" />
+                    tools:text="123" />
 
                 <com.ramble.ramblewallet.wight.HtmlWebView
                     android:id="@+id/web"

@@ -32,7 +32,7 @@
                 android:paddingLeft="@dimen/dp_9"
                 android:paddingRight="@dimen/dp_9"
                 android:singleLine="true"
-                android:text="@string/transaction_query_all2"
+                android:text="@string/all_transactions"
                 android:textColor="@color/color_group_button_transaction"
                 android:textSize="@dimen/sp_13" />
 
@@ -51,7 +51,7 @@
                 android:paddingLeft="@dimen/dp_9"
                 android:paddingRight="@dimen/dp_9"
                 android:singleLine="true"
-                android:text="@string/transaction_query_week"
+                android:text="@string/within_7_days"
                 android:textColor="@color/color_group_button_transaction"
                 android:textSize="@dimen/sp_13" />
 
@@ -70,7 +70,7 @@
                 android:paddingLeft="@dimen/dp_9"
                 android:paddingRight="@dimen/dp_9"
                 android:singleLine="true"
-                android:text="@string/transaction_query_month"
+                android:text="@string/within_30_days"
                 android:textColor="@color/color_group_button_transaction"
                 android:textSize="@dimen/sp_13" />
 
@@ -89,7 +89,7 @@
                 android:paddingLeft="@dimen/dp_9"
                 android:paddingRight="@dimen/dp_9"
                 android:singleLine="true"
-                android:text="@string/transaction_query_year"
+                android:text="@string/within_1_year"
                 android:textColor="@color/color_group_button_transaction"
                 android:textSize="@dimen/sp_13" />
         </RadioGroup>

@@ -72,7 +72,7 @@
         <!--        </meta-data>-->
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="@string/umeng_msg_secret"></meta-data>
+            android:value="50bb050a3c372095dfbb6610b89bc987"></meta-data>
 
         <service android:name=".push.MyNotificationService" />
         <service
