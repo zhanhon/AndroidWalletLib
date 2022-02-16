@@ -297,7 +297,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginStart="@dimen/dp_5"
-                            android:text="NTF"
+                            android:text="NFT"
                             android:textColor="@color/color_9598AA" />
 
                         <RelativeLayout
