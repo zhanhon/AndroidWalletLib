@@ -18,11 +18,15 @@ import com.ramble.ramblewallet.databinding.ActivityRecoverWalletBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.ethereum.WalletETHUtils.isEthValidAddress
+import com.ramble.ramblewallet.ethereum.utils.ChineseSimplified
+import com.ramble.ramblewallet.ethereum.utils.ChineseTraditional
+import com.ramble.ramblewallet.ethereum.utils.English
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.StringUtils.*
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.utils.toastDefault
 
@@ -98,13 +102,13 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun btnIsClick() {
-        if ((binding.edtWalletName.text.isNotEmpty())
-            && (binding.edtWalletPassword.text.isNotEmpty())
-            && (binding.edtPasswordConfirm.text.isNotEmpty())
-            && (binding.edtContributingWords.text.isNotEmpty())
-            && (binding.edtWalletPassword.text.length >= 6)
-            && (binding.edtWalletPassword.text.trim()
-                .toString() == binding.edtPasswordConfirm.text.trim().toString())
+        if ((binding.edtWalletName.text.toString().isNotEmpty())
+            && (binding.edtWalletPassword.text.toString().isNotEmpty())
+            && (binding.edtPasswordConfirm.text.toString().isNotEmpty())
+            && (binding.edtContributingWords.text.toString().isNotEmpty())
+            && (binding.edtWalletPassword.text.toString().length >= 6)
+            && (binding.edtWalletPassword.text.trim().toString()
+                    == binding.edtPasswordConfirm.text.trim().toString())
         ) {
             binding.btnConfirm.background = getDrawable(R.drawable.shape_green_bottom_btn)
         } else {
@@ -158,19 +162,12 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     toastDefault(getString(R.string.different_password))
                     return
                 }
+
                 when (walletType) {
                     1 -> { //以太坊
                         when (chooseMode) {
                             1 -> {
-                                mnemonic = binding.edtContributingWords.text.split(" ") as ArrayList<String>
-                                if (mnemonic.size != 12) {
-                                    toastDefault(getString(R.string.input_mnemonic_words))
-                                    return
-                                }
-                                if (binding.edtContributingWords.text.isEmpty()) {
-                                    toastDefault(getString(R.string.input_mnemonic_words))
-                                    return
-                                }
+                                if (validMnemonic()) return
                                 recoverWalletETH(1)
                             }
                             2 -> {
@@ -192,15 +189,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     2 -> { //波场
                         when (chooseMode) {
                             1 -> {
-                                mnemonic = binding.edtContributingWords.text.split(" ") as ArrayList<String>
-                                if (mnemonic.size != 12) {
-                                    toastDefault(getString(R.string.input_mnemonic_words))
-                                    return
-                                }
-                                if (binding.edtContributingWords.text.isEmpty()) {
-                                    toastDefault(getString(R.string.input_mnemonic_words))
-                                    return
-                                }
+                                if (validMnemonic()) return
                                 recoverWalletTRX(1)
                             }
                             2 -> {
@@ -225,6 +214,38 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    private fun validMnemonic(): Boolean {
+        if (binding.edtContributingWords.text.isEmpty()) {
+            toastDefault(getString(R.string.input_mnemonic_words))
+            return true
+        }
+        var str = binding.edtContributingWords.text.toString().replace(" ", "")
+        if (isHasLowerChar(str) || isChinese(str)) {
+            mnemonic =
+                binding.edtContributingWords.text.trim().toString().split(" ") as ArrayList<String>
+            if (mnemonic.size != 12) {
+                toastDefault(getString(R.string.input_mnemonic_words))
+                return true
+            }
+            mnemonic.forEach {
+                if (isHasLowerChar(str) && !English.words.contains(it)) {
+                    toastDefault(getString(R.string.input_mnemonic_words))
+                    return true
+                }
+                if (isChinese(str) && !ChineseSimplified.words.contains(it)
+                    && !ChineseTraditional.words.contains(it)
+                ) {
+                    toastDefault(getString(R.string.input_mnemonic_words))
+                    return true
+                }
+            }
+        } else {
+            toastDefault(getString(R.string.input_mnemonic_words))
+            return true
+        }
+        return false
     }
 
     private fun recoverWalletETH(chooseMode: Int) {

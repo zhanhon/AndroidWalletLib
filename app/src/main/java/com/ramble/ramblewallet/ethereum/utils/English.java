@@ -10,7 +10,7 @@ import com.develop.mnemonic.wordlists.WordList;
 public enum English implements WordList {
     INSTANCE;
 
-    private final static String[] words = new String[]{
+    public final static String[] words = new String[]{
             "abandon",
             "ability",
             "able",

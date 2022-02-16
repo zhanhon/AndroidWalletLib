@@ -2,6 +2,8 @@ package com.ramble.ramblewallet.utils;
 
 import android.text.TextUtils;
 
+import java.util.regex.Pattern;
+
 /**
  * @创建人： Ricky
  * @创建时间： 2022/2/15
@@ -77,4 +79,16 @@ public class StringUtils {
         String resultStr = new StringBuilder(strTemp).reverse().toString() + tmpCommaStr;
         return resultStr;
     }
+
+    //小写字母
+    public static final String REG_LOWERCASE = ".*[a-z]+.*";
+    public static boolean isHasLowerChar(String password) {
+        return password.matches(REG_LOWERCASE);
+    }
+
+    public static boolean isChinese(String str) {
+        Pattern pattern = Pattern.compile("[\u0391-\uFFE5]+$");
+        return pattern.matcher(str).matches();
+    }
+
 }
