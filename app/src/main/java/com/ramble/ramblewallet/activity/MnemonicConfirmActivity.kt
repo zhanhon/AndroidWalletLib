@@ -274,12 +274,33 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             R.id.ll_english -> {
                 currentTab = "english"
                 initData()
+                initSwitch()
             }
             R.id.ll_chinese -> {
                 currentTab = "chinese"
                 initData()
+                initSwitch()
             }
         }
+    }
+
+    private fun initSwitch() {
+        myDataBeans.clear()
+        mnemonicETHChoose.clear()
+        contributingWordsConfirmAdapter.notifyDataSetChanged()
+        binding.tvContributingWordsConfirmTips.visibility = View.VISIBLE
+        binding.tvContributingWordsName1.visibility = View.VISIBLE
+        binding.tvContributingWordsName2.visibility = View.VISIBLE
+        binding.tvContributingWordsName3.visibility = View.VISIBLE
+        binding.tvContributingWordsName4.visibility = View.VISIBLE
+        binding.tvContributingWordsName5.visibility = View.VISIBLE
+        binding.tvContributingWordsName6.visibility = View.VISIBLE
+        binding.tvContributingWordsName7.visibility = View.VISIBLE
+        binding.tvContributingWordsName8.visibility = View.VISIBLE
+        binding.tvContributingWordsName9.visibility = View.VISIBLE
+        binding.tvContributingWordsName10.visibility = View.VISIBLE
+        binding.tvContributingWordsName11.visibility = View.VISIBLE
+        binding.tvContributingWordsName12.visibility = View.VISIBLE
     }
 
     @SuppressLint("CheckResult")
