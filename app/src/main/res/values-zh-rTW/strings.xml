@@ -65,7 +65,7 @@
     <string name="within_30_days">30日之內</string>
     <string name="within_7_days">7日內</string>
     <string name="keystore_backup">Keystore備份</string>
-    <string name="help_center_content">幫助中心內容</string>
+    <string name="help_center_content">幫助与中心內容</string>
     <string name="remark">備註</string>
     <string name="address_transfer_tips">本地址僅能接受以太坊ETH資產,請勿轉入其他公鏈資產</string>
     <string name="bitcoin">比特幣</string>
@@ -168,7 +168,7 @@
     <string name="abc">"123"</string>
     <string name="message_center">消息中心</string>
     <string name="message_details">消息內容</string>
-    <string name="help_center">幫助中心</string>
+    <string name="help_center">幫助與反饋</string>
     <string name="help_door_sister">新手入門須知</string>
     <string name="help_sever_sister">客服中心</string>
     <string name="transaction_query_all">全部</string>
