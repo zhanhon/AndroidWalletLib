@@ -11,6 +11,29 @@ import java.util.Arrays;
  */
 public class WalletBTCUtils {
 
+//    private fun createBTCWalletFromWords(words: String): TianWallet {
+//        //把助记词切割成数组
+//        val wordsList = Arrays.asList(*words.split("\\s+".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
+//        val deterministicSeed = DeterministicSeed(wordsList, null, "", 0)
+//        val deterministicKeyChain = DeterministicKeyChain.builder().seed(deterministicSeed).build()
+//        //这里运用了BIP44里面提到的算法, 44'是固定的, 后面的一个0'代表的是币种BTC
+//        var privKeyBTC = deterministicKeyChain.getKeyByPath(parsePath("m/44'/0'/0'/0/0"), true).privKey
+//        //如果是调试模式, 第二个字符串应该填1'
+//        if (BuildConfig.DEBUG) {
+//            privKeyBTC = deterministicKeyChain.getKeyByPath(parsePath("m/44'/1'/0'/0/0"), true).privKey
+//        }
+//
+//        val ecKey = ECKey.fromPrivate(privKeyBTC)
+//        val publickey = Numeric.toHexStringNoPrefixZeroPadded(BigInteger(ecKey.pubKey), 66)
+//        //正式环境应该是主网参数
+//        var privateKey = ecKey.getPrivateKeyEncoded(MainNetParams.get()).toString()
+//        //如果是测试环境, 应该调用测试网参数
+//        if (BuildConfig.DEBUG) {
+//            privateKey = ecKey.getPrivateKeyEncoded(TestNet3Params.get()).toString()
+//            return TianWallet(ecKey.toAddress(TestNet3Params.get()).toString(), publickey, privateKey, words)
+//        }
+//        return TianWallet(ecKey.toAddress(MainNetParams.get()).toString(), publickey, privateKey, words)
+//    }
 
     /**
      * btc(bch,usdt)地址是否有效

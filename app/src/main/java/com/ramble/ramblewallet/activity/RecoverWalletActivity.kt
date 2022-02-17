@@ -223,6 +223,10 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         }
         var str = binding.edtContributingWords.text.toString().replace(" ", "")
         if (isHasLowerChar(str) || isChinese(str)) {
+            if (!binding.edtContributingWords.text.trim().toString().contains(" ")) {
+                toastDefault(getString(R.string.input_mnemonic_words))
+                return true
+            }
             mnemonic =
                 binding.edtContributingWords.text.trim().toString().split(" ") as ArrayList<String>
             if (mnemonic.size != 12) {
