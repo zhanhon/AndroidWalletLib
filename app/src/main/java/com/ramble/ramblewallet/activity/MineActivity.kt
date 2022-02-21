@@ -382,17 +382,17 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             CN -> {
                 binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text =
                     getString(R.string.language_simplified_chinese)
-                LanguageSetting.setLanguage(applicationContext, 1)
+                LanguageSetting.setLanguage(this, 1)
             }
             TW -> {
                 binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text =
                     getString(R.string.language_traditional_chinese)
-                LanguageSetting.setLanguage(applicationContext, 2)
+                LanguageSetting.setLanguage(this, 2)
             }
             EN -> {
                 binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text =
                     getString(R.string.language_english)
-                LanguageSetting.setLanguage(applicationContext, 3)
+                LanguageSetting.setLanguage(this, 3)
             }
         }
     }
