@@ -2,16 +2,18 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@mipmap/ic_home_bg_btc_big">
+        android:background="@color/color_CA7C14"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_64"
-            android:layout_marginTop="@dimen/dp_20">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginBottom="@dimen/dp_15">
 
             <TextView
                 android:id="@+id/txtTitle"
@@ -30,7 +32,7 @@
                 android:background="@drawable/vector_menu" />
 
             <LinearLayout
-                android:id="@+id/relBtns"
+                android:id="@+id/toolbar_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/btnMenu"
@@ -59,7 +61,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/relBtn2"
+                android:id="@+id/toolbar_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true">
@@ -80,22 +82,23 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <ScrollView
-            android:id="@+id/scroll01"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/toolbar">
 
-            <LinearLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbar_layout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_60"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:background="@color/color_CA7C14">
 
                 <LinearLayout
                     android:id="@+id/linearBtns"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_64"
-                    android:layout_marginBottom="@dimen/dp_15">
+                    android:layout_marginBottom="@dimen/dp_15"
+                    app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
                     <LinearLayout
                         android:id="@+id/ll_gathering"
@@ -169,7 +172,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/card00"
+                    android:id="@+id/ll_card"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_240"
                     android:background="@mipmap/ic_home_btc_spread"
@@ -183,6 +186,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tv_wallet_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxEms="8"
@@ -192,6 +196,7 @@
                             android:textSize="@dimen/dp_15" />
 
                         <ImageView
+                            android:id="@+id/iv_balance_refresh"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -206,24 +211,31 @@
                         android:layout_marginTop="@dimen/dp_10"
                         android:orientation="horizontal">
 
-                        <ImageView
-                            android:layout_width="@dimen/dp_15"
-                            android:layout_height="@dimen/dp_15"
-                            android:background="@drawable/vector_dollar_mark" />
-
                         <TextView
+                            android:id="@+id/tv_currency_unit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="23232343"
+                            android:gravity="top|left"
+                            android:text="$"
+                            android:textColor="@color/color_FFFFFF"
+                            android:textSize="@dimen/dp_12" />
+
+                        <TextView
+                            android:id="@+id/tv_balance_total"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
                             android:textColor="@color/color_FFFFFF"
                             android:textSize="@dimen/dp_17" />
 
                         <ImageView
+                            android:id="@+id/iv_eyes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="@dimen/dp_15"
-                            android:background="@drawable/vector_home_address_open" />
+                            android:background="@drawable/vector_home_address_open"
+                            android:checked="true" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -234,6 +246,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tv_btc_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0xxxs....sdfs"
@@ -241,6 +254,7 @@
                             android:textSize="@dimen/dp_12" />
 
                         <ImageView
+                            android:id="@+id/iv_copy"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -279,6 +293,7 @@
                             android:background="@drawable/shape_gray_endways_bottom_btn" />
 
                         <TextView
+                            android:id="@+id/tv_ntf"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginStart="@dimen/dp_5"
@@ -289,149 +304,17 @@
 
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_currency"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_FFFFFF"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-            </LinearLayout>
+            </com.google.android.material.appbar.AppBarLayout>
 
-        </ScrollView>
-
-        <LinearLayout
-            android:id="@+id/card01"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_240"
-            android:layout_below="@id/toolbar"
-            android:background="@mipmap/ic_home_btc_pack_up"
-            android:orientation="vertical"
-            android:padding="@dimen/dp_10"
-            android:visibility="gone">
-
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_currency"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_20"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:background="@color/color_FFFFFF"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Chric"
-                    android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/dp_15" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/dp_15"
-                    android:background="@drawable/vector_refresh" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_20"
-                android:layout_marginTop="@dimen/dp_10"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/dp_15"
-                    android:layout_height="@dimen/dp_15"
-                    android:background="@drawable/vector_dollar_mark" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="23232343"
-                    android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/dp_17" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/dp_15"
-                    android:background="@drawable/vector_home_address_open" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_20"
-                android:layout_marginTop="@dimen/dp_35"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0xxxs....sdfs"
-                    android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/dp_12" />
-
-                <ImageView
-                    android:layout_width="@dimen/dp_10"
-                    android:layout_height="@dimen/dp_10"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/dp_20"
-                    android:background="@drawable/vector_home_copy" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_90"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="@dimen/dp_2"
-                    android:layout_marginBottom="@dimen/dp_2"
-                    android:background="@drawable/shape_green_endways_bottom_btn" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/dp_5"
-                    android:text="@string/asset"
-                    android:textColor="@color/color_000000" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/dp_20"
-                    android:layout_marginTop="@dimen/dp_2"
-                    android:layout_marginBottom="@dimen/dp_2"
-                    android:background="@drawable/shape_gray_endways_bottom_btn" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/dp_5"
-                    android:text="NFT"
-                    android:textColor="@color/color_9598AA" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_24">
-
-                    <ImageView
-                        android:id="@+id/iv_token_manage_click_01"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginStart="@dimen/dp_20"
-                        android:layout_marginEnd="@dimen/dp_10"
-                        android:background="@drawable/vector_token_manage" />
-                </RelativeLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-    </RelativeLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
 </layout>

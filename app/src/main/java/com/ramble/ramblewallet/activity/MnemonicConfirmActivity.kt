@@ -21,6 +21,7 @@ import com.ramble.ramblewallet.adapter.ContributingWordsConfirmAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
 import com.ramble.ramblewallet.bean.MyDataBean
+import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.custom.AutoLineFeedLayoutManager
 import com.ramble.ramblewallet.databinding.ActivityContributingWordsConfirmBinding
@@ -52,7 +53,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mnemonicETH: ArrayList<String>
     private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX|3：BTC、ETH、TRX
     private var isBackupMnemonic = false
-    private var mnemonic:String? = null
+    private var mnemonic: String? = null
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -244,7 +245,40 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             0 -> { //BTC
-
+                val walletBTC = WalletBTCUtils.generateWalletByMnemonic(
+                    walletName,
+                    walletPassword,
+                    walletETHString.trim()
+                )
+                if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+                    saveWalletList =
+                        Gson().fromJson(
+                            SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                            object : TypeToken<ArrayList<WalletETH>>() {}.type
+                        )
+                }
+                if (walletName.isEmpty()) {
+                    var index = 1
+                    walletBTC.walletName = "BTC" + String.format("%02d", index)
+                    if (saveWalletList.size > 0) {
+                        saveWalletList.forEach {
+                            if (it.walletName == walletBTC.walletName) {
+                                index++
+                            }
+                        }
+                    }
+                    walletBTC.walletName = "BTC" + String.format("%02d", index)
+                }
+                saveWalletList.add(walletBTC)
+                SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+                var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+                detailsList.add(AddressReport.DetailsList(walletBTC.address, 0, 0))
+                putAddress(detailsList)
+                var isValidBtcSuccess = WalletBTCUtils.isBtcValidAddress(walletBTC.address, true)
+                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletBTC))
+                if (isValidBtcSuccess) {
+                    startActivity(Intent(this, MainBTCActivity::class.java))
+                }
             }
         }
     }

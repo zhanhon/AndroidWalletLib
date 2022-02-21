@@ -13,6 +13,8 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
+import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
+import com.ramble.ramblewallet.bitcoin.WalletBTCUtils.isBtcValidAddress
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityRecoverWalletBinding
 import com.ramble.ramblewallet.ethereum.WalletETH
@@ -26,7 +28,8 @@ import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.StringUtils.*
+import com.ramble.ramblewallet.utils.StringUtils.isChinese
+import com.ramble.ramblewallet.utils.StringUtils.isHasLowerChar
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.utils.toastDefault
 
@@ -209,7 +212,19 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                         }
                     }
                     0 -> { //比特币
-
+                        when (chooseMode) {
+                            1 -> {
+                                if (validMnemonic()) return
+                                recoverWalletBTC(1)
+                            }
+                            2 -> {
+                                if (binding.edtContributingWords.text.isEmpty()) {
+                                    toastDefault(getString(R.string.input_secret_key))
+                                    return
+                                }
+                                recoverWalletBTC(2)
+                            }
+                        }
                     }
                 }
             }
@@ -384,6 +399,62 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 }
                 3 -> {
                     toastDefault(getString(R.string.input_correct_keystore))
+                }
+            }
+        }
+    }
+
+    private fun recoverWalletBTC(chooseMode: Int) {
+        lateinit var walletBTC: WalletETH
+        when (chooseMode) {
+            1 -> {
+                walletBTC = WalletBTCUtils.generateWalletByMnemonic(
+                    binding.edtWalletName.text.trim().toString(),
+                    binding.edtWalletPassword.text.trim().toString(),
+                    binding.edtContributingWords.text.toString()
+                )
+            }
+            2 -> {
+                walletBTC = WalletBTCUtils.generateWalletByPrivateKey(
+                    binding.edtWalletName.text.trim().toString(),
+                    binding.edtWalletPassword.text.trim().toString(),
+                    binding.edtContributingWords.text.toString()
+                )
+            }
+        }
+        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+            saveWalletList =
+                Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                    object : TypeToken<ArrayList<WalletETH>>() {}.type
+                )
+        }
+        saveWalletList.add(walletBTC)
+        println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
+        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        if (walletBTC.address.isNotEmpty()) {
+            putAddress(walletBTC, 0)
+            startActivity(Intent(this, MainETHActivity::class.java))
+            if (isBtcValidAddress(walletBTC.address, true)) {
+                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletBTC))
+                startActivity(Intent(this, MainBTCActivity::class.java))
+            } else {
+                when (chooseMode) {
+                    1 -> {
+                        toastDefault(getString(R.string.input_correct_mnemonic_words))
+                    }
+                    2 -> {
+                        toastDefault(getString(R.string.input_correct_secret_key))
+                    }
+                }
+            }
+        } else {
+            when (chooseMode) {
+                1 -> {
+                    toastDefault(getString(R.string.input_correct_mnemonic_words))
+                }
+                2 -> {
+                    toastDefault(getString(R.string.input_correct_secret_key))
                 }
             }
         }
