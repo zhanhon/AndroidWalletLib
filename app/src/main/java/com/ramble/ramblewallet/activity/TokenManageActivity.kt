@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +44,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
     private lateinit var itemTouchHelper: ItemTouchHelperImpl
     private val adapter = RecyclerAdapter()
     private var isShowCheck: Boolean = false
-    private var isFirst: Boolean = false
+
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,8 +84,6 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                     Collections.swap(myStores, srcPosition, targetPosition)
                     // 更新UI中的Item的位置，主要是给用户看到交互效果
                     adapter.notifyItemMoved(srcPosition, targetPosition)
-                    SharedPreferencesUtils.saveString(this@TokenManageActivity, TOKEN_INFO_NO, Gson().toJson(myStores))
-                    RxBus.emitEvent(Pie.EVENT_DEL_TOKEN, saveList)
                     return true
                 }
                 return false
@@ -109,6 +108,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
 
     private fun initListener() {
         binding.ivBack.setOnClickListener(this)
+        binding.confirmButton.setOnClickListener(this)
         binding.ivDeleteToken.setOnClickListener(this)
         adapter.onClickListener = this
     }
@@ -144,33 +144,40 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_back -> {
                 finish()
             }
+            R.id.confirm_button -> {//完成
+                binding.ivDeleteToken.isVisible=true
+                binding.confirmButton.isVisible=false
+                isShowCheck=false
+                itemTouchHelper.setDragEnable(false)
+                setIDlist()
+                if (saveList.isNotEmpty()) {
+                    saveTokenList.forEach {
+                        adapter.remove(it)
+                    }
+                    adapter.notifyDataSetChanged()
+                    var list = myStores.iterator()
+                    list.forEach {
+                        if (saveList.contains(it.id)) {
+                            list.remove()
+                        }
+                    }
+
+                }
+                SharedPreferencesUtils.saveString(this@TokenManageActivity, TOKEN_INFO_NO, Gson().toJson(myStores))
+                RxBus.emitEvent(Pie.EVENT_DEL_TOKEN, saveList)
+                ArrayList<SimpleRecyclerItem>().apply {
+                    myStores.forEach { o -> this.add(TokenManageItem(o)) }
+                    adapter.replaceAll(this.toList())
+                }
+//                setAdapterEditable(isShowCheck)
+
+            }
             R.id.iv_delete_token -> {
+                binding.ivDeleteToken.isVisible=false
+                binding.confirmButton.isVisible=true
                 isShowCheck = true
                 itemTouchHelper.setDragEnable(true)
-                if (!isFirst) {
-                    setAdapterEditable(isShowCheck)
-                    isFirst = true
-                } else {
-                    setIDlist()
-                    if (saveList.isNotEmpty()) {
-                        saveTokenList.forEach {
-                            adapter.remove(it)
-                        }
-                        adapter.notifyDataSetChanged()
-                        var list = myStores.iterator()
-                        list.forEach {
-                            if (saveList.contains(it.id)) {
-                                list.remove()
-                            }
-                        }
-                        SharedPreferencesUtils.saveString(
-                            this,
-                            TOKEN_INFO_NO,
-                            Gson().toJson(myStores)
-                        )
-                        RxBus.emitEvent(Pie.EVENT_DEL_TOKEN, saveList)
-                    }
-                }
+                setAdapterEditable(isShowCheck)
             }
             R.id.iv_token_status -> {
                 if (isShowCheck) return
