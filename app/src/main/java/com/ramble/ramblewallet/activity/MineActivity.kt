@@ -315,20 +315,23 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<View>(R.id.tv_language1).setOnClickListener { v1: View? ->
                 SharedPreferencesUtils.saveString(this, LANGUAGE, CN)
                 setLanguage()
+                initView()
                 dialogLanguage.dismiss()
-                startActivity(Intent(this, MineActivity::class.java))
+
             }
             window.findViewById<View>(R.id.tv_language2).setOnClickListener { v1: View? ->
                 SharedPreferencesUtils.saveString(this, LANGUAGE, TW)
                 setLanguage()
+                initView()
                 dialogLanguage.dismiss()
-                startActivity(Intent(this, MineActivity::class.java))
+
             }
             window.findViewById<View>(R.id.tv_language3).setOnClickListener { v1: View? ->
                 SharedPreferencesUtils.saveString(this, LANGUAGE, EN)
                 setLanguage()
+                initView()
                 dialogLanguage.dismiss()
-                startActivity(Intent(this, MineActivity::class.java))
+
             }
 
             dialogTheme(window)
