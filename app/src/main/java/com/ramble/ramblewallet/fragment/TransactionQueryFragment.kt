@@ -162,6 +162,7 @@ class TransactionQueryFragment : BaseFragment(),
             object : TypeToken<ArrayList<WalletETH>>() {}.type
         )
         address = saveData(saveWalletList)
+//            "0x202DD5755125500587ADA64E84af2A00AF73e2E3"
 //        "0x90d51f90fdf0722f1d621820ca9f45547221fdd9"
         var req = QueryTransferRecord.Req(
             currentPage,
