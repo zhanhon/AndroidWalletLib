@@ -101,7 +101,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
         })
         itemTouchHelper = ItemTouchHelperImpl(itemTouchCallback)
         itemTouchHelper.attachToRecyclerView(binding.rvTokenManageCurrency)
-        itemTouchHelper.setDragEnable(true)
+        itemTouchHelper.setDragEnable(false)
 
     }
 
@@ -144,6 +144,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.iv_delete_token -> {
                 isShowCheck = true
+                itemTouchHelper.setDragEnable(true)
                 if (!isFirst) {
                     setAdapterEditable(isShowCheck)
                     isFirst = true

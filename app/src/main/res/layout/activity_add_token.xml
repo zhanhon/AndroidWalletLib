@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/dp_10"
-                android:text="@string/new_tokens_eth"
+                android:text="@string/new_tokens"
                 android:textColor="@color/color_000000"
                 android:textSize="@dimen/sp_17"
                 android:textStyle="bold"

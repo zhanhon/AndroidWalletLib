@@ -94,7 +94,7 @@
     <string name="disappear">消失</string>
     <string name="message_details">消息內容</string>
     <string name="message_center">消息中心</string>
-    <string name="new_tokens">新增代幣</string>
+    <string name="new_tokens">新增ETH代幣</string>
     <string name="new_wallet">新增錢包</string>
     <string name="edit">修改</string>
     <string name="one_copy">一鍵複製</string>
@@ -209,6 +209,6 @@
     <string name="transaction_query_trx">TRX交易</string>
     <string name="contributing_name_hint">請輸入名稱</string>
     <string name="address_tips">完成</string>
-    <string name="new_tokens_eth">新增ETH代幣</string>
+
 
 </resources>

@@ -48,7 +48,7 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
         binding.transactionCode.text = trans?.txHash
         binding.blockNumber.text = trans?.blockNumber
         binding.tvStatus.text = trans?.statusDesc
-        binding.tvTime.text = TimeUtils.dateToWeek(trans?.createTime) + "  " + trans?.createTime
+        binding.tvTime.text = TimeUtils.dateToWeek(this,trans?.createTime) + "  " + trans?.createTime
         when (trans?.status) {
             1 -> {
                 binding.ivStatus.setImageResource(R.drawable.ic_transing)

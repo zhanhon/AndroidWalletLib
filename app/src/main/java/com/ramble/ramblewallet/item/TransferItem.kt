@@ -1,5 +1,6 @@
 package com.ramble.ramblewallet.item
 
+import android.app.Activity
 import android.graphics.Color
 import androidx.core.view.isVisible
 import com.ramble.ramblewallet.R
@@ -14,7 +15,7 @@ import com.ramble.ramblewallet.wight.adapter.ViewHolder
  * 作者　: potato
  * 描述　:
  */
-class TransferItem(val data: QueryTransferRecord.Record) : SimpleRecyclerItem() {
+class TransferItem(val activity: Activity, val data: QueryTransferRecord.Record) : SimpleRecyclerItem() {
     override fun getLayout(): Int = R.layout.item_transfer_accounts
 
     override fun bind(holder: ViewHolder) {
@@ -25,7 +26,7 @@ class TransferItem(val data: QueryTransferRecord.Record) : SimpleRecyclerItem() 
         }else{
             addressHandle(data.toAddress)
         }
-        binding.tvTime.text = dateToWeek(data.createTime) + "  " + data.createTime
+        binding.tvTime.text = dateToWeek(activity,data.createTime) + "  " + data.createTime
         binding.tvMoneyType.isVisible = false
         when (data.addressType) {
             1 -> {

@@ -360,8 +360,7 @@ fun Activity.startMatisseActivity() {
         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
         .thumbnailScale(0.85f)
         .imageEngine(Glide4Engine())
-        .capture(true)
-        .captureStrategy(CaptureStrategy(true, "$appProcessName.file_provider", "pie"))
+        .capture(false)
         .theme(R.style.MyMatisse)
         .forResult(REQUEST_CODE_1029)
 }

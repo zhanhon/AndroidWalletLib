@@ -183,7 +183,7 @@ class TransactionQueryFragment : BaseFragment(),
                         totalPage = data.totalPage
                         println("==================>getTransferInfo:${data}")
                         ArrayList<SimpleRecyclerItem>().apply {
-                            data.records.forEach { item -> add(TransferItem(item)) }
+                            data.records.forEach { item -> add(TransferItem(myActivity,item)) }
                             if (data.pageNo == 1) {
                                 adapter.replaceAll(this.toList())
                             } else {

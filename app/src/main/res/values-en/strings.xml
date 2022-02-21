@@ -94,7 +94,7 @@
     <string name="disappear">Lost</string>
     <string name="message_details">Message Information</string>
     <string name="message_center">Message Center</string>
-    <string name="new_tokens">New Token</string>
+    <string name="new_tokens">New ETH Token</string>
     <string name="new_wallet">New Wallet</string>
     <string name="edit">Revise</string>
     <string name="one_copy">Copy</string>
@@ -209,6 +209,6 @@
     <string name="transaction_query_trx">TRX transaction</string>
     <string name="contributing_name_hint">Please enter a name</string>
     <string name="address_tips">Done</string>
-    <string name="new_tokens_eth">Add ETH tokens</string>
+
 
 </resources>

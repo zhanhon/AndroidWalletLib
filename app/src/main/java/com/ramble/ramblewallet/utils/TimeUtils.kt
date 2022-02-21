@@ -1,5 +1,7 @@
 package com.ramble.ramblewallet.utils
 
+import android.app.Activity
+import com.ramble.ramblewallet.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,11 +20,11 @@ object TimeUtils {
      */
 
 
-    fun dateToWeek(dateString: String?): String? {
+    fun dateToWeek(activity: Activity,dateString: String?): String? {
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         var data = sdf.parse(dateString)
-        val weekDays = arrayOf("周日", "周一", "周二", "周三", "周四", "周五", "周六")
+        val weekDays = arrayOf(activity.getString(R.string.sunday), activity.getString(R.string.monday), activity.getString(R.string.tuesday), activity.getString(R.string.wednesday), activity.getString(R.string.thursday), activity.getString(R.string.friday), activity.getString(R.string.saturday))
         val cal: Calendar = Calendar.getInstance()
         cal.time = data
         // 指示一个星期中的某天,0代表星期天。
