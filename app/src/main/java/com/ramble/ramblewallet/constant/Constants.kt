@@ -22,7 +22,7 @@ const val ARG_PARAM11 = "11"
 //语言代码|zh_CN:简体中文|zh_TW:繁体中文|en:英文|th:泰语|vi:越南语
 const val CN = "zh_CN"
 const val TW = "zh_TW"
-const val EN = "en"
+const val EN = "EN"
 const val LANGUAGE = "language"
 const val DEVICE_TOKEN = "deviceToken"
 
