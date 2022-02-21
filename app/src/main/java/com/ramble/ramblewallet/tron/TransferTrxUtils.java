@@ -73,6 +73,9 @@ public class TransferTrxUtils {
                     if (context instanceof MainTRXActivity) {
                         ((MainTRXActivity) context).setTrxBalance(new BigDecimal("0"));
                     }
+                    if (context instanceof TransferActivity) {
+                        ((TransferActivity) context).setTrxBalance(new BigDecimal("0"));
+                    }
                     e.printStackTrace();
                 }
             }

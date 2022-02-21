@@ -22,6 +22,9 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EthMinerConfig
 import com.ramble.ramblewallet.bean.MainETHTokenBean
+import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.balanceOfBtc
+import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.balanceOfOmni
+import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.*
@@ -86,6 +89,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         binding.edtReceiverAddress.setText(transferReceiverAddress)
         binding.edtInputQuantity.addTextChangedListener(object : TextWatcher {
             var deleteLastChar = false
+
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun afterTextChanged(s: Editable?) {
                 if (deleteLastChar) {
@@ -105,11 +109,15 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 if (s.toString().contains(".")) {
                     if (s != null) {
                         var length = s.length - s.toString().lastIndexOf(".")
-                        deleteLastChar = length >= 10
+                        if (walletSelleted.walletType == 2) {
+                            deleteLastChar = length >= 8
+                        } else {
+                            deleteLastChar = length >= 10
+                        }
                     }
                 }
             }
-        });
+        })
 
         initClick()
     }
@@ -249,12 +257,15 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         when (walletSelleted.walletType) { //链类型|0:BTC|1:ETH|2:TRX
             1 -> {
                 binding.clMinerFee.visibility = View.VISIBLE
+                binding.edtReceiverAddress.hint = "ETH" + getString(R.string.address)
             }
             2 -> {
                 binding.clMinerFee.visibility = View.GONE
+                binding.edtReceiverAddress.hint = "TRX" + getString(R.string.address)
             }
             0 -> {
-
+                binding.clMinerFee.visibility = View.GONE
+                binding.edtReceiverAddress.hint = "BTC" + getString(R.string.address)
             }
         }
 
@@ -296,7 +307,17 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             0 -> {
-
+                if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address, true)) {
+                    if (isToken) {
+                        balanceOfOmni(
+                            this,
+                            walletSelleted.address,
+                            tokenBean.contractAddress
+                        )
+                    } else {
+                        balanceOfBtc(this, walletSelleted.address)
+                    }
+                }
             }
         }
     }
@@ -311,21 +332,23 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         setBalance(transferBalance)
     }
 
+    fun setBtcBalance(balance: BigDecimal) {
+        transferBalance = balance
+        setBalance(transferBalance)
+    }
+
+    fun setBtcTokenBalance(balance: BigDecimal) {
+        transferBalance = balance
+        setBalance(transferBalance)
+    }
+
     private fun setMinerFee() {
         gas = BigDecimal(gasPrice).multiply(BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
-        when (walletSelleted.walletType) {
-            1 -> {
-                binding.tvMinerFeeValue.text = "${DecimalFormatUtil.format8.format(gas)} ETH"
-                binding.tvMinerFeeValueConvert.text = "≈${currencyUnit} ${currencySymbol}${
-                    DecimalFormatUtil.format2.format(BigDecimal(rate).multiply(gas))
-                }"
-            }
-            2 -> {
-
-            }
-            0 -> {
-
-            }
+        if (walletSelleted.walletType == 1) {
+            binding.tvMinerFeeValue.text = "${DecimalFormatUtil.format8.format(gas)} ETH"
+            binding.tvMinerFeeValueConvert.text = "≈${currencyUnit} ${currencySymbol}${
+                DecimalFormatUtil.format2.format(BigDecimal(rate).multiply(gas))
+            }"
         }
         binding.tvTips.text = "$gasPrice Gwei * Gas Limit (${strAddComma(gasLimit)})"
     }
@@ -382,7 +405,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
                 override fun afterTextChanged(s: Editable?) {
                     if ((edtWalletPassword.text.isNotEmpty())
-                        && (edtWalletPassword.text.length >= 6)){
+                        && (edtWalletPassword.text.length >= 6)
+                    ) {
                         window.findViewById<Button>(R.id.btn_confirm).background =
                             getDrawable(R.drawable.shape_green_bottom_btn)
                     } else {
@@ -570,7 +594,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<TextView>(R.id.miner_fee_gas_price).text = fastGasPrice
             window.findViewById<TextView>(R.id.miner_fee_limit_title).text = "21000"
 
-                when (walletSelleted.walletType) {
+            when (walletSelleted.walletType) {
                 1 -> {
                     gas = BigDecimal(gasPrice).multiply(BigDecimal(gasLimit))
                         .divide(BigDecimal("1000000000"))

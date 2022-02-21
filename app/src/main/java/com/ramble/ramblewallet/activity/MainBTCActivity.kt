@@ -26,12 +26,11 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.StoreInfo
+import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.balanceOfBtc
+import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainBtcBinding
-import com.ramble.ramblewallet.ethereum.TransferEthUtils
-import com.ramble.ramblewallet.ethereum.TransferEthUtils.getBalanceETH
 import com.ramble.ramblewallet.ethereum.WalletETH
-import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.noticeInfoUrl
@@ -39,7 +38,6 @@ import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.StringUtils.strAddComma
 import java.math.BigDecimal
-
 
 class MainBTCActivity : BaseActivity(), View.OnClickListener {
 
@@ -50,18 +48,14 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
     private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
     private var isClickEyes = false
     private var animator: ObjectAnimator? = null
-    private var saveTokenList: ArrayList<StoreInfo> = arrayListOf()
     private lateinit var walletSelleted: WalletETH
-    private var ethBalance: BigDecimal = BigDecimal("0.00000000")
-    private var tokenBalance: BigDecimal = BigDecimal("0.00000000")
-    private var totalBalance: BigDecimal = BigDecimal("0.00")
-    private var rateETH: String? = ""
+    private var btcBalance: BigDecimal = BigDecimal("0")
+    private var tokenBalance: BigDecimal = BigDecimal("0")
+    private var totalBalance: BigDecimal = BigDecimal("0")
     private var unitPrice = ""
 
-
-    //DAI:4 0x16aFDD5dfE386052766b798bFA37DAec4b81155a      新：0x0B6558D0C0e06aAdf34428137b7eFF5B9da5974A
-    //private var contractAddress = "0xb319d1A045ffe108D14195F7C5d60Be220436a34" //测试节点ERC-USDT:6合约地址
-    private var contractAddress = "0x40a90Ade8BB2BdF8858b424ccbb90012373e8a41" //新
+    //YING
+    private var contractAddress = "TU9iBgEEv9qsc6m7EBPLJ3x5vSNKfyxWW5" //官方Nile测试节点YING
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -205,7 +199,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                         ARG_PARAM2, MainETHTokenBean(
                             "BTC",
                             "BTC",
-                            ethBalance,
+                            btcBalance,
                             unitPrice,
                             currencyUnit,
                             null,
@@ -231,7 +225,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.iv_gathering_top, R.id.ll_gathering -> {
                 startActivity(Intent(this, GatheringActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "BTC")
+                    putExtra(ARG_PARAM1, "TRX")
                     putExtra(ARG_PARAM2, walletSelleted.address)
                 })
             }
@@ -241,7 +235,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                         ARG_PARAM2, MainETHTokenBean(
                             "BTC",
                             "BTC",
-                            ethBalance,
+                            btcBalance,
                             unitPrice,
                             currencyUnit,
                             null,
@@ -265,11 +259,8 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_eyes -> {
                 if (isClickEyes) {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_open)
-                    binding.tvBalanceTotal.text = strAddComma(
-                        DecimalFormatUtil.format2.format(
-                            totalBalance
-                        )
-                    )
+                    binding.tvBalanceTotal.text =
+                        strAddComma(DecimalFormatUtil.format2.format(totalBalance))
                     isClickEyes = false
                 } else {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_close)
@@ -343,23 +334,24 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
-        if (WalletETHUtils.isEthValidAddress(walletSelleted.address)) {
-            Thread {
-                ethBalance = getBalanceETH(walletSelleted.address)
-                if (ethBalance != BigDecimal("0.00000000")) {
-                    refreshData()
-                }
-                tokenBalance =
-                    TransferEthUtils.getBalanceToken(walletSelleted.address, contractAddress)
-                if (tokenBalance != BigDecimal("0.000000")) {
-                    refreshData()
-                }
-            }.start()
+        if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address, true)) {
+            balanceOfBtc(this, walletSelleted.address)
+            //balanceOfOmni(this, walletSelleted.address, contractAddress)
         }
         binding.tvBtcAddress.text = addressHandle(walletSelleted.address)
     }
 
-    private fun setBalanceETH(balance: BigDecimal) {
+    fun setBtcBalance(balance: BigDecimal) {
+        btcBalance = balance
+        refreshData()
+    }
+
+    fun setBtcTokenBalance(balance: BigDecimal) {
+        tokenBalance = balance
+        refreshData()
+    }
+
+    private fun setBalanceTRX(balance: BigDecimal) {
         postUI {
             if (DecimalFormatUtil.format2.format(balance) == "0") {
                 binding.tvBalanceTotal.text = "0"
@@ -432,22 +424,9 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("CheckResult")
     private fun refreshData() {
-        val tokenInfo = SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, "")
         var list: ArrayList<String> = arrayListOf()
         list.add("BTC")
-        if (tokenInfo.isNotEmpty()) {
-            saveTokenList =
-                Gson().fromJson(tokenInfo, object : TypeToken<ArrayList<StoreInfo>>() {}.type)
-            val list = saveTokenList.iterator()
-            list.forEach {
-                if (it.isMyToken == 0) {
-                    list.remove()
-                }
-            }
-        }
-        saveTokenList.forEach {
-            list.add(it.symbol)
-        }
+        list.add("USDT")
         var req = StoreInfo.Req()
         req.list = list
         req.convertId = "2787,2792,2781" //人民币、港币、美元
@@ -468,23 +447,20 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                                 MainETHTokenBean(
                                     "BTC",
                                     storeInfo.symbol,
-                                    ethBalance,
+                                    btcBalance,
                                     unitPrice,
                                     currencyUnit,
                                     null,
                                     false
                                 )
                             )
-                            rateETH = unitPrice
-                            totalBalance += ethBalance.multiply(BigDecimal(unitPrice))
+                            totalBalance += btcBalance.multiply(BigDecimal(unitPrice))
                         } else {
                             mainETHTokenBean.add(
                                 MainETHTokenBean(
                                     "BTC-${storeInfo.symbol}",
                                     storeInfo.symbol,
-                                    if (storeInfo.symbol == "TESTERC") tokenBalance else BigDecimal(
-                                        "0"
-                                    ),
+                                    if (storeInfo.symbol == "YING") tokenBalance else BigDecimal("0"),
                                     unitPrice,
                                     currencyUnit,
                                     contractAddress,
@@ -503,7 +479,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                             }
                         }
                     }
-                    setBalanceETH(totalBalance)
+                    setBalanceTRX(totalBalance)
                 }
             } else {
                 println("-=-=-=->${it.message()}")

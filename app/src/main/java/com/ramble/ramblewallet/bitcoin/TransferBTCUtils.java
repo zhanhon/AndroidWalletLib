@@ -6,7 +6,7 @@ import android.util.Log;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.ramble.ramblewallet.BuildConfig;
-import com.ramble.ramblewallet.activity.MainTRXActivity;
+import com.ramble.ramblewallet.activity.MainBTCActivity;
 import com.ramble.ramblewallet.activity.TransferActivity;
 import com.ramble.ramblewallet.tronsdk.common.crypto.ECKey;
 import com.ramble.ramblewallet.tronsdk.common.utils.ByteArray;
@@ -52,33 +52,33 @@ public class TransferBTCUtils {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                if (context instanceof MainTRXActivity) {
-                    ((MainTRXActivity) context).setTrxBalance(new BigDecimal("0"));
+                if (context instanceof MainBTCActivity) {
+                    ((MainBTCActivity) context).setBtcBalance(new BigDecimal("0"));
                 }
                 if (context instanceof TransferActivity) {
-                    ((TransferActivity) context).setTrxBalance(new BigDecimal("0"));
+                    ((TransferActivity) context).setBtcBalance(new BigDecimal("0"));
                 }
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String string = response.body().string();
-                Log.v("-=-=-=->string；", string);
                 try {
                     JSONObject json = new JSONObject(string);
                     String balanceBefore = json.optString("balance");
-                    Log.v("-=-=-=->balance；", String.valueOf(new BigDecimal(balanceBefore).divide(new BigDecimal("100000000"))));
-//                    if (context instanceof MainTRXActivity) {
-//                        ((MainTRXActivity) context).setTrxBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
-//                    }
-//                    if (context instanceof TransferActivity) {
-//                        ((TransferActivity) context).setTrxBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
-//                    }
+                    if (context instanceof MainBTCActivity) {
+                        ((MainBTCActivity) context).setBtcBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("100000000")));
+                    }
+                    if (context instanceof TransferActivity) {
+                        ((TransferActivity) context).setBtcBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("100000000")));
+                    }
                 } catch (Exception e) {
-                    Log.v("-=-=-=->string；", e.getMessage());
-//                    if (context instanceof MainTRXActivity) {
-//                        ((MainTRXActivity) context).setTrxBalance(new BigDecimal("0"));
-//                    }
+                    if (context instanceof MainBTCActivity) {
+                        ((MainBTCActivity) context).setBtcBalance(new BigDecimal("0"));
+                    }
+                    if (context instanceof TransferActivity) {
+                        ((TransferActivity) context).setBtcBalance(new BigDecimal("0"));
+                    }
                     e.printStackTrace();
                 }
             }
@@ -101,8 +101,8 @@ public class TransferBTCUtils {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                if (context instanceof MainTRXActivity) {
-                    ((MainTRXActivity) context).setTokenBalance(new BigDecimal("0"));
+                if (context instanceof MainBTCActivity) {
+                    ((MainBTCActivity) context).setBtcTokenBalance(new BigDecimal("0"));
                 }
                 if (context instanceof TransferActivity) {
                     ((TransferActivity) context).setTokenBalance(new BigDecimal("0"));
@@ -117,15 +117,15 @@ public class TransferBTCUtils {
                     String constant_result = json.optString("constant_result");
                     String constantResult = constant_result.substring(2, constant_result.length() - 2).replaceAll("^(0+)", "");
                     String balanceBefore = (new BigInteger(constantResult, 16)).toString();
-                    if (context instanceof MainTRXActivity) {
-                        ((MainTRXActivity) context).setTokenBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
+                    if (context instanceof MainBTCActivity) {
+                        ((MainBTCActivity) context).setBtcTokenBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
                     }
                     if (context instanceof TransferActivity) {
                         ((TransferActivity) context).setTokenBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
                     }
                 } catch (Exception e) {
-                    if (context instanceof MainTRXActivity) {
-                        ((MainTRXActivity) context).setTokenBalance(new BigDecimal("0"));
+                    if (context instanceof MainBTCActivity) {
+                        ((MainBTCActivity) context).setBtcTokenBalance(new BigDecimal("0"));
                     }
                     if (context instanceof TransferActivity) {
                         ((TransferActivity) context).setTokenBalance(new BigDecimal("0"));

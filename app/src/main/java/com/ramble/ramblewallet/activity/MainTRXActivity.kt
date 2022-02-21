@@ -49,12 +49,10 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
     private var isClickEyes = false
     private var animator: ObjectAnimator? = null
-    private var saveTokenList: ArrayList<StoreInfo> = arrayListOf()
     private lateinit var walletSelleted: WalletETH
     private var trxBalance: BigDecimal = BigDecimal("0")
     private var tokenBalance: BigDecimal = BigDecimal("0")
     private var totalBalance: BigDecimal = BigDecimal("0")
-    private var rateTRX: String? = ""
     private var unitPrice = ""
 
     //YING
@@ -171,9 +169,9 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
 
 
                             }
-                            if (redList.isNotEmpty()){
+                            if (redList.isNotEmpty()) {
                                 binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
-                            }else{
+                            } else {
                                 binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center)
                             }
                         }
@@ -198,15 +196,17 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             Pie.EVENT_ADDRESS_TRANS_SCAN -> {
                 start(TransferActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, event.data())
-                    it.putSerializable(ARG_PARAM2, MainETHTokenBean(
-                        "TRX",
-                        "TRX",
-                        trxBalance,
-                        unitPrice,
-                        currencyUnit,
-                        null,
-                        false
-                    ))
+                    it.putSerializable(
+                        ARG_PARAM2, MainETHTokenBean(
+                            "TRX",
+                            "TRX",
+                            trxBalance,
+                            unitPrice,
+                            currencyUnit,
+                            null,
+                            false
+                        )
+                    )
                 })
             }
         }
@@ -232,15 +232,17 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.iv_transfer_top, R.id.ll_transfer -> {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
-                    putExtra(ARG_PARAM2, MainETHTokenBean(
-                        "TRX",
-                        "TRX",
-                        trxBalance,
-                        unitPrice,
-                        currencyUnit,
-                        null,
-                        false
-                    ))
+                    putExtra(
+                        ARG_PARAM2, MainETHTokenBean(
+                            "TRX",
+                            "TRX",
+                            trxBalance,
+                            unitPrice,
+                            currencyUnit,
+                            null,
+                            false
+                        )
+                    )
                 })
             }
             R.id.iv_scan_top, R.id.ll_scan -> {
@@ -251,13 +253,15 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_balance_refresh -> {
                 startSyncAnimation()
                 Handler().postDelayed({
+                    initData()
                     refreshData()
                 }, 2000)
             }
             R.id.iv_eyes -> {
                 if (isClickEyes) {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_open)
-                    binding.tvBalanceTotal.text = strAddComma(DecimalFormatUtil.format2.format(totalBalance))
+                    binding.tvBalanceTotal.text =
+                        strAddComma(DecimalFormatUtil.format2.format(totalBalance))
                     isClickEyes = false
                 } else {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_close)

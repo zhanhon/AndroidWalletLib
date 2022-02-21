@@ -83,8 +83,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1"
                         android:layout_marginBottom="@dimen/dp_5"
+                        android:layout_weight="1"
                         android:orientation="horizontal">
 
                         <TextView
@@ -158,14 +158,14 @@
                             android:layout_alignParentLeft="true"
                             android:layout_margin="@dimen/dp_5"
                             android:background="@null"
-                            android:hint="0xxxxxxxxxxxxxxxxxx"
-                            android:textColorHint="@color/color_9598AA"
+                            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                            android:hint="@string/address"
                             android:inputType="textEmailAddress"
                             android:longClickable="false"
                             android:maxLength="42"
-                            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                             android:text=""
                             android:textColor="@color/color_9598AA"
+                            android:textColorHint="@color/color_9598AA"
                             android:textSize="@dimen/sp_11" />
 
                         <ImageView
@@ -248,11 +248,11 @@
                         android:layout_alignParentLeft="true"
                         android:background="@null"
                         android:hint="0.00"
-                        android:textColorHint="@color/color_9598AA"
-                        android:maxLength="22"
                         android:inputType="numberDecimal"
                         android:longClickable="false"
+                        android:maxLength="22"
                         android:textColor="@color/color_000000"
+                        android:textColorHint="@color/color_9598AA"
                         android:textSize="@dimen/sp_18"
                         android:textStyle="bold" />
 
@@ -262,10 +262,10 @@
                         android:layout_height="@dimen/dp_20"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:textAllCaps="false"
                         android:background="@drawable/shape_white_bottom_blue_line_btn"
                         android:outlineProvider="none"
                         android:text="@string/all"
+                        android:textAllCaps="false"
                         android:textColor="@color/color_3F5E94"
                         android:textSize="@dimen/sp_12" />
                 </RelativeLayout>
@@ -312,11 +312,11 @@
                     android:layout_marginTop="@dimen/dp_10"
                     android:background="@drawable/shape_light_bottom_btn"
                     android:hint="@string/choose_fill"
-                    android:textColorHint="@color/color_9598AA"
                     android:inputType="textEmailAddress"
                     android:longClickable="false"
                     android:padding="@dimen/dp_10"
                     android:textColor="@color/color_9598AA"
+                    android:textColorHint="@color/color_9598AA"
                     android:textSize="@dimen/sp_12"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -408,8 +408,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:padding="@dimen/dp_10"
-                    android:textSize="@dimen/sp_12"
                     android:textColor="@color/color_E4E4E9"
+                    android:textSize="@dimen/sp_12"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/v_miner_fee_middle"
@@ -425,8 +425,8 @@
                 android:layout_marginEnd="@dimen/dp_20"
                 android:layout_marginBottom="@dimen/dp_20"
                 android:background="@drawable/shape_gray_bottom_btn"
-                android:outlineProvider="none"
                 android:enabled="false"
+                android:outlineProvider="none"
                 android:text="@string/confirm"
                 android:textAllCaps="false"
                 android:textColor="@color/color_FFFFFF"
