@@ -129,7 +129,7 @@
                 android:layout_centerHorizontal="true"
                 android:drawableTop="@drawable/ic_no_records"
                 android:gravity="center"
-                android:text="暂无记录"
+                android:text="@string/no_records"
                 android:textColor="@color/front_three"
                 android:textSize="@dimen/sp_15" />
 
