@@ -23,7 +23,7 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.EthMinerConfig
 import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.balanceOfBtc
-import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.balanceOfOmni
+import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.transferBTC
 import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
@@ -308,13 +308,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
             0 -> {
                 if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address, true)) {
-                    if (isToken) {
-                        balanceOfOmni(
-                            this,
-                            walletSelleted.address,
-                            tokenBean.contractAddress
-                        )
-                    } else {
+                    if (!isToken) {
                         balanceOfBtc(this, walletSelleted.address)
                     }
                 }
@@ -497,7 +491,18 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             0 -> {
-
+                if (!isToken) {
+                    transferBTC(
+                        this,
+                        walletSelleted.address,
+                        transferReceiverAddress,
+                        walletSelleted.privateKey,
+                        BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
+                            BigDecimal("100000000")
+                        ),
+                        binding.edtInputTransferRemarks.text.trim().toString()
+                    )
+                }
             }
         }
     }

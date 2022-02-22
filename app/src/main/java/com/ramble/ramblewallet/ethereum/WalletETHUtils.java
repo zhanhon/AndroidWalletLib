@@ -5,6 +5,7 @@ import com.develop.mnemonic.MnemonicUtils;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ramble.ramblewallet.ethereum.utils.EthUtils;
 
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;

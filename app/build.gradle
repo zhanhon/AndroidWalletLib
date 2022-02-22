@@ -172,6 +172,7 @@ dependencies {
         exclude group: 'org.bouncycastle'
         exclude group: 'com.google.protobuf'
     }
+    implementation 'commons-codec:commons-codec:1.13'
     //TRX
     implementation 'org.fusesource.leveldbjni:leveldbjni-all:1.8'
     implementation 'com.googlecode.protobuf-java-format:protobuf-java-format:1.4'

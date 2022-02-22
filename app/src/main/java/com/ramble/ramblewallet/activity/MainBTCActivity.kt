@@ -336,7 +336,6 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         }
         if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address, true)) {
             balanceOfBtc(this, walletSelleted.address)
-            //balanceOfOmni(this, walletSelleted.address, contractAddress)
         }
         binding.tvBtcAddress.text = addressHandle(walletSelleted.address)
     }
@@ -426,7 +425,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
     private fun refreshData() {
         var list: ArrayList<String> = arrayListOf()
         list.add("BTC")
-        list.add("USDT")
+        //list.add("USDT")   暂时不用Omni-USDT
         var req = StoreInfo.Req()
         req.list = list
         req.convertId = "2787,2792,2781" //人民币、港币、美元

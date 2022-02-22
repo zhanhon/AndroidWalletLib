@@ -1,4 +1,4 @@
-package com.ramble.ramblewallet.ethereum;
+package com.ramble.ramblewallet.ethereum.utils;
 
 import com.ramble.ramblewallet.ethereum.utils.HexUtils;
 import com.ramble.ramblewallet.ethereum.utils.KECCAK256;

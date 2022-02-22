@@ -1,6 +1,5 @@
 package com.ramble.ramblewallet.tronsdk;
 
-import com.ramble.ramblewallet.tron.Wallet;
 import com.ramble.ramblewallet.tronsdk.common.crypto.Hash;
 import com.ramble.ramblewallet.tronsdk.common.crypto.SymmEncoder;
 import com.ramble.ramblewallet.tronsdk.common.utils.Base58;
@@ -26,12 +25,8 @@ public class StringTronUtil {
      * @return
      */
     public static boolean isNullOrEmpty(String text) {
-        if (text == null || "".equals(text.trim()) || text.trim().length() == 0
-                || "null".equals(text.trim())) {
-            return true;
-        } else {
-            return false;
-        }
+        return text == null || "".equals(text.trim()) || text.trim().length() == 0
+                || "null".equals(text.trim());
     }
 
     /**
@@ -101,15 +96,6 @@ public class StringTronUtil {
         return pwdAsc.equals(pwdInstore);
     }
 
-    public static boolean checkPassword(Wallet wallet, String password) {
-        byte[] pwd = getPasswordHash(password);
-        if (pwd == null) {
-            return false;
-        }
-        String pwdHexString = ByteArray.toHexString(pwd);
-        return pwdHexString.equals(wallet.getEncryptedPassword());
-    }
-
     public static boolean isNameValid(String name) {
         return !name.isEmpty();
     }
@@ -121,11 +107,8 @@ public class StringTronUtil {
         if (password.length() < 6) {
             return false;
         }
-        if (password.contains("\\s")) {
-            return false;
-        }
+        return !password.contains("\\s");
         //Other rule;
-        return true;
     }
 
     public static boolean isAddressValid(byte[] address) {
@@ -136,11 +119,7 @@ public class StringTronUtil {
             return false;
         }
         byte preFixbyte = address[0];
-        if (preFixbyte != Parameter.CommonConstant.ADD_PRE_FIX_BYTE) {
-            return false;
-        }
-
-        return true;
+        return preFixbyte == Parameter.CommonConstant.ADD_PRE_FIX_BYTE;
     }
 
     public static String encode58Check(byte[] input) {
@@ -190,11 +169,7 @@ public class StringTronUtil {
         if (isEmpty(priKey)) {
             return false;
         }
-        if (priKey.length() != 64) {
-            return false;
-        }
-
-        return true;
+        return priKey.length() == 64;
     }
 
     public static String decryptPrivateKey(byte[] privateKey, String password) {

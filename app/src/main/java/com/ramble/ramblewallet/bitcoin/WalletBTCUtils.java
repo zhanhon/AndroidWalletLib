@@ -36,7 +36,7 @@ public class WalletBTCUtils {
             NetworkParameters networkParameters = TestNet3Params.get();
 
             String publicKey = Numeric.toHexStringNoPrefixZeroPadded(new BigInteger(ecKeyPair.getPubKey()), 66);
-            String privateKey = ecKeyPair.getPrivateKeyAsHex();
+            String privateKey = ecKeyPair.getPrivateKeyEncoded(networkParameters).toString();//ecKeyPair.getPrivateKeyAsHex();
 
             //1开头的地址
             //LegacyAddress address1 = LegacyAddress.fromKey(networkParameters, ecKeyPair);
@@ -72,7 +72,6 @@ public class WalletBTCUtils {
             //BTC无keystore，由于通过privateKey无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
             return new WalletETH(walletname, walletPassword, "", segwitAddress.toBech32(), privateKey, publicKey, "", 0);
         } catch (Exception e) {
-            Log.v("-=-=-=->e；", e.getMessage());
             e.printStackTrace();
             return new WalletETH("", "", "", "", "", "", "", 0);
         }
