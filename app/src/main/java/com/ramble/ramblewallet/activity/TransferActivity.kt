@@ -20,6 +20,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.bean.BtcMinerConfig
 import com.ramble.ramblewallet.bean.EthMinerConfig
 import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.balanceOfBtc
@@ -54,6 +55,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private var gasPrice: String? = ""
     private var rate: String? = ""
     private var gas: BigDecimal = BigDecimal("0.00")
+    private var btcFee: String? = ""
+    private var btcFeeFast: String? = ""
+    private var btcFeeSlow: String? = ""
 
     private var isCustom = false
     private lateinit var walletSelleted: WalletETH
@@ -154,7 +158,14 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 })
             }
             R.id.cl_miner_fee -> {
-                showDialog()
+                when (walletSelleted.walletType) {
+                    1 -> {
+                        showEthDialog()
+                    }
+                    0 -> {
+                        showBtcDialog()
+                    }
+                }
             }
             R.id.tv_select_all -> {
                 binding.edtInputQuantity.setText(DecimalFormatUtil.format8.format(transferBalance))
@@ -207,27 +218,54 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             USD -> currencySymbol = "$"
         }
 
-        mApiService.getEthMinerConfig(
-            EthMinerConfig.Req(transferTitle).toApiRequest(getEthMinerConfigUrl)
-        ).applyIo().subscribe(
-            {
-                if (it.code() == 1) {
-                    it.data()?.let { data ->
-                        gasLimit = data.gasLimit
-                        fastGasPrice = data.fastGasPrice
-                        slowGasPrice = data.slowGasPrice
+        when (walletSelleted.walletType) { //链类型|0:BTC|1:ETH|2:TRX
+            1 -> {
+                mApiService.getEthMinerConfig(
+                    EthMinerConfig.Req(transferTitle).toApiRequest(getEthMinerConfigUrl)
+                ).applyIo().subscribe(
+                    {
+                        if (it.code() == 1) {
+                            it.data()?.let { data ->
+                                gasLimit = data.gasLimit
+                                fastGasPrice = data.fastGasPrice
+                                slowGasPrice = data.slowGasPrice
 
-                        //默认
-                        gasPrice = fastGasPrice
-                        setMinerFee()
+                                //默认
+                                gasPrice = fastGasPrice
+                                setEthMinerFee()
+                            }
+                        } else {
+                            println("-=-=-=->ETH:${it.message()}")
+                        }
+                    }, {
+                        println("-=-=-=->ETH:${it.printStackTrace()}")
                     }
-                } else {
-                    println("-=-=-=->ETH:${it.message()}")
-                }
-            }, {
-                println("-=-=-=->ETH:${it.printStackTrace()}")
+                )
             }
-        )
+            0 -> {
+                mApiService.getBtcMinerConfig(
+                    BtcMinerConfig.Req().toApiRequest(getEthMinerConfigUrl)
+                ).applyIo().subscribe(
+                    {
+                        if (it.code() == 1) {
+                            it.data()?.let { data ->
+                                btcFeeFast = data.fastestFee
+                                btcFeeSlow = data.generalFee
+
+                                //默认
+                                btcFee = fastGasPrice
+                                setBtcMinerFee()
+                            }
+                        } else {
+                            println("-=-=-=->BTC:${it.message()}")
+                        }
+                    }, {
+                        println("-=-=-=->BTC:${it.printStackTrace()}")
+                    }
+                )
+            }
+        }
+
 
         binding.edtReceiverAddress.addTextChangedListener(object : TextWatcher {
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -264,7 +302,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 binding.edtReceiverAddress.hint = "TRX" + getString(R.string.address)
             }
             0 -> {
-                binding.clMinerFee.visibility = View.GONE
+                binding.clMinerFee.visibility = View.VISIBLE
                 binding.edtReceiverAddress.hint = "BTC" + getString(R.string.address)
             }
         }
@@ -336,7 +374,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         setBalance(transferBalance)
     }
 
-    private fun setMinerFee() {
+    private fun setEthMinerFee() {
         gas = BigDecimal(gasPrice).multiply(BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
         if (walletSelleted.walletType == 1) {
             binding.tvMinerFeeValue.text = "${DecimalFormatUtil.format8.format(gas)} ETH"
@@ -345,6 +383,17 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }"
         }
         binding.tvTips.text = "$gasPrice Gwei * Gas Limit (${strAddComma(gasLimit)})"
+    }
+
+    private fun setBtcMinerFee() {
+//        btcFee = BigDecimal(btcFee).multiply(BigDecimal("72")).divide(BigDecimal("1000000000")).toString()
+//        if (walletSelleted.walletType == 0) {
+//            binding.tvMinerFeeValue.text = "${DecimalFormatUtil.format8.format(btcFee)} BTC"
+//            binding.tvMinerFeeValueConvert.text = "≈${currencyUnit} ${currencySymbol}${
+//                DecimalFormatUtil.format2.format(BigDecimal(rate).multiply(BigDecimal(btcFee)))
+//            }"
+//        }
+        binding.tvTips.visibility = View.INVISIBLE
     }
 
     private fun setBalance(balance: BigDecimal) {
@@ -500,6 +549,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
                             BigDecimal("100000000")
                         ),
+                        btcFee,
                         binding.edtInputTransferRemarks.text.trim().toString()
                     )
                 }
@@ -508,6 +558,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun transferSuccess(transactionHash: String) {
+        println("-=-=-=-=->transactionHash:${transactionHash}")
         postUI {
             transactionFinishConfirmDialog(transactionHash)
         }
@@ -577,12 +628,12 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     @SuppressLint("SetTextI18n", "ResourceAsColor")
-    private fun showDialog() {
+    private fun showEthDialog() {
         var dialog = AlertDialog.Builder(this).create()
         dialog.show()
         val window: Window? = dialog.window
         if (window != null) {
-            window.setContentView(R.layout.dialog_miner_fee)
+            window.setContentView(R.layout.dialog_eth_miner_fee)
             window.setGravity(Gravity.BOTTOM)
             window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             val params = window.attributes //设置属性
@@ -599,26 +650,22 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<TextView>(R.id.miner_fee_gas_price).text = fastGasPrice
             window.findViewById<TextView>(R.id.miner_fee_limit_title).text = "21000"
 
-            when (walletSelleted.walletType) {
-                1 -> {
-                    gas = BigDecimal(gasPrice).multiply(BigDecimal(gasLimit))
-                        .divide(BigDecimal("1000000000"))
-                    window.findViewById<TextView>(R.id.tv_transfer_gas_fast).text =
-                        "${
-                            DecimalFormatUtil.format8.format(
-                                BigDecimal(fastGasPrice).multiply(BigDecimal(gasLimit))
-                                    .divide(BigDecimal("1000000000"))
-                            )
-                        } ETH"
-                    window.findViewById<TextView>(R.id.tv_transfer_gas_slow).text =
-                        "${
-                            DecimalFormatUtil.format8.format(
-                                BigDecimal(slowGasPrice).multiply(BigDecimal(gasLimit))
-                                    .divide(BigDecimal("1000000000"))
-                            )
-                        } ETH"
-                }
-            }
+            gas = BigDecimal(gasPrice).multiply(BigDecimal(gasLimit))
+                .divide(BigDecimal("1000000000"))
+            window.findViewById<TextView>(R.id.tv_transfer_gas_fast).text =
+                "${
+                    DecimalFormatUtil.format8.format(
+                        BigDecimal(fastGasPrice).multiply(BigDecimal(gasLimit))
+                            .divide(BigDecimal("1000000000"))
+                    )
+                } ETH"
+            window.findViewById<TextView>(R.id.tv_transfer_gas_slow).text =
+                "${
+                    DecimalFormatUtil.format8.format(
+                        BigDecimal(slowGasPrice).multiply(BigDecimal(gasLimit))
+                            .divide(BigDecimal("1000000000"))
+                    )
+                } ETH"
 
             onClickTransferFast(window)
             onClickTransferSlow(window)
@@ -631,7 +678,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     gasLimit =
                         window.findViewById<EditText>(R.id.miner_fee_limit_title).text.toString()
                 }
-                setMinerFee()
+                setEthMinerFee()
                 dialog.dismiss()
                 if ((BigDecimal(gasPrice) < BigDecimal(slowGasPrice))
                     || (BigDecimal(gasLimit) < BigDecimal("21000"))
@@ -645,6 +692,69 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     transactionFailDialog(getString(R.string.miner_fee_high_tips))
                     return@setOnClickListener
                 }
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n", "ResourceAsColor")
+    private fun showBtcDialog() {
+        var dialog = AlertDialog.Builder(this).create()
+        dialog.show()
+        val window: Window? = dialog.window
+        if (window != null) {
+            window.setContentView(R.layout.dialog_btc_miner_fee)
+            window.setGravity(Gravity.BOTTOM)
+            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            val params = window.attributes //设置属性
+            params.width = WindowManager.LayoutParams.MATCH_PARENT
+            params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+            params.dimAmount = 0.5f   //dialog背景层
+            window.attributes = params
+
+            window.findViewById<TextView>(R.id.tv_transfer_gas_price_fast).text =
+                "($btcFeeFast sat)"
+            window.findViewById<TextView>(R.id.tv_transfer_gas_price_slow).text =
+                "($btcFeeSlow sat)"
+
+            btcFee = BigDecimal(btcFeeFast).multiply(BigDecimal("72"))
+                .divide(BigDecimal("1000000000")).toString()
+            window.findViewById<TextView>(R.id.tv_transfer_gas_fast).text =
+                "${
+                    DecimalFormatUtil.format8.format(
+                        BigDecimal(btcFeeFast).multiply(BigDecimal("72"))
+                            .divide(BigDecimal("1000000000"))
+                    )
+                } BTC"
+            window.findViewById<TextView>(R.id.tv_transfer_gas_slow).text =
+                "${
+                    DecimalFormatUtil.format8.format(
+                        BigDecimal(btcFeeSlow).multiply(BigDecimal("72"))
+                            .divide(BigDecimal("1000000000"))
+                    )
+                } BTC"
+
+            onClickTransferFast(window)
+            onClickTransferSlow(window)
+            onClickTransferCustom(window)
+
+            window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
+                if (isCustom) {
+                    btcFee = window.findViewById<EditText>(R.id.miner_fee_gas_price).text.toString()
+                }
+                setBtcMinerFee()
+                dialog.dismiss()
+//                if ((BigDecimal(gasPrice) < BigDecimal(slowGasPrice))
+//                    || (BigDecimal(gasLimit) < BigDecimal("21000"))
+//                ) {
+//                    transactionFailDialog(getString(R.string.miner_fee_low_tips))
+//                    return@setOnClickListener
+//                }
+//                if ((BigDecimal(gasPrice) > BigDecimal(fastGasPrice))
+//                    || (BigDecimal(gasLimit) < BigDecimal("1000000"))
+//                ) {
+//                    transactionFailDialog(getString(R.string.miner_fee_high_tips))
+//                    return@setOnClickListener
+//                }
             }
         }
     }

@@ -1,10 +1,10 @@
 package com.ramble.ramblewallet.bitcoin;
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -17,6 +17,7 @@ import com.ramble.ramblewallet.tronsdk.common.utils.Sha256Hash;
 import org.apache.commons.lang3.StringUtils;
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
+import org.bitcoinj.core.Context;
 import org.bitcoinj.core.DumpedPrivateKey;
 import org.bitcoinj.core.LegacyAddress;
 import org.bitcoinj.core.NetworkParameters;
@@ -35,15 +36,16 @@ import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.script.ScriptPattern;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.tron.TronWalletApi;
 import org.tron.protos.Protocol;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -62,11 +64,10 @@ public class TransferBTCUtils {
     }
 
     public static void balanceOfBtc(Activity context, String address) throws JSONException { //限流：每秒好像只能20次
-        String addresssss = "tb1q0d2cwh2tpcdn98tlr9hghvsved5z0n802pqsj8";
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request
                 .Builder()
-                .url("https://api.blockcypher.com/v1/btc/test3/addrs/" + addresssss + "/balance")//要访问的链接
+                .url("https://api.blockcypher.com/v1/btc/test3/addrs/" + address + "/balance")//要访问的链接
                 .build();
         Call call = okHttpClient.newCall(request);
         call.enqueue(new Callback() {
@@ -84,7 +85,7 @@ public class TransferBTCUtils {
             public void onResponse(Call call, Response response) throws IOException {
                 String string = response.body().string();
                 try {
-                    JSONObject json = new JSONObject(string);
+                    org.json.JSONObject json = new org.json.JSONObject(string);
                     String balanceBefore = json.optString("final_balance");
                     if (context instanceof MainBTCActivity) {
                         ((MainBTCActivity) context).setBtcBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("100000000")));
@@ -106,52 +107,59 @@ public class TransferBTCUtils {
     }
 
     public static void transferBTC(Activity context, String fromAddress, String toAddress,
-                                   String privateKey, BigDecimal amount, String remark) throws JSONException {
-        List<UTXO> utxos = Lists.newArrayList();
-        String host = isMainNet ? "BTC" : "BTCTEST";
-        String url = "https://chain.so/api/v2/get_tx_unspent/" + host + "/" + fromAddress;
-        Call call = getCallGet(url);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                if (context instanceof TransferActivity) {
-                    ((TransferActivity) context).transferFail(e.getMessage());
+                                   String privateKey, BigDecimal amount, String btcFee, String remark) throws JSONException {
+        final List<UTXO>[] utxos = new List[]{Lists.newArrayList()};
+        final String[] host = {isMainNet ? "BTC" : "BTCTEST"};
+        String url = "https://chain.so/api/v2/get_tx_unspent/" + host[0] + "/" + fromAddress;
+        try {
+            Call call = getCallGet(url);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    if (context instanceof TransferActivity) {
+                        ((TransferActivity) context).transferFail(e.getMessage());
+                    }
                 }
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String httpGet = response.body().string();
-                com.alibaba.fastjson.JSONObject jsonObject = JSON.parseObject(httpGet);
-                if (StringUtils.equals("fail", jsonObject.getString("status"))) {
-                    return;
-                }
-                JSONArray unspentOutputs = jsonObject.getJSONObject("data").getJSONArray("txs");
-                List<Map> outputs = com.alibaba.fastjson.JSONObject.parseArray(unspentOutputs.toJSONString(), Map.class);
-                if (outputs == null || outputs.size() == 0) {
-                    System.out.println("交易异常，余额不足");
-                }
-                for (int i = 0; i < outputs.size(); i++) {
-                    Map outputsMap = outputs.get(i);
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String httpGet = response.body().string();
+                    JSONObject jsonObject = JSON.parseObject(httpGet);
+                    if (StringUtils.equals("fail", jsonObject.getString("status"))) {
+                        return;
+                    }
+                    JSONArray unspentOutputs = jsonObject.getJSONObject("data").getJSONArray("txs");
+                    List<Map> outputs = JSONObject.parseArray(unspentOutputs.toJSONString(), Map.class);
+                    if (outputs == null || outputs.size() == 0) {
+                        System.out.println("交易异常，余额不足");
+                    }
+                    for (int i = 0; i < outputs.size(); i++) {
+                        Map outputsMap = outputs.get(i);
 
-                    String tx_hash = outputsMap.get("txid").toString();
-                    String tx_output_n = outputsMap.get("output_no").toString();
-                    String script = outputsMap.get("script_hex").toString();
-                    String value = outputsMap.get("value").toString();
-                    UTXO utxo = new UTXO(
-                            org.bitcoinj.core.Sha256Hash.wrap(tx_hash),
-                            Long.valueOf(tx_output_n),
-                            Coin.valueOf(new BigDecimal(value).multiply(new BigDecimal("100000000")).intValue()),
-                            0,
-                            false,
-                            new Script(Utils.HEX.decode(script)),
-                            fromAddress
-                    );
-                    utxos.add(utxo);
-                }
-                long fee = getFee(amount.longValue(), utxos);
-                try {
-                    String toHex = sign(fromAddress, toAddress, privateKey, amount.longValue(), fee, utxos);
+                        String tx_hash = outputsMap.get("txid").toString();
+                        String tx_output_n = outputsMap.get("output_no").toString();
+                        String script = outputsMap.get("script_hex").toString();
+                        String value = outputsMap.get("value").toString();
+                        UTXO utxo = new UTXO(
+                                org.bitcoinj.core.Sha256Hash.wrap(tx_hash),
+                                Long.valueOf(tx_output_n),
+                                Coin.valueOf(new BigDecimal(value).multiply(new BigDecimal("100000000")).intValue()),
+                                0,
+                                false,
+                                new Script(Utils.HEX.decode(script)),
+                                fromAddress
+                        );
+                        utxos[0].add(utxo);
+                    }
+                    //TODO 根据金额降序排序
+                    utxos[0] = utxos[0].stream().sorted(Comparator.comparing(UTXO::getValue, Comparator.reverseOrder())).collect(Collectors.toList());
+                    long fee = getFee(btcFee, amount.longValue(), utxos[0]);
+                    String toHex = null;
+                    try {
+                        toHex = sign(fromAddress, toAddress, privateKey, amount.longValue(), fee, utxos[0]);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     JSONObject jsonObjectTransaction = new JSONObject();
                     jsonObjectTransaction.put("tx_hex", toHex);
                     String url = isMainNet ? "https://chain.so/api/v2/send_tx/BTC" : "https://chain.so/api/v2/send_tx/BTCTEST";
@@ -167,16 +175,22 @@ public class TransferBTCUtils {
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
                             String result = response.body().string();
-                            if (context instanceof TransferActivity) {
-                                ((TransferActivity) context).transferSuccess(com.alibaba.fastjson.JSONObject.parseObject(result).getString("txid"));
+                            try {
+                                org.json.JSONObject trans = new org.json.JSONObject(result);
+                                String constant_result = trans.getJSONObject("data").optString("txid");
+                                if (context instanceof TransferActivity) {
+                                    ((TransferActivity) context).transferSuccess(constant_result);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         }
                     });
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-        });
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @NotNull
@@ -215,6 +229,63 @@ public class TransferBTCUtils {
         return transaction1.toBuilder().addSignature(ByteString.copyFrom(sign)).build().toByteArray();
     }
 
+    /***
+     * 获取未消费列表
+     * @param address ：地址
+     * @return
+     */
+//    public static List<UTXO> getUnspent(String address) {
+//        final List<UTXO>[] utxos = new List[]{Lists.newArrayList()};
+//        String host = isMainNet ? "BTC" : "BTCTEST";
+//        String url = "https://chain.so/api/v2/get_tx_unspent/" + host + "/" + address;
+//        try {
+//            Call call = getCallGet(url);
+//            call.enqueue(new Callback() {
+//                @Override
+//                public void onFailure(Call call, IOException e) {
+//                }
+//
+//                @Override
+//                public void onResponse(Call call, Response response) throws IOException {
+//                    String httpGet = response.body().string();
+//                    JSONObject jsonObject = JSON.parseObject(httpGet);
+//                    if (StringUtils.equals("fail", jsonObject.getString("status"))) {
+//                        return;
+//                    }
+//                    JSONArray unspentOutputs = jsonObject.getJSONObject("data").getJSONArray("txs");
+//                    List<Map> outputs = JSONObject.parseArray(unspentOutputs.toJSONString(), Map.class);
+//                    if (outputs == null || outputs.size() == 0) {
+//                        System.out.println("交易异常，余额不足");
+//                    }
+//
+//                    for (int i = 0; i < outputs.size(); i++) {
+//                        Map outputsMap = outputs.get(i);
+//
+//                        String tx_hash = outputsMap.get("txid").toString();
+//                        String tx_output_n = outputsMap.get("output_no").toString();
+//                        String script = outputsMap.get("script_hex").toString();
+//                        String value = outputsMap.get("value").toString();
+//                        UTXO utxo = new UTXO(
+//                                Sha256Hash.wrap(tx_hash),
+//                                Long.valueOf(tx_output_n),
+//                                Coin.valueOf(new BigDecimal(value).multiply(new BigDecimal("100000000")).intValue()),
+//                                0,
+//                                false,
+//                                new Script(Utils.HEX.decode(script)),
+//                                address
+//                        );
+//                        utxos[0].add(utxo);
+//                    }
+//                    //TODO 根据金额降序排序
+//                    utxos[0] = utxos[0].stream().sorted(Comparator.comparing(UTXO::getValue, Comparator.reverseOrder())).collect(Collectors.toList());
+//                }
+//            });
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return utxos[0];
+//    }
+
     /**
      * btc交易签名
      *
@@ -236,7 +307,6 @@ public class TransferBTCUtils {
         List<UTXO> needUtxos = new ArrayList<UTXO>();
         //获取未消费列表
         if (utxos == null || utxos.size() == 0) {
-            Log.v("-=-=-=-=->:", "未消费列表为空");
             throw new Exception("未消费列表为空");
         }
         //遍历未花费列表，组装合适的item
@@ -278,30 +348,10 @@ public class TransferBTCUtils {
                 transaction.addSignedInput(outPoint, utxo.getScript(), ecKey, Transaction.SigHash.ALL, true);
             }
         }
+        Context context = new Context(networkParameters);
         transaction.getConfidence().setSource(TransactionConfidence.Source.NETWORK);
         transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
         return new String(org.apache.commons.codec.binary.Hex.encodeHex(transaction.bitcoinSerialize()));
-    }
-
-    /**
-     * 获取btc费率
-     *
-     * @return
-     */
-    public static Long getFeeRate() {
-        try {
-            /**
-             String httpGet1 = HttpUtil.doGet("https://bitcoinfees.earn.com/api/v1/fees/recommended");
-             Map map = JSON.parseObject(httpGet1, Map.class);
-             Long fastestFee = Long.valueOf(map.get("hourFee").toString());
-             return fastestFee;
-             */
-            //TODO 测试直接返回10
-            return 10L;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 10L;
-        }
     }
 
     /**
@@ -311,19 +361,18 @@ public class TransferBTCUtils {
      * @param utxos
      * @return
      */
-    public static Long getFee(long amount, List<UTXO> utxos) {
+    public static Long getFee(String btcFee, long amount, List<UTXO> utxos) {
         //获取费率
-        Long feeRate = getFeeRate();
+        Long feeRate = Long.getLong(btcFee);
         Long utxoAmount = 0L;
         Long fee = 0L;
         Long utxoSize = 0L;
         for (UTXO us : utxos) {
             utxoSize++;
+            utxoAmount += us.getValue().value;
+            fee = (utxoSize * 148 + 34 * 2 + 10) * feeRate;
             if (utxoAmount >= (amount + fee)) {
                 break;
-            } else {
-                utxoAmount += us.getValue().value;
-                fee = (utxoSize * 148 * 34 + 10) * feeRate;
             }
         }
         return fee;

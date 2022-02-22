@@ -14,6 +14,7 @@ import retrofit2.http.POST
 
 const val reportAddressUrl = "wallet-decentralized-api/address/report"
 const val getEthMinerConfigUrl = "wallet-decentralized-api/sys/getEthMinerConfig"
+const val getBtcMinerConfigUrl = "wallet-decentralized-api/sys/getBtcMinerConfig"
 const val transferInfoUrl = "wallet-decentralized-api/transfer/info"
 const val noticeInfoUrl = "wallet-decentralized-api/sys/getNotice"
 const val faqInfoUrl = "wallet-decentralized-api/faq/getFaqInfos"
@@ -54,5 +55,10 @@ interface ApiService {
     /** 查询以太坊矿工费 */
     @POST(getEthMinerConfigUrl)
     fun getEthMinerConfig(@Body req: ApiRequest<EthMinerConfig.Req>): Observable<ApiResponse<EthMinerConfig>>
+
+    /** 查询比特币矿工费 */
+    @POST(getBtcMinerConfigUrl)
+    fun getBtcMinerConfig(@Body req: ApiRequest<BtcMinerConfig.Req>): Observable<ApiResponse<BtcMinerConfig>>
+
 
 }
