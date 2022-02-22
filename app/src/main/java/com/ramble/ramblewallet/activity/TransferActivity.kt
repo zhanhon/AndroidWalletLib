@@ -477,7 +477,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             btnConfirm.setOnClickListener {
                 if (edtWalletPassword.text.trim().toString() == walletSelleted.walletPassword) {
                     transferReceiverAddress = binding.edtReceiverAddress.text.toString()
-                    toastDefault(getString(R.string.input_amount_too_large))
+                    transfer()
                     dialog.dismiss()
                 } else {
                     toastDefault(getString(R.string.input_correct_wallet_password))
@@ -510,7 +510,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         walletSelleted.address,
                         transferReceiverAddress,
                         walletSelleted.privateKey,
-                        binding.edtInputQuantity.text.trim().toString(),
+                        BigDecimal(binding.edtInputQuantity.text.trim().toString()),
                         (BigInteger(gasPrice).multiply(BigInteger("100000000"))), //GWEI → WEI
                         BigInteger(gasLimit),
                         binding.edtInputTransferRemarks.text.trim().toString()

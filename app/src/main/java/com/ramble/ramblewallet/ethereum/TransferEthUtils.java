@@ -76,7 +76,7 @@ public class TransferEthUtils {
     }
 
     @SuppressLint("LongLogTag")
-    public static void transferETH(Activity context, String fromAddress, String toAddress, String privateKey, String number,
+    public static void transferETH(Activity context, String fromAddress, String toAddress, String privateKey, BigDecimal number,
                                    BigInteger gasPrice, BigInteger gasLimit, String remark) throws Exception {
         Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0]));
         //加载转账所需的凭证，用私钥
@@ -90,7 +90,7 @@ public class TransferEthUtils {
             remark = StringHexUtils.byte2HexString(remark.getBytes(StandardCharsets.UTF_8));
         }
         //创建RawTransaction交易对象
-        RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, gasPrice, gasLimit, toAddress, new BigInteger(number), remark);
+        RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, gasPrice, gasLimit, toAddress, number.toBigInteger(), remark);
         //签名Transaction，这里要对交易做签名
         byte[] signMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
         String hexValue = Numeric.toHexString(signMessage);
