@@ -171,7 +171,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 binding.edtInputQuantity.setText(DecimalFormatUtil.format8.format(transferBalance))
             }
             R.id.btn_confirm -> {
-                transactionConfirmationDialog()
+                if (BigDecimal(binding.edtInputQuantity.text.trim().toString()).compareTo(transferBalance) == -1) {
+                    transactionConfirmationDialog()
+                } else {
+                    toastDefault(getString(R.string.input_amount_too_large))
+                }
             }
         }
     }
@@ -473,7 +477,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             btnConfirm.setOnClickListener {
                 if (edtWalletPassword.text.trim().toString() == walletSelleted.walletPassword) {
                     transferReceiverAddress = binding.edtReceiverAddress.text.toString()
-                    transfer()
+                    toastDefault(getString(R.string.input_amount_too_large))
                     dialog.dismiss()
                 } else {
                     toastDefault(getString(R.string.input_correct_wallet_password))

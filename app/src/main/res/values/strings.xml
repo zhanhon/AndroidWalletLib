@@ -133,6 +133,7 @@
     <string name="edit_address_wallet">编辑地址</string>
     <string name="no_records">暂无记录</string>
     <string name="app_name">漫步钱包</string>
+    <string name="input_amount_too_large">输入金额过大</string>
 
 
     <string name="input_keystore">请输入Keystore</string>
