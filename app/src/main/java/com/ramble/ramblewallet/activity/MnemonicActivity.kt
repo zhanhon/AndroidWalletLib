@@ -73,7 +73,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         super.onResume()
         currentTab = "english"//默认英文
         binding.vEnglish.setBackgroundResource(R.color.color_3F5E94)
-        binding.vChinese.setBackgroundResource(R.color.color_9598AA)
+        binding.vChinese.visibility = View.INVISIBLE
         // 生成钱包助记词
         when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
             EN, CN -> {
@@ -94,13 +94,15 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.ll_english -> {
+                binding.vChinese.visibility = View.INVISIBLE
+                binding.vEnglish.visibility = View.VISIBLE
                 binding.vEnglish.setBackgroundResource(R.color.color_3F5E94)
-                binding.vChinese.setBackgroundResource(R.color.color_9598AA)
                 createContributingWordsPage(mnemonicList[0])
                 currentTab = "english"
             }
             R.id.ll_chinese -> {
-                binding.vEnglish.setBackgroundResource(R.color.color_9598AA)
+                binding.vEnglish.visibility = View.INVISIBLE
+                binding.vChinese.visibility = View.VISIBLE
                 binding.vChinese.setBackgroundResource(R.color.color_3F5E94)
                 createContributingWordsPage(mnemonicList[1])
                 currentTab = "chinese"

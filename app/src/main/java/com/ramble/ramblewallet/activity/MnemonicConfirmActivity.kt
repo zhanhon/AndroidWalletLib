@@ -286,14 +286,16 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     private fun initData() {
         when (currentTab) {
             "english" -> {
+                binding.vChinese.visibility = View.INVISIBLE
+                binding.vEnglish.visibility = View.VISIBLE
                 binding.vEnglish.setBackgroundResource(R.color.color_3F5E94)
-                binding.vChinese.setBackgroundResource(R.color.color_9598AA)
                 mnemonicETHOriginal = mnemonicETH[0].split(" ") as ArrayList<String>
                 mnemonicETHShuffled = mnemonicETH[0].split(" ") as ArrayList<String>
                 mnemonicETHShuffled.shuffle()
             }
             "chinese" -> {
-                binding.vEnglish.setBackgroundResource(R.color.color_9598AA)
+                binding.vEnglish.visibility = View.INVISIBLE
+                binding.vChinese.visibility = View.VISIBLE
                 binding.vChinese.setBackgroundResource(R.color.color_3F5E94)
                 mnemonicETHOriginal = mnemonicETH[1].split(" ") as ArrayList<String>
                 mnemonicETHShuffled = mnemonicETH[1].split(" ") as ArrayList<String>
@@ -321,7 +323,6 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     private fun initSwitch() {
         myDataBeans.clear()
         mnemonicETHChoose.clear()
-        contributingWordsConfirmAdapter.notifyDataSetChanged()
         binding.tvContributingWordsConfirmTips.visibility = View.VISIBLE
         binding.tvContributingWordsName1.visibility = View.VISIBLE
         binding.tvContributingWordsName2.visibility = View.VISIBLE
