@@ -12,6 +12,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
@@ -386,6 +387,9 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             } else {
                 window.findViewById<Button>(R.id.btn_cancel_create).setText(R.string.cancel_create)
                 window.findViewById<Button>(R.id.btn_skip).visibility = View.VISIBLE
+            }
+            window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
+                dialog.dismiss()
             }
             window.findViewById<Button>(R.id.btn_cancel_create).setOnClickListener {
                 if (isBackupMnemonic) {

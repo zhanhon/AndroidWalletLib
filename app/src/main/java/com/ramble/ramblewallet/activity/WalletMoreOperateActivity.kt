@@ -148,6 +148,9 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<Button>(R.id.btn_cancel).setOnClickListener {
                 dialog.dismiss()
             }
+            window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
+                dialog.dismiss()
+            }
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                 saveWalletList.forEach {
@@ -412,6 +415,9 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             val btnNext = window.findViewById<Button>(R.id.btn_next)
             btnNext.text = getText(R.string.gathering_save)
             val btnCancel = window.findViewById<Button>(R.id.btn_cancel)
+            window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
+                dialog.dismiss()
+            }
             btnCancel.setOnClickListener { v1: View? -> dialog.dismiss() }
             btnNext.setOnClickListener { v1: View? ->
                 requestRuntimePermission(

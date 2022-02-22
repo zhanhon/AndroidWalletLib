@@ -13,6 +13,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
@@ -292,6 +293,9 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
                 binding.ivAddWallet.visibility = View.VISIBLE
                 loadData(walletManageBean)
+            }
+            window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
+                dialog.dismiss()
             }
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()

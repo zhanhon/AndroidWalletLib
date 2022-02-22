@@ -138,6 +138,9 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
             btnNext.text = getText(R.string.gathering_save)
             val btnCancel = window.findViewById<Button>(R.id.btn_cancel)
             btnCancel.setOnClickListener { v1: View? -> dialog.dismiss() }
+            window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
+                dialog.dismiss()
+            }
             btnNext.setOnClickListener { v1: View? ->
                 requestRuntimePermission(
                     arrayOf(

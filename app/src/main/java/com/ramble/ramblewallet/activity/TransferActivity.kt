@@ -587,6 +587,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 dialog.dismiss()
                 startActivity(Intent(this, TransactionQueryActivity::class.java))
             }
+            window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
+                dialog.dismiss()
+            }
         }
     }
 
@@ -600,6 +603,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
             window.findViewById<TextView>(R.id.tv_content).text = content
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
+                dialog.dismiss()
+            }
+            window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
                 dialog.dismiss()
             }
         }
