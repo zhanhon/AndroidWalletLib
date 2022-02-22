@@ -697,7 +697,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     return@setOnClickListener
                 }
                 if ((BigDecimal(gasPrice) > BigDecimal(fastGasPrice))
-                    || (BigDecimal(gasLimit) < BigDecimal("1000000"))
+                    || (BigDecimal(gasLimit) > BigDecimal("1000000"))
                 ) {
                     transactionFailDialog(getString(R.string.miner_fee_high_tips))
                     return@setOnClickListener
