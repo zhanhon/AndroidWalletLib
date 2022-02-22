@@ -24,6 +24,7 @@ const val CN = "zh_CN"
 const val TW = "zh_TW"
 const val EN = "EN"
 const val LANGUAGE = "language"
+const val FIRSTLANGUAGE = "first_language"
 const val DEVICE_TOKEN = "deviceToken"
 
 const val CNY = "CNY"

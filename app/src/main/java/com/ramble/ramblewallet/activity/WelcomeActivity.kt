@@ -15,6 +15,8 @@ import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.helper.MyPreferences
 import com.ramble.ramblewallet.push.UmInitConfig
+import com.ramble.ramblewallet.utils.LanguageSetting
+import com.ramble.ramblewallet.utils.LanguageSetting.setLanguage
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.message.PushAgent
@@ -74,21 +76,41 @@ class WelcomeActivity : BaseActivity() {
     @SuppressLint("CheckResult")
     override fun onResume() {
         super.onResume()
-        //设置跟随手机系统语言进行设置app默认语言
-        val locale: Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Resources.getSystem().configuration.locales[0]
+        val fristShow = SharedPreferencesUtils.getBoolean(this, FIRSTLANGUAGE, true)
+        if(fristShow){//第一次
+            SharedPreferencesUtils.saveBoolean(this, FIRSTLANGUAGE, false)
+            //设置跟随手机系统语言进行设置app默认语言
+            val locale: Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Resources.getSystem().configuration.locales[0]
+            } else {
+                Resources.getSystem().configuration.locale
+            }
+            when (locale.country) {
+                "CN" -> {
+                    SharedPreferencesUtils.saveString(this, LANGUAGE, CN)
+                }
+                "TW" -> {
+                    SharedPreferencesUtils.saveString(this, LANGUAGE, TW)
+                }
+                else -> {
+                    SharedPreferencesUtils.saveString(this, LANGUAGE, EN)
+                }
+            }
         } else {
-            Resources.getSystem().configuration.locale
+            setLanguage()
         }
-        when (locale.country) {
-            "CN" -> {
-                SharedPreferencesUtils.saveString(this, LANGUAGE, CN)
+    }
+
+    private fun setLanguage() {
+        when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
+            CN -> {
+                setLanguage(applicationContext, 1)
             }
-            "TW" -> {
-                SharedPreferencesUtils.saveString(this, LANGUAGE, TW)
+            TW -> {
+                setLanguage(applicationContext, 2)
             }
-            else -> {
-                SharedPreferencesUtils.saveString(this, LANGUAGE, EN)
+            EN -> {
+                setLanguage(applicationContext, 3)
             }
         }
     }
