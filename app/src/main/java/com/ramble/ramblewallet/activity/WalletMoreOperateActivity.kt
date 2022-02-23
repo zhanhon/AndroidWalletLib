@@ -66,14 +66,17 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             1 -> {
                 binding.tvRecoverWalletTitle.text =
                     "ETH" + " " + walletCurrent.walletName + getString(R.string.di_wallet)
+                binding.rlKeystoreBackups.visibility = View.VISIBLE
             }
             2 -> {
                 binding.tvRecoverWalletTitle.text =
                     "TRX" + " " + walletCurrent.walletName + getString(R.string.di_wallet)
+                binding.rlKeystoreBackups.visibility = View.VISIBLE
             }
             0 -> {
                 binding.tvRecoverWalletTitle.text =
                     "BTC" + " " + walletCurrent.walletName + getString(R.string.di_wallet)
+                binding.rlKeystoreBackups.visibility = View.INVISIBLE
             }
         }
 

@@ -56,6 +56,15 @@ class CreateWalletListActivity : BaseActivity(), View.OnClickListener {
 
             window.findViewById<TextView>(R.id.tv_title).text = title
 
+            when (walletType) {
+                1,2 -> {
+                    window.findViewById<RelativeLayout>(R.id.rl_keystore).visibility = View.VISIBLE
+                }
+                0 -> {
+                    window.findViewById<RelativeLayout>(R.id.rl_keystore).visibility = View.GONE
+                }
+            }
+
             window.findViewById<RelativeLayout>(R.id.rl_create_wallet).setOnClickListener {
                 startActivity(Intent(this, CreateWalletActivity::class.java).apply {
                     putExtra(ARG_PARAM1, walletType)
