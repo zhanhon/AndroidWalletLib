@@ -21,7 +21,7 @@ import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.BottomNoticeDialog2Binding
 import com.ramble.ramblewallet.databinding.BottomNoticeDialogBinding
 import com.ramble.ramblewallet.databinding.TopNoticeDialogBinding
-import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start
 
@@ -164,7 +164,7 @@ fun showBottomDialog2(
                                     ),
                                     object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                                 )
-                           var number=if (binding.editAddress.text.toString()
+                            var number = if (binding.editAddress.text.toString()
                                     .startsWith("1") || binding.editAddress.text.toString()
                                     .startsWith("3")
                             ) {
@@ -179,8 +179,8 @@ fun showBottomDialog2(
                             } else {
                                 4
                             }
-                            var cout= 1
-                                myData.forEach {
+                            var cout = 1
+                            myData.forEach {
                                 if (it.type == number) {
                                     cout++
                                 }
@@ -190,16 +190,16 @@ fun showBottomDialog2(
                                     .startsWith("1") || binding.editAddress.text.toString()
                                     .startsWith("3")
                             ) {
-                                "BTC"+String.format("%02d",cout)
+                                "BTC" + String.format("%02d", cout)
                             } else if (binding.editAddress.text.toString().startsWith("0")) {
-                                "ETH"+String.format("%02d",cout)
+                                "ETH" + String.format("%02d", cout)
                             } else if (binding.editAddress.text.toString()
                                     .startsWith("T") || binding.editAddress.text.toString()
                                     .startsWith("t")
                             ) {
-                                "TRX"+String.format("%02d",cout)
+                                "TRX" + String.format("%02d", cout)
                             } else {
-                                "ETH"+String.format("%02d",cout)
+                                "ETH" + String.format("%02d", cout)
                             }
 
                         }
@@ -236,12 +236,12 @@ fun showBottomDialog2(
                         SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, ""),
                         object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                     )
-                when (type){
-                    1->{
+                when (type) {
+                    1 -> {
                         myData.forEach {
 
-                            if (it.userName!=tvName){
-                                if (it.userName == name|| it.address == binding.editAddress.text.toString() ) {
+                            if (it.userName != tvName) {
+                                if (it.userName == name || it.address == binding.editAddress.text.toString()) {
                                     Toast.makeText(
                                         MyApp.sInstance,
                                         MyApp.sInstance.getString(R.string.address_already_exists),
@@ -253,7 +253,7 @@ fun showBottomDialog2(
 
                         }
                     }
-                    else->{
+                    else -> {
                         myData.forEach {
                             if (it.address == binding.editAddress.text.toString() || it.userName == name) {
                                 Toast.makeText(
@@ -391,9 +391,9 @@ fun showTopTranDialog(
         setCanceledOnTouchOutside(false)
         show()
         setContentView(binding.root)
-        var wallet: WalletETH = Gson().fromJson(
+        var wallet: Wallet = Gson().fromJson(
             SharedPreferencesUtils.getString(activity, WALLETSELECTED, ""),
-            object : TypeToken<WalletETH>() {}.type
+            object : TypeToken<Wallet>() {}.type
         )
         var currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
         if (currencyUnit.isNotEmpty()) {

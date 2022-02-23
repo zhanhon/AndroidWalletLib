@@ -2,7 +2,7 @@ package com.ramble.ramblewallet.bitcoin;
 
 import android.util.Log;
 
-import com.ramble.ramblewallet.ethereum.WalletETH;
+import com.ramble.ramblewallet.bean.Wallet;
 
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.ECKey;
@@ -15,17 +15,11 @@ import org.bitcoinj.crypto.HDKeyDerivation;
 import org.bitcoinj.crypto.HDUtils;
 import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.params.TestNet3Params;
-import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.MnemonicUtils;
-import org.web3j.crypto.WalletFile;
-import org.web3j.protocol.ObjectMapperFactory;
 import org.web3j.utils.Numeric;
 
 import java.math.BigInteger;
 import java.util.List;
-
-import static org.web3j.crypto.Wallet.createLight;
-import static org.web3j.crypto.Wallet.decrypt;
 
 /**
  * @创建人： Ricky
@@ -47,7 +41,7 @@ public class WalletBTCUtils {
      * @param mnemonic
      * @return
      */
-    public static WalletETH generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic) {
+    public static Wallet generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic) {
         try {
             DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(mnemonic, 0);
             ECKey ecKeyPair = ECKey.fromPrivate(deterministicKey.getPrivKey());
@@ -67,10 +61,10 @@ public class WalletBTCUtils {
             Log.v("--->地址；", segwitAddress + "");
             Log.v("--->私钥；", privateKey + "");
             //BTC无keystore
-            return new WalletETH(walletname, walletPassword, mnemonic, segwitAddress.toBech32(), privateKey, publicKey, "", 0);
+            return new Wallet(walletname, walletPassword, mnemonic, segwitAddress.toBech32(), privateKey, publicKey, "", 0);
         } catch (Exception e) {
             e.printStackTrace();
-            return new WalletETH("", "", "", "", "", "", "", 0);
+            return new Wallet("", "", "", "", "", "", "", 0);
         }
     }
 
@@ -82,7 +76,7 @@ public class WalletBTCUtils {
      * @param privateKey
      * @return
      */
-    public static WalletETH generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey) {
+    public static Wallet generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey) {
         try {
             ECKey ecKeyPair = ECKey.fromPrivate(Numeric.toBigInt(privateKey));
             //主网
@@ -98,10 +92,10 @@ public class WalletBTCUtils {
             //bc1开头的地址
             SegwitAddress segwitAddress = SegwitAddress.fromKey(networkParameters, ecKeyPair);
             //BTC无keystore，由于通过privateKey无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
-            return new WalletETH(walletname, walletPassword, "", segwitAddress.toBech32(), privateKey, publicKey, "", 0);
+            return new Wallet(walletname, walletPassword, "", segwitAddress.toBech32(), privateKey, publicKey, "", 0);
         } catch (Exception e) {
             e.printStackTrace();
-            return new WalletETH("", "", "", "", "", "", "", 0);
+            return new Wallet("", "", "", "", "", "", "", 0);
         }
     }
 

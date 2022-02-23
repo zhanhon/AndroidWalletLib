@@ -3,7 +3,6 @@ package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -17,7 +16,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
-import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.Page
@@ -227,9 +225,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
 
                             }
-                            if (redList.isNotEmpty()){
+                            if (redList.isNotEmpty()) {
                                 binding.ivMineRight.setImageResource(R.drawable.ic_bell_unread)
-                            }else{
+                            } else {
                                 binding.ivMineRight.setImageResource(R.drawable.ic_bell_read)
                             }
                         }
@@ -408,7 +406,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             }
             HKD -> {
                 binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text =
-                   "HKD"
+                    "HKD"
             }
             USD -> {
                 binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text =

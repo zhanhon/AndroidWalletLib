@@ -14,11 +14,13 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.MyAddressBean
-import com.ramble.ramblewallet.constant.*
+import com.ramble.ramblewallet.constant.ADDRESS_BOOK_INFO
+import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
+import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityAddressBookBinding
-import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.item.AddressBookItem
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.wight.adapter.*
@@ -40,7 +42,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     private var bean = MyAddressBean()
     private var isFromTransfer: Boolean = false
     private var idButton = 0
-    private lateinit var walletSelleted: WalletETH
+    private lateinit var walletSelleted: Wallet
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,13 +80,13 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                 )
         }
-        if (isFromTransfer){
+        if (isFromTransfer) {
             walletSelleted = Gson().fromJson(
                 SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-                object : TypeToken<WalletETH>() {}.type
+                object : TypeToken<Wallet>() {}.type
             )
-            when (walletSelleted.walletType){
-                0->{//btc
+            when (walletSelleted.walletType) {
+                0 -> {//btc
                     binding.groupButton.check(R.id.check_bt)
                     idButton = 1
                     myDataBeans = arrayListOf()
@@ -95,7 +97,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     }
                     loadData()
                 }
-                1->{//ETH
+                1 -> {//ETH
                     binding.groupButton.check(R.id.check_eth)
                     idButton = 2
                     myDataBeans = arrayListOf()
@@ -106,7 +108,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     }
                     loadData()
                 }
-                2->{//TRX
+                2 -> {//TRX
                     binding.groupButton.check(R.id.check_trx)
                     idButton = 3
                     myDataBeans = arrayListOf()
@@ -118,7 +120,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     loadData()
                 }
             }
-        }else{
+        } else {
             binding.groupButton.check(R.id.check_all)
             loadData()
         }
@@ -204,7 +206,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             Pie.EVENT_ADDRESS_BOOK_ADD -> {
 
                 myData = arrayListOf()
-                myData=  Gson().fromJson(
+                myData = Gson().fromJson(
                     SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, ""),
                     object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                 )

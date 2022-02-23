@@ -1,7 +1,7 @@
 package com.ramble.ramblewallet.tron;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ramble.ramblewallet.ethereum.WalletETH;
+import com.ramble.ramblewallet.bean.Wallet;
 import com.ramble.ramblewallet.tronsdk.StringTronUtil;
 import com.ramble.ramblewallet.tronsdk.common.utils.ByteArray;
 
@@ -40,7 +40,7 @@ public class WalletTRXUtils {
      * @param mnemonic
      * @return
      */
-    public static WalletETH generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic) throws Exception {
+    public static Wallet generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic) throws Exception {
         try {
             DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(mnemonic, 1);
             ECKeyPair ecKeyPair = ECKeyPair.create(deterministicKey.getPrivKey());
@@ -52,10 +52,10 @@ public class WalletTRXUtils {
             String address = fromHexAddress("41" + walletFile.getAddress());
             String privateKey = ecKeyPair1.getPrivateKey().toString(16);
             String publicKey = ecKeyPair1.getPublicKey().toString(16);
-            return new WalletETH(walletname, walletPassword, mnemonic, address, privateKey, publicKey, keystore, 2);
+            return new Wallet(walletname, walletPassword, mnemonic, address, privateKey, publicKey, keystore, 2);
         } catch (Exception e) {
             e.printStackTrace();
-            return new WalletETH("", "", "", "", "", "", "", 2);
+            return new Wallet("", "", "", "", "", "", "", 2);
         }
     }
 
@@ -67,7 +67,7 @@ public class WalletTRXUtils {
      * @param privateKey
      * @return
      */
-    public static WalletETH generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey) throws Exception {
+    public static Wallet generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey) throws Exception {
         try {
             BigInteger pk = Numeric.toBigIntNoPrefix(privateKey);
             byte[] privateKeyByte = pk.toByteArray();
@@ -80,10 +80,10 @@ public class WalletTRXUtils {
             String address = fromHexAddress("41" + walletFile.getAddress());
             String publicKey = ecKeyPair1.getPublicKey().toString(16);
             //由于通过privateKey无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
-            return new WalletETH(walletname, walletPassword, null, address, privateKey, publicKey, keystore, 2);
+            return new Wallet(walletname, walletPassword, null, address, privateKey, publicKey, keystore, 2);
         } catch (Exception e) {
             e.printStackTrace();
-            return new WalletETH("", "", "", "", "", "", "", 2);
+            return new Wallet("", "", "", "", "", "", "", 2);
         }
     }
 
@@ -95,7 +95,7 @@ public class WalletTRXUtils {
      * @param keystore
      * @return
      */
-    public static WalletETH generateWalletByKeyStore(String walletname, String walletPassword, String keystore) throws Exception {
+    public static Wallet generateWalletByKeyStore(String walletname, String walletPassword, String keystore) throws Exception {
         try {
             ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
             WalletFile walletFile2 = objectMapper.readValue(keystore, WalletFile.class);
@@ -106,10 +106,10 @@ public class WalletTRXUtils {
             String privateKey = ecKeyPair1.getPrivateKey().toString(16);
             String publicKey = ecKeyPair1.getPublicKey().toString(16);
             //由于通过keystore无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
-            return new WalletETH(walletname, walletPassword, null, address, privateKey, publicKey, keystore, 2);
+            return new Wallet(walletname, walletPassword, null, address, privateKey, publicKey, keystore, 2);
         } catch (Exception e) {
             e.printStackTrace();
-            return new WalletETH("", "", "", "", "", "", "", 2);
+            return new Wallet("", "", "", "", "", "", "", 2);
         }
     }
 

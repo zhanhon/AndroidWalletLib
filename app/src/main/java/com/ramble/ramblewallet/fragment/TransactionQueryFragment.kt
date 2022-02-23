@@ -7,11 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.DealDetailActivity
 import com.ramble.ramblewallet.activity.TransactionQueryActivity
@@ -19,7 +17,7 @@ import com.ramble.ramblewallet.base.BaseFragment
 import com.ramble.ramblewallet.bean.QueryTransferRecord
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.FragmentTransactionQueryBinding
-import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.TransferItem
@@ -57,8 +55,8 @@ class TransactionQueryFragment : BaseFragment(),
     private var currentPage = 1
     private var totalPage = 1
     private val adapter = RecyclerAdapter()
-    private lateinit var wallet: WalletETH
-    private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
+    private lateinit var wallet: Wallet
+    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var address = ""
 
 
@@ -159,7 +157,7 @@ class TransactionQueryFragment : BaseFragment(),
 
         saveWalletList = Gson().fromJson(
             SharedPreferencesUtils.getString(myActivity, WALLETINFO, ""),
-            object : TypeToken<ArrayList<WalletETH>>() {}.type
+            object : TypeToken<ArrayList<Wallet>>() {}.type
         )
         address = saveData(saveWalletList)
 //            "0x202DD5755125500587ADA64E84af2A00AF73e2E3"
@@ -184,7 +182,7 @@ class TransactionQueryFragment : BaseFragment(),
                         totalPage = data.totalPage
                         println("==================>getTransferInfo:${data}")
                         ArrayList<SimpleRecyclerItem>().apply {
-                            data.records.forEach { item -> add(TransferItem(myActivity,item)) }
+                            data.records.forEach { item -> add(TransferItem(myActivity, item)) }
                             if (data.pageNo == 1) {
                                 adapter.replaceAll(this.toList())
                             } else {
@@ -214,11 +212,11 @@ class TransactionQueryFragment : BaseFragment(),
         }
     }
 
-    private fun saveData(list: ArrayList<WalletETH>): String {
+    private fun saveData(list: ArrayList<Wallet>): String {
         wallet =
             Gson().fromJson(
                 SharedPreferencesUtils.getString(myActivity, WALLETSELECTED, ""),
-                object : TypeToken<WalletETH>() {}.type
+                object : TypeToken<Wallet>() {}.type
             )
         var currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
         var sb = StringBuffer()

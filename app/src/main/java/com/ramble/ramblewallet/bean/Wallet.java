@@ -1,9 +1,9 @@
-package com.ramble.ramblewallet.ethereum;
+package com.ramble.ramblewallet.bean;
 
 /**
  * @author Ricky
  */
-public class WalletETH {
+public class Wallet {
     private String walletName;
     private String walletPassword;
     private String mnemonic;
@@ -16,32 +16,32 @@ public class WalletETH {
     private boolean isClickDelete;
     private boolean isChoose;
 
-    public WalletETH() {
+    public Wallet() {
 
     }
 
-    public WalletETH(String mnemonic, String address, String privateKey, String publicKey) {
+    public Wallet(String mnemonic, String address, String privateKey, String publicKey) {
         this.mnemonic = mnemonic;
         this.address = address;
         this.privateKey = privateKey;
         this.publicKey = publicKey;
     }
 
-    public WalletETH(String mnemonic, String address, String privateKey, String publicKey, String keystore) {
+    public Wallet(String mnemonic, String address, String privateKey, String publicKey, String keystore) {
         this(mnemonic, address, privateKey, publicKey);
         this.keystore = keystore;
     }
 
-    public WalletETH(String walletName, String walletPassword, String mnemonic, String address,
-                     String privateKey, String publicKey, String keystore, int walletType) {
+    public Wallet(String walletName, String walletPassword, String mnemonic, String address,
+                  String privateKey, String publicKey, String keystore, int walletType) {
         this(mnemonic, address, privateKey, publicKey, keystore);
         this.walletName = walletName;
         this.walletPassword = walletPassword;
         this.walletType = walletType;
     }
 
-    public WalletETH(String walletName, String walletPassword, String mnemonic, String address,
-                     String privateKey, String publicKey, String keystore, int walletType, boolean isClickDelete) {
+    public Wallet(String walletName, String walletPassword, String mnemonic, String address,
+                  String privateKey, String publicKey, String keystore, int walletType, boolean isClickDelete) {
         this(walletName, walletPassword, mnemonic, address, privateKey, publicKey, keystore, walletType);
         this.isClickDelete = isClickDelete;
     }

@@ -88,10 +88,11 @@
                 android:textSize="@dimen/sp_14" />
         </LinearLayout>
     </LinearLayout>
+
     <TextView
         android:id="@+id/tv_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_20"
-        android:background="@drawable/vector_close"/>
+        android:background="@drawable/vector_close" />
 </LinearLayout>

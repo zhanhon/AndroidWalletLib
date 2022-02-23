@@ -29,7 +29,7 @@ import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.*
-import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getBtcMinerConfigUrl
@@ -62,7 +62,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private var btcFeeSlow: String? = ""
 
     private var isCustom = false
-    private lateinit var walletSelleted: WalletETH
+    private lateinit var walletSelleted: Wallet
     private lateinit var transferTitle: String
     private var transferReceiverAddress: String? = null
     private var isToken: Boolean = false
@@ -215,7 +215,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isNotEmpty()) {
             walletSelleted = Gson().fromJson(
                 SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-                object : TypeToken<WalletETH>() {}.type
+                object : TypeToken<Wallet>() {}.type
             )
             binding.tvWalletAddress.text = walletSelleted.address
             binding.tvWalletName.text = walletSelleted.walletName

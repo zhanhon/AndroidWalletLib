@@ -19,7 +19,10 @@ import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -31,7 +34,7 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityWalletMoreOperateBinding
-import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
@@ -43,11 +46,11 @@ import java.io.IOException
 class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityWalletMoreOperateBinding
-    private lateinit var walletCurrent: WalletETH
-    private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
+    private lateinit var walletCurrent: Wallet
+    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private val sdCardDir =
         Environment.getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DCIM
-    private lateinit var walletSelleted: WalletETH
+    private lateinit var walletSelleted: Wallet
     var mPermissionListener: PermissionListener? = null
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -57,27 +60,30 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
         SharedPreferencesUtils.saveBoolean(this, IS_CONFIRM_MNEMONIC, false)
         walletCurrent = Gson().fromJson(
             intent.getStringExtra(ARG_PARAM1),
-            object : TypeToken<WalletETH>() {}.type
+            object : TypeToken<Wallet>() {}.type
         )
         when (walletCurrent.walletType) {
             1 -> {
-                binding.tvRecoverWalletTitle.text = "ETH" + " " + walletCurrent.walletName + getString(R.string.di_wallet)
+                binding.tvRecoverWalletTitle.text =
+                    "ETH" + " " + walletCurrent.walletName + getString(R.string.di_wallet)
             }
             2 -> {
-                binding.tvRecoverWalletTitle.text = "TRX" + " " + walletCurrent.walletName + getString(R.string.di_wallet)
+                binding.tvRecoverWalletTitle.text =
+                    "TRX" + " " + walletCurrent.walletName + getString(R.string.di_wallet)
             }
             0 -> {
-                binding.tvRecoverWalletTitle.text = "BTC" + " " + walletCurrent.walletName + getString(R.string.di_wallet)
+                binding.tvRecoverWalletTitle.text =
+                    "BTC" + " " + walletCurrent.walletName + getString(R.string.di_wallet)
             }
         }
 
         saveWalletList = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-            object : TypeToken<ArrayList<WalletETH>>() {}.type
+            object : TypeToken<ArrayList<Wallet>>() {}.type
         )
         walletSelleted = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-            object : TypeToken<WalletETH>() {}.type
+            object : TypeToken<Wallet>() {}.type
         )
 
         if (saveWalletList.size == 1) {
@@ -201,7 +207,8 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
                 override fun afterTextChanged(s: Editable?) {
                     if ((edtWalletPassword.text.isNotEmpty())
-                        && (edtWalletPassword.text.length >= 6)){
+                        && (edtWalletPassword.text.length >= 6)
+                    ) {
                         window.findViewById<Button>(R.id.btn_confirm).background =
                             getDrawable(R.drawable.shape_green_bottom_btn)
                     } else {

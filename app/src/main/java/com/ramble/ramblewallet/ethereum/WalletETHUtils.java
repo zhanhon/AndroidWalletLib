@@ -5,6 +5,7 @@ import com.develop.mnemonic.MnemonicUtils;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ramble.ramblewallet.bean.Wallet;
 import com.ramble.ramblewallet.ethereum.utils.EthUtils;
 
 import org.web3j.crypto.CipherException;
@@ -12,7 +13,6 @@ import org.web3j.crypto.Credentials;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Hash;
 import org.web3j.crypto.Keys;
-import org.web3j.crypto.Wallet;
 import org.web3j.crypto.WalletFile;
 import org.web3j.utils.Numeric;
 
@@ -124,13 +124,13 @@ public class WalletETHUtils {
      * @throws CipherException
      * @throws IOException
      */
-    public static WalletETH generateBip32WalletFile(String password, File destinationDirectory)
+    public static Wallet generateBip32WalletFile(String password, File destinationDirectory)
             throws CipherException, IOException {
         String mnemonic = MnemonicUtils.generateMnemonic();
         ECKeyPair ecKeyPair = generateBip32ECKeyPair(mnemonic);
 
         String fileName = generateWalletFile(password, ecKeyPair, destinationDirectory, false);
-        WalletETH wallet = new WalletETH(mnemonic, EthUtils.getAddress(ecKeyPair), EthUtils.getPrivateKey(ecKeyPair), EthUtils.getPublicKey(ecKeyPair));
+        Wallet wallet = new Wallet(mnemonic, EthUtils.getAddress(ecKeyPair), EthUtils.getPrivateKey(ecKeyPair), EthUtils.getPublicKey(ecKeyPair));
         wallet.setFilename(fileName);
 
         return wallet;
@@ -144,7 +144,7 @@ public class WalletETHUtils {
      * @param mnemonic
      * @return
      */
-    public static WalletETH generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic) throws CipherException, IOException {
+    public static Wallet generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic) throws CipherException, IOException {
         try {
             ECKeyPair keyPair = WalletETHUtils.generateBip32ECKeyPair(mnemonic);
             WalletFile walletFile = createWalletFile(walletPassword, keyPair, false);
@@ -154,10 +154,10 @@ public class WalletETHUtils {
             String publicKey = EthUtils.getPublicKey(keyPair);
             String keyStore = objectMapper.writeValueAsString(walletFile);
             //链类型|0:BTC|1:ETH|2:TRX
-            return new WalletETH(walletname, walletPassword, mnemonic, address, privateKey, publicKey, keyStore, 1);
+            return new Wallet(walletname, walletPassword, mnemonic, address, privateKey, publicKey, keyStore, 1);
         } catch (Exception e) {
             e.printStackTrace();
-            return new WalletETH("", "", "", "", "", "", "", 1);
+            return new Wallet("", "", "", "", "", "", "", 1);
         }
     }
 
@@ -169,20 +169,20 @@ public class WalletETHUtils {
      * @param privateKey
      * @return
      */
-    public static WalletETH generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey) throws Exception {
+    public static Wallet generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey) throws Exception {
         try {
             BigInteger pk = new BigInteger(privateKey, 16);
             ECKeyPair keyPair = ECKeyPair.create(pk);
-            WalletFile walletFile = Wallet.createLight(walletPassword, keyPair);
+            WalletFile walletFile = org.web3j.crypto.Wallet.createLight(walletPassword, keyPair);
 
             String address = EthUtils.getAddress(keyPair);
             String publicKey = EthUtils.getPublicKey(keyPair);
             String keyStore = objectMapper.writeValueAsString(walletFile);
             //由于通过privateKey无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
-            return new WalletETH(walletname, walletPassword, null, address, privateKey, publicKey, keyStore, 1);
+            return new Wallet(walletname, walletPassword, null, address, privateKey, publicKey, keyStore, 1);
         } catch (Exception e) {
             e.printStackTrace();
-            return new WalletETH("", "", "", "", "", "", "", 1);
+            return new Wallet("", "", "", "", "", "", "", 1);
         }
     }
 
@@ -194,7 +194,7 @@ public class WalletETHUtils {
      * @param keystore
      * @return
      */
-    public static WalletETH generateWalletByKeyStore(String walletname, String walletPassword, String keystore) throws CipherException, IOException {
+    public static Wallet generateWalletByKeyStore(String walletname, String walletPassword, String keystore) throws CipherException, IOException {
         try {
             WalletFile walletFile = objectMapper.readValue(keystore, WalletFile.class);
             ECKeyPair keyPair = org.web3j.crypto.Wallet.decrypt(walletPassword, walletFile);
@@ -203,10 +203,10 @@ public class WalletETHUtils {
             String publicKey = EthUtils.getPublicKey(keyPair);
             String keyStore = objectMapper.writeValueAsString(walletFile);
             //由于通过keyStore无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
-            return new WalletETH(walletname, walletPassword, null, address, keystore, publicKey, keyStore, 1);
+            return new Wallet(walletname, walletPassword, null, address, keystore, publicKey, keyStore, 1);
         } catch (Exception e) {
             e.printStackTrace();
-            return new WalletETH("", "", "", "", "", "", "", 1);
+            return new Wallet("", "", "", "", "", "", "", 1);
         }
     }
 

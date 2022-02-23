@@ -69,39 +69,41 @@
                 app:layout_constraintRight_toRightOf="@+id/cardview"
                 app:layout_constraintTop_toTopOf="@+id/img_first"
                 tool:visibility="invisible" />
-             <LinearLayout
-                 android:layout_width="0dp"
-                 android:layout_height="wrap_content"
-                 android:orientation="horizontal"
-                 app:layout_constraintEnd_toStartOf="@+id/flag_new"
-                 app:layout_constraintStart_toEndOf="@+id/img_first"
-                 app:layout_constraintTop_toTopOf="@+id/img_first" >
-                 <TextView
-                     android:id="@+id/title1"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_marginEnd="8dp"
-                     android:layout_marginTop="@dimen/dp_15"
-                     android:ellipsize="end"
-                     android:gravity="left"
-                     android:maxEms="10"
-                     android:maxLines="1"
-                     android:text="1111111111199999999999999991111111111"
-                     android:textColor="@color/front_one"
-                     android:textSize="@dimen/sp_16"
-                     android:textStyle="bold" />
 
-                 <TextView
-                     android:id="@+id/badge"
-                     android:layout_width="14dp"
-                     android:layout_height="14dp"
-                     android:layout_marginTop="@dimen/dp_10"
-                     android:layout_marginStart="15dp"
-                     android:background="@drawable/shape_home_badge"
-                     android:textColor="@color/white"
-                     android:textSize="10sp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toStartOf="@+id/flag_new"
+                app:layout_constraintStart_toEndOf="@+id/img_first"
+                app:layout_constraintTop_toTopOf="@+id/img_first">
 
-             </LinearLayout>
+                <TextView
+                    android:id="@+id/title1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:ellipsize="end"
+                    android:gravity="left"
+                    android:maxEms="10"
+                    android:maxLines="1"
+                    android:text="1111111111199999999999999991111111111"
+                    android:textColor="@color/front_one"
+                    android:textSize="@dimen/sp_16"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/badge"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginStart="15dp"
+                    android:background="@drawable/shape_home_badge"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
 
             <View
                 android:id="@+id/view"

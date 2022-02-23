@@ -87,6 +87,7 @@ public class StringUtils {
 
     //小写字母
     public static final String REG_LOWERCASE = ".*[a-z]+.*";
+
     public static boolean isHasLowerChar(String password) {
         return password.matches(REG_LOWERCASE);
     }
@@ -98,7 +99,8 @@ public class StringUtils {
 
     /**
      * 传入区间值   假设:1-100   1-10
-     * @param edit   控件
+     *
+     * @param edit    控件
      * @param context
      * @param max     最大数
      * @param min     最小数
@@ -121,20 +123,20 @@ public class StringUtils {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // TODO Auto-generated method stub
-                if (!TextUtils.isEmpty(s.toString())){
+                if (!TextUtils.isEmpty(s.toString())) {
                     Pattern p = Pattern.compile("[0-9]*");
                     Matcher m = p.matcher(s.toString());
-                    if(m.matches() ){
+                    if (m.matches()) {
                         int number = Integer.valueOf(s.toString());
-                        if (number<=max&&number>=min) {
-                            if(s!=null){
-                                data= s.toString();
+                        if (number <= max && number >= min) {
+                            if (s != null) {
+                                data = s.toString();
                             }
                         } else {
                             edit.setText(data);
                             edit.setSelection(data.length());
                         }
-                    }else{
+                    } else {
                         edit.setText("");
                     }
                 }

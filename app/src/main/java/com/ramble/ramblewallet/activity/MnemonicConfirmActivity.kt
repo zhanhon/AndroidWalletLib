@@ -26,7 +26,7 @@ import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.custom.AutoLineFeedLayoutManager
 import com.ramble.ramblewallet.databinding.ActivityContributingWordsConfirmBinding
-import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.ethereum.WalletETHUtils.isEthValidAddress
 import com.ramble.ramblewallet.network.reportAddressUrl
@@ -49,7 +49,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     private var walletETHString: String = ""
     private lateinit var walletName: String
     private lateinit var walletPassword: String
-    private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
+    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var currentTab = ""
     private lateinit var mnemonicETH: ArrayList<String>
     private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX|3：BTC、ETH、TRX
@@ -103,7 +103,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                     saveWalletList =
                         Gson().fromJson(
                             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                            object : TypeToken<ArrayList<WalletETH>>() {}.type
+                            object : TypeToken<ArrayList<Wallet>>() {}.type
                         )
                 }
                 if (walletName.isEmpty()) {
@@ -147,7 +147,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                     saveWalletList =
                         Gson().fromJson(
                             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                            object : TypeToken<ArrayList<WalletETH>>() {}.type
+                            object : TypeToken<ArrayList<Wallet>>() {}.type
                         )
                 }
                 if (walletName.isEmpty()) {
@@ -204,7 +204,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                     saveWalletList =
                         Gson().fromJson(
                             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                            object : TypeToken<ArrayList<WalletETH>>() {}.type
+                            object : TypeToken<ArrayList<Wallet>>() {}.type
                         )
                 }
                 if (walletName.isEmpty()) {
@@ -262,7 +262,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                     saveWalletList =
                         Gson().fromJson(
                             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                            object : TypeToken<ArrayList<WalletETH>>() {}.type
+                            object : TypeToken<ArrayList<Wallet>>() {}.type
                         )
                 }
                 if (walletName.isEmpty()) {

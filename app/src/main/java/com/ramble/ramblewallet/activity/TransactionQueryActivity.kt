@@ -14,7 +14,7 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.constant.CURRENCY_TRAN
 import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityTransactionQueryBinding
-import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.fragment.TransactionQueryFragment
 import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
@@ -31,7 +31,7 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
     private lateinit var adapter: MyAdapter
     private lateinit var binding: ActivityTransactionQueryBinding
     private var isSpread = false
-    private lateinit var wallet:WalletETH
+    private lateinit var wallet: Wallet
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,9 +46,9 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
         adapter = MyAdapter(supportFragmentManager, this)
         binding.pager.adapter = adapter
         binding.layoutTab.setViewPager(binding.pager)
-         wallet = Gson().fromJson(
+        wallet = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-            object : TypeToken<WalletETH>() {}.type
+            object : TypeToken<Wallet>() {}.type
         )
         var currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY_TRAN, "")
         if (currencyUnit.isNotEmpty()) {

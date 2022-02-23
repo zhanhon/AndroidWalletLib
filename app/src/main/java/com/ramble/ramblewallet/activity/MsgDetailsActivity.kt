@@ -48,9 +48,9 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
                 binding.tvMineTitle.text = getString(R.string.help_center_content)
                 isCheckContent(content, title)
             }
-            2,22 -> {
+            2, 22 -> {
                 binding.ivRight.visibility = View.GONE
-                if (typeText==2){
+                if (typeText == 2) {
                     binding.tvMineTitle.text = getString(R.string.message_details)
                     if (id != 0) {
                         list = if (SharedPreferencesUtils.getString(
@@ -79,7 +79,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
                         var addId = SharedPreferencesUtils.SceneList2String(list)
                         SharedPreferencesUtils.saveString(this, READ_ID, addId)
                     }
-                }else{
+                } else {
                     binding.tvMineTitle.text = getString(R.string.announcement_content)
                     if (id != 0) {
                         list = if (SharedPreferencesUtils.getString(
@@ -168,9 +168,9 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun isCheckContent(content: String, title: String) {
-        binding.title1.text = if (title.length>=30){
-            title.subSequence(0,30).toString()+"..."
-        }else{
+        binding.title1.text = if (title.length >= 30) {
+            title.subSequence(0, 30).toString() + "..."
+        } else {
             title
         }
         binding.time2.text = if (createTime.isNotEmpty()) "发布日期：$createTime" else createTime

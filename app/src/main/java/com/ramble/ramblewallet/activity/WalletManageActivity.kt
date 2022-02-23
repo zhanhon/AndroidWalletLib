@@ -24,7 +24,7 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityWalletManageBinding
-import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.ClipboardUtils
@@ -39,12 +39,12 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     View.OnClickListener {
 
     private lateinit var binding: ActivityWalletManageBinding
-    private var walletManageBean: ArrayList<WalletETH> = arrayListOf()
-    private var walletManageCurrencyBean: ArrayList<WalletETH> = arrayListOf()
+    private var walletManageBean: ArrayList<Wallet> = arrayListOf()
+    private var walletManageCurrencyBean: ArrayList<Wallet> = arrayListOf()
     private lateinit var walletManageAdapter: WalletManageAdapter
     private var isDeletePage = false
-    private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
-    private lateinit var walletSelleted: WalletETH
+    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
+    private lateinit var walletSelleted: Wallet
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -69,11 +69,11 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         super.onResume()
         saveWalletList = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-            object : TypeToken<ArrayList<WalletETH>>() {}.type
+            object : TypeToken<ArrayList<Wallet>>() {}.type
         )
         walletSelleted = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-            object : TypeToken<WalletETH>() {}.type
+            object : TypeToken<Wallet>() {}.type
         )
         initView()
     }
@@ -97,20 +97,20 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         binding.tvDefaultWallet.setOnClickListener(this)
     }
 
-    private fun loadData(walletManageBean: ArrayList<WalletETH>) {
+    private fun loadData(walletManageBean: ArrayList<Wallet>) {
         walletManageBean.forEach {
             it.isChoose = it.address == walletSelleted.address
         }
         walletManageAdapter = WalletManageAdapter(walletManageBean, isDeletePage)
         binding.rvMainCurrency.adapter = walletManageAdapter
         walletManageAdapter.setOnItemClickListener { adapter, view, position ->
-            if (adapter.getItem(position) is WalletETH) {
+            if (adapter.getItem(position) is Wallet) {
                 SharedPreferencesUtils.saveString(
                     this,
                     WALLETSELECTED,
-                    Gson().toJson(adapter.getItem(position) as WalletETH)
+                    Gson().toJson(adapter.getItem(position) as Wallet)
                 )
-                when ((adapter.getItem(position) as WalletETH).walletType) {
+                when ((adapter.getItem(position) as Wallet).walletType) {
                     1 -> {
                         startActivity(Intent(this, MainETHActivity::class.java))
                     }
@@ -129,42 +129,42 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         walletManageAdapter.setOnItemChildClickListener { adapter, view, position ->
             when (view.id) {
                 R.id.iv_copy_address -> {
-                    if (adapter.getItem(position) is WalletETH) {
-                        ClipboardUtils.copy((adapter.getItem(position) as WalletETH).address)
+                    if (adapter.getItem(position) is Wallet) {
+                        ClipboardUtils.copy((adapter.getItem(position) as Wallet).address)
                     }
                 }
                 R.id.iv_wallet_more -> {
                     startActivity(Intent(this, WalletMoreOperateActivity::class.java).apply {
-                        putExtra(ARG_PARAM1, Gson().toJson(adapter.getItem(position) as WalletETH))
+                        putExtra(ARG_PARAM1, Gson().toJson(adapter.getItem(position) as Wallet))
                     })
                 }
                 R.id.cl_delete -> {
-                    if (adapter.getItem(position) is WalletETH) {
-                        if ((adapter.getItem(position) as WalletETH).clickDelete) {
+                    if (adapter.getItem(position) is Wallet) {
+                        if ((adapter.getItem(position) as Wallet).clickDelete) {
                             walletManageBean[position] =
-                                WalletETH(
-                                    (adapter.getItem(position) as WalletETH).walletName,
-                                    (adapter.getItem(position) as WalletETH).walletPassword,
-                                    (adapter.getItem(position) as WalletETH).mnemonic,
-                                    (adapter.getItem(position) as WalletETH).address,
-                                    (adapter.getItem(position) as WalletETH).privateKey,
-                                    (adapter.getItem(position) as WalletETH).publicKey,
-                                    (adapter.getItem(position) as WalletETH).keystore,
-                                    (adapter.getItem(position) as WalletETH).walletType,
+                                Wallet(
+                                    (adapter.getItem(position) as Wallet).walletName,
+                                    (adapter.getItem(position) as Wallet).walletPassword,
+                                    (adapter.getItem(position) as Wallet).mnemonic,
+                                    (adapter.getItem(position) as Wallet).address,
+                                    (adapter.getItem(position) as Wallet).privateKey,
+                                    (adapter.getItem(position) as Wallet).publicKey,
+                                    (adapter.getItem(position) as Wallet).keystore,
+                                    (adapter.getItem(position) as Wallet).walletType,
                                     false
                                 )
                             walletManageAdapter.notifyItemChanged(position)
                         } else {
                             walletManageBean[position] =
-                                WalletETH(
-                                    (adapter.getItem(position) as WalletETH).walletName,
-                                    (adapter.getItem(position) as WalletETH).walletPassword,
-                                    (adapter.getItem(position) as WalletETH).mnemonic,
-                                    (adapter.getItem(position) as WalletETH).address,
-                                    (adapter.getItem(position) as WalletETH).privateKey,
-                                    (adapter.getItem(position) as WalletETH).publicKey,
-                                    (adapter.getItem(position) as WalletETH).keystore,
-                                    (adapter.getItem(position) as WalletETH).walletType,
+                                Wallet(
+                                    (adapter.getItem(position) as Wallet).walletName,
+                                    (adapter.getItem(position) as Wallet).walletPassword,
+                                    (adapter.getItem(position) as Wallet).mnemonic,
+                                    (adapter.getItem(position) as Wallet).address,
+                                    (adapter.getItem(position) as Wallet).privateKey,
+                                    (adapter.getItem(position) as Wallet).publicKey,
+                                    (adapter.getItem(position) as Wallet).keystore,
+                                    (adapter.getItem(position) as Wallet).walletType,
                                     true
                                 )
                             walletManageAdapter.notifyItemChanged(position)

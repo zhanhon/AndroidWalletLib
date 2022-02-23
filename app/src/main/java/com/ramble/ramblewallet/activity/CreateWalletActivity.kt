@@ -14,7 +14,7 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityCreateWalletBinding
-import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.toastDefault
 
@@ -23,7 +23,7 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityCreateWalletBinding
     private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX|3：BTC、ETH、TRX
     private var walletSource = 1
-    private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
+    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +44,7 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
             saveWalletList =
                 Gson().fromJson(
                     SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                    object : TypeToken<ArrayList<WalletETH>>() {}.type
+                    object : TypeToken<ArrayList<Wallet>>() {}.type
                 )
         }
     }
@@ -103,6 +103,7 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
             binding.btnConfirm.background = getDrawable(R.drawable.shape_gray_bottom_btn)
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onClick(v: View) {
         when (v.id) {

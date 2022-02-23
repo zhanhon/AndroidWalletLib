@@ -30,16 +30,14 @@ import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.getBalanceETH
-import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.helper.start
-import com.ramble.ramblewallet.item.StationItem
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.StringUtils.strAddComma
-import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
 import java.math.BigDecimal
 
 class MainETHActivity : BaseActivity(), View.OnClickListener {
@@ -48,11 +46,11 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private var mainETHTokenBean: ArrayList<MainETHTokenBean> = arrayListOf()
     private lateinit var mainAdapter: MainAdapter
     private lateinit var currencyUnit: String
-    private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
+    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var isClickEyes = false
     private var animator: ObjectAnimator? = null
     private var saveTokenList: ArrayList<StoreInfo> = arrayListOf()
-    private lateinit var walletSelleted: WalletETH
+    private lateinit var walletSelleted: Wallet
     private var ethBalance: BigDecimal = BigDecimal("0.00000000")
     private var tokenBalance: BigDecimal = BigDecimal("0.00000000")
     private var totalBalance: BigDecimal = BigDecimal("0.00")
@@ -175,9 +173,9 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 
 
                             }
-                            if (redList.isNotEmpty()){
+                            if (redList.isNotEmpty()) {
                                 binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
-                            }else{
+                            } else {
                                 binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center)
                             }
                         }
@@ -271,7 +269,8 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_eyes -> {
                 if (isClickEyes) {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_open)
-                    binding.tvBalanceTotal.text = strAddComma(DecimalFormatUtil.format2.format(totalBalance))
+                    binding.tvBalanceTotal.text =
+                        strAddComma(DecimalFormatUtil.format2.format(totalBalance))
                     isClickEyes = false
                 } else {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_close)
@@ -335,11 +334,11 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, USD)
         saveWalletList = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-            object : TypeToken<ArrayList<WalletETH>>() {}.type
+            object : TypeToken<ArrayList<Wallet>>() {}.type
         )
         walletSelleted = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-            object : TypeToken<WalletETH>() {}.type
+            object : TypeToken<Wallet>() {}.type
         )
         binding.tvWalletName.text = walletSelleted.walletName
         when (currencyUnit) {

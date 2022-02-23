@@ -30,7 +30,7 @@ import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.balanceOfBtc
 import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainBtcBinding
-import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.noticeInfoUrl
@@ -45,10 +45,10 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
     private var mainETHTokenBean: ArrayList<MainETHTokenBean> = arrayListOf()
     private lateinit var mainAdapter: MainAdapter
     private lateinit var currencyUnit: String
-    private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
+    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var isClickEyes = false
     private var animator: ObjectAnimator? = null
-    private lateinit var walletSelleted: WalletETH
+    private lateinit var walletSelleted: Wallet
     private var btcBalance: BigDecimal = BigDecimal("0")
     private var tokenBalance: BigDecimal = BigDecimal("0")
     private var totalBalance: BigDecimal = BigDecimal("0")
@@ -322,11 +322,11 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, USD)
         saveWalletList = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-            object : TypeToken<ArrayList<WalletETH>>() {}.type
+            object : TypeToken<ArrayList<Wallet>>() {}.type
         )
         walletSelleted = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-            object : TypeToken<WalletETH>() {}.type
+            object : TypeToken<Wallet>() {}.type
         )
         binding.tvWalletName.text = walletSelleted.walletName
         when (currencyUnit) {

@@ -17,7 +17,7 @@ import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.bitcoin.WalletBTCUtils.isBtcValidAddress
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityRecoverWalletBinding
-import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.ethereum.WalletETHUtils.isEthValidAddress
 import com.ramble.ramblewallet.ethereum.utils.ChineseSimplified
@@ -38,8 +38,8 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityRecoverWalletBinding
     private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX
     private var chooseMode = 0 //选择方式|1:助记词|2:私钥|3:keystore
-    private var saveWalletList: ArrayList<WalletETH> = arrayListOf()
-    private lateinit var saveWalletSelected: WalletETH
+    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
+    private lateinit var saveWalletSelected: Wallet
     private var mnemonic: ArrayList<String> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -268,7 +268,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun recoverWalletETH(chooseMode: Int) {
-        lateinit var walletETH: WalletETH
+        lateinit var walletETH: Wallet
         when (chooseMode) {
             1 -> {
                 walletETH = WalletETHUtils.generateWalletByMnemonic(
@@ -296,7 +296,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             saveWalletList =
                 Gson().fromJson(
                     SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                    object : TypeToken<ArrayList<WalletETH>>() {}.type
+                    object : TypeToken<ArrayList<Wallet>>() {}.type
                 )
         }
         saveWalletList.add(walletETH)
@@ -336,7 +336,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun recoverWalletTRX(chooseMode: Int) {
-        lateinit var walletTRX: WalletETH
+        lateinit var walletTRX: Wallet
         when (chooseMode) {
             1 -> {
                 walletTRX = WalletTRXUtils.generateWalletByMnemonic(
@@ -364,7 +364,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             saveWalletList =
                 Gson().fromJson(
                     SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                    object : TypeToken<ArrayList<WalletETH>>() {}.type
+                    object : TypeToken<ArrayList<Wallet>>() {}.type
                 )
         }
         saveWalletList.add(walletTRX)
@@ -405,7 +405,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun recoverWalletBTC(chooseMode: Int) {
-        lateinit var walletBTC: WalletETH
+        lateinit var walletBTC: Wallet
         when (chooseMode) {
             1 -> {
                 walletBTC = WalletBTCUtils.generateWalletByMnemonic(
@@ -426,7 +426,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             saveWalletList =
                 Gson().fromJson(
                     SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                    object : TypeToken<ArrayList<WalletETH>>() {}.type
+                    object : TypeToken<ArrayList<Wallet>>() {}.type
                 )
         }
         saveWalletList.add(walletBTC)
@@ -460,7 +460,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun putAddress(wallet: WalletETH, walletType: Int) {
+    private fun putAddress(wallet: Wallet, walletType: Int) {
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
         when (walletType) {
             1 -> {

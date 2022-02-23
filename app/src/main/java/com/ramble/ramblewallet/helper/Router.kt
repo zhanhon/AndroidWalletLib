@@ -24,12 +24,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.constant.REQUEST_CODE_1029
-import com.ramble.ramblewallet.constant.appProcessName
 import com.ramble.ramblewallet.utils.Glide4Engine
 import com.ramble.ramblewallet.utils.dimensionPixelSize
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
-import com.zhihu.matisse.internal.entity.CaptureStrategy
 import org.joor.Reflect
 
 @JvmOverloads

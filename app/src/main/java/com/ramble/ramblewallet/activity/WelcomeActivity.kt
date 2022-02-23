@@ -12,10 +12,9 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.constant.*
-import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.helper.MyPreferences
 import com.ramble.ramblewallet.push.UmInitConfig
-import com.ramble.ramblewallet.utils.LanguageSetting
 import com.ramble.ramblewallet.utils.LanguageSetting.setLanguage
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.umeng.commonsdk.UMConfigure
@@ -24,7 +23,7 @@ import java.util.*
 
 class WelcomeActivity : BaseActivity() {
 
-    private lateinit var wallet: WalletETH
+    private lateinit var wallet: Wallet
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +43,7 @@ class WelcomeActivity : BaseActivity() {
                 wallet =
                     Gson().fromJson(
                         SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-                        object : TypeToken<WalletETH>() {}.type
+                        object : TypeToken<Wallet>() {}.type
                     )
                 when (wallet.walletType) {
                     1 -> {
@@ -77,7 +76,7 @@ class WelcomeActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         val fristShow = SharedPreferencesUtils.getBoolean(this, FIRSTLANGUAGE, true)
-        if(fristShow){//第一次
+        if (fristShow) {//第一次
             SharedPreferencesUtils.saveBoolean(this, FIRSTLANGUAGE, false)
             //设置跟随手机系统语言进行设置app默认语言
             val locale: Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

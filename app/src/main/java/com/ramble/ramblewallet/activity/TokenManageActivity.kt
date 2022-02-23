@@ -145,9 +145,9 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.confirm_button -> {//完成
-                binding.ivDeleteToken.isVisible=true
-                binding.confirmButton.isVisible=false
-                isShowCheck=false
+                binding.ivDeleteToken.isVisible = true
+                binding.confirmButton.isVisible = false
+                isShowCheck = false
                 itemTouchHelper.setDragEnable(false)
                 setIDlist()
                 if (saveList.isNotEmpty()) {
@@ -163,7 +163,11 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                     }
 
                 }
-                SharedPreferencesUtils.saveString(this@TokenManageActivity, TOKEN_INFO_NO, Gson().toJson(myStores))
+                SharedPreferencesUtils.saveString(
+                    this@TokenManageActivity,
+                    TOKEN_INFO_NO,
+                    Gson().toJson(myStores)
+                )
                 RxBus.emitEvent(Pie.EVENT_DEL_TOKEN, saveList)
                 ArrayList<SimpleRecyclerItem>().apply {
                     myStores.forEach { o -> this.add(TokenManageItem(o)) }
@@ -173,8 +177,8 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
 
             }
             R.id.iv_delete_token -> {
-                binding.ivDeleteToken.isVisible=false
-                binding.confirmButton.isVisible=true
+                binding.ivDeleteToken.isVisible = false
+                binding.confirmButton.isVisible = true
                 isShowCheck = true
                 itemTouchHelper.setDragEnable(true)
                 setAdapterEditable(isShowCheck)

@@ -15,7 +15,7 @@ import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.constant.TOKEN_INFO_NO
 import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivitySearchTokenBinding
-import com.ramble.ramblewallet.ethereum.WalletETH
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.item.AddTokenItem
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -40,7 +40,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
     private val adapter = RecyclerAdapter()
     private var myDataBeansMyAssets: ArrayList<StoreInfo> = arrayListOf()
     private var lastString = ""
-    private lateinit var wallet: WalletETH
+    private lateinit var wallet: Wallet
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,7 +85,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
         wallet =
             Gson().fromJson(
                 SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-                object : TypeToken<WalletETH>() {}.type
+                object : TypeToken<Wallet>() {}.type
             )
 
         var req = StoreInfo.Req()

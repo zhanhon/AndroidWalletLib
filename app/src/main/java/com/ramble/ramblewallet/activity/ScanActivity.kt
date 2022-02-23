@@ -88,7 +88,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
                 1,
                 *perms
             )
-        }else{
+        } else {
             // 请求权限已经被授权
             zxingview?.startCamera()
             zxingview?.startSpotAndShowRect()
