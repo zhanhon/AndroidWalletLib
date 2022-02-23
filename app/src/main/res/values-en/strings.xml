@@ -42,7 +42,7 @@
     <string name="back_previous_page">Back To The Last Page And Remember The Mnemonic Phrase Again</string>
     <string name="currency_unit">Unit</string>
     <string name="encrypt_private_key_json_file">JSON Document</string>
-    <string name="language_simplified_chinese">Simplified Chinese</string>
+    <string name="language_simplified_chinese">简体中文</string>
     <string name="transaction_code">Transaction Code</string>
     <string name="trading_date">Date</string>
     <string name="transaction_failed">Transaction Failed</string>
@@ -172,9 +172,9 @@
     <string name="gathering_scan_tips">Scan QR code to transfer to <tools>%s</tools></string>
     <string name="save_success">Save successfully</string>
     <string name="save_scan">Save QR code</string>
-    <string name="language_traditional_chinese">Chinese Traditional</string>
+    <string name="language_traditional_chinese">繁體中文</string>
     <string name="language_english">English</string>
-    <string name="language_choose">language choice</string>
+    <string name="language_choose">language</string>
     <string name="currency_choose">Currency choice</string>
     <string name="transfer_remark">transfer remark</string>
     <string name="choose_fill">optional</string>
