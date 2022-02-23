@@ -363,7 +363,7 @@ public class TransferBTCUtils {
      */
     public static Long getFee(String btcFee, long amount, List<UTXO> utxos) {
         //获取费率
-        Long feeRate = Long.getLong(btcFee);
+        Long feeRate = Long.parseLong(btcFee);
         Long utxoAmount = 0L;
         Long fee = 0L;
         Long utxoSize = 0L;
