@@ -15,11 +15,17 @@ import org.bitcoinj.crypto.HDKeyDerivation;
 import org.bitcoinj.crypto.HDUtils;
 import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.params.TestNet3Params;
+import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.MnemonicUtils;
+import org.web3j.crypto.WalletFile;
+import org.web3j.protocol.ObjectMapperFactory;
 import org.web3j.utils.Numeric;
 
 import java.math.BigInteger;
 import java.util.List;
+
+import static org.web3j.crypto.Wallet.createLight;
+import static org.web3j.crypto.Wallet.decrypt;
 
 /**
  * @创建人： Ricky
@@ -27,6 +33,20 @@ import java.util.List;
  */
 public class WalletBTCUtils {
 
+    public static boolean isMainNet;
+
+    static {
+        isMainNet = false;
+    }
+
+    /**
+     * 通过助记词生成钱包
+     *
+     * @param walletname
+     * @param walletPassword
+     * @param mnemonic
+     * @return
+     */
     public static WalletETH generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic) {
         try {
             DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(mnemonic, 0);
@@ -54,6 +74,14 @@ public class WalletBTCUtils {
         }
     }
 
+    /**
+     * 通过privateKey生成钱包
+     *
+     * @param walletname
+     * @param walletPassword
+     * @param privateKey
+     * @return
+     */
     public static WalletETH generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey) {
         try {
             ECKey ecKeyPair = ECKey.fromPrivate(Numeric.toBigInt(privateKey));
@@ -96,10 +124,10 @@ public class WalletBTCUtils {
         return hierarchy.deriveChild(parentPath, true, true, new ChildNumber(id, false));
     }
 
-    public static boolean isBtcValidAddress(String address, boolean flag) {
+    public static boolean isBtcValidAddress(String address) {
         try {
             NetworkParameters networkParameters = null;
-            if (!flag)
+            if (isMainNet)
                 networkParameters = MainNetParams.get();
             else
                 networkParameters = TestNet3Params.get();

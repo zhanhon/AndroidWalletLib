@@ -353,7 +353,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             0 -> {
-                if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address, true)) {
+                if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address)) {
                     if (!isToken) {
                         balanceOfBtc(this, walletSelleted.address)
                     }

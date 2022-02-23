@@ -334,7 +334,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
-        if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address, true)) {
+        if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address)) {
             balanceOfBtc(this, walletSelleted.address)
         }
         binding.tvBtcAddress.text = addressHandle(walletSelleted.address)

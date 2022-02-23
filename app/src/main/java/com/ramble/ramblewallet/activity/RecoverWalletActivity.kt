@@ -435,7 +435,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         if (walletBTC.address.isNotEmpty()) {
             putAddress(walletBTC, 0)
             startActivity(Intent(this, MainETHActivity::class.java))
-            if (isBtcValidAddress(walletBTC.address, true)) {
+            if (isBtcValidAddress(walletBTC.address)) {
                 SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletBTC))
                 startActivity(Intent(this, MainBTCActivity::class.java))
             } else {
