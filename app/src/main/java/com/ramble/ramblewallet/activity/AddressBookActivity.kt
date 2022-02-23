@@ -120,11 +120,6 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             }
         }else{
             binding.groupButton.check(R.id.check_all)
-            idButton = 0
-            myDataBeans = arrayListOf()
-            myData.forEach {
-                myDataBeans.add(it)
-            }
             loadData()
         }
 
