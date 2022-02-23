@@ -695,17 +695,32 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 }
                 setEthMinerFee()
                 dialog.dismiss()
-                if ((BigDecimal(gasPrice) < BigDecimal(slowGasPrice))
-                    || (BigDecimal(gasLimit) < BigDecimal("10000"))
-                ) {
-                    transactionFailDialog(getString(R.string.miner_fee_low_tips))
-                    return@setOnClickListener
-                }
-                if ((BigDecimal(gasPrice) > BigDecimal(fastGasPrice))
-                    || (BigDecimal(gasLimit) > BigDecimal("50000"))
-                ) {
-                    transactionFailDialog(getString(R.string.miner_fee_high_tips))
-                    return@setOnClickListener
+                if (isToken) {
+                    if ((BigDecimal(gasPrice) < BigDecimal("60"))
+                        || (BigDecimal(gasLimit) < BigDecimal("62000"))
+                    ) {
+                        transactionFailDialog(getString(R.string.miner_fee_low_tips))
+                        return@setOnClickListener
+                    }
+                    if ((BigDecimal(gasPrice) > BigDecimal("300"))
+                        || (BigDecimal(gasLimit) > BigDecimal("100000"))
+                    ) {
+                        transactionFailDialog(getString(R.string.miner_fee_high_tips))
+                        return@setOnClickListener
+                    }
+                } else {
+                    if ((BigDecimal(gasPrice) < BigDecimal("60"))
+                        || (BigDecimal(gasLimit) < BigDecimal("21000"))
+                    ) {
+                        transactionFailDialog(getString(R.string.miner_fee_low_tips))
+                        return@setOnClickListener
+                    }
+                    if ((BigDecimal(gasPrice) > BigDecimal("300"))
+                        || (BigDecimal(gasLimit) > BigDecimal("26000"))
+                    ) {
+                        transactionFailDialog(getString(R.string.miner_fee_high_tips))
+                        return@setOnClickListener
+                    }
                 }
             }
         }
@@ -757,18 +772,14 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 }
                 setBtcMinerFee()
                 dialog.dismiss()
-//                if ((BigDecimal(gasPrice) < BigDecimal(slowGasPrice))
-//                    || (BigDecimal(gasLimit) < BigDecimal("21000"))
-//                ) {
-//                    transactionFailDialog(getString(R.string.miner_fee_low_tips))
-//                    return@setOnClickListener
-//                }
-//                if ((BigDecimal(gasPrice) > BigDecimal(fastGasPrice))
-//                    || (BigDecimal(gasLimit) < BigDecimal("1000000"))
-//                ) {
-//                    transactionFailDialog(getString(R.string.miner_fee_high_tips))
-//                    return@setOnClickListener
-//                }
+                if (BigDecimal(btcFee) < BigDecimal("1")) {
+                    transactionFailDialog(getString(R.string.miner_fee_low_tips))
+                    return@setOnClickListener
+                }
+                if (BigDecimal(gasPrice) > BigDecimal("250")) {
+                    transactionFailDialog(getString(R.string.miner_fee_high_tips))
+                    return@setOnClickListener
+                }
             }
         }
     }
