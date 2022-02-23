@@ -63,7 +63,7 @@ class QueryTransferRecord @SuppressWarnings("unused") constructor() {
         var id: Int = 0//id
 
         @Json(name = "inputs")
-        var inputs: List<InRecord> = listOf()//BTC转出信息
+        var inputs: List<InRecord> = emptyList()//BTC转出信息
 
         @Json(name = "miner")
         var miner: String = ""//矿工费
@@ -72,7 +72,7 @@ class QueryTransferRecord @SuppressWarnings("unused") constructor() {
         var minerUnit: String = ""//矿工费单位
 
         @Json(name = "outputs")
-        var outputs: List<OutRecord> = listOf()//BTC转入信息
+        var outputs: List<InRecord> = emptyList()//BTC转入信息
 
         @Json(name = "remark")
         var remark: String = ""//备注
@@ -116,25 +116,6 @@ class QueryTransferRecord @SuppressWarnings("unused") constructor() {
         var unit: String = ""//交易币种单位
     }
 
-    class OutRecord : Serializable {
-        @Json(name = "address")
-        var address: String = ""//地址
-
-        @Json(name = "amount")
-        var amount: Double = 0.00//金额
-
-        @Json(name = "changeAmount")
-        var changeAmount: Double = 0.00//转换金额
-
-        @Json(name = "changeUnit")
-        var changeUnit: String = ""//转换单位
-
-        @Json(name = "currencyType")
-        var currencyType: String = ""//币种
-
-        @Json(name = "unit")
-        var unit: String = ""//交易币种单位
-    }
 
     data class Req(
         @Json(name = "pageNo")

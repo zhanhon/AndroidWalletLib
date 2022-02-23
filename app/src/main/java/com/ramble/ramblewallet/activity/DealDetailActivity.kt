@@ -8,14 +8,23 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.QueryTransferRecord
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.databinding.ActivityDealDetailBinding
 import com.ramble.ramblewallet.helper.getExtras
+import com.ramble.ramblewallet.item.AddressTansItem
+import com.ramble.ramblewallet.item.AddressTansRuItem
 import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.TimeUtils
+import com.ramble.ramblewallet.wight.adapter.AdapterUtils
+import com.ramble.ramblewallet.wight.adapter.QuickItemDecoration
+import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
+import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -26,6 +35,8 @@ import com.ramble.ramblewallet.utils.TimeUtils
 class DealDetailActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityDealDetailBinding
     private var trans: QueryTransferRecord.Record? = null
+    private val adapter = RecyclerAdapter()
+    private val adapterRu = RecyclerAdapter()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,10 +51,60 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
     private fun initView() {
         binding.tvMineTitle.text = getString(R.string.details)
         trans = getExtras().getSerializable(ARG_PARAM1) as QueryTransferRecord.Record?
+        binding.rvCurrency.addItemDecoration(
+            QuickItemDecoration.builder(this)
+                .color(R.color.driver_gray, R.dimen.dp_08)
+                .build()
+        )
+        LinearLayoutManager(this).apply {
+            binding.rvCurrency.layoutManager = this
+        }
+        binding.rvCurrency.adapter = adapter
+
+        binding.rvCurrencyAddress.addItemDecoration(
+            QuickItemDecoration.builder(this)
+                .color(R.color.driver_gray, R.dimen.dp_08)
+                .build()
+        )
+        LinearLayoutManager(this).apply {
+            binding.rvCurrencyAddress.layoutManager = this
+        }
+        binding.rvCurrencyAddress.adapter = adapterRu
+
         binding.minerFees.text = trans?.miner
         binding.minerFeesUsd.text = trans?.minerUnit
-        binding.tvToAddress.text = trans?.fromAddress
-        binding.tvFromAddress.text = trans?.toAddress
+
+        when (trans?.addressType) {
+            3 -> {
+                ArrayList<SimpleRecyclerItem>().apply {
+                    trans?.inputs?.forEach { o -> this.add(AddressTansItem(o)) }
+                    adapter.replaceAll(this.toList())
+                }
+
+                ArrayList<SimpleRecyclerItem>().apply {
+                    trans?.outputs?.forEach { o -> this.add(AddressTansRuItem(o)) }
+                    adapterRu.replaceAll(this.toList())
+                }
+
+            }
+            else -> {
+                ArrayList<SimpleRecyclerItem>().apply {
+                    var o = QueryTransferRecord.InRecord()
+                    o.address= trans?.fromAddress.toString()
+                  this.add(AddressTansItem(o))
+                    adapter.replaceAll(this.toList())
+                }
+
+                ArrayList<SimpleRecyclerItem>().apply {
+                    var o = QueryTransferRecord.InRecord()
+                    o.address= trans?.toAddress.toString()
+                    this.add(AddressTansRuItem(o))
+                    adapterRu.replaceAll(this.toList())
+                }
+
+            }
+        }
+
         binding.mark.text = trans?.remark
         binding.transactionCode.text = trans?.txHash
         binding.blockNumber.text = trans?.blockNumber
@@ -85,10 +146,10 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
     private fun initListener() {
         binding.ivBack.setOnClickListener(this)
         binding.ivMineRight.setOnClickListener(this)
-        binding.addCopy.setOnClickListener(this)
-        binding.payCopy.setOnClickListener(this)
         binding.numberCopy.setOnClickListener(this)
         binding.btnDetail.setOnClickListener(this)
+        adapter.onClickListener = this
+        adapterRu.onClickListener = this
     }
 
     override fun onClick(v: View?) {
@@ -98,10 +159,12 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
 
             }
             R.id.add_copy -> {
-                ClipboardUtils.copy(binding.tvFromAddress.text.toString())
+                val itemBean = AdapterUtils.getHolder(v).getItem<AddressTansRuItem>().data
+                ClipboardUtils.copy(itemBean.address)
             }
             R.id.pay_copy -> {
-                ClipboardUtils.copy(binding.tvToAddress.text.toString())
+                val itemBean = AdapterUtils.getHolder(v).getItem<AddressTansItem>().data
+                ClipboardUtils.copy(itemBean.address)
             }
             R.id.number_copy -> {
                 ClipboardUtils.copy(binding.transactionCode.text.toString())

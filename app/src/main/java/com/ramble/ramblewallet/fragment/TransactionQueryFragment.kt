@@ -58,6 +58,7 @@ class TransactionQueryFragment : BaseFragment(),
     private lateinit var wallet: Wallet
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var address = ""
+    private var addressType=0
 
 
     override fun onAttach(context: Context) {
@@ -145,13 +146,13 @@ class TransactionQueryFragment : BaseFragment(),
         var changeCurrencyType =
             when (SharedPreferencesUtils.getString(myActivity, CURRENCY, USD)) {
                 CNY -> {
-                    1
-                }
-                HKD -> {
                     2
                 }
-                else -> {
+                HKD -> {
                     3
+                }
+                else -> {
+                    1
                 }
             }
 
@@ -161,12 +162,13 @@ class TransactionQueryFragment : BaseFragment(),
         )
         address = saveData(saveWalletList)
 //            "0x202DD5755125500587ADA64E84af2A00AF73e2E3"
+//        saveData(saveWalletList)
 //        "0x90d51f90fdf0722f1d621820ca9f45547221fdd9"
         var req = QueryTransferRecord.Req(
             currentPage,
             20,
             address,
-            1,
+            addressType,
             changeCurrencyType,
             endTime,
             startTime,
@@ -221,6 +223,11 @@ class TransactionQueryFragment : BaseFragment(),
         var currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
         var sb = StringBuffer()
         if (currencyUnit.isNotEmpty()) {
+            addressType =when (currencyUnit) {
+                "ETH" -> 1
+                "BTC" -> 3
+                else -> 2
+            }
             var walletType = when (currencyUnit) {
                 "ETH" -> 1
                 "BTC" -> 0
@@ -232,6 +239,11 @@ class TransactionQueryFragment : BaseFragment(),
                 }
             }
         } else {
+            addressType =when (wallet.walletType) {
+                1 -> 1
+                0 -> 3
+                else -> 2
+            }
             list.forEach {
                 if (wallet.walletType == it.walletType) {
                     sb.append(it.address).append(",")
