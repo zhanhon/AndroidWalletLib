@@ -59,6 +59,7 @@ class TransactionQueryFragment : BaseFragment(),
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var address = ""
     private var addressType=0
+    private var currencyUnit=""
 
 
     override fun onAttach(context: Context) {
@@ -160,8 +161,30 @@ class TransactionQueryFragment : BaseFragment(),
             SharedPreferencesUtils.getString(myActivity, WALLETINFO, ""),
             object : TypeToken<ArrayList<Wallet>>() {}.type
         )
-        address = saveData(saveWalletList)
-//            "0x202DD5755125500587ADA64E84af2A00AF73e2E3"
+        wallet =
+            Gson().fromJson(
+                SharedPreferencesUtils.getString(myActivity, WALLETSELECTED, ""),
+                object : TypeToken<Wallet>() {}.type
+            )
+         currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
+
+        addressType = if (currencyUnit.isNotEmpty()){
+            when (currencyUnit) {
+                "ETH" -> 1
+                "BTC" -> 3
+                else -> 2
+            }
+        }else{
+            when(wallet.walletType){
+                0->3
+                1->1
+                else->2
+            }
+        }
+
+
+        address =saveData(saveWalletList)
+//           "tb1qlg08ptrd0mff0tzxcg6fas2wzy6dzqxprmum9c"
 //        saveData(saveWalletList)
 //        "0x90d51f90fdf0722f1d621820ca9f45547221fdd9"
         var req = QueryTransferRecord.Req(
@@ -215,19 +238,8 @@ class TransactionQueryFragment : BaseFragment(),
     }
 
     private fun saveData(list: ArrayList<Wallet>): String {
-        wallet =
-            Gson().fromJson(
-                SharedPreferencesUtils.getString(myActivity, WALLETSELECTED, ""),
-                object : TypeToken<Wallet>() {}.type
-            )
-        var currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
         var sb = StringBuffer()
         if (currencyUnit.isNotEmpty()) {
-            addressType =when (currencyUnit) {
-                "ETH" -> 1
-                "BTC" -> 3
-                else -> 2
-            }
             var walletType = when (currencyUnit) {
                 "ETH" -> 1
                 "BTC" -> 0
@@ -239,11 +251,6 @@ class TransactionQueryFragment : BaseFragment(),
                 }
             }
         } else {
-            addressType =when (wallet.walletType) {
-                1 -> 1
-                0 -> 3
-                else -> 2
-            }
             list.forEach {
                 if (wallet.walletType == it.walletType) {
                     sb.append(it.address).append(",")

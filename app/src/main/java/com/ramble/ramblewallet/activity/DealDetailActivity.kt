@@ -114,6 +114,8 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
         when (trans?.status) {
             1 -> {
                 binding.ivStatus.setImageResource(R.drawable.ic_transing)
+                binding.tvMoneyCount.text = trans?.amount
+                binding.tvMoneyType.text = trans?.unit
             }
             2 -> {
                 binding.ivStatus.setImageResource(R.drawable.ic_success)
