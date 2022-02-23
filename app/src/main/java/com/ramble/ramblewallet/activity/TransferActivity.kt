@@ -38,6 +38,7 @@ import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.tron.TransferTrxUtils.*
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.utils.*
+import com.ramble.ramblewallet.utils.StringUtils.inputWatch
 import com.ramble.ramblewallet.utils.StringUtils.strAddComma
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -766,17 +767,19 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             onClickTransferSlow(window)
             onClickTransferCustom(window)
 
+            inputWatch(window.findViewById<EditText>(R.id.miner_fee_gas_price), this, 250, 1)
+
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 if (isCustom) {
                     btcFee = window.findViewById<EditText>(R.id.miner_fee_gas_price).text.toString()
                 }
                 setBtcMinerFee()
                 dialog.dismiss()
-                if (BigDecimal(btcFee) < BigDecimal("1")) {
+                if (BigDecimal(btcFee) < BigDecimal(btcFeeSlow)) {
                     transactionFailDialog(getString(R.string.miner_fee_low_tips))
                     return@setOnClickListener
                 }
-                if (BigDecimal(gasPrice) > BigDecimal("250")) {
+                if (BigDecimal(gasPrice) > BigDecimal(btcFeeFast)) {
                     transactionFailDialog(getString(R.string.miner_fee_high_tips))
                     return@setOnClickListener
                 }

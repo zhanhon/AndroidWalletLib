@@ -1,7 +1,12 @@
 package com.ramble.ramblewallet.utils;
 
+import android.content.Context;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.widget.EditText;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -91,4 +96,55 @@ public class StringUtils {
         return pattern.matcher(str).matches();
     }
 
+    /**
+     * 传入区间值   假设:1-100   1-10
+     * @param edit   控件
+     * @param context
+     * @param max     最大数
+     * @param min     最小数
+     */
+    public static void inputWatch(final EditText edit, final Context context, final int max, final int min) {
+
+
+        edit.addTextChangedListener(new TextWatcher() {
+            int l = 0;
+            int location = 0;//记录光标的位置
+            String data;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+                l = s.length();
+                location = edit.getSelectionStart();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+                if (!TextUtils.isEmpty(s.toString())){
+                    Pattern p = Pattern.compile("[0-9]*");
+                    Matcher m = p.matcher(s.toString());
+                    if(m.matches() ){
+                        int number = Integer.valueOf(s.toString());
+                        if (number<=max&&number>=min) {
+                            if(s!=null){
+                                data= s.toString();
+                            }
+                        } else {
+                            edit.setText(data);
+                            edit.setSelection(data.length());
+                        }
+                    }else{
+                        edit.setText("");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+    }
 }
