@@ -55,6 +55,15 @@ class RecoverWalletListActivity : BaseActivity(), View.OnClickListener {
 
             window.findViewById<TextView>(R.id.tv_title).text = getString(R.string.import_wallet)
 
+            when (walletType) {
+                1,2 -> {
+                    window.findViewById<RelativeLayout>(R.id.rl_keystore).visibility = View.VISIBLE
+                }
+                0 -> {
+                    window.findViewById<RelativeLayout>(R.id.rl_keystore).visibility = View.GONE
+                }
+            }
+
             window.findViewById<RelativeLayout>(R.id.rl_contributing_words).setOnClickListener {
                 startActivity(Intent(this, RecoverWalletActivity::class.java).apply {
                     putExtra(ARG_PARAM1, walletType)
