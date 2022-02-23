@@ -31,6 +31,7 @@ import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.*
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
+import com.ramble.ramblewallet.ethereum.WalletETHUtils.isValidAddress
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getBtcMinerConfigUrl
 import com.ramble.ramblewallet.network.getEthMinerConfigUrl
@@ -173,14 +174,31 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 binding.edtInputQuantity.setText(DecimalFormatUtil.format8.format(transferBalance))
             }
             R.id.btn_confirm -> {
-                if (BigDecimal(binding.edtInputQuantity.text.trim().toString()).compareTo(
-                        transferBalance
-                    ) == -1
-                ) {
-                    transactionConfirmationDialog()
-                } else {
+                if (BigDecimal(binding.edtInputQuantity.text.trim().toString()).compareTo(transferBalance) == 1) {
                     toastDefault(getString(R.string.balance_insufficient))
+                    return
                 }
+                when (walletSelleted.walletType) { //链类型|0:BTC|1:ETH|2:TRX
+                    1 -> {
+                        if (!WalletETHUtils.isEthValidAddress(binding.edtReceiverAddress.text.toString())) {
+                            toastDefault(getString(R.string.address_already_err))
+                            return
+                        }
+                    }
+                    2 -> {
+                        if (!WalletTRXUtils.isTrxValidAddress(binding.edtReceiverAddress.text.toString())) {
+                            toastDefault(getString(R.string.address_already_err))
+                            return
+                        }
+                    }
+                    0 -> {
+                        if (!WalletBTCUtils.isBtcValidAddress(binding.edtReceiverAddress.text.toString())) {
+                            toastDefault(getString(R.string.address_already_err))
+                            return
+                        }
+                    }
+                }
+                transactionConfirmationDialog()
             }
         }
     }
