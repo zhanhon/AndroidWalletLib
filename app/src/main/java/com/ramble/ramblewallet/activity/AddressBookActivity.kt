@@ -18,6 +18,7 @@ import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.MyAddressBean
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityAddressBookBinding
+import com.ramble.ramblewallet.ethereum.WalletETH
 import com.ramble.ramblewallet.item.AddressBookItem
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.wight.adapter.*
@@ -39,6 +40,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     private var bean = MyAddressBean()
     private var isFromTransfer: Boolean = false
     private var idButton = 0
+    private lateinit var walletSelleted: WalletETH
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,8 +78,57 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                 )
         }
-        binding.groupButton.check(R.id.check_all)
-        loadData()
+        if (isFromTransfer){
+            walletSelleted = Gson().fromJson(
+                SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+                object : TypeToken<WalletETH>() {}.type
+            )
+            when (walletSelleted.walletType){
+                0->{//btc
+                    binding.groupButton.check(R.id.check_bt)
+                    idButton = 1
+                    myDataBeans = arrayListOf()
+                    myData.forEach {
+                        if (it.type == 2) {
+                            myDataBeans.add(it)
+                        }
+                    }
+                    loadData()
+                }
+                1->{//ETH
+                    binding.groupButton.check(R.id.check_eth)
+                    idButton = 2
+                    myDataBeans = arrayListOf()
+                    myData.forEach {
+                        if (it.type == 1) {
+                            myDataBeans.add(it)
+                        }
+                    }
+                    loadData()
+                }
+                2->{//TRX
+                    binding.groupButton.check(R.id.check_trx)
+                    idButton = 3
+                    myDataBeans = arrayListOf()
+                    myData.forEach {
+                        if (it.type == 3) {
+                            myDataBeans.add(it)
+                        }
+                    }
+                    loadData()
+                }
+            }
+        }else{
+            binding.groupButton.check(R.id.check_all)
+            idButton = 0
+            myDataBeans = arrayListOf()
+            myData.forEach {
+                myDataBeans.add(it)
+            }
+            loadData()
+        }
+
+
     }
 
     private fun initListener() {
