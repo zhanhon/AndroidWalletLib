@@ -8,7 +8,9 @@
     <string name="help_feedback">Help And Feedbackk</string>
     <string name="help_center_content">Help Center Information</string>
     <string name="remark">Note</string>
-    <string name="gathering_tips">This Address Only Can Transfer On <tools>%s</tools> Network, Please Don\'t Use The Other Public Blockchain.</string>
+    <string name="gathering_tips_eth">This Address Only Can Transfer On <tools>%s</tools> Network, Please Don\'t Use The Other Public Blockchain.</string>
+    <string name="gathering_tips_trx">This Address Only Can Transfer On <tools>%s</tools> Network, Please Don\'t Use The Other Public Blockchain.</string>
+    <string name="gathering_tips_btc">This Address Only Can Transfer On <tools>%s</tools> Network, Please Don\'t Use The Other Public Blockchain.</string>
     <string name="bitcoin">BTC</string>
     <string name="edit_wallet">Edit Wallet\'s Name</string>
     <string name="gathering_save">Save</string>

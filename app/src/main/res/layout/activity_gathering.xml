@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_5"
                     android:gravity="center_horizontal"
-                    android:text="@string/gathering_tips"
+                    android:text="@string/gathering_tips_eth"
                     android:textSize="@dimen/sp_12" />
             </LinearLayout>
 

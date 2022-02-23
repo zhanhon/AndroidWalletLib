@@ -225,7 +225,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.iv_gathering_top, R.id.ll_gathering -> {
                 startActivity(Intent(this, GatheringActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "TRX")
+                    putExtra(ARG_PARAM1, "BTC")
                     putExtra(ARG_PARAM2, walletSelleted.address)
                 })
             }
@@ -350,7 +350,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         refreshData()
     }
 
-    private fun setBalanceTRX(balance: BigDecimal) {
+    private fun setBalanceBTC(balance: BigDecimal) {
         postUI {
             if (DecimalFormatUtil.format2.format(balance) == "0") {
                 binding.tvBalanceTotal.text = "0"
@@ -478,7 +478,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                             }
                         }
                     }
-                    setBalanceTRX(totalBalance)
+                    setBalanceBTC(totalBalance)
                 }
             } else {
                 println("-=-=-=->${it.message()}")

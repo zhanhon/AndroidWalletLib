@@ -8,7 +8,9 @@
     <string name="help_feedback">幫助與反饋</string>
     <string name="help_center_content">幫助與中心內容</string>
     <string name="remark">備註</string>
-    <string name="gathering_tips">本地址僅能接受以太坊<tools>%s</tools>資產，請勿轉入其他公鏈資產</string>
+    <string name="gathering_tips_eth">本地址僅能接受以太坊<tools>%s</tools>資產，請勿轉入其他公鏈資產</string>
+    <string name="gathering_tips_trx">本地址僅能接受波场<tools>%s</tools>資產，請勿轉入其他公鏈資產</string>
+    <string name="gathering_tips_btc">本地址僅能接受比特币<tools>%s</tools>資產，請勿轉入其他公鏈資產</string>
     <string name="bitcoin">比特幣</string>
     <string name="edit_wallet">編輯錢包</string>
     <string name="gathering_save">存儲</string>

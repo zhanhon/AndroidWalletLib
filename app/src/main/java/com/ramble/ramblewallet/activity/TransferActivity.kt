@@ -174,7 +174,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 if (BigDecimal(binding.edtInputQuantity.text.trim().toString()).compareTo(transferBalance) == -1) {
                     transactionConfirmationDialog()
                 } else {
-                    toastDefault(getString(R.string.input_amount_too_large))
+                    toastDefault(getString(R.string.balance_insufficient))
                 }
             }
         }
@@ -691,13 +691,13 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 setEthMinerFee()
                 dialog.dismiss()
                 if ((BigDecimal(gasPrice) < BigDecimal(slowGasPrice))
-                    || (BigDecimal(gasLimit) < BigDecimal("21000"))
+                    || (BigDecimal(gasLimit) < BigDecimal("10000"))
                 ) {
                     transactionFailDialog(getString(R.string.miner_fee_low_tips))
                     return@setOnClickListener
                 }
                 if ((BigDecimal(gasPrice) > BigDecimal(fastGasPrice))
-                    || (BigDecimal(gasLimit) > BigDecimal("1000000"))
+                    || (BigDecimal(gasLimit) > BigDecimal("50000"))
                 ) {
                     transactionFailDialog(getString(R.string.miner_fee_high_tips))
                     return@setOnClickListener
