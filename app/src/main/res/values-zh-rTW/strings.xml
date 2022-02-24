@@ -135,6 +135,8 @@
     <string name="edit_address_wallet">編輯地址</string>
     <string name="no_records">暫無記錄</string>
     <string name="app_name">漫步錢包</string>
+    <string name="balance_insufficient">餘額不足</string>
+    <string name="trx_address_no_activate">賬戶未激活，可正常轉賬TRC20通證，但不會激活該賬戶</string>
 
 
     <string name="input_keystore">請輸入Keystore</string>

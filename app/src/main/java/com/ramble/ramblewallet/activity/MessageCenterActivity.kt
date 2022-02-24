@@ -24,7 +24,6 @@ import com.ramble.ramblewallet.wight.adapter.FragmentPagerAdapter2
  */
 class MessageCenterActivity : BaseActivity(), View.OnClickListener {
 
-    private var flag = -1
     private lateinit var binding: ActivityMessageCenterBinding
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
