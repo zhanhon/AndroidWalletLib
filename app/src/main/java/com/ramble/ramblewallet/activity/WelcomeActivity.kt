@@ -103,13 +103,13 @@ class WelcomeActivity : BaseActivity() {
     private fun setLanguage() {
         when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
             CN -> {
-                setLanguage(applicationContext, 1)
+                setLanguage(this, 1)
             }
             TW -> {
-                setLanguage(applicationContext, 2)
+                setLanguage(this, 2)
             }
             EN -> {
-                setLanguage(applicationContext, 3)
+                setLanguage(this, 3)
             }
         }
     }

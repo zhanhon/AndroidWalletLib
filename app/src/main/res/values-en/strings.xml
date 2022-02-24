@@ -5,7 +5,7 @@
     <string name="within_30_days">30 days</string>
     <string name="within_7_days">7 days</string>
     <string name="keystore_backup">Backup Keystore</string>
-    <string name="help_feedback">Help And Feedbackk</string>
+    <string name="help_feedback">Help And Feedback</string>
     <string name="help_center_content">Help Center Information</string>
     <string name="remark">Note</string>
     <string name="gathering_tips_eth">This Address Only Can Transfer On <tools>%s</tools> Network, Please Don\'t Use The Other Public Blockchain.</string>
