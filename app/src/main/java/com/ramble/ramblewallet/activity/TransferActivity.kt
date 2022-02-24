@@ -296,7 +296,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
                                 //默认
                                 btcFee = btcFeeFast
-                                setBtcMinerFee()
+                                if (!btcFee.isNullOrEmpty()) {
+                                    setBtcMinerFee()
+                                }
                             }
                         } else {
                             println("-=-=-=->BTC:${it.message()}")
@@ -816,15 +818,17 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 if (isCustom) {
                     btcFee = window.findViewById<EditText>(R.id.miner_fee_gas_price).text.toString()
                 }
-                setBtcMinerFee()
-                dialog.dismiss()
-                if (BigDecimal(btcFee) < BigDecimal(btcFeeSlow)) {
-                    transactionFailDialog(getString(R.string.miner_fee_low_tips))
-                    return@setOnClickListener
-                }
-                if (BigDecimal(gasPrice) > BigDecimal(btcFeeFast)) {
-                    transactionFailDialog(getString(R.string.miner_fee_high_tips))
-                    return@setOnClickListener
+                if (!btcFee.isNullOrEmpty()) {
+                    setBtcMinerFee()
+                    dialog.dismiss()
+                    if (BigDecimal(btcFee) < BigDecimal(btcFeeSlow)) {
+                        transactionFailDialog(getString(R.string.miner_fee_low_tips))
+                        return@setOnClickListener
+                    }
+                    if (BigDecimal(btcFee) > BigDecimal(btcFeeFast)) {
+                        transactionFailDialog(getString(R.string.miner_fee_high_tips))
+                        return@setOnClickListener
+                    }
                 }
             }
         }
