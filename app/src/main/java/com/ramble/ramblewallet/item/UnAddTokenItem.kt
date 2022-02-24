@@ -31,6 +31,5 @@ class UnAddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
         binding.ivTokenStatus.setImageResource(R.drawable.vector_token_reduce)
         binding.tvTokenName.text = data.symbol
         holder.attachOnClickListener(R.id.add_view)
-//        holder.attachOnClickListener(R.id.iv_reduce)
     }
 }

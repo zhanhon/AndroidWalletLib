@@ -23,8 +23,6 @@ import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.QuickItemDecoration
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -90,14 +88,14 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
             else -> {
                 ArrayList<SimpleRecyclerItem>().apply {
                     var o = QueryTransferRecord.InRecord()
-                    o.address= trans?.fromAddress.toString()
-                  this.add(AddressTansItem(o))
+                    o.address = trans?.fromAddress.toString()
+                    this.add(AddressTansItem(o))
                     adapter.replaceAll(this.toList())
                 }
 
                 ArrayList<SimpleRecyclerItem>().apply {
                     var o = QueryTransferRecord.InRecord()
-                    o.address= trans?.toAddress.toString()
+                    o.address = trans?.toAddress.toString()
                     this.add(AddressTansRuItem(o))
                     adapterRu.replaceAll(this.toList())
                 }

@@ -15,9 +15,9 @@ import com.ramble.ramblewallet.activity.DealDetailActivity
 import com.ramble.ramblewallet.activity.TransactionQueryActivity
 import com.ramble.ramblewallet.base.BaseFragment
 import com.ramble.ramblewallet.bean.QueryTransferRecord
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.FragmentTransactionQueryBinding
-import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.TransferItem
@@ -58,8 +58,8 @@ class TransactionQueryFragment : BaseFragment(),
     private lateinit var wallet: Wallet
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var address = ""
-    private var addressType=0
-    private var currencyUnit=""
+    private var addressType = 0
+    private var currencyUnit = ""
 
 
     override fun onAttach(context: Context) {
@@ -166,24 +166,24 @@ class TransactionQueryFragment : BaseFragment(),
                 SharedPreferencesUtils.getString(myActivity, WALLETSELECTED, ""),
                 object : TypeToken<Wallet>() {}.type
             )
-         currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
+        currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
 
-        addressType = if (currencyUnit.isNotEmpty()){
+        addressType = if (currencyUnit.isNotEmpty()) {
             when (currencyUnit) {
                 "ETH" -> 1
                 "BTC" -> 3
                 else -> 2
             }
-        }else{
-            when(wallet.walletType){
-                0->3
-                1->1
-                else->2
+        } else {
+            when (wallet.walletType) {
+                0 -> 3
+                1 -> 1
+                else -> 2
             }
         }
 
 
-        address =saveData(saveWalletList)
+        address = saveData(saveWalletList)
 //           "tb1qlg08ptrd0mff0tzxcg6fas2wzy6dzqxprmum9c"
 //        saveData(saveWalletList)
 //        "0x90d51f90fdf0722f1d621820ca9f45547221fdd9"

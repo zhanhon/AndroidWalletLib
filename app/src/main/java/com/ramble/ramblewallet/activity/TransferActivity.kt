@@ -23,15 +23,14 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.BtcMinerConfig
 import com.ramble.ramblewallet.bean.EthMinerConfig
 import com.ramble.ramblewallet.bean.MainETHTokenBean
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.balanceOfBtc
 import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.transferBTC
 import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.*
-import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
-import com.ramble.ramblewallet.ethereum.WalletETHUtils.isValidAddress
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getBtcMinerConfigUrl
 import com.ramble.ramblewallet.network.getEthMinerConfigUrl
@@ -186,7 +185,10 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 binding.edtInputQuantity.setText(DecimalFormatUtil.format8.format(transferBalance))
             }
             R.id.btn_confirm -> {
-                if (BigDecimal(binding.edtInputQuantity.text.trim().toString()).compareTo(transferBalance) == 1) {
+                if (BigDecimal(binding.edtInputQuantity.text.trim().toString()).compareTo(
+                        transferBalance
+                    ) == 1
+                ) {
                     toastDefault(getString(R.string.balance_insufficient))
                     return
                 }

@@ -88,7 +88,7 @@ android {
         //测试环境：http://13.214.207.185:8095/
         //ETH测试节点：http://122.248.244.178:8545
         //TRX节点nile：https://api.nileex.io
-        pre_dev {
+        pre_test {
             applicationId "com.ramble.ramblewallet"
             buildConfigField "long", "PLATFORM_ID", '1'
             buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.214.207.185:8095/"}'

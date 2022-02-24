@@ -6,13 +6,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
-import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.ramble.ramblewallet.activity.MainBTCActivity;
 import com.ramble.ramblewallet.activity.TransferActivity;
-import com.ramble.ramblewallet.tronsdk.common.crypto.ECKey;
-import com.ramble.ramblewallet.tronsdk.common.utils.ByteArray;
-import com.ramble.ramblewallet.tronsdk.common.utils.Sha256Hash;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bitcoinj.core.Address;
@@ -36,8 +31,6 @@ import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.script.ScriptPattern;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
-import org.tron.TronWalletApi;
-import org.tron.protos.Protocol;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -214,77 +207,6 @@ public class TransferBTCUtils {
                 .build();
         return okHttpClient.newCall(request);
     }
-
-    public static String toHexAddress(String address) {
-        return ByteArray.toHexString(TronWalletApi.decodeFromBase58Check(address));
-    }
-
-    public static byte[] signTransaction2Byte(byte[] transaction, byte[] privateKey)
-            throws InvalidProtocolBufferException {
-        ECKey ecKey = ECKey.fromPrivate(privateKey);
-        Protocol.Transaction transaction1 = Protocol.Transaction.parseFrom(transaction);
-        byte[] rawdata = transaction1.getRawData().toByteArray();
-        byte[] hash = Sha256Hash.hash(rawdata);
-        byte[] sign = ecKey.sign(hash).toByteArray();
-        return transaction1.toBuilder().addSignature(ByteString.copyFrom(sign)).build().toByteArray();
-    }
-
-    /***
-     * 获取未消费列表
-     * @param address ：地址
-     * @return
-     */
-//    public static List<UTXO> getUnspent(String address) {
-//        final List<UTXO>[] utxos = new List[]{Lists.newArrayList()};
-//        String host = isMainNet ? "BTC" : "BTCTEST";
-//        String url = "https://chain.so/api/v2/get_tx_unspent/" + host + "/" + address;
-//        try {
-//            Call call = getCallGet(url);
-//            call.enqueue(new Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    String httpGet = response.body().string();
-//                    JSONObject jsonObject = JSON.parseObject(httpGet);
-//                    if (StringUtils.equals("fail", jsonObject.getString("status"))) {
-//                        return;
-//                    }
-//                    JSONArray unspentOutputs = jsonObject.getJSONObject("data").getJSONArray("txs");
-//                    List<Map> outputs = JSONObject.parseArray(unspentOutputs.toJSONString(), Map.class);
-//                    if (outputs == null || outputs.size() == 0) {
-//                        System.out.println("交易异常，余额不足");
-//                    }
-//
-//                    for (int i = 0; i < outputs.size(); i++) {
-//                        Map outputsMap = outputs.get(i);
-//
-//                        String tx_hash = outputsMap.get("txid").toString();
-//                        String tx_output_n = outputsMap.get("output_no").toString();
-//                        String script = outputsMap.get("script_hex").toString();
-//                        String value = outputsMap.get("value").toString();
-//                        UTXO utxo = new UTXO(
-//                                Sha256Hash.wrap(tx_hash),
-//                                Long.valueOf(tx_output_n),
-//                                Coin.valueOf(new BigDecimal(value).multiply(new BigDecimal("100000000")).intValue()),
-//                                0,
-//                                false,
-//                                new Script(Utils.HEX.decode(script)),
-//                                address
-//                        );
-//                        utxos[0].add(utxo);
-//                    }
-//                    //TODO 根据金额降序排序
-//                    utxos[0] = utxos[0].stream().sorted(Comparator.comparing(UTXO::getValue, Comparator.reverseOrder())).collect(Collectors.toList());
-//                }
-//            });
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return utxos[0];
-//    }
 
     /**
      * btc交易签名

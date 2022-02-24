@@ -241,8 +241,6 @@ public class WalletETHUtils {
     }
 
     private static String getWalletFileName(WalletFile walletFile) {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("'UTC--'yyyy-MM-dd'T'HH-mm-ss.SSS'--'");
-//        return dateFormat.format(new Date()) + walletFile.getAddress() + ".json";
         return walletFile.getAddress();
     }
 

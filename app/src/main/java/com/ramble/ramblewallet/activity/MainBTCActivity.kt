@@ -26,11 +26,11 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.StoreInfo
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.balanceOfBtc
 import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainBtcBinding
-import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.noticeInfoUrl
@@ -50,12 +50,8 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
     private var animator: ObjectAnimator? = null
     private lateinit var walletSelleted: Wallet
     private var btcBalance: BigDecimal = BigDecimal("0")
-    private var tokenBalance: BigDecimal = BigDecimal("0")
     private var totalBalance: BigDecimal = BigDecimal("0")
     private var unitPrice = ""
-
-    //YING
-    private var contractAddress = "TU9iBgEEv9qsc6m7EBPLJ3x5vSNKfyxWW5" //官方Nile测试节点YING
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -345,11 +341,6 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         refreshData()
     }
 
-    fun setBtcTokenBalance(balance: BigDecimal) {
-        tokenBalance = balance
-        refreshData()
-    }
-
     private fun setBalanceBTC(balance: BigDecimal) {
         postUI {
             if (DecimalFormatUtil.format2.format(balance) == "0") {
@@ -454,19 +445,6 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                                 )
                             )
                             totalBalance += btcBalance.multiply(BigDecimal(unitPrice))
-                        } else {
-                            mainETHTokenBean.add(
-                                MainETHTokenBean(
-                                    "BTC-${storeInfo.symbol}",
-                                    storeInfo.symbol,
-                                    if (storeInfo.symbol == "YING") tokenBalance else BigDecimal("0"),
-                                    unitPrice,
-                                    currencyUnit,
-                                    contractAddress,
-                                    true
-                                )
-                            )
-                            totalBalance += tokenBalance.multiply(BigDecimal(unitPrice))
                         }
                         mainAdapter = MainAdapter(mainETHTokenBean)
                         binding.rvCurrency.adapter = mainAdapter

@@ -44,8 +44,6 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
         tokenTitle = intent.getStringExtra(ARG_PARAM1)
         initView()
         initListener()
-
-
     }
 
     private fun initView() {

@@ -57,7 +57,7 @@ class CreateWalletListActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<TextView>(R.id.tv_title).text = title
 
             when (walletType) {
-                1,2 -> {
+                1, 2 -> {
                     window.findViewById<RelativeLayout>(R.id.rl_keystore).visibility = View.VISIBLE
                 }
                 0 -> {

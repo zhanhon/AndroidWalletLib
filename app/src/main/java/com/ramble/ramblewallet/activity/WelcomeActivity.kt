@@ -11,8 +11,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.bean.Wallet
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.helper.MyPreferences
 import com.ramble.ramblewallet.push.UmInitConfig
 import com.ramble.ramblewallet.utils.LanguageSetting.setLanguage

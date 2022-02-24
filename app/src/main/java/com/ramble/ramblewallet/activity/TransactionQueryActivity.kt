@@ -11,10 +11,10 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.CURRENCY_TRAN
 import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityTransactionQueryBinding
-import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.fragment.TransactionQueryFragment
 import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
@@ -39,7 +39,6 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_transaction_query)
         initView()
         initListener()
-
     }
 
     private fun initView() {
@@ -82,7 +81,6 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
-
     }
 
     private fun initListener() {

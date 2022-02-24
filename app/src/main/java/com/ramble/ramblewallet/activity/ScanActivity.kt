@@ -105,7 +105,6 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
                     val result: Result? = scanningImage(uri)
                     if (result != null) {
                         downScanQRCodeSuccess(result.text)
-//                        transDialog(result.text)
                     } else {
                         Toast.makeText(
                             this@ScanActivity,

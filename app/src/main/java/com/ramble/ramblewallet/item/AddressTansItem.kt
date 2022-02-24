@@ -11,7 +11,7 @@ import com.ramble.ramblewallet.wight.adapter.ViewHolder
  * 作者　: potato
  * 描述　:
  */
-class AddressTansItem (val data: QueryTransferRecord.InRecord) : SimpleRecyclerItem() {
+class AddressTansItem(val data: QueryTransferRecord.InRecord) : SimpleRecyclerItem() {
 
     override fun getLayout(): Int = R.layout.item_address_tran
 

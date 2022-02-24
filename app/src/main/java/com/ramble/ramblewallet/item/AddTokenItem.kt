@@ -36,6 +36,5 @@ class AddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
 
         binding.tvTokenName.text = data.symbol
         holder.attachOnClickListener(R.id.add_view)
-//        holder.attachOnClickListener(R.id.iv_reduce)
     }
 }

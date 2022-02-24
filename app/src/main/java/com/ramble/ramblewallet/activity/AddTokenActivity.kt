@@ -264,7 +264,6 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                         }
                     }
                 }
-
             }
         }
     }

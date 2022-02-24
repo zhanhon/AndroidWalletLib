@@ -12,10 +12,10 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.StoreInfo
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.TOKEN_INFO_NO
 import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivitySearchTokenBinding
-import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.item.AddTokenItem
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.toApiRequest

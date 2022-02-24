@@ -13,11 +13,11 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.bitcoin.WalletBTCUtils.isBtcValidAddress
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityRecoverWalletBinding
-import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.ethereum.WalletETHUtils.isEthValidAddress
 import com.ramble.ramblewallet.ethereum.utils.ChineseSimplified
@@ -39,7 +39,6 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX
     private var chooseMode = 0 //选择方式|1:助记词|2:私钥|3:keystore
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
-    private lateinit var saveWalletSelected: Wallet
     private var mnemonic: ArrayList<String> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

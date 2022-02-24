@@ -41,7 +41,7 @@ import okhttp3.Response;
 
 public class TransferTrxUtils {
 
-    public static void isAddressActivate(Activity context, String address) throws JSONException{
+    public static void isAddressActivate(Activity context, String address) throws JSONException {
         String url = BuildConfig.RPC_TRX_NODE[0] + "/wallet/getaccount";
         JSONObject param = new JSONObject();
         param.put("address", toHexAddress(address));

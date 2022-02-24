@@ -53,8 +53,6 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
 
         initView()
         initListener()
-
-
     }
 
     private fun initView() {
@@ -122,7 +120,6 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
             }
         }
         adapter.notifyDataSetChanged()
-//        adapter.notifyItemRangeChanged(0, adapter.itemCount, isEditable)
     }
 
     private fun setIDlist() {
@@ -173,8 +170,6 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                     myStores.forEach { o -> this.add(TokenManageItem(o)) }
                     adapter.replaceAll(this.toList())
                 }
-//                setAdapterEditable(isShowCheck)
-
             }
             R.id.iv_delete_token -> {
                 binding.ivDeleteToken.isVisible = false
@@ -196,7 +191,6 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                 SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myStores))
                 adapter.notifyItemChanged(position)
                 RxBus.emitEvent(Pie.EVENT_MINUS_TOKEN, item)
-
             }
 
         }

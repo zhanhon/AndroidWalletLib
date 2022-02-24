@@ -22,9 +22,6 @@ import java.util.List;
 import static org.web3j.crypto.Wallet.createLight;
 import static org.web3j.crypto.Wallet.decrypt;
 
-//import org.tron.TronWalletApi;
-//import org.tron.wallet.util.ByteArray;
-
 /**
  * @author Angus
  */

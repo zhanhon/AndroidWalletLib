@@ -35,26 +35,6 @@ class Help {
         }
     }
 
-    //    class adviceList(val data: String) : SimpleRecyclerItem() {
-//        override fun getLayout(): Int = R.layout.item_help_todo
-//
-//        override fun bind(holder: ViewHolder) {
-//            val binding: ItemHelpTodoBinding = holder.binding()
-//            binding.itemHelpTodo.text = data
-//            holder.attachOnClickListener(R.id.item_help_todo)
-//        }
-//    }
-//
-//    class coo(val data: String) : SimpleRecyclerItem() {
-//        override fun getLayout(): Int = R.layout.item_help_todo
-//
-//        override fun bind(holder: ViewHolder) {
-//            val binding: ItemHelpTodoBinding = holder.binding()
-//            binding.itemHelpTodo.text = data
-//            holder.attachOnClickListener(R.id.item_help_todo)
-//        }
-//    }
-//
     class FaqAllTypeList(val data: QueryFaqInfos) : SimpleRecyclerItem() {
         override fun getLayout(): Int = R.layout.item_help_todo
 
@@ -65,17 +45,6 @@ class Help {
         }
     }
 
-    //
-//    class HotFaqMainList(val data: Faq) : SimpleRecyclerItem() {
-//        override fun getLayout(): Int = R.layout.item_sub_help_todo
-//
-//        override fun bind(holder: ViewHolder) {
-//            val binding: com.square.pie.databinding.ItemSubHelpTodoBinding = holder.binding()
-//            binding.itemSubHelpTodo.text = data.title
-//            holder.attachOnClickListener(R.id.item_sub_help_todo)
-//        }
-//    }
-//
     class FaqTypeList(val data: FaqInfos.NoviceReq) : SimpleRecyclerItem() {
         override fun getLayout(): Int = R.layout.item_help_todo
 
@@ -85,14 +54,5 @@ class Help {
             holder.attachOnClickListener(R.id.item_help_todo)
         }
     }
-//
-//    class FaqTypeMainList(val data: Faq) : SimpleRecyclerItem() {
-//        override fun getLayout(): Int = R.layout.item_sub_help_todo
-//
-//        override fun bind(holder: ViewHolder) {
-//            val binding: com.square.pie.databinding.ItemSubHelpTodoBinding = holder.binding()
-//            binding.itemSubHelpTodo.text = data.title
-//            holder.attachOnClickListener(R.id.item_sub_help_todo)
-//        }
-//    }
+
 }
