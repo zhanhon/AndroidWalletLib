@@ -84,7 +84,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:stl_clickable="true"
                 app:stl_defaultTabBackground="?attr/selectableItemBackground"
-                app:stl_defaultTabTextAllCaps="true"
+                app:stl_defaultTabTextAllCaps="false"
                 app:stl_defaultTabTextColor="@color/color_activity_tab_text"
                 app:stl_defaultTabTextSize="@dimen/sp_15"
                 app:stl_distributeEvenly="true"
