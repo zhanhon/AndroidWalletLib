@@ -107,6 +107,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             .setImageResource(R.drawable.ic_about)
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).visibility = View.INVISIBLE
         binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text = "V1.0.0"
+        binding.clearText.text= getString(R.string.clear_cache)
     }
 
 
