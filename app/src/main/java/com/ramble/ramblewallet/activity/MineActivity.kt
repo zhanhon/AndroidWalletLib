@@ -41,8 +41,6 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_mine)
-        language = SharedPreferencesUtils.getString(this, LANGUAGE, CN)
-        currency = SharedPreferencesUtils.getString(this, CURRENCY, USD)
         initView()
         initListener()
     }
@@ -51,6 +49,8 @@ class MineActivity : BaseActivity(), View.OnClickListener {
      * View初始化
      */
     private fun initView() {
+        language = SharedPreferencesUtils.getString(this, LANGUAGE, CN)
+        currency = SharedPreferencesUtils.getString(this, CURRENCY, USD)
         binding.tvMineTitle.text = getString(R.string.personal_management)
         binding.incManageWallet.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.wallet_management)
@@ -391,6 +391,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 LanguageSetting.setLanguage(this, 2)
             }
             EN -> {
+
                 binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text =
                     getString(R.string.language_english)
                 LanguageSetting.setLanguage(this, 3)
