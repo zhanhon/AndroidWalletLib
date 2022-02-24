@@ -173,7 +173,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
         } else {
             title
         }
-        binding.time2.text = if (createTime.isNotEmpty()) "发布日期：$createTime" else createTime
+        binding.time2.text = if (createTime.isNotEmpty()) getString(R.string.release_date)+createTime else createTime
         if (content.contains("<") && content.contains(">")) {
             binding.web.visibility = View.VISIBLE
             binding.tvContent.visibility = View.GONE

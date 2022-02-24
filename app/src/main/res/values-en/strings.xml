@@ -213,6 +213,6 @@
     <string name="transaction_query_trx">TRX Transaction</string>
     <string name="contributing_name_hint">Please Enter A Name</string>
     <string name="address_tips">Done</string>
-
+    <string name="release_date">Release Date：</string>
 
 </resources>
