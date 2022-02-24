@@ -88,7 +88,7 @@ android {
         //测试环境：http://13.214.207.185:8095/
         //ETH测试节点：http://122.248.244.178:8545
         //TRX节点nile：https://api.nileex.io
-        pre_test {
+        pre_dev {
             applicationId "com.ramble.ramblewallet"
             buildConfigField "long", "PLATFORM_ID", '1'
             buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.214.207.185:8095/"}'
@@ -238,5 +238,5 @@ dependencies {
     implementation 'cn.bingoogolapple:bga-baseadapter:1.2.9@aar'
     implementation 'cn.bingoogolapple:bga-flowlayout:1.0.0@aar'
     implementation 'pub.devrel:easypermissions:3.0.0'
-    implementation 'com.zwh:matisse:0.1.0'
+    implementation 'com.zhihu.android:matisse:0.5.3-beta3'
 }
