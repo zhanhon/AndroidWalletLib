@@ -509,11 +509,11 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                     setBalanceETH(totalBalance)
                 }
             } else {
-                println("-=-=-=->${it.message()}")
+                println("-=-=-=->ETH${it.message()}")
             }
             cancelSyncAnimation()
         }, {
-            println("-=-=-=->${it.printStackTrace()}")
+            println("-=-=-=->ETH${it.printStackTrace()}")
             cancelSyncAnimation()
         })
     }

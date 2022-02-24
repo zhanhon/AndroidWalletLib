@@ -372,7 +372,6 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (walletTRX.address.isNotEmpty()) {
             putAddress(walletTRX, 2)
-            startActivity(Intent(this, MainETHActivity::class.java))
             if (isTrxValidAddress(walletTRX.address)) {
                 SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletTRX))
                 startActivity(Intent(this, MainTRXActivity::class.java))
@@ -434,7 +433,6 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (walletBTC.address.isNotEmpty()) {
             putAddress(walletBTC, 0)
-            startActivity(Intent(this, MainETHActivity::class.java))
             if (isBtcValidAddress(walletBTC.address)) {
                 SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletBTC))
                 startActivity(Intent(this, MainBTCActivity::class.java))
@@ -481,6 +479,15 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     )
                 ) //链类型|0:ETC|1:ETH|2:TRON
             }
+            0 -> {
+                detailsList.add(
+                    AddressReport.DetailsList(
+                        wallet.address,
+                        0,
+                        0
+                    )
+                ) //链类型|0:ETC|1:ETH|2:TRON
+            }
         }
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
         val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
@@ -489,13 +496,13 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         ).applyIo().subscribe(
             {
                 if (it.code() == 1) {
-                    it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
+                    it.data()?.let { data -> println("-=-=-=->putAddress-recover:${data}") }
                 } else {
                     putAddress(wallet, walletType)
-                    println("-=-=-=->putAddress:${it.message()}")
+                    println("-=-=-=->putAddress-recover:${it.message()}")
                 }
             }, {
-                println("-=-=-=->putAddress:${it.printStackTrace()}")
+                println("-=-=-=->putAddress-recover:${it.printStackTrace()}")
             }
         )
     }

@@ -483,11 +483,11 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                     setBalanceTRX(totalBalance)
                 }
             } else {
-                println("-=-=-=->${it.message()}")
+                println("-=-=-=->TRX${it.message()}")
             }
             cancelSyncAnimation()
         }, {
-            println("-=-=-=->${it.printStackTrace()}")
+            println("-=-=-=->TRX${it.printStackTrace()}")
             cancelSyncAnimation()
         })
     }

@@ -481,11 +481,11 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                     setBalanceBTC(totalBalance)
                 }
             } else {
-                println("-=-=-=->${it.message()}")
+                println("-=-=-=->BTC${it.message()}")
             }
             cancelSyncAnimation()
         }, {
-            println("-=-=-=->${it.printStackTrace()}")
+            println("-=-=-=->BTC${it.printStackTrace()}")
             cancelSyncAnimation()
         })
     }
