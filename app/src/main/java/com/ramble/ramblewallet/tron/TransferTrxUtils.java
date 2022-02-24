@@ -56,14 +56,14 @@ public class TransferTrxUtils {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String string = response.body().string();
-                if (string != null) {
+                long length = response.body().contentLength();
+                if (length == 3) { //当body为null，判断此地址为激活
                     if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).isTrxAddressActivate(true);
+                        ((TransferActivity) context).isTrxAddressActivate(false);
                     }
                 } else {
                     if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).isTrxAddressActivate(false);
+                        ((TransferActivity) context).isTrxAddressActivate(true);
                     }
                 }
             }

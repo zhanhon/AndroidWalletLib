@@ -395,10 +395,12 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun isTrxAddressActivate(isAddressActivate: Boolean) {
-        if (!isAddressActivate) {
-            binding.tvNoActivateTips.visibility = View.VISIBLE
-        } else {
-            binding.tvNoActivateTips.visibility = View.GONE
+        postUI {
+            if (!isAddressActivate) {
+                binding.tvNoActivateTips.visibility = View.VISIBLE
+            } else {
+                binding.tvNoActivateTips.visibility = View.GONE
+            }
         }
     }
 
