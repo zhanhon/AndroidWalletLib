@@ -16,9 +16,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.Page
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMineBinding
 import com.ramble.ramblewallet.helper.start
@@ -36,6 +39,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityMineBinding
     private lateinit var language: String
     private lateinit var currency: String
+    private lateinit var walletSelleted: Wallet
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,6 +131,10 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         redPoint()
+        walletSelleted = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            object : TypeToken<Wallet>() {}.type
+        )
     }
 
 
@@ -249,7 +257,17 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> { //区分不同钱包进行跳转
-                finish()
+                when (walletSelleted.walletType) {
+                    1 -> {
+                        start(MainETHActivity::class.java)
+                    }
+                    2 -> {
+                        start(MainTRXActivity::class.java)
+                    }
+                    0 -> {
+                        start(MainBTCActivity::class.java)
+                    }
+                }
             }
             R.id.iv_mine_right -> {
                 start(MessageCenterActivity::class.java)
