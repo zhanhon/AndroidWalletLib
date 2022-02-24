@@ -116,6 +116,8 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
                 binding.ivStatus.setImageResource(R.drawable.ic_transing)
                 binding.tvMoneyCount.text = trans?.amount
                 binding.tvMoneyType.text = trans?.unit
+                binding.tvMoneyCount.setTextColor(Color.parseColor("#3F5E94"))
+                binding.tvMoneyType.setTextColor(Color.parseColor("#3F5E94"))
             }
             2 -> {
                 binding.ivStatus.setImageResource(R.drawable.ic_success)
