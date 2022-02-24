@@ -136,6 +136,7 @@
     <string name="no_records">暂无记录</string>
     <string name="app_name">漫步钱包</string>
     <string name="balance_insufficient">余额不足</string>
+    <string name="trx_address_no_activate">账户未激活，可正常转账TRC20通证，但不会激活该账户</string>
 
 
     <string name="input_keystore">请输入Keystore</string>

@@ -177,6 +177,15 @@
                             android:background="@drawable/vector_contacts"
                             tools:text="1111" />
                     </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_no_activate_tips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:visibility="gone"
+                        android:textSize="@dimen/sp_11"
+                        android:textColor="@color/color_E11334"
+                        android:text="@string/trx_address_no_activate"/>
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

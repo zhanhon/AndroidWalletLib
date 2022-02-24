@@ -41,8 +41,37 @@ import okhttp3.Response;
 
 public class TransferTrxUtils {
 
+    public static void isAddressActivate(Activity context, String address) throws JSONException{
+        String url = BuildConfig.RPC_TRX_NODE[0] + "/wallet/getsaccount";
+        JSONObject param = new JSONObject();
+        param.put("address", toHexAddress(address));
+        Call call = getCall(url, param);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                if (context instanceof TransferActivity) {
+                    ((TransferActivity) context).isTrxAddressActivate(true);
+                }
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String string = response.body().string();
+                if (string != null) {
+                    if (context instanceof TransferActivity) {
+                        ((TransferActivity) context).isTrxAddressActivate(true);
+                    }
+                } else {
+                    if (context instanceof TransferActivity) {
+                        ((TransferActivity) context).isTrxAddressActivate(false);
+                    }
+                }
+            }
+        });
+    }
+
     public static void balanceOfTrx(Activity context, String address) throws JSONException {
-        String url = BuildConfig.RPC_TRX_NODE[0] + "/wallet/getaccount";
+        String url = BuildConfig.RPC_TRX_NODE[0] + "/wallet/getsaccount";
         JSONObject param = new JSONObject();
         param.put("address", toHexAddress(address));
         Call call = getCall(url, param);

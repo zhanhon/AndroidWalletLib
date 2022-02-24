@@ -132,6 +132,18 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         initData()
+        binding.edtInputQuantity.addTextChangedListener(object : TextWatcher {
+            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+            override fun afterTextChanged(s: Editable?) {
+                btnIsClick()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
     }
 
     override fun onRxBus(event: RxBus.Event) {
@@ -190,6 +202,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                             toastDefault(getString(R.string.address_already_err))
                             return
                         }
+                        isAddressActivate(this, binding.edtReceiverAddress.text.toString())
                     }
                     0 -> {
                         if (!WalletBTCUtils.isBtcValidAddress(binding.edtReceiverAddress.text.toString())) {
@@ -378,6 +391,14 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
             }
+        }
+    }
+
+    fun isTrxAddressActivate(isAddressActivate: Boolean) {
+        if (!isAddressActivate) {
+            binding.tvNoActivateTips.visibility = View.VISIBLE
+        } else {
+            binding.tvNoActivateTips.visibility = View.GONE
         }
     }
 
