@@ -60,7 +60,7 @@ public class TransferBTCUtils {
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request
                 .Builder()
-                .url("https://api.blockcypher.com/v1/btc/main/addrs/" + address + "/balance")//要访问的链接
+                .url("https://api.blockcypher.com/v1/btc/test3/addrs/" + address + "/balance")//要访问的链接
                 .build();
         Call call = okHttpClient.newCall(request);
         call.enqueue(new Callback() {
