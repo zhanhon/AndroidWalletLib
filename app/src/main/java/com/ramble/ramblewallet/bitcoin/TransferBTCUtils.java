@@ -55,12 +55,14 @@ public class TransferBTCUtils {
     static {
         isMainNet = false;
     }
-
-    public static void balanceOfBtc(Activity context, String address) throws JSONException { //限流：每秒好像只能20次
+    //"https://api.blockcypher.com/v1/btc/test3/addrs/" + address + "/balance"    有限制：//限流：每秒好像只能20次
+    public static void balanceOfBtc(Activity context, String address) throws JSONException {
         OkHttpClient okHttpClient = new OkHttpClient();
+        final String[] host = {isMainNet ? "BTC" : "BTCTEST"};
+        String url = "https://chain.so/api/v2/get_address_balance/" + host[0] + "/" + address;
         Request request = new Request
                 .Builder()
-                .url("https://api.blockcypher.com/v1/btc/test3/addrs/" + address + "/balance")//要访问的链接
+                .url(url)//要访问的链接
                 .build();
         Call call = okHttpClient.newCall(request);
         call.enqueue(new Callback() {
@@ -79,12 +81,13 @@ public class TransferBTCUtils {
                 String string = response.body().string();
                 try {
                     org.json.JSONObject json = new org.json.JSONObject(string);
-                    String balanceBefore = json.optString("final_balance");
+
+                    String balanceBefore = json.getJSONObject("data").optString("confirmed_balance");
                     if (context instanceof MainBTCActivity) {
-                        ((MainBTCActivity) context).setBtcBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("100000000")));
+                        ((MainBTCActivity) context).setBtcBalance(new BigDecimal(balanceBefore));
                     }
                     if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).setBtcBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("100000000")));
+                        ((TransferActivity) context).setBtcBalance(new BigDecimal(balanceBefore));
                     }
                 } catch (Exception e) {
                     if (context instanceof MainBTCActivity) {
