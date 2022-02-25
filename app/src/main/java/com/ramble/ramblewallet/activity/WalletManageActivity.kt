@@ -27,10 +27,7 @@ import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityWalletManageBinding
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.utils.ClipboardUtils
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.applyIo
-import com.ramble.ramblewallet.utils.toastDefault
+import com.ramble.ramblewallet.utils.*
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 
@@ -71,6 +68,8 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
             object : TypeToken<ArrayList<Wallet>>() {}.type
         )
+        StringUtils.removeDuplicate(saveWalletList).toSet()
+        SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(saveWalletList))
         walletSelleted = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
             object : TypeToken<Wallet>() {}.type

@@ -6,6 +6,11 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import com.ramble.ramblewallet.bean.Wallet;
+
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +19,18 @@ import java.util.regex.Pattern;
  * @创建时间： 2022/2/15
  */
 public class StringUtils {
+
+    //小写字母
+    public static final String REG_LOWERCASE = ".*[a-z]+.*";
+
+    public static ArrayList<Wallet> removeDuplicate(ArrayList<Wallet> list) {
+        Set set = new LinkedHashSet<String>();
+        set.addAll(list);
+        list.clear();
+        list.addAll(set);
+        return list;
+    }
+
     /**
      * 处理文本，将文本位数限制为maxLen，中文两个字符，英文一个字符
      *
@@ -84,9 +101,6 @@ public class StringUtils {
         String resultStr = new StringBuilder(strTemp).reverse().toString() + tmpCommaStr;
         return resultStr;
     }
-
-    //小写字母
-    public static final String REG_LOWERCASE = ".*[a-z]+.*";
 
     public static boolean isHasLowerChar(String password) {
         return password.matches(REG_LOWERCASE);
