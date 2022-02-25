@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.ramble.ramblewallet.R
@@ -15,6 +16,7 @@ import com.ramble.ramblewallet.helper.formatHTML
 import com.ramble.ramblewallet.helper.getExtras
 import com.ramble.ramblewallet.network.getPrivacyInfo
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.utils.LanguageSetting
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.HtmlWebView
@@ -37,11 +39,13 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_msg_details)
+        binding.web.display
+        setLanguage()
         title = getExtras().getString(ARG_PARAM1, "")
         content = getExtras().getString(ARG_PARAM2, "")
         createTime = getExtras().getString(ARG_PARAM3, "")
         typeText = getExtras().getInt(ARG_PARAM4, 0)
-        id == getExtras().getInt(ARG_PARAM5, 0)
+        id = getExtras().getInt(ARG_PARAM5, 0)
         when (typeText) {
             1 -> {
                 binding.ivRight.visibility = View.GONE
@@ -177,24 +181,26 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
         if (content.contains("<") && content.contains(">")) {
             binding.web.visibility = View.VISIBLE
             binding.tvContent.visibility = View.GONE
-
-            binding.web.setPlaceholderImage("loading_default_image.png")
-            binding.web.setOnHtmlWebViewListener(object : HtmlWebView.OnHtmlWebViewListener {
-                override fun onPageStarted() {}
-                override fun onPageFinished() {}
-
-                @SuppressLint("InflateParams")
-                override fun onClickImage(url: String?, position: Int) {
-                    var imagePath: String = if (url!!.contains("http")) url else ""
-//                    RxBus.emitEvent(Pie.EVENT_NOTICE_IAMGE_SELECT, imagePath)
-
-                }
-            })
             binding.web.loadDataWithHtml(formatHTML(content, title))
         } else {
             binding.tvContent.text = content
         }
     }
+
+    private fun setLanguage() {
+        when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
+            CN -> {
+                LanguageSetting.setLanguage(this, 1)
+            }
+            TW -> {
+                LanguageSetting.setLanguage(this, 2)
+            }
+            EN -> {
+                LanguageSetting.setLanguage(this, 3)
+            }
+        }
+    }
+
 
     override fun onClick(v: View?) {
         when (v!!.id) {
