@@ -25,7 +25,7 @@
     <string name="import_mnemonic_words">导入助记词</string>
     <string name="address_book">地址本</string>
     <string name="multi_language">多语言</string>
-    <string name="initiate_transfer">发起转帐或建立Wallet Connet连接</string>
+    <string name="initiate_transfer">发起转账或建立Wallet Connet连接</string>
     <string name="sending_address">发送地址</string>
     <string name="traditional_chinese">繁体中文</string>
     <string name="service_agreement">服务协议</string>
@@ -53,7 +53,7 @@
     <string name="miner_fee">矿工费</string>
     <string name="miner_fee_limit_title">矿工费上限</string>
     <string name="miner_fees">矿工费用</string>
-    <string name="miner_fee_tips">矿工费越高 转帐越快</string>
+    <string name="miner_fee_tips">矿工费越高 转账越快</string>
     <string name="enquire_now">立即查询</string>
     <string name="miner_fee_slow">慢速</string>
     <string name="secret_key">密钥</string>
