@@ -69,7 +69,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             object : TypeToken<ArrayList<Wallet>>() {}.type
         )
         StringUtils.removeDuplicate(saveWalletList).toSet()
-        SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(saveWalletList))
+        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
         walletSelleted = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
             object : TypeToken<Wallet>() {}.type
