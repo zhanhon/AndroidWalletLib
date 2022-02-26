@@ -176,6 +176,10 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                         list.remove()
                     }
                 }
+                SharedPreferencesUtils.saveString(
+                    this,
+                    WALLETSELECTED,
+                    Gson().toJson(saveWalletList[0]))
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
                 dialog.dismiss()
                 finish()

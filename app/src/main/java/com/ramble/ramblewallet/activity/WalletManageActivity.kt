@@ -25,6 +25,7 @@ import com.ramble.ramblewallet.bean.AddressReport
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityWalletManageBinding
+import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
@@ -70,10 +71,6 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         )
         StringUtils.removeDuplicate(saveWalletList).toSet()
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
-        walletSelleted = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-            object : TypeToken<Wallet>() {}.type
-        )
         initView()
     }
 
@@ -97,6 +94,10 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     }
 
     private fun loadData(walletManageBean: ArrayList<Wallet>) {
+        walletSelleted = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            object : TypeToken<Wallet>() {}.type
+        )
         walletManageBean.forEach {
             it.isChoose = it.address == walletSelleted.address
         }
@@ -243,7 +244,17 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     binding.ivAddWallet.visibility = View.VISIBLE
                     loadData(walletManageBean)
                 } else {
-                    finish()
+                    when (walletSelleted.walletType) {
+                        1 -> {
+                            start(MainETHActivity::class.java)
+                        }
+                        2 -> {
+                            start(MainTRXActivity::class.java)
+                        }
+                        0 -> {
+                            start(MainBTCActivity::class.java)
+                        }
+                    }
                 }
             }
             R.id.iv_add_wallet -> {
@@ -310,8 +321,15 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 list.forEach {
                     if (it.clickDelete) {
                         list.remove()
+                        if (it.isChoose) {
+                            walletManageBean[0].isChoose = true
+                        }
                     }
                 }
+                SharedPreferencesUtils.saveString(
+                    this,
+                    WALLETSELECTED,
+                    Gson().toJson(walletManageBean[0]))
                 saveWalletList = walletManageBean
                 SharedPreferencesUtils.saveString(
                     this,
