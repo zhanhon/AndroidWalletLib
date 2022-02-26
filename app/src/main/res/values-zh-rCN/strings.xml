@@ -138,6 +138,8 @@
     <string name="balance_insufficient">余额不足</string>
     <string name="trx_address_no_activate">账户未激活，可正常转账TRC20通证，但不会激活该账户</string>
     <string name="repeat_address">转帐地址与收款地址重复 请重新输入</string>
+    <string name="network_anomaly">网络异常，请检查网络连接</string>
+    <string name="retry">重试</string>
 
 
     <string name="input_keystore">请输入Keystore</string>

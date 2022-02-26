@@ -138,6 +138,8 @@
     <string name="balance_insufficient">Insufficient Balance</string>
     <string name="trx_address_no_activate">If The Account Is Not Activated, The TRC20 Token Can Be Transferred Normally, But The Account Will Not Be Activated</string>
     <string name="repeat_address">The Transfer Address And The Payee Address Are The Same, Please Re-enter</string>
+    <string name="network_anomaly">The Network Is Abnormal, Please Check The Network Connection</string>
+    <string name="retry">Retry</string>
 
 
     <string name="input_keystore">Please Enter Keystore</string>

@@ -1,5 +1,7 @@
 package com.ramble.ramblewallet.base
 
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -27,6 +29,8 @@ abstract class BaseActivity : AppCompatActivity() {
     @JvmField
     val onDestroyComposite = CompositeDisposable()
 
+    private var mNetWorkStateReceiver: NetWorkStateReceiver? = null
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +52,24 @@ abstract class BaseActivity : AppCompatActivity() {
             .addTo(onDestroyComposite)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (mNetWorkStateReceiver == null) {
+            mNetWorkStateReceiver = NetWorkStateReceiver()
+        }
+        var filter = IntentFilter()
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
+        registerReceiver(mNetWorkStateReceiver, filter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(mNetWorkStateReceiver)
+    }
 
     open fun onRxBus(event: RxBus.Event) {
 
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

@@ -138,6 +138,8 @@
     <string name="balance_insufficient">餘額不足</string>
     <string name="trx_address_no_activate">賬戶未激活，可正常轉賬TRC20通證，但不會激活該賬戶</string>
     <string name="repeat_address">轉帳地址與收款地址重複 請重新輸入</string>
+    <string name="network_anomaly">網絡異常，請檢查網絡連接</string>
+    <string name="retry">重試</string>
 
 
     <string name="input_keystore">請輸入Keystore</string>
