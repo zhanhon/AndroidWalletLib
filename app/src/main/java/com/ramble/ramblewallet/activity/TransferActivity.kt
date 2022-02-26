@@ -213,6 +213,10 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         }
                     }
                 }
+                if (binding.tvWalletAddress.text.toString().equals(binding.edtReceiverAddress.text.toString())) {
+                    toastDefault(getString(R.string.repeat_address))
+                    return
+                }
                 transactionConfirmationDialog()
             }
         }
