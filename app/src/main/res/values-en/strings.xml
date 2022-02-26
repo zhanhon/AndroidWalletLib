@@ -140,6 +140,7 @@
     <string name="repeat_address">The Transfer Address And The Payee Address Are The Same, Please Re-enter</string>
     <string name="network_anomaly">The Network Is Abnormal, Please Check The Network Connection</string>
     <string name="retry">Retry</string>
+    <string name="error_tips_backup">You Have Entered The Wrong Input More Than Three Times, Whether To Cancel Or Return To The Previous Page</string>
 
 
     <string name="input_keystore">Please Enter Keystore</string>

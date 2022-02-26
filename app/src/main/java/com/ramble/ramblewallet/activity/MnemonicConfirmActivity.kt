@@ -388,10 +388,14 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         if (window != null) {
             window.setContentView(R.layout.dialog_contributing_words_fail)
             dialogCenterTheme(window)
+
             if (isBackupMnemonic) {
+                window.findViewById<TextView>(R.id.tv_content).setText(R.string.error_tips_backup)
                 window.findViewById<Button>(R.id.btn_cancel_create).setText(R.string.cancel)
                 window.findViewById<Button>(R.id.btn_skip).visibility = View.GONE
             } else {
+                window.findViewById<TextView>(R.id.tv_content).setText(R.string.error_tips)
+                window.findViewById<TextView>(R.id.tv_content).visibility = View.VISIBLE
                 window.findViewById<Button>(R.id.btn_cancel_create).setText(R.string.cancel_create)
                 window.findViewById<Button>(R.id.btn_skip).visibility = View.VISIBLE
             }

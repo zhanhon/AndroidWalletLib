@@ -140,6 +140,7 @@
     <string name="repeat_address">转帐地址与收款地址重复 请重新输入</string>
     <string name="network_anomaly">网络异常，请检查网络连接</string>
     <string name="retry">重试</string>
+    <string name="error_tips_backup">您已输入错误超过三次,是否取消或返回上个页面</string>
 
 
     <string name="input_keystore">请输入Keystore</string>
