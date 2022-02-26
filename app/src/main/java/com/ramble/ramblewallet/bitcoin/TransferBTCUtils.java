@@ -55,11 +55,11 @@ public class TransferBTCUtils {
     static {
         isMainNet = false;
     }
-    //"https://api.blockcypher.com/v1/btc/test3/addrs/" + address + "/balance"    有限制：//限流：每秒好像只能20次
+    //"https://api.blockcypher.com/v1/btc/test3/addrs/" + address + "/balance"   //免费用户：每秒2次限流
     public static void balanceOfBtc(Activity context, String address) throws JSONException {
         OkHttpClient okHttpClient = new OkHttpClient();
         final String[] host = {isMainNet ? "BTC" : "BTCTEST"};
-        String url = "https://chain.so/api/v2/get_address_balance/" + host[0] + "/" + address;
+        String url = "https://chain.so/api/v2/get_address_balance/" + host[0] + "/" + address; //免费用户：每秒5次限流
         Request request = new Request
                 .Builder()
                 .url(url)//要访问的链接
