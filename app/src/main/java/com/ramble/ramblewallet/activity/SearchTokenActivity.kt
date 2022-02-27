@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
@@ -105,6 +106,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
 
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
+                adapter.clear()
                 it.data()?.let { data ->
                     data.forEach { info ->
                         myDataBeansMyAssets.forEach { bean ->
@@ -119,7 +121,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
                         adapter.replaceAll(this.toList())
                     }
                 }
-
+                apply(adapter.itemCount)
             } else {
                 println("==================>getTransferInfo1:${it.message()}")
             }
@@ -129,6 +131,10 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
         )
     }
 
+    private fun apply(count: Int) {
+        binding.txtEmpty.isVisible = count == 0
+        binding.rvTokenManageCurrency.isVisible = count > 0
+    }
 
     override fun onClick(v: View) {
         when (v.id) {

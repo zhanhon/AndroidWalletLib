@@ -134,6 +134,7 @@
     <string name="contributing_address_hint">请输入地址</string>
     <string name="edit_address_wallet">编辑地址</string>
     <string name="no_records">暂无记录</string>
+    <string name="no_results">暂无结果</string>
     <string name="app_name">漫步钱包</string>
     <string name="balance_insufficient">余额不足</string>
     <string name="trx_address_no_activate">账户未激活，可正常转账TRC20通证，但不会激活该账户</string>

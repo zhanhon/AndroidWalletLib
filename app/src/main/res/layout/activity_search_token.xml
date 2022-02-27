@@ -148,6 +148,36 @@
                         app:layout_constraintTop_toBottomOf="@id/tv_token_title" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+                <RelativeLayout
+                    android:id="@+id/txt_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_FFFFFF"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:paddingTop="@dimen/dp_100"
+                    android:visibility="gone"
+                    android:paddingBottom="@dimen/dp_100">
+
+                    <TextView
+                        android:id="@+id/text1"
+                        style="@style/WrapWrap"
+                        android:layout_centerHorizontal="true"
+                        android:drawableTop="@drawable/ic_no_records"
+                        android:gravity="center"
+                        android:text="@string/no_results"
+                        android:textColor="@color/front_three"
+                        android:textSize="@dimen/sp_15" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/text1"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/game_today_order_no_log2"
+                        android:textColor="@color/front_four"
+                        android:textSize="@dimen/sp_13" />
+                </RelativeLayout>
             </LinearLayout>
 
         </ScrollView>

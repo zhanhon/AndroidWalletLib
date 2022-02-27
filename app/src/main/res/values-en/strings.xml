@@ -134,6 +134,7 @@
     <string name="contributing_address_hint">Please Enter Address</string>
     <string name="edit_address_wallet">Edit Address</string>
     <string name="no_records">No Data</string>
+    <string name="no_results">No Result</string>
     <string name="app_name">Ramble Wallet</string>
     <string name="balance_insufficient">Insufficient Balance</string>
     <string name="trx_address_no_activate">If The Account Is Not Activated, The TRC20 Token Can Be Transferred Normally, But The Account Will Not Be Activated</string>
