@@ -48,6 +48,7 @@ public class Pie {
      * 转账地址扫描二维码
      */
     public static final int EVENT_ADDRESS_TRANS_SCAN = 2007;
+
     /**
      * 消除消息
      */
@@ -58,4 +59,8 @@ public class Pie {
      */
     public static final int EVENT_TRAN_TYPE = 2009;
 
+    /**
+     * 转账页面地址扫描二维码
+     */
+    public static final int EVENT_RESS_TRANS_SCAN = 2010;
 }

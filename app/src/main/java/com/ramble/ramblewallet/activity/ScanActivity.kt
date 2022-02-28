@@ -217,7 +217,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
                 finish()
             }
             2 -> {
-                RxBus.emitEvent(Pie.EVENT_ADDRESS_TRANS_SCAN, result)
+                RxBus.emitEvent(Pie.EVENT_RESS_TRANS_SCAN, result)
                 finish()
             }
             3 -> {
@@ -236,7 +236,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
                 finish()
             }
             2 -> {
-                RxBus.emitEvent(Pie.EVENT_ADDRESS_TRANS_SCAN, result)
+                RxBus.emitEvent(Pie.EVENT_RESS_TRANS_SCAN, result)
                 finish()
             }
             3 -> {

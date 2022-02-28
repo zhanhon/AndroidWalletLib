@@ -148,7 +148,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     override fun onRxBus(event: RxBus.Event) {
         super.onRxBus(event)
         when (event.id()) {
-            Pie.EVENT_ADDRESS_TRANS_SCAN -> {
+            Pie.EVENT_ADDRESS_TRANS_SCAN ,Pie.EVENT_RESS_TRANS_SCAN-> {
                 binding.edtReceiverAddress.text = event.data()
 
             }
