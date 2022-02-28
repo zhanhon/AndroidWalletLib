@@ -209,7 +209,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     }
 
     override fun onScanQRCodeSuccess(result: String?) {
-        vibrate()
+//        vibrate()
         zxingview?.stopSpot()
         when (type) {
             1 -> {
@@ -228,7 +228,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     }
 
     private fun downScanQRCodeSuccess(result: String?) {
-        vibrate()
+//        vibrate()
         zxingview?.stopSpot()
         when (type) {
             1 -> {
