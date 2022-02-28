@@ -19,6 +19,7 @@ import org.web3j.crypto.MnemonicUtils;
 import org.web3j.utils.Numeric;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class WalletBTCUtils {
      * @param mnemonic
      * @return
      */
-    public static Wallet generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic) {
+    public static Wallet generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic, ArrayList<String> mnemonicList) {
         try {
             DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(mnemonic, 0);
             ECKey ecKeyPair = ECKey.fromPrivate(deterministicKey.getPrivKey());
@@ -61,10 +62,10 @@ public class WalletBTCUtils {
             Log.v("--->地址；", segwitAddress + "");
             Log.v("--->私钥；", privateKey + "");
             //BTC无keystore
-            return new Wallet(walletname, walletPassword, mnemonic, segwitAddress.toBech32(), privateKey, publicKey, "", 0);
+            return new Wallet(walletname, walletPassword, mnemonic, segwitAddress.toBech32(), privateKey, publicKey, "", 0, mnemonicList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Wallet("", "", "", "", "", "", "", 0);
+            return new Wallet("", "", "", "", "", "", "", 0, null);
         }
     }
 
@@ -76,7 +77,7 @@ public class WalletBTCUtils {
      * @param privateKey
      * @return
      */
-    public static Wallet generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey) {
+    public static Wallet generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey, ArrayList<String> mnemonicList) {
         try {
             ECKey ecKeyPair = ECKey.fromPrivate(Numeric.toBigInt(privateKey));
             //主网
@@ -92,10 +93,10 @@ public class WalletBTCUtils {
             //bc1开头的地址
             SegwitAddress segwitAddress = SegwitAddress.fromKey(networkParameters, ecKeyPair);
             //BTC无keystore，由于通过privateKey无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
-            return new Wallet(walletname, walletPassword, "", segwitAddress.toBech32(), privateKey, publicKey, "", 0);
+            return new Wallet(walletname, walletPassword, "", segwitAddress.toBech32(), privateKey, publicKey, "", 0, mnemonicList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Wallet("", "", "", "", "", "", "", 0);
+            return new Wallet("", "", "", "", "", "", "", 0, null);
         }
     }
 

@@ -151,7 +151,8 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                                     (adapter.getItem(position) as Wallet).publicKey,
                                     (adapter.getItem(position) as Wallet).keystore,
                                     (adapter.getItem(position) as Wallet).walletType,
-                                    false
+                                    (adapter.getItem(position) as Wallet).mnemonicList,
+                                    false,
                                 )
                             walletManageAdapter.notifyItemChanged(position)
                         } else {
@@ -165,6 +166,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                                     (adapter.getItem(position) as Wallet).publicKey,
                                     (adapter.getItem(position) as Wallet).keystore,
                                     (adapter.getItem(position) as Wallet).walletType,
+                                    (adapter.getItem(position) as Wallet).mnemonicList,
                                     true
                                 )
                             walletManageAdapter.notifyItemChanged(position)

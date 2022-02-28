@@ -46,6 +46,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
     private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX|3：BTC、ETH、TRX
     private var isBackupMnemonic = false
     private var mnemonic: String? = null
+    private var fromMnemonicList: ArrayList<String> = arrayListOf()
 
     companion object {
         @JvmField
@@ -62,6 +63,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         walletType = intent.getIntExtra(ARG_PARAM3, 0)
         isBackupMnemonic = intent.getBooleanExtra(ARG_PARAM4, false)
         mnemonic = intent.getStringExtra(ARG_PARAM5)
+        fromMnemonicList = intent.getStringArrayListExtra(ARG_PARAM6)
 
         binding.llEnglish.setOnClickListener(this)
         binding.llChinese.setOnClickListener(this)
@@ -74,13 +76,17 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         currentTab = "english"//默认英文
         binding.vEnglish.setBackgroundResource(R.color.color_3F5E94)
         binding.vChinese.visibility = View.INVISIBLE
-        // 生成钱包助记词
-        when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
-            EN, CN -> {
-                mnemonicList = MnemonicUtils.generateMnemonicEnglishChinese()
-            }
-            TW -> {
-                mnemonicList = MnemonicUtils.generateMnemonicChineseTraditional()
+        if (mnemonic != null) {
+            mnemonicList = fromMnemonicList
+        } else {
+            // 生成钱包助记词
+            when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
+                EN, CN -> {
+                    mnemonicList = MnemonicUtils.generateMnemonicEnglishChinese()
+                }
+                TW -> {
+                    mnemonicList = MnemonicUtils.generateMnemonicChineseTraditional()
+                }
             }
         }
         if (isBackupMnemonic) {
@@ -162,7 +168,8 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 var walletETH = WalletETHUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim()
+                    walletETHString.trim(),
+                    mnemonicList
                 )
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
                     saveWalletList =
@@ -198,7 +205,8 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim()
+                    walletETHString.trim(),
+                    mnemonicList
                 )
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
                     saveWalletList =
@@ -234,19 +242,22 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 var walletETH = WalletETHUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim()
+                    walletETHString.trim(),
+                    mnemonicList
                 )
 
                 val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim()
+                    walletETHString.trim(),
+                    mnemonicList
                 )
 
                 val walletBTC = WalletBTCUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim()
+                    walletETHString.trim(),
+                    mnemonicList
                 )
 
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
@@ -303,11 +314,12 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                     startActivity(Intent(this, MainETHActivity::class.java))
                 }
             }
-            0 -> { //BTC
+            3 -> { //BTC
                 val walletBTC = WalletBTCUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim()
+                    walletETHString.trim(),
+                    mnemonicList
                 )
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
                     saveWalletList =

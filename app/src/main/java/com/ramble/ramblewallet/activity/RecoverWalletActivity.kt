@@ -273,21 +273,24 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 walletETH = WalletETHUtils.generateWalletByMnemonic(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
-                    binding.edtContributingWords.text.toString()
+                    binding.edtContributingWords.text.toString(),
+                    null
                 )
             }
             2 -> {
                 walletETH = WalletETHUtils.generateWalletByPrivateKey(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
-                    binding.edtContributingWords.text.toString()
+                    binding.edtContributingWords.text.toString(),
+                    null
                 )
             }
             3 -> {
                 walletETH = WalletETHUtils.generateWalletByKeyStore(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
-                    binding.edtContributingWords.text.toString()
+                    binding.edtContributingWords.text.toString(),
+                    null
                 )
             }
         }
@@ -341,21 +344,24 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 walletTRX = WalletTRXUtils.generateWalletByMnemonic(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
-                    binding.edtContributingWords.text.toString()
+                    binding.edtContributingWords.text.toString(),
+                    null
                 )
             }
             2 -> {
                 walletTRX = WalletTRXUtils.generateWalletByPrivateKey(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
-                    binding.edtContributingWords.text.toString()
+                    binding.edtContributingWords.text.toString(),
+                    null
                 )
             }
             3 -> {
                 walletTRX = WalletTRXUtils.generateWalletByKeyStore(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
-                    binding.edtContributingWords.text.toString()
+                    binding.edtContributingWords.text.toString(),
+                    null
                 )
             }
         }
@@ -409,14 +415,16 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 walletBTC = WalletBTCUtils.generateWalletByMnemonic(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
-                    binding.edtContributingWords.text.toString()
+                    binding.edtContributingWords.text.toString(),
+                    null
                 )
             }
             2 -> {
                 walletBTC = WalletBTCUtils.generateWalletByPrivateKey(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
-                    binding.edtContributingWords.text.toString()
+                    binding.edtContributingWords.text.toString(),
+                    null
                 )
             }
         }

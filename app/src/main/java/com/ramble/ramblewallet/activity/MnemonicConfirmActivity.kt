@@ -97,7 +97,8 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 var walletETH = WalletETHUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim()
+                    walletETHString.trim(),
+                    mnemonicETH
                 )
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
                     saveWalletList =
@@ -141,7 +142,8 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim()
+                    walletETHString.trim(),
+                    mnemonicETH
                 )
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
                     saveWalletList =
@@ -185,19 +187,22 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 var walletETH = WalletETHUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim()
+                    walletETHString.trim(),
+                    mnemonicETH
                 )
 
                 val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim()
+                    walletETHString.trim(),
+                    mnemonicETH
                 )
 
                 val walletBTC = WalletBTCUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim()
+                    walletETHString.trim(),
+                    mnemonicETH
                 )
 
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
@@ -256,7 +261,8 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 val walletBTC = WalletBTCUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim()
+                    walletETHString.trim(),
+                    mnemonicETH
                 )
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
                     saveWalletList =

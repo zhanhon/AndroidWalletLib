@@ -248,6 +248,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                                 putExtra(ARG_PARAM3, walletCurrent.walletType)
                                 putExtra(ARG_PARAM4, true)
                                 putExtra(ARG_PARAM5, walletCurrent.mnemonic)
+                                putStringArrayListExtra(ARG_PARAM6, walletCurrent.mnemonicList)
                             })
                         }
                         getString(R.string.secret_key_backup) -> {
