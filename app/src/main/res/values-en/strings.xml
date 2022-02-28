@@ -29,7 +29,7 @@
     <string name="sending_address">Send The Address</string>
     <string name="traditional_chinese">Traditional Chinese</string>
     <string name="service_agreement">Service Agreement</string>
-    <string name="payment_address">Copy Address</string>
+    <string name="payment_address">Address</string>
     <string name="copy_success">Copy Complete</string>
     <string name="personal_management">Personal Management</string>
     <string name="announcement">Announcement</string>
@@ -77,7 +77,7 @@
     <string name="confirm">Confirm</string>
     <string name="passord_confirm">Confirm Password</string>
     <string name="confirm_delete">Delete</string>
-    <string name="scan">Scan Code</string>
+    <string name="scan">Scan QRcode</string>
     <string name="generate_QR_code_store">Generate QRcode And Save Them</string>
     <string name="fail">Failed</string>
     <string name="gathering">Deposit</string>

@@ -101,7 +101,7 @@
     <string name="edit">修改</string>
     <string name="one_copy">一鍵複製</string>
     <string name="ethercoin">以太幣</string>
-    <string name="privacy_statement">隱私聲明</string>
+    <string name="privacy_statement">隱私權聲明</string>
     <string name="english">英文</string>
     <string name="transfer_balance">餘額</string>
     <string name="use_original_mnemonic_word_wallet_import">運用原有助記詞進行錢包導入</string>
@@ -122,8 +122,8 @@
     <string name="cash_in">轉入</string>
     <string name="transfer">轉賬</string>
     <string name="asset">資產</string>
-    <string name="miner_fee_custom">自定義</string>
-    <string name="minimum_miner_fee">最低礦工費</string>
+    <string name="miner_fee_custom">自訂</string>
+    <string name="minimum_miner_fee">最低礦工（手續）費</string>
     <string name="clear_suc">清除成功</string>
     <string name="cancel_create">取消創建</string>
     <string name="skip_backup_directly_create">跳過備份直接創建</string>
