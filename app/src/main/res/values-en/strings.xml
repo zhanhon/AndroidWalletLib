@@ -171,7 +171,7 @@
     <string name="repeat_wallet_tips">Duplicates With Other Wallet Names, Please Re-enter! </string>
     <string name="wallet_password">Wallet Password</string>
     <string name="contributing_words_hint">Please Enter Chinese Or English Mnemonics, Please Add A Space Between Each Word For The System To Determine</string>
-    <string name="transaction_query">Transaction History</string>
+    <string name="transaction_query">Record</string>
     <string name="sender">Sender</string>
     <string name="receiver_address">Receiver Address</string>
     <string name="miner_fee_formulae">Miner Fee = GAS Price*GAS Limit</string>
