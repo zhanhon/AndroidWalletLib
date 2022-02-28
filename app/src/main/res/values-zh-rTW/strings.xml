@@ -6,7 +6,7 @@
     <string name="within_7_days">7日內</string>
     <string name="keystore_backup">Keystore備份</string>
     <string name="help_feedback">幫助與反饋</string>
-    <string name="help_center_content">幫助與中心內容</string>
+    <string name="help_center_content">幫助中心內容</string>
     <string name="remark">備註</string>
     <string name="gathering_tips_eth">本地址僅能接受以太坊<tools>%s</tools>資產，請勿轉入其他公鏈資產</string>
     <string name="gathering_tips_trx">本地址僅能接受波场<tools>%s</tools>資產，請勿轉入其他公鏈資產</string>
