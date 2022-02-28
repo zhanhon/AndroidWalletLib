@@ -176,7 +176,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     1 -> {
                         showEthDialog()
                     }
-                    0 -> {
+                    3 -> {
                         showBtcDialog()
                     }
                 }
@@ -192,7 +192,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     toastDefault(getString(R.string.balance_insufficient))
                     return
                 }
-                when (walletSelleted.walletType) { //链类型|0:BTC|1:ETH|2:TRX
+                when (walletSelleted.walletType) { //链类型|1:ETH|2:TRX|3:BTC
                     1 -> {
                         if (!WalletETHUtils.isEthValidAddress(binding.edtReceiverAddress.text.toString())) {
                             toastDefault(getString(R.string.address_already_err))
@@ -206,7 +206,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         }
                         isAddressActivate(this, binding.edtReceiverAddress.text.toString())
                     }
-                    0 -> {
+                    3 -> {
                         if (!WalletBTCUtils.isBtcValidAddress(binding.edtReceiverAddress.text.toString())) {
                             toastDefault(getString(R.string.address_already_err))
                             return
@@ -264,7 +264,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             USD -> currencySymbol = "$"
         }
 
-        when (walletSelleted.walletType) { //链类型|0:BTC|1:ETH|2:TRX
+        when (walletSelleted.walletType) {  //链类型|1:ETH|2:TRX|3:BTC
             1 -> {
                 mApiService.getEthMinerConfig(
                     EthMinerConfig.Req(transferTitle).toApiRequest(getEthMinerConfigUrl)
@@ -288,7 +288,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     }
                 )
             }
-            0 -> {
+            3 -> {
                 mApiService.getBtcMinerConfig(
                     BtcMinerConfig.Req().toApiRequest(getBtcMinerConfigUrl)
                 ).applyIo().subscribe(
@@ -340,7 +340,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
         })
 
-        when (walletSelleted.walletType) { //链类型|0:BTC|1:ETH|2:TRX
+        when (walletSelleted.walletType) {  //链类型|1:ETH|2:TRX|3:BTC
             1 -> {
                 binding.clMinerFee.visibility = View.VISIBLE
                 binding.edtReceiverAddress.hint = "ETH" + getString(R.string.address)
@@ -349,7 +349,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 binding.clMinerFee.visibility = View.GONE
                 binding.edtReceiverAddress.hint = "TRX" + getString(R.string.address)
             }
-            0 -> {
+            3 -> {
                 binding.clMinerFee.visibility = View.VISIBLE
                 binding.edtReceiverAddress.hint = "BTC" + getString(R.string.address)
             }
@@ -392,7 +392,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
             }
-            0 -> {
+            3 -> {
                 if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address)) {
                     if (!isToken) {
                         balanceOfBtc(this, walletSelleted.address)
@@ -542,7 +542,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun transfer() {
-        when (walletSelleted.walletType) { //链类型|0:BTC|1:ETH|2:TRX
+        when (walletSelleted.walletType) {  //链类型|1:ETH|2:TRX|3:BTC
             1 -> {
                 if (isToken) {
                     transferETHToken( //暂时是USDT合约
@@ -597,7 +597,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     )
                 }
             }
-            0 -> {
+            3 -> {
                 if (!isToken) {
                     println("-=-=-=-=->btcFee：${btcFee}")
                     transferBTC(

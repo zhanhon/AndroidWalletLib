@@ -59,7 +59,7 @@ class RecoverWalletListActivity : BaseActivity(), View.OnClickListener {
                 1, 2 -> {
                     window.findViewById<RelativeLayout>(R.id.rl_keystore).visibility = View.VISIBLE
                 }
-                0 -> {
+                3 -> {
                     window.findViewById<RelativeLayout>(R.id.rl_keystore).visibility = View.GONE
                 }
             }

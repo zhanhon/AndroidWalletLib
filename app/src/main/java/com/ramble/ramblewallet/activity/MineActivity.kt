@@ -265,7 +265,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                     2 -> {
                         start(MainTRXActivity::class.java)
                     }
-                    0 -> {
+                    3 -> {
                         start(MainBTCActivity::class.java)
                     }
                 }

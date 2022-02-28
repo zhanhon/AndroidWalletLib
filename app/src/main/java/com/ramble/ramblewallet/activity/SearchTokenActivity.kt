@@ -96,7 +96,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
             2 -> {
                 1958
             }
-            0 -> {
+            3 -> {
                 1
             }
             else -> {

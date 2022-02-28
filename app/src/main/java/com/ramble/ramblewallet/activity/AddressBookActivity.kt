@@ -86,17 +86,6 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 object : TypeToken<Wallet>() {}.type
             )
             when (walletSelleted.walletType) {
-                0 -> {//btc
-                    binding.groupButton.check(R.id.check_bt)
-                    idButton = 1
-                    myDataBeans = arrayListOf()
-                    myData.forEach {
-                        if (it.type == 2) {
-                            myDataBeans.add(it)
-                        }
-                    }
-                    loadData()
-                }
                 1 -> {//ETH
                     binding.groupButton.check(R.id.check_eth)
                     idButton = 2
@@ -114,6 +103,17 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     myDataBeans = arrayListOf()
                     myData.forEach {
                         if (it.type == 3) {
+                            myDataBeans.add(it)
+                        }
+                    }
+                    loadData()
+                }
+                3 -> {//btc
+                    binding.groupButton.check(R.id.check_bt)
+                    idButton = 1
+                    myDataBeans = arrayListOf()
+                    myData.forEach {
+                        if (it.type == 2) {
                             myDataBeans.add(it)
                         }
                     }

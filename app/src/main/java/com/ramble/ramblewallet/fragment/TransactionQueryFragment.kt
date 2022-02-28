@@ -176,7 +176,7 @@ class TransactionQueryFragment : BaseFragment(),
             }
         } else {
             when (wallet.walletType) {
-                0 -> 3
+                3 -> 3
                 1 -> 1
                 else -> 2
             }
@@ -242,7 +242,7 @@ class TransactionQueryFragment : BaseFragment(),
         if (currencyUnit.isNotEmpty()) {
             var walletType = when (currencyUnit) {
                 "ETH" -> 1
-                "BTC" -> 0
+                "BTC" -> 3
                 else -> 2
             }
             list.forEach {

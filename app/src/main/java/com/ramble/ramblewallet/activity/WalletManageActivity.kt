@@ -117,7 +117,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     2 -> {
                         startActivity(Intent(this, MainTRXActivity::class.java))
                     }
-                    0 -> {
+                    3 -> {
                         startActivity(Intent(this, MainBTCActivity::class.java))
                     }
                 }
@@ -189,7 +189,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             R.id.check_btc -> {
                 walletManageCurrencyBean.clear()
                 walletManageBean.forEach {
-                    if (it.walletType == 0) {
+                    if (it.walletType == 3) {
                         walletManageCurrencyBean.add(it)
                     }
                 }
@@ -253,7 +253,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                         2 -> {
                             start(MainTRXActivity::class.java)
                         }
-                        0 -> {
+                        3 -> {
                             start(MainBTCActivity::class.java)
                         }
                     }

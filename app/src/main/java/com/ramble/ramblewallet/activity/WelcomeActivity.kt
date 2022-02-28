@@ -52,7 +52,7 @@ class WelcomeActivity : BaseActivity() {
                     2 -> {
                         startActivity(Intent(this, MainTRXActivity::class.java))
                     }
-                    0 -> {
+                    3 -> {
                         startActivity(Intent(this, MainBTCActivity::class.java))
                     }
                 }

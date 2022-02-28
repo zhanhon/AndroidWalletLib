@@ -71,13 +71,13 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
                     binding.tvMyCurrency.text = "ETH"
                     binding.tvMineTitle.text = getString(R.string.transaction_query_eth)
                 }
-                0 -> {
-                    binding.tvMyCurrency.text = "BTC"
-                    binding.tvMineTitle.text = getString(R.string.transaction_query_btc)
-                }
                 2 -> {
                     binding.tvMyCurrency.text = "TRX"
                     binding.tvMineTitle.text = getString(R.string.transaction_query_trx)
+                }
+                3 -> {
+                    binding.tvMyCurrency.text = "BTC"
+                    binding.tvMineTitle.text = getString(R.string.transaction_query_btc)
                 }
             }
         }

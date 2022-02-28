@@ -421,15 +421,15 @@ fun showTopTranDialog(
                     binding.ivBtc.visibility = View.INVISIBLE
                     binding.ivTrx.visibility = View.INVISIBLE
                 }
-                0 -> {
-                    binding.ivEth.visibility = View.INVISIBLE
-                    binding.ivBtc.visibility = View.VISIBLE
-                    binding.ivTrx.visibility = View.INVISIBLE
-                }
                 2 -> {
                     binding.ivEth.visibility = View.INVISIBLE
                     binding.ivBtc.visibility = View.INVISIBLE
                     binding.ivTrx.visibility = View.VISIBLE
+                }
+                3 -> {
+                    binding.ivEth.visibility = View.INVISIBLE
+                    binding.ivBtc.visibility = View.VISIBLE
+                    binding.ivTrx.visibility = View.INVISIBLE
                 }
             }
         }

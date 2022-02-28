@@ -36,7 +36,7 @@ import com.ramble.ramblewallet.utils.toastDefault
 class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityRecoverWalletBinding
-    private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX
+    private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4：BTC、ETH、TRX
     private var chooseMode = 0 //选择方式|1:助记词|2:私钥|3:keystore
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var mnemonic: ArrayList<String> = arrayListOf()
@@ -119,7 +119,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initData() {
-        walletType = intent.getIntExtra(ARG_PARAM1, 0)
+        walletType = intent.getIntExtra(ARG_PARAM1, 1)
         chooseMode = intent.getIntExtra(ARG_PARAM2, 0)
         when (chooseMode) {
             1 -> {
@@ -210,7 +210,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                             }
                         }
                     }
-                    0 -> { //比特币
+                    3 -> { //比特币
                         when (chooseMode) {
                             1 -> {
                                 if (validMnemonic()) return
@@ -475,7 +475,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                         0,
                         1
                     )
-                ) //链类型|0:ETC|1:ETH|2:TRON
+                ) //链类型|1:ETH|2:TRX|3:ETC
             }
             2 -> {
                 detailsList.add(
@@ -484,16 +484,16 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                         0,
                         2
                     )
-                ) //链类型|0:ETC|1:ETH|2:TRON
+                ) //链类型|1:ETH|2:TRX|3:ETC
             }
-            0 -> {
+            3 -> {
                 detailsList.add(
                     AddressReport.DetailsList(
                         wallet.address,
                         0,
                         0
                     )
-                ) //链类型|0:ETC|1:ETH|2:TRON
+                ) //链类型|1:ETH|2:TRX|3:ETC
             }
         }
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)

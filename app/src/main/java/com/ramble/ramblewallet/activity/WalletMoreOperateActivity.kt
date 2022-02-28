@@ -73,7 +73,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                     "TRX" + " " + walletCurrent.walletName + getString(R.string.di_wallet)
                 binding.rlKeystoreBackups.visibility = View.VISIBLE
             }
-            0 -> {
+            3 -> {
                 binding.tvRecoverWalletTitle.text =
                     "BTC" + " " + walletCurrent.walletName + getString(R.string.di_wallet)
                 binding.rlKeystoreBackups.visibility = View.INVISIBLE

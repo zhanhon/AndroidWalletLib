@@ -154,7 +154,7 @@ public class WalletETHUtils {
             String privateKey = Numeric.toHexStringNoPrefix(keyPair.getPrivateKey());
             String publicKey = EthUtils.getPublicKey(keyPair);
             String keyStore = objectMapper.writeValueAsString(walletFile);
-            //链类型|0:BTC|1:ETH|2:TRX
+            //链类型|1:ETH|2:TRX|3:BTC
             return new Wallet(walletname, walletPassword, mnemonic, address, privateKey, publicKey, keyStore, 1, mnemonicList);
         } catch (Exception e) {
             e.printStackTrace();

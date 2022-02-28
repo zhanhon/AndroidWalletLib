@@ -52,7 +52,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var currentTab = ""
     private lateinit var mnemonicETH: ArrayList<String>
-    private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX|3：BTC、ETH、TRX
+    private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4：BTC、ETH、TRX
     private var isBackupMnemonic = false
     private var mnemonic: String? = null
 
@@ -64,7 +64,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         walletName = intent.getStringExtra(ARG_PARAM2)
         walletPassword = intent.getStringExtra(ARG_PARAM3)
         currentTab = intent.getStringExtra(ARG_PARAM4)
-        walletType = intent.getIntExtra(ARG_PARAM5, 0)
+        walletType = intent.getIntExtra(ARG_PARAM5, 1)
         isBackupMnemonic = intent.getBooleanExtra(ARG_PARAM6, false)
         mnemonic = intent.getStringExtra(ARG_PARAM7)
 
@@ -183,7 +183,44 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                     startActivity(Intent(this, MainTRXActivity::class.java))
                 }
             }
-            3 -> { //ALL
+            3 -> { //BTC
+                val walletBTC = WalletBTCUtils.generateWalletByMnemonic(
+                    walletName,
+                    walletPassword,
+                    walletETHString.trim(),
+                    mnemonicETH
+                )
+                if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+                    saveWalletList =
+                        Gson().fromJson(
+                            SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                            object : TypeToken<ArrayList<Wallet>>() {}.type
+                        )
+                }
+                if (walletName.isEmpty()) {
+                    var index = 1
+                    walletBTC.walletName = "BTC" + String.format("%02d", index)
+                    if (saveWalletList.size > 0) {
+                        saveWalletList.forEach {
+                            if (it.walletName == walletBTC.walletName) {
+                                index++
+                            }
+                        }
+                    }
+                    walletBTC.walletName = "BTC" + String.format("%02d", index)
+                }
+                saveWalletList.add(walletBTC)
+                SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+                var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+                detailsList.add(AddressReport.DetailsList(walletBTC.address, 0, 3))
+                putAddress(detailsList)
+                var isValidBtcSuccess = WalletBTCUtils.isBtcValidAddress(walletBTC.address)
+                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletBTC))
+                if (isValidBtcSuccess) {
+                    startActivity(Intent(this, MainBTCActivity::class.java))
+                }
+            }
+            4 -> { //ALL
                 var walletETH = WalletETHUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
@@ -244,7 +281,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                 detailsList.add(AddressReport.DetailsList(walletETH.address, 0, 1))
                 detailsList.add(AddressReport.DetailsList(walletTRX.address, 0, 2))
-                detailsList.add(AddressReport.DetailsList(walletBTC.address, 0, 0))
+                detailsList.add(AddressReport.DetailsList(walletBTC.address, 0, 3))
                 putAddress(detailsList)
                 //设置选择默认
                 SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
@@ -255,43 +292,6 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 var isValidBtcSuccess = WalletBTCUtils.isBtcValidAddress(walletBTC.address)
                 if (isValidEthSuccess && isValidTrxSuccess && isValidBtcSuccess) {
                     startActivity(Intent(this, MainETHActivity::class.java))
-                }
-            }
-            0 -> { //BTC
-                val walletBTC = WalletBTCUtils.generateWalletByMnemonic(
-                    walletName,
-                    walletPassword,
-                    walletETHString.trim(),
-                    mnemonicETH
-                )
-                if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
-                    saveWalletList =
-                        Gson().fromJson(
-                            SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                            object : TypeToken<ArrayList<Wallet>>() {}.type
-                        )
-                }
-                if (walletName.isEmpty()) {
-                    var index = 1
-                    walletBTC.walletName = "BTC" + String.format("%02d", index)
-                    if (saveWalletList.size > 0) {
-                        saveWalletList.forEach {
-                            if (it.walletName == walletBTC.walletName) {
-                                index++
-                            }
-                        }
-                    }
-                    walletBTC.walletName = "BTC" + String.format("%02d", index)
-                }
-                saveWalletList.add(walletBTC)
-                SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
-                var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
-                detailsList.add(AddressReport.DetailsList(walletBTC.address, 0, 0))
-                putAddress(detailsList)
-                var isValidBtcSuccess = WalletBTCUtils.isBtcValidAddress(walletBTC.address)
-                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletBTC))
-                if (isValidBtcSuccess) {
-                    startActivity(Intent(this, MainBTCActivity::class.java))
                 }
             }
         }
@@ -422,10 +422,10 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                             startActivity(Intent(this, MainTRXActivity::class.java))
                         }
                         3 -> {
-                            startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
-                        }
-                        0 -> {
                             startActivity(Intent(this, MainBTCActivity::class.java))
+                        }
+                        4 -> {
+                            startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
                         }
                     }
                 }

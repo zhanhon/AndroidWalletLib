@@ -62,10 +62,10 @@ public class WalletBTCUtils {
             Log.v("--->地址；", segwitAddress + "");
             Log.v("--->私钥；", privateKey + "");
             //BTC无keystore
-            return new Wallet(walletname, walletPassword, mnemonic, segwitAddress.toBech32(), privateKey, publicKey, "", 0, mnemonicList);
+            return new Wallet(walletname, walletPassword, mnemonic, segwitAddress.toBech32(), privateKey, publicKey, "", 3, mnemonicList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Wallet("", "", "", "", "", "", "", 0, null);
+            return new Wallet("", "", "", "", "", "", "", 3, null);
         }
     }
 
@@ -93,10 +93,10 @@ public class WalletBTCUtils {
             //bc1开头的地址
             SegwitAddress segwitAddress = SegwitAddress.fromKey(networkParameters, ecKeyPair);
             //BTC无keystore，由于通过privateKey无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
-            return new Wallet(walletname, walletPassword, "", segwitAddress.toBech32(), privateKey, publicKey, "", 0, mnemonicList);
+            return new Wallet(walletname, walletPassword, "", segwitAddress.toBech32(), privateKey, publicKey, "", 3, mnemonicList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Wallet("", "", "", "", "", "", "", 0, null);
+            return new Wallet("", "", "", "", "", "", "", 3, null);
         }
     }
 

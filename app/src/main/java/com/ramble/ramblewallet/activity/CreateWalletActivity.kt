@@ -21,7 +21,7 @@ import com.ramble.ramblewallet.utils.toastDefault
 class CreateWalletActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityCreateWalletBinding
-    private var walletType = 0 //链类型|0:BTC|1:ETH|2:TRX|3：BTC、ETH、TRX
+    private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4：BTC、ETH、TRX
     private var walletSource = 1
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
 
@@ -29,7 +29,7 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_wallet)
-        walletType = intent.getIntExtra(ARG_PARAM1, 0)
+        walletType = intent.getIntExtra(ARG_PARAM1, 1)
         walletSource = intent.getIntExtra(ARG_PARAM1, 1)
         initClick()
         when (walletSource) {
