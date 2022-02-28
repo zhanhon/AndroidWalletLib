@@ -46,7 +46,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
     private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4：BTC、ETH、TRX
     private var isBackupMnemonic = false
     private var mnemonic: String? = null
-    private var fromMnemonicList: ArrayList<String> = arrayListOf()
+    private var fromMnemonicList: ArrayList<String>? = arrayListOf()
 
     companion object {
         @JvmField
@@ -77,7 +77,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         binding.vEnglish.setBackgroundResource(R.color.color_3F5E94)
         binding.vChinese.visibility = View.INVISIBLE
         if (mnemonic != null) {
-            mnemonicList = fromMnemonicList
+            mnemonicList = fromMnemonicList!!
         } else {
             // 生成钱包助记词
             when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
