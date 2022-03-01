@@ -152,9 +152,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
            Pie.EVENT_RESS_TRANS_SCAN-> {
                 binding.edtReceiverAddress.text = event.data()
             }
-            Pie.EVENT_ADDRESS_TRANS_SCAN-> {
-                binding.edtReceiverAddress.setText( event.data<Wallet>().address)
-            }
         }
     }
 

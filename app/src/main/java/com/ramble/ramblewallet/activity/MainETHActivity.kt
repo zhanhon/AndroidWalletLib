@@ -199,9 +199,8 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         when (event.id()) {
             Pie.EVENT_ADDRESS_TRANS_SCAN -> {
                 if (DoubleUtils.isFastDoubleClick())return
-                if (event.data<Wallet>().walletType!=1)return
                 start(TransferActivity::class.java, Bundle().also {
-                    it.putString(ARG_PARAM1, event.data<Wallet>().address)
+                    it.putString(ARG_PARAM1, event.data())
                     it.putSerializable(
                         ARG_PARAM2, MainETHTokenBean(
                             "ETH",
