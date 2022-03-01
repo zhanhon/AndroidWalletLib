@@ -9,19 +9,16 @@ import android.widget.EditText;
 import com.ramble.ramblewallet.bean.Wallet;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.Comparator.comparing;
-import static java.util.Comparator.comparingLong;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toCollection;
+
 /**
  * @创建人： Ricky
  * @创建时间： 2022/2/15
@@ -44,8 +41,8 @@ public class StringUtils {
     public static ArrayList<Wallet> removeDuplicateByAddress(ArrayList<Wallet> list) {
         ArrayList<Wallet> removedDuplicateList = list.stream().collect(
                 collectingAndThen(
-                        toCollection(() -> new TreeSet<>(comparing(n->n.getAddress()))),ArrayList::new)
-                );
+                        toCollection(() -> new TreeSet<>(comparing(n -> n.getAddress()))), ArrayList::new)
+        );
         return removedDuplicateList;
     }
 

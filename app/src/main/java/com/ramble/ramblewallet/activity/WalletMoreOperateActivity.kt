@@ -179,7 +179,8 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 SharedPreferencesUtils.saveString(
                     this,
                     WALLETSELECTED,
-                    Gson().toJson(saveWalletList[0]))
+                    Gson().toJson(saveWalletList[0])
+                )
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
                 dialog.dismiss()
                 finish()

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.ramble.ramblewallet.R
@@ -19,7 +18,6 @@ import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.LanguageSetting
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
-import com.ramble.ramblewallet.wight.HtmlWebView
 
 /**
  * 时间　: 2021/12/16 13:54
@@ -177,7 +175,8 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
         } else {
             title
         }
-        binding.time2.text = if (createTime.isNotEmpty()) getString(R.string.release_date)+createTime else createTime
+        binding.time2.text =
+            if (createTime.isNotEmpty()) getString(R.string.release_date) + createTime else createTime
         if (content.contains("<") && content.contains(">")) {
             binding.web.visibility = View.VISIBLE
             binding.tvContent.visibility = View.GONE

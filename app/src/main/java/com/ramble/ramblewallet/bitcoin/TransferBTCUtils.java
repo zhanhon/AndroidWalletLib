@@ -55,6 +55,7 @@ public class TransferBTCUtils {
     static {
         isMainNet = false;
     }
+
     //"https://api.blockcypher.com/v1/btc/test3/addrs/" + address + "/balance"   //免费用户：每秒2次限流
     public static void balanceOfBtc(Activity context, String address) throws JSONException {
         OkHttpClient okHttpClient = new OkHttpClient();

@@ -45,7 +45,7 @@ public class Wallet {
     }
 
     public Wallet(String walletName, String walletPassword, String mnemonic, String address,
-                  String privateKey, String publicKey, String keystore, int walletType,  ArrayList<String> mnemonicList, boolean isClickDelete) {
+                  String privateKey, String publicKey, String keystore, int walletType, ArrayList<String> mnemonicList, boolean isClickDelete) {
         this(walletName, walletPassword, mnemonic, address, privateKey, publicKey, keystore, walletType, mnemonicList);
         this.isClickDelete = isClickDelete;
     }

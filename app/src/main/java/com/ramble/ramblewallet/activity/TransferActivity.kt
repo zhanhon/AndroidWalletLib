@@ -149,7 +149,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     override fun onRxBus(event: RxBus.Event) {
         super.onRxBus(event)
         when (event.id()) {
-           Pie.EVENT_RESS_TRANS_SCAN-> {
+            Pie.EVENT_RESS_TRANS_SCAN -> {
                 binding.edtReceiverAddress.text = event.data()
             }
         }
@@ -213,7 +213,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         }
                     }
                 }
-                if (StrUtil.equalsIgnoreCase(binding.tvWalletAddress.text.toString(), binding.edtReceiverAddress.text.toString())) {
+                if (StrUtil.equalsIgnoreCase(
+                        binding.tvWalletAddress.text.toString(),
+                        binding.edtReceiverAddress.text.toString()
+                    )
+                ) {
                     toastDefault(getString(R.string.repeat_address))
                     return
                 }
