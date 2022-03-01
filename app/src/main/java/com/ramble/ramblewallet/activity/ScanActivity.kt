@@ -203,10 +203,10 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
         }
     }
 
-    private fun vibrate() {
-        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        vibrator.vibrate(200)
-    }
+//    private fun vibrate() {
+//        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+//        vibrator.vibrate(200)
+//    }
 
     override fun onScanQRCodeSuccess(result: String?) {
 //        vibrate()
