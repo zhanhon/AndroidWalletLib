@@ -188,6 +188,8 @@ dependencies {
     implementation "com.madgag.spongycastle:core:1.53.0.0"
     implementation "com.madgag.spongycastle:prov:1.53.0.0"
     implementation 'com.alibaba:fastjson:1.2.47'
+    //比较两个字符串忽略大小写
+    implementation 'cn.hutool:hutool-all:4.6.2'
 
     //友盟推送
     implementation project(':UMLibrary')

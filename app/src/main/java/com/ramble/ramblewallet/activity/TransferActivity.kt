@@ -16,6 +16,7 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import cn.hutool.core.util.StrUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
@@ -213,7 +214,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         }
                     }
                 }
-                if (binding.tvWalletAddress.text.toString().equals(binding.edtReceiverAddress.text.toString())) {
+                if (StrUtil.equalsIgnoreCase(binding.tvWalletAddress.text.toString(), binding.edtReceiverAddress.text.toString())) {
                     toastDefault(getString(R.string.repeat_address))
                     return
                 }
