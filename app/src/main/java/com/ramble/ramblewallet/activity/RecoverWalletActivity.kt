@@ -18,6 +18,7 @@ import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.bitcoin.WalletBTCUtils.isBtcValidAddress
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityRecoverWalletBinding
+import com.ramble.ramblewallet.ethereum.MnemonicUtils
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.ethereum.WalletETHUtils.isEthValidAddress
 import com.ramble.ramblewallet.ethereum.utils.ChineseSimplified
@@ -273,7 +274,9 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         return false
     }
 
+    private lateinit var mnemonicList: ArrayList<String>
     private fun recoverWalletETH(chooseMode: Int) {
+        mnemonicList = MnemonicUtils.generateMnemonicEnglishChinese()
         lateinit var walletETH: Wallet
         when (chooseMode) {
             1 -> {
@@ -281,7 +284,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    walletSelleted?.mnemonicList
+                    mnemonicList
                 )
             }
             2 -> {
@@ -289,7 +292,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    walletSelleted?.mnemonicList
+                    mnemonicList
                 )
             }
             3 -> {
@@ -297,7 +300,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    walletSelleted?.mnemonicList
+                    mnemonicList
                 )
             }
         }
@@ -352,7 +355,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    walletSelleted?.mnemonicList
+                    mnemonicList
                 )
             }
             2 -> {
@@ -360,7 +363,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    walletSelleted?.mnemonicList
+                    mnemonicList
                 )
             }
             3 -> {
@@ -368,7 +371,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    walletSelleted?.mnemonicList
+                    mnemonicList
                 )
             }
         }
@@ -423,7 +426,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    walletSelleted?.mnemonicList
+                    mnemonicList
                 )
             }
             2 -> {
@@ -431,7 +434,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    walletSelleted?.mnemonicList
+                    mnemonicList
                 )
             }
         }
