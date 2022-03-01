@@ -85,18 +85,6 @@
                         android:gravity="center" />
 
                     <RadioButton
-                        android:id="@+id/check_btc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_5"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:layout_marginRight="@dimen/dp_2"
-                        android:layout_marginBottom="@dimen/dp_10"
-                        android:background="@drawable/selector_check_bt"
-                        android:button="@null"
-                        android:gravity="center" />
-
-                    <RadioButton
                         android:id="@+id/check_eth"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -105,6 +93,18 @@
                         android:layout_marginRight="@dimen/dp_2"
                         android:layout_marginBottom="@dimen/dp_10"
                         android:background="@drawable/selector_check_eth"
+                        android:button="@null"
+                        android:gravity="center" />
+
+                    <RadioButton
+                        android:id="@+id/check_btc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_2"
+                        android:layout_marginBottom="@dimen/dp_10"
+                        android:background="@drawable/selector_check_bt"
                         android:button="@null"
                         android:gravity="center" />
 

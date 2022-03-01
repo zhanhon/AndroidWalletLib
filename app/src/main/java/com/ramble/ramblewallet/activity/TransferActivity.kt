@@ -821,7 +821,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             onClickTransferSlow(window)
             onClickTransferCustom(window)
 
-            inputWatch(window.findViewById<EditText>(R.id.miner_fee_gas_price), this, 250, 1)
+            inputWatch(window.findViewById<EditText>(R.id.miner_fee_gas_price), 250, 1)
 
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 if (isCustom) {

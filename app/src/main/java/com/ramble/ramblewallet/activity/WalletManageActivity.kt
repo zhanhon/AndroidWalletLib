@@ -186,10 +186,10 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 binding.lyPullRefresh.visibility = View.VISIBLE
                 loadData(walletManageBean)
             }
-            R.id.check_btc -> {
+            R.id.check_eth -> {
                 walletManageCurrencyBean.clear()
                 walletManageBean.forEach {
-                    if (it.walletType == 3) {
+                    if (it.walletType == 1) {
                         walletManageCurrencyBean.add(it)
                     }
                 }
@@ -202,10 +202,10 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     loadData(walletManageCurrencyBean)
                 }
             }
-            R.id.check_eth -> {
+            R.id.check_btc -> {
                 walletManageCurrencyBean.clear()
                 walletManageBean.forEach {
-                    if (it.walletType == 1) {
+                    if (it.walletType == 3) {
                         walletManageCurrencyBean.add(it)
                     }
                 }
