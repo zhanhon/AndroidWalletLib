@@ -255,6 +255,21 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        when (walletSelleted.walletType) {
+            1 -> {
+                start(MainETHActivity::class.java)
+            }
+            2 -> {
+                start(MainTRXActivity::class.java)
+            }
+            3 -> {
+                start(MainBTCActivity::class.java)
+            }
+        }
+    }
+
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> { //区分不同钱包进行跳转
