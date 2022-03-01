@@ -25,7 +25,7 @@
     <string name="import_mnemonic_words">導入助記詞</string>
     <string name="address_book">地址本</string>
     <string name="multi_language">多語言</string>
-    <string name="initiate_transfer">發起轉帳或建立Wallet Connet連接</string>
+    <string name="initiate_transfer">發起轉賬或建立Wallet Connet連接</string>
     <string name="sending_address">發送地址</string>
     <string name="traditional_chinese">繁體中文</string>
     <string name="service_agreement">服務協議</string>
@@ -53,7 +53,7 @@
     <string name="miner_fee">礦工費</string>
     <string name="miner_fee_limit_title">礦工費上限</string>
     <string name="miner_fees">礦工費用</string>
-    <string name="miner_fee_tips">礦工費越高 轉帳越快</string>
+    <string name="miner_fee_tips">礦工費越高 轉賬越快</string>
     <string name="enquire_now">立即查詢</string>
     <string name="miner_fee_slow">慢速</string>
     <string name="secret_key">密鑰</string>
@@ -138,7 +138,7 @@
     <string name="app_name">漫步錢包</string>
     <string name="balance_insufficient">餘額不足</string>
     <string name="trx_address_no_activate">賬戶未激活，可正常轉賬TRC20通證，但不會激活該賬戶</string>
-    <string name="repeat_address">轉帳地址與收款地址重複 請重新輸入</string>
+    <string name="repeat_address">轉賬地址與收款地址重複 請重新輸入</string>
     <string name="network_anomaly">網絡異常，請檢查網絡連接</string>
     <string name="retry">重試</string>
     <string name="error_tips_backup">您已輸入錯誤超過三次,是否取消或返回上個頁面</string>

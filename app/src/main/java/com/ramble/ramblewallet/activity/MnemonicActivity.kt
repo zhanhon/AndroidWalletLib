@@ -76,8 +76,8 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         currentTab = "english"//默认英文
         binding.vEnglish.setBackgroundResource(R.color.color_3F5E94)
         binding.vChinese.visibility = View.INVISIBLE
-        if (mnemonic != null) {
-            mnemonicList = fromMnemonicList!!
+        if ((mnemonic != null) && (fromMnemonicList != null)) {
+            mnemonicList = fromMnemonicList as ArrayList<String>
         } else {
             // 生成钱包助记词
             when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {

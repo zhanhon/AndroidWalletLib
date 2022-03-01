@@ -40,6 +40,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     private var chooseMode = 0 //选择方式|1:助记词|2:私钥|3:keystore
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var mnemonic: ArrayList<String> = arrayListOf()
+    private var walletSelleted: Wallet? = null
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -121,6 +122,12 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     private fun initData() {
         walletType = intent.getIntExtra(ARG_PARAM1, 1)
         chooseMode = intent.getIntExtra(ARG_PARAM2, 0)
+        if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isNotEmpty()) {
+            walletSelleted = Gson().fromJson(
+                SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+                object : TypeToken<Wallet>() {}.type
+            )
+        }
         when (chooseMode) {
             1 -> {
                 binding.tvRecoverTitle.text = getString(R.string.import_mnemonic_words)
@@ -274,7 +281,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    null
+                    walletSelleted?.mnemonicList
                 )
             }
             2 -> {
@@ -282,7 +289,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    null
+                    walletSelleted?.mnemonicList
                 )
             }
             3 -> {
@@ -290,7 +297,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    null
+                    walletSelleted?.mnemonicList
                 )
             }
         }
@@ -345,7 +352,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    null
+                    walletSelleted?.mnemonicList
                 )
             }
             2 -> {
@@ -353,7 +360,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    null
+                    walletSelleted?.mnemonicList
                 )
             }
             3 -> {
@@ -361,7 +368,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    null
+                    walletSelleted?.mnemonicList
                 )
             }
         }
@@ -416,7 +423,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    null
+                    walletSelleted?.mnemonicList
                 )
             }
             2 -> {
@@ -424,7 +431,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
-                    null
+                    walletSelleted?.mnemonicList
                 )
             }
         }
