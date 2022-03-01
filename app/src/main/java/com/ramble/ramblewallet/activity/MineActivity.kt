@@ -3,6 +3,7 @@ package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -20,13 +21,18 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.bean.AddressReport
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.Wallet
+import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMineBinding
+import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.noticeInfoUrl
+import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.utils.LanguageSetting
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
@@ -40,6 +46,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     private lateinit var language: String
     private lateinit var currency: String
     private lateinit var walletSelleted: Wallet
+    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,7 +114,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             .setImageResource(R.drawable.ic_about)
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).visibility = View.INVISIBLE
         binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text = "V1.0.0"
-        binding.clearText.text= getString(R.string.clear_cache)
+        binding.clearText.text = getString(R.string.clear_cache)
     }
 
 
@@ -337,6 +344,56 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    /***
+     *切换语言重新上传地址
+     */
+
+    private fun skipConfirmHandle() {
+        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+            saveWalletList =
+                Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                    object : TypeToken<ArrayList<Wallet>>() {}.type
+                )
+            var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+            saveWalletList.forEach {
+                if (it.walletType == 1) {
+                    detailsList.add(AddressReport.DetailsList(it.address, 0, 1))
+                }
+                if (it.walletType == 2) {
+                    detailsList.add(AddressReport.DetailsList(it.address, 0, 2))
+                }
+                if (it.walletType == 3) {
+                    detailsList.add(AddressReport.DetailsList(it.address, 0, 3))
+                }
+            }
+            putAddress(detailsList)
+        }
+    }
+
+    /***
+     *切换语言重新上传地址网络请求
+     */
+    @SuppressLint("CheckResult")
+    private fun putAddress(detailsList: ArrayList<AddressReport.DetailsList>) {
+        val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
+        val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
+        mApiService.putAddress(
+            AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)
+        ).applyIo().subscribe(
+            {
+                if (it.code() == 1) {
+                    it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
+                } else {
+                    putAddress(detailsList)
+                    println("-=-=-=->putAddress:${it.message()}")
+                }
+            }, {
+                println("-=-=-=->putAddress:${it.printStackTrace()}")
+            }
+        )
+    }
+
     private fun languageDialog() {
         var dialogLanguage = AlertDialog.Builder(this).create()
         dialogLanguage.show()
@@ -367,7 +424,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             }
 
             dialogTheme(window)
-            dialogLanguage.show()
+//            dialogLanguage.show()
         }
     }
 
@@ -395,7 +452,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             }
 
             dialogTheme(window)
-            dialogCurrency.show()
+//            dialogCurrency.show()
         }
     }
 
@@ -431,6 +488,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 LanguageSetting.setLanguage(this, 3)
             }
         }
+        skipConfirmHandle()
     }
 
     private fun setCurrency() {
@@ -448,6 +506,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                     "USD"
             }
         }
+
     }
 
 }
