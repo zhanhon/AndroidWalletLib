@@ -31,6 +31,8 @@ import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
+import java.util.stream.Collector
+import java.util.stream.Collectors.toList
 
 
 class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
@@ -69,7 +71,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
             object : TypeToken<ArrayList<Wallet>>() {}.type
         )
-        StringUtils.removeDuplicate(saveWalletList).toSet()
+        saveWalletList = StringUtils.removeDuplicateByAddress(saveWalletList)
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
         initView()
     }
