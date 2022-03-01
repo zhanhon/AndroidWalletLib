@@ -28,7 +28,9 @@ import static org.web3j.crypto.Wallet.decrypt;
  */
 public class WalletTRXUtils {
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private WalletTRXUtils() {
+        throw new IllegalStateException("WalletTRXUtils");
+    }
 
     /**
      * 通过助记词生成钱包
@@ -38,7 +40,7 @@ public class WalletTRXUtils {
      * @param mnemonic
      * @return
      */
-    public static Wallet generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic, ArrayList<String> mnemonicList) throws Exception {
+    public static Wallet generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic, ArrayList<String> mnemonicList) {
         try {
             DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(mnemonic, 1);
             ECKeyPair ecKeyPair = ECKeyPair.create(deterministicKey.getPrivKey());
@@ -65,7 +67,7 @@ public class WalletTRXUtils {
      * @param privateKey
      * @return
      */
-    public static Wallet generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey, ArrayList<String> mnemonicList) throws Exception {
+    public static Wallet generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey, ArrayList<String> mnemonicList) {
         try {
             BigInteger pk = Numeric.toBigIntNoPrefix(privateKey);
             byte[] privateKeyByte = pk.toByteArray();
@@ -93,7 +95,7 @@ public class WalletTRXUtils {
      * @param keystore
      * @return
      */
-    public static Wallet generateWalletByKeyStore(String walletname, String walletPassword, String keystore, ArrayList<String> mnemonicList) throws Exception {
+    public static Wallet generateWalletByKeyStore(String walletname, String walletPassword, String keystore, ArrayList<String> mnemonicList) {
         try {
             ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
             WalletFile walletFile2 = objectMapper.readValue(keystore, WalletFile.class);

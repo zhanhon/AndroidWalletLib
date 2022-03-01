@@ -231,9 +231,11 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                     count: Int,
                     after: Int
                 ) {
+                    //暂时不需要实现此方法
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    //暂时不需要实现此方法
                 }
             })
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
@@ -295,9 +297,11 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                     count: Int,
                     after: Int
                 ) {
+                    //暂时不需要实现此方法
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    //暂时不需要实现此方法
                 }
             })
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
@@ -451,11 +455,13 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                                     bitmap.recycle()
                                 }
                             } catch (e: Exception) {
+                                e.printStackTrace()
                             }
                         }
 
                         override
                         fun onDenied(deniedPermissions: List<String?>?) {
+                            //暂时不需要实现此方法
                         }
                     })
                 dialog.dismiss()

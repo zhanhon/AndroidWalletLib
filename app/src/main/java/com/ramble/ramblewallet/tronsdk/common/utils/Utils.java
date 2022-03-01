@@ -27,6 +27,9 @@ public class Utils {
 
     private static SecureRandom random;
 
+    private Utils() {
+        throw new IllegalStateException("Utils");
+    }
 
     static {
         if (isAndroidRuntime()) {

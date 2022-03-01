@@ -38,6 +38,10 @@ public class WalletETHUtils {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
+    private WalletETHUtils() {
+        throw new IllegalStateException("WalletETHUtils");
+    }
+
     /**
      * 生成钱包 以及keystore文件
      *
@@ -170,7 +174,7 @@ public class WalletETHUtils {
      * @param privateKey
      * @return
      */
-    public static Wallet generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey, ArrayList<String> mnemonicList) throws Exception {
+    public static Wallet generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey, ArrayList<String> mnemonicList) {
         try {
             BigInteger pk = new BigInteger(privateKey, 16);
             ECKeyPair keyPair = ECKeyPair.create(pk);
@@ -195,7 +199,7 @@ public class WalletETHUtils {
      * @param keystore
      * @return
      */
-    public static Wallet generateWalletByKeyStore(String walletname, String walletPassword, String keystore, ArrayList<String> mnemonicList) throws CipherException, IOException {
+    public static Wallet generateWalletByKeyStore(String walletname, String walletPassword, String keystore, ArrayList<String> mnemonicList) {
         try {
             WalletFile walletFile = objectMapper.readValue(keystore, WalletFile.class);
             ECKeyPair keyPair = org.web3j.crypto.Wallet.decrypt(walletPassword, walletFile);

@@ -30,7 +30,7 @@ public class StringUtils {
 
     //对象去重
     public static ArrayList<Wallet> removeDuplicate(ArrayList<Wallet> list) {
-        Set set = new LinkedHashSet<String>();
+        Set<Wallet> set = new LinkedHashSet();
         set.addAll(list);
         list.clear();
         list.addAll(set);
@@ -134,8 +134,7 @@ public class StringUtils {
      * @param max     最大数
      * @param min     最小数
      */
-    public static void inputWatch(final EditText edit, final Context context, final int max, final int min) {
-
+    public static void inputWatch(final EditText edit, final int max, final int min) {
 
         edit.addTextChangedListener(new TextWatcher() {
             int l = 0;

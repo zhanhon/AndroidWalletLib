@@ -22,29 +22,26 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j(topic = "API")
 public class Util {
 
-    public static final String PERMISSION_ID = "Permission_id";
     public static final String VISIBLE = "visible";
-    public static final String TRANSACTION = "transaction";
     public static final String VALUE = "value";
-    public static final String CONTRACT_TYPE = "contractType";
-    public static final String EXTRA_DATA = "extra_data";
+    public static final String RAW_DATA = "raw_data";
+    public static final String CONTRACT = "contract";
+    public static final String PARAMETER = "parameter";
 
-    public static String printErrorMsg(Exception e) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("Error", e.getClass() + " : " + e.getMessage());
-        return jsonObject.toJSONString();
+    private Util() {
+        throw new IllegalStateException("Util");
     }
 
-    public static Transaction packTransaction(String strTransaction, boolean selfType) {
+    public static Transaction packTransaction(String strTransaction) {
         JSONObject jsonTransaction = JSONObject.parseObject(strTransaction);
-        JSONObject rawData = jsonTransaction.getJSONObject("raw_data");
+        JSONObject rawData = jsonTransaction.getJSONObject(RAW_DATA);
         JSONArray contracts = new JSONArray();
-        JSONArray rawContractArray = rawData.getJSONArray("contract");
+        JSONArray rawContractArray = rawData.getJSONArray(CONTRACT);
 
         for (int i = 0; i < rawContractArray.size(); i++) {
             try {
                 JSONObject contract = rawContractArray.getJSONObject(i);
-                JSONObject parameter = contract.getJSONObject("parameter");
+                JSONObject parameter = contract.getJSONObject(PARAMETER);
                 String contractType = contract.getString("type");
                 Any any = null;
                 Class clazz = TransactionFactory.getContract(ContractType.valueOf(contractType));
@@ -60,7 +57,7 @@ public class Util {
                 if (any != null) {
                     String value = ByteArray.toHexString(any.getValue().toByteArray());
                     parameter.put(VALUE, value);
-                    contract.put("parameter", parameter);
+                    contract.put(PARAMETER, parameter);
                     contracts.add(contract);
                 }
             } catch (JsonFormat.ParseException e) {
@@ -69,8 +66,8 @@ public class Util {
                 Log.e("", e.toString());
             }
         }
-        rawData.put("contract", contracts);
-        jsonTransaction.put("raw_data", rawData);
+        rawData.put(CONTRACT, contracts);
+        jsonTransaction.put(RAW_DATA, rawData);
         Transaction.Builder transactionBuilder = Transaction.newBuilder();
         try {
             CharSequence charSequence = jsonTransaction.toJSONString();
@@ -85,14 +82,14 @@ public class Util {
 
     public static Transaction packTransaction2(String strTransaction) {
         JSONObject jsonTransaction = JSONObject.parseObject(strTransaction);
-        JSONObject rawData = jsonTransaction.getJSONObject("raw_data");
+        JSONObject rawData = jsonTransaction.getJSONObject(RAW_DATA);
         JSONArray contracts = new JSONArray();
-        JSONArray rawContractArray = rawData.getJSONArray("contract");
+        JSONArray rawContractArray = rawData.getJSONArray(CONTRACT);
 
         for (int i = 0; i < rawContractArray.size(); i++) {
             try {
                 JSONObject contract = rawContractArray.getJSONObject(i);
-                JSONObject parameter = contract.getJSONObject("parameter");
+                JSONObject parameter = contract.getJSONObject(PARAMETER);
                 String contractType = contract.getString("type");
                 Any any = null;
                 switch (contractType) {
@@ -218,15 +215,15 @@ public class Util {
                 if (any != null) {
                     String value = ByteArray.toHexString(any.getValue().toByteArray());
                     parameter.put("value", value);
-                    contract.put("parameter", parameter);
+                    contract.put(PARAMETER, parameter);
                     contracts.add(contract);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        rawData.put("contract", contracts);
-        jsonTransaction.put("raw_data", rawData);
+        rawData.put(CONTRACT, contracts);
+        jsonTransaction.put(RAW_DATA, rawData);
         Transaction.Builder transactionBuilder = Transaction.newBuilder();
         try {
             JsonFormat.merge(jsonTransaction.toJSONString(), transactionBuilder);

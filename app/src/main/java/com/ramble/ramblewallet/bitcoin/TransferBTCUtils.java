@@ -56,8 +56,12 @@ public class TransferBTCUtils {
         isMainNet = false;
     }
 
+    private TransferBTCUtils() {
+        throw new IllegalStateException("TransferBTCUtils");
+    }
+
     //"https://api.blockcypher.com/v1/btc/test3/addrs/" + address + "/balance"   //免费用户：每秒2次限流
-    public static void balanceOfBtc(Activity context, String address) throws JSONException {
+    public static void balanceOfBtc(Activity context, String address) {
         OkHttpClient okHttpClient = new OkHttpClient();
         final String[] host = {isMainNet ? "BTC" : "BTCTEST"};
         String url = "https://chain.so/api/v2/get_address_balance/" + host[0] + "/" + address; //免费用户：每秒5次限流
@@ -104,7 +108,7 @@ public class TransferBTCUtils {
     }
 
     public static void transferBTC(Activity context, String fromAddress, String toAddress,
-                                   String privateKey, BigDecimal amount, String btcFee, String remark) throws JSONException {
+                                   String privateKey, BigDecimal amount, String btcFee, String remark) {
         final List<UTXO>[] utxos = new List[]{Lists.newArrayList()};
         final String[] host = {isMainNet ? "BTC" : "BTCTEST"};
         String url = "https://chain.so/api/v2/get_tx_unspent/" + host[0] + "/" + fromAddress;
@@ -274,7 +278,7 @@ public class TransferBTCUtils {
                 transaction.addSignedInput(outPoint, utxo.getScript(), ecKey, Transaction.SigHash.ALL, true);
             }
         }
-        Context context = new Context(networkParameters);
+        new Context(networkParameters);
         transaction.getConfidence().setSource(TransactionConfidence.Source.NETWORK);
         transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
         return new String(org.apache.commons.codec.binary.Hex.encodeHex(transaction.bitcoinSerialize()));

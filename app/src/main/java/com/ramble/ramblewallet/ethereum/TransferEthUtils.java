@@ -45,8 +45,12 @@ public class TransferEthUtils {
 
     private static final String DATA_PREFIX = "0x70a08231000000000000000000000000";
 
+    private TransferEthUtils() {
+        throw new IllegalStateException("TransferEthUtils");
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static BigDecimal getBalanceETH(String address) throws Exception {
+    public static BigDecimal getBalanceETH(String address) {
         try {
             Web3j web3 = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0]));
             Future<EthGetBalance> ethGetBalanceFuture = web3.ethGetBalance(address, DefaultBlockParameterName.LATEST).sendAsync();
@@ -54,7 +58,7 @@ public class TransferEthUtils {
                     Convert.Unit.ETHER);
         } catch (Exception e) {
             e.printStackTrace();
-            return new BigDecimal(0.00000000);
+            return BigDecimal.valueOf(0.00000000);
         }
     }
 
@@ -64,14 +68,14 @@ public class TransferEthUtils {
                     .ethCall(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(address,
                             contractAddress, DATA_PREFIX + address.substring(2)), DefaultBlockParameterName.PENDING).send().getValue();
             String s = new BigInteger(value.substring(2), 16).toString();
-            if (s == "0x") {
-                return new BigDecimal(0.000000);
+            if (s.equals("0x")) {
+                return BigDecimal.valueOf(0.000000);
             } else {
                 return new BigDecimal(s).divide(BigDecimal.valueOf(1000000), 6, RoundingMode.UP);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new BigDecimal(0.000000);
+            return BigDecimal.valueOf(0.000000);
         }
     }
 
@@ -85,7 +89,6 @@ public class TransferEthUtils {
         //获取nonce，交易笔数
         EthGetTransactionCount transactionCount = web3j.ethGetTransactionCount(fromAddress, DefaultBlockParameterName.LATEST).sendAsync().get();
         BigInteger nonce = transactionCount.getTransactionCount();
-        //Log.i(TAG, "transfer nonce : " + nonce);
 
         if (remark != null) {
             remark = StringHexUtils.byte2HexString(remark.getBytes(StandardCharsets.UTF_8));
@@ -119,7 +122,6 @@ public class TransferEthUtils {
         //获取nonce，交易笔数
         EthGetTransactionCount transactionCount = web3j.ethGetTransactionCount(fromAddress, DefaultBlockParameterName.LATEST).sendAsync().get();
         BigInteger nonce = transactionCount.getTransactionCount();
-        //Log.i(TAG, "transfer nonce : " + nonce);
 
         Function function = new Function(
                 "transfer",

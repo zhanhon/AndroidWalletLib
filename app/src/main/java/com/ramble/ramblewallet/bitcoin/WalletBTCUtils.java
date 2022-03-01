@@ -34,6 +34,10 @@ public class WalletBTCUtils {
         isMainNet = false;
     }
 
+    private WalletBTCUtils() {
+        throw new IllegalStateException("WalletBTCUtils");
+    }
+
     /**
      * 通过助记词生成钱包
      *
@@ -47,16 +51,11 @@ public class WalletBTCUtils {
             DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(mnemonic, 0);
             ECKey ecKeyPair = ECKey.fromPrivate(deterministicKey.getPrivKey());
             //主网
-            //NetworkParameters networkParameters = MainNetParams.get();
             NetworkParameters networkParameters = TestNet3Params.get();
 
             String publicKey = Numeric.toHexStringNoPrefixZeroPadded(new BigInteger(ecKeyPair.getPubKey()), 66);
-            String privateKey = ecKeyPair.getPrivateKeyEncoded(networkParameters).toString();//ecKeyPair.getPrivateKeyAsHex();
+            String privateKey = ecKeyPair.getPrivateKeyEncoded(networkParameters).toString();
 
-            //1开头的地址
-            //LegacyAddress address1 = LegacyAddress.fromKey(networkParameters, ecKeyPair);
-            //3开头的地址
-            //LegacyAddress address3 = LegacyAddress.fromScriptHash(networkParameters, ecKeyPair.getPubKeyHash());
             //bc1开头的地址
             SegwitAddress segwitAddress = SegwitAddress.fromKey(networkParameters, ecKeyPair);
             Log.v("--->地址；", segwitAddress + "");
@@ -81,15 +80,10 @@ public class WalletBTCUtils {
         try {
             ECKey ecKeyPair = ECKey.fromPrivate(Numeric.toBigInt(privateKey));
             //主网
-            //NetworkParameters networkParameters = MainNetParams.get();
             NetworkParameters networkParameters = TestNet3Params.get();
 
             String publicKey = Numeric.toHexStringNoPrefixZeroPadded(new BigInteger(ecKeyPair.getPubKey()), 66);
 
-            //1开头的地址
-            //LegacyAddress address1 = LegacyAddress.fromKey(networkParameters, ecKeyPair);
-            //3开头的地址
-            //LegacyAddress address3 = LegacyAddress.fromScriptHash(networkParameters, ecKeyPair.getPubKeyHash());
             //bc1开头的地址
             SegwitAddress segwitAddress = SegwitAddress.fromKey(networkParameters, ecKeyPair);
             //BTC无keystore，由于通过privateKey无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份

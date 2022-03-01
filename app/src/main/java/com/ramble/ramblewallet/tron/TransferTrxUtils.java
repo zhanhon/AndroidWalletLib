@@ -92,11 +92,12 @@ public class TransferTrxUtils {
                 try {
                     JSONObject json = new JSONObject(string);
                     String balanceBefore = json.optString("balance");
+                    BigDecimal divide = new BigDecimal(balanceBefore).divide(new BigDecimal("1000000"));
                     if (context instanceof MainTRXActivity) {
-                        ((MainTRXActivity) context).setTrxBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
+                        ((MainTRXActivity) context).setTrxBalance(divide);
                     }
                     if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).setTrxBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
+                        ((TransferActivity) context).setTrxBalance(divide);
                     }
                 } catch (Exception e) {
                     if (context instanceof MainTRXActivity) {
@@ -260,7 +261,7 @@ public class TransferTrxUtils {
                     if (remark != null) {
                         tx.getJSONObject("raw_data").put("data", Hex.toHexString(remark.getBytes()));
                     }
-                    org.tron.protos.Protocol.Transaction transaction = Util.packTransaction(tx.toString(), false);
+                    org.tron.protos.Protocol.Transaction transaction = Util.packTransaction(tx.toString());
                     byte[] bytes = TrxApi.signTransaction2Byte(transaction.toByteArray(), ByteArray.fromHexString(privateKey));
                     String signTransation = ByteArray.toHexString(bytes);
                     // 广播交易
