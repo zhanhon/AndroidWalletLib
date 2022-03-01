@@ -83,7 +83,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:stl_clickable="true"
-                app:stl_defaultTabTextHorizontalPadding="@dimen/dp_5"
+                app:stl_defaultTabTextHorizontalPadding="@dimen/dp_2"
                 app:stl_defaultTabBackground="?attr/selectableItemBackground"
                 app:stl_defaultTabTextAllCaps="false"
                 app:stl_defaultTabTextColor="@color/color_activity_tab_text"
