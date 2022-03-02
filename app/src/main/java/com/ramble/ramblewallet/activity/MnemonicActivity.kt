@@ -358,6 +358,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
     private fun putAddress(detailsList: ArrayList<AddressReport.DetailsList>) {
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
         val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
+        if (detailsList.size == 0) return
         mApiService.putAddress(
             AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)
         ).applyIo().subscribe(

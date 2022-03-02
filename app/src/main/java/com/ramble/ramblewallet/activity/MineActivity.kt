@@ -355,7 +355,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             saveWalletList.forEach {
                 detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
             }
-            if (detailsList.size>0){
+            if (detailsList.size > 0){
                 putAddress(detailsList)
             }
         }
@@ -368,6 +368,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     private fun putAddress(detailsList: ArrayList<AddressReport.DetailsList>) {
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
         val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
+        if (detailsList.size == 0) return
         mApiService.putAddress(
             AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)
         ).applyIo().subscribe(

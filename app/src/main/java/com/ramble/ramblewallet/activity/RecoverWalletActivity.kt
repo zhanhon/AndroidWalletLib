@@ -449,7 +449,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (walletBTC.address.isNotEmpty()) {
-            putAddress(walletBTC, 0)
+            putAddress(walletBTC, 3)
             if (isBtcValidAddress(walletBTC.address)) {
                 SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletBTC))
                 startActivity(Intent(this, MainBTCActivity::class.java))
@@ -508,6 +508,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         }
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
         val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
+        if (detailsList.size == 0) return
         mApiService.putAddress(
             AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)
         ).applyIo().subscribe(
