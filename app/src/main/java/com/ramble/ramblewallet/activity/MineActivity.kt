@@ -64,7 +64,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incManageWallet.findViewById<ImageView>(R.id.iv_mine_icon)
             .setImageResource(R.drawable.ic_manag)
         binding.incAddressBook.findViewById<TextView>(R.id.tv_mine_title).text =
-            getString(R.string.address_book)
+            getString(R.string.address_page)
         binding.incAddressBook.findViewById<ImageView>(R.id.iv_mine_icon)
             .setImageResource(R.drawable.ic_address_book)
         binding.incTransactionQuery.findViewById<TextView>(R.id.tv_mine_title).text =
