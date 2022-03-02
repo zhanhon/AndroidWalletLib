@@ -199,7 +199,6 @@
                     android:layout_alignParentLeft="true"
                     android:background="@null"
                     android:inputType="numberDecimal"
-                    android:longClickable="false"
                     android:textSize="@dimen/sp_18"
                     android:textStyle="bold" />
 
@@ -229,7 +228,6 @@
                     android:layout_alignParentLeft="true"
                     android:background="@null"
                     android:inputType="numberDecimal"
-                    android:longClickable="false"
                     android:textSize="@dimen/sp_18"
                     android:textStyle="bold" />
 
