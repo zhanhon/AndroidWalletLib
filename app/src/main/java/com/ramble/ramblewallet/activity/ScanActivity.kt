@@ -13,8 +13,6 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import cn.bingoogolapple.qrcode.zxing.ZXingView
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.QRCodeReader
@@ -22,11 +20,9 @@ import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MainETHTokenBean
-import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.constant.REQUEST_CODE_1029
-import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityScanBinding
 import com.ramble.ramblewallet.helper.getExtras
 import com.ramble.ramblewallet.helper.start
@@ -34,7 +30,6 @@ import com.ramble.ramblewallet.helper.startMatisseActivity
 import com.ramble.ramblewallet.network.ObjUtils.isCameraPermission
 import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.zhihu.matisse.Matisse
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
