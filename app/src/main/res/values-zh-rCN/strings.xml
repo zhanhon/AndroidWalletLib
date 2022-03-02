@@ -137,7 +137,8 @@
     <string name="no_results">暂无结果</string>
     <string name="app_name">漫步钱包</string>
     <string name="balance_insufficient">余额不足</string>
-    <string name="trx_address_no_activate">账户未激活，可正常转账TRC20通证，但不会激活该账户</string>
+    <string name="trx_address_no_activate">该账户未激活，将额外消耗您 1.1 TRX 用于激活该账户</string>
+    <string name="trx_address_no_activate_token">账户未激活，可正常转账 TRC20 通证，但不会激活该账户</string>
     <string name="repeat_address">转账地址与收款地址重复 请重新输入</string>
     <string name="network_anomaly">网络异常，请检查网络连接</string>
     <string name="retry">重试</string>

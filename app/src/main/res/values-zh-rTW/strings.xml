@@ -137,7 +137,8 @@
     <string name="no_results">暫無結果</string>
     <string name="app_name">漫步錢包</string>
     <string name="balance_insufficient">餘額不足</string>
-    <string name="trx_address_no_activate">賬戶未激活，可正常轉賬TRC20通證，但不會激活該賬戶</string>
+    <string name="trx_address_no_activate">該帳戶未啟動，將額外消耗您1.1 TRX用於啟動該帳戶</string>
+    <string name="trx_address_no_activate_token">帳戶未啟動，可正常轉帳TRC20通證，但不會啟動該帳戶</string>
     <string name="repeat_address">轉賬地址與收款地址重複 請重新輸入</string>
     <string name="network_anomaly">網絡異常，請檢查網絡連接</string>
     <string name="retry">重試</string>

@@ -70,6 +70,40 @@ public class TransferTrxUtils {
         });
     }
 
+    public static void isAddressActivateToken(Activity context, String address, String contractAddress) throws JSONException {
+        String url = BuildConfig.RPC_TRX_NODE[0] + "/wallet/triggersmartcontract";
+        JSONObject param = new JSONObject();
+        param.put("owner_address", toHexAddress(address));
+        param.put("contract_address", toHexAddress(contractAddress));
+        param.put("function_selector", "balanceOf(address)");
+        List<Type> inputParameters = new ArrayList<>();
+        inputParameters.add(new Address(toHexAddress(address).substring(2)));
+        param.put("parameter", FunctionEncoder.encodeConstructor(inputParameters));
+        Call call = getCall(url, param);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                if (context instanceof TransferActivity) {
+                    ((TransferActivity) context).isTrxAddressActivate(true);
+                }
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                long length = response.body().contentLength();
+                if (length == 3) { //当body为null，判断此地址为激活
+                    if (context instanceof TransferActivity) {
+                        ((TransferActivity) context).isTrxAddressActivate(false);
+                    }
+                } else {
+                    if (context instanceof TransferActivity) {
+                        ((TransferActivity) context).isTrxAddressActivate(true);
+                    }
+                }
+            }
+        });
+    }
+
     public static void balanceOfTrx(Activity context, String address) throws JSONException {
         String url = BuildConfig.RPC_TRX_NODE[0] + "/wallet/getaccount";
         JSONObject param = new JSONObject();

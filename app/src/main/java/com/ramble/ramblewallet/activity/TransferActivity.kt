@@ -204,7 +204,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                             toastDefault(getString(R.string.address_already_err))
                             return
                         }
-                        isAddressActivate(this, binding.edtReceiverAddress.text.toString())
+                        if (isToken) {
+                            isAddressActivateToken(this, binding.edtReceiverAddress.text.toString(), contractTRXAddress)
+                        } else {
+                            isAddressActivate(this, binding.edtReceiverAddress.text.toString())
+                        }
                     }
                     3 -> {
                         if (!WalletBTCUtils.isBtcValidAddress(binding.edtReceiverAddress.text.toString())) {
@@ -415,6 +419,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         postUI {
             if (!isAddressActivate) {
                 binding.tvNoActivateTips.visibility = View.VISIBLE
+                if (isToken) {
+                    binding.tvNoActivateTips.setText(R.string.trx_address_no_activate_token)
+                } else {
+                    binding.tvNoActivateTips.setText(R.string.trx_address_no_activate)
+                }
             } else {
                 binding.tvNoActivateTips.visibility = View.GONE
             }
