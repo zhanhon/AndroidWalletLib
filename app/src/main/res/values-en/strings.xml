@@ -167,7 +167,7 @@
     <string name="btn_confirm">OK</string>
     <string name="please_input_your_wallet_name">Please Enter Your Wallet Name</string>
     <string name="please_confirm_password">Please Confirm Password</string>
-    <string name="di_wallet">Wallet</string>
+    <string name="di_wallet">\'s Wallet</string>
     <string name="repeat_wallet_tips">Duplicates With Other Wallet Names, Please Re-enter! </string>
     <string name="wallet_password">Wallet Password</string>
     <string name="contributing_words_hint">Please Enter Chinese Or English Mnemonics, Please Add A Space Between Each Word For The System To Determine</string>
