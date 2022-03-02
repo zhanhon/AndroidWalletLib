@@ -102,7 +102,7 @@ android {
 sonarqube {
     properties {
         property "sonar.host.url", "http://54.169.226.140:29000"
-        property "sonar.login", "941718fcb2684d919a18f2534b4149a0684187f4"
+        property "sonar.login", "1a2bd792f592db0c404f17ce4ba98e9f12cb2610"
         property "sonar.projectKey", "ak:android-cp"
     }
 }

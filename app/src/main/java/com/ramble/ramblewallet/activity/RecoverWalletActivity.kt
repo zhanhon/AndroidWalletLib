@@ -274,7 +274,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         return false
     }
 
-    private lateinit var mnemonicList: ArrayList<String>
+    private var mnemonicList: ArrayList<String> = arrayListOf()
     private fun recoverWalletETH(chooseMode: Int) {
         mnemonicList = MnemonicUtils.generateMnemonicEnglishChinese()
         lateinit var walletETH: Wallet
