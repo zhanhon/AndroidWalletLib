@@ -29,8 +29,7 @@ import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.StringUtils.isChinese
-import com.ramble.ramblewallet.utils.StringUtils.isHasLowerChar
+import com.ramble.ramblewallet.utils.StringUtils.*
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.utils.toastDefault
 
@@ -276,8 +275,64 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     }
 
     private var mnemonicList: ArrayList<String> = arrayListOf()
+    private var mnemonicList1: ArrayList<String> = arrayListOf()
+    private var mnemonicList2: ArrayList<String> = arrayListOf()
+    private var mnemonicOther: String = ""
+    private var mnemonicIndexList: ArrayList<Int> = arrayListOf()
     private fun recoverWalletETH(chooseMode: Int) {
-        mnemonicList = MnemonicUtils.generateMnemonicEnglishChinese()
+        var mmemoic = binding.edtContributingWords.text.toString()
+        mnemonicList1 = mmemoic.split(" ") as ArrayList<String>
+        if (isHasLowerChar(mmemoic)) {
+            mnemonicList.add(mmemoic)
+            mnemonicList1.forEach {
+                English.words.forEachIndexed { index, element ->
+                    if (it == element) {
+                        mnemonicIndexList.add(index)
+                    }
+                }
+            }
+            mnemonicIndexList.forEach {
+                ChineseSimplified.words.forEachIndexed { index, element ->
+                    if (it == index) {
+                        mnemonicList2.add(element)
+                    }
+                }
+            }
+            mnemonicList2.forEach {
+                mnemonicOther = "$mnemonicOther $it"
+            }
+            if (mnemonicOther != "") {
+                mnemonicList.add(mnemonicOther.trim())
+            } else {
+                mnemonicList.add(MnemonicUtils.generateMnemonicEnglishChinese()[1])
+            }
+        }
+        if (isContainChinese(mmemoic)) {
+            mnemonicList1.forEach {
+                ChineseSimplified.words.forEachIndexed { index, element ->
+                    if (it == element) {
+                        mnemonicIndexList.add(index)
+                    }
+                }
+            }
+            mnemonicIndexList.forEach {
+                English.words.forEachIndexed { index, element ->
+                    if (it == index) {
+                        mnemonicList2.add(element)
+                    }
+                }
+            }
+            mnemonicList2.forEach {
+                mnemonicOther = "$mnemonicOther $it"
+            }
+            if (mnemonicOther != "") {
+                mnemonicList.add(mnemonicOther.trim())
+            } else {
+                mnemonicList.add(MnemonicUtils.generateMnemonicEnglishChinese()[0])
+            }
+            mnemonicList.add(mmemoic)
+        }
+
         lateinit var walletETH: Wallet
         when (chooseMode) {
             1 -> {

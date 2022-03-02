@@ -126,6 +126,15 @@ public class StringUtils {
         return pattern.matcher(str).matches();
     }
 
+    public static boolean isContainChinese(String str) {
+        Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+        Matcher m = p.matcher(str);
+        if (m.find()) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 传入区间值   假设:1-100   1-10
      *
