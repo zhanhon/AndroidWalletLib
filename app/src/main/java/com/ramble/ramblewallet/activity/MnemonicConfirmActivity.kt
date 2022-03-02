@@ -55,6 +55,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4：BTC、ETH、TRX
     private var isBackupMnemonic = false
     private var mnemonic: String? = null
+    private var times = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,14 +128,14 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 )
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                 detailsList.add(AddressReport.DetailsList(walletETH.address, 0, 1))
-                putAddress(detailsList)
-                SharedPreferencesUtils.saveString(
-                    this,
-                    WALLETSELECTED,
-                    Gson().toJson(walletETH)
-                )
                 var isValidEthSuccess = isEthValidAddress(walletETH.address)
                 if (isValidEthSuccess) {
+                    putAddress(detailsList)
+                    SharedPreferencesUtils.saveString(
+                        this,
+                        WALLETSELECTED,
+                        Gson().toJson(walletETH)
+                    )
                     startActivity(Intent(this, MainETHActivity::class.java))
                 }
             }
@@ -172,14 +173,14 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 )
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                 detailsList.add(AddressReport.DetailsList(walletTRX.address, 0, 2))
-                putAddress(detailsList)
-                SharedPreferencesUtils.saveString(
-                    this,
-                    WALLETSELECTED,
-                    Gson().toJson(walletTRX)
-                )
                 var isValidTrxSuccess = isTrxValidAddress(walletTRX.address)
                 if (isValidTrxSuccess) {
+                    putAddress(detailsList)
+                    SharedPreferencesUtils.saveString(
+                        this,
+                        WALLETSELECTED,
+                        Gson().toJson(walletTRX)
+                    )
                     startActivity(Intent(this, MainTRXActivity::class.java))
                 }
             }
@@ -213,10 +214,10 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                 detailsList.add(AddressReport.DetailsList(walletBTC.address, 0, 3))
-                putAddress(detailsList)
                 var isValidBtcSuccess = WalletBTCUtils.isBtcValidAddress(walletBTC.address)
-                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletBTC))
                 if (isValidBtcSuccess) {
+                    putAddress(detailsList)
+                    SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletBTC))
                     startActivity(Intent(this, MainBTCActivity::class.java))
                 }
             }
@@ -282,15 +283,15 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 detailsList.add(AddressReport.DetailsList(walletETH.address, 0, 1))
                 detailsList.add(AddressReport.DetailsList(walletTRX.address, 0, 2))
                 detailsList.add(AddressReport.DetailsList(walletBTC.address, 0, 3))
-                putAddress(detailsList)
-                //设置选择默认
-                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
 
                 //2、之后地址校验
                 var isValidEthSuccess = isEthValidAddress(walletETH.address)
                 var isValidTrxSuccess = isTrxValidAddress(walletTRX.address)
                 var isValidBtcSuccess = WalletBTCUtils.isBtcValidAddress(walletBTC.address)
                 if (isValidEthSuccess && isValidTrxSuccess && isValidBtcSuccess) {
+                    putAddress(detailsList)
+                    //设置选择默认
+                    SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
                     startActivity(Intent(this, MainETHActivity::class.java))
                 }
             }
@@ -364,7 +365,10 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 if (it.code() == 1) {
                     it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
                 } else {
-                    putAddress(detailsList)
+                    if (times < 3) {
+                        putAddress(detailsList)
+                        times ++
+                    }
                     println("-=-=-=->putAddress:${it.message()}")
                 }
             }, {

@@ -43,7 +43,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     private var isDeletePage = false
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private lateinit var walletSelleted: Wallet
-
+    private var times = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -373,7 +373,10 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 if (it.code() == 1) {
                     it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
                 } else {
-                    putAddress(detailsList)
+                    if (times < 3) {
+                        putAddress(detailsList)
+                        times ++
+                    }
                     println("-=-=-=->putAddress:${it.message()}")
                 }
             }, {

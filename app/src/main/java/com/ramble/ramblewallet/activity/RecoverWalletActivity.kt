@@ -42,6 +42,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var mnemonic: ArrayList<String> = arrayListOf()
     private var walletSelleted: Wallet? = null
+    private var times = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -315,8 +316,8 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (walletETH.address.isNotEmpty()) {
-            putAddress(walletETH, 1)
             if (isEthValidAddress(walletETH.address)) {
+                putAddress(walletETH, 1)
                 SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
                 startActivity(Intent(this, MainETHActivity::class.java))
             } else {
@@ -386,8 +387,8 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (walletTRX.address.isNotEmpty()) {
-            putAddress(walletTRX, 2)
             if (isTrxValidAddress(walletTRX.address)) {
+                putAddress(walletTRX, 2)
                 SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletTRX))
                 startActivity(Intent(this, MainTRXActivity::class.java))
             } else {
@@ -449,8 +450,8 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (walletBTC.address.isNotEmpty()) {
-            putAddress(walletBTC, 3)
             if (isBtcValidAddress(walletBTC.address)) {
+                putAddress(walletBTC, 3)
                 SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletBTC))
                 startActivity(Intent(this, MainBTCActivity::class.java))
             } else {
@@ -516,7 +517,10 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 if (it.code() == 1) {
                     it.data()?.let { data -> println("-=-=-=->putAddress-recover:${data}") }
                 } else {
-                    putAddress(wallet, walletType)
+                    if (times < 3) {
+                        putAddress(wallet, walletType)
+                        times ++
+                    }
                     println("-=-=-=->putAddress-recover:${it.message()}")
                 }
             }, {

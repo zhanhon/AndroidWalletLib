@@ -43,6 +43,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     private lateinit var currency: String
     private lateinit var walletSelleted: Wallet
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
+    private var times = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -376,7 +377,10 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 if (it.code() == 1) {
                     it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
                 } else {
-                    putAddress(detailsList)
+                    if (times < 3) {
+                        putAddress(detailsList)
+                        times ++
+                    }
                     println("-=-=-=->putAddress:${it.message()}")
                 }
             }, {

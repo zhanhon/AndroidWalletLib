@@ -52,6 +52,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
         Environment.getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DCIM
     private lateinit var walletSelleted: Wallet
     var mPermissionListener: PermissionListener? = null
+    private var times = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -594,7 +595,10 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 if (it.code() == 1) {
                     it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
                 } else {
-                    putAddress(detailsList)
+                    if (times < 3) {
+                        putAddress(detailsList)
+                        times ++
+                    }
                     println("-=-=-=->putAddress:${it.message()}")
                 }
             }, {

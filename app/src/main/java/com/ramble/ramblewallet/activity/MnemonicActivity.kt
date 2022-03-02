@@ -47,6 +47,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
     private var isBackupMnemonic = false
     private var mnemonic: String? = null
     private var fromMnemonicList: ArrayList<String>? = arrayListOf()
+    private var times = 0
 
     companion object {
         @JvmField
@@ -194,10 +195,10 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                 detailsList.add(AddressReport.DetailsList(walletETH.address, 0, 1))
-                putAddress(detailsList)
                 var isValidEthSuccess = isEthValidAddress(walletETH.address)
-                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
                 if (isValidEthSuccess) {
+                    putAddress(detailsList)
+                    SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
                     startActivity(Intent(this, MainETHActivity::class.java))
                 }
             }
@@ -231,10 +232,10 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                 detailsList.add(AddressReport.DetailsList(walletTRX.address, 0, 2))
-                putAddress(detailsList)
                 var isValidTrxSuccess = isTrxValidAddress(walletTRX.address)
-                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletTRX))
                 if (isValidTrxSuccess) {
+                    putAddress(detailsList)
+                    SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletTRX))
                     startActivity(Intent(this, MainTRXActivity::class.java))
                 }
             }
@@ -268,10 +269,10 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                 detailsList.add(AddressReport.DetailsList(walletBTC.address, 0, 3))
-                putAddress(detailsList)
                 var isValidBtcSuccess = isBtcValidAddress(walletBTC.address)
-                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletBTC))
                 if (isValidBtcSuccess) {
+                    putAddress(detailsList)
+                    SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletBTC))
                     startActivity(Intent(this, MainBTCActivity::class.java))
                 }
             }
@@ -337,9 +338,6 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 detailsList.add(AddressReport.DetailsList(walletETH.address, 0, 1))
                 detailsList.add(AddressReport.DetailsList(walletTRX.address, 0, 2))
                 detailsList.add(AddressReport.DetailsList(walletBTC.address, 0, 3))
-                putAddress(detailsList)
-                //设置选择默认
-                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
 
                 //2、之后地址校验
                 var isValidEthSuccess = isEthValidAddress(walletETH.address)
@@ -348,6 +346,9 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 println("--->walletBTC.address:${walletBTC.address}")
                 println("--->isValidBtcSuccess:${isValidBtcSuccess}")
                 if (isValidEthSuccess && isValidTrxSuccess && isValidBtcSuccess) {
+                    putAddress(detailsList)
+                    //设置选择默认
+                    SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
                     startActivity(Intent(this, MainETHActivity::class.java))
                 }
             }
@@ -358,7 +359,6 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
     private fun putAddress(detailsList: ArrayList<AddressReport.DetailsList>) {
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
         val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
-        if (detailsList.size == 0) return
         mApiService.putAddress(
             AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)
         ).applyIo().subscribe(
@@ -366,7 +366,10 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 if (it.code() == 1) {
                     it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
                 } else {
-                    putAddress(detailsList)
+                    if (times < 3) {
+                        putAddress(detailsList)
+                        times ++
+                    }
                     println("-=-=-=->putAddress:${it.message()}")
                 }
             }, {
