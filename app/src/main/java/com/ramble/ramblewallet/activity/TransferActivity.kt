@@ -211,6 +211,10 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                             toastDefault(getString(R.string.address_already_err))
                             return
                         }
+                        if (BigDecimal(binding.edtInputQuantity.text.toString()).compareTo(BigDecimal("0.0001")) == -1) {
+                            toastDefault(getString(R.string.btc_minimum_amount_prompt))
+                            return
+                        }
                     }
                 }
                 if (StrUtil.equalsIgnoreCase(

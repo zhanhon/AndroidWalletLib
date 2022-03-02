@@ -142,7 +142,7 @@
     <string name="network_anomaly">The Network Is Abnormal, Please Check The Network Connection</string>
     <string name="retry">Retry</string>
     <string name="error_tips_backup">You Have Entered The Wrong Input More Than Three Times, Whether To Cancel Or Return To The Previous Page</string>
-
+    <string name="btc_minimum_amount_prompt">The Minimum Amount Is 0.0001, Please Try Again.</string>
 
     <string name="input_keystore">Please Enter Keystore</string>
     <string name="input_secret_key">Please Enter The Secret Key</string>
