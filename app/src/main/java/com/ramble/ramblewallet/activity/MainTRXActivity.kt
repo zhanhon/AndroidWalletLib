@@ -194,8 +194,9 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
         super.onRxBus(event)
         when (event.id()) {
             Pie.EVENT_ADDRESS_TRANS_SCAN -> {
-                if (DoubleUtils.isFastDoubleClick()) return
                 if (event.data<Wallet>().walletType!=2)return
+                if (DoubleUtils.isFastDoubleClick()) return
+
                 start(TransferActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, event.data<Wallet>().address)
                     it.putSerializable(

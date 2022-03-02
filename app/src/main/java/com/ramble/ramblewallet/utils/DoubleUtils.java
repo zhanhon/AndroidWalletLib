@@ -7,7 +7,7 @@ package com.ramble.ramblewallet.utils;
  */
 public class DoubleUtils {
     private static long lastClickTime;
-    private final static long TIME = 800;
+    private final static long TIME = 500;
 
     public static boolean isFastDoubleClick() {
         long time = System.currentTimeMillis();
