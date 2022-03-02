@@ -32,7 +32,6 @@ import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.getBalanceETH
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
-import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -194,30 +193,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 
     }
 
-    override fun onRxBus(event: RxBus.Event) {
-        super.onRxBus(event)
-        when (event.id()) {
-            Pie.EVENT_ADDRESS_TRANS_SCAN -> {
-                if (event.data<Wallet>().walletType!=1)return
-                if (DoubleUtils.isFastDoubleClick()) return
-
-                start(TransferActivity::class.java, Bundle().also {
-                    it.putString(ARG_PARAM1, event.data<Wallet>().address)
-                    it.putSerializable(
-                        ARG_PARAM2, MainETHTokenBean(
-                            "ETH",
-                            "ETH",
-                            ethBalance,
-                            unitPrice,
-                            currencyUnit,
-                            null,
-                            false
-                        )
-                    )
-                })
-            }
-        }
-    }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onClick(v: View) {
@@ -255,6 +230,17 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_scan_top, R.id.ll_scan -> {
                 startActivity(Intent(this, ScanActivity::class.java).apply {
                     putExtra(ARG_PARAM1, 3)
+                    putExtra(
+                        ARG_PARAM2, MainETHTokenBean(
+                            "ETH",
+                            "ETH",
+                            ethBalance,
+                            unitPrice,
+                            currencyUnit,
+                            null,
+                            false
+                        )
+                    )
                 })
             }
             R.id.iv_token_manage_click -> {

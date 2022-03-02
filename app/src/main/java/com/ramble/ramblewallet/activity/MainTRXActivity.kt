@@ -29,7 +29,6 @@ import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainTrxBinding
-import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -190,30 +189,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
 
     }
 
-    override fun onRxBus(event: RxBus.Event) {
-        super.onRxBus(event)
-        when (event.id()) {
-            Pie.EVENT_ADDRESS_TRANS_SCAN -> {
-                if (event.data<Wallet>().walletType!=2)return
-                if (DoubleUtils.isFastDoubleClick()) return
 
-                start(TransferActivity::class.java, Bundle().also {
-                    it.putString(ARG_PARAM1, event.data<Wallet>().address)
-                    it.putSerializable(
-                        ARG_PARAM2, MainETHTokenBean(
-                            "TRX",
-                            "TRX",
-                            trxBalance,
-                            unitPrice,
-                            currencyUnit,
-                            null,
-                            false
-                        )
-                    )
-                })
-            }
-        }
-    }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onClick(v: View) {
@@ -251,6 +227,17 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_scan_top, R.id.ll_scan -> {
                 startActivity(Intent(this, ScanActivity::class.java).apply {
                     putExtra(ARG_PARAM1, 3)
+                    putExtra(
+                        ARG_PARAM2, MainETHTokenBean(
+                            "TRX",
+                            "TRX",
+                            trxBalance,
+                            unitPrice,
+                            currencyUnit,
+                            null,
+                            false
+                        )
+                    )
                 })
             }
             R.id.iv_balance_refresh -> {

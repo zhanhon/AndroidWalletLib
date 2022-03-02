@@ -16,6 +16,7 @@ import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.AddressBookActivity
 import com.ramble.ramblewallet.activity.ScanActivity
+import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.MyAddressBean
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
@@ -115,6 +116,17 @@ fun showBottomDialog2(
         binding.ivQr.setOnClickListener {
             activity.start(ScanActivity::class.java, Bundle().also {
                 it.putInt(ARG_PARAM1, 1)
+                it.putSerializable(
+                    ARG_PARAM2, MainETHTokenBean(
+                        "ETH",
+                        "ETH",
+                        null,
+                        "",
+                        "",
+                        null,
+                        false
+                    )
+                )
             })
         }
         binding.tvCancel.setOnClickListener {

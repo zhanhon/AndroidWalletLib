@@ -163,6 +163,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_transfer_scan -> {
                 start(ScanActivity::class.java, Bundle().also {
                     it.putInt(ARG_PARAM1, 2)
+                    it.putSerializable(ARG_PARAM2, tokenBean)
                 })
             }
             R.id.iv_address_book -> {

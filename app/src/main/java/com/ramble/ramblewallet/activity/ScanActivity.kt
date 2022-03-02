@@ -21,12 +21,15 @@ import com.google.zxing.qrcode.QRCodeReader
 import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.constant.REQUEST_CODE_1029
 import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityScanBinding
 import com.ramble.ramblewallet.helper.getExtras
+import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.helper.startMatisseActivity
 import com.ramble.ramblewallet.network.ObjUtils.isCameraPermission
 import com.ramble.ramblewallet.utils.Pie
@@ -50,13 +53,14 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     private var isLight = false
     private var zxingview: ZXingView? = null
     private var type = 0
-    private lateinit var walletSelleted: Wallet
+    private lateinit var tokenBean: MainETHTokenBean
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scan)
         type = getExtras().getInt(ARG_PARAM1, 0)
+        tokenBean = intent.getSerializableExtra(ARG_PARAM2) as MainETHTokenBean
         zxingview = findViewById(R.id.zxingview)
         zxingview?.setDelegate(this)
         initView()
@@ -215,10 +219,6 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     override fun onScanQRCodeSuccess(result: String?) {
 //        vibrate()
         zxingview?.stopSpot()
-        walletSelleted = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-            object : TypeToken<Wallet>() {}.type
-        )
         when (type) {
             1 -> {
                 RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_SCAN, result)
@@ -229,8 +229,11 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
                 finish()
             }
             3 -> {
-                walletSelleted.address=result
-                RxBus.emitEvent(Pie.EVENT_ADDRESS_TRANS_SCAN, walletSelleted)
+                start(TransferActivity::class.java, Bundle().also {
+                    it.putString(ARG_PARAM1, result)
+                    it.putSerializable(ARG_PARAM2, tokenBean)
+                })
+
                 finish()
             }
         }
@@ -239,11 +242,6 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     private fun downScanQRCodeSuccess(result: String?) {
 //        vibrate()
         zxingview?.stopSpot()
-        walletSelleted = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-            object : TypeToken<Wallet>() {}.type
-        )
-
         when (type) {
             1 -> {
                 RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_SCAN, result)
@@ -254,8 +252,10 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
                 finish()
             }
             3 -> {
-                walletSelleted.address=result
-                RxBus.emitEvent(Pie.EVENT_ADDRESS_TRANS_SCAN, walletSelleted)
+                start(TransferActivity::class.java, Bundle().also {
+                    it.putString(ARG_PARAM1, result)
+                    it.putSerializable(ARG_PARAM2, tokenBean)
+                })
                 finish()
             }
         }
