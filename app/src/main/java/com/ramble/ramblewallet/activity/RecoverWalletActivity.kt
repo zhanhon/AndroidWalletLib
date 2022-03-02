@@ -280,59 +280,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     private var mnemonicOther: String = ""
     private var mnemonicIndexList: ArrayList<Int> = arrayListOf()
     private fun recoverWalletETH(chooseMode: Int) {
-        var mmemoic = binding.edtContributingWords.text.toString()
-        mnemonicList1 = mmemoic.split(" ") as ArrayList<String>
-        if (isHasLowerChar(mmemoic)) {
-            mnemonicList.add(mmemoic)
-            mnemonicList1.forEach {
-                English.words.forEachIndexed { index, element ->
-                    if (it == element) {
-                        mnemonicIndexList.add(index)
-                    }
-                }
-            }
-            mnemonicIndexList.forEach {
-                ChineseSimplified.words.forEachIndexed { index, element ->
-                    if (it == index) {
-                        mnemonicList2.add(element)
-                    }
-                }
-            }
-            mnemonicList2.forEach {
-                mnemonicOther = "$mnemonicOther $it"
-            }
-            if (mnemonicOther != "") {
-                mnemonicList.add(mnemonicOther.trim())
-            } else {
-                mnemonicList.add(MnemonicUtils.generateMnemonicEnglishChinese()[1])
-            }
-        }
-        if (isContainChinese(mmemoic)) {
-            mnemonicList1.forEach {
-                ChineseSimplified.words.forEachIndexed { index, element ->
-                    if (it == element) {
-                        mnemonicIndexList.add(index)
-                    }
-                }
-            }
-            mnemonicIndexList.forEach {
-                English.words.forEachIndexed { index, element ->
-                    if (it == index) {
-                        mnemonicList2.add(element)
-                    }
-                }
-            }
-            mnemonicList2.forEach {
-                mnemonicOther = "$mnemonicOther $it"
-            }
-            if (mnemonicOther != "") {
-                mnemonicList.add(mnemonicOther.trim())
-            } else {
-                mnemonicList.add(MnemonicUtils.generateMnemonicEnglishChinese()[0])
-            }
-            mnemonicList.add(mmemoic)
-        }
-
+        dictionaryMnemonic()
         lateinit var walletETH: Wallet
         when (chooseMode) {
             1 -> {
@@ -403,7 +351,63 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    private fun dictionaryMnemonic() {
+        var mmemoic = binding.edtContributingWords.text.toString()
+        mnemonicList1 = mmemoic.split(" ") as ArrayList<String>
+        if (isHasLowerChar(mmemoic)) {
+            mnemonicList.add(mmemoic)
+            mnemonicList1.forEach {
+                English.words.forEachIndexed { index, element ->
+                    if (it == element) {
+                        mnemonicIndexList.add(index)
+                    }
+                }
+            }
+            mnemonicIndexList.forEach {
+                ChineseSimplified.words.forEachIndexed { index, element ->
+                    if (it == index) {
+                        mnemonicList2.add(element)
+                    }
+                }
+            }
+            mnemonicList2.forEach {
+                mnemonicOther = "$mnemonicOther $it"
+            }
+            if (mnemonicOther != "") {
+                mnemonicList.add(mnemonicOther.trim())
+            } else {
+                mnemonicList.add(MnemonicUtils.generateMnemonicEnglishChinese()[1])
+            }
+        }
+        if (isContainChinese(mmemoic)) {
+            mnemonicList1.forEach {
+                ChineseSimplified.words.forEachIndexed { index, element ->
+                    if (it == element) {
+                        mnemonicIndexList.add(index)
+                    }
+                }
+            }
+            mnemonicIndexList.forEach {
+                English.words.forEachIndexed { index, element ->
+                    if (it == index) {
+                        mnemonicList2.add(element)
+                    }
+                }
+            }
+            mnemonicList2.forEach {
+                mnemonicOther = "$mnemonicOther $it"
+            }
+            if (mnemonicOther != "") {
+                mnemonicList.add(mnemonicOther.trim())
+            } else {
+                mnemonicList.add(MnemonicUtils.generateMnemonicEnglishChinese()[0])
+            }
+            mnemonicList.add(mmemoic)
+        }
+    }
+
     private fun recoverWalletTRX(chooseMode: Int) {
+        dictionaryMnemonic()
         lateinit var walletTRX: Wallet
         when (chooseMode) {
             1 -> {
@@ -475,6 +479,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun recoverWalletBTC(chooseMode: Int) {
+        dictionaryMnemonic()
         lateinit var walletBTC: Wallet
         when (chooseMode) {
             1 -> {
