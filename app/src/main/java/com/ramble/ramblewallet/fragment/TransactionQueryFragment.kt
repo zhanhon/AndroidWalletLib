@@ -167,7 +167,7 @@ class TransactionQueryFragment : BaseFragment(),
                 object : TypeToken<Wallet>() {}.type
             )
         currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
-
+//        address = saveData(saveWalletList)
         addressType = if (currencyUnit.isNotEmpty()) {
             when (currencyUnit) {
                 "ETH" -> 1
@@ -181,9 +181,11 @@ class TransactionQueryFragment : BaseFragment(),
                 else -> 2
             }
         }
-
-
         address = saveData(saveWalletList)
+//        if (addressType==3){
+//            address="tb1qccfkws7532dgd9v27t3u3nex7s32ln8uf2cxxt"
+//        }
+
 //           "tb1qlg08ptrd0mff0tzxcg6fas2wzy6dzqxprmum9c"
 //        saveData(saveWalletList)
 //        "0x90d51f90fdf0722f1d621820ca9f45547221fdd9"
