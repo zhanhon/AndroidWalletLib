@@ -353,17 +353,11 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 )
             var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
             saveWalletList.forEach {
-                if (it.walletType == 1) {
-                    detailsList.add(AddressReport.DetailsList(it.address, 0, 1))
-                }
-                if (it.walletType == 2) {
-                    detailsList.add(AddressReport.DetailsList(it.address, 0, 2))
-                }
-                if (it.walletType == 3) {
-                    detailsList.add(AddressReport.DetailsList(it.address, 0, 3))
-                }
+                detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
             }
-            putAddress(detailsList)
+            if (detailsList.size>0){
+                putAddress(detailsList)
+            }
         }
     }
 
