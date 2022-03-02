@@ -483,6 +483,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 LanguageSetting.setLanguage(this, 3)
             }
         }
+        times=0
         skipConfirmHandle()
     }
 
