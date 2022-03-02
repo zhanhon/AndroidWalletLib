@@ -99,6 +99,14 @@ android {
 
 }
 
+sonarqube {
+    properties {
+        property "sonar.host.url", "http://54.169.226.140:29000"
+        property "sonar.login", "941718fcb2684d919a18f2534b4149a0684187f4"
+        property "sonar.projectKey", "ak:android-cp"
+    }
+}
+
 protobuf {
     protoc {
         artifact = 'com.google.protobuf:protoc:3.0.0'
