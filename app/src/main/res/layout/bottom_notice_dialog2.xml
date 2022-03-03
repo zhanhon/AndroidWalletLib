@@ -36,7 +36,7 @@
             android:textSize="@dimen/sp_15" />
 
         <LinearLayout
-            android:layout_marginLeft="@dimen/dp_25"
+            android:layout_marginStart="@dimen/dp_25"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:layout_marginEnd="@dimen/dp_25"

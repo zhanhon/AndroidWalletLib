@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/shape_white_rectangle"
     android:orientation="vertical"
     android:paddingLeft="@dimen/dp_10"
@@ -12,14 +11,13 @@
     <TextView
         android:id="@+id/tv_transfer_title"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginTop="10dp"
+        android:layout_height="@dimen/dp_68"
+        android:layout_marginStart="@dimen/dp_25"
         android:gravity="left|center_vertical"
-        android:text="@string/language_choose"
+        android:text="@string/currency_choose"
         android:textColor="@color/color_000000"
         android:textSize="@dimen/sp_15"
-        android:textStyle="bold" />
+        android:textStyle="bold"  />
 
     <View
         android:layout_width="match_parent"
@@ -28,38 +26,70 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginTop="10dp"
+        android:layout_height="@dimen/dp_52"
+        android:layout_marginStart="@dimen/dp_25"
         android:gravity="left|center_vertical"
         android:text="@string/name"
         android:textColor="@color/color_000000"
         android:textSize="@dimen/sp_15" />
 
-    <View
+
+    <LinearLayout
+        android:layout_marginStart="@dimen/dp_25"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_E7E7E7" />
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginEnd="@dimen/dp_25"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/edit_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingStart="@dimen/dp_16"
+            android:background="@drawable/shape_light_green_bottom_btn"
+            android:maxLength="20"
+            android:hint="@string/contributing_name_hint"
+            android:textColor="@color/front_one"
+            android:textColorHint="@color/front_four" />
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_address"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginStart="@dimen/dp_25"
         android:gravity="left|center_vertical"
-        tools:text="@string/language_traditional_chinese"
+        android:text="@string/address"
         android:textColor="@color/color_000000"
         android:textSize="@dimen/sp_15" />
 
-    <View
+    <LinearLayout
+        android:layout_marginStart="@dimen/dp_25"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_E7E7E7" />
+        android:layout_height="50dp"
+        android:layout_marginEnd="@dimen/dp_25">
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="0dp"
+            android:paddingStart="@dimen/dp_16"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical"
+            android:hint="@string/contributing_address_hint"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:background="@drawable/shape_light_green_bottom_btn"
+            android:maxLength="42"
+            android:textColor="@color/front_one"
+            android:textColorHint="@color/front_four" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/dp_68"
+        android:layout_marginStart="@dimen/dp_25"
         android:orientation="horizontal"
+        android:layout_marginEnd="@dimen/dp_25"
         android:gravity="center_vertical">
 
         <TextView
@@ -80,21 +110,15 @@
             android:button="@drawable/checkbox_selector" />
     </LinearLayout>
 
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_E7E7E7" />
-
     <TextView
         android:id="@+id/ok"
         android:textColor="@color/white"
         android:gravity="center"
         android:text="@string/confirm"
-        android:layout_marginTop="@dimen/dp_50"
+        android:textSize="@dimen/sp_18"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50"
         android:background="@drawable/shape_green_bottom_btn"
-        android:layout_marginStart="@dimen/dp_20"
-        android:layout_marginEnd="@dimen/dp_20" />
+        android:layout_marginStart="@dimen/dp_25"
+        android:layout_marginEnd="@dimen/dp_25" />
 </LinearLayout>

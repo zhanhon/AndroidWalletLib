@@ -2,14 +2,23 @@ package com.ramble.ramblewallet.activity
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.widget.CheckBox
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.databinding.DataBindingUtil
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import cn.bingoogolapple.qrcode.zxing.ZXingView
@@ -49,6 +58,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     private var zxingview: ZXingView? = null
     private var type = 0
     private lateinit var tokenBean: MainETHTokenBean
+    var isChecked: Boolean = false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -220,10 +230,12 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
                 finish()
             }
             2 -> {
+//                transDialog(result)
                 RxBus.emitEvent(Pie.EVENT_RESS_TRANS_SCAN, result)
                 finish()
             }
             3 -> {
+//                transDialog(result)
                 start(TransferActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, result)
                     it.putSerializable(ARG_PARAM2, tokenBean)
@@ -243,10 +255,12 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
                 finish()
             }
             2 -> {
+//                 transDialog(result)
                 RxBus.emitEvent(Pie.EVENT_RESS_TRANS_SCAN, result)
                 finish()
             }
             3 -> {
+//                transDialog(result)
                 start(TransferActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, result)
                     it.putSerializable(ARG_PARAM2, tokenBean)
@@ -261,4 +275,35 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
 
     override fun onScanQRCodeOpenCameraError() {}
 
+    private fun transDialog(result: String?) {
+        var dialogLanguage = AlertDialog.Builder(this).create()
+        dialogLanguage.show()
+        val window: Window? = dialogLanguage.window
+        if (window != null) {
+            window.setContentView(R.layout.dialog_trans_item)
+            window.setGravity(Gravity.BOTTOM)
+            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            window.findViewById<View>(R.id.tv_address)
+                .findViewById<TextView>(R.id.tv_address).text = result
+            window.findViewById<View>(R.id.tv_check)
+                .findViewById<AppCompatCheckBox>(R.id.tv_check).isChecked = isChecked
+            window.findViewById<View>(R.id.ok).setOnClickListener { v1: View? ->
+                dialogLanguage.dismiss()
+                finish()
+            }
+            window.findViewById<View>(R.id.tv_check).setOnClickListener { v1: View? ->
+                isChecked = (v1!! as CheckBox).isChecked
+            }
+            //设置属性
+            val params = window.attributes
+            params.width = WindowManager.LayoutParams.MATCH_PARENT
+            //弹出一个窗口，让背后的窗口变暗一点
+            params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+            //dialog背景层
+            params.dimAmount = 0.5f
+            window.attributes = params
+            //点击空白处不关闭dialog
+            dialogLanguage.show()
+        }
+    }
 }
