@@ -6,16 +6,19 @@ package com.ramble.ramblewallet.push;
  * 描述　: Sample相关的常量定义类
  */
 public class PushConstants {
+
+    private PushConstants() {
+        throw new IllegalStateException("Pie");
+    }
+
     /**
      * 应用申请的Appkey
      */
-//    public static final String APP_KEY = "应用申请的Appkey";
     public static final String APP_KEY = "61cc2cb0cccde77a8a5cc2e7";
 
     /**
      * 应用申请的UmengMessageSecret
      */
-//    public static final String MESSAGE_SECRET = "应用申请的UmengMessageSecret";
     public static final String MESSAGE_SECRET = "50bb050a3c372095dfbb6610b89bc987";
 
     /**

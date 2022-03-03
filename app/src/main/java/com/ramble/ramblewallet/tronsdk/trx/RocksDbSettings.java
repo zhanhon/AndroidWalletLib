@@ -51,26 +51,6 @@ public class RocksDbSettings {
         return rocksDbSettings;
     }
 
-    public static RocksDbSettings initCustomSettings(int levelNumber, int compactThreads,
-                                                     int blocksize, long maxBytesForLevelBase,
-                                                     double maxBytesForLevelMultiplier, int level0FileNumCompactionTrigger,
-                                                     long targetFileSizeBase,
-                                                     int targetFileSizeMultiplier) {
-        rocksDbSettings = new RocksDbSettings()
-                .withMaxOpenFiles(-1)
-                .withEnableStatistics(false)
-                .withLevelNumber(levelNumber)
-                .withCompactThreads(compactThreads)
-                .withBlockSize(blocksize)
-                .withMaxBytesForLevelBase(maxBytesForLevelBase)
-                .withMaxBytesForLevelMultiplier(maxBytesForLevelMultiplier)
-                .withLevel0FileNumCompactionTrigger(level0FileNumCompactionTrigger)
-                .withTargetFileSizeBase(targetFileSizeBase)
-                .withTargetFileSizeMultiplier(targetFileSizeMultiplier);
-        return rocksDbSettings;
-    }
-
-
     public RocksDbSettings withMaxOpenFiles(int maxOpenFiles) {
         this.maxOpenFiles = maxOpenFiles;
         return this;

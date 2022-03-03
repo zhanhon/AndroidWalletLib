@@ -22,7 +22,7 @@ public class QRCodeUtil {
     //生成二维码图片（不带图片）
     public static Bitmap createQRCode(String url, int widthAndHeight)
             throws WriterException {
-        Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>();
+        Hashtable<EncodeHintType, String> hints = new Hashtable<>();
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
         hints.put(EncodeHintType.MARGIN, String.valueOf(0));
         BitMatrix matrix = new MultiFormatWriter().encode(url,
@@ -121,8 +121,6 @@ public class QRCodeUtil {
             canvas.drawBitmap(src, 0, 0, null);
             canvas.scale(scaleFactor, scaleFactor, srcWidth / 2, srcHeight / 2);
             canvas.drawBitmap(logo, (srcWidth - logoWidth) / 2, (srcHeight - logoHeight) / 2, null);
-
-//            canvas.save(Canvas.);
             canvas.restore();
         } catch (Exception e) {
             bitmap = null;

@@ -18,6 +18,13 @@ import java.util.regex.Pattern;
  * 处理字符串工具类
  */
 public class StringTronUtil {
+
+    private StringTronUtil() {
+        throw new IllegalStateException("StringTronUtil");
+    }
+
+    private static final String RULE = "^([A-Z]|[a-z]|[0-9]|[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）――+|{}【】‘；：”“'。，、？]){8,16}$";
+
     /**
      * 判断是否为空
      *
@@ -56,17 +63,14 @@ public class StringTronUtil {
         if (StringTronUtil.isNullOrEmpty(password)) {
             return false;
         }
-//        Pattern pattern = Pattern
-//                .compile("^(?!^[0-9]+$)(?!^[a-zA-Z]+$)[0-9a-zA-Z]{8,16}$");
-        Pattern pattern = Pattern
-                .compile("^([A-Z]|[a-z]|[0-9]|[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）――+|{}【】‘；：”“'。，、？]){8,16}$");
+        Pattern pattern = Pattern.compile(RULE);
         Matcher m = pattern.matcher(password);
         return m.matches();
     }
 
     public static byte[] getPasswordHash(String password) {
         if (!isPasswordValid(password)) {
-            return null;
+            return new byte[0];
         }
         byte[] pwd;
         pwd = Hash.sha256(password.getBytes());
@@ -77,23 +81,12 @@ public class StringTronUtil {
 
     public static byte[] getEncKey(String password) {
         if (!isOkPassword(password)) {
-            return null;
+            return new byte[0];
         }
         byte[] encKey;
         encKey = Sha256Hash.hash(password.getBytes());
         encKey = Arrays.copyOfRange(encKey, 0, 16);
         return encKey;
-    }
-
-    public static boolean checkPassword(String walletName, String password) {
-        byte[] pwd = getPasswordHash(password);
-        if (pwd == null) {
-            return false;
-        }
-        String pwdAsc = ByteArray.toHexString(pwd);
-        String pwdInstore = "";
-//                SpAPI.THIS.getPassWord(walletName);
-        return pwdAsc.equals(pwdInstore);
     }
 
     public static boolean isNameValid(String name) {
@@ -108,7 +101,6 @@ public class StringTronUtil {
             return false;
         }
         return !password.contains("\\s");
-        //Other rule;
     }
 
     public static boolean isAddressValid(byte[] address) {
@@ -135,7 +127,7 @@ public class StringTronUtil {
         try {
             byte[] decodeCheck = Base58.decode(input);
             if (decodeCheck.length <= 4) {
-                return null;
+                return new byte[0];
             }
             byte[] decodeData = new byte[decodeCheck.length - 4];
             System.arraycopy(decodeCheck, 0, decodeData, 0, decodeData.length);
@@ -147,20 +139,20 @@ public class StringTronUtil {
                     hash1[3] == decodeCheck[decodeData.length + 3]) {
                 return decodeData;
             }
-            return null;
+            return new byte[0];
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            return null;
+            return new byte[0];
         }
     }
 
     public static byte[] decodeFromBase58Check(String addressBase58) {
         if (org.apache.commons.lang3.StringUtils.isEmpty(addressBase58)) {
-            return null;
+            return new byte[0];
         }
         byte[] address = decode58Check(addressBase58);
         if (!isAddressValid(address)) {
-            return null;
+            return new byte[0];
         }
         return address;
     }
@@ -184,7 +176,7 @@ public class StringTronUtil {
     }
 
     public static double bigDecimal2(double number) {
-        BigDecimal b = new BigDecimal(number);
+        BigDecimal b = BigDecimal.valueOf(number);
         return b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 

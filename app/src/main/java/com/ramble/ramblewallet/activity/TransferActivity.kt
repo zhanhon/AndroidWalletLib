@@ -110,17 +110,16 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //暂时不需要实现此方法
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.toString().contains(".")) {
-                    if (s != null) {
-                        var length = s.length - s.toString().lastIndexOf(".")
-                        if (walletSelleted.walletType == 2) {
-                            deleteLastChar = length >= 8
-                        } else {
-                            deleteLastChar = length >= 10
-                        }
+                if (s.toString().contains(".") && (s != null)) {
+                    var length = s.length - s.toString().lastIndexOf(".")
+                    if (walletSelleted.walletType == 2) {
+                        deleteLastChar = length >= 8
+                    } else {
+                        deleteLastChar = length >= 10
                     }
                 }
             }
@@ -139,9 +138,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //暂时不需要实现此方法
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                //暂时不需要实现此方法
             }
         })
     }
@@ -336,6 +337,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //暂时不需要实现此方法
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -348,9 +350,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //暂时不需要实现此方法
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                //暂时不需要实现此方法
             }
         })
 
@@ -407,10 +411,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             3 -> {
-                if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address)) {
-                    if (!isToken) {
-                        balanceOfBtc(this, walletSelleted.address)
-                    }
+                if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address) && (!isToken)) {
+                    balanceOfBtc(this, walletSelleted.address)
                 }
             }
         }
@@ -541,9 +543,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     count: Int,
                     after: Int
                 ) {
+                    //暂时不需要实现此方法
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    //暂时不需要实现此方法
                 }
             })
             val btnConfirm = window.findViewById<Button>(R.id.btn_confirm)

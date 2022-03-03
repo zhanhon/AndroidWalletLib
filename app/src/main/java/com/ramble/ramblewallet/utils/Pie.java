@@ -6,6 +6,11 @@ package com.ramble.ramblewallet.utils;
  * 描述　:
  */
 public class Pie {
+
+    private Pie() {
+        throw new IllegalStateException("Pie");
+    }
+
     public static final String MMKV_DEVICE_ID = "MMKV_DEVICE_ID";
     public static final int EVENT_CHECK_MSG = 2001270;
     /**

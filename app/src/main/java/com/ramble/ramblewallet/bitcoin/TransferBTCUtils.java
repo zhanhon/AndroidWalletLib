@@ -1,6 +1,7 @@
 package com.ramble.ramblewallet.bitcoin;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -132,7 +133,7 @@ public class TransferBTCUtils {
                     JSONArray unspentOutputs = jsonObject.getJSONObject("data").getJSONArray("txs");
                     List<Map> outputs = JSONObject.parseArray(unspentOutputs.toJSONString(), Map.class);
                     if (outputs == null || outputs.size() == 0) {
-                        System.out.println("交易异常，余额不足");
+                        Log.v("-=-=->","交易异常，余额不足");
                     }
                     for (int i = 0; i < outputs.size(); i++) {
                         Map outputsMap = outputs.get(i);

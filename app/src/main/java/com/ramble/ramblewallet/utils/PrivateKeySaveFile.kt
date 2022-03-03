@@ -53,6 +53,7 @@ class PrivateKeySaveFile {
             file.write(content.toByteArray())
             file.close()
         } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
 

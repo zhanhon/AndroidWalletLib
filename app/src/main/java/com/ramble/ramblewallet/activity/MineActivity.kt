@@ -328,9 +328,6 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             R.id.inc_currency_unit -> {//货币
                 currencyDialog()
             }
-            R.id.inc_about_us -> {
-
-            }
             R.id.clear_text -> {
                 Toast.makeText(
                     this,

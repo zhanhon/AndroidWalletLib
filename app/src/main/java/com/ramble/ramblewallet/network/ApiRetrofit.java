@@ -58,32 +58,6 @@ public class ApiRetrofit {
                 .build();
     };
 
-    /**
-     * 增加头部信息的拦截器
-     */
-    private final Interceptor mHeaderInterceptor = chain -> {
-        String languageCode = SharedPreferencesUtils.getString(getAppContext(), LANGUAGE, CN);
-        Request.Builder builder = chain.request().newBuilder();
-        Request request = chain.request();
-        String url = request.url().toString()
-                .replace(request.url().host() + ":" + request.url().port(), "")
-                .replace(request.url().host(), "")
-                .replace("http://", "")
-                .replace("https://", "");
-        String signStr = url + System.currentTimeMillis() + "1" + "" + AppUtils.getSecretKey();
-        String sign = Md5Util.md5(signStr);
-        builder.addHeader("apiName", url); //API接口名
-        builder.addHeader("callTime", String.valueOf(System.currentTimeMillis())); //调用时间
-        builder.addHeader("sign", sign);
-        builder.addHeader("clientType", "1"); //"客户端类型|1:Android|2:IOSv|3:H5|4:PC"
-        builder.addHeader("languageCode", languageCode); //语言代码|zh_CN:简体中文|zh_TW:繁体中文|en:英文|th:泰语|vi:越南语
-        builder.addHeader("apiVersion", "20211227"); //(预留字段)Api版本号
-        builder.addHeader("gzipEnabled", "0"); //(预留字段)是否启用gzip压缩｜0:不启用｜1:启用
-
-
-        return chain.proceed(builder.build());
-    };
-
     public ApiRetrofit() {
         //cache url
         File httpCacheDirectory = new File(MyApp.sInstance.getCacheDir(), "responses");
@@ -91,7 +65,6 @@ public class ApiRetrofit {
         Cache cache = new Cache(httpCacheDirectory, cacheSize);
 
         mClient = new OkHttpClient.Builder()
-                //.addInterceptor(mHeaderInterceptor)//添加头部信息拦截器
                 .addInterceptor(mLogInterceptor)//添加log拦截器
                 .sslSocketFactory(createSSLSocketFactory())
                 .cache(cache)
@@ -116,6 +89,7 @@ public class ApiRetrofit {
             sc.init(null, new TrustManager[]{new TrustAllCerts()}, new SecureRandom());
             ssfFactory = sc.getSocketFactory();
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return ssfFactory;
     }

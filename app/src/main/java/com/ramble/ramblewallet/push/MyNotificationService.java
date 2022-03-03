@@ -26,9 +26,9 @@ import java.util.Random;
 import static com.ramble.ramblewallet.constant.ConstantsKt.STATION_INFO;
 
 public class MyNotificationService extends Service {
-    private static final String TAG = UmengNotificationService.class.getName();
     public static UMessage oldMessage = null;
     private ArrayList<Page.Record> records = null;
+    private static final String MESSAGE_TYPE = "message_type";
 
     @Override
     public void onCreate() {
@@ -44,7 +44,7 @@ public class MyNotificationService extends Service {
         try {
             UMessage msg = new UMessage(new JSONObject(message));
             /**根据主题返回不同页面**/
-            if (msg.extra.get("message_type").equals("201")) {//消息 保存本地
+            if (msg.extra.get(MESSAGE_TYPE).equals("201")) {//消息 保存本地
                 Page.Record a = new Page.Record();
                 a.setId(Integer.parseInt(msg.extra.get("id")));
                 a.setTitle(msg.title);
@@ -71,10 +71,10 @@ public class MyNotificationService extends Service {
                 String addId = SharedPreferencesUtils.SceneList2String(records);
                 SharedPreferencesUtils.saveString(this, STATION_INFO, addId);
 
-            } else if (msg.extra.get("message_type").equals("202")) {//公告
+            } else if (msg.extra.get(MESSAGE_TYPE).equals("202")) {//公告
 
-            } else if (msg.extra.get("message_type").equals("1") || msg.extra.get("message_type").equals("2") ||
-                    msg.extra.get("message_type").equals("3") || msg.extra.get("message_type").equals("4")) {//交易记录
+            } else if (msg.extra.get(MESSAGE_TYPE).equals("1") || msg.extra.get(MESSAGE_TYPE).equals("2") ||
+                    msg.extra.get(MESSAGE_TYPE).equals("3") || msg.extra.get(MESSAGE_TYPE).equals("4")) {//交易记录
 
             } else {//其它
 
@@ -95,7 +95,8 @@ public class MyNotificationService extends Service {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         try {
             manager.cancelAll();
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         Notification.Builder builder;
         if (Build.VERSION.SDK_INT >= 26) {
@@ -104,9 +105,7 @@ public class MyNotificationService extends Service {
                 NotificationChannel chan = new NotificationChannel(UmengMessageHandler.PRIMARY_CHANNEL,
                         PushAgent.getInstance(this).getNotificationChannelName(),
                         NotificationManager.IMPORTANCE_DEFAULT);
-                if (manager != null) {
                     manager.createNotificationChannel(chan);
-                }
             }
             builder = new Notification.Builder(this, UmengMessageHandler.PRIMARY_CHANNEL);
         } else {

@@ -11,6 +11,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class TransactionFactory {
 
+    private TransactionFactory() {
+        throw new IllegalStateException("TransactionFactory");
+    }
+
     private static Map<ContractType, Class<? extends Actuator>> actuatorMap = new ConcurrentHashMap<>();
     private static Map<ContractType, Class<? extends GeneratedMessageV3>> contractMap = new ConcurrentHashMap<>();
 

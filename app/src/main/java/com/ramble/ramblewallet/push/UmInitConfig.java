@@ -35,6 +35,10 @@ public class UmInitConfig {
     private static final String UM_APP_KEY = "621eea8d3cf78e2eaac25bc8";
     private static final String UM_MESSAGE_SECRET = "6c2214961a6e9c7789e84d4ec9510ad1";
 
+    private UmInitConfig() {
+        throw new IllegalStateException("UmInitConfig");
+    }
+
     /**
      * 预初始化
      */
@@ -72,14 +76,6 @@ public class UmInitConfig {
 
         //sdk开启通知声音
         pushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE);
-        // sdk关闭通知声音
-        // mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SDK_DISABLE);
-        // 通知声音由服务端控制
-        // mPushAgent.setNotificationPlaySound(MsgConstant.NOTIFICATION_PLAY_SERVER);
-
-        // mPushAgent.setNotificationPlayLights(MsgConstant.NOTIFICATION_PLAY_SDK_DISABLE);
-        // mPushAgent.setNotificationPlayVibrate(MsgConstant.NOTIFICATION_PLAY_SDK_DISABLE);
-
         UmengMessageHandler messageHandler = new UmengMessageHandler() {
 
             /**
@@ -102,16 +98,7 @@ public class UmInitConfig {
 
                     @Override
                     public void run() {
-                        // TODO Auto-generated method stub
-                        // 对自定义消息的处理方式，点击或者忽略
-                        boolean isClickOrDismissed = true;
-                        if (isClickOrDismissed) {
-                            //自定义消息的点击统计
-                            UTrack.getInstance(context).trackMsgClick(msg);
-                        } else {
-                            //自定义消息的忽略统计
-                            UTrack.getInstance(context).trackMsgDismissed(msg);
-                        }
+                        UTrack.getInstance(context).trackMsgClick(msg);
                         Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
                     }
                 });
@@ -211,13 +198,6 @@ public class UmInitConfig {
 
         //使用完全自定义处理
         pushAgent.setPushIntentServiceClass(UmengNotificationService.class);
-
-        //小米通道
-        //MiPushRegistar.register(this, XIAOMI_ID, XIAOMI_KEY);
-        //华为通道
-        //HuaWeiRegister.register(this);
-        //魅族通道
-        //MeizuRegister.register(this, MEIZU_APPID, MEIZU_APPKEY);
     }
 
 

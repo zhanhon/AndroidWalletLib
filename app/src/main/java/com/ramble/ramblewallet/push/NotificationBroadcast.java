@@ -70,8 +70,9 @@ public class NotificationBroadcast extends BroadcastReceiver {
                     data.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//需为Intent添加Flag：Intent.FLAG_ACTIVITY_NEW_TASK，否则无法启动Activity。
                     context.startActivity(data);
                     break;
+                default:
+                    break;
             }
-            //
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -15,10 +15,10 @@ public class SymmEncoder {
 
     public static byte[] AES128EcbEnc(byte[] plain, byte[] aesKey) {
         if (aesKey == null || aesKey.length != 16) {
-            return null;
+            return new byte[0];
         }
         if (plain == null || (plain.length & 0x0F) != 0) {
-            return null;
+            return new byte[0];
         }
 
         SecretKey key = restoreSecretKey(aesKey, "AES");
@@ -27,10 +27,10 @@ public class SymmEncoder {
 
     public static byte[] AES128EcbDec(byte[] encoded, byte[] aesKey) {
         if (aesKey == null || aesKey.length != 16) {
-            return null;
+            return new byte[0];
         }
         if (encoded == null || (encoded.length & 0x0F) != 0) {
-            return null;
+            return new byte[0];
         }
 
         SecretKey key = restoreSecretKey(aesKey, "AES");
@@ -45,7 +45,7 @@ public class SymmEncoder {
             return cipher.doFinal(plainText);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return null;
+            return new byte[0];
         }
     }
 
@@ -56,16 +56,16 @@ public class SymmEncoder {
             return cipher.doFinal(encodedText);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return null;
+            return new byte[0];
         }
     }
 
     public static byte[] AESEcbEnc(byte[] plain, byte[] aesKey) {
         if (aesKey == null || aesKey.length != 16) {
-            return null;
+            return new byte[0];
         }
         if (plain == null) {
-            return null;
+            return new byte[0];
         }
 
         SecretKey key = restoreSecretKey(aesKey, "AES");
@@ -74,10 +74,10 @@ public class SymmEncoder {
 
     public static byte[] AESEcbDec(byte[] encoded, byte[] aesKey) {
         if (aesKey == null || aesKey.length != 16) {
-            return null;
+            return new byte[0];
         }
         if (encoded == null) {
-            return null;
+            return new byte[0];
         }
 
         SecretKey key = restoreSecretKey(aesKey, "AES");
@@ -91,7 +91,7 @@ public class SymmEncoder {
             return cipher.doFinal(plainText);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return null;
+            return new byte[0];
         }
     }
 
@@ -102,7 +102,7 @@ public class SymmEncoder {
             return cipher.doFinal(encodedText);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return null;
+            return new byte[0];
         }
     }
 }

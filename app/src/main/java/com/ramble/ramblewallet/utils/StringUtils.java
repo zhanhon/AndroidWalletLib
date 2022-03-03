@@ -166,9 +166,7 @@ public class StringUtils {
                     if (m.matches()) {
                         int number = Integer.valueOf(s.toString());
                         if (number <= max && number >= min) {
-                            if (s != null) {
-                                data = s.toString();
-                            }
+                            data = s.toString();
                         } else {
                             edit.setText(data);
                             edit.setSelection(data.length());

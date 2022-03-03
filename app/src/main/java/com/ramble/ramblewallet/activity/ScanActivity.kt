@@ -216,13 +216,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
         }
     }
 
-//    private fun vibrate() {
-//        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-//        vibrator.vibrate(200)
-//    }
-
     override fun onScanQRCodeSuccess(result: String?) {
-//        vibrate()
         zxingview?.stopSpot()
         when (type) {
             1 -> {
@@ -230,12 +224,10 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
                 finish()
             }
             2 -> {
-//                transDialog(result)
                 RxBus.emitEvent(Pie.EVENT_RESS_TRANS_SCAN, result)
                 finish()
             }
             3 -> {
-//                transDialog(result)
                 start(TransferActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, result)
                     it.putSerializable(ARG_PARAM2, tokenBean)
@@ -247,7 +239,6 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     }
 
     private fun downScanQRCodeSuccess(result: String?) {
-//        vibrate()
         zxingview?.stopSpot()
         when (type) {
             1 -> {
@@ -255,12 +246,10 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
                 finish()
             }
             2 -> {
-//                 transDialog(result)
                 RxBus.emitEvent(Pie.EVENT_RESS_TRANS_SCAN, result)
                 finish()
             }
             3 -> {
-//                transDialog(result)
                 start(TransferActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, result)
                     it.putSerializable(ARG_PARAM2, tokenBean)
@@ -271,39 +260,12 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     }
 
 
-    override fun onCameraAmbientBrightnessChanged(isDark: Boolean) {}
-
-    override fun onScanQRCodeOpenCameraError() {}
-
-    private fun transDialog(result: String?) {
-        var dialogLanguage = AlertDialog.Builder(this).create()
-        dialogLanguage.show()
-        val window: Window? = dialogLanguage.window
-        if (window != null) {
-            window.setContentView(R.layout.dialog_trans_item)
-            window.setGravity(Gravity.BOTTOM)
-            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            window.findViewById<View>(R.id.tv_address)
-                .findViewById<TextView>(R.id.tv_address).text = result
-            window.findViewById<View>(R.id.tv_check)
-                .findViewById<AppCompatCheckBox>(R.id.tv_check).isChecked = isChecked
-            window.findViewById<View>(R.id.ok).setOnClickListener { v1: View? ->
-                dialogLanguage.dismiss()
-                finish()
-            }
-            window.findViewById<View>(R.id.tv_check).setOnClickListener { v1: View? ->
-                isChecked = (v1!! as CheckBox).isChecked
-            }
-            //设置属性
-            val params = window.attributes
-            params.width = WindowManager.LayoutParams.MATCH_PARENT
-            //弹出一个窗口，让背后的窗口变暗一点
-            params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-            //dialog背景层
-            params.dimAmount = 0.5f
-            window.attributes = params
-            //点击空白处不关闭dialog
-            dialogLanguage.show()
-        }
+    override fun onCameraAmbientBrightnessChanged(isDark: Boolean) {
+        //暂时不需要实现此方法
     }
+
+    override fun onScanQRCodeOpenCameraError() {
+        //暂时不需要实现此方法
+    }
+
 }

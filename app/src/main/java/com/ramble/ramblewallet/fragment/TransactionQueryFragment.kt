@@ -182,13 +182,6 @@ class TransactionQueryFragment : BaseFragment(),
             }
         }
         address = saveData(saveWalletList)
-//        if (addressType==3){
-//            address="tb1qccfkws7532dgd9v27t3u3nex7s32ln8uf2cxxt"
-//        }
-
-//           "tb1qlg08ptrd0mff0tzxcg6fas2wzy6dzqxprmum9c"
-//        saveData(saveWalletList)
-//        "0x90d51f90fdf0722f1d621820ca9f45547221fdd9"
         var req = QueryTransferRecord.Req(
             currentPage,
             20,

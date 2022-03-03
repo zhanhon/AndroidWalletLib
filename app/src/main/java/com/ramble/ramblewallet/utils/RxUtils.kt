@@ -41,13 +41,6 @@ fun postToMainThread(runnable: Runnable, delay: Long) {
     AndroidSchedulers.mainThread().scheduleDirect(runnable, delay, TimeUnit.MILLISECONDS)
 }
 
-fun threadSleep(millis: Long) {
-    try {
-        Thread.sleep(millis)
-    } catch (ignored: InterruptedException) {
-    }
-}
-
 fun lenientRxJavaErrorHandler() = RxJavaPlugins.setErrorHandler {}
 
 fun useAsyncMainThreadSchedulers() {
@@ -275,13 +268,6 @@ fun Runnable.mainThread(delay: Long, unit: TimeUnit) {
 
 val FORMATTER_DD_MM_YYYY_HH_MM_SS: DateTimeFormatter by lazy {
     DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-}
-
-fun yyyy_mm_dd_hh_mm_ss(milliseconds: Long): String {
-    return Instant.ofEpochMilli(milliseconds)
-        .atZone(ZoneId.systemDefault())
-        .toLocalDateTime()
-        .format(FORMATTER_DD_MM_YYYY_HH_MM_SS)
 }
 
 fun LocalDateTime.toJdk7Date(): Date {
