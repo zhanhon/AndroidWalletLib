@@ -9,10 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.view.Gravity
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -66,6 +63,14 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         initData()
         refreshData()
         redPoint()
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(true)
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
     /***
@@ -183,7 +188,6 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         }
 
     }
-
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
