@@ -54,8 +54,8 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     private var totalBalance: BigDecimal = BigDecimal("0")
     private var unitPrice = ""
 
-    //YING
-    private var contractAddress = "TU9iBgEEv9qsc6m7EBPLJ3x5vSNKfyxWW5" //官方Nile测试节点YING
+    //USDT
+    private var contractAddress = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t" //正式链
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -188,7 +188,6 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
         }
 
     }
-
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -417,7 +416,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     private fun refreshData() {
         var list: ArrayList<String> = arrayListOf()
         list.add("TRX")
-        list.add("YING")
+        list.add("USDT")
         var req = StoreInfo.Req()
         req.list = list
         req.convertId = "2787,2792,2781" //人民币、港币、美元
@@ -446,12 +445,20 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                 )
                             )
                             totalBalance += trxBalance.multiply(BigDecimal(unitPrice))
-                        } else {
+                        }
+                    }
+                    data.forEach { storeInfo ->
+                        storeInfo.quote.forEach { quote ->
+                            if (quote.symbol == currencyUnit) {
+                                unitPrice = quote.price
+                            }
+                        }
+                        if (storeInfo.symbol != "TRX") {
                             mainETHTokenBean.add(
                                 MainETHTokenBean(
                                     "TRX-${storeInfo.symbol}",
                                     storeInfo.symbol,
-                                    if (storeInfo.symbol == "YING") tokenBalance else BigDecimal("0"),
+                                    if (storeInfo.symbol == "USDT") tokenBalance else BigDecimal("0"),
                                     unitPrice,
                                     currencyUnit,
                                     contractAddress,
@@ -460,24 +467,24 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                             )
                             totalBalance += tokenBalance.multiply(BigDecimal(unitPrice))
                         }
-                        mainAdapter = MainAdapter(mainETHTokenBean)
-                        binding.rvCurrency.adapter = mainAdapter
-                        mainAdapter.setOnItemClickListener { adapter, view, position ->
-                            if (adapter.getItem(position) is MainETHTokenBean) {
-                                if ((adapter.getItem(position) as MainETHTokenBean).symbol != "TRX") {
-                                    showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
-                                }
+                    }
+                    mainAdapter = MainAdapter(mainETHTokenBean)
+                    binding.rvCurrency.adapter = mainAdapter
+                    mainAdapter.setOnItemClickListener { adapter, view, position ->
+                        if (adapter.getItem(position) is MainETHTokenBean) {
+                            if ((adapter.getItem(position) as MainETHTokenBean).symbol != "TRX") {
+                                showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
                             }
                         }
                     }
                     setBalanceTRX(totalBalance)
                 }
             } else {
-                println("-=-=-=->TRX${it.message()}")
+                println("-=-=-=->ETH${it.message()}")
             }
             cancelSyncAnimation()
         }, {
-            println("-=-=-=->TRX${it.printStackTrace()}")
+            println("-=-=-=->ETH${it.printStackTrace()}")
             cancelSyncAnimation()
         })
     }

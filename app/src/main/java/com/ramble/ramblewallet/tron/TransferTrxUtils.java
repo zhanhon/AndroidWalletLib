@@ -41,7 +41,18 @@ import okhttp3.Response;
 
 public class TransferTrxUtils {
 
-    public static final String apiKey = "db3a1845-857d-414f-9d50-8207e39a2ec8";
+    public static final String APIKEY = "db3a1845-857d-414f-9d50-8207e39a2ec8";
+    private static final String SMARTCONTRACT = "/wallet/triggersmartcontract";
+    private static final String OWNERADDRESS = "owner_address";
+    private static final String CONTRACTADDRESS = "contract_address";
+    private static final String FUNCTIONSELECTOR = "function_selector";
+    private static final String PARAMETER = "parameter";
+    private static final String EXACT = "1000000";
+    private static final String TRANSACTION = "transaction";
+
+    private TransferTrxUtils() {
+        throw new IllegalStateException("TransferTrxUtils");
+    }
 
     public static void isAddressActivate(Activity context, String address) throws JSONException {
         String url = BuildConfig.RPC_TRX_NODE[0] + "/wallet/getaccount";
@@ -73,14 +84,14 @@ public class TransferTrxUtils {
     }
 
     public static void isAddressActivateToken(Activity context, String address, String contractAddress) throws JSONException {
-        String url = BuildConfig.RPC_TRX_NODE[0] + "/wallet/triggersmartcontract";
+        String url = BuildConfig.RPC_TRX_NODE[0] + SMARTCONTRACT;
         JSONObject param = new JSONObject();
-        param.put("owner_address", toHexAddress(address));
-        param.put("contract_address", toHexAddress(contractAddress));
-        param.put("function_selector", "balanceOf(address)");
+        param.put(OWNERADDRESS, toHexAddress(address));
+        param.put(CONTRACTADDRESS, toHexAddress(contractAddress));
+        param.put(FUNCTIONSELECTOR, "balanceOf(address)");
         List<Type> inputParameters = new ArrayList<>();
         inputParameters.add(new Address(toHexAddress(address).substring(2)));
-        param.put("parameter", FunctionEncoder.encodeConstructor(inputParameters));
+        param.put(PARAMETER, FunctionEncoder.encodeConstructor(inputParameters));
         Call call = getCall(url, param);
         call.enqueue(new Callback() {
             @Override
@@ -128,7 +139,7 @@ public class TransferTrxUtils {
                 try {
                     JSONObject json = new JSONObject(string);
                     String balanceBefore = json.optString("balance");
-                    BigDecimal divide = new BigDecimal(balanceBefore).divide(new BigDecimal("1000000"));
+                    BigDecimal divide = new BigDecimal(balanceBefore).divide(new BigDecimal(EXACT));
                     if (context instanceof MainTRXActivity) {
                         ((MainTRXActivity) context).setTrxBalance(divide);
                     }
@@ -152,14 +163,14 @@ public class TransferTrxUtils {
      * 查询trc20数量
      */
     public static void balanceOfTrc20(Activity context, String address, String contractAddress) throws JSONException {
-        String url = BuildConfig.RPC_TRX_NODE[0] + "/wallet/triggersmartcontract";
+        String url = BuildConfig.RPC_TRX_NODE[0] + SMARTCONTRACT;
         JSONObject param = new JSONObject();
-        param.put("owner_address", toHexAddress(address));
-        param.put("contract_address", toHexAddress(contractAddress));
-        param.put("function_selector", "balanceOf(address)");
+        param.put(OWNERADDRESS, toHexAddress(address));
+        param.put(CONTRACTADDRESS, toHexAddress(contractAddress));
+        param.put(FUNCTIONSELECTOR, "balanceOf(address)");
         List<Type> inputParameters = new ArrayList<>();
         inputParameters.add(new Address(toHexAddress(address).substring(2)));
-        param.put("parameter", FunctionEncoder.encodeConstructor(inputParameters));
+        param.put(PARAMETER, FunctionEncoder.encodeConstructor(inputParameters));
         Call call = getCall(url, param);
         call.enqueue(new Callback() {
             @Override
@@ -177,14 +188,15 @@ public class TransferTrxUtils {
                 String string = response.body().string();
                 try {
                     JSONObject json = new JSONObject(string);
-                    String constant_result = json.optString("constant_result");
-                    String constantResult = constant_result.substring(2, constant_result.length() - 2).replaceAll("^(0+)", "");
+                    String constantResultBefore = json.optString("constant_result");
+                    String constantResult = constantResultBefore.substring(2, constantResultBefore.length() - 2).replaceAll("^(0+)", "");
                     String balanceBefore = (new BigInteger(constantResult, 16)).toString();
+                    BigDecimal value = new BigDecimal(balanceBefore).divide(new BigDecimal(EXACT));
                     if (context instanceof MainTRXActivity) {
-                        ((MainTRXActivity) context).setTokenBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
+                        ((MainTRXActivity) context).setTokenBalance(value);
                     }
                     if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).setTokenBalance(new BigDecimal(balanceBefore).divide(new BigDecimal("1000000")));
+                        ((TransferActivity) context).setTokenBalance(value);
                     }
                 } catch (Exception e) {
                     if (context instanceof MainTRXActivity) {
@@ -203,7 +215,7 @@ public class TransferTrxUtils {
                                    String privateKey, BigDecimal number, String remark) throws JSONException {
         String url = BuildConfig.RPC_TRX_NODE[0] + "/wallet/createtransaction";
         JSONObject param = new JSONObject();
-        param.put("owner_address", toHexAddress(fromAddress));
+        param.put(OWNERADDRESS, toHexAddress(fromAddress));
         param.put("to_address", toHexAddress(toAddress));
         param.put("amount", number);
         if (StringUtils.isNotEmpty(remark)) {
@@ -236,7 +248,7 @@ public class TransferTrxUtils {
 
                     // 广播交易
                     JSONObject jsonObjectGB = new JSONObject();
-                    jsonObjectGB.put("transaction", signTransation);
+                    jsonObjectGB.put(TRANSACTION, signTransation);
                     Call call2 = getCall(BuildConfig.RPC_TRX_NODE[0] + "/wallet/broadcasthex", jsonObjectGB);
                     call2.enqueue(new Callback() {
                         @Override
@@ -251,9 +263,9 @@ public class TransferTrxUtils {
                             String string = response.body().string();
                             try {
                                 JSONObject trans = new JSONObject(string);
-                                String constant_result = trans.optString("txid");
+                                String constantResult = trans.optString("txid");
                                 if (context instanceof TransferActivity) {
-                                    ((TransferActivity) context).transferSuccess(constant_result);
+                                    ((TransferActivity) context).transferSuccess(constantResult);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -272,14 +284,14 @@ public class TransferTrxUtils {
     public static void transferTRXToken(Activity context, String fromAddress, String toAddress,
                                         String contractAddress, String privateKey, BigInteger amount, String remark) throws JSONException {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("contract_address", toHexAddress(contractAddress));
-        jsonObject.put("function_selector", "transfer(address,uint256)");
+        jsonObject.put(CONTRACTADDRESS, toHexAddress(contractAddress));
+        jsonObject.put(FUNCTIONSELECTOR, "transfer(address,uint256)");
         String parameter = TrxApi.encoderAbi(TrxApi.toHexAddress(toAddress).substring(2), amount);
-        jsonObject.put("parameter", parameter);
-        jsonObject.put("owner_address", TrxApi.toHexAddress(fromAddress));
+        jsonObject.put(PARAMETER, parameter);
+        jsonObject.put(OWNERADDRESS, TrxApi.toHexAddress(fromAddress));
         jsonObject.put("call_value", 0);
         jsonObject.put("fee_limit", "10000000");
-        Call call = getCall(BuildConfig.RPC_TRX_NODE[0] + "/wallet/triggersmartcontract", jsonObject);
+        Call call = getCall(BuildConfig.RPC_TRX_NODE[0] + SMARTCONTRACT, jsonObject);
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -293,7 +305,7 @@ public class TransferTrxUtils {
                 String string = response.body().string();
                 try {
                     JSONObject trans = new JSONObject(string);
-                    JSONObject tx = trans.getJSONObject("transaction");
+                    JSONObject tx = trans.getJSONObject(TRANSACTION);
                     if (remark != null) {
                         tx.getJSONObject("raw_data").put("data", Hex.toHexString(remark.getBytes()));
                     }
@@ -302,7 +314,7 @@ public class TransferTrxUtils {
                     String signTransation = ByteArray.toHexString(bytes);
                     // 广播交易
                     JSONObject jsonObjectGB = new JSONObject();
-                    jsonObjectGB.put("transaction", signTransation);
+                    jsonObjectGB.put(TRANSACTION, signTransation);
                     Call call2 = getCall(BuildConfig.RPC_TRX_NODE[0] + "/wallet/broadcasthex", jsonObjectGB);
                     call2.enqueue(new Callback() {
                         @Override
@@ -317,9 +329,9 @@ public class TransferTrxUtils {
                             String string = response.body().string();
                             try {
                                 JSONObject trans = new JSONObject(string);
-                                String constant_result = trans.optString("txid");
+                                String constantResult = trans.optString("txid");
                                 if (context instanceof TransferActivity) {
-                                    ((TransferActivity) context).transferSuccess(constant_result);
+                                    ((TransferActivity) context).transferSuccess(constantResult);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -340,7 +352,7 @@ public class TransferTrxUtils {
         RequestBody requestBody = RequestBody.create(JSON, String.valueOf(param));
         final Request request = new Request.Builder()
                 .url(url)
-                .header("TRON-PRO-API-KEY", apiKey)
+                .header("TRON-PRO-API-KEY", APIKEY)
                 .post(requestBody)
                 .build();
         return okHttpClient.newCall(request);

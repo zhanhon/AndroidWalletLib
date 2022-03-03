@@ -134,17 +134,18 @@ public class TransferBTCUtils {
                     List<Map> outputs = JSONObject.parseArray(unspentOutputs.toJSONString(), Map.class);
                     if (outputs == null || outputs.size() == 0) {
                         Log.v("-=-=->","交易异常，余额不足");
+                        return;
                     }
                     for (int i = 0; i < outputs.size(); i++) {
                         Map outputsMap = outputs.get(i);
 
-                        String tx_hash = outputsMap.get("txid").toString();
-                        String tx_output_n = outputsMap.get("output_no").toString();
+                        String txHash = outputsMap.get("txid").toString();
+                        String txOutput = outputsMap.get("output_no").toString();
                         String script = outputsMap.get("script_hex").toString();
                         String value = outputsMap.get("value").toString();
                         UTXO utxo = new UTXO(
-                                org.bitcoinj.core.Sha256Hash.wrap(tx_hash),
-                                Long.valueOf(tx_output_n),
+                                org.bitcoinj.core.Sha256Hash.wrap(txHash),
+                                Long.valueOf(txOutput),
                                 Coin.valueOf(new BigDecimal(value).multiply(new BigDecimal("100000000")).intValue()),
                                 0,
                                 false,
@@ -153,7 +154,7 @@ public class TransferBTCUtils {
                         );
                         utxos[0].add(utxo);
                     }
-                    //TODO 根据金额降序排序
+                    //根据金额降序排序
                     utxos[0] = utxos[0].stream().sorted(Comparator.comparing(UTXO::getValue, Comparator.reverseOrder())).collect(Collectors.toList());
                     long fee = getFee(btcFee, amount.longValue(), utxos[0]);
                     String toHex = null;
@@ -179,9 +180,9 @@ public class TransferBTCUtils {
                             String result = response.body().string();
                             try {
                                 org.json.JSONObject trans = new org.json.JSONObject(result);
-                                String constant_result = trans.getJSONObject("data").optString("txid");
+                                String constantResult = trans.getJSONObject("data").optString("txid");
                                 if (context instanceof TransferActivity) {
-                                    ((TransferActivity) context).transferSuccess(constant_result);
+                                    ((TransferActivity) context).transferSuccess(constantResult);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -235,9 +236,9 @@ public class TransferBTCUtils {
         //找零地址
         String changeAddress = fromAddress;
         Long utxoAmount = 0L;
-        List<UTXO> needUtxos = new ArrayList<UTXO>();
+        List<UTXO> needUtxos = new ArrayList<>();
         //获取未消费列表
-        if (utxos == null || utxos.size() == 0) {
+        if (utxos.isEmpty()) {
             throw new Exception("未消费列表为空");
         }
         //遍历未花费列表，组装合适的item

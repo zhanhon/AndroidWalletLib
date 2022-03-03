@@ -341,6 +341,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                //暂时不需要实现此方法
             }
         })
         binding.edtInputQuantity.addTextChangedListener(object : TextWatcher {
