@@ -41,6 +41,8 @@ import okhttp3.Response;
 
 public class TransferTrxUtils {
 
+    public static final String apiKey = "db3a1845-857d-414f-9d50-8207e39a2ec8";
+
     public static void isAddressActivate(Activity context, String address) throws JSONException {
         String url = BuildConfig.RPC_TRX_NODE[0] + "/wallet/getaccount";
         JSONObject param = new JSONObject();
@@ -338,6 +340,7 @@ public class TransferTrxUtils {
         RequestBody requestBody = RequestBody.create(JSON, String.valueOf(param));
         final Request request = new Request.Builder()
                 .url(url)
+                .header("TRON-PRO-API-KEY", apiKey)
                 .post(requestBody)
                 .build();
         return okHttpClient.newCall(request);

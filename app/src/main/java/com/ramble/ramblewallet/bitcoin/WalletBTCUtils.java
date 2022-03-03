@@ -31,7 +31,7 @@ public class WalletBTCUtils {
     public static boolean isMainNet;
 
     static {
-        isMainNet = false;
+        isMainNet = true;
     }
 
     private WalletBTCUtils() {
@@ -50,16 +50,17 @@ public class WalletBTCUtils {
         try {
             DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(mnemonic, 0);
             ECKey ecKeyPair = ECKey.fromPrivate(deterministicKey.getPrivKey());
-            //主网
-            NetworkParameters networkParameters = TestNet3Params.get();
+            NetworkParameters networkParameters = null;
+            if (isMainNet)
+                networkParameters = MainNetParams.get();
+            else
+                networkParameters = TestNet3Params.get();
 
             String publicKey = Numeric.toHexStringNoPrefixZeroPadded(new BigInteger(ecKeyPair.getPubKey()), 66);
             String privateKey = ecKeyPair.getPrivateKeyEncoded(networkParameters).toString();
 
             //bc1开头的地址
             SegwitAddress segwitAddress = SegwitAddress.fromKey(networkParameters, ecKeyPair);
-            Log.v("--->地址；", segwitAddress + "");
-            Log.v("--->私钥；", privateKey + "");
             //BTC无keystore
             return new Wallet(walletname, walletPassword, mnemonic, segwitAddress.toBech32(), privateKey, publicKey, "", 3, mnemonicList);
         } catch (Exception e) {
@@ -79,8 +80,11 @@ public class WalletBTCUtils {
     public static Wallet generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey, ArrayList<String> mnemonicList) {
         try {
             ECKey ecKeyPair = ECKey.fromPrivate(Numeric.toBigInt(privateKey));
-            //主网
-            NetworkParameters networkParameters = TestNet3Params.get();
+            NetworkParameters networkParameters = null;
+            if (isMainNet)
+                networkParameters = MainNetParams.get();
+            else
+                networkParameters = TestNet3Params.get();
 
             String publicKey = Numeric.toHexStringNoPrefixZeroPadded(new BigInteger(ecKeyPair.getPubKey()), 66);
 
@@ -109,7 +113,7 @@ public class WalletBTCUtils {
         byte[] seed = MnemonicUtils.generateSeed(mnemonic, "");
         DeterministicKey rootKey = HDKeyDerivation.createMasterPrivateKey(seed);
         DeterministicHierarchy hierarchy = new DeterministicHierarchy(rootKey);
-        List<ChildNumber> parentPath = HDUtils.parsePath("M/84H/1H/0H/0");
+        List<ChildNumber> parentPath = HDUtils.parsePath("M/84H/0H/0H/0");
         return hierarchy.deriveChild(parentPath, true, true, new ChildNumber(id, false));
     }
 

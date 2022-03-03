@@ -43,6 +43,8 @@ import java.util.concurrent.Future;
  */
 public class TransferEthUtils {
 
+    public static final String apiKey = "0b81da36bb9b4532bbd865c26e79ac98";
+
     private static final String DATA_PREFIX = "0x70a08231000000000000000000000000";
 
     private TransferEthUtils() {
@@ -52,7 +54,7 @@ public class TransferEthUtils {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static BigDecimal getBalanceETH(String address) {
         try {
-            Web3j web3 = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0]));
+            Web3j web3 = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + apiKey));
             Future<EthGetBalance> ethGetBalanceFuture = web3.ethGetBalance(address, DefaultBlockParameterName.LATEST).sendAsync();
             return Convert.fromWei(ethGetBalanceFuture.get().getBalance().toString(),
                     Convert.Unit.ETHER);
@@ -64,7 +66,7 @@ public class TransferEthUtils {
 
     public static BigDecimal getBalanceToken(String address, String contractAddress) throws IOException {
         try {
-            String value = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0]))
+            String value = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + apiKey))
                     .ethCall(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(address,
                             contractAddress, DATA_PREFIX + address.substring(2)), DefaultBlockParameterName.PENDING).send().getValue();
             String s = new BigInteger(value.substring(2), 16).toString();
@@ -82,7 +84,7 @@ public class TransferEthUtils {
     @SuppressLint("LongLogTag")
     public static void transferETH(Activity context, String fromAddress, String toAddress, String privateKey, String number,
                                    BigInteger gasPrice, BigInteger gasLimit, String remark) throws Exception {
-        Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0]));
+        Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + apiKey));
         BigInteger value = Convert.toWei(number, Convert.Unit.ETHER).toBigInteger();
         //加载转账所需的凭证，用私钥
         Credentials credentials = Credentials.create(privateKey);
@@ -116,7 +118,7 @@ public class TransferEthUtils {
     @SuppressLint("LongLogTag")
     public static void transferETHToken(Context context, String fromAddress, String toAddress, String contractAddress, String privateKey, BigInteger number,
                                         BigInteger gasPrice, BigInteger gasLimit, String remark) throws Exception {
-        Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0]));
+        Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + apiKey));
         //加载转账所需的凭证，用私钥
         Credentials credentials = Credentials.create(privateKey);
         //获取nonce，交易笔数

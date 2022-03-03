@@ -95,6 +95,16 @@ android {
             buildConfigField "String[]", "RPC_ETH_NODE", '{"http://122.248.244.178:8545"}'
             buildConfigField "String[]", "RPC_TRX_NODE", '{"https://api.nileex.io"}'
         }
+        //测试环境：http://13.214.207.185:8095/
+        //ETH测试节点：https://mainnet.infura.io/v3
+        //TRX节点nile：https://api.trongrid.io
+        pre_formal {
+            applicationId "com.ramble.ramblewallet"
+            buildConfigField "long", "PLATFORM_ID", '1'
+            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.214.207.185:8095/"}'
+            buildConfigField "String[]", "RPC_ETH_NODE", '{"https://mainnet.infura.io/v3"}'
+            buildConfigField "String[]", "RPC_TRX_NODE", '{"https://api.trongrid.io"}'
+        }
     }
 
 }
