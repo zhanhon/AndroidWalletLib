@@ -36,7 +36,7 @@ public class UmInitConfig {
     private static final String UM_MESSAGE_SECRET = "6c2214961a6e9c7789e84d4ec9510ad1";
 
     private UmInitConfig() {
-        throw new IllegalStateException("UmInitConfig");
+        throw new IllegalStateException(TAG);
     }
 
     /**
@@ -94,13 +94,9 @@ public class UmInitConfig {
             @Override
             public void dealWithCustomMessage(final Context context, final UMessage msg) {
                 Log.i(TAG, "deviceToken 11--> " + msg);
-                handler.post(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        UTrack.getInstance(context).trackMsgClick(msg);
-                        Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
-                    }
+                handler.post(() -> {
+                    UTrack.getInstance(context).trackMsgClick(msg);
+                    Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
                 });
             }
 

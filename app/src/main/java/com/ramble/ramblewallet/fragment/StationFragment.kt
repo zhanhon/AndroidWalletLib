@@ -161,7 +161,6 @@ open class StationFragment : BaseFragment() {
 
             R.id.item_msg_notic -> {
                 if (isShowCheck) {
-//                    toastDefault("处于编辑状态不可查看")
                     return
                 }
                 val itemBean = AdapterUtils.getHolder(v).getItem<StationItem>().data
@@ -215,11 +214,9 @@ open class StationFragment : BaseFragment() {
             saveList.clear()
         }
         adapter.all.forEach {
-            if (it is StationItem) {
-                if (it.isChecked) {
-                    saveList.add(it.data.id)
-                    saveTokenList.add(it)
-                }
+            if (it is StationItem && it.isChecked) {
+                saveList.add(it.data.id)
+                saveTokenList.add(it)
             }
         }
     }
