@@ -108,10 +108,12 @@ fun showBottomDialog2(
             1 -> {
                 binding.tvTitle.text = activity.getString(R.string.edit_address_wallet)
                 binding.tvUpdata.text = activity.getString(R.string.edit)
+                binding.ivQr.visibility=View.GONE
             }
             2 -> {
                 binding.tvTitle.text = activity.getString(R.string.new_address_wallet)
                 binding.tvUpdata.text = activity.getString(R.string.confirm)
+                binding.ivQr.visibility=View.VISIBLE
             }
         }
 

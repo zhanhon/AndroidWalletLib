@@ -39,6 +39,7 @@
             android:layout_marginLeft="@dimen/dp_25"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
+            android:layout_marginEnd="@dimen/dp_25"
             android:gravity="center_vertical">
 
             <EditText
@@ -56,7 +57,6 @@
             <ImageView
                 android:id="@+id/iv_qr"
                 android:layout_marginStart="@dimen/dp_10"
-                android:layout_marginEnd="@dimen/dp_25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/vector_scan_icon" />
