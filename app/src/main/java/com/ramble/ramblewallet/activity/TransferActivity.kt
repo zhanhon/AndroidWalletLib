@@ -578,7 +578,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
                             BigDecimal("1000000")
                         ).toBigInteger(),
-                        (BigInteger(gasPrice).multiply(BigInteger("100000000"))), //GWEI → WEI
+                        (BigInteger(gasPrice).multiply(BigInteger("1000000000"))), //GWEI → WEI
                         BigInteger(gasLimit),
                         binding.edtInputTransferRemarks.text.trim().toString()
                     )
@@ -589,7 +589,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         transferReceiverAddress,
                         walletSelleted.privateKey,
                         binding.edtInputQuantity.text.trim().toString(),
-                        (BigInteger(gasPrice).multiply(BigInteger("100000000"))), //GWEI → WEI
+                        (BigInteger(gasPrice).multiply(BigInteger("1000000000"))), //GWEI → WEI
                         BigInteger(gasLimit),
                         binding.edtInputTransferRemarks.text.trim().toString()
                     )
