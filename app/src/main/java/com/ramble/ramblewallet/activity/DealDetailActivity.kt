@@ -157,9 +157,6 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> finish()
-            R.id.iv_mine_right -> {
-
-            }
             R.id.add_copy -> {
                 val itemBean = AdapterUtils.getHolder(v).getItem<AddressTansRuItem>().data
                 ClipboardUtils.copy(itemBean.address)

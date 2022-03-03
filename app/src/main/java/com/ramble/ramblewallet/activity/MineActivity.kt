@@ -44,6 +44,8 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     private lateinit var walletSelleted: Wallet
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var times = 0
+    var redList: ArrayList<Page.Record> = arrayListOf()
+    var records2: ArrayList<Page.Record> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -135,6 +137,23 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
+        records2 = if (SharedPreferencesUtils.getString(
+                this,
+                STATION_INFO,
+                ""
+            ).isNotEmpty()
+        ) {
+            SharedPreferencesUtils.String2SceneList(
+                SharedPreferencesUtils.getString(
+                    this,
+                    STATION_INFO,
+                    ""
+                )
+            ) as ArrayList<Page.Record>
+
+        } else {
+            arrayListOf()
+        }
         redPoint()
         walletSelleted = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
@@ -162,8 +181,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                     3
                 }
             }
-            var redList: ArrayList<Page.Record> = arrayListOf()
-            var records2: ArrayList<Page.Record> = arrayListOf()
+
             var req = Page.Req(1, 1000, lang)
             mApiService.getNotice(
                 req.toApiRequest(noticeInfoUrl)
@@ -172,77 +190,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                     if (it.code() == 1) {
                         it.data()?.let { data ->
                             println("==================>getTransferInfo:${data}")
-
-                            data.records.forEach { item ->
-
-                                if (SharedPreferencesUtils.String2SceneList(
-                                        SharedPreferencesUtils.getString(
-                                            this,
-                                            READ_ID_NEW,
-                                            ""
-                                        )
-                                    ).contains(item.id)
-                                ) {
-                                    item.isRead = 1
-                                } else {
-                                    item.isRead = 0
-                                    redList.add(item)
-                                }
-                            }
-                            records2 = if (SharedPreferencesUtils.getString(
-                                    this,
-                                    STATION_INFO,
-                                    ""
-                                ).isNotEmpty()
-                            ) {
-                                SharedPreferencesUtils.String2SceneList(
-                                    SharedPreferencesUtils.getString(
-                                        this,
-                                        STATION_INFO,
-                                        ""
-                                    )
-                                ) as ArrayList<Page.Record>
-
-                            } else {
-                                arrayListOf()
-                            }
-                            if (records2.isNotEmpty()) {
-
-                                records2.forEach { item ->
-                                    if (SharedPreferencesUtils.getString(
-                                            this,
-                                            READ_ID,
-                                            ""
-                                        ).isNotEmpty()
-                                    ) {
-                                        if (SharedPreferencesUtils.String2SceneList(
-                                                SharedPreferencesUtils.getString(
-                                                    this,
-                                                    READ_ID,
-                                                    ""
-                                                )
-                                            ).contains(item.id)
-                                        ) {
-                                            item.isRead = 1
-                                        } else {
-                                            item.isRead = 0
-                                            redList.add(item)
-                                        }
-
-                                    } else {
-                                        item.isRead = 0
-                                        redList.add(item)
-                                    }
-
-                                }
-
-
-                            }
-                            if (redList.isNotEmpty()) {
-                                binding.ivMineRight.setImageResource(R.drawable.ic_bell_unread)
-                            } else {
-                                binding.ivMineRight.setImageResource(R.drawable.ic_bell_read)
-                            }
+                            dataCheck(data.records)
                         }
                     } else {
                         println("==================>getTransferInfo1:${it.message()}")
@@ -257,6 +205,60 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             binding.ivMineRight.setImageResource(R.drawable.ic_bell_unread)
         }
 
+    }
+
+    private fun dataCheck(data:List<Page.Record>){
+        data.forEach { item ->
+            if (SharedPreferencesUtils.String2SceneList(
+                    SharedPreferencesUtils.getString(
+                        this,
+                        READ_ID_NEW,
+                        ""
+                    )
+                ).contains(item.id)
+            ) {
+                item.isRead = 1
+            } else {
+                item.isRead = 0
+                redList.add(item)
+            }
+        }
+
+        if (records2.isNotEmpty()) {
+
+            records2.forEach { item ->
+                if (SharedPreferencesUtils.getString(
+                        this,
+                        READ_ID,
+                        ""
+                    ).isNotEmpty()
+                ) {
+                    if (SharedPreferencesUtils.String2SceneList(
+                            SharedPreferencesUtils.getString(
+                                this,
+                                READ_ID,
+                                ""
+                            )
+                        ).contains(item.id)
+                    ) {
+                        item.isRead = 1
+                    } else {
+                        item.isRead = 0
+                        redList.add(item)
+                    }
+
+                } else {
+                    item.isRead = 0
+                    redList.add(item)
+                }
+
+            }
+        }
+        if (redList.isNotEmpty()) {
+            binding.ivMineRight.setImageResource(R.drawable.ic_bell_unread)
+        } else {
+            binding.ivMineRight.setImageResource(R.drawable.ic_bell_read)
+        }
     }
 
     override fun onBackPressed() {

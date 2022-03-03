@@ -108,12 +108,12 @@ fun showBottomDialog2(
             1 -> {
                 binding.tvTitle.text = activity.getString(R.string.edit_address_wallet)
                 binding.tvUpdata.text = activity.getString(R.string.edit)
-                binding.ivQr.visibility=View.GONE
+                binding.ivQr.visibility = View.GONE
             }
             2 -> {
                 binding.tvTitle.text = activity.getString(R.string.new_address_wallet)
                 binding.tvUpdata.text = activity.getString(R.string.confirm)
-                binding.ivQr.visibility=View.VISIBLE
+                binding.ivQr.visibility = View.VISIBLE
             }
         }
 
@@ -189,7 +189,7 @@ fun showBottomDialog2(
                                 isEthValidAddress(binding.editAddress.text.toString()) -> {
                                     number = 1
                                 }
-                                isTrxValidAddress( binding.editAddress.text.toString()) -> {
+                                isTrxValidAddress(binding.editAddress.text.toString()) -> {
                                     number = 3
                                 }
                             }
@@ -207,10 +207,10 @@ fun showBottomDialog2(
                                 isEthValidAddress(binding.editAddress.text.toString()) -> {
                                     "ETH" + String.format("%02d", cout)
                                 }
-                                isTrxValidAddress( binding.editAddress.text.toString()) -> {
+                                isTrxValidAddress(binding.editAddress.text.toString()) -> {
                                     "TRX" + String.format("%02d", cout)
                                 }
-                                else->""
+                                else -> ""
                             }
 
                         }
@@ -226,10 +226,10 @@ fun showBottomDialog2(
                                 isEthValidAddress(binding.editAddress.text.toString()) -> {
                                     "ETH01"
                                 }
-                                isTrxValidAddress( binding.editAddress.text.toString()) -> {
+                                isTrxValidAddress(binding.editAddress.text.toString()) -> {
                                     "TRX01"
                                 }
-                                else-> "ETH01"
+                                else -> "ETH01"
                             }
                         }
 
@@ -247,18 +247,14 @@ fun showBottomDialog2(
                 when (type) {
                     1 -> {
                         myData.forEach {
-
-                            if (it.userName != tvName) {
-                                if (it.userName == name || it.address == binding.editAddress.text.toString()) {
-                                    Toast.makeText(
-                                        MyApp.sInstance,
-                                        MyApp.sInstance.getString(R.string.address_already_exists),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    return@setOnClickListener
-                                }
+                            if (it.userName != tvName && (it.userName == name || it.address == binding.editAddress.text.toString())) {
+                                Toast.makeText(
+                                    MyApp.sInstance,
+                                    MyApp.sInstance.getString(R.string.address_already_exists),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                return@setOnClickListener
                             }
-
                         }
                     }
                     else -> {
@@ -287,12 +283,12 @@ fun showBottomDialog2(
                 isEthValidAddress(binding.editAddress.text.toString()) -> {
                     1
                 }
-                isTrxValidAddress( binding.editAddress.text.toString()) -> {
+                isTrxValidAddress(binding.editAddress.text.toString()) -> {
                     3
                 }
-                else->4
+                else -> 4
             }
-            if ( isBtcValidAddress( data.address)) {
+            if (isBtcValidAddress(data.address)) {
                 if (data.address.length < 26) {
                     Toast.makeText(
                         MyApp.sInstance,
@@ -301,7 +297,7 @@ fun showBottomDialog2(
                     ).show()
                     return@setOnClickListener
                 }
-            } else if ( isEthValidAddress(data.address)) {
+            } else if (isEthValidAddress(data.address)) {
                 if (data.address.length < 42) {
                     Toast.makeText(
                         MyApp.sInstance,
@@ -327,7 +323,7 @@ fun showBottomDialog2(
                 ).show()
                 return@setOnClickListener
             }
-            if (data.type == 4||data.type == 0) {
+            if (data.type == 4 || data.type == 0) {
                 Toast.makeText(
                     MyApp.sInstance,
                     MyApp.sInstance.getString(R.string.address_already_err),

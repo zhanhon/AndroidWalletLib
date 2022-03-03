@@ -61,7 +61,5 @@ abstract class Fragment : Fragment() {
         }
     }
 
-//    open fun viewModelSource() = ViewModelSource.ACTIVITY
-
     open fun onBackPressed(): Boolean = false
 }

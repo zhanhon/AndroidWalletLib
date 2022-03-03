@@ -11,7 +11,7 @@ public abstract class FragmentPagerAdapter2 extends FragmentPagerAdapter {
     protected int currentPosition = -1;
     protected Fragment currentFragment;
 
-    public FragmentPagerAdapter2(@NonNull FragmentManager fm) {
+    protected FragmentPagerAdapter2(@NonNull FragmentManager fm) {
         super(fm);
     }
 
