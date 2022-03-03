@@ -19,12 +19,15 @@ import com.ramble.ramblewallet.activity.ScanActivity
 import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.MyAddressBean
 import com.ramble.ramblewallet.bean.Wallet
+import com.ramble.ramblewallet.bitcoin.WalletBTCUtils.isBtcValidAddress
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.BottomNoticeDialog2Binding
 import com.ramble.ramblewallet.databinding.BottomNoticeDialogBinding
 import com.ramble.ramblewallet.databinding.TopNoticeDialogBinding
+import com.ramble.ramblewallet.ethereum.WalletETHUtils.isEthValidAddress
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start
+import com.ramble.ramblewallet.tron.WalletTRXUtils.isTrxValidAddress
 
 
 /**
@@ -176,20 +179,17 @@ fun showBottomDialog2(
                                     ),
                                     object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                                 )
-                            var number = if (binding.editAddress.text.toString()
-                                    .startsWith("1") || binding.editAddress.text.toString()
-                                    .startsWith("3")
-                            ) {
-                                2
-                            } else if (binding.editAddress.text.toString().startsWith("0")) {
-                                1
-                            } else if (binding.editAddress.text.toString()
-                                    .startsWith("T") || binding.editAddress.text.toString()
-                                    .startsWith("t")
-                            ) {
-                                3
-                            } else {
-                                4
+                            var number = 0
+                            when {
+                                isBtcValidAddress(binding.editAddress.text.toString()) -> {
+                                    number = 2
+                                }
+                                isEthValidAddress(binding.editAddress.text.toString()) -> {
+                                    number = 1
+                                }
+                                isTrxValidAddress( binding.editAddress.text.toString()) -> {
+                                    number = 3
+                                }
                             }
                             var cout = 1
                             myData.forEach {
@@ -198,20 +198,17 @@ fun showBottomDialog2(
                                 }
                             }
 
-                            if (binding.editAddress.text.toString()
-                                    .startsWith("1") || binding.editAddress.text.toString()
-                                    .startsWith("3")
-                            ) {
-                                "BTC" + String.format("%02d", cout)
-                            } else if (binding.editAddress.text.toString().startsWith("0")) {
-                                "ETH" + String.format("%02d", cout)
-                            } else if (binding.editAddress.text.toString()
-                                    .startsWith("T") || binding.editAddress.text.toString()
-                                    .startsWith("t")
-                            ) {
-                                "TRX" + String.format("%02d", cout)
-                            } else {
-                                "ETH" + String.format("%02d", cout)
+                            when {
+                                isBtcValidAddress(binding.editAddress.text.toString()) -> {
+                                    "BTC" + String.format("%02d", cout)
+                                }
+                                isEthValidAddress(binding.editAddress.text.toString()) -> {
+                                    "ETH" + String.format("%02d", cout)
+                                }
+                                isTrxValidAddress( binding.editAddress.text.toString()) -> {
+                                    "TRX" + String.format("%02d", cout)
+                                }
+                                else->""
                             }
 
                         }
@@ -220,20 +217,17 @@ fun showBottomDialog2(
                         if (binding.editName.text.toString().isNotEmpty()) {
                             binding.editName.text.toString()
                         } else {
-                            if (binding.editAddress.text.toString()
-                                    .startsWith("1") || binding.editAddress.text.toString()
-                                    .startsWith("3")
-                            ) {
-                                "BTC01"
-                            } else if (binding.editAddress.text.toString().startsWith("0")) {
-                                "ETH01"
-                            } else if (binding.editAddress.text.toString()
-                                    .startsWith("T") || binding.editAddress.text.toString()
-                                    .startsWith("t")
-                            ) {
-                                "TRX01"
-                            } else {
-                                "ETH01"
+                            when {
+                                isBtcValidAddress(binding.editAddress.text.toString()) -> {
+                                    "BTC01"
+                                }
+                                isEthValidAddress(binding.editAddress.text.toString()) -> {
+                                    "ETH01"
+                                }
+                                isTrxValidAddress( binding.editAddress.text.toString()) -> {
+                                    "TRX01"
+                                }
+                                else-> "ETH01"
                             }
                         }
 
@@ -284,16 +278,19 @@ fun showBottomDialog2(
             var data = MyAddressBean()
             data.address = binding.editAddress.text.toString()
             data.userName = name
-            data.type = if (data.address.startsWith("1") || data.address.startsWith("3")) {
-                2
-            } else if (data.address.startsWith("0")) {
-                1
-            } else if (data.address.startsWith("T") || data.address.startsWith("t")) {
-                3
-            } else {
-                4
+            data.type = when {
+                isBtcValidAddress(binding.editAddress.text.toString()) -> {
+                    2
+                }
+                isEthValidAddress(binding.editAddress.text.toString()) -> {
+                    1
+                }
+                isTrxValidAddress( binding.editAddress.text.toString()) -> {
+                    3
+                }
+                else->4
             }
-            if (data.address.startsWith("1") || data.address.startsWith("3")) {
+            if ( isBtcValidAddress( data.address)) {
                 if (data.address.length < 26) {
                     Toast.makeText(
                         MyApp.sInstance,
@@ -302,7 +299,7 @@ fun showBottomDialog2(
                     ).show()
                     return@setOnClickListener
                 }
-            } else if (data.address.startsWith("0")) {
+            } else if ( isEthValidAddress(data.address)) {
                 if (data.address.length < 42) {
                     Toast.makeText(
                         MyApp.sInstance,
@@ -311,7 +308,7 @@ fun showBottomDialog2(
                     ).show()
                     return@setOnClickListener
                 }
-            } else if (data.address.startsWith("T") || data.address.startsWith("t")) {
+            } else if (isTrxValidAddress(data.address)) {
                 if (data.address.length < 34) {
                     Toast.makeText(
                         MyApp.sInstance,
@@ -328,7 +325,7 @@ fun showBottomDialog2(
                 ).show()
                 return@setOnClickListener
             }
-            if (data.type == 4) {
+            if (data.type == 4||data.type == 0) {
                 Toast.makeText(
                     MyApp.sInstance,
                     MyApp.sInstance.getString(R.string.address_already_err),

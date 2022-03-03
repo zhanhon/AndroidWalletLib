@@ -281,8 +281,8 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                         showBottomDialog2(this, itemBean.userName, itemBean.address, 1)
                     },
                     delListener = View.OnClickListener {//删除
-                        myDataBeans.removeAt(position)
-                        myData.removeAt(position)
+                        myDataBeans.remove(bean)
+                        myData.remove(bean)
                         SharedPreferencesUtils.saveString(
                             this,
                             ADDRESS_BOOK_INFO,
