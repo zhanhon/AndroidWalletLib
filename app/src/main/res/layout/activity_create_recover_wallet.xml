@@ -78,7 +78,7 @@
             <Button
                 android:id="@+id/btn_recover_wallet"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginRight="@dimen/dp_10"
                 android:layout_weight="1"
                 android:background="@drawable/shape_white_bottom_green_line_btn"
@@ -93,7 +93,7 @@
             <Button
                 android:id="@+id/btn_create_wallet"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_weight="1"
                 android:textAllCaps="false"
