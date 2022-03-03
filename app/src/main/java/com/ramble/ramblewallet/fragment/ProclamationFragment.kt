@@ -111,48 +111,7 @@ class ProclamationFragment : BaseFragment() {
                     it.data()?.let { data ->
                         totalPage = data.totalPage
                         println("==================>getTransferInfo:${data}")
-                        ArrayList<SimpleRecyclerItem>().apply {
-                            data.records.forEach { item ->
-                                if (SharedPreferencesUtils.getString(myActivity, READ_ID_NEW, "")
-                                        .isNotEmpty()
-                                ) {
-                                    if (SharedPreferencesUtils.String2SceneList(
-                                            SharedPreferencesUtils.getString(
-                                                myActivity,
-                                                READ_ID_NEW,
-                                                ""
-                                            )
-                                        ).contains(item.id)
-                                    ) {
-                                        item.isRead = 1
-                                    } else {
-                                        item.isRead = 0
-                                    }
-
-                                } else {
-                                    item.isRead = 0
-                                }
-                                add(StationItem(item))
-                            }
-                            if (data.pageNo == 1) {
-                                forEach {
-                                    if (it is StationItem) {
-                                        it.isEditable = isShowCheck
-                                        it.isChecked = isShowALLCheck
-
-                                    }
-                                }
-                                adapter.replaceAll(this.toList())
-                            } else {
-                                forEach {
-                                    if (it is StationItem) {
-                                        it.isEditable = isShowCheck
-                                        it.isChecked = isShowALLCheck
-                                    }
-                                }
-                                adapter.addAll(this.toList())
-                            }
-                        }
+                        dataItem(data)
                         apply(adapter.itemCount)
                         onLoaded()
                     }
@@ -167,6 +126,55 @@ class ProclamationFragment : BaseFragment() {
             }
         )
 
+    }
+
+    private fun dataItem(data:Page){
+        ArrayList<SimpleRecyclerItem>().apply {
+            data.records.forEach { item ->
+                add(StationItem(dataCheck(item)))
+            }
+            if (data.pageNo == 1) {
+                forEach {
+                    if (it is StationItem) {
+                        it.isEditable = isShowCheck
+                        it.isChecked = isShowALLCheck
+
+                    }
+                }
+                adapter.replaceAll(this.toList())
+            } else {
+                forEach {
+                    if (it is StationItem) {
+                        it.isEditable = isShowCheck
+                        it.isChecked = isShowALLCheck
+                    }
+                }
+                adapter.addAll(this.toList())
+            }
+        }
+    }
+
+    private fun dataCheck(item:Page.Record):Page.Record{
+        if (SharedPreferencesUtils.getString(myActivity, READ_ID_NEW, "")
+                .isNotEmpty()
+        ) {
+            if (SharedPreferencesUtils.String2SceneList(
+                    SharedPreferencesUtils.getString(
+                        myActivity,
+                        READ_ID_NEW,
+                        ""
+                    )
+                ).contains(item.id)
+            ) {
+                item.isRead = 1
+            } else {
+                item.isRead = 0
+            }
+
+        } else {
+            item.isRead = 0
+        }
+        return item
     }
 
 

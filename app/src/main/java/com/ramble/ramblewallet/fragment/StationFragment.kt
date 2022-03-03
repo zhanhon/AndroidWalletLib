@@ -79,15 +79,6 @@ open class StationFragment : BaseFragment() {
 
 
     private fun reFreshData() {
-        loadData()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-    }
-
-    private fun loadData() {
         records = if (SharedPreferencesUtils.getString(
                 myActivity,
                 STATION_INFO,
@@ -105,27 +96,20 @@ open class StationFragment : BaseFragment() {
         } else {
             arrayListOf()
         }
+        loadData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+    }
+
+    private fun loadData() {
+
         if (records.isNotEmpty()) {
             ArrayList<SimpleRecyclerItem>().apply {
                 records.forEach { item ->
-                    if (SharedPreferencesUtils.getString(myActivity, READ_ID, "").isNotEmpty()) {
-                        if (SharedPreferencesUtils.String2SceneList(
-                                SharedPreferencesUtils.getString(
-                                    myActivity,
-                                    READ_ID,
-                                    ""
-                                )
-                            ).contains(item.id)
-                        ) {
-                            item.isRead = 1
-                        } else {
-                            item.isRead = 0
-                        }
-
-                    } else {
-                        item.isRead = 0
-                    }
-                    add(StationItem(item))
+                    add(StationItem(dataCheck(item)))
                 }
 
                 forEach {
@@ -143,6 +127,27 @@ open class StationFragment : BaseFragment() {
         apply(adapter.itemCount)
         onLoaded()
 
+    }
+
+    private  fun dataCheck(item:Page.Record):Page.Record{
+        if (SharedPreferencesUtils.getString(myActivity, READ_ID, "").isNotEmpty()) {
+            if (SharedPreferencesUtils.String2SceneList(
+                    SharedPreferencesUtils.getString(
+                        myActivity,
+                        READ_ID,
+                        ""
+                    )
+                ).contains(item.id)
+            ) {
+                item.isRead = 1
+            } else {
+                item.isRead = 0
+            }
+
+        } else {
+            item.isRead = 0
+        }
+        return item
     }
 
     private fun onLoaded() {
