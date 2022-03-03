@@ -68,11 +68,11 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
      */
     protected ListenerProviderImpl provider;
 
-    public BasePagerAdapter2() {
+    protected BasePagerAdapter2() {
         this(null);
     }
 
-    public BasePagerAdapter2(@Nullable List<T> data) {
+    protected BasePagerAdapter2(@Nullable List<T> data) {
         this.data = data == null ? new ArrayList<T>() : new ArrayList<>(data);
         this.provider = new ListenerProviderImpl();
         this.cacheViews = new LinkedList<>();

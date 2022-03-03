@@ -72,8 +72,6 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, ""),
                     object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                 )
-        }
-        if (SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
             myData =
                 Gson().fromJson(
                     SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, ""),
@@ -85,46 +83,50 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
                 object : TypeToken<Wallet>() {}.type
             )
-            when (walletSelleted.walletType) {
-                1 -> {//ETH
-                    binding.groupButton.check(R.id.check_eth)
-                    idButton = 2
-                    myDataBeans = arrayListOf()
-                    myData.forEach {
-                        if (it.type == 1) {
-                            myDataBeans.add(it)
-                        }
-                    }
-                    loadData()
-                }
-                2 -> {//TRX
-                    binding.groupButton.check(R.id.check_trx)
-                    idButton = 3
-                    myDataBeans = arrayListOf()
-                    myData.forEach {
-                        if (it.type == 3) {
-                            myDataBeans.add(it)
-                        }
-                    }
-                    loadData()
-                }
-                3 -> {//btc
-                    binding.groupButton.check(R.id.check_bt)
-                    idButton = 1
-                    myDataBeans = arrayListOf()
-                    myData.forEach {
-                        if (it.type == 2) {
-                            myDataBeans.add(it)
-                        }
-                    }
-                    loadData()
-                }
-            }
+            dataCheck()
         } else {
             binding.groupButton.check(R.id.check_all)
             loadData()
         }
 
+    }
+
+    private fun dataCheck() {
+        when (walletSelleted.walletType) {
+            1 -> {//ETH
+                binding.groupButton.check(R.id.check_eth)
+                idButton = 2
+                myDataBeans = arrayListOf()
+                myData.forEach {
+                    if (it.type == 1) {
+                        myDataBeans.add(it)
+                    }
+                }
+                loadData()
+            }
+            2 -> {//TRX
+                binding.groupButton.check(R.id.check_trx)
+                idButton = 3
+                myDataBeans = arrayListOf()
+                myData.forEach {
+                    if (it.type == 3) {
+                        myDataBeans.add(it)
+                    }
+                }
+                loadData()
+            }
+            3 -> {//btc
+                binding.groupButton.check(R.id.check_bt)
+                idButton = 1
+                myDataBeans = arrayListOf()
+                myData.forEach {
+                    if (it.type == 2) {
+                        myDataBeans.add(it)
+                    }
+                }
+                loadData()
+            }
+        }
 
     }
 
@@ -339,7 +341,6 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     }
 
     override fun apply(count: Int) {
-
+        println("-=-=-=->BTC")
     }
-
 }

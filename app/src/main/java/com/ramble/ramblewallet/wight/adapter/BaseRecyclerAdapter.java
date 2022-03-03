@@ -51,11 +51,11 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
      */
     protected ListenerProviderImpl provider;
 
-    public BaseRecyclerAdapter() {
+    protected BaseRecyclerAdapter() {
         this(null);
     }
 
-    public BaseRecyclerAdapter(@Nullable List<T> data) {
+    protected BaseRecyclerAdapter(@Nullable List<T> data) {
         this.data = data == null ? new ArrayList<T>() : new ArrayList<>(data);
         this.provider = new ListenerProviderImpl();
     }
