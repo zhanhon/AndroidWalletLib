@@ -1,16 +1,10 @@
 package com.ramble.ramblewallet.network;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import java.util.List;
 import static com.ramble.ramblewallet.constant.ConstantsKt.getAppContext;
 
@@ -109,24 +103,6 @@ public class AppUtils {
         return null;
     }
 
-    public static boolean isAppInstalled(String packageName) {
-        try {
-            getAppContext().getPackageManager().getPackageInfo(packageName, 0);
-            return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-    }
-
-    public static boolean checkAndStartInstalledApp(Activity activity, String packageName) {
-        if (isAppInstalled(packageName)) {
-            Intent intent = getAppContext().getPackageManager().getLaunchIntentForPackage(packageName);
-            activity.startActivity(intent);
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     public static boolean isAppDebug() {
         return isAppDebug(getPackageName());
@@ -140,17 +116,6 @@ public class AppUtils {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    private static void startActivityForResult(@Nullable Activity activity,
-                                               @Nullable Fragment fragment,
-                                               @NonNull Intent intent,
-                                               int requestCode) {
-        if (activity != null) {
-            activity.startActivityForResult(intent, requestCode);
-        } else {
-            fragment.startActivityForResult(intent, requestCode);
         }
     }
 

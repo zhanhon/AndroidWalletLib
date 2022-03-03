@@ -20,14 +20,12 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class AdapterUtils {
     public static final int ADAPTER_HOLDER = 1 + 2 << 24;
 
     private AdapterUtils() {
-        new UnsupportedOperationException("Not supported");
+        throw new UnsupportedOperationException("Not supported");
     }
 
     /**
@@ -43,25 +41,6 @@ public class AdapterUtils {
         return (V) view.findViewById(viewId);
     }
 
-    /**
-     * convert list to {@link RecyclerItem} list
-     *
-     * @param list list
-     * @return {@link RecyclerItem} list
-     */
-    public static List<RecyclerItem> toRecyclerItems(List list) {
-        return new ArrayList<>(list);
-    }
-
-    /**
-     * convert list to {@link Item} list
-     *
-     * @param list
-     * @return {@link Item} list
-     */
-    public static List<Item> toItems(List list) {
-        return new ArrayList<>(list);
-    }
 
     /**
      * get view holder
