@@ -280,10 +280,10 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     private var mnemonicOther: String = ""
     private var mnemonicIndexList: ArrayList<Int> = arrayListOf()
     private fun recoverWalletETH(chooseMode: Int) {
-        dictionaryMnemonic()
         lateinit var walletETH: Wallet
         when (chooseMode) {
             1 -> {
+                dictionaryMnemonic()
                 walletETH = WalletETHUtils.generateWalletByMnemonic(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
@@ -407,10 +407,10 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun recoverWalletTRX(chooseMode: Int) {
-        dictionaryMnemonic()
         lateinit var walletTRX: Wallet
         when (chooseMode) {
             1 -> {
+                dictionaryMnemonic()
                 walletTRX = WalletTRXUtils.generateWalletByMnemonic(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
@@ -479,10 +479,10 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun recoverWalletBTC(chooseMode: Int) {
-        dictionaryMnemonic()
         lateinit var walletBTC: Wallet
         when (chooseMode) {
             1 -> {
+                dictionaryMnemonic()
                 walletBTC = WalletBTCUtils.generateWalletByMnemonic(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),

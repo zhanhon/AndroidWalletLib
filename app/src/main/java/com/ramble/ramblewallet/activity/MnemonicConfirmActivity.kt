@@ -463,9 +463,6 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     private var clickErrorCount = 0
     private fun mnmonicETHClick() {
         binding.tvContributingWordsName1.setOnClickListener {
-            if (clickErrorCount >= 3) {
-                contributingWordsFailDialog()
-            }
             myDataBeans.forEach {
                 if (it.isWrong) {
                     return@setOnClickListener
@@ -477,6 +474,9 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             mnemonicETHChoose.add(binding.tvContributingWordsName1.text.toString())
             mnemonicETHChoose.forEachIndexed { index, element ->
                 if (element != mnemonicETHOriginal[index]) {
+                    if (clickErrorCount >= 3) {
+                        contributingWordsFailDialog()
+                    }
                     myDataBeans[index].isWrong = true
                     clickErrorCount++
                 }
@@ -488,9 +488,6 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName2.setOnClickListener {
-            if (clickErrorCount >= 3) {
-                contributingWordsFailDialog()
-            }
             myDataBeans.forEach {
                 if (it.isWrong) {
                     return@setOnClickListener
@@ -503,6 +500,9 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             mnemonicETHChoose.add(binding.tvContributingWordsName2.text.toString())
             mnemonicETHChoose.forEachIndexed { index, element ->
                 if (element != mnemonicETHOriginal[index]) {
+                    if (clickErrorCount >= 3) {
+                        contributingWordsFailDialog()
+                    }
                     myDataBeans[index].isWrong = true
                     clickErrorCount++
                 }
@@ -513,9 +513,6 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName3.setOnClickListener {
-            if (clickErrorCount >= 3) {
-                contributingWordsFailDialog()
-            }
             myDataBeans.forEach {
                 if (it.isWrong) {
                     return@setOnClickListener
@@ -528,6 +525,9 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             mnemonicETHChoose.add(binding.tvContributingWordsName3.text.toString())
             mnemonicETHChoose.forEachIndexed { index, element ->
                 if (element != mnemonicETHOriginal[index]) {
+                    if (clickErrorCount >= 3) {
+                        contributingWordsFailDialog()
+                    }
                     myDataBeans[index].isWrong = true
                     clickErrorCount++
                 }
@@ -538,9 +538,6 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName4.setOnClickListener {
-            if (clickErrorCount >= 3) {
-                contributingWordsFailDialog()
-            }
             myDataBeans.forEach {
                 if (it.isWrong) {
                     return@setOnClickListener
@@ -553,6 +550,9 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             mnemonicETHChoose.add(binding.tvContributingWordsName4.text.toString())
             mnemonicETHChoose.forEachIndexed { index, element ->
                 if (element != mnemonicETHOriginal[index]) {
+                    if (clickErrorCount >= 3) {
+                        contributingWordsFailDialog()
+                    }
                     myDataBeans[index].isWrong = true
                     clickErrorCount++
                 }
@@ -563,9 +563,6 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName5.setOnClickListener {
-            if (clickErrorCount >= 3) {
-                contributingWordsFailDialog()
-            }
             myDataBeans.forEach {
                 if (it.isWrong) {
                     return@setOnClickListener
@@ -578,6 +575,9 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             mnemonicETHChoose.add(binding.tvContributingWordsName5.text.toString())
             mnemonicETHChoose.forEachIndexed { index, element ->
                 if (element != mnemonicETHOriginal[index]) {
+                    if (clickErrorCount >= 3) {
+                        contributingWordsFailDialog()
+                    }
                     myDataBeans[index].isWrong = true
                     clickErrorCount++
                 }
@@ -588,9 +588,6 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName6.setOnClickListener {
-            if (clickErrorCount >= 3) {
-                contributingWordsFailDialog()
-            }
             myDataBeans.forEach {
                 if (it.isWrong) {
                     return@setOnClickListener
@@ -603,6 +600,9 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             mnemonicETHChoose.add(binding.tvContributingWordsName6.text.toString())
             mnemonicETHChoose.forEachIndexed { index, element ->
                 if (element != mnemonicETHOriginal[index]) {
+                    if (clickErrorCount >= 3) {
+                        contributingWordsFailDialog()
+                    }
                     myDataBeans[index].isWrong = true
                     clickErrorCount++
                 }
@@ -613,9 +613,6 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName7.setOnClickListener {
-            if (clickErrorCount >= 3) {
-                contributingWordsFailDialog()
-            }
             myDataBeans.forEach {
                 if (it.isWrong) {
                     return@setOnClickListener
@@ -628,6 +625,9 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             mnemonicETHChoose.add(binding.tvContributingWordsName7.text.toString())
             mnemonicETHChoose.forEachIndexed { index, element ->
                 if (element != mnemonicETHOriginal[index]) {
+                    if (clickErrorCount >= 3) {
+                        contributingWordsFailDialog()
+                    }
                     myDataBeans[index].isWrong = true
                     clickErrorCount++
                 }
@@ -638,9 +638,6 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName8.setOnClickListener {
-            if (clickErrorCount >= 3) {
-                contributingWordsFailDialog()
-            }
             myDataBeans.forEach {
                 if (it.isWrong) {
                     return@setOnClickListener
@@ -653,6 +650,9 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             mnemonicETHChoose.add(binding.tvContributingWordsName8.text.toString())
             mnemonicETHChoose.forEachIndexed { index, element ->
                 if (element != mnemonicETHOriginal[index]) {
+                    if (clickErrorCount >= 3) {
+                        contributingWordsFailDialog()
+                    }
                     myDataBeans[index].isWrong = true
                     clickErrorCount++
                 }
@@ -663,9 +663,6 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName9.setOnClickListener {
-            if (clickErrorCount >= 3) {
-                contributingWordsFailDialog()
-            }
             myDataBeans.forEach {
                 if (it.isWrong) {
                     return@setOnClickListener
@@ -678,6 +675,9 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             mnemonicETHChoose.add(binding.tvContributingWordsName9.text.toString())
             mnemonicETHChoose.forEachIndexed { index, element ->
                 if (element != mnemonicETHOriginal[index]) {
+                    if (clickErrorCount >= 3) {
+                        contributingWordsFailDialog()
+                    }
                     myDataBeans[index].isWrong = true
                     clickErrorCount++
                 }
@@ -688,9 +688,6 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName10.setOnClickListener {
-            if (clickErrorCount >= 3) {
-                contributingWordsFailDialog()
-            }
             myDataBeans.forEach {
                 if (it.isWrong) {
                     return@setOnClickListener
@@ -703,6 +700,9 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             mnemonicETHChoose.add(binding.tvContributingWordsName10.text.toString())
             mnemonicETHChoose.forEachIndexed { index, element ->
                 if (element != mnemonicETHOriginal[index]) {
+                    if (clickErrorCount >= 3) {
+                        contributingWordsFailDialog()
+                    }
                     myDataBeans[index].isWrong = true
                     clickErrorCount++
                 }
@@ -713,9 +713,6 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName11.setOnClickListener {
-            if (clickErrorCount >= 3) {
-                contributingWordsFailDialog()
-            }
             myDataBeans.forEach {
                 if (it.isWrong) {
                     return@setOnClickListener
@@ -734,6 +731,9 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             mnemonicETHChoose.add(binding.tvContributingWordsName11.text.toString())
             mnemonicETHChoose.forEachIndexed { index, element ->
                 if (element != mnemonicETHOriginal[index]) {
+                    if (clickErrorCount >= 3) {
+                        contributingWordsFailDialog()
+                    }
                     myDataBeans[index].isWrong = true
                     clickErrorCount++
                 }
@@ -744,9 +744,6 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             contributingWordsConfirmClick()
         }
         binding.tvContributingWordsName12.setOnClickListener {
-            if (clickErrorCount >= 3) {
-                contributingWordsFailDialog()
-            }
             myDataBeans.forEach {
                 if (it.isWrong) {
                     return@setOnClickListener
@@ -765,6 +762,9 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             mnemonicETHChoose.add(binding.tvContributingWordsName12.text.toString())
             mnemonicETHChoose.forEachIndexed { index, element ->
                 if (element != mnemonicETHOriginal[index]) {
+                    if (clickErrorCount >= 3) {
+                        contributingWordsFailDialog()
+                    }
                     myDataBeans[index].isWrong = true
                     clickErrorCount++
                 }

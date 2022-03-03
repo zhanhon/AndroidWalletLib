@@ -53,7 +53,7 @@ public class TransferBTCUtils {
     public static boolean isMainNet;
 
     static {
-        isMainNet = false;
+        isMainNet = true;
     }
 
     private TransferBTCUtils() {
