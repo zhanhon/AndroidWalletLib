@@ -62,15 +62,15 @@ class CreateRecoverWalletActivity : BaseActivity(), View.OnClickListener {
         when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
             CN -> {
                 binding.tvMore.text = getString(R.string.language_simplified_chinese)
-                LanguageSetting.setLanguage(applicationContext, 1)
+                LanguageSetting.setLanguage(this, 1)
             }
             TW -> {
                 binding.tvMore.text = getString(R.string.language_traditional_chinese)
-                LanguageSetting.setLanguage(applicationContext, 2)
+                LanguageSetting.setLanguage(this, 2)
             }
             EN -> {
                 binding.tvMore.text = getString(R.string.language_english)
-                LanguageSetting.setLanguage(applicationContext, 3)
+                LanguageSetting.setLanguage(this, 3)
             }
         }
     }
