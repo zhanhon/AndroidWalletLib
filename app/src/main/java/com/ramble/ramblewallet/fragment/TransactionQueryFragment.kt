@@ -60,6 +60,7 @@ class TransactionQueryFragment : BaseFragment(),
     private var address = ""
     private var addressType = 0
     private var currencyUnit = ""
+    private var changeCurrencyType=0
 
 
     override fun onAttach(context: Context) {
@@ -98,6 +99,7 @@ class TransactionQueryFragment : BaseFragment(),
                     binding.lyPullRefresh.finishLoadMore() //加载完成
                     ProgressItem.addTo(adapter)
                     currentPage += 1
+                    dataCheck()
                     loadData()
                 } else {
                     binding.lyPullRefresh.finishLoadMoreWithNoMoreData()
@@ -116,6 +118,7 @@ class TransactionQueryFragment : BaseFragment(),
     private fun reFreshData() {
         currentPage = 1
         totalPage = 1
+        dataCheck()
         loadData()
     }
 
@@ -125,8 +128,7 @@ class TransactionQueryFragment : BaseFragment(),
         reFreshData()
     }
 
-    @SuppressLint("CheckResult")
-    private fun loadData() {
+    private fun  dataCheck(){
         if (isAll) {
             endTime = null
             startTime = null
@@ -144,7 +146,7 @@ class TransactionQueryFragment : BaseFragment(),
             else -> null
         }
 
-        var changeCurrencyType =
+        changeCurrencyType =
             when (SharedPreferencesUtils.getString(myActivity, CURRENCY, USD)) {
                 CNY -> {
                     2
@@ -182,6 +184,10 @@ class TransactionQueryFragment : BaseFragment(),
             }
         }
         address = saveData(saveWalletList)
+    }
+
+    @SuppressLint("CheckResult")
+    private fun loadData() {
         var req = QueryTransferRecord.Req(
             currentPage,
             20,

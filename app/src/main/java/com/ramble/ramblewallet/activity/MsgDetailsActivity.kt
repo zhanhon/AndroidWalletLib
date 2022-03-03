@@ -44,6 +44,11 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
         createTime = getExtras().getString(ARG_PARAM3, "")
         typeText = getExtras().getInt(ARG_PARAM4, 0)
         id = getExtras().getInt(ARG_PARAM5, 0)
+        initView()
+        initListener()
+    }
+
+    private fun initView(){
         when (typeText) {
             1 -> {
                 binding.ivRight.visibility = View.GONE
@@ -54,62 +59,10 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
                 binding.ivRight.visibility = View.GONE
                 if (typeText == 2) {
                     binding.tvMineTitle.text = getString(R.string.message_details)
-                    if (id != 0) {
-                        list = if (SharedPreferencesUtils.getString(
-                                this,
-                                READ_ID,
-                                ""
-                            ).isNotEmpty()
-                        ) {
-                            SharedPreferencesUtils.String2SceneList(
-                                SharedPreferencesUtils.getString(
-                                    this,
-                                    READ_ID,
-                                    ""
-                                )
-                            )
-                        } else {
-                            mutableListOf()
-                        }
-                        if (list.isNotEmpty()) {
-                            if (!list.contains(id)) {
-                                list.add(id)
-                            }
-                        } else {
-                            list.add(id)
-                        }
-                        var addId = SharedPreferencesUtils.SceneList2String(list)
-                        SharedPreferencesUtils.saveString(this, READ_ID, addId)
-                    }
+                    listData()
                 } else {
                     binding.tvMineTitle.text = getString(R.string.announcement_content)
-                    if (id != 0) {
-                        list = if (SharedPreferencesUtils.getString(
-                                this,
-                                READ_ID_NEW,
-                                ""
-                            ).isNotEmpty()
-                        ) {
-                            SharedPreferencesUtils.String2SceneList(
-                                SharedPreferencesUtils.getString(
-                                    this,
-                                    READ_ID_NEW,
-                                    ""
-                                )
-                            )
-                        } else {
-                            mutableListOf()
-                        }
-                        if (list.isNotEmpty()) {
-                            if (!list.contains(id)) {
-                                list.add(id)
-                            }
-                        } else {
-                            list.add(id)
-                        }
-                        var addId = SharedPreferencesUtils.SceneList2String(list)
-                        SharedPreferencesUtils.saveString(this, READ_ID_NEW, addId)
-                    }
+                    listData2()
                 }
                 isCheckContent(content, title)
             }
@@ -128,7 +81,66 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
                 isCheckContent(content, title)
             }
         }
-        initListener()
+    }
+
+    private fun listData(){
+        if (id != 0) {
+            list = if (SharedPreferencesUtils.getString(
+                    this,
+                    READ_ID,
+                    ""
+                ).isNotEmpty()
+            ) {
+                SharedPreferencesUtils.String2SceneList(
+                    SharedPreferencesUtils.getString(
+                        this,
+                        READ_ID,
+                        ""
+                    )
+                )
+            } else {
+                mutableListOf()
+            }
+            if (list.isNotEmpty()) {
+                if (!list.contains(id)) {
+                    list.add(id)
+                }
+            } else {
+                list.add(id)
+            }
+            var addId = SharedPreferencesUtils.SceneList2String(list)
+            SharedPreferencesUtils.saveString(this, READ_ID, addId)
+        }
+    }
+
+    private fun listData2(){
+        if (id != 0) {
+            list = if (SharedPreferencesUtils.getString(
+                    this,
+                    READ_ID_NEW,
+                    ""
+                ).isNotEmpty()
+            ) {
+                SharedPreferencesUtils.String2SceneList(
+                    SharedPreferencesUtils.getString(
+                        this,
+                        READ_ID_NEW,
+                        ""
+                    )
+                )
+            } else {
+                mutableListOf()
+            }
+            if (list.isNotEmpty()) {
+                if (!list.contains(id)) {
+                    list.add(id)
+                }
+            } else {
+                list.add(id)
+            }
+            var addId = SharedPreferencesUtils.SceneList2String(list)
+            SharedPreferencesUtils.saveString(this, READ_ID_NEW, addId)
+        }
     }
 
     private fun initListener() {

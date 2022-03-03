@@ -68,14 +68,10 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
         tokenBean = intent.getSerializableExtra(ARG_PARAM2) as MainETHTokenBean
         zxingview = findViewById(R.id.zxingview)
         zxingview?.setDelegate(this)
-        initView()
         initListener()
 
     }
 
-    private fun initView() {
-
-    }
 
     @AfterPermissionGranted(1)
     private fun requestCodeQRCodePermissions() {
@@ -100,26 +96,24 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_1029 && resultCode == Activity.RESULT_OK) {
-            if (Matisse.obtainPathResult(data).isNotEmpty()) {
-                val uris = Matisse.obtainResult(data)
-                val uri: Uri? = uris[0]
-                try {
-                    val result: Result? = scanningImage(uri)
-                    if (result != null) {
-                        downScanQRCodeSuccess(result.text)
-                    } else {
-                        Toast.makeText(
-                            this@ScanActivity,
-                            MyApp.sInstance.getString(R.string.scan_qr_code_fail),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                } catch (e: FileNotFoundException) {
-                    e.printStackTrace()
+        if ((requestCode == REQUEST_CODE_1029 )&& (resultCode == Activity.RESULT_OK) && Matisse.obtainPathResult(data).isNotEmpty()
+        ) {
+            val uris = Matisse.obtainResult(data)
+            val uri: Uri? = uris[0]
+            try {
+                val result: Result? = scanningImage(uri)
+                if (result != null) {
+                    onScanQRCodeSuccess(result.text)
+                } else {
+                    Toast.makeText(
+                        this@ScanActivity,
+                        MyApp.sInstance.getString(R.string.scan_qr_code_fail),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
             }
-
         }
 
     }
@@ -233,27 +227,6 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
                     it.putSerializable(ARG_PARAM2, tokenBean)
                 })
 
-                finish()
-            }
-        }
-    }
-
-    private fun downScanQRCodeSuccess(result: String?) {
-        zxingview?.stopSpot()
-        when (type) {
-            1 -> {
-                RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_SCAN, result)
-                finish()
-            }
-            2 -> {
-                RxBus.emitEvent(Pie.EVENT_RESS_TRANS_SCAN, result)
-                finish()
-            }
-            3 -> {
-                start(TransferActivity::class.java, Bundle().also {
-                    it.putString(ARG_PARAM1, result)
-                    it.putSerializable(ARG_PARAM2, tokenBean)
-                })
                 finish()
             }
         }
