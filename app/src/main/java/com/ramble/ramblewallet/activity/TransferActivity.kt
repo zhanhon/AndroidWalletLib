@@ -677,7 +677,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         dialog.show()
         val window: Window? = dialog.window
         if (window != null) {
-            window.setContentView(R.layout.dialog_network_anomaly)
+            window.setContentView(R.layout.dialog_transfer_fail)
             dialogCenterTheme(window)
 
             window.findViewById<TextView>(R.id.tv_content).text = content
