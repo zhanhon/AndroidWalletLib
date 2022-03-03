@@ -61,15 +61,15 @@ public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
     /**
      * default 1 view type
      */
-    public BaseAbsAdapter() {
+    protected BaseAbsAdapter() {
         this(1);
     }
 
-    public BaseAbsAdapter(int viewTypeCount) {
+    protected BaseAbsAdapter(int viewTypeCount) {
         this(null, viewTypeCount);
     }
 
-    public BaseAbsAdapter(@Nullable List<T> data, int viewTypeCount) {
+    protected BaseAbsAdapter(@Nullable List<T> data, int viewTypeCount) {
         this.data = data == null ? new ArrayList<T>() : new ArrayList<>(data);
         this.provider = new ListenerProviderImpl();
         this.viewTypeCount = viewTypeCount;
