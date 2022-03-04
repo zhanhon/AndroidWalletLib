@@ -270,7 +270,7 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
             View view = (View) object;
             T item = get(position);
             ViewHolder holder = (ViewHolder) view.getTag(AdapterUtils.ADAPTER_HOLDER);
-            if (item != null && holder != null) {
+            if (holder != null) {
                 item.unbind(holder);
             }
             container.removeView(view);
