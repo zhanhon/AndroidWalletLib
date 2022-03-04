@@ -177,7 +177,7 @@
     <string name="receiver_address">Receiver Address</string>
     <string name="miner_fee_formulae">Miner Fee = GAS Price*GAS Limit</string>
     <string name="gathering_copy">Copy</string>
-    <string name="gathering_scan_tips">Scan QR Code To Transfer To <tools>%s</tools></string>
+    <string name="gathering_scan_tips">Scan The QRcode And Transfer It To The <tools>%s</tools> Wallet</string>
     <string name="save_success">Save Successfully</string>
     <string name="save_scan">Save QR Code</string>
     <string name="language_traditional_chinese">繁體中文</string>
