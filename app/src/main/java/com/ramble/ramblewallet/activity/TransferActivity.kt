@@ -184,7 +184,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                             return
                         }
                         if (isToken) {
-                            isAddressActivateToken(this, binding.edtReceiverAddress.text.toString(), contractTRXAddress)
+                            isAddressActivateToken(this, binding.edtReceiverAddress.text.toString(), tokenBean.contractAddress)
                         } else {
                             isAddressActivate(this, binding.edtReceiverAddress.text.toString())
                         }

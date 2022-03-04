@@ -69,8 +69,8 @@ public class TransferTrxUtils {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                long length = response.body().contentLength();
-                if (length == 3) { //当body为null，判断此地址为激活
+                String string = response.body().string();
+                if (!string.contains("balance")) { //当body为null，判断此地址为激活
                     if (context instanceof TransferActivity) {
                         ((TransferActivity) context).isTrxAddressActivate(false);
                     }
@@ -103,8 +103,8 @@ public class TransferTrxUtils {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                long length = response.body().contentLength();
-                if (length == 3) { //当body为null，判断此地址为激活
+                String string = response.body().string();
+                if (!string.contains("constant_result")) { //当body为null，判断此地址为激活
                     if (context instanceof TransferActivity) {
                         ((TransferActivity) context).isTrxAddressActivate(false);
                     }
