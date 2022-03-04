@@ -184,7 +184,7 @@
     <string name="language_english">English</string>
     <string name="language_choose">Language</string>
     <string name="currency_choose">Currency Unit</string>
-    <string name="transfer_remark">Transfer Remark</string>
+    <string name="transfer_remark">Note</string>
     <string name="choose_fill">Optional</string>
     <string name="add_wallet">Add Wallet</string>
     <string name="least_save_wallet">Keep At Least One Wallet</string>
