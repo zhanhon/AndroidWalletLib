@@ -17,7 +17,10 @@ import static com.develop.mnemonic.MnemonicUtils.generateMnemonic;
 public class MnemonicUtils {
 
     private static final SecureRandom secureRandom = SecureRandomUtils.secureRandom();
-    private final ArrayList<String> mnemonicList = new ArrayList();
+
+    private MnemonicUtils() {
+        throw new IllegalStateException("MnemonicUtils");
+    }
 
     /**
      * 生成助记词：语言为简体中文\英文
@@ -26,7 +29,7 @@ public class MnemonicUtils {
      */
     public static ArrayList<String> generateMnemonicEnglishChinese() {
         byte[] initialEntropy = new byte[16];
-        ArrayList<String> mnemonicList = new ArrayList();
+        ArrayList<String> mnemonicList = new ArrayList<>();
         secureRandom.nextBytes(initialEntropy);
         String mnemonic1 = generateMnemonic(initialEntropy, English.INSTANCE);
         mnemonicList.add(mnemonic1);
@@ -42,7 +45,7 @@ public class MnemonicUtils {
      */
     public static ArrayList<String> generateMnemonicChineseTraditional() {
         byte[] initialEntropy = new byte[16];
-        ArrayList<String> mnemonicList = new ArrayList();
+        ArrayList<String> mnemonicList = new ArrayList<>();
         secureRandom.nextBytes(initialEntropy);
         String mnemonic1 = generateMnemonic(initialEntropy, English.INSTANCE);
         mnemonicList.add(mnemonic1);

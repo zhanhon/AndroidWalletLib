@@ -176,6 +176,7 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
 
                         override
                         fun onDenied(deniedPermissions: List<String?>?) {
+                            println("-=-=->${deniedPermissions.toString()}")
                         }
                     })
                 dialog.dismiss()

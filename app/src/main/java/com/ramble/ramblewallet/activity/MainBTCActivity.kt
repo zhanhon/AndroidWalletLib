@@ -443,10 +443,9 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                         mainAdapter = MainAdapter(mainETHTokenBean)
                         binding.rvCurrency.adapter = mainAdapter
                         mainAdapter.setOnItemClickListener { adapter, _, position ->
-                            if (adapter.getItem(position) is MainETHTokenBean) {
-                                if ((adapter.getItem(position) as MainETHTokenBean).symbol != "BTC") {
+                            if ((adapter.getItem(position) is MainETHTokenBean)
+                                && ((adapter.getItem(position) as MainETHTokenBean).symbol != "BTC")){
                                     showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
-                                }
                             }
                         }
                     }

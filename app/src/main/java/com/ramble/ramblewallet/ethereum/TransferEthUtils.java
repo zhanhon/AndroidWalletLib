@@ -10,7 +10,6 @@ import androidx.annotation.RequiresApi;
 import com.ramble.ramblewallet.BuildConfig;
 import com.ramble.ramblewallet.activity.TransferActivity;
 import com.ramble.ramblewallet.bean.MainETHTokenBean;
-import com.ramble.ramblewallet.bean.StoreInfo;
 import com.ramble.ramblewallet.ethereum.utils.StringHexUtils;
 
 import org.web3j.abi.FunctionEncoder;

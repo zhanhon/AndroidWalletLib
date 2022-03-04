@@ -39,7 +39,7 @@ class RecoverWalletListActivity : BaseActivity(), View.OnClickListener {
         binding.rlBtc.setOnClickListener(this)
     }
 
-    private fun showDialog(title: String, walletType: Int) {
+    private fun showDialogList(walletType: Int) {
         var dialog = AlertDialog.Builder(this).create()
         dialog.show()
         val window: Window? = dialog.window
@@ -96,13 +96,13 @@ class RecoverWalletListActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.rl_eth -> {
-                showDialog(binding.tvEthCurrencyName.text.toString(), 1)
+                showDialogList(1)
             }
             R.id.rl_trx -> {
-                showDialog(binding.tvTrxCurrencyName.text.toString(), 2)
+                showDialogList(2)
             }
             R.id.rl_btc -> {
-                showDialog(binding.tvBtcCurrencyName.text.toString(), 3)
+                showDialogList(3)
             }
         }
     }

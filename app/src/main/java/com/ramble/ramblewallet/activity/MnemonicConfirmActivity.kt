@@ -787,79 +787,50 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         contributingWordsConfirmAdapter.setOnItemClickListener { _, _, position ->
             when (position) {
                 0 -> {
-                    position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
-                    contributingWordsConfirmAdapter.remove(myDataBeans[position])
-                    contributingWordsConfirmAdapter.notifyDataSetChanged()
+                    setItemClickSub(position)
                 }
                 1 -> {
-                    position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
-                    contributingWordsConfirmAdapter.remove(myDataBeans[position])
-                    contributingWordsConfirmAdapter.notifyDataSetChanged()
+                    setItemClickSub(position)
                 }
                 2 -> {
-                    position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
-                    contributingWordsConfirmAdapter.remove(myDataBeans[position])
-                    contributingWordsConfirmAdapter.notifyDataSetChanged()
+                    setItemClickSub(position)
                 }
                 3 -> {
-                    position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
-                    contributingWordsConfirmAdapter.remove(myDataBeans[position])
-                    contributingWordsConfirmAdapter.notifyDataSetChanged()
+                    setItemClickSub(position)
                 }
                 4 -> {
-                    position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
-                    contributingWordsConfirmAdapter.remove(myDataBeans[position])
-                    contributingWordsConfirmAdapter.notifyDataSetChanged()
+                    setItemClickSub(position)
                 }
                 5 -> {
-                    position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
-                    contributingWordsConfirmAdapter.remove(myDataBeans[position])
-                    contributingWordsConfirmAdapter.notifyDataSetChanged()
+                    setItemClickSub(position)
                 }
                 6 -> {
-                    position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
-                    contributingWordsConfirmAdapter.remove(myDataBeans[position])
-                    contributingWordsConfirmAdapter.notifyDataSetChanged()
+                    setItemClickSub(position)
                 }
                 7 -> {
-                    position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
-                    contributingWordsConfirmAdapter.remove(myDataBeans[position])
-                    contributingWordsConfirmAdapter.notifyDataSetChanged()
+                    setItemClickSub(position)
                 }
                 8 -> {
-                    position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
-                    contributingWordsConfirmAdapter.remove(myDataBeans[position])
-                    contributingWordsConfirmAdapter.notifyDataSetChanged()
+                    setItemClickSub(position)
                 }
                 9 -> {
-                    position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
-                    contributingWordsConfirmAdapter.remove(myDataBeans[position])
-                    contributingWordsConfirmAdapter.notifyDataSetChanged()
+                    setItemClickSub(position)
                 }
                 10 -> {
-                    position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
-                    contributingWordsConfirmAdapter.remove(myDataBeans[position])
-                    contributingWordsConfirmAdapter.notifyDataSetChanged()
+                    setItemClickSub(position)
                 }
                 11 -> {
-                    position(myDataBeans[position].index)
-                    mnemonicETHChoose.remove(mnemonicETHChoose[position])
-                    contributingWordsConfirmAdapter.remove(myDataBeans[position])
-                    contributingWordsConfirmAdapter.notifyDataSetChanged()
+                    setItemClickSub(position)
                 }
             }
         }
+    }
+
+    private fun setItemClickSub(position: Int) {
+        position(myDataBeans[position].index)
+        mnemonicETHChoose.remove(mnemonicETHChoose[position])
+        contributingWordsConfirmAdapter.remove(myDataBeans[position])
+        contributingWordsConfirmAdapter.notifyDataSetChanged()
     }
 
     private fun position(position: Int) {

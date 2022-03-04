@@ -54,15 +54,15 @@ var appUIDeep = 0
     private set
 
 fun setupArchLibrary(
-    __appContext: Context,
-    __isDebug: Boolean,
-    __appProcessName: String,
-    __appUIDeep: Int
+    mAppContext: Context,
+    mIsDebug: Boolean,
+    mAppProcessName: String,
+    mAppUIDeep: Int
 ) {
-    appContext = __appContext
-    isDebug = __isDebug
-    appProcessName = __appProcessName
-    appUIDeep = __appUIDeep
+    appContext = mAppContext
+    isDebug = mIsDebug
+    appProcessName = mAppProcessName
+    appUIDeep = mAppUIDeep
 }
 
 const val WALLETINFO = "wallet_info"

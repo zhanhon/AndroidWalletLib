@@ -31,7 +31,6 @@ import org.bitcoinj.script.Script;
 import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.script.ScriptPattern;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -51,7 +50,7 @@ import okhttp3.Response;
 
 public class TransferBTCUtils {
 
-    public static boolean isMainNet;
+    private static boolean isMainNet;
 
     static {
         isMainNet = true;
@@ -132,7 +131,7 @@ public class TransferBTCUtils {
                     }
                     JSONArray unspentOutputs = jsonObject.getJSONObject("data").getJSONArray("txs");
                     List<Map> outputs = JSONObject.parseArray(unspentOutputs.toJSONString(), Map.class);
-                    if (outputs == null || outputs.size() == 0) {
+                    if (outputs.isEmpty()) {
                         Log.v("-=-=->","交易异常，余额不足");
                         return;
                     }

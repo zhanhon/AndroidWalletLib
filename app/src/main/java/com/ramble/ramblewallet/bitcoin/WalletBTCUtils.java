@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class WalletBTCUtils {
 
-    public static final boolean isMainNet;
+    private static final boolean isMainNet;
 
     static {
         isMainNet = true;

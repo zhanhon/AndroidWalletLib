@@ -92,14 +92,22 @@ interface ItemTouchDelegate {
 
     fun onMove(srcPosition: Int, targetPosition: Int): Boolean = true
 
-    fun onSwiped(position: Int, direction: Int) {}
+    fun onSwiped(position: Int, direction: Int) {
+        //暂时不需要实现此方法
+    }
 
     // 正在滑动，可在这个方法进行UI更新操作
-    fun uiOnSwiping(viewHolder: RecyclerView.ViewHolder?) {}
+    fun uiOnSwiping(viewHolder: RecyclerView.ViewHolder?) {
+        //暂时不需要实现此方法
+    }
 
     // 正在拖动，可以在这个方法进行UI更新操作
-    fun uiOnDragging(viewHolder: RecyclerView.ViewHolder?) {}
+    fun uiOnDragging(viewHolder: RecyclerView.ViewHolder?) {
+        //暂时不需要实现此方法
+    }
 
     // 用户释放与当前itemView的交互时调用，可在此方法进行UI的复原
-    fun uiOnClearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {}
+    fun uiOnClearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+        //暂时不需要实现此方法
+    }
 }

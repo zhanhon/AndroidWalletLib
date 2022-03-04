@@ -476,10 +476,9 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                     mainAdapter = MainAdapter(mainETHTokenBean)
                     binding.rvCurrency.adapter = mainAdapter
                     mainAdapter.setOnItemClickListener { adapter, _, position ->
-                        if (adapter.getItem(position) is MainETHTokenBean) {
-                            if ((adapter.getItem(position) as MainETHTokenBean).symbol != "TRX") {
+                        if ((adapter.getItem(position) is MainETHTokenBean)
+                            && ((adapter.getItem(position) as MainETHTokenBean).symbol != "TRX")){
                                 showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
-                            }
                         }
                     }
                     setBalanceTRX(totalBalance)

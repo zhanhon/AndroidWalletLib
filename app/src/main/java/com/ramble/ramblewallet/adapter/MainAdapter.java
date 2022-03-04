@@ -40,6 +40,8 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
             case USD:
                 baseViewHolder.setText(R.id.tv_converted_token_unit, "$");
                 break;
+            default:
+                break;
         }
         baseViewHolder.setText(R.id.tv_unit_price, strAddComma(DecimalFormatUtil.format8.format(new BigDecimal(mainETHTokenBean.getUnitPrice()))));
     }

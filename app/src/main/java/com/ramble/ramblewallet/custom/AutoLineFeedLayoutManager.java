@@ -25,7 +25,8 @@ public class AutoLineFeedLayoutManager extends RecyclerView.LayoutManager {
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         detachAndScrapAttachedViews(recycler);
 
-        int curLineWidth = 0, curLineTop = 0;//curLineWidth 累加item布局时的x轴偏移curLineTop 累加item布局时的x轴偏移
+        int curLineWidth = 0;
+        int curLineTop = 0;//curLineWidth 累加item布局时的x轴偏移curLineTop 累加item布局时的x轴偏移
         int lastLineMaxHeight = 0;
         for (int i = 0; i < getItemCount(); i++) {
             View view = recycler.getViewForPosition(i);

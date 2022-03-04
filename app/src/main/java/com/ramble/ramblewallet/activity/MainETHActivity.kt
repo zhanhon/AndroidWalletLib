@@ -509,10 +509,9 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                     mainAdapter = MainAdapter(mainETHTokenBean)
                     binding.rvCurrency.adapter = mainAdapter
                     mainAdapter.setOnItemClickListener { adapter, _, position ->
-                        if (adapter.getItem(position) is MainETHTokenBean) {
-                            if ((adapter.getItem(position) as MainETHTokenBean).symbol != "ETH") {
+                        if ((adapter.getItem(position) is MainETHTokenBean)
+                            && ((adapter.getItem(position) as MainETHTokenBean).symbol != "ETH")){
                                 showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
-                            }
                         }
                     }
                     setBalanceETH(totalBalance)
