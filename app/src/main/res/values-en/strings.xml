@@ -66,7 +66,7 @@
     <string name="wallet_name">Wallet Name</string>
     <string name="create_recover_wallet_tips">Easy Token, Easy Go!</string>
     <string name="clear_cache">Cleaning The Cache</string>
-    <string name="transaction_tips">Please Wait For A Little While To Confirm.</string>
+    <string name="transaction_tips">Please wait for a while.</string>
     <string name="please_confirm_delete_wallet">Please Confirm To Delete This Wallet</string>
     <string name="please_input_password">Please Enter The Password</string>
     <string name="block_number">Block Number</string>
