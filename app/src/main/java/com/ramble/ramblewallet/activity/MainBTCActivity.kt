@@ -259,7 +259,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             R.id.iv_copy -> {
-                ClipboardUtils.copy(walletSelleted.address)
+                ClipboardUtils.copy(walletSelleted.address,this)
             }
             R.id.tv_ntf -> {
                 toastDefault(getString(R.string.coming_soon))

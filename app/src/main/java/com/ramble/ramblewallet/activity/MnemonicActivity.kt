@@ -117,13 +117,13 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
             R.id.btn_one_copy -> {
                 when (currentTab) {
                     "english" -> {
-                        ClipboardUtils.copy(mnemonicList[0])
+                        ClipboardUtils.copy(mnemonicList[0],this)
                     }
                     "chinese" -> {
-                        ClipboardUtils.copy(mnemonicList[1])
+                        ClipboardUtils.copy(mnemonicList[1],this)
                     }
                     else -> {
-                        ClipboardUtils.copy(mnemonicList[0])
+                        ClipboardUtils.copy(mnemonicList[0],this)
                     }
                 }
             }

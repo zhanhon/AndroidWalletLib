@@ -130,7 +130,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             when (view.id) {
                 R.id.iv_copy_address -> {
                     if (adapter.getItem(position) is Wallet) {
-                        ClipboardUtils.copy((adapter.getItem(position) as Wallet).address)
+                        ClipboardUtils.copy((adapter.getItem(position) as Wallet).address,this)
                     }
                 }
                 R.id.iv_wallet_more -> {

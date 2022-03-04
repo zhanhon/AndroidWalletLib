@@ -169,7 +169,6 @@ class TransactionQueryFragment : BaseFragment(),
                 object : TypeToken<Wallet>() {}.type
             )
         currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
-//        address = saveData(saveWalletList)
         addressType = if (currencyUnit.isNotEmpty()) {
             when (currencyUnit) {
                 "ETH" -> 1
