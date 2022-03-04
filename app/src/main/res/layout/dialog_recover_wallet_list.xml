@@ -23,18 +23,18 @@
         android:layout_marginBottom="@dimen/dp_20"
         android:background="@color/color_E2E2E2" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl_contributing_words"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:paddingLeft="@dimen/dp_20">
 
         <ImageView
             android:id="@+id/iv_eth_currency_icon"
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_10"
             android:background="@drawable/vector_contributing_words" />
@@ -43,9 +43,7 @@
             android:id="@+id/ll_eth_currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/iv_eth_currency_icon"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/dp_40"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -69,13 +67,11 @@
             android:id="@+id/iv_eth_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:layout_gravity="right|center_vertical"
             android:padding="@dimen/dp_20"
             android:src="@mipmap/ic_arrow_right"
             android:textColor="@color/color_000000" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
@@ -84,18 +80,18 @@
         android:layout_marginEnd="@dimen/dp_10"
         android:background="@color/color_F9F9F9" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl_secret_key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:paddingLeft="@dimen/dp_20">
 
         <ImageView
             android:id="@+id/iv_trx_currency_icon"
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_10"
             android:background="@drawable/vector_private_key" />
@@ -104,9 +100,7 @@
             android:id="@+id/ll_trx_currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/iv_trx_currency_icon"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/dp_40"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -130,13 +124,11 @@
             android:id="@+id/iv_trx_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:layout_gravity="right|center_vertical"
             android:padding="@dimen/dp_20"
             android:src="@mipmap/ic_arrow_right"
             android:textColor="@color/color_000000" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
@@ -145,18 +137,18 @@
         android:layout_marginEnd="@dimen/dp_10"
         android:background="@color/color_F9F9F9" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl_keystore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:paddingLeft="@dimen/dp_20">
 
         <ImageView
             android:id="@+id/iv_btc_currency_icon"
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_10"
             android:background="@drawable/vector_keystore" />
@@ -165,9 +157,7 @@
             android:id="@+id/ll_btc_currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/iv_btc_currency_icon"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/dp_40"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -191,11 +181,9 @@
             android:id="@+id/iv_btc_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:layout_gravity="right|center_vertical"
             android:padding="@dimen/dp_20"
             android:src="@mipmap/ic_arrow_right"
             android:textColor="@color/color_000000" />
-    </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

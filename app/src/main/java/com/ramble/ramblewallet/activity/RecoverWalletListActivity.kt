@@ -10,6 +10,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -57,14 +58,14 @@ class RecoverWalletListActivity : BaseActivity(), View.OnClickListener {
 
             when (walletType) {
                 1, 2 -> {
-                    window.findViewById<RelativeLayout>(R.id.rl_keystore).visibility = View.VISIBLE
+                    window.findViewById<LinearLayout>(R.id.rl_keystore).visibility = View.VISIBLE
                 }
                 3 -> {
-                    window.findViewById<RelativeLayout>(R.id.rl_keystore).visibility = View.GONE
+                    window.findViewById<LinearLayout>(R.id.rl_keystore).visibility = View.GONE
                 }
             }
 
-            window.findViewById<RelativeLayout>(R.id.rl_contributing_words).setOnClickListener {
+            window.findViewById<LinearLayout>(R.id.rl_contributing_words).setOnClickListener {
                 startActivity(Intent(this, RecoverWalletActivity::class.java).apply {
                     putExtra(ARG_PARAM1, walletType)
                     putExtra(ARG_PARAM2, 1)
@@ -72,7 +73,7 @@ class RecoverWalletListActivity : BaseActivity(), View.OnClickListener {
                 dialog.dismiss()
             }
 
-            window.findViewById<RelativeLayout>(R.id.rl_secret_key).setOnClickListener {
+            window.findViewById<LinearLayout>(R.id.rl_secret_key).setOnClickListener {
                 startActivity(Intent(this, RecoverWalletActivity::class.java).apply {
                     putExtra(ARG_PARAM1, walletType)
                     putExtra(ARG_PARAM2, 2)
@@ -80,7 +81,7 @@ class RecoverWalletListActivity : BaseActivity(), View.OnClickListener {
                 dialog.dismiss()
             }
 
-            window.findViewById<RelativeLayout>(R.id.rl_keystore).setOnClickListener {
+            window.findViewById<LinearLayout>(R.id.rl_keystore).setOnClickListener {
                 startActivity(Intent(this, RecoverWalletActivity::class.java).apply {
                     putExtra(ARG_PARAM1, walletType)
                     putExtra(ARG_PARAM2, 3)
