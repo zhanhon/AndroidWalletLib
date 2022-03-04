@@ -104,7 +104,14 @@ public class TransferTrxUtils {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String string = response.body().string();
-                if (!string.contains("constant_result")) { //当body为null，判断此地址为激活
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(string);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String constantResult = json.optString("constant_result");
+                if (constantResult.contains("0000000000000000000000000000000000000000000000000000000000000000")) { //当body为null，判断此地址为激活
                     if (context instanceof TransferActivity) {
                         ((TransferActivity) context).isTrxAddressActivate(false);
                     }
