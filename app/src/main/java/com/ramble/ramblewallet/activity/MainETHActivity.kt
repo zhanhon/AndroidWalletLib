@@ -48,7 +48,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private var saveTokenList: ArrayList<StoreInfo> = arrayListOf()
     private lateinit var walletSelleted: Wallet
     private var ethBalance: BigDecimal = BigDecimal("0.00000000")
-    private var tokenBalance: BigDecimal = BigDecimal("0.00000000")
     private var totalBalance: BigDecimal = BigDecimal("0.00")
     private var rateETH: String? = ""
     private var unitPrice = ""
@@ -346,11 +345,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 if (ethBalance != BigDecimal("0.00000000")) {
                     refreshData()
                 }
-                tokenBalance =
-                    TransferEthUtils.getBalanceToken(walletSelleted.address, contractAddress)
-                if (tokenBalance != BigDecimal("0.000000")) {
-                    refreshData()
-                }
             }.start()
         }
         binding.tvEthAddress.text = addressHandle(walletSelleted.address)
@@ -483,18 +477,33 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                             }
                         }
                         if (storeInfo.symbol != "ETH") {
-                            mainETHTokenBean.add(
-                                MainETHTokenBean(
-                                    "ETH-${storeInfo.symbol}",
-                                    storeInfo.symbol,
-                                    tokenBalance,
-                                    unitPrice,
-                                    currencyUnit,
-                                    storeInfo.contractAddress,
-                                    true
-                                )
+                            var tokenBean = MainETHTokenBean(
+                                "ETH-${storeInfo.symbol}",
+                                storeInfo.symbol,
+                                BigDecimal("0.00000000"),
+                                unitPrice,
+                                currencyUnit,
+                                storeInfo.contractAddress,
+                                true
                             )
-                            totalBalance += tokenBalance.multiply(BigDecimal(unitPrice))
+                            mainETHTokenBean.add(tokenBean)
+                            TransferEthUtils.getBalanceToken(walletSelleted.address, tokenBean)
+                            TransferEthUtils().setOnListener { storeInfo, tokenBalance ->
+                                mainETHTokenBean.add(
+                                    MainETHTokenBean(
+                                        "ETH-${storeInfo.symbol}",
+                                        storeInfo.symbol,
+                                        tokenBalance,
+                                        unitPrice,
+                                        currencyUnit,
+                                        storeInfo.contractAddress,
+                                        true
+                                    )
+                                )
+                                totalBalance += tokenBalance.multiply(BigDecimal(unitPrice))
+                                mainAdapter.notifyDataSetChanged()
+                                setBalanceETH(totalBalance)
+                            }
                         }
                     }
                     mainAdapter = MainAdapter(mainETHTokenBean)

@@ -383,7 +383,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     if (isToken) {
                         Thread {
                             transferBalance =
-                                getBalanceToken(walletSelleted.address, tokenBean.contractAddress)
+                                getBalanceToken(walletSelleted.address, tokenBean)
                             if (transferBalance != BigDecimal("0.000000")) {
                                 setBalance(transferBalance)
                             }

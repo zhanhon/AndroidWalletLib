@@ -9,6 +9,8 @@ import androidx.annotation.RequiresApi;
 
 import com.ramble.ramblewallet.BuildConfig;
 import com.ramble.ramblewallet.activity.TransferActivity;
+import com.ramble.ramblewallet.bean.MainETHTokenBean;
+import com.ramble.ramblewallet.bean.StoreInfo;
 import com.ramble.ramblewallet.ethereum.utils.StringHexUtils;
 
 import org.web3j.abi.FunctionEncoder;
@@ -47,8 +49,14 @@ public class TransferEthUtils {
 
     private static final String DATA_PREFIX = "0x70a08231000000000000000000000000";
 
-    private TransferEthUtils() {
-        throw new IllegalStateException("TransferEthUtils");
+    public static BalanceGet getBalance;
+
+    public interface BalanceGet {
+        void onListener(MainETHTokenBean tokenBean, BigDecimal tokenBalance);
+    }
+
+    public void setOnListener(BalanceGet getBalance) {
+        this.getBalance = getBalance;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -64,15 +72,16 @@ public class TransferEthUtils {
         }
     }
 
-    public static BigDecimal getBalanceToken(String address, String contractAddress) throws IOException {
+    public static BigDecimal getBalanceToken(String address, MainETHTokenBean tokenBean) throws IOException {
         try {
             String value = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + APIKEY))
                     .ethCall(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(address,
-                            contractAddress, DATA_PREFIX + address.substring(2)), DefaultBlockParameterName.PENDING).send().getValue();
+                            tokenBean.getContractAddress(), DATA_PREFIX + address.substring(2)), DefaultBlockParameterName.PENDING).send().getValue();
             String s = new BigInteger(value.substring(2), 16).toString();
             if (s.equals("0x")) {
                 return BigDecimal.valueOf(0.000000);
             } else {
+                getBalance.onListener(tokenBean, new BigDecimal(s).divide(BigDecimal.valueOf(1000000), 6, RoundingMode.UP));
                 return new BigDecimal(s).divide(BigDecimal.valueOf(1000000), 6, RoundingMode.UP);
             }
         } catch (Exception e) {
