@@ -165,7 +165,7 @@
     <string name="miner_fee_low_tips">The Miner Fee You Entered Is Too Low, Which May Cause The Transaction To Fail Or The Transaction Time To Be Too Long. Please Enter It Carefully! </string>
     <string name="miner_fee_high_tips">Miner Fee Is Too High, Please Enter Carefully</string>
     <string name="tips">Tips</string>
-    <string name="btn_confirm">OK</string>
+    <string name="btn_confirm">Confirm</string>
     <string name="please_input_your_wallet_name">Please Enter Your Wallet Name</string>
     <string name="please_confirm_password">Please Confirm Password</string>
     <string name="di_wallet">\'s Wallet</string>
