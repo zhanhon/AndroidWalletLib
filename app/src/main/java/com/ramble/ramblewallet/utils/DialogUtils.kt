@@ -142,8 +142,8 @@ fun showBottomDialog2(
                 1 -> {
                     if (binding.editName.text.isNullOrEmpty() || binding.editAddress.text.isNullOrEmpty()) {
                         Toast.makeText(
-                            MyApp.sInstance,
-                            MyApp.sInstance.getString(R.string.address_already_null),
+                            activity,
+                            activity.getString(R.string.address_already_null),
                             Toast.LENGTH_SHORT
                         ).show()
                         return@setOnClickListener
@@ -152,8 +152,8 @@ fun showBottomDialog2(
                 else -> {
                     if (binding.editAddress.text.isNullOrEmpty()) {
                         Toast.makeText(
-                            MyApp.sInstance,
-                            MyApp.sInstance.getString(R.string.address_already_null),
+                            activity,
+                            activity.getString(R.string.address_already_null),
                             Toast.LENGTH_SHORT
                         ).show()
                         return@setOnClickListener
@@ -249,8 +249,8 @@ fun showBottomDialog2(
                         myData.forEach {
                             if (it.userName != tvName && (it.userName == name || it.address == binding.editAddress.text.toString())) {
                                 Toast.makeText(
-                                    MyApp.sInstance,
-                                    MyApp.sInstance.getString(R.string.address_already_exists),
+                                    activity,
+                                    activity.getString(R.string.address_already_exists),
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 return@setOnClickListener
@@ -261,8 +261,8 @@ fun showBottomDialog2(
                         myData.forEach {
                             if (it.address == binding.editAddress.text.toString() || it.userName == name) {
                                 Toast.makeText(
-                                    MyApp.sInstance,
-                                    MyApp.sInstance.getString(R.string.address_already_exists),
+                                    activity,
+                                    activity.getString(R.string.address_already_exists),
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 return@setOnClickListener
@@ -291,8 +291,8 @@ fun showBottomDialog2(
             if (isBtcValidAddress(data.address)) {
                 if (data.address.length < 26) {
                     Toast.makeText(
-                        MyApp.sInstance,
-                        MyApp.sInstance.getString(R.string.address_already_err),
+                        activity,
+                        activity.getString(R.string.address_already_err),
                         Toast.LENGTH_SHORT
                     ).show()
                     return@setOnClickListener
@@ -300,8 +300,8 @@ fun showBottomDialog2(
             } else if (isEthValidAddress(data.address)) {
                 if (data.address.length < 42) {
                     Toast.makeText(
-                        MyApp.sInstance,
-                        MyApp.sInstance.getString(R.string.address_already_err),
+                        activity,
+                        activity.getString(R.string.address_already_err),
                         Toast.LENGTH_SHORT
                     ).show()
                     return@setOnClickListener
@@ -309,24 +309,24 @@ fun showBottomDialog2(
             } else if (isTrxValidAddress(data.address)) {
                 if (data.address.length < 34) {
                     Toast.makeText(
-                        MyApp.sInstance,
-                        MyApp.sInstance.getString(R.string.address_already_err),
+                        activity,
+                        activity.getString(R.string.address_already_err),
                         Toast.LENGTH_SHORT
                     ).show()
                     return@setOnClickListener
                 }
             } else {
                 Toast.makeText(
-                    MyApp.sInstance,
-                    MyApp.sInstance.getString(R.string.address_already_err),
+                    activity,
+                    activity.getString(R.string.address_already_err),
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
             }
             if (data.type == 4 || data.type == 0) {
                 Toast.makeText(
-                    MyApp.sInstance,
-                    MyApp.sInstance.getString(R.string.address_already_err),
+                    activity,
+                    activity.getString(R.string.address_already_err),
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
