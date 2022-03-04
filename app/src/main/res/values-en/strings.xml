@@ -131,7 +131,7 @@
     <string name="wallet_status_selected">Selected</string>
     <string name="new_address_wallet">Add Address</string>
     <string name="address">Address</string>
-    <string name="contributing_address_hint">Please Enter Address</string>
+    <string name="contributing_address_hint">Please Enter The Address</string>
     <string name="edit_address_wallet">Edit Address</string>
     <string name="no_records">No Data</string>
     <string name="no_results">No Result</string>
@@ -217,7 +217,7 @@
     <string name="transaction_query_eth">ETH Transaction</string>
     <string name="transaction_query_btc">BTC Transaction</string>
     <string name="transaction_query_trx">TRX Transaction</string>
-    <string name="contributing_name_hint">Please Enter A Name</string>
+    <string name="contributing_name_hint">Please Enter The Nickname</string>
     <string name="address_tips">Done</string>
     <string name="release_date">Release Date：</string>
 
