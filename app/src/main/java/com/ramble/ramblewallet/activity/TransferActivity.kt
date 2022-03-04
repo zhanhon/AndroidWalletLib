@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
@@ -94,43 +95,19 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }
 
         binding.edtReceiverAddress.setText(transferReceiverAddress)
-        binding.edtInputQuantity.addTextChangedListener(object : TextWatcher {
-            var deleteLastChar = false
-
-            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-            override fun afterTextChanged(s: Editable?) {
-                if (deleteLastChar) {
-                    //设置新的截取的字符串
-                    binding.edtInputQuantity.setText(
-                        s.toString().substring(0, s.toString().length - 1)
-                    )
-                    //光标强制到末尾
-                    binding.edtInputQuantity.setSelection(binding.edtInputQuantity.text.length)
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                //暂时不需要实现此方法
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.toString().contains(".") && (s != null)) {
-                    var length = s.length - s.toString().lastIndexOf(".")
-                    if (walletSelleted.walletType == 2) {
-                        deleteLastChar = length >= 8
-                    } else {
-                        deleteLastChar = length >= 10
-                    }
-                }
-            }
-        })
-
         initClick()
     }
 
     override fun onResume() {
         super.onResume()
         initData()
+        if (walletSelleted.walletType == 2) {
+            binding.edtInputQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(24))
+            EditTextTools(binding.edtInputQuantity, 24, 6)
+        } else {
+            binding.edtInputQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(26))
+            EditTextTools(binding.edtInputQuantity, 26, 8)
+        }
         binding.edtInputQuantity.addTextChangedListener(object : TextWatcher {
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun afterTextChanged(s: Editable?) {
