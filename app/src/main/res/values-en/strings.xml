@@ -183,7 +183,7 @@
     <string name="language_traditional_chinese">繁體中文</string>
     <string name="language_english">English</string>
     <string name="language_choose">Language</string>
-    <string name="currency_choose">Currency Choice</string>
+    <string name="currency_choose">Currency Unit</string>
     <string name="transfer_remark">Transfer Remark</string>
     <string name="choose_fill">Optional</string>
     <string name="add_wallet">Add Wallet</string>
