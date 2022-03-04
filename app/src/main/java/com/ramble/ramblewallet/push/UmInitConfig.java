@@ -32,8 +32,8 @@ public class UmInitConfig {
     private static final String TAG = "UmInitConfig";
     public static final String UPDATE_STATUS_ACTION = "com.umeng.message.example.action.UPDATE_STATUS";
     private static Handler handler;
-    private static final String UM_APP_KEY = "621eea8d3cf78e2eaac25bc8";
-    private static final String UM_MESSAGE_SECRET = "6c2214961a6e9c7789e84d4ec9510ad1";
+    private static final String UM_APP_KEY = "61cc2cb0cccde77a8a5cc2e7";
+    private static final String UM_MESSAGE_SECRET = "50bb050a3c372095dfbb6610b89bc987";
 
     private UmInitConfig() {
         throw new IllegalStateException(TAG);
