@@ -67,25 +67,23 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
 
     private fun initData() {
         binding.tvGatheringTitle.text = gatherTitle + " " + getString(R.string.gathering)
-        when (gatherTitle) {
-            "ETH" -> {
-                binding.tvGatheringTips.text = String.format(
-                    getString(R.string.gathering_tips_eth),
-                    gatherTitle
-                )
-            }
-            "TRX" -> {
-                binding.tvGatheringTips.text = String.format(
-                    getString(R.string.gathering_tips_trx),
-                    gatherTitle
-                )
-            }
-            "BTC" -> {
-                binding.tvGatheringTips.text = String.format(
-                    getString(R.string.gathering_tips_btc),
-                    gatherTitle
-                )
-            }
+        if (gatherTitle.contains("ETH")) {
+            binding.tvGatheringTips.text = String.format(
+                getString(R.string.gathering_tips_eth),
+                gatherTitle
+            )
+        }
+        if (gatherTitle.contains("TRX")) {
+            binding.tvGatheringTips.text = String.format(
+                getString(R.string.gathering_tips_trx),
+                gatherTitle
+            )
+        }
+        if (gatherTitle.contains("BTC")) {
+            binding.tvGatheringTips.text = String.format(
+                getString(R.string.gathering_tips_btc),
+                gatherTitle
+            )
         }
         binding.tvGatheringScanTips.text = String.format(
             getString(R.string.gathering_scan_tips),
