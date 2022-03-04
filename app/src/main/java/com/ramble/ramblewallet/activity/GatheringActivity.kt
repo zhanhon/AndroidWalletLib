@@ -152,11 +152,13 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
             val btnNext = window.findViewById<Button>(R.id.btn_next)
             btnNext.text = getText(R.string.gathering_save)
             val btnCancel = window.findViewById<Button>(R.id.btn_cancel)
-            btnCancel.setOnClickListener { v1: View? -> dialog.dismiss() }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
             window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
                 dialog.dismiss()
             }
-            btnNext.setOnClickListener { v1: View? ->
+            btnNext.setOnClickListener {
                 requestRuntimePermission(
                     arrayOf(
                         "android.permission.CAMERA",
@@ -167,11 +169,10 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
                         fun onGranted() {
                             try {
                                 val bitmap: Bitmap = viewConversionBitmap(ivImg)
-                                if (bitmap != null) {
-                                    saveBitmap(bitmap)
-                                    bitmap.recycle()
-                                }
+                                saveBitmap(bitmap)
+                                bitmap.recycle()
                             } catch (e: Exception) {
+                                e.printStackTrace()
                             }
                         }
 

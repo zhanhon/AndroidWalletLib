@@ -374,7 +374,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<Button>(R.id.btn_copy).setOnClickListener {
                 ClipboardUtils.copy(walletCurrent.keystore.toString())
             }
-            window.findViewById<Button>(R.id.btn_generate_qr_code).setOnClickListener { v1: View? ->
+            window.findViewById<Button>(R.id.btn_generate_qr_code).setOnClickListener {
                 showSaveDialog()
                 dialog.dismiss()
             }
@@ -439,8 +439,10 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
                 dialog.dismiss()
             }
-            btnCancel.setOnClickListener { v1: View? -> dialog.dismiss() }
-            btnNext.setOnClickListener { v1: View? ->
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+            btnNext.setOnClickListener {
                 requestRuntimePermission(
                     arrayOf(
                         "android.permission.CAMERA",
@@ -451,10 +453,8 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                         fun onGranted() {
                             try {
                                 val bitmap: Bitmap = viewConversionBitmap(ivImg)
-                                if (bitmap != null) {
-                                    saveBitmap(bitmap)
-                                    bitmap.recycle()
-                                }
+                                saveBitmap(bitmap)
+                                bitmap.recycle()
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }

@@ -20,7 +20,4 @@ abstract class CheckableSimpleRecyclerItem : SimpleRecyclerItem() {
     @JvmField
     var isVsb: Boolean = true
 
-    protected fun debugValue(value: String, position: Int): String {
-        return value
-    }
 }

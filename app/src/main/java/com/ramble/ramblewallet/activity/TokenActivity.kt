@@ -112,7 +112,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
             SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myStores))
         }
         ArrayList<SimpleRecyclerItem>().apply {
-            myStores.forEach { o -> this.add(AddTokenItem(o as StoreInfo)) }
+            myStores.forEach { o -> this.add(AddTokenItem(o)) }
             adapter.addAll(this.toList())
         }
 
@@ -148,7 +148,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
 
                 SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myStores))
                 ArrayList<SimpleRecyclerItem>().apply {
-                    myStores.forEach { o -> this.add(AddTokenItem(o as StoreInfo)) }
+                    myStores.forEach { o -> this.add(AddTokenItem(o)) }
                     adapter.addAll(this.toList())
                 }
             }
@@ -161,7 +161,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                 )
 
                 ArrayList<SimpleRecyclerItem>().apply {
-                    myStores.forEach { o -> this.add(AddTokenItem(o as StoreInfo)) }
+                    myStores.forEach { o -> this.add(AddTokenItem(o)) }
                     adapter.addAll(this.toList())
                 }
             }

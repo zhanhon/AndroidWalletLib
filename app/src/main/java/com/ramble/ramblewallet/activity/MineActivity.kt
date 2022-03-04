@@ -395,21 +395,21 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         if (window != null) {
             window.setContentView(R.layout.dialog_language)
 
-            window.findViewById<View>(R.id.tv_language1).setOnClickListener { v1: View? ->
+            window.findViewById<View>(R.id.tv_language1).setOnClickListener {
                 SharedPreferencesUtils.saveString(this, LANGUAGE, CN)
                 setLanguage()
                 initView()
                 dialogLanguage.dismiss()
 
             }
-            window.findViewById<View>(R.id.tv_language2).setOnClickListener { v1: View? ->
+            window.findViewById<View>(R.id.tv_language2).setOnClickListener {
                 SharedPreferencesUtils.saveString(this, LANGUAGE, TW)
                 setLanguage()
                 initView()
                 dialogLanguage.dismiss()
 
             }
-            window.findViewById<View>(R.id.tv_language3).setOnClickListener { v1: View? ->
+            window.findViewById<View>(R.id.tv_language3).setOnClickListener {
                 SharedPreferencesUtils.saveString(this, LANGUAGE, EN)
                 setLanguage()
                 initView()
@@ -429,17 +429,17 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         if (window != null) {
             window.setContentView(R.layout.dialog_currency)
 
-            window.findViewById<View>(R.id.tv_language1).setOnClickListener { v1: View? ->
+            window.findViewById<View>(R.id.tv_language1).setOnClickListener {
                 SharedPreferencesUtils.saveString(this, CURRENCY, CNY)
                 setCurrency()
                 dialogCurrency.dismiss()
             }
-            window.findViewById<View>(R.id.tv_language2).setOnClickListener { v1: View? ->
+            window.findViewById<View>(R.id.tv_language2).setOnClickListener {
                 SharedPreferencesUtils.saveString(this, CURRENCY, HKD)
                 setCurrency()
                 dialogCurrency.dismiss()
             }
-            window.findViewById<View>(R.id.tv_language3).setOnClickListener { v1: View? ->
+            window.findViewById<View>(R.id.tv_language3).setOnClickListener {
                 SharedPreferencesUtils.saveString(this, CURRENCY, USD)
                 setCurrency()
                 dialogCurrency.dismiss()

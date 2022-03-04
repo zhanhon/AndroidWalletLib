@@ -98,7 +98,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             var redList: ArrayList<Page.Record> = arrayListOf()
-            var records2: ArrayList<Page.Record> = arrayListOf()
+            var records2: ArrayList<Page.Record>
             var req = Page.Req(1, 1000, lang)
             mApiService.getNotice(
                 req.toApiRequest(noticeInfoUrl)
@@ -390,7 +390,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
 
             tvTokenTitle.text = mainETHTokenBean.symbol
 
-            tvTransfer.setOnClickListener { v1: View? ->
+            tvTransfer.setOnClickListener {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(ARG_PARAM2, mainETHTokenBean)
                 })
@@ -475,7 +475,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                     }
                     mainAdapter = MainAdapter(mainETHTokenBean)
                     binding.rvCurrency.adapter = mainAdapter
-                    mainAdapter.setOnItemClickListener { adapter, view, position ->
+                    mainAdapter.setOnItemClickListener { adapter, _, position ->
                         if (adapter.getItem(position) is MainETHTokenBean) {
                             if ((adapter.getItem(position) as MainETHTokenBean).symbol != "TRX") {
                                 showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))

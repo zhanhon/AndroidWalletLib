@@ -784,7 +784,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             binding.btnContributingWordsCompleted.background =
                 getDrawable(R.drawable.shape_gray_bottom_btn)
         }
-        contributingWordsConfirmAdapter.setOnItemClickListener { adapter, view, position ->
+        contributingWordsConfirmAdapter.setOnItemClickListener { _, _, position ->
             when (position) {
                 0 -> {
                     position(myDataBeans[position].index)
