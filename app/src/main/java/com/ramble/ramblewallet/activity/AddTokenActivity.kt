@@ -129,15 +129,16 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
 
     override fun onRxBus(event: RxBus.Event) {
         super.onRxBus(event)
-        myDataBeansMyAssets = arrayListOf()
-        adapter.clear()
-        recommendTokenAdapter.clear()
-        myDataBeansMyAssets = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
-            object : TypeToken<ArrayList<StoreInfo>>() {}.type
-        )
+
         when (event.id()) {
             Pie.EVENT_MINUS_TOKEN -> {
+                myDataBeansMyAssets = arrayListOf()
+                adapter.clear()
+                recommendTokenAdapter.clear()
+                myDataBeansMyAssets = Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                    object : TypeToken<ArrayList<StoreInfo>>() {}.type
+                )
                 var isOpen = false
                 myDataBeansMyAssets.forEach {
                     if (it.id == event.data<StoreInfo>().id) {
@@ -155,7 +156,15 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 )
                 dataCheck()
             }
+
             Pie.EVENT_DEL_TOKEN -> {
+                myDataBeansMyAssets = arrayListOf()
+                adapter.clear()
+                recommendTokenAdapter.clear()
+                myDataBeansMyAssets = Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                    object : TypeToken<ArrayList<StoreInfo>>() {}.type
+                )
                 dataCheck()
             }
 
