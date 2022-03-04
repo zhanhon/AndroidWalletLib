@@ -26,7 +26,7 @@
     <string name="address_book">Address Book</string>
     <string name="multi_language">Multi-language</string>
     <string name="initiate_transfer">Scan QRcode Can Make The Trasfer Or Make The Wallet Connet</string>
-    <string name="sending_address">Send The Address</string>
+    <string name="sending_address">From</string>
     <string name="traditional_chinese">Traditional Chinese</string>
     <string name="service_agreement">Service Agreement</string>
     <string name="payment_address">Address</string>
@@ -81,7 +81,7 @@
     <string name="generate_QR_code_store">Generate QRcode And Save Them</string>
     <string name="fail">Failed</string>
     <string name="gathering">Deposit</string>
-    <string name="receiving_address">Deposit Address</string>
+    <string name="receiving_address">To</string>
     <string name="pack_up">Fold</string>
     <string name="quantity">Amount</string>
     <string name="search">Search</string>
