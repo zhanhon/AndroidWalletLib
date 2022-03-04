@@ -183,8 +183,7 @@ class TransactionQueryFragment : BaseFragment(),
                 else -> 2
             }
         }
-        address ="0x88b5f355edf725aa8189c3601764388a1bb50aeb"
-//            saveData(saveWalletList)
+        address = saveData(saveWalletList)
     }
 
     @SuppressLint("CheckResult")
