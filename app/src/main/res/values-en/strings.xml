@@ -131,7 +131,7 @@
     <string name="wallet_status_selected">Selected</string>
     <string name="new_address_wallet">Add address</string>
     <string name="address">Address</string>
-    <string name="contributing_address_hint">Please enter address</string>
+    <string name="contributing_address_hint">Please enter the address</string>
     <string name="edit_address_wallet">Edit address</string>
     <string name="no_records">No data</string>
     <string name="no_results">No result</string>
