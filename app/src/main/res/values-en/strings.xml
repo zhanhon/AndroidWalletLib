@@ -137,7 +137,7 @@
     <string name="no_records">No data</string>
     <string name="no_results">No result</string>
     <string name="app_name">Ramble Wallet</string>
-    <string name="balance_insufficient">Insufficient Balance</string>
+    <string name="balance_insufficient">Balance Not Enough</string>
     <string name="trx_address_no_activate">The account is not activated, you will consume an additional 1.1 TRX to activate the account</string>
     <string name="trx_address_no_activate_token">The account is not activated, the trc20 pass can be transferred normally, but the account will not be activated</string>
     <string name="repeat_address">The transfer address and the payee address are the same, Please re-enter</string>
