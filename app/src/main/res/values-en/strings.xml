@@ -82,6 +82,7 @@
     <string name="fail">Failed</string>
     <string name="gathering">Deposit</string>
     <string name="receiving_address">To</string>
+    <string name="to_address">Deposit Address</string>
     <string name="pack_up">Fold</string>
     <string name="quantity">Amount</string>
     <string name="search">Search</string>

@@ -255,7 +255,7 @@
                             <TextView
                                 android:layout_width="@dimen/dp_80"
                                 android:layout_height="@dimen/dp_70"
-                                android:text="@string/receiving_address"
+                                android:text="@string/to_address"
                                 android:gravity="center_vertical"
                                 android:textColor="@color/gray_8F95AA"
                                 android:textSize="@dimen/sp_14" />
