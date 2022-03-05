@@ -206,7 +206,7 @@
     <string name="address_page">Address Page</string>
     <string name="alert_request_permission">In order to ensure the normal operation of this program, It is now starting to request the necessary permissions from you. </string>
     <string name="put_barcode_in_box">Put the barcode into the box and it will be scanned automatically</string>
-    <string name="put_qrcode_in_box">Put the QRcode in the box and it will be scanned automatically</string>
+    <string name="put_qrcode_in_box">Scan QRcode</string>
     <string name="scan_qr_code_fail">Failed to identify, Please try another QRcode</string>
     <string name="edit_book">Edit</string>
     <string name="delete_book">Delete</string>
