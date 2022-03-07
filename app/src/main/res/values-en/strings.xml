@@ -65,7 +65,7 @@
     <string name="wallet_management">Wallet Management</string>
     <string name="wallet_name">Wallet Name</string>
     <string name="create_recover_wallet_tips">Easy Token, Easy Go!</string>
-    <string name="clear_cache">Cleaning the cache</string>
+    <string name="clear_cache">Clean Cache</string>
     <string name="transaction_tips">Please wait for a while.</string>
     <string name="please_confirm_delete_wallet">Please confirm to delete this wallet</string>
     <string name="please_input_password">Please enter the password</string>
