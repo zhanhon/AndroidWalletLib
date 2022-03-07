@@ -58,28 +58,60 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
                 baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_btc);
                 break;
             case "WETH":
-                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.ic_weth);
+                if (mainETHTokenBean.getContractAddress().equals("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")){
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.ic_weth);
+                }else{
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.mipmap.def_token_img);
+                }
                 break;
             case "WBTC":
-                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_wbtc);
+                if (mainETHTokenBean.getContractAddress().equals("0x2260fac5e5542a773aa44fbcfedf7c193bc2c599")){
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_wbtc);
+                }else{
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.mipmap.def_token_img);
+                }
                 break;
             case "DAI":
-                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_dai);
+                if (mainETHTokenBean.getContractAddress().equals("0x6b175474e89094c44da98b954eedeac495271d0f")){
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_dai);
+                }else{
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.mipmap.def_token_img);
+                }
                 break;
             case "USDC":
-                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_usdc);
+                if (mainETHTokenBean.getContractAddress().equals("0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48")){
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_usdc);
+                }else{
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.mipmap.def_token_img);
+                }
                 break;
             case "USDT":
-                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_usdt);
+                if (mainETHTokenBean.getContractAddress().equals("0xdac17f958d2ee523a2206206994597c13d831ec7")){
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_usdt);
+                }else{
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.mipmap.def_token_img);
+                }
                 break;
             case "LINK":
-                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_link);
+                if (mainETHTokenBean.getContractAddress().equals("0x514910771af9ca656af840dff83e8264ecf986ca")){
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_link);
+                }else{
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.mipmap.def_token_img);
+                }
                 break;
             case "YFI":
-                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_yfi);
+                if (mainETHTokenBean.getContractAddress().equals("0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e")){
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_yfi);
+                }else{
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.mipmap.def_token_img);
+                }
                 break;
             case "UNI":
-                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_uni);
+                if (mainETHTokenBean.getContractAddress().equals("0x1f9840a85d5af5bf1d1762f925bdaddc4201f984")){
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_uni);
+                }else{
+                    baseViewHolder.setImageResource(R.id.iv_token_icon, R.mipmap.def_token_img);
+                }
                 break;
             default:
                 baseViewHolder.setImageResource(R.id.iv_token_icon, R.mipmap.def_token_img);
