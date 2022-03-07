@@ -225,9 +225,6 @@ public class TransferTrxUtils {
         param.put(OWNERADDRESS, toHexAddress(fromAddress));
         param.put("to_address", toHexAddress(toAddress));
         param.put("amount", number);
-        if (StringUtils.isNotEmpty(remark)) {
-            param.put("data", Hex.toHexString(remark.getBytes()));
-        }
         Call call = getCall(url, param);
         call.enqueue(new Callback() {
             @Override
@@ -243,7 +240,9 @@ public class TransferTrxUtils {
                 String string = response.body().string();
                 try {
                     JSONObject trans = new JSONObject(string);
-
+                    if (remark != null) {
+                        trans.getJSONObject("raw_data").put("data", Hex.toHexString(remark.getBytes()));
+                    }
                     org.tron.protos.Protocol.Transaction transaction = Util.packTransaction2(trans.toString());
                     byte[] bytes = new byte[0];
                     try {
