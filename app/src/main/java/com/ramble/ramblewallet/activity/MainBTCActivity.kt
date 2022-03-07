@@ -259,7 +259,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             R.id.iv_copy -> {
-                ClipboardUtils.copy(walletSelleted.address,this)
+                ClipboardUtils.copy(walletSelleted.address, this)
             }
             R.id.tv_ntf -> {
                 toastDefault(getString(R.string.coming_soon))
@@ -445,8 +445,9 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                         binding.rvCurrency.adapter = mainAdapter
                         mainAdapter.setOnItemClickListener { adapter, _, position ->
                             if ((adapter.getItem(position) is MainETHTokenBean)
-                                && ((adapter.getItem(position) as MainETHTokenBean).symbol != "BTC")){
-                                    showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
+                                && ((adapter.getItem(position) as MainETHTokenBean).symbol != "BTC")
+                            ) {
+                                showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
                             }
                         }
                     }

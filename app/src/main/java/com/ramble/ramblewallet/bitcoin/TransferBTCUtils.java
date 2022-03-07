@@ -132,7 +132,7 @@ public class TransferBTCUtils {
                     JSONArray unspentOutputs = jsonObject.getJSONObject("data").getJSONArray("txs");
                     List<Map> outputs = JSONObject.parseArray(unspentOutputs.toJSONString(), Map.class);
                     if (outputs.isEmpty()) {
-                        Log.v("-=-=->","交易异常，余额不足");
+                        Log.v("-=-=->", "交易异常，余额不足");
                         return;
                     }
                     for (int i = 0; i < outputs.size(); i++) {

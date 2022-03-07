@@ -264,7 +264,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             R.id.iv_copy -> {
-                ClipboardUtils.copy(walletSelleted.address,this)
+                ClipboardUtils.copy(walletSelleted.address, this)
             }
             R.id.tv_ntf -> {
                 toastDefault(getString(R.string.coming_soon))
@@ -479,8 +479,9 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                     binding.rvCurrency.adapter = mainAdapter
                     mainAdapter.setOnItemClickListener { adapter, _, position ->
                         if ((adapter.getItem(position) is MainETHTokenBean)
-                            && ((adapter.getItem(position) as MainETHTokenBean).symbol != "TRX")){
-                                showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
+                            && ((adapter.getItem(position) as MainETHTokenBean).symbol != "TRX")
+                        ) {
+                            showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
                         }
                     }
                     setBalanceTRX(totalBalance)

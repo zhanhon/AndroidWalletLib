@@ -217,7 +217,11 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 var isValidBtcSuccess = WalletBTCUtils.isBtcValidAddress(walletBTC.address)
                 if (isValidBtcSuccess) {
                     putAddress(detailsList)
-                    SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletBTC))
+                    SharedPreferencesUtils.saveString(
+                        this,
+                        WALLETSELECTED,
+                        Gson().toJson(walletBTC)
+                    )
                     startActivity(Intent(this, MainBTCActivity::class.java))
                 }
             }
@@ -291,7 +295,11 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 if (isValidEthSuccess && isValidTrxSuccess && isValidBtcSuccess) {
                     putAddress(detailsList)
                     //设置选择默认
-                    SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
+                    SharedPreferencesUtils.saveString(
+                        this,
+                        WALLETSELECTED,
+                        Gson().toJson(walletETH)
+                    )
                     startActivity(Intent(this, MainETHActivity::class.java))
                 }
             }
@@ -367,7 +375,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 } else {
                     if (times < 3) {
                         putAddress(detailsList)
-                        times ++
+                        times++
                     }
                     println("-=-=-=->putAddress:${it.message()}")
                 }

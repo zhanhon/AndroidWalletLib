@@ -129,7 +129,7 @@ open class StationFragment : BaseFragment() {
 
     }
 
-    private  fun dataCheck(item:Page.Record):Page.Record{
+    private fun dataCheck(item: Page.Record): Page.Record {
         if (SharedPreferencesUtils.getString(myActivity, READ_ID, "").isNotEmpty()) {
             if (SharedPreferencesUtils.String2SceneList(
                     SharedPreferencesUtils.getString(

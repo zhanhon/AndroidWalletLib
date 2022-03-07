@@ -344,7 +344,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<EditText>(R.id.edt_secret_key)
                 .setText(walletCurrent.privateKey.toString())
             window.findViewById<Button>(R.id.btn_copy).setOnClickListener {
-                ClipboardUtils.copy(walletCurrent.privateKey.toString(),this)
+                ClipboardUtils.copy(walletCurrent.privateKey.toString(), this)
             }
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 if (walletCurrent.privateKey.toString() != null) {
@@ -372,7 +372,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<EditText>(R.id.edt_keystore)
                 .setText(walletCurrent.keystore.toString())
             window.findViewById<Button>(R.id.btn_copy).setOnClickListener {
-                ClipboardUtils.copy(walletCurrent.keystore.toString(),this)
+                ClipboardUtils.copy(walletCurrent.keystore.toString(), this)
             }
             window.findViewById<Button>(R.id.btn_generate_qr_code).setOnClickListener {
                 showSaveDialog()
@@ -597,7 +597,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 } else {
                     if (times < 3) {
                         putAddress(detailsList)
-                        times ++
+                        times++
                     }
                     println("-=-=-=->putAddress:${it.message()}")
                 }

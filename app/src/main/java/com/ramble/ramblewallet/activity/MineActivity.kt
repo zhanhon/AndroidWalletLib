@@ -207,7 +207,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
     }
 
-    private fun dataCheck(data:List<Page.Record>){
+    private fun dataCheck(data: List<Page.Record>) {
         data.forEach { item ->
             if (SharedPreferencesUtils.String2SceneList(
                     SharedPreferencesUtils.getString(
@@ -355,7 +355,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             saveWalletList.forEach {
                 detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
             }
-            if (detailsList.size > 0){
+            if (detailsList.size > 0) {
                 putAddress(detailsList)
             }
         }
@@ -378,7 +378,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 } else {
                     if (times < 3) {
                         putAddress(detailsList)
-                        times ++
+                        times++
                     }
                     println("-=-=-=->putAddress:${it.message()}")
                 }
@@ -482,7 +482,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 LanguageSetting.setLanguage(this, 3)
             }
         }
-        times=0
+        times = 0
         skipConfirmHandle()
     }
 

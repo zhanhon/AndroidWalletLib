@@ -5,8 +5,8 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import com.qmuiteam.qmui.BuildConfig;
 
+import com.qmuiteam.qmui.BuildConfig;
 
 
 /**

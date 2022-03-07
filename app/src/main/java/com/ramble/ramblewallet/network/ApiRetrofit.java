@@ -5,8 +5,6 @@ import android.util.Log;
 import com.google.gson.GsonBuilder;
 import com.ramble.ramblewallet.BuildConfig;
 import com.ramble.ramblewallet.MyApp;
-import com.ramble.ramblewallet.utils.Md5Util;
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils;
 
 import java.io.File;
 import java.security.SecureRandom;
@@ -25,10 +23,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
-
-import static com.ramble.ramblewallet.constant.ConstantsKt.CN;
-import static com.ramble.ramblewallet.constant.ConstantsKt.LANGUAGE;
-import static com.ramble.ramblewallet.constant.ConstantsKt.getAppContext;
 
 /**
  * @author ChayChan

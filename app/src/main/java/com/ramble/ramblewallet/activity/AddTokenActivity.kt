@@ -171,7 +171,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun dataCheck(){
+    private fun dataCheck() {
         ArrayList<SimpleRecyclerItem>().apply {
             myDataBeansMyAssets.forEach { o ->
                 if (o.isMyToken == 0) {

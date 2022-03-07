@@ -127,7 +127,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
             saveList.clear()
         }
         adapter.all.forEach {
-            if ((it is TokenManageItem)&&(it.isChecked)) {
+            if ((it is TokenManageItem) && (it.isChecked)) {
                 saveList.add(it.data.id)
                 saveTokenList.add(it)
             }

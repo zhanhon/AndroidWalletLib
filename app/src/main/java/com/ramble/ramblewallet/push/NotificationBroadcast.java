@@ -47,16 +47,16 @@ public class NotificationBroadcast extends BroadcastReceiver {
                     UTrack.getInstance(context).trackMsgClick(msg);
                     Intent data = new Intent(intent);
                     /**根据主题返回不同页面**/
-                    switch (msg.extra.get("message_type")){
-                       case  "201"://消息
-                           data.setClass(context, MsgDetailsActivity.class);
-                           data.putExtra(ARG_PARAM1, msg.title);
-                           data.putExtra(ARG_PARAM2, msg.text);
-                           data.putExtra(ARG_PARAM3, msg.extra.get("time"));
-                           data.putExtra(ARG_PARAM4, 2);
-                           data.putExtra(ARG_PARAM5, Integer.parseInt(msg.extra.get("id")));
-                           break;
-                        case  "202"://公告
+                    switch (msg.extra.get("message_type")) {
+                        case "201"://消息
+                            data.setClass(context, MsgDetailsActivity.class);
+                            data.putExtra(ARG_PARAM1, msg.title);
+                            data.putExtra(ARG_PARAM2, msg.text);
+                            data.putExtra(ARG_PARAM3, msg.extra.get("time"));
+                            data.putExtra(ARG_PARAM4, 2);
+                            data.putExtra(ARG_PARAM5, Integer.parseInt(msg.extra.get("id")));
+                            break;
+                        case "202"://公告
                             data.setClass(context, MsgDetailsActivity.class);
                             data.putExtra(ARG_PARAM1, msg.title);
                             data.putExtra(ARG_PARAM2, msg.text);
@@ -64,10 +64,10 @@ public class NotificationBroadcast extends BroadcastReceiver {
                             data.putExtra(ARG_PARAM4, 22);
                             data.putExtra(ARG_PARAM5, Integer.parseInt(msg.extra.get("id")));
                             break;
-                        case  "1"://交易记录
-                        case  "2"://交易记录
-                        case  "3"://交易记录
-                        case  "4"://交易记录
+                        case "1"://交易记录
+                        case "2"://交易记录
+                        case "3"://交易记录
+                        case "4"://交易记录
                             data.setClass(context, TransactionQueryActivity.class);
                             break;
                         default:

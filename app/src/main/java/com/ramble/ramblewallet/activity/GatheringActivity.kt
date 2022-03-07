@@ -112,7 +112,7 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
                 showSaveDialog()
             }
             R.id.ll_copy -> {
-                ClipboardUtils.copy(binding.tvAddress.text.toString(),this)
+                ClipboardUtils.copy(binding.tvAddress.text.toString(), this)
             }
         }
     }

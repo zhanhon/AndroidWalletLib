@@ -48,7 +48,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
         initListener()
     }
 
-    private fun initView(){
+    private fun initView() {
         when (typeText) {
             1 -> {
                 binding.ivRight.visibility = View.GONE
@@ -83,7 +83,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun listData(){
+    private fun listData() {
         if (id != 0) {
             list = if (SharedPreferencesUtils.getString(
                     this,
@@ -113,7 +113,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun listData2(){
+    private fun listData2() {
         if (id != 0) {
             list = if (SharedPreferencesUtils.getString(
                     this,

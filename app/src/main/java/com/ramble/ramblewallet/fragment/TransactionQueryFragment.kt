@@ -60,7 +60,7 @@ class TransactionQueryFragment : BaseFragment(),
     private var address = ""
     private var addressType = 0
     private var currencyUnit = ""
-    private var changeCurrencyType=0
+    private var changeCurrencyType = 0
 
 
     override fun onAttach(context: Context) {
@@ -128,7 +128,7 @@ class TransactionQueryFragment : BaseFragment(),
         reFreshData()
     }
 
-    private fun  dataCheck(){
+    private fun dataCheck() {
         if (isAll) {
             endTime = null
             startTime = null

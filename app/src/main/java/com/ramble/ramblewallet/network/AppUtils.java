@@ -5,9 +5,10 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import java.util.List;
-import static com.ramble.ramblewallet.constant.ConstantsKt.getAppContext;
 
+import java.util.List;
+
+import static com.ramble.ramblewallet.constant.ConstantsKt.getAppContext;
 
 
 /**

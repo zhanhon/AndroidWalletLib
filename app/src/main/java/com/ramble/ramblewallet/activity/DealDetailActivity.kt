@@ -159,14 +159,14 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_back -> finish()
             R.id.add_copy -> {
                 val itemBean = AdapterUtils.getHolder(v).getItem<AddressTansRuItem>().data
-                ClipboardUtils.copy(itemBean.address,this)
+                ClipboardUtils.copy(itemBean.address, this)
             }
             R.id.pay_copy -> {
                 val itemBean = AdapterUtils.getHolder(v).getItem<AddressTansItem>().data
-                ClipboardUtils.copy(itemBean.address,this)
+                ClipboardUtils.copy(itemBean.address, this)
             }
             R.id.number_copy -> {
-                ClipboardUtils.copy(binding.transactionCode.text.toString(),this)
+                ClipboardUtils.copy(binding.transactionCode.text.toString(), this)
             }
             R.id.btn_detail -> {
                 var intent = Intent()

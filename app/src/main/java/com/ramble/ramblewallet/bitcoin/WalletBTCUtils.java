@@ -1,6 +1,7 @@
 package com.ramble.ramblewallet.bitcoin;
 
 import com.ramble.ramblewallet.bean.Wallet;
+
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.NetworkParameters;
@@ -14,6 +15,7 @@ import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.params.TestNet3Params;
 import org.web3j.crypto.MnemonicUtils;
 import org.web3j.utils.Numeric;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;

@@ -128,7 +128,7 @@ class ProclamationFragment : BaseFragment() {
 
     }
 
-    private fun dataItem(data:Page){
+    private fun dataItem(data: Page) {
         ArrayList<SimpleRecyclerItem>().apply {
             data.records.forEach { item ->
                 add(StationItem(dataCheck(item)))
@@ -154,7 +154,7 @@ class ProclamationFragment : BaseFragment() {
         }
     }
 
-    private fun dataCheck(item:Page.Record):Page.Record{
+    private fun dataCheck(item: Page.Record): Page.Record {
         if (SharedPreferencesUtils.getString(myActivity, READ_ID_NEW, "")
                 .isNotEmpty()
         ) {

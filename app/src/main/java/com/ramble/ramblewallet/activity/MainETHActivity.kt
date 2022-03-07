@@ -35,7 +35,6 @@ import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.StringUtils.strAddComma
-import org.web3j.utils.Convert
 import java.math.BigDecimal
 
 class MainETHActivity : BaseActivity(), View.OnClickListener {

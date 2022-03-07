@@ -3,7 +3,6 @@ package com.ramble.ramblewallet.tronsdk;
 import com.ramble.ramblewallet.tronsdk.common.crypto.Hash;
 import com.ramble.ramblewallet.tronsdk.common.crypto.SymmEncoder;
 import com.ramble.ramblewallet.tronsdk.common.utils.Base58;
-import com.ramble.ramblewallet.tronsdk.common.utils.ByteArray;
 import com.ramble.ramblewallet.tronsdk.common.utils.Sha256Hash;
 import com.ramble.ramblewallet.tronsdk.config.Parameter;
 

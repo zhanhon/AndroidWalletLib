@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
@@ -588,7 +587,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 } else {
                     if (times < 3) {
                         putAddress(wallet, walletType)
-                        times ++
+                        times++
                     }
                     println("-=-=-=->putAddress-recover:${it.message()}")
                 }

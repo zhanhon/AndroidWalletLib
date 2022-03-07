@@ -2,23 +2,14 @@ package com.ramble.ramblewallet.activity
 
 import android.Manifest
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
-import android.widget.CheckBox
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.databinding.DataBindingUtil
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import cn.bingoogolapple.qrcode.zxing.ZXingView
@@ -96,7 +87,9 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if ((requestCode == REQUEST_CODE_1029 )&& (resultCode == Activity.RESULT_OK) && Matisse.obtainPathResult(data).isNotEmpty()
+        if ((requestCode == REQUEST_CODE_1029) && (resultCode == Activity.RESULT_OK) && Matisse.obtainPathResult(
+                data
+            ).isNotEmpty()
         ) {
             val uris = Matisse.obtainResult(data)
             val uri: Uri? = uris[0]

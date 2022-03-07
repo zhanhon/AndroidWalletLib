@@ -105,7 +105,7 @@ public class MyNotificationService extends Service {
                 NotificationChannel chan = new NotificationChannel(UmengMessageHandler.PRIMARY_CHANNEL,
                         PushAgent.getInstance(this).getNotificationChannelName(),
                         NotificationManager.IMPORTANCE_DEFAULT);
-                    manager.createNotificationChannel(chan);
+                manager.createNotificationChannel(chan);
             }
             builder = new Notification.Builder(this, UmengMessageHandler.PRIMARY_CHANNEL);
         } else {
