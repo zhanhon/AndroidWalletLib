@@ -61,7 +61,6 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         initData()
-        refreshData()
         redPoint()
     }
 
@@ -218,6 +217,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                             unitPrice,
                             currencyUnit,
                             null,
+                            0,
                             false
                         )
                     )
@@ -234,6 +234,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                             unitPrice,
                             currencyUnit,
                             null,
+                            0,
                             false
                         )
                     )
@@ -243,7 +244,6 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                 startSyncAnimation()
                 Handler().postDelayed({
                     initData()
-                    refreshData()
                 }, 2000)
             }
             R.id.iv_eyes -> {
@@ -435,6 +435,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                                     unitPrice,
                                     currencyUnit,
                                     null,
+                                    0,
                                     false
                                 )
                             )

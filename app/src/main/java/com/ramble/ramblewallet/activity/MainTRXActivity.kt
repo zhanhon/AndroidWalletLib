@@ -66,7 +66,6 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         initData()
-        refreshData()
         redPoint()
     }
 
@@ -223,6 +222,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                             unitPrice,
                             currencyUnit,
                             null,
+                            0,
                             false
                         )
                     )
@@ -239,6 +239,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                             unitPrice,
                             currencyUnit,
                             null,
+                            0,
                             false
                         )
                     )
@@ -248,7 +249,6 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                 startSyncAnimation()
                 Handler().postDelayed({
                     initData()
-                    refreshData()
                 }, 2000)
             }
             R.id.iv_eyes -> {
@@ -446,6 +446,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                     unitPrice,
                                     currencyUnit,
                                     null,
+                                    0,
                                     false
                                 )
                             )
@@ -467,6 +468,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                     unitPrice,
                                     currencyUnit,
                                     contractAddress,
+                                    0,
                                     true
                                 )
                             )

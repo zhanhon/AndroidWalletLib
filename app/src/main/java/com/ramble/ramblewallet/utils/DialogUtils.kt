@@ -129,6 +129,7 @@ fun showBottomDialog2(
                         "",
                         "",
                         null,
+                        18,
                         false
                     )
                 )

@@ -23,6 +23,7 @@ import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
@@ -74,25 +75,15 @@ public class TransferEthUtils {
     public static BigDecimal getBalanceToken(String address, MainETHTokenBean tokenBean) throws IOException {
         try {
             String value = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + APIKEY))
-                    .ethCall(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(address,
+                    .ethCall(Transaction.createEthCallTransaction(address,
                             tokenBean.getContractAddress(), DATA_PREFIX + address.substring(2)), DefaultBlockParameterName.PENDING).send().getValue();
             String s = new BigInteger(value.substring(2), 16).toString();
             if (s.equals("0x")) {
                 return BigDecimal.valueOf(0.000000);
             } else {
-                if (tokenBean.getSymbol().equals("DAI") || tokenBean.getSymbol().equals("LINK") || tokenBean.getSymbol().equals("UNI") || tokenBean.getSymbol().equals("YFI")) {
-                    BigDecimal divide = new BigDecimal(s).divide(BigDecimal.valueOf(Long.parseLong("1000000000000000000")), 6, RoundingMode.UP);
-                    getBalance.onListener(tokenBean, divide);
-                    return divide;
-                } else if (tokenBean.getSymbol().equals("WBTC")) {
-                    BigDecimal divide = new BigDecimal(s).divide(BigDecimal.valueOf(100000000), 6, RoundingMode.UP);
-                    getBalance.onListener(tokenBean, divide);
-                    return divide;
-                } else {
-                    BigDecimal divide = new BigDecimal(s).divide(BigDecimal.valueOf(1000000), 6, RoundingMode.UP);
-                    getBalance.onListener(tokenBean, divide);
-                    return divide;
-                }
+                BigDecimal divide = new BigDecimal(s).divide(new BigDecimal("10").pow(tokenBean.getDecimalPoints()));
+                getBalance.onListener(tokenBean, divide);
+                return divide;
             }
         } catch (Exception e) {
             e.printStackTrace();

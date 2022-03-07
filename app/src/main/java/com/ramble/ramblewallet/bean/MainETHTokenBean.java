@@ -15,16 +15,18 @@ public class MainETHTokenBean implements Serializable {
     private String unitPrice;
     private String currencyUnit;
     private String contractAddress;
+    private Integer decimalPoints;
     private boolean isToken;
 
     public MainETHTokenBean(String title, String symbol, BigDecimal balance, String unitPrice,
-                            String currencyUnit, String contractAddress, boolean isToken) {
+                            String currencyUnit, String contractAddress, Integer decimalPoints, boolean isToken) {
         this.title = title;
         this.symbol = symbol;
         this.balance = balance;
         this.unitPrice = unitPrice;
         this.currencyUnit = currencyUnit;
         this.contractAddress = contractAddress;
+        this.decimalPoints = decimalPoints;
         this.isToken = isToken;
     }
 
@@ -74,6 +76,14 @@ public class MainETHTokenBean implements Serializable {
 
     public void setContractAddress(String contractAddress) {
         this.contractAddress = contractAddress;
+    }
+
+    public Integer getDecimalPoints() {
+        return decimalPoints;
+    }
+
+    public void setDecimalPoints(Integer decimalPoints) {
+        this.decimalPoints = decimalPoints;
     }
 
     public boolean isToken() {

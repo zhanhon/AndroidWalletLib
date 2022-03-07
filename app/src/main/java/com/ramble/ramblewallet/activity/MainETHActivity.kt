@@ -35,6 +35,7 @@ import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.StringUtils.strAddComma
+import org.web3j.utils.Convert
 import java.math.BigDecimal
 
 class MainETHActivity : BaseActivity(), View.OnClickListener {
@@ -220,6 +221,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                             unitPrice,
                             currencyUnit,
                             null,
+                            18,
                             false
                         )
                     )
@@ -236,6 +238,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                             unitPrice,
                             currencyUnit,
                             null,
+                            18,
                             false
                         )
                     )
@@ -250,7 +253,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 startSyncAnimation()
                 Handler().postDelayed({
                     initData()
-                    //refreshData()
                 }, 2000)
             }
             R.id.iv_eyes -> {
@@ -457,6 +459,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                     unitPrice,
                                     currencyUnit,
                                     null,
+                                    18,
                                     false
                                 )
                             )
@@ -480,6 +483,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                 storeInfo.price,
                                 currencyUnit,
                                 storeInfo.contractAddress,
+                                storeInfo.decimalPoints,
                                 true
                             )
                             Thread {
@@ -495,6 +499,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                             storeInfo.unitPrice,
                                             currencyUnit,
                                             storeInfo.contractAddress,
+                                            storeInfo.decimalPoints,
                                             true
                                         )
                                     )
@@ -509,8 +514,9 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                     binding.rvCurrency.adapter = mainAdapter
                     mainAdapter.setOnItemClickListener { adapter, _, position ->
                         if ((adapter.getItem(position) is MainETHTokenBean)
-                            && ((adapter.getItem(position) as MainETHTokenBean).symbol != "ETH")){
-                                showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
+                            && ((adapter.getItem(position) as MainETHTokenBean).symbol != "ETH")
+                        ) {
+                            showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
                         }
                     }
                     setBalanceETH(totalBalance)
