@@ -64,11 +64,11 @@ public class TransferEthUtils {
         try {
             Web3j web3 = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + APIKEY));
             Future<EthGetBalance> ethGetBalanceFuture = web3.ethGetBalance(address, DefaultBlockParameterName.LATEST).sendAsync();
-            return Convert.fromWei(ethGetBalanceFuture.get().getBalance().toString(),
-                    Convert.Unit.ETHER);
+            BigDecimal finalBalance = new BigDecimal(ethGetBalanceFuture.get().getBalance().toString()).divide(new BigDecimal("10").pow(18));
+            return finalBalance;
         } catch (Exception e) {
             e.printStackTrace();
-            return BigDecimal.valueOf(0.00000000);
+            return BigDecimal.valueOf(0);
         }
     }
 
@@ -79,15 +79,15 @@ public class TransferEthUtils {
                             tokenBean.getContractAddress(), DATA_PREFIX + address.substring(2)), DefaultBlockParameterName.PENDING).send().getValue();
             String s = new BigInteger(value.substring(2), 16).toString();
             if (s.equals("0x")) {
-                return BigDecimal.valueOf(0.000000);
+                return BigDecimal.valueOf(0);
             } else {
-                BigDecimal divide = new BigDecimal(s).divide(new BigDecimal("10").pow(tokenBean.getDecimalPoints()));
-                getBalance.onListener(tokenBean, divide);
-                return divide;
+                BigDecimal finalBalance = new BigDecimal(s).divide(new BigDecimal("10").pow(tokenBean.getDecimalPoints()));
+                getBalance.onListener(tokenBean, finalBalance);
+                return finalBalance;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return BigDecimal.valueOf(0.000000);
+            return BigDecimal.valueOf(0);
         }
     }
 

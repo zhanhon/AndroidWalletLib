@@ -354,14 +354,14 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         Thread {
                             transferBalance =
                                 getBalanceToken(walletSelleted.address, tokenBean)
-                            if (transferBalance != BigDecimal("0.000000")) {
+                            if (transferBalance != BigDecimal("0")) {
                                 setBalance(transferBalance)
                             }
                         }.start()
                     } else {
                         Thread {
                             transferBalance = getBalanceETH(walletSelleted.address)
-                            if (transferBalance != BigDecimal("0.00000000")) {
+                            if (transferBalance != BigDecimal("0")) {
                                 setBalance(transferBalance)
                             }
                         }.start()
