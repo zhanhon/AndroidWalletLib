@@ -70,13 +70,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private var isToken: Boolean = false
     private lateinit var tokenBean: MainETHTokenBean
 
-    //DAI:4 0x16aFDD5dfE386052766b798bFA37DAec4b81155a
-    private var contractETHAddress =
-        "0xb319d1A045ffe108D14195F7C5d60Be220436a34" //测试节点ERC-USDT:6合约地址
-    //private var contractAddress = "0xd95371A0550cF47aB9519105300707a82b0640Db" //开发节点ERC-USDT合约地址
-
-    private var contractTRXAddress = "TU9iBgEEv9qsc6m7EBPLJ3x5vSNKfyxWW5" //YING 合约地址；nile
-
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

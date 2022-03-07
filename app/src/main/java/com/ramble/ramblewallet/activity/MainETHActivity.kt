@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.text.InputFilter
 import android.view.*
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -49,13 +50,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private lateinit var walletSelleted: Wallet
     private var ethBalance: BigDecimal = BigDecimal("0.00000000")
     private var totalBalance: BigDecimal = BigDecimal("0.00")
-    private var rateETH: String? = ""
     private var unitPrice = ""
-
-
-    //DAI:4 0x16aFDD5dfE386052766b798bFA37DAec4b81155a      新：0x0B6558D0C0e06aAdf34428137b7eFF5B9da5974A
-    //private var contractAddress = "0xb319d1A045ffe108D14195F7C5d60Be220436a34" //测试节点ERC-USDT:6合约地址
-    private var contractAddress = "0x40a90Ade8BB2BdF8858b424ccbb90012373e8a41" //新
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -69,7 +64,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         initData()
-        refreshData()
         redPoint()
     }
 
@@ -256,7 +250,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 startSyncAnimation()
                 Handler().postDelayed({
                     initData()
-                    refreshData()
+                    //refreshData()
                 }, 2000)
             }
             R.id.iv_eyes -> {
@@ -272,7 +266,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             R.id.iv_copy -> {
-                ClipboardUtils.copy(walletSelleted.address,this)
+                ClipboardUtils.copy(walletSelleted.address, this)
             }
             R.id.tv_ntf -> {
                 toastDefault(getString(R.string.coming_soon))
@@ -351,12 +345,11 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setBalanceETH(balance: BigDecimal) {
-        postUI {
-            if (DecimalFormatUtil.format2.format(balance) == "0") {
-                binding.tvBalanceTotal.text = "0"
-            } else {
-                binding.tvBalanceTotal.text = strAddComma(DecimalFormatUtil.format2.format(balance))
-            }
+        if (DecimalFormatUtil.format2.format(balance) == "0") {
+            binding.tvBalanceTotal.text = "0"
+        } else {
+            binding.tvBalanceTotal.text = strAddComma(DecimalFormatUtil.format2.format(balance))
+            binding.tvBalanceTotal.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(18))
         }
     }
 
@@ -452,6 +445,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                         storeInfo.quote.forEach { quote ->
                             if (quote.symbol == currencyUnit) {
                                 unitPrice = quote.price
+                                storeInfo.price = quote.price
                             }
                         }
                         if (storeInfo.symbol == "ETH") {
@@ -466,43 +460,48 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                                     false
                                 )
                             )
-                            rateETH = unitPrice
                             totalBalance += ethBalance.multiply(BigDecimal(unitPrice))
                         }
                     }
                     data.forEach { storeInfo ->
                         storeInfo.quote.forEach { quote ->
                             if (quote.symbol == currencyUnit) {
-                                unitPrice = quote.price
+                                storeInfo.price = quote.price
                             }
+                        }
+                        if ((storeInfo.symbol == "UNI") && (storeInfo.contractAddress != "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984")) {
+                            return@forEach
                         }
                         if (storeInfo.symbol != "ETH") {
                             var tokenBean = MainETHTokenBean(
                                 "ETH-${storeInfo.symbol}",
                                 storeInfo.symbol,
                                 BigDecimal("0.00000000"),
-                                unitPrice,
+                                storeInfo.price,
                                 currencyUnit,
                                 storeInfo.contractAddress,
                                 true
                             )
-                            mainETHTokenBean.add(tokenBean)
-                            TransferEthUtils.getBalanceToken(walletSelleted.address, tokenBean)
+                            Thread {
+                                TransferEthUtils.getBalanceToken(walletSelleted.address, tokenBean)
+                            }.start()
                             TransferEthUtils().setOnListener { storeInfo, tokenBalance ->
-                                mainETHTokenBean.add(
-                                    MainETHTokenBean(
-                                        "ETH-${storeInfo.symbol}",
-                                        storeInfo.symbol,
-                                        tokenBalance,
-                                        unitPrice,
-                                        currencyUnit,
-                                        storeInfo.contractAddress,
-                                        true
+                                postUI {
+                                    mainETHTokenBean.add(
+                                        MainETHTokenBean(
+                                            "ETH-${storeInfo.symbol}",
+                                            storeInfo.symbol,
+                                            tokenBalance,
+                                            storeInfo.unitPrice,
+                                            currencyUnit,
+                                            storeInfo.contractAddress,
+                                            true
+                                        )
                                     )
-                                )
-                                totalBalance += tokenBalance.multiply(BigDecimal(unitPrice))
-                                mainAdapter.notifyDataSetChanged()
-                                setBalanceETH(totalBalance)
+                                    totalBalance += tokenBalance.multiply(BigDecimal(storeInfo.unitPrice))
+                                    mainAdapter.notifyDataSetChanged()
+                                    setBalanceETH(totalBalance)
+                                }
                             }
                         }
                     }

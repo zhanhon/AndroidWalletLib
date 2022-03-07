@@ -48,6 +48,9 @@ class StoreInfo @SuppressWarnings("unused") constructor() : Serializable {
     @Json(name = "updateTime")
     var updateTime: String = ""//修改时间
 
+    @Json(name = "price")
+    var price: String = ""//转换金额
+
     @Json(name = "quote")
     var quote: List<Record> = listOf()
 

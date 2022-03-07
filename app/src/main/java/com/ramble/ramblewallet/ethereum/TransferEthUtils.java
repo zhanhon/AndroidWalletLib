@@ -80,8 +80,19 @@ public class TransferEthUtils {
             if (s.equals("0x")) {
                 return BigDecimal.valueOf(0.000000);
             } else {
-                getBalance.onListener(tokenBean, new BigDecimal(s).divide(BigDecimal.valueOf(1000000), 6, RoundingMode.UP));
-                return new BigDecimal(s).divide(BigDecimal.valueOf(1000000), 6, RoundingMode.UP);
+                if (tokenBean.getSymbol().equals("DAI") || tokenBean.getSymbol().equals("LINK") || tokenBean.getSymbol().equals("UNI") || tokenBean.getSymbol().equals("YFI")) {
+                    BigDecimal divide = new BigDecimal(s).divide(BigDecimal.valueOf(Long.parseLong("1000000000000000000")), 6, RoundingMode.UP);
+                    getBalance.onListener(tokenBean, divide);
+                    return divide;
+                } else if (tokenBean.getSymbol().equals("WBTC")) {
+                    BigDecimal divide = new BigDecimal(s).divide(BigDecimal.valueOf(100000000), 6, RoundingMode.UP);
+                    getBalance.onListener(tokenBean, divide);
+                    return divide;
+                } else {
+                    BigDecimal divide = new BigDecimal(s).divide(BigDecimal.valueOf(1000000), 6, RoundingMode.UP);
+                    getBalance.onListener(tokenBean, divide);
+                    return divide;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
