@@ -140,7 +140,7 @@
     <string name="balance_insufficient">Balance Not Enough</string>
     <string name="trx_address_no_activate">The account is not activated, you will consume an additional 1.1 TRX to activate the account</string>
     <string name="trx_address_no_activate_token">The account is not activated, the trc20 pass can be transferred normally, but the account will not be activated</string>
-    <string name="repeat_address">The transfer address and the payee address are the same, Please re-enter</string>
+    <string name="repeat_address">The sender address and receive address are duplicates, please re-enter</string>
     <string name="network_anomaly">The network is abnormal, Please check the network connection</string>
     <string name="retry">Retry</string>
     <string name="error_tips_backup">You have entered the wrong input more than three times, Whether to cancel or return to the previous page</string>
