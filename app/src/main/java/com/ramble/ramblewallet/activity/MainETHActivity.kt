@@ -487,7 +487,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                             postUI {
                                 mainETHTokenBean.add(
                                     MainETHTokenBean(
-                                        "ETH-${storeInfo.symbol}",
+                                        "ETH-${tokenBean.symbol}",
                                         tokenBean.symbol,
                                         tokenBalance,
                                         tokenBean.unitPrice,
