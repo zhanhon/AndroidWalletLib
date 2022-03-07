@@ -194,8 +194,8 @@
     <string name="refresh_time">Last Updated On {key}</string>
     <string name="refresh_ing">Refreshing...</string>
     <string name="refresh_release">Release And Update Immediately</string>
-    <string name="help_door_sister">Beginner Guide</string>
-    <string name="help_sever_sister">Service Center</string>
+    <string name="help_door_sister">Getting Started</string>
+    <string name="help_sever_sister">FAQ</string>
     <string name="game_today_order_no_log2"></string>
     <string name="transaction_success">Transaction Successful</string>
     <string name="hk_dollar">Hong Kong Dollars (HK$)</string>
