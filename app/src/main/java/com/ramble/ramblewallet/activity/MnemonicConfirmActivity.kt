@@ -51,7 +51,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     private lateinit var walletPassword: String
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var currentTab = ""
-    private lateinit var mnemonicETH: ArrayList<String>
+    private lateinit var mnemonicETH: List<String>
     private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4：BTC、ETH、TRX
     private var isBackupMnemonic = false
     private var mnemonic: String? = null

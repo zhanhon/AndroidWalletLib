@@ -1,6 +1,6 @@
 package com.ramble.ramblewallet.bean;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Ricky
@@ -17,7 +17,7 @@ public class Wallet {
     private int walletType;  //链类型|1:ETH|2:TRX|3:BTC
     private boolean isClickDelete;
     private boolean isChoose;
-    private ArrayList<String> mnemonicList;
+    private List<String> mnemonicList;
 
     public Wallet() {
 
@@ -36,7 +36,7 @@ public class Wallet {
     }
 
     public Wallet(String walletName, String walletPassword, String mnemonic, String address,
-                  String privateKey, String publicKey, String keystore, int walletType, ArrayList<String> mnemonicList) {
+                  String privateKey, String publicKey, String keystore, int walletType, List<String> mnemonicList) {
         this(mnemonic, address, privateKey, publicKey, keystore);
         this.walletName = walletName;
         this.walletPassword = walletPassword;
@@ -45,16 +45,16 @@ public class Wallet {
     }
 
     public Wallet(String walletName, String walletPassword, String mnemonic, String address,
-                  String privateKey, String publicKey, String keystore, int walletType, ArrayList<String> mnemonicList, boolean isClickDelete) {
+                  String privateKey, String publicKey, String keystore, int walletType, List<String> mnemonicList, boolean isClickDelete) {
         this(walletName, walletPassword, mnemonic, address, privateKey, publicKey, keystore, walletType, mnemonicList);
         this.isClickDelete = isClickDelete;
     }
 
-    public ArrayList<String> getMnemonicList() {
+    public List<String> getMnemonicList() {
         return mnemonicList;
     }
 
-    public void setMnemonicList(ArrayList<String> mnemonicList) {
+    public void setMnemonicList(List<String> mnemonicList) {
         this.mnemonicList = mnemonicList;
     }
 

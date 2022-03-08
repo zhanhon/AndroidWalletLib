@@ -609,8 +609,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
                             BigDecimal("100000000")
                         ),
-                        btcFee,
-                        binding.edtInputTransferRemarks.text.trim().toString()
+                        btcFee
                     )
                 }
             }

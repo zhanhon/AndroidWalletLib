@@ -1,7 +1,6 @@
 package com.ramble.ramblewallet.tron;
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -14,7 +13,6 @@ import com.ramble.ramblewallet.tronsdk.common.utils.Sha256Hash;
 import com.ramble.ramblewallet.tronsdk.trx.TrxApi;
 import com.ramble.ramblewallet.tronsdk.trx.Util;
 
-import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.util.encoders.Hex;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -89,7 +87,7 @@ public class TransferTrxUtils {
         param.put(OWNERADDRESS, toHexAddress(address));
         param.put(CONTRACTADDRESS, toHexAddress(contractAddress));
         param.put(FUNCTIONSELECTOR, "balanceOf(address)");
-        List<Type> inputParameters = new ArrayList<>();
+        List<Type> inputParameters = new ArrayList();
         inputParameters.add(new Address(toHexAddress(address).substring(2)));
         param.put(PARAMETER, FunctionEncoder.encodeConstructor(inputParameters));
         Call call = getCall(url, param);
@@ -103,22 +101,21 @@ public class TransferTrxUtils {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String string = response.body().string();
-                JSONObject json = null;
                 try {
-                    json = new JSONObject(string);
-                } catch (JSONException e) {
+                    String string = response.body().string();
+                    JSONObject json = new JSONObject(string);
+                    String constantResult = json.optString("constant_result");
+                    if (constantResult.contains("0000000000000000000000000000000000000000000000000000000000000000")) { //当body为null，判断此地址为激活
+                        if (context instanceof TransferActivity) {
+                            ((TransferActivity) context).isTrxAddressActivate(false);
+                        }
+                    } else {
+                        if (context instanceof TransferActivity) {
+                            ((TransferActivity) context).isTrxAddressActivate(true);
+                        }
+                    }
+                } catch (Exception e) {
                     e.printStackTrace();
-                }
-                String constantResult = json.optString("constant_result");
-                if (constantResult.contains("0000000000000000000000000000000000000000000000000000000000000000")) { //当body为null，判断此地址为激活
-                    if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).isTrxAddressActivate(false);
-                    }
-                } else {
-                    if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).isTrxAddressActivate(true);
-                    }
                 }
             }
         });
@@ -244,12 +241,7 @@ public class TransferTrxUtils {
                         trans.getJSONObject("raw_data").put("data", Hex.toHexString(remark.getBytes()));
                     }
                     org.tron.protos.Protocol.Transaction transaction = Util.packTransaction2(trans.toString());
-                    byte[] bytes = new byte[0];
-                    try {
-                        bytes = signTransaction2Byte(transaction.toByteArray(), ByteArray.fromHexString(privateKey));
-                    } catch (InvalidProtocolBufferException e) {
-                        Log.e("TRX交易签名出错 errMsg:{}", e.getMessage(), e);
-                    }
+                    byte[] bytes = signTransaction2Byte(transaction.toByteArray(), ByteArray.fromHexString(privateKey));
                     String signTransation = ByteArray.toHexString(bytes);
 
                     // 广播交易
@@ -279,7 +271,7 @@ public class TransferTrxUtils {
                         }
                     });
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -354,8 +346,8 @@ public class TransferTrxUtils {
     @NotNull
     private static Call getCall(String url, JSONObject param) {
         OkHttpClient okHttpClient = new OkHttpClient();
-        MediaType JSON = MediaType.parse("application/json;charset=utf-8");
-        RequestBody requestBody = RequestBody.create(JSON, String.valueOf(param));
+        MediaType mediaType = MediaType.parse("application/json;charset=utf-8");
+        RequestBody requestBody = RequestBody.create(mediaType, String.valueOf(param));
         final Request request = new Request.Builder()
                 .url(url)
                 .header("TRON-PRO-API-KEY", APIKEY)

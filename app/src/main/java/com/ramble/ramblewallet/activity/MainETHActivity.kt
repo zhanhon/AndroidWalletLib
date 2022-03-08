@@ -480,23 +480,13 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                             storeInfo.decimalPoints,
                             true
                         )
+                        mainETHTokenBean.add(tokenBean)
                         Thread {
                             TransferEthUtils.getBalanceToken(walletSelleted.address, tokenBean)
                         }.start()
                         TransferEthUtils().setOnListener { tokenBean, tokenBalance ->
                             postUI {
-                                mainETHTokenBean.add(
-                                    MainETHTokenBean(
-                                        "ETH-${tokenBean.symbol}",
-                                        tokenBean.symbol,
-                                        tokenBalance,
-                                        tokenBean.unitPrice,
-                                        currencyUnit,
-                                        tokenBean.contractAddress,
-                                        tokenBean.decimalPoints,
-                                        true
-                                    )
-                                )
+                                tokenBean.balance = tokenBalance
                                 totalBalance += tokenBalance.multiply(BigDecimal(tokenBean.unitPrice))
                                 mainAdapter.notifyDataSetChanged()
                                 setBalanceETH(totalBalance)
