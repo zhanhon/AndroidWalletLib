@@ -47,7 +47,7 @@ class HelpFaqActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        binding.tvMineTitle.text = title
+        binding.tvMineTitle.text = getString(R.string.help_sever_sister)
         LinearLayoutManager(this).apply {
             binding.recycler.layoutManager = this
         }

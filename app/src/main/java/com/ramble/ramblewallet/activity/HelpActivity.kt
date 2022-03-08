@@ -73,12 +73,12 @@ class HelpActivity : BaseActivity(), View.OnClickListener {
                 it.data()?.let { data ->
                     adapter.add(Help.Header(getString(R.string.help_door_sister)))
                     ArrayList<SimpleRecyclerItem>().apply {
-                        it.data()!!.noviceList.forEach { o -> this.add(Help.FaqTypeList(o)) }
+                        data.noviceList.forEach { o -> this.add(Help.FaqTypeList(o)) }
                         adapter.addAll(this.toList())
                     }
                     adapter.add(Help.Header(getString(R.string.help_sever_sister)))
                     ArrayList<SimpleRecyclerItem>().apply {
-                        it.data()!!.categoryList.forEach { o -> this.add(Help.HotFaqList(o)) }
+                        data.categoryList.forEach { o -> this.add(Help.HotFaqList(o)) }
                         adapter.addAll(this.toList())
                     }
 
