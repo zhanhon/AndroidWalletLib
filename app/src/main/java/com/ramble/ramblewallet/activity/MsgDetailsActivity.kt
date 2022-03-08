@@ -91,7 +91,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
                     ""
                 ).isNotEmpty()
             ) {
-                SharedPreferencesUtils.String2SceneList(
+                SharedPreferencesUtils.string2SceneList(
                     SharedPreferencesUtils.getString(
                         this,
                         READ_ID,
@@ -108,7 +108,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
             } else {
                 list.add(id)
             }
-            var addId = SharedPreferencesUtils.SceneList2String(list)
+            var addId = SharedPreferencesUtils.sceneList2String(list)
             SharedPreferencesUtils.saveString(this, READ_ID, addId)
         }
     }
@@ -121,7 +121,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
                     ""
                 ).isNotEmpty()
             ) {
-                SharedPreferencesUtils.String2SceneList(
+                SharedPreferencesUtils.string2SceneList(
                     SharedPreferencesUtils.getString(
                         this,
                         READ_ID_NEW,
@@ -138,7 +138,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
             } else {
                 list.add(id)
             }
-            var addId = SharedPreferencesUtils.SceneList2String(list)
+            var addId = SharedPreferencesUtils.sceneList2String(list)
             SharedPreferencesUtils.saveString(this, READ_ID_NEW, addId)
         }
     }

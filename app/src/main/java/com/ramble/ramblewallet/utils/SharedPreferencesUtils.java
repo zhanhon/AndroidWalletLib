@@ -14,6 +14,10 @@ import java.util.List;
 
 public class SharedPreferencesUtils {
 
+    private SharedPreferencesUtils() {
+        throw new IllegalStateException("SharedPreferencesUtils");
+    }
+
     private static final String SP_NAME = "xz";
     private static SharedPreferences sp;
 
@@ -55,21 +59,14 @@ public class SharedPreferencesUtils {
         sp.edit().remove(key).commit();
     }
 
-    public static int getInt(Context context, String key, int value) {
-        if (sp == null) {
-            sp = context.getSharedPreferences(SP_NAME, 0);
-        }
-        return sp.getInt(key, 0);
-    }
-
     /**
      * 将集合转成string
      *
-     * @param SceneList
+     * @param sceneList
      * @return
      * @throws IOException
      */
-    public static String SceneList2String(List SceneList)
+    public static String sceneList2String(List sceneList)
             throws IOException {
         // 实例化一个ByteArrayOutputStream对象，用来装载压缩后的字节文件。
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -77,13 +74,13 @@ public class SharedPreferencesUtils {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(
                 byteArrayOutputStream);
         // writeObject 方法负责写入特定类的对象的状态，以便相应的 readObject 方法可以还原它
-        objectOutputStream.writeObject(SceneList);
+        objectOutputStream.writeObject(sceneList);
         // 最后，用Base64.encode将字节文件转换成Base64编码保存在String中
-        String SceneListString = new String(Base64.encode(
+        String sceneListString = new String(Base64.encode(
                 byteArrayOutputStream.toByteArray(), Base64.DEFAULT));
         // 关闭objectOutputStream
         objectOutputStream.close();
-        return SceneListString;
+        return sceneListString;
 
     }
 
@@ -98,19 +95,18 @@ public class SharedPreferencesUtils {
      */
 
     @SuppressWarnings("unchecked")
-    public static List String2SceneList(String SceneListString)
-            throws StreamCorruptedException, IOException,
-            ClassNotFoundException {
-        byte[] mobileBytes = Base64.decode(SceneListString.getBytes(),
+    public static List string2SceneList(String sceneListString)
+            throws IOException, ClassNotFoundException {
+        byte[] mobileBytes = Base64.decode(sceneListString.getBytes(),
                 Base64.DEFAULT);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
                 mobileBytes);
         ObjectInputStream objectInputStream = new ObjectInputStream(
                 byteArrayInputStream);
-        List SceneList = (List) objectInputStream
+        List sceneList = (List) objectInputStream
                 .readObject();
         objectInputStream.close();
-        return SceneList;
+        return sceneList;
     }
 
 

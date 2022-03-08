@@ -158,7 +158,7 @@ class ProclamationFragment : BaseFragment() {
         if (SharedPreferencesUtils.getString(myActivity, READ_ID_NEW, "")
                 .isNotEmpty()
         ) {
-            if (SharedPreferencesUtils.String2SceneList(
+            if (SharedPreferencesUtils.string2SceneList(
                     SharedPreferencesUtils.getString(
                         myActivity,
                         READ_ID_NEW,
@@ -215,7 +215,7 @@ class ProclamationFragment : BaseFragment() {
                         ""
                     ).isNotEmpty()
                 ) {
-                    SharedPreferencesUtils.String2SceneList(
+                    SharedPreferencesUtils.string2SceneList(
                         SharedPreferencesUtils.getString(
                             myActivity,
                             READ_ID_NEW,
@@ -232,7 +232,7 @@ class ProclamationFragment : BaseFragment() {
                 } else {
                     list.add(itemBean.id)
                 }
-                var addId = SharedPreferencesUtils.SceneList2String(list)
+                var addId = SharedPreferencesUtils.sceneList2String(list)
                 SharedPreferencesUtils.saveString(myActivity, READ_ID_NEW, addId)
                 itemBean.isRead = 1
                 adapter.notifyItemChanged(AdapterUtils.getHolder(v).adapterPosition)

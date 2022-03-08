@@ -1,6 +1,8 @@
 package com.ramble.ramblewallet.tronsdk.common.bip32;
 
 
+import android.util.Log;
+
 import com.ramble.ramblewallet.tronsdk.StringTronUtil;
 
 import java.math.BigDecimal;
@@ -157,7 +159,7 @@ public final class Numeric {
         }
 
         if (bytesLength > length) {
-            throw new RuntimeException("Input is too large to put in byte array of size " + length);
+            Log.v("-=-=-=->", "Input is too large to put in byte array of size " + length);
         }
 
         int destOffset = length - bytesLength;

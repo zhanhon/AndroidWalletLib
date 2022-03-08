@@ -85,7 +85,7 @@ open class StationFragment : BaseFragment() {
                 ""
             ).isNotEmpty()
         ) {
-            SharedPreferencesUtils.String2SceneList(
+            SharedPreferencesUtils.string2SceneList(
                 SharedPreferencesUtils.getString(
                     myActivity,
                     STATION_INFO,
@@ -131,7 +131,7 @@ open class StationFragment : BaseFragment() {
 
     private fun dataCheck(item: Page.Record): Page.Record {
         if (SharedPreferencesUtils.getString(myActivity, READ_ID, "").isNotEmpty()) {
-            if (SharedPreferencesUtils.String2SceneList(
+            if (SharedPreferencesUtils.string2SceneList(
                     SharedPreferencesUtils.getString(
                         myActivity,
                         READ_ID,
@@ -175,7 +175,7 @@ open class StationFragment : BaseFragment() {
                         ""
                     ).isNotEmpty()
                 ) {
-                    SharedPreferencesUtils.String2SceneList(
+                    SharedPreferencesUtils.string2SceneList(
                         SharedPreferencesUtils.getString(
                             myActivity,
                             READ_ID,
@@ -192,7 +192,7 @@ open class StationFragment : BaseFragment() {
                 } else {
                     list.add(itemBean.id)
                 }
-                var addId = SharedPreferencesUtils.SceneList2String(list)
+                var addId = SharedPreferencesUtils.sceneList2String(list)
                 itemBean.isRead = 1
                 SharedPreferencesUtils.saveString(myActivity, READ_ID, addId)
                 adapter.notifyItemChanged(AdapterUtils.getHolder(v).adapterPosition)
@@ -257,7 +257,7 @@ open class StationFragment : BaseFragment() {
                             list.remove()
                         }
                     }
-                    var addId = SharedPreferencesUtils.SceneList2String(records)
+                    var addId = SharedPreferencesUtils.sceneList2String(records)
                     SharedPreferencesUtils.saveString(myActivity, STATION_INFO, addId)
                     apply(adapter.itemCount)
                 }

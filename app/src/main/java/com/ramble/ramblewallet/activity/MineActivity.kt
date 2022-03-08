@@ -143,7 +143,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 ""
             ).isNotEmpty()
         ) {
-            SharedPreferencesUtils.String2SceneList(
+            SharedPreferencesUtils.string2SceneList(
                 SharedPreferencesUtils.getString(
                     this,
                     STATION_INFO,
@@ -209,7 +209,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
     private fun dataCheck(data: List<Page.Record>) {
         data.forEach { item ->
-            if (SharedPreferencesUtils.String2SceneList(
+            if (SharedPreferencesUtils.string2SceneList(
                     SharedPreferencesUtils.getString(
                         this,
                         READ_ID_NEW,
@@ -233,7 +233,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                         ""
                     ).isNotEmpty()
                 ) {
-                    if (SharedPreferencesUtils.String2SceneList(
+                    if (SharedPreferencesUtils.string2SceneList(
                             SharedPreferencesUtils.getString(
                                 this,
                                 READ_ID,

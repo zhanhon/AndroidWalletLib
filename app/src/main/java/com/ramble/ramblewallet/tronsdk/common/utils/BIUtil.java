@@ -21,6 +21,10 @@ import java.math.BigInteger;
 
 public class BIUtil {
 
+    private BIUtil() {
+        throw new IllegalStateException("BIUtil");
+    }
+
     /**
      * @param valueA - not null
      * @param valueB - not null

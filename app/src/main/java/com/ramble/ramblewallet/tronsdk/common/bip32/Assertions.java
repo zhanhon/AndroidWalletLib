@@ -1,9 +1,15 @@
 package com.ramble.ramblewallet.tronsdk.common.bip32;
 
+import android.util.Log;
+
 /**
  * Assertion utility functions.
  */
 public class Assertions {
+
+    private Assertions() {
+        throw new IllegalStateException("Assertions");
+    }
 
     /**
      * Verify that the provided precondition holds true.
@@ -13,7 +19,7 @@ public class Assertions {
      */
     public static void verifyPrecondition(boolean assertionResult, String errorMessage) {
         if (!assertionResult) {
-            throw new RuntimeException(errorMessage);
+            Log.v("-=-=-=->", errorMessage);
         }
     }
 }

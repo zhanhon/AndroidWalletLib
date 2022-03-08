@@ -56,11 +56,8 @@ public class LinuxSecureRandom extends SecureRandomSpi {
                 throw new RuntimeException("/dev/urandom not readable?");
             }
             // Now override the default SecureRandom implementation with this one.
-            int position = Security.insertProviderAt(new LinuxSecureRandomProvider(), 1);
+            Security.insertProviderAt(new LinuxSecureRandomProvider(), 1);
 
-            if (position != -1) {
-            } else {
-            }
         } catch (FileNotFoundException e) {
             // Should never happen.
             throw new RuntimeException(e);
@@ -69,11 +66,11 @@ public class LinuxSecureRandom extends SecureRandomSpi {
         }
     }
 
-    private final DataInputStream dis;
+    private final DataInputStream dataInputStream;
 
     public LinuxSecureRandom() {
         // DataInputStream is not thread safe, so each random object has its own.
-        dis = new DataInputStream(urandom);
+        dataInputStream = new DataInputStream(urandom);
     }
 
     @Override
@@ -84,7 +81,7 @@ public class LinuxSecureRandom extends SecureRandomSpi {
     @Override
     protected void engineNextBytes(byte[] bytes) {
         try {
-            dis.readFully(bytes); // This will block until all the bytes can be read.
+            dataInputStream.readFully(bytes); // This will block until all the bytes can be read.
         } catch (IOException e) {
             throw new RuntimeException(e); // Fatal error. Do not attempt to recover from this.
         }

@@ -99,7 +99,7 @@ public class Value {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Value) == false) {
+        if (!(other instanceof Value)) {
             return false;
         }
         Value rhs = ((Value) other);

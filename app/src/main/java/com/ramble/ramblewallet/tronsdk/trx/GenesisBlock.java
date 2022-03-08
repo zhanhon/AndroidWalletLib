@@ -91,7 +91,7 @@ public class GenesisBlock implements Serializable {
     }
 
     public void setNumber(final String number) {
-        this.number = "0";
+        this.number = number;
     }
 
     /**

@@ -12,6 +12,9 @@ import com.ramble.ramblewallet.R;
  * @创建时间： 2021/12/16
  */
 public class ClipboardUtils {
+    private ClipboardUtils() {
+        throw new IllegalStateException("ClipboardUtils");
+    }
     public static void copy(String value, Context context) {
         ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         cm.setPrimaryClip(ClipData.newPlainText(null, value));

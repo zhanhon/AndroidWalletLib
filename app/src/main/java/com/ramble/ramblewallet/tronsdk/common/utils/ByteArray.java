@@ -25,6 +25,11 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 
 public class ByteArray {
+
+    private ByteArray() {
+        throw new IllegalStateException("ByteArray");
+    }
+
     public static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     public static String toHexString(byte[] data) {
@@ -53,7 +58,7 @@ public class ByteArray {
 
     public static byte[] fromString(String str) {
         if (str == null) {
-            return null;
+            return new byte[0];
         }
 
         return str.getBytes();

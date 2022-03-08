@@ -37,6 +37,10 @@ import static java.util.Arrays.copyOfRange;
 
 public class Hash {
 
+    private Hash() {
+        throw new IllegalStateException("Hash");
+    }
+
     private static final Provider CRYPTO_PROVIDER;
 
     private static final String HASH_256_ALGORITHM_NAME;

@@ -556,8 +556,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                             BigDecimal("1000000")
                         ).toBigInteger(),
                         (BigInteger(gasPrice).multiply(BigInteger("1000000000"))), //GWEI → WEI
-                        BigInteger(gasLimit),
-                        binding.edtInputTransferRemarks.text.trim().toString()
+                        BigInteger(gasLimit)
                     )
                 } else {
                     transferETH(

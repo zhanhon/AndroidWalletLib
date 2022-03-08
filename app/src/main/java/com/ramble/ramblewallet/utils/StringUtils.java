@@ -4,16 +4,12 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
-
 import com.ramble.ramblewallet.bean.Wallet;
-
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toCollection;
@@ -24,17 +20,11 @@ import static java.util.stream.Collectors.toCollection;
  */
 public class StringUtils {
 
+    private StringUtils() {
+        throw new IllegalStateException("StringUtils");
+    }
     //小写字母
     public static final String REG_LOWERCASE = ".*[a-z]+.*";
-
-    //对象去重
-    public static ArrayList<Wallet> removeDuplicate(ArrayList<Wallet> list) {
-        Set<Wallet> set = new LinkedHashSet();
-        set.addAll(list);
-        list.clear();
-        list.addAll(set);
-        return list;
-    }
 
     //根据对象的某个字段去重
     public static ArrayList<Wallet> removeDuplicateByAddress(ArrayList<Wallet> list) {
@@ -151,14 +141,12 @@ public class StringUtils {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // TODO Auto-generated method stub
                 l = s.length();
                 location = edit.getSelectionStart();
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // TODO Auto-generated method stub
                 if (!TextUtils.isEmpty(s.toString())) {
                     Pattern p = Pattern.compile("[0-9]*");
                     Matcher m = p.matcher(s.toString());
@@ -178,8 +166,7 @@ public class StringUtils {
 
             @Override
             public void afterTextChanged(Editable s) {
-                // TODO Auto-generated method stub
-
+                //暂时不需要实现此方法
             }
         });
     }

@@ -13,6 +13,11 @@ import java.util.Locale;
  * @创建时间： 2021/12/17
  */
 public class LanguageSetting {
+
+    private LanguageSetting() {
+        throw new IllegalStateException("LanguageSetting");
+    }
+
     public static void setLanguage(Context context, int type) {
         Resources resources = context.getResources();
         Configuration config = resources.getConfiguration();

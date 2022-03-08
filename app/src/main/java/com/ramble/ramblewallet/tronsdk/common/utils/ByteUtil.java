@@ -26,6 +26,10 @@ import java.util.Arrays;
 
 public class ByteUtil {
 
+    private ByteUtil() {
+        throw new IllegalStateException("ByteUtil");
+    }
+
     public static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
     public static final byte[] ZERO_BYTE_ARRAY = new byte[]{0};
 
@@ -41,7 +45,7 @@ public class ByteUtil {
      */
     public static byte[] bigIntegerToBytes(BigInteger b, int numBytes) {
         if (b == null) {
-            return null;
+            return new byte[0];
         }
         byte[] bytes = new byte[numBytes];
         byte[] biBytes = b.toByteArray();
@@ -67,7 +71,7 @@ public class ByteUtil {
      */
     public static byte[] bigIntegerToBytes(BigInteger value) {
         if (value == null) {
-            return null;
+            return new byte[0];
         }
 
         byte[] data = value.toByteArray();
@@ -220,7 +224,7 @@ public class ByteUtil {
     public static byte[] stripLeadingZeroes(byte[] data) {
 
         if (data == null)
-            return null;
+            return new byte[0];
 
         final int firstNonZero = firstNonZeroByte(data);
         switch (firstNonZero) {

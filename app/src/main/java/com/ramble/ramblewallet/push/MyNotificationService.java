@@ -56,7 +56,7 @@ public class MyNotificationService extends Service {
                         ""
                 ).isEmpty();
                 if (!isP) {
-                    records = (ArrayList<Page.Record>) SharedPreferencesUtils.String2SceneList(
+                    records = (ArrayList<Page.Record>) SharedPreferencesUtils.string2SceneList(
                             SharedPreferencesUtils.getString(
                                     this,
                                     STATION_INFO,
@@ -68,7 +68,7 @@ public class MyNotificationService extends Service {
                     records = new ArrayList<Page.Record>();
                 }
                 records.add(a);
-                String addId = SharedPreferencesUtils.SceneList2String(records);
+                String addId = SharedPreferencesUtils.sceneList2String(records);
                 SharedPreferencesUtils.saveString(this, STATION_INFO, addId);
 
             } else if (msg.extra.get(MESSAGE_TYPE).equals("202")) {//公告

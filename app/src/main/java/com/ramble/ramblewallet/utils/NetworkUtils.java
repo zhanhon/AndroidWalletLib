@@ -18,6 +18,11 @@ import com.ramble.ramblewallet.R;
  * @创建时间： 2022/2/26
  */
 public class NetworkUtils {
+
+    private NetworkUtils() {
+        throw new IllegalStateException("NetworkUtils");
+    }
+
     /*** 判断网络情况   有网络返回true，没网络返回false*/
     public static boolean isNetworkAvalible(Context context) {
         //检测API是不是小于23，因为到了API23之后getNetworkInfo(int networkType)方法被弃用
@@ -40,11 +45,11 @@ public class NetworkUtils {
                 return false;
             } else {
                 // 建立网络数组
-                NetworkInfo[] net_info = connectivityManager.getAllNetworkInfo();
-                if (net_info != null) {
-                    for (int i = 0; i < net_info.length; i++) {
+                NetworkInfo[] netInfo = connectivityManager.getAllNetworkInfo();
+                if (netInfo != null) {
+                    for (int i = 0; i < netInfo.length; i++) {
                         // 判断获得的网络状态是否是处于连接状态
-                        if (net_info[i].getState() == NetworkInfo.State.CONNECTED) {
+                        if (netInfo[i].getState() == NetworkInfo.State.CONNECTED) {
                             return true;
                         }
                     }
@@ -59,7 +64,7 @@ public class NetworkUtils {
         if (!NetworkUtils.isNetworkAvalible(context)) {
             netWorkDialog(context);
         }
-        return;
+
     }
 
     public static void netWorkDialog(final Context context) {

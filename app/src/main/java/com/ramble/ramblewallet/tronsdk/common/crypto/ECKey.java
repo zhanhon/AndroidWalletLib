@@ -25,6 +25,7 @@ import com.ramble.ramblewallet.tronsdk.common.crypto.jce.ECSignatureFactory;
 import com.ramble.ramblewallet.tronsdk.common.crypto.jce.TronCastleProvider;
 import com.ramble.ramblewallet.tronsdk.common.utils.ByteUtil;
 
+import org.jetbrains.annotations.NotNull;
 import org.spongycastle.asn1.ASN1InputStream;
 import org.spongycastle.asn1.ASN1Integer;
 import org.spongycastle.asn1.DLSequence;
@@ -112,7 +113,6 @@ public class ECKey implements Serializable {
     // The two parts of the key. If "priv" is set, "pub" can always be
     // calculated. If "pub" is set but not "priv", we
     // can only verify signatures not make them.
-    // TODO: Redesign this class to use consistent internals and more
     // efficient serialization.
     private final PrivateKey privKey;
     // the Java Cryptographic Architecture provider to use for Signature
@@ -252,7 +252,7 @@ public class ECKey implements Serializable {
      * @return -
      * @deprecated per-point compression property will be removed in Bouncy Castle
      */
-    public static ECPoint compressPoint(ECPoint uncompressed) {
+    public static ECPoint compressPoint(@NotNull ECPoint uncompressed) {
         return CURVE.getCurve().decodePoint(uncompressed.getEncoded(true));
     }
 
@@ -1121,12 +1121,8 @@ public class ECKey implements Serializable {
                             "stream.");
                 }
                 ASN1Integer r, s;
-                try {
-                    r = (ASN1Integer) seq.getObjectAt(0);
-                    s = (ASN1Integer) seq.getObjectAt(1);
-                } catch (ClassCastException e) {
-                    throw new IllegalArgumentException(e);
-                }
+                r = (ASN1Integer) seq.getObjectAt(0);
+                s = (ASN1Integer) seq.getObjectAt(1);
                 // OpenSSL deviates from the DER spec by interpreting these
                 // values as unsigned, though they should not be
                 // Thus, we always use the positive versions. See:
@@ -1136,11 +1132,10 @@ public class ECKey implements Serializable {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } finally {
-                if (decoder != null) {
-                    try {
-                        decoder.close();
-                    } catch (IOException x) {
-                    }
+                try {
+                    decoder.close();
+                } catch (IOException x) {
+                    x.printStackTrace();
                 }
             }
         }

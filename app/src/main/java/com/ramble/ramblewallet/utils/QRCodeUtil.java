@@ -19,6 +19,11 @@ import java.util.Map;
 import static android.graphics.Color.BLACK;
 
 public class QRCodeUtil {
+
+    private QRCodeUtil() {
+        throw new IllegalStateException("QRCodeUtil");
+    }
+
     //生成二维码图片（不带图片）
     public static Bitmap createQRCode(String url, int widthAndHeight)
             throws WriterException {

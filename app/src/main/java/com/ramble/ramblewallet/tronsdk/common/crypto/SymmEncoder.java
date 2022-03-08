@@ -7,22 +7,13 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class SymmEncoder {
 
+    private SymmEncoder() {
+        throw new IllegalStateException("SymmEncoder");
+    }
 
     public static SecretKey restoreSecretKey(byte[] secretBytes, String algorithm) {
         SecretKey secretKey = new SecretKeySpec(secretBytes, algorithm);
         return secretKey;
-    }
-
-    public static byte[] AES128EcbEnc(byte[] plain, byte[] aesKey) {
-        if (aesKey == null || aesKey.length != 16) {
-            return new byte[0];
-        }
-        if (plain == null || (plain.length & 0x0F) != 0) {
-            return new byte[0];
-        }
-
-        SecretKey key = restoreSecretKey(aesKey, "AES");
-        return AesEcbEncode(plain, key);
     }
 
     public static byte[] AES128EcbDec(byte[] encoded, byte[] aesKey) {
@@ -70,18 +61,6 @@ public class SymmEncoder {
 
         SecretKey key = restoreSecretKey(aesKey, "AES");
         return AesEcbPKCS7Encode(plain, key);
-    }
-
-    public static byte[] AESEcbDec(byte[] encoded, byte[] aesKey) {
-        if (aesKey == null || aesKey.length != 16) {
-            return new byte[0];
-        }
-        if (encoded == null) {
-            return new byte[0];
-        }
-
-        SecretKey key = restoreSecretKey(aesKey, "AES");
-        return AesEcbPKCS7Decode(encoded, key);
     }
 
     private static byte[] AesEcbPKCS7Encode(byte[] plainText, SecretKey key) {

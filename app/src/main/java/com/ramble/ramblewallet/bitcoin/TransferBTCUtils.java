@@ -52,11 +52,7 @@ import static com.alibaba.fastjson.JSON.parseArray;
 
 public class TransferBTCUtils {
 
-    private static final boolean isMainNet;
-
-    static {
-        isMainNet = true;
-    }
+    private static final boolean ISMAINNET = true;
 
     private TransferBTCUtils() {
         throw new IllegalStateException("TransferBTCUtils");
@@ -65,7 +61,7 @@ public class TransferBTCUtils {
     //"https://api.blockcypher.com/v1/btc/test3/addrs/" + address + "/balance"   //免费用户：每秒2次限流
     public static void balanceOfBtc(Activity context, String address) {
         OkHttpClient okHttpClient = new OkHttpClient();
-        final String[] host = {isMainNet ? "BTC" : "BTCTEST"};
+        final String[] host = {ISMAINNET ? "BTC" : "BTCTEST"};
         String url = "https://chain.so/api/v2/get_address_balance/" + host[0] + "/" + address; //免费用户：每秒5次限流
         Request request = new Request
                 .Builder()
@@ -112,7 +108,7 @@ public class TransferBTCUtils {
     public static void transferBTC(Activity context, String fromAddress, String toAddress,
                                    String privateKey, BigDecimal amount, String btcFee) {
         final List<UTXO>[] utxos = new List[]{Lists.newArrayList()};
-        final String[] host = {isMainNet ? "BTC" : "BTCTEST"};
+        final String[] host = {ISMAINNET ? "BTC" : "BTCTEST"};
         String url = "https://chain.so/api/v2/get_tx_unspent/" + host[0] + "/" + fromAddress;
         try {
             Call call = getCallGet(url);
@@ -166,7 +162,7 @@ public class TransferBTCUtils {
                     }
                     JSONObject jsonObjectTransaction = new JSONObject();
                     jsonObjectTransaction.put("tx_hex", toHex);
-                    String url = isMainNet ? "https://chain.so/api/v2/send_tx/BTC" : "https://chain.so/api/v2/send_tx/BTCTEST";
+                    String url = ISMAINNET ? "https://chain.so/api/v2/send_tx/BTC" : "https://chain.so/api/v2/send_tx/BTCTEST";
                     Call callTransaction = getCall(url, jsonObjectTransaction);
                     callTransaction.enqueue(new Callback() {
                         @Override
@@ -235,7 +231,7 @@ public class TransferBTCUtils {
     public static String sign(String fromAddress, String toAddress, String privateKey, long amount, long fee, List<UTXO> utxos) {
         Transaction transaction = null;
         try {
-            NetworkParameters networkParameters = isMainNet ? MainNetParams.get() : TestNet3Params.get();
+            NetworkParameters networkParameters = ISMAINNET ? MainNetParams.get() : TestNet3Params.get();
             transaction = new Transaction(networkParameters);
             //找零地址
             String changeAddress = fromAddress;

@@ -28,16 +28,19 @@ import java.util.Locale;
 
 public class DisplayHelper {
 
+    private DisplayHelper() {
+        throw new IllegalStateException("DisplayHelper");
+    }
+
     /**
      * 屏幕密度,系统源码注释不推荐使用
      */
     public static final float DENSITY = Resources.getSystem()
             .getDisplayMetrics().density;
-    private static final String TAG = "Devices";
     /**
      * 屏幕密度
      */
-    public static float sDensity = 0f;
+    public static float SDENSITY = 0f;
     /**
      * 是否有摄像头
      */
@@ -79,10 +82,10 @@ public class DisplayHelper {
     }
 
     public static float getDensity(Context context) {
-        if (sDensity == 0f) {
-            sDensity = getDisplayMetrics(context).density;
+        if (SDENSITY == 0f) {
+            SDENSITY = getDisplayMetrics(context).density;
         }
-        return sDensity;
+        return SDENSITY;
     }
 
     /**
@@ -104,12 +107,12 @@ public class DisplayHelper {
      */
     public static int[] getRealScreenSize(Context context) {
         int[] size = new int[2];
-        int widthPixels = 0, heightPixels = 0;
+        int widthPixels = 0;
+        int heightPixels = 0;
         WindowManager w = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display d = w.getDefaultDisplay();
         DisplayMetrics metrics = new DisplayMetrics();
         d.getMetrics(metrics);
-        // since SDK_INT = 1;
         widthPixels = metrics.widthPixels;
         heightPixels = metrics.heightPixels;
         try {
@@ -117,6 +120,7 @@ public class DisplayHelper {
             widthPixels = (Integer) Display.class.getMethod("getRawWidth").invoke(d);
             heightPixels = (Integer) Display.class.getMethod("getRawHeight").invoke(d);
         } catch (Exception ignored) {
+            ignored.printStackTrace();
         }
         try {
             // used when SDK_INT >= 17; includes window decorations (statusbar bar/menu bar)
@@ -128,6 +132,7 @@ public class DisplayHelper {
             widthPixels = realSize.x;
             heightPixels = realSize.y;
         } catch (Exception ignored) {
+            ignored.printStackTrace();
         }
 
         size[0] = widthPixels;
@@ -273,6 +278,7 @@ public class DisplayHelper {
                 return true;
             }
         } catch (PackageManager.NameNotFoundException ignored) {
+            ignored.printStackTrace();
         }
         return false;
     }

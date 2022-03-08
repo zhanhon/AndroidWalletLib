@@ -56,8 +56,7 @@ public class TransferEthUtils {
         try {
             Web3j web3 = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + APIKEY));
             Future<EthGetBalance> ethGetBalanceFuture = web3.ethGetBalance(address, DefaultBlockParameterName.LATEST).sendAsync();
-            BigDecimal finalBalance = new BigDecimal(ethGetBalanceFuture.get().getBalance().toString()).divide(new BigDecimal("10").pow(18));
-            return finalBalance;
+            return new BigDecimal(ethGetBalanceFuture.get().getBalance().toString()).divide(new BigDecimal("10").pow(18));
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
@@ -125,45 +124,50 @@ public class TransferEthUtils {
 
     @SuppressLint("LongLogTag")
     public static void transferETHToken(Context context, String fromAddress, String toAddress, String contractAddress, String privateKey, BigInteger number,
-                                        BigInteger gasPrice, BigInteger gasLimit, String remark) throws Exception {
-        Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + APIKEY));
-        //加载转账所需的凭证，用私钥
-        Credentials credentials = Credentials.create(privateKey);
-        //获取nonce，交易笔数
-        EthGetTransactionCount transactionCount = web3j.ethGetTransactionCount(fromAddress, DefaultBlockParameterName.LATEST).sendAsync().get();
-        BigInteger nonce = transactionCount.getTransactionCount();
+                                        BigInteger gasPrice, BigInteger gasLimit) {
+        try {
+            Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + APIKEY));
+            //加载转账所需的凭证，用私钥
+            Credentials credentials = Credentials.create(privateKey);
+            //获取nonce，交易笔数
+            EthGetTransactionCount transactionCount = web3j.ethGetTransactionCount(fromAddress, DefaultBlockParameterName.LATEST).sendAsync().get();
+            BigInteger nonce = transactionCount.getTransactionCount();
 
-        Function function = new Function(
-                "transfer",
-                Arrays.asList(new Address(toAddress), new Uint256(number)),
-                Arrays.asList(new TypeReference<Type>() {
-                }));
+            Function function = new Function(
+                    "transfer",
+                    Arrays.asList(new Address(toAddress), new Uint256(number)),
+                    Arrays.asList(new TypeReference<Type>() {
+                    }));
 
-        String encodedFunction = FunctionEncoder.encode(function);
-        //创建RawTransaction交易对象
-        RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, gasPrice,
-                gasLimit, contractAddress, encodedFunction); //USDT合约地址，暂时写死用于测试
+            String encodedFunction = FunctionEncoder.encode(function);
+            //创建RawTransaction交易对象
+            RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, gasPrice,
+                    gasLimit, contractAddress, encodedFunction);
 
-        //签名Transaction，这里要对交易做签名
-        byte[] signMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
-        String hexValue = Numeric.toHexString(signMessage);
+            //签名Transaction，这里要对交易做签名
+            byte[] signMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
+            String hexValue = Numeric.toHexString(signMessage);
 
-        //发送交易
-        EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexValue).sendAsync().get();
-        if (ethSendTransaction.hasError()) {
-            if (context instanceof TransferActivity) {
-                ((TransferActivity) context).transferFail(ethSendTransaction.getError().getMessage());
+            //发送交易
+            EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexValue).sendAsync().get();
+            if (ethSendTransaction.hasError()) {
+                if (context instanceof TransferActivity) {
+                    ((TransferActivity) context).transferFail(ethSendTransaction.getError().getMessage());
+                }
+            } else {
+                String transactionHash = ethSendTransaction.getTransactionHash();
+                if (context instanceof TransferActivity) {
+                    ((TransferActivity) context).transferSuccess(transactionHash);
+                }
             }
-        } else {
-            String transactionHash = ethSendTransaction.getTransactionHash();
-            if (context instanceof TransferActivity) {
-                ((TransferActivity) context).transferSuccess(transactionHash);
-            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
     }
 
-    public void setOnListener(BalanceGet getBalance) {
-        TransferEthUtils.getBalance = getBalance;
+    public void setOnListener(BalanceGet balance) {
+        getBalance = balance;
     }
 
     public interface BalanceGet {

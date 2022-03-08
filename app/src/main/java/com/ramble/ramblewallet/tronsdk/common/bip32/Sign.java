@@ -1,5 +1,7 @@
 package com.ramble.ramblewallet.tronsdk.common.bip32;
 
+import android.util.Log;
+
 import com.ramble.ramblewallet.tronsdk.common.crypto.ECKey;
 import com.ramble.ramblewallet.tronsdk.common.crypto.Hash;
 
@@ -34,6 +36,10 @@ public class Sign {
     static final BigInteger HALF_CURVE_ORDER = CURVE_PARAMS.getN().shiftRight(1);
 
     static final String MESSAGE_PREFIX = "\u0019Ethereum Signed Message:\n";
+
+    private Sign() {
+        throw new IllegalStateException("Sign");
+    }
 
     static byte[] getEthereumMessagePrefix(int messageLength) {
         return MESSAGE_PREFIX.concat(String.valueOf(messageLength)).getBytes();
@@ -77,8 +83,7 @@ public class Sign {
             }
         }
         if (recId == -1) {
-            throw new RuntimeException(
-                    "Could not construct a recoverable key. Are your credentials valid?");
+            Log.v("-=-=-=->", "Could not construct a recoverable key. Are your credentials valid?");
         }
 
         int headerByte = recId + 27;
@@ -138,10 +143,10 @@ public class Sign {
         }
         // Compressed keys require you to know an extra bit of data about the y-coord as there are
         // two possibilities. So it's encoded in the recId.
-        ECPoint R = decompressKey(x, (recId & 1) == 1);
+        ECPoint r = decompressKey(x, (recId & 1) == 1);
         //   1.4. If nR != point at infinity, then do another iteration of Step 1 (callers
         //        responsibility).
-        if (!R.multiply(n).isInfinity()) {
+        if (!r.multiply(n).isInfinity()) {
             return null;
         }
         //   1.5. Compute e from M using Steps 2 and 3 of ECDSA signature verification.
@@ -164,7 +169,7 @@ public class Sign {
         BigInteger rInv = sig.r.modInverse(n);
         BigInteger srInv = rInv.multiply(sig.s).mod(n);
         BigInteger eInvrInv = rInv.multiply(eInv).mod(n);
-        ECPoint q = ECAlgorithms.sumOfTwoMultiplies(CURVE.getG(), eInvrInv, R, srInv);
+        ECPoint q = ECAlgorithms.sumOfTwoMultiplies(CURVE.getG(), eInvrInv, r, srInv);
 
         byte[] qBytes = q.getEncoded(false);
         // We remove the prefix
@@ -261,7 +266,6 @@ public class Sign {
      */
     public static ECPoint publicPointFromPrivate(BigInteger privKey) {
         /*
-         * TODO: FixedPointCombMultiplier currently doesn't support scalars longer than the group
          * order, but that could change in future versions.
          */
         if (privKey.bitLength() > CURVE.getN().bitLength()) {

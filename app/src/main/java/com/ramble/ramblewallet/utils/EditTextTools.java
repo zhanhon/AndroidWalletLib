@@ -25,7 +25,7 @@ public class EditTextTools {
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            //暂时不需要实现此方法
         }
 
         @Override
