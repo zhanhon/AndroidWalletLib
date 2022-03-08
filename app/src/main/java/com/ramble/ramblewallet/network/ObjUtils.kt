@@ -27,9 +27,6 @@ object ObjUtils {
         val currentTime = System.currentTimeMillis()
         var signOriginal: String = apiName + currentTime + "1" + AppUtils.getSecretKey()
         val sign = Md5Util.md5(signOriginal)
-        Log.v("-=-=->", "=========================Sign Original=========================")
-        Log.v("-=-=->", signOriginal)
-        Log.v("-=-=->", "=========================Request Start=========================")
         Log.v(
             "-=-=->", Gson().toJson(
                 ApiRequest(

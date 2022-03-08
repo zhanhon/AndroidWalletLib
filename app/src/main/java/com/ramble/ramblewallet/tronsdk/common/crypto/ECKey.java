@@ -1053,7 +1053,8 @@ public class ECKey implements Serializable {
         /**
          * The two components of the signature.
          */
-        public final BigInteger r, s;
+        public final BigInteger r;
+        public final BigInteger s;
         public byte v;
 
         /**
@@ -1120,7 +1121,8 @@ public class ECKey implements Serializable {
                     throw new RuntimeException("Reached past end of ASN.1 " +
                             "stream.");
                 }
-                ASN1Integer r, s;
+                ASN1Integer r;
+                ASN1Integer s;
                 r = (ASN1Integer) seq.getObjectAt(0);
                 s = (ASN1Integer) seq.getObjectAt(1);
                 // OpenSSL deviates from the DER spec by interpreting these

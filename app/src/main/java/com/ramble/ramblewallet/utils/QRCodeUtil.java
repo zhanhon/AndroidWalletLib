@@ -27,7 +27,7 @@ public class QRCodeUtil {
     //生成二维码图片（不带图片）
     public static Bitmap createQRCode(String url, int widthAndHeight)
             throws WriterException {
-        Hashtable<EncodeHintType, String> hints = new Hashtable<>();
+        HashMap<EncodeHintType, String> hints = new HashMap<>();
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
         hints.put(EncodeHintType.MARGIN, String.valueOf(0));
         BitMatrix matrix = new MultiFormatWriter().encode(url,

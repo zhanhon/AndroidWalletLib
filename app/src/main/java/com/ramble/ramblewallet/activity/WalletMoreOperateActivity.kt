@@ -164,7 +164,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                 saveWalletList.forEach {
-                    if (it.clickDelete) {
+                    if (it.isClickDelete) {
                         detailsList.add(AddressReport.DetailsList(it.address, 2, it.walletType))
                     } else {
                         detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))

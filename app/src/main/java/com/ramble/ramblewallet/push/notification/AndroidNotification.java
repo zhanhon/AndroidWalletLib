@@ -8,11 +8,11 @@ import java.util.HashSet;
 public abstract class AndroidNotification extends UmengNotification {
 
     // Keys can be set in the payload level
-    protected static final HashSet<String> PAYLOAD_KEYS = new HashSet<String>(Arrays.asList(new String[]{
+    protected static final HashSet<String> PAYLOAD_KEYS = new HashSet<>(Arrays.asList(new String[]{
             "display_type"}));
 
     // Keys can be set in the body level
-    protected static final HashSet<String> BODY_KEYS = new HashSet<String>(Arrays.asList(new String[]{
+    protected static final HashSet<String> BODY_KEYS = new HashSet<>(Arrays.asList(new String[]{
             "ticker", "title", "text", "builder_id", "icon", "largeIcon", "img", "play_vibrate", "play_lights",
             "play_sound",
             "sound", "after_open", "url", "activity", "custom"}));
@@ -90,7 +90,7 @@ public abstract class AndroidNotification extends UmengNotification {
             }
             policyJson.put(key, value);
         } else {
-            if (key == "payload" || key == "body" || key == "policy" || key == "extra") {
+            if (key.equals("payload") || key.equals("body") || key.equals("policy")  || key.equals("extra")) {
                 throw new Exception(
                         "You don't need to set value for " + key + " , just set values for the sub keys in it.");
             } else {
@@ -142,8 +142,8 @@ public abstract class AndroidNotification extends UmengNotification {
     }
 
     ///用于标识该通知采用的样式。使用该参数时, 必须在SDK里面实现自定义通知栏样式。
-    public void setBuilderId(Integer builder_id) throws Exception {
-        setPredefinedKeyValue("builder_id", builder_id);
+    public void setBuilderId(Integer builderId) throws Exception {
+        setPredefinedKeyValue("builder_id", builderId);
     }
 
     ///状态栏图标ID, R.drawable.[smallIcon],如果没有, 默认使用应用图标。
@@ -162,18 +162,18 @@ public abstract class AndroidNotification extends UmengNotification {
     }
 
     ///收到通知是否震动,默认为"true"
-    public void setPlayVibrate(Boolean play_vibrate) throws Exception {
-        setPredefinedKeyValue("play_vibrate", play_vibrate.toString());
+    public void setPlayVibrate(Boolean playVibrate) throws Exception {
+        setPredefinedKeyValue("play_vibrate", playVibrate.toString());
     }
 
     ///收到通知是否闪灯,默认为"true"
-    public void setPlayLights(Boolean play_lights) throws Exception {
-        setPredefinedKeyValue("play_lights", play_lights.toString());
+    public void setPlayLights(Boolean playLights) throws Exception {
+        setPredefinedKeyValue("play_lights", playLights.toString());
     }
 
     ///收到通知是否发出声音,默认为"true"
-    public void setPlaySound(Boolean play_sound) throws Exception {
-        setPredefinedKeyValue("play_sound", play_sound.toString());
+    public void setPlaySound(Boolean playSound) throws Exception {
+        setPredefinedKeyValue("play_sound", playSound.toString());
     }
 
     ///通知声音，R.raw.[sound]. 如果该字段为空，采用SDK默认的声音

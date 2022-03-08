@@ -15,9 +15,9 @@ import com.qmuiteam.qmui.BuildConfig;
  * 描述　:
  */
 public class HtmlWebView extends WebView {
-    private final String UTF_8 = "UTF-8";
-    private final String baseUrl = "file:///android_asset/";
-    private final String mineType = "text/html;charset=UTF-8";
+    private static final String UTF8 = "UTF-8";
+    private static final String BASEURL = "file:///android_asset/";
+    private static final String MINETYPE = "text/html;charset=UTF-8";
 
     public HtmlWebView(Context context) {
         super(context);
@@ -37,7 +37,7 @@ public class HtmlWebView extends WebView {
     private void initWebViewSet() {
         WebSettings settings = getSettings();
         settings.setJavaScriptEnabled(true);
-        settings.setDefaultTextEncodingName(UTF_8);
+        settings.setDefaultTextEncodingName(UTF8);
         settings.setBlockNetworkImage(false);
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
@@ -64,7 +64,7 @@ public class HtmlWebView extends WebView {
      * @param htmlText html字符串
      */
     public void loadDataWithHtml(String htmlText) {
-        loadDataWithBaseURL(baseUrl, htmlText, mineType, null, null);
+        loadDataWithBaseURL(BASEURL, htmlText, MINETYPE, null, null);
     }
 
 }

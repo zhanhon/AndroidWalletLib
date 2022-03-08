@@ -140,7 +140,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 }
                 R.id.cl_delete -> {
                     if (adapter.getItem(position) is Wallet) {
-                        if ((adapter.getItem(position) as Wallet).clickDelete) {
+                        if ((adapter.getItem(position) as Wallet).isClickDelete) {
                             walletManageBean[position] =
                                 Wallet(
                                     (adapter.getItem(position) as Wallet).walletName,
@@ -266,7 +266,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 if (isDeletePage) {
                     var isAllClickDelete = true
                     walletManageBean.iterator().forEach {
-                        isAllClickDelete = isAllClickDelete && it.clickDelete
+                        isAllClickDelete = isAllClickDelete && it.isClickDelete
                     }
                     if (isAllClickDelete) {
                         toastDefault(getString(R.string.least_save_wallet))
@@ -312,7 +312,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                 walletManageBean.forEach {
-                    if (it.clickDelete) {
+                    if (it.isClickDelete) {
                         detailsList.add(AddressReport.DetailsList(it.address, 2, it.walletType))
                     } else {
                         detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
@@ -321,7 +321,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 putAddress(detailsList)
                 val list = walletManageBean.iterator()
                 list.forEach {
-                    if (it.clickDelete) {
+                    if (it.isClickDelete) {
                         list.remove()
                         if (it.isChoose) {
                             walletManageBean[0].isChoose = true

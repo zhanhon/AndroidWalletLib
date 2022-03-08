@@ -142,10 +142,6 @@ public class Wallet {
         this.walletType = walletType;
     }
 
-    public boolean getClickDelete() {
-        return isClickDelete;
-    }
-
     public void setClickDelete(boolean clickDelete) {
         isClickDelete = clickDelete;
     }

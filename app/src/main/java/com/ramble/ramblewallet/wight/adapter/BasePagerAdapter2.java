@@ -73,14 +73,14 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     }
 
     protected BasePagerAdapter2(@Nullable List<T> data) {
-        this.data = data == null ? new ArrayList<T>() : new ArrayList<>(data);
+        this.data = data == null ? new ArrayList<>() : new ArrayList<>(data);
         this.provider = new ListenerProviderImpl();
         this.cacheViews = new LinkedList<>();
     }
 
     @Override
     public void clear() {
-        if (data.size() > 0) {
+        if (!data.isEmpty()) {
             data.clear();
         }
         notifyDataSetChanged();

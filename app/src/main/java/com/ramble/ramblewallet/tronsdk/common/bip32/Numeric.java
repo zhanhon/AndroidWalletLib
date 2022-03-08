@@ -49,11 +49,7 @@ public final class Numeric {
             return false;
         }
 
-        if (!value.startsWith(HEX_PREFIX)) {
-            return false;
-        }
-
-        return true;
+        return value.startsWith(HEX_PREFIX);
     }
 
     public static String cleanHexPrefix(String input) {

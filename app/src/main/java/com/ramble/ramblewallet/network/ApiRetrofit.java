@@ -17,7 +17,6 @@ import javax.net.ssl.TrustManager;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -40,7 +39,6 @@ public class ApiRetrofit {
      * 请求访问quest和response拦截器
      */
     private final Interceptor mLogInterceptor = chain -> {
-        Request request = chain.request();
         Response response = chain.proceed(chain.request());
         okhttp3.MediaType mediaType = response.body().contentType();
         String content = response.body().string();
@@ -90,11 +88,7 @@ public class ApiRetrofit {
 
     public static ApiRetrofit getInstance() {
         if (mApiRetrofit == null) {
-            synchronized (Object.class) {
-                if (mApiRetrofit == null) {
-                    mApiRetrofit = new ApiRetrofit();
-                }
-            }
+            mApiRetrofit = new ApiRetrofit();
         }
         return mApiRetrofit;
     }

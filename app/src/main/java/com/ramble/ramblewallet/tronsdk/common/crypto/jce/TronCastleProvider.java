@@ -25,6 +25,10 @@ import java.security.Security;
 
 public final class TronCastleProvider {
 
+    private TronCastleProvider() {
+        throw new IllegalStateException("TronCastleProvider");
+    }
+
     public static Provider getInstance() {
         return Holder.INSTANCE;
     }

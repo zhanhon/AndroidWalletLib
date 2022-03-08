@@ -56,7 +56,7 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     }
 
     protected BaseRecyclerAdapter(@Nullable List<T> data) {
-        this.data = data == null ? new ArrayList<T>() : new ArrayList<>(data);
+        this.data = data == null ? new ArrayList<>() : new ArrayList<>(data);
         this.provider = new ListenerProviderImpl();
     }
 
@@ -87,7 +87,6 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
         int position = holder.getAdapterPosition();
         if (position != RecyclerView.NO_POSITION) {
             get(position).onViewAttachedToWindow(holder);
-            return;
         }
     }
 
@@ -96,7 +95,6 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
         int position = holder.getAdapterPosition();
         if (position != RecyclerView.NO_POSITION) {
             get(position).onViewDetachedFromWindow(holder);
-            return;
         }
     }
 
@@ -111,9 +109,9 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public void onBindViewHolder(H holder, int position, List<Object> payloads) {
-        if (payloads == null || payloads.isEmpty()) {
+        if (payloads == null || payloads.isEmpty())
             super.onBindViewHolder(holder, position, payloads);
-        } else {
+        else {
             T item = get(position);
             holder.setCurrentPosition(position);
             holder.setSize(getItemCount());
@@ -148,7 +146,7 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public void clear() {
-        if (data.size() > 0) {
+        if (!data.isEmpty()) {
             data.clear();
             notifyDataSetChanged();
         }
@@ -281,7 +279,7 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public void replaceAll(@NonNull List<T> list) {
-        if (data.size() > 0) {
+        if (!data.isEmpty()) {
             data.clear();
         }
         data.addAll(list);

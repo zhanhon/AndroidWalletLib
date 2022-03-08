@@ -89,10 +89,8 @@ public class ByteUtil {
      * @return - merged array
      */
     public static byte[] merge(byte[]... arrays) {
-        int arrCount = 0;
         int count = 0;
         for (byte[] array : arrays) {
-            arrCount++;
             count += array.length;
         }
 
@@ -254,9 +252,7 @@ public class ByteUtil {
     public static byte[] copyToArray(BigInteger value) {
         byte[] dest = ByteBuffer.allocate(32).array();
         byte[] src = ByteUtil.bigIntegerToBytes(value);
-        if (src != null) {
-            System.arraycopy(src, 0, dest, dest.length - src.length, src.length);
-        }
+        System.arraycopy(src, 0, dest, dest.length - src.length, src.length);
         return dest;
     }
 

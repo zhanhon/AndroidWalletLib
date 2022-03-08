@@ -70,7 +70,7 @@ public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
     }
 
     protected BaseAbsAdapter(@Nullable List<T> data, int viewTypeCount) {
-        this.data = data == null ? new ArrayList<T>() : new ArrayList<>(data);
+        this.data = data == null ? new ArrayList<>() : new ArrayList<>(data);
         this.provider = new ListenerProviderImpl();
         this.viewTypeCount = viewTypeCount;
         this.typeArray = new SparseIntArray();
@@ -222,7 +222,7 @@ public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
 
     @Override
     public void replaceAll(@NonNull List<T> list) {
-        if (data.size() > 0) {
+        if (!data.isEmpty()) {
             data.clear();
         }
         data.addAll(list);
