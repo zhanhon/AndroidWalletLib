@@ -36,6 +36,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
@@ -50,14 +51,6 @@ public class TransferEthUtils {
 
     public static BalanceGet getBalance;
 
-    public interface BalanceGet {
-        void onListener(MainETHTokenBean tokenBean, BigDecimal tokenBalance);
-    }
-
-    public void setOnListener(BalanceGet getBalance) {
-        this.getBalance = getBalance;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static BigDecimal getBalanceETH(String address) {
         try {
@@ -65,8 +58,9 @@ public class TransferEthUtils {
             Future<EthGetBalance> ethGetBalanceFuture = web3.ethGetBalance(address, DefaultBlockParameterName.LATEST).sendAsync();
             BigDecimal finalBalance = new BigDecimal(ethGetBalanceFuture.get().getBalance().toString()).divide(new BigDecimal("10").pow(18));
             return finalBalance;
-        } catch (Exception e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
+            Thread.currentThread().interrupt();
             return BigDecimal.valueOf(0);
         }
     }
@@ -92,35 +86,40 @@ public class TransferEthUtils {
 
     @SuppressLint("LongLogTag")
     public static void transferETH(Activity context, String fromAddress, String toAddress, String privateKey, String number,
-                                   BigInteger gasPrice, BigInteger gasLimit, String remark) throws Exception {
-        Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + APIKEY));
-        BigInteger value = Convert.toWei(number, Convert.Unit.ETHER).toBigInteger();
-        //加载转账所需的凭证，用私钥
-        Credentials credentials = Credentials.create(privateKey);
-        //获取nonce，交易笔数
-        EthGetTransactionCount transactionCount = web3j.ethGetTransactionCount(fromAddress, DefaultBlockParameterName.LATEST).sendAsync().get();
-        BigInteger nonce = transactionCount.getTransactionCount();
+                                   BigInteger gasPrice, BigInteger gasLimit, String remark) {
+        try {
+            Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + APIKEY));
+            BigInteger value = Convert.toWei(number, Convert.Unit.ETHER).toBigInteger();
+            //加载转账所需的凭证，用私钥
+            Credentials credentials = Credentials.create(privateKey);
+            //获取nonce，交易笔数
+            EthGetTransactionCount transactionCount = web3j.ethGetTransactionCount(fromAddress, DefaultBlockParameterName.LATEST).sendAsync().get();
+            BigInteger nonce = transactionCount.getTransactionCount();
 
-        if (remark != null) {
-            remark = StringHexUtils.byte2HexString(remark.getBytes(StandardCharsets.UTF_8));
-        }
-        //创建RawTransaction交易对象
-        RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, gasPrice, gasLimit, toAddress, value, remark);
-        //签名Transaction，这里要对交易做签名
-        byte[] signMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
-        String hexValue = Numeric.toHexString(signMessage);
+            if (remark != null) {
+                remark = StringHexUtils.byte2HexString(remark.getBytes(StandardCharsets.UTF_8));
+            }
+            //创建RawTransaction交易对象
+            RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, gasPrice, gasLimit, toAddress, value, remark);
+            //签名Transaction，这里要对交易做签名
+            byte[] signMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
+            String hexValue = Numeric.toHexString(signMessage);
 
-        //发送交易
-        EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexValue).sendAsync().get();
-        if (ethSendTransaction.hasError()) {
-            if (context instanceof TransferActivity) {
-                ((TransferActivity) context).transferFail(ethSendTransaction.getError().getMessage());
+            //发送交易
+            EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexValue).sendAsync().get();
+            if (ethSendTransaction.hasError()) {
+                if (context instanceof TransferActivity) {
+                    ((TransferActivity) context).transferFail(ethSendTransaction.getError().getMessage());
+                }
+            } else {
+                String transactionHash = ethSendTransaction.getTransactionHash();
+                if (context instanceof TransferActivity) {
+                    ((TransferActivity) context).transferSuccess(transactionHash);
+                }
             }
-        } else {
-            String transactionHash = ethSendTransaction.getTransactionHash();
-            if (context instanceof TransferActivity) {
-                ((TransferActivity) context).transferSuccess(transactionHash);
-            }
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -161,6 +160,14 @@ public class TransferEthUtils {
                 ((TransferActivity) context).transferSuccess(transactionHash);
             }
         }
+    }
+
+    public void setOnListener(BalanceGet getBalance) {
+        TransferEthUtils.getBalance = getBalance;
+    }
+
+    public interface BalanceGet {
+        void onListener(MainETHTokenBean tokenBean, BigDecimal tokenBalance);
     }
 
 }

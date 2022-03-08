@@ -17,7 +17,6 @@ import org.web3j.crypto.MnemonicUtils;
 import org.web3j.utils.Numeric;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,11 +25,7 @@ import java.util.List;
  */
 public class WalletBTCUtils {
 
-    private static final boolean isMainNet;
-
-    static {
-        isMainNet = true;
-    }
+    private static final boolean ISMAINNET = true;
 
     private WalletBTCUtils() {
         throw new IllegalStateException("WalletBTCUtils");
@@ -44,12 +39,12 @@ public class WalletBTCUtils {
      * @param mnemonic
      * @return
      */
-    public static Wallet generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic, ArrayList<String> mnemonicList) {
+    public static Wallet generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic, List<String> mnemonicList) {
         try {
             DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(mnemonic, 0);
             ECKey ecKeyPair = ECKey.fromPrivate(deterministicKey.getPrivKey());
             NetworkParameters networkParameters = null;
-            if (isMainNet)
+            if (ISMAINNET)
                 networkParameters = MainNetParams.get();
             else
                 networkParameters = TestNet3Params.get();
@@ -75,11 +70,11 @@ public class WalletBTCUtils {
      * @param privateKey
      * @return
      */
-    public static Wallet generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey, ArrayList<String> mnemonicList) {
+    public static Wallet generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey, List<String> mnemonicList) {
         try {
             ECKey ecKeyPair = ECKey.fromPrivate(Numeric.toBigInt(privateKey));
             NetworkParameters networkParameters = null;
-            if (isMainNet)
+            if (ISMAINNET)
                 networkParameters = MainNetParams.get();
             else
                 networkParameters = TestNet3Params.get();
@@ -118,7 +113,7 @@ public class WalletBTCUtils {
     public static boolean isBtcValidAddress(String address) {
         try {
             NetworkParameters networkParameters = null;
-            if (isMainNet)
+            if (ISMAINNET)
                 networkParameters = MainNetParams.get();
             else
                 networkParameters = TestNet3Params.get();

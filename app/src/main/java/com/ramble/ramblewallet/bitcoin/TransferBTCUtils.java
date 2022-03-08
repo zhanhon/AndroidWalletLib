@@ -48,9 +48,11 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.alibaba.fastjson.JSON.parseArray;
+
 public class TransferBTCUtils {
 
-    private static boolean isMainNet;
+    private static final boolean isMainNet;
 
     static {
         isMainNet = true;
@@ -108,7 +110,7 @@ public class TransferBTCUtils {
     }
 
     public static void transferBTC(Activity context, String fromAddress, String toAddress,
-                                   String privateKey, BigDecimal amount, String btcFee, String remark) {
+                                   String privateKey, BigDecimal amount, String btcFee) {
         final List<UTXO>[] utxos = new List[]{Lists.newArrayList()};
         final String[] host = {isMainNet ? "BTC" : "BTCTEST"};
         String url = "https://chain.so/api/v2/get_tx_unspent/" + host[0] + "/" + fromAddress;
@@ -130,7 +132,7 @@ public class TransferBTCUtils {
                         return;
                     }
                     JSONArray unspentOutputs = jsonObject.getJSONObject("data").getJSONArray("txs");
-                    List<Map> outputs = JSONObject.parseArray(unspentOutputs.toJSONString(), Map.class);
+                    List<Map> outputs = parseArray(unspentOutputs.toJSONString(), Map.class);
                     if (outputs.isEmpty()) {
                         Log.v("-=-=->", "交易异常，余额不足");
                         return;
@@ -205,11 +207,12 @@ public class TransferBTCUtils {
         return okHttpClient.newCall(request);
     }
 
+
     @NotNull
     private static Call getCall(String url, JSONObject param) {
         OkHttpClient okHttpClient = new OkHttpClient();
-        MediaType JSON = MediaType.parse("application/json;charset=utf-8");
-        RequestBody requestBody = RequestBody.create(JSON, String.valueOf(param));
+        MediaType mediaType = MediaType.parse("application/json;charset=utf-8");
+        RequestBody requestBody = RequestBody.create(mediaType, String.valueOf(param));
         final Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
@@ -229,59 +232,64 @@ public class TransferBTCUtils {
      * @return
      * @throws Exception
      */
-    public static String sign(String fromAddress, String toAddress, String privateKey, long amount, long fee, List<UTXO> utxos) throws Exception {
-        NetworkParameters networkParameters = isMainNet ? MainNetParams.get() : TestNet3Params.get();
-        Transaction transaction = new Transaction(networkParameters);
-        //找零地址
-        String changeAddress = fromAddress;
-        Long utxoAmount = 0L;
-        List<UTXO> needUtxos = new ArrayList<>();
-        //获取未消费列表
-        if (utxos.isEmpty()) {
-            throw new Exception("未消费列表为空");
-        }
-        //遍历未花费列表，组装合适的item
-        for (UTXO utxo : utxos) {
-            if (utxoAmount >= (amount + fee)) {
-                break;
-            } else {
-                needUtxos.add(utxo);
-                utxoAmount += utxo.getValue().value;
+    public static String sign(String fromAddress, String toAddress, String privateKey, long amount, long fee, List<UTXO> utxos) {
+        Transaction transaction = null;
+        try {
+            NetworkParameters networkParameters = isMainNet ? MainNetParams.get() : TestNet3Params.get();
+            transaction = new Transaction(networkParameters);
+            //找零地址
+            String changeAddress = fromAddress;
+            Long utxoAmount = 0L;
+            List<UTXO> needUtxos = new ArrayList<>();
+            //获取未消费列表
+            if (utxos.isEmpty()) {
+                Log.v("-=-=-=->", "未消费列表为空");
             }
-        }
+            //遍历未花费列表，组装合适的item
+            for (UTXO utxo : utxos) {
+                if (utxoAmount >= (amount + fee)) {
+                    break;
+                } else {
+                    needUtxos.add(utxo);
+                    utxoAmount += utxo.getValue().value;
+                }
+            }
 
-        //消费列表总金额 - 已经转账的金额 - 手续费 就等于需要返回给自己的金额了
-        Long changeAmount = utxoAmount - (amount + fee);
-        //余额判断
-        if (changeAmount < 0) {
-            throw new Exception("utxo余额不足");
-        }
-        //输出-转给自己(找零)
-        if (changeAmount > 0) {
-            transaction.addOutput(Coin.valueOf(changeAmount), org.bitcoinj.core.Address.fromString(networkParameters, changeAddress));
-        }
-        transaction.addOutput(Coin.valueOf(amount), Address.fromString(networkParameters, toAddress));
-        //输入未消费列表项
-        DumpedPrivateKey dumpedPrivateKey = DumpedPrivateKey.fromBase58(networkParameters, privateKey);
-        org.bitcoinj.core.ECKey ecKey = dumpedPrivateKey.getKey();
-        for (UTXO utxo : needUtxos) {
-            TransactionOutPoint outPoint = new TransactionOutPoint(networkParameters, utxo.getIndex(), utxo.getHash());
-            Script scriptPubKey = utxo.getScript();
-            if (ScriptPattern.isP2WPKH(scriptPubKey)) {
-                TransactionInput input = new TransactionInput(networkParameters, transaction, new byte[0], outPoint);
-                transaction.addInput(input);
-                int inputIndex = transaction.getInputs().size() - 1;
-                Script scriptCode = (new ScriptBuilder()).data(ScriptBuilder.createOutputScript(LegacyAddress.fromKey(networkParameters, ecKey)).getProgram()).build();
-                TransactionSignature signature = transaction.calculateWitnessSignature(inputIndex, ecKey, scriptCode, utxo.getValue(), Transaction.SigHash.ALL, true);
-                input.setScriptSig(ScriptBuilder.createEmpty());
-                input.setWitness(TransactionWitness.redeemP2WPKH(signature, ecKey));
-            } else {
-                transaction.addSignedInput(outPoint, utxo.getScript(), ecKey, Transaction.SigHash.ALL, true);
+            //消费列表总金额 - 已经转账的金额 - 手续费 就等于需要返回给自己的金额了
+            Long changeAmount = utxoAmount - (amount + fee);
+            //余额判断
+            if (changeAmount < 0) {
+                Log.v("-=-=-=->", "utxo余额不足");
             }
+            //输出-转给自己(找零)
+            if (changeAmount > 0) {
+                transaction.addOutput(Coin.valueOf(changeAmount), org.bitcoinj.core.Address.fromString(networkParameters, changeAddress));
+            }
+            transaction.addOutput(Coin.valueOf(amount), Address.fromString(networkParameters, toAddress));
+            //输入未消费列表项
+            DumpedPrivateKey dumpedPrivateKey = DumpedPrivateKey.fromBase58(networkParameters, privateKey);
+            org.bitcoinj.core.ECKey ecKey = dumpedPrivateKey.getKey();
+            for (UTXO utxo : needUtxos) {
+                TransactionOutPoint outPoint = new TransactionOutPoint(networkParameters, utxo.getIndex(), utxo.getHash());
+                Script scriptPubKey = utxo.getScript();
+                if (ScriptPattern.isP2WPKH(scriptPubKey)) {
+                    TransactionInput input = new TransactionInput(networkParameters, transaction, new byte[0], outPoint);
+                    transaction.addInput(input);
+                    int inputIndex = transaction.getInputs().size() - 1;
+                    Script scriptCode = (new ScriptBuilder()).data(ScriptBuilder.createOutputScript(LegacyAddress.fromKey(networkParameters, ecKey)).getProgram()).build();
+                    TransactionSignature signature = transaction.calculateWitnessSignature(inputIndex, ecKey, scriptCode, utxo.getValue(), Transaction.SigHash.ALL, true);
+                    input.setScriptSig(ScriptBuilder.createEmpty());
+                    input.setWitness(TransactionWitness.redeemP2WPKH(signature, ecKey));
+                } else {
+                    transaction.addSignedInput(outPoint, utxo.getScript(), ecKey, Transaction.SigHash.ALL, true);
+                }
+            }
+            new Context(networkParameters);
+            transaction.getConfidence().setSource(TransactionConfidence.Source.NETWORK);
+            transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        new Context(networkParameters);
-        transaction.getConfidence().setSource(TransactionConfidence.Source.NETWORK);
-        transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
         return new String(org.apache.commons.codec.binary.Hex.encodeHex(transaction.bitcoinSerialize()));
     }
 

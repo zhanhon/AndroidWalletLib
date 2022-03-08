@@ -22,7 +22,7 @@ import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.web3j.crypto.Keys.ADDRESS_LENGTH_IN_HEX;
 import static org.web3j.crypto.Keys.PRIVATE_KEY_LENGTH_IN_HEX;
@@ -149,7 +149,7 @@ public class WalletETHUtils {
      * @param mnemonic
      * @return
      */
-    public static Wallet generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic, ArrayList<String> mnemonicList) throws CipherException, IOException {
+    public static Wallet generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic, List<String> mnemonicList) throws CipherException, IOException {
         try {
             ECKeyPair keyPair = WalletETHUtils.generateBip32ECKeyPair(mnemonic);
             WalletFile walletFile = createWalletFile(walletPassword, keyPair, false);
@@ -174,7 +174,7 @@ public class WalletETHUtils {
      * @param privateKey
      * @return
      */
-    public static Wallet generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey, ArrayList<String> mnemonicList) {
+    public static Wallet generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey, List<String> mnemonicList) {
         try {
             BigInteger pk = new BigInteger(privateKey, 16);
             ECKeyPair keyPair = ECKeyPair.create(pk);
@@ -199,7 +199,7 @@ public class WalletETHUtils {
      * @param keystore
      * @return
      */
-    public static Wallet generateWalletByKeyStore(String walletname, String walletPassword, String keystore, ArrayList<String> mnemonicList) {
+    public static Wallet generateWalletByKeyStore(String walletname, String walletPassword, String keystore, List<String> mnemonicList) {
         try {
             WalletFile walletFile = objectMapper.readValue(keystore, WalletFile.class);
             ECKeyPair keyPair = org.web3j.crypto.Wallet.decrypt(walletPassword, walletFile);
