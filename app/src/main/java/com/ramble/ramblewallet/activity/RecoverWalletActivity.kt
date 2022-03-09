@@ -546,35 +546,13 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
 
     private fun putAddress(wallet: Wallet, walletType: Int) {
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
-        when (walletType) {
-            1 -> {
-                detailsList.add(
-                    AddressReport.DetailsList(
-                        wallet.address,
-                        0,
-                        1
-                    )
-                ) //链类型|1:ETH|2:TRX|3:ETC
-            }
-            2 -> {
-                detailsList.add(
-                    AddressReport.DetailsList(
-                        wallet.address,
-                        0,
-                        2
-                    )
-                ) //链类型|1:ETH|2:TRX|3:ETC
-            }
-            3 -> {
-                detailsList.add(
-                    AddressReport.DetailsList(
-                        wallet.address,
-                        0,
-                        3
-                    )
-                ) //链类型|1:ETH|2:TRX|3:ETC
-            }
-        }
+        detailsList.add(
+            AddressReport.DetailsList(
+                wallet.address,
+                0,
+                walletType
+            )
+        ) //链类型|1:ETH|2:TRX|3:ETC
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
         val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
         if (detailsList.size == 0) return
