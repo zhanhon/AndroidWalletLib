@@ -180,10 +180,16 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                 if (isShowCheck) return
                 val position = AdapterUtils.getHolder(v).adapterPosition
                 val item = AdapterUtils.getHolder(v).getItem<TokenManageItem>().data
-                if (item.isMyToken == 0) {
-                    item.isMyToken = 1
-                } else {
-                    item.isMyToken = 0
+                when (item.isMyToken) {
+                    0 -> {
+                        item.isMyToken = 1
+                    }
+                    1 -> {
+                        item.isMyToken = 0
+                    }
+                    else -> {
+                        return
+                    }
                 }
                 myStores[position] = item
                 SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myStores))

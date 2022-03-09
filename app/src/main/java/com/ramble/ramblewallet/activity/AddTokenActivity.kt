@@ -85,7 +85,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         }
         ArrayList<SimpleRecyclerItem>().apply {
             myDataBeansRecommendToken.forEach { o ->
-                if (o.isMyToken == 1) {
+                if (o.isMyToken == 1||o.isMyToken == 2) {
                     this.add(UnAddTokenItem(o))
                 }
             }
@@ -183,7 +183,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         }
         ArrayList<SimpleRecyclerItem>().apply {
             myDataBeansMyAssets.forEach { o ->
-                if (o.isMyToken == 1) {
+                if (o.isMyToken == 1||o.isMyToken == 2) {
                     this.add(UnAddTokenItem(o))
                 }
             }
@@ -227,6 +227,9 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
             R.id.add_view -> {
                 when (val item = AdapterUtils.getHolder(v).getItem<SimpleRecyclerItem>()) {
                     is AddTokenItem -> {//增加代币到我的
+                        if (item.data.isMyToken==2){
+                            return
+                        }
                         myDataBeansMyAssets.clear()
                         item.data.isMyToken = 1
                         myDataBeansMyAssets.add(item.data)
@@ -240,6 +243,9 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                         RxBus.emitEvent(Pie.EVENT_ADD_TOKEN, item.data)
                     }
                     is UnAddTokenItem -> {//减到代币到我的
+                        if (item.data.isMyToken==2){
+                            return
+                        }
                         myDataBeansMyAssets.clear()
                         item.data.isMyToken = 0
                         RxBus.emitEvent(Pie.EVENT_ADD_TOKEN, item.data)

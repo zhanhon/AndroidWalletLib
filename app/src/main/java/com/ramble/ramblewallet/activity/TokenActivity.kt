@@ -89,6 +89,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
             r5.symbol = "USDT"
             r5.id = 825
             r5.contractAddress = "0xdac17f958d2ee523a2206206994597c13d831ec7"
+            r5.isMyToken=2
             var r6 = StoreInfo()
             r6.symbol = "LINK"
             r6.id = 1975
@@ -183,10 +184,16 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
             R.id.add_view -> {
                 val position = AdapterUtils.getHolder(v).adapterPosition
                 val item = AdapterUtils.getHolder(v).getItem<AddTokenItem>().data
-                if (item.isMyToken == 0) {
-                    item.isMyToken = 1
-                } else {
-                    item.isMyToken = 0
+                when (item.isMyToken) {
+                    0 -> {
+                        item.isMyToken = 1
+                    }
+                    1 -> {
+                        item.isMyToken = 0
+                    }
+                    else -> {
+                        return
+                    }
                 }
                 myStores[position] = item
                 SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myStores))

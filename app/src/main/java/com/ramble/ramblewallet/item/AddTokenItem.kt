@@ -1,6 +1,7 @@
 package com.ramble.ramblewallet.item
 
 
+import androidx.core.view.isVisible
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.databinding.ItemAddTokenBinding
@@ -79,8 +80,15 @@ class AddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
             else -> binding.ivTokenIcon.setImageResource(R.mipmap.def_token_img)
         }
         when (data.isMyToken) {
-            0 -> binding.ivTokenStatus.setImageResource(R.drawable.vector_token_add)
-            1 -> binding.ivTokenStatus.setImageResource(R.drawable.vector_token_reduce)
+            0 -> {
+                binding.ivTokenStatus.setImageResource(R.drawable.vector_token_add)
+                binding.ivTokenStatus.isVisible=true
+            }
+            1 -> {
+                binding.ivTokenStatus.setImageResource(R.drawable.vector_token_reduce)
+                binding.ivTokenStatus.isVisible=true
+            }
+            else->  binding.ivTokenStatus.isVisible=false
         }
 
         binding.tvTokenName.text = data.symbol

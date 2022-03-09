@@ -54,7 +54,7 @@ class StoreInfo @SuppressWarnings("unused") constructor() : Serializable {
     @Json(name = "quote")
     var quote: List<Record> = listOf()
 
-    var isMyToken: Int = 0//是否我的资产0,不是 1 是的
+    var isMyToken: Int = 0//是否我的资产0,不是 1 是的 2,USDT
 
     class Record : Serializable {
         @Json(name = "cryptoId")
