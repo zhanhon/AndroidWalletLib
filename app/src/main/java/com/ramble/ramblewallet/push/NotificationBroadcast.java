@@ -47,7 +47,7 @@ public class NotificationBroadcast extends BroadcastReceiver {
                     UTrack.getInstance(context).trackMsgClick(msg);
                     Intent data = new Intent(intent);
                     /**根据主题返回不同页面**/
-                    switch (msg.extra.get("message_type")) {
+                    switch (msg.extra.get("messageType")) {
                         case "201"://消息
                             data.setClass(context, MsgDetailsActivity.class);
                             data.putExtra(ARG_PARAM1, msg.title);

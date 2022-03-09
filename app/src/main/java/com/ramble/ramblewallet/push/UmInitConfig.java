@@ -32,8 +32,6 @@ public class UmInitConfig {
     private static final String TAG = "UmInitConfig";
     public static final String UPDATE_STATUS_ACTION = "com.umeng.message.example.action.UPDATE_STATUS";
     private static Handler handler;
-    private static final String UM_APP_KEY = "61cc2cb0cccde77a8a5cc2e7";
-    private static final String UM_MESSAGE_SECRET = "50bb050a3c372095dfbb6610b89bc987";
 
     private UmInitConfig() {
         throw new IllegalStateException(TAG);
@@ -44,15 +42,15 @@ public class UmInitConfig {
      */
     public static void preInit(Context context) {
         //解决厂商通知点击时乱码等问题
-        PushAgent.setup(context, UM_APP_KEY, UM_MESSAGE_SECRET);
-        UMConfigure.preInit(context, UM_APP_KEY, PushConstants.CHANNEL);
+        PushAgent.setup(context, PushConstants.APP_KEY, PushConstants.MESSAGE_SECRET);
+        UMConfigure.preInit(context, PushConstants.APP_KEY, PushConstants.CHANNEL);
     }
 
     public static void umInit(Context context) {
 
         //初始化组件化基础库, 统计SDK/推送SDK/分享SDK都必须调用此初始化接口
-        UMConfigure.init(context, UM_APP_KEY, "Umeng",
-                UMConfigure.DEVICE_TYPE_PHONE, UM_MESSAGE_SECRET);
+        UMConfigure.init(context, PushConstants.APP_KEY, PushConstants.CHANNEL,
+                UMConfigure.DEVICE_TYPE_PHONE, PushConstants.MESSAGE_SECRET);
 
 
         //集成umeng-crash-vx.x.x.aar，则需要关闭原有统计SDK异常捕获功能

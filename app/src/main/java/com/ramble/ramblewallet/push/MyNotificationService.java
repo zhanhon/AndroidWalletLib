@@ -28,7 +28,7 @@ import static com.ramble.ramblewallet.constant.ConstantsKt.STATION_INFO;
 public class MyNotificationService extends Service {
     public static UMessage oldMessage = null;
     private ArrayList<Page.Record> records = null;
-    private static final String MESSAGE_TYPE = "message_type";
+    private static final String MESSAGE_TYPE = "messageType";
 
     @Override
     public void onCreate() {
