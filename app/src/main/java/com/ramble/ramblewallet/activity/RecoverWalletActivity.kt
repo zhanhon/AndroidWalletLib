@@ -570,7 +570,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     AddressReport.DetailsList(
                         wallet.address,
                         0,
-                        0
+                        3
                     )
                 ) //链类型|1:ETH|2:TRX|3:ETC
             }
