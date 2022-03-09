@@ -118,6 +118,8 @@ class QueryTransferRecord @SuppressWarnings("unused") constructor() {
 
 
     data class Req(
+        @Json(name = "dateType")
+        var dateType: String?,  //时间类型
         @Json(name = "pageNo")
         var pageNo: Int,   //当前页码
         @Json(name = "pageSize")

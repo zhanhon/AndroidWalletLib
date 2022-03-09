@@ -51,7 +51,7 @@ class TransactionQueryFragment : BaseFragment(),
     private var transferType: Int? = null
     private var endTime: Long? = null
     private var startTime: Long? = null
-    private var isAll = false
+    private var dateType:String?=null
     private var currentPage = 1
     private var totalPage = 1
     private val adapter = RecyclerAdapter()
@@ -106,7 +106,7 @@ class TransactionQueryFragment : BaseFragment(),
                 }
             }
             binding.tableHeader.check(R.id.all)
-            isAll = true
+
             binding.recycler.adapter = adapter
             binding.tableHeader.setOnCheckedChangeListener(this)
             reusedView = binding.root
@@ -129,13 +129,6 @@ class TransactionQueryFragment : BaseFragment(),
     }
 
     private fun dataCheck() {
-        if (isAll) {
-            endTime = null
-            startTime = null
-        } else {
-            endTime = chooseDay.toJdk7Date().time
-            startTime = startDay.toJdk7Date().time
-        }
         status = when (gameType) {
             2 -> 3
             else -> null
@@ -188,6 +181,7 @@ class TransactionQueryFragment : BaseFragment(),
     @SuppressLint("CheckResult")
     private fun loadData() {
         var req = QueryTransferRecord.Req(
+            dateType ,
             currentPage,
             20,
             address,
@@ -297,21 +291,21 @@ class TransactionQueryFragment : BaseFragment(),
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
         when (checkedId) {
             R.id.all -> {
-                isAll = true
+               dateType=null
                 reFreshData()
             }
             R.id.week -> {
-                isAll = false
+                dateType="WW"
                 startDay = LocalDateTime.of(chooseDay.plusDays(-7).toLocalDate(), LocalTime.MIN)
                 reFreshData()
             }
             R.id.month -> {
-                isAll = false
+                dateType="MM"
                 startDay = LocalDateTime.of(chooseDay.plusMonths(-1).toLocalDate(), LocalTime.MIN)
                 reFreshData()
             }
             R.id.year -> {
-                isAll = false
+                dateType="YY"
                 startDay = LocalDateTime.of(chooseDay.plusYears(-1).toLocalDate(), LocalTime.MIN)
                 reFreshData()
             }
