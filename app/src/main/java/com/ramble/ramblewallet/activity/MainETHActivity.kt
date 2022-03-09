@@ -117,14 +117,15 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             r8.symbol = "UNI"
             r8.id = 7083
             r8.contractAddress = "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
-            myStores.add(r1)
+            myStores.add(r5)
             myStores.add(r2)
             myStores.add(r3)
             myStores.add(r4)
-            myStores.add(r5)
-            myStores.add(r6)
-            myStores.add(r7)
             myStores.add(r8)
+            myStores.add(r6)
+            myStores.add(r1)
+            myStores.add(r7)
+
             SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myStores))
         }
     }
