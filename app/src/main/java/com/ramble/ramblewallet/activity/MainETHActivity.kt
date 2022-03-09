@@ -35,7 +35,11 @@ import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.StringUtils.strAddComma
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter
+import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import java.math.BigDecimal
+
 
 class MainETHActivity : BaseActivity(), View.OnClickListener {
 
@@ -58,6 +62,13 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_078DC2)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_eth)
+        binding.lyPullRefresh.setRefreshHeader(ClassicsHeader(this))
+        binding.lyPullRefresh.setRefreshFooter(ClassicsFooter(this))
+        //刷新的监听事件
+        binding.lyPullRefresh.setOnRefreshListener {
+            initData()
+        }
+        binding.lyPullRefresh.setEnableLoadMore(false);//是否启用上拉加载功能
         initClick()
     }
 
@@ -507,9 +518,11 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             } else {
                 println("-=-=-=->ETH${it.message()}")
             }
+            binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         }, {
             println("-=-=-=->ETH${it.printStackTrace()}")
+            binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         })
     }

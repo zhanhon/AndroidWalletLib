@@ -34,6 +34,8 @@ import com.ramble.ramblewallet.tron.TransferTrxUtils.balanceOfTrx
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.StringUtils.strAddComma
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter
+import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import java.math.BigDecimal
 
 class MainTRXActivity : BaseActivity(), View.OnClickListener {
@@ -60,6 +62,13 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_E11334)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_trx)
+        binding.lyPullRefresh.setRefreshHeader(ClassicsHeader(this))
+        binding.lyPullRefresh.setRefreshFooter(ClassicsFooter(this))
+        //刷新的监听事件
+        binding.lyPullRefresh.setOnRefreshListener {
+            initData()
+        }
+        binding.lyPullRefresh.setEnableLoadMore(false);//是否启用上拉加载功能
         initClick()
     }
 
@@ -489,9 +498,11 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             } else {
                 println("-=-=-=->ETH${it.message()}")
             }
+            binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         }, {
             println("-=-=-=->ETH${it.printStackTrace()}")
+            binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         })
     }

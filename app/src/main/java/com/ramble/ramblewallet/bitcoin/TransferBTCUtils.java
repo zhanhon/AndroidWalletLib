@@ -166,7 +166,7 @@ public class TransferBTCUtils {
                     }
                     JSONObject jsonObjectTransaction = new JSONObject();
                     jsonObjectTransaction.put("tx_hex", toHex);
-                    jsonObjectTransaction.put("remarks", Hex.toHexString(remark.getBytes()));
+                    jsonObjectTransaction.put("op_return", Hex.toHexString(remark.getBytes()));
                     String url = ISMAINNET ? "https://chain.so/api/v2/send_tx/BTC" : "https://chain.so/api/v2/send_tx/BTCTEST";
                     Call callTransaction = getCall(url, jsonObjectTransaction);
                     callTransaction.enqueue(new Callback() {

@@ -593,7 +593,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
                             BigDecimal("1000000")
                         ),
-                        binding.edtInputTransferRemarks.text.trim().toString(),
+                        binding.edtInputTransferRemarks.text.trim().toString()
                     )
                 }
             }

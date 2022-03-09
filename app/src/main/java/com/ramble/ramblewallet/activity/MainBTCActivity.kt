@@ -33,6 +33,8 @@ import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.StringUtils.strAddComma
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter
+import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import java.math.BigDecimal
 
 class MainBTCActivity : BaseActivity(), View.OnClickListener {
@@ -55,6 +57,13 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_CA7C14)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_btc)
+        binding.lyPullRefresh.setRefreshHeader(ClassicsHeader(this))
+        binding.lyPullRefresh.setRefreshFooter(ClassicsFooter(this))
+        //刷新的监听事件
+        binding.lyPullRefresh.setOnRefreshListener {
+            initData()
+        }
+        binding.lyPullRefresh.setEnableLoadMore(false);//是否启用上拉加载功能
         initClick()
     }
 
@@ -456,9 +465,11 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
             } else {
                 println("-=-=-=->BTC${it.message()}")
             }
+            binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         }, {
             println("-=-=-=->BTC${it.printStackTrace()}")
+            binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         })
     }
