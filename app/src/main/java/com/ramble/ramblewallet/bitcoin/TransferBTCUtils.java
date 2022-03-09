@@ -30,6 +30,7 @@ import org.bitcoinj.params.TestNet3Params;
 import org.bitcoinj.script.Script;
 import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.script.ScriptPattern;
+import org.bouncycastle.util.encoders.Hex;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -106,7 +107,7 @@ public class TransferBTCUtils {
     }
 
     public static void transferBTC(Activity context, String fromAddress, String toAddress,
-                                   String privateKey, BigDecimal amount, String btcFee) {
+                                   String privateKey, BigDecimal amount, String btcFee, String remark) {
         final List<UTXO>[] utxos = new List[]{Lists.newArrayList()};
         final String[] host = {ISMAINNET ? "BTC" : "BTCTEST"};
         String url = "https://chain.so/api/v2/get_tx_unspent/" + host[0] + "/" + fromAddress;
@@ -128,6 +129,9 @@ public class TransferBTCUtils {
                         return;
                     }
                     JSONArray unspentOutputs = jsonObject.getJSONObject("data").getJSONArray("txs");
+//                    if (remark != null) {
+//                        jsonObject.getJSONObject("raw_data").put("data", Hex.toHexString(remark.getBytes()));
+//                    }
                     List<Map> outputs = parseArray(unspentOutputs.toJSONString(), Map.class);
                     if (outputs.isEmpty()) {
                         Log.v("-=-=->", "交易异常，余额不足");
@@ -162,6 +166,7 @@ public class TransferBTCUtils {
                     }
                     JSONObject jsonObjectTransaction = new JSONObject();
                     jsonObjectTransaction.put("tx_hex", toHex);
+                    jsonObjectTransaction.put("remarks", Hex.toHexString(remark.getBytes()));
                     String url = ISMAINNET ? "https://chain.so/api/v2/send_tx/BTC" : "https://chain.so/api/v2/send_tx/BTCTEST";
                     Call callTransaction = getCall(url, jsonObjectTransaction);
                     callTransaction.enqueue(new Callback() {

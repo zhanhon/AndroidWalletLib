@@ -79,7 +79,7 @@ public class AppUtils {
      * @return
      */
     public static String getApiVersion() {
-        return "21121701";//格式：YYMMDDXX，YYMMDD=年月日，XX=序列编号
+        return "20220309";//格式：YYMMDDXX，YYMMDD=年月日，XX=序列编号
     }
 
     /**
