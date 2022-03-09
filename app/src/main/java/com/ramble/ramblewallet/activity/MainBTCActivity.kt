@@ -422,7 +422,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         //list.add("USDT")   暂时不用Omni-USDT
         var req = StoreInfo.Req()
         req.list = list
-        req.convertId = "2787,2792,2781" //人民币、港币、美元
+        req.convertId = "2781,2787,2792" //美元、人民币、港币
         req.platformId = 1 //BTC 1,ETH 1027,TRX 1958
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
