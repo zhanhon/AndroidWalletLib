@@ -882,6 +882,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<TextView>(R.id.tv_transfer_gas_slow)
                 .setTextColor(resources.getColor(R.color.color_FFFFFF))
 
+            gasPrice = slowGasPrice
             btcFee = btcFeeSlow
             isCustom = false
         }
@@ -907,6 +908,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<TextView>(R.id.tv_transfer_gas_slow)
                 .setTextColor(resources.getColor(R.color.color_9598AA))
 
+            gasPrice = fastGasPrice
             btcFee = btcFeeFast
             isCustom = false
         }
