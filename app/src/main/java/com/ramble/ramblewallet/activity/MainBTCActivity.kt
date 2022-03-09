@@ -57,13 +57,9 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_CA7C14)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_btc)
-        binding.lyPullRefresh.setRefreshHeader(ClassicsHeader(this))
-        binding.lyPullRefresh.setRefreshFooter(ClassicsFooter(this))
-        //刷新的监听事件
         binding.lyPullRefresh.setOnRefreshListener {
             initData()
         }
-        binding.lyPullRefresh.setEnableLoadMore(false);//是否启用上拉加载功能
         initClick()
     }
 

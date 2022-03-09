@@ -62,13 +62,9 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_E11334)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_trx)
-        binding.lyPullRefresh.setRefreshHeader(ClassicsHeader(this))
-        binding.lyPullRefresh.setRefreshFooter(ClassicsFooter(this))
-        //刷新的监听事件
         binding.lyPullRefresh.setOnRefreshListener {
             initData()
         }
-        binding.lyPullRefresh.setEnableLoadMore(false);//是否启用上拉加载功能
         initClick()
     }
 
