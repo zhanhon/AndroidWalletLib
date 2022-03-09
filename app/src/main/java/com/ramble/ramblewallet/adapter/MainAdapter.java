@@ -29,7 +29,7 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
     protected void convert(@NotNull BaseViewHolder baseViewHolder, MainETHTokenBean mainETHTokenBean) {
         tokenIcon(baseViewHolder, mainETHTokenBean);
         baseViewHolder.setText(R.id.tv_token_name, mainETHTokenBean.getSymbol());
-        baseViewHolder.setText(R.id.tv_token_balance, strAddComma(DecimalFormatUtil.format8.format(mainETHTokenBean.getBalance())));
+        baseViewHolder.setText(R.id.tv_token_balance, strAddComma(DecimalFormatUtil.format(mainETHTokenBean.getBalance(), 8)));
         switch (mainETHTokenBean.getCurrencyUnit()) {
             case CNY:
                 baseViewHolder.setText(R.id.tv_converted_token_unit, "￥");
@@ -43,7 +43,7 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
             default:
                 break;
         }
-        baseViewHolder.setText(R.id.tv_unit_price, strAddComma(DecimalFormatUtil.format8.format(new BigDecimal(mainETHTokenBean.getUnitPrice()))));
+        baseViewHolder.setText(R.id.tv_unit_price, strAddComma(DecimalFormatUtil.format(new BigDecimal(mainETHTokenBean.getUnitPrice()), 8)));
     }
 
     private void tokenIcon(@NotNull BaseViewHolder baseViewHolder, MainETHTokenBean mainETHTokenBean) {

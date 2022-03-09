@@ -154,7 +154,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             R.id.tv_select_all -> {
-                binding.edtInputQuantity.setText(DecimalFormatUtil.format8.format(transferBalance))
+                binding.edtInputQuantity.setText(DecimalFormatUtil.format(transferBalance, 8))
             }
             R.id.btn_confirm -> {
                 if (BigDecimal(binding.edtInputQuantity.text.trim().toString()).compareTo(
@@ -428,26 +428,26 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     private fun setEthMinerFee() {
         gas = BigDecimal(gasPrice).multiply(BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
-        binding.tvMinerFeeValue.text = "${DecimalFormatUtil.format8.format(gas)} ETH"
+        binding.tvMinerFeeValue.text = "${DecimalFormatUtil.format(gas, 8)} ETH"
         binding.tvMinerFeeValueConvert.text = "≈${currencyUnit} ${currencySymbol}${
-            DecimalFormatUtil.format2.format(BigDecimal(rate).multiply(gas))
+            DecimalFormatUtil.format(BigDecimal(rate).multiply(gas), 2)
         }"
         binding.tvTips.text = "$gasPrice Gwei * Gas Limit (${strAddComma(gasLimit)})"
     }
 
     private fun setBtcMinerFee() {
         binding.tvMinerFeeValue.text = "${
-            DecimalFormatUtil.format8.format(
+            DecimalFormatUtil.format(
                 BigDecimal(btcFee).multiply(BigDecimal("72"))
-                    .divide(BigDecimal("1000000000"))
+                    .divide(BigDecimal("1000000000")),8
             )
         } BTC"
         binding.tvMinerFeeValueConvert.text = "≈${currencyUnit} ${currencySymbol}${
-            DecimalFormatUtil.format2.format(
+            DecimalFormatUtil.format(
                 BigDecimal(rate).multiply(
                     BigDecimal(btcFee).multiply(BigDecimal("72"))
                         .divide(BigDecimal("1000000000"))
-                )
+                ), 2
             )
         }"
         binding.tvTips.visibility = View.INVISIBLE
@@ -456,8 +456,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private fun setBalance(balance: BigDecimal) {
         postUI {
             binding.tvQuantityBalance.text =
-                getString(R.string.transfer_balance) + " " + DecimalFormatUtil.format8.format(
-                    balance
+                getString(R.string.transfer_balance) + " " + DecimalFormatUtil.format(
+                    balance,8
                 ) + " " + transferUnit
         }
     }
@@ -473,8 +473,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
             val tvAmount = window.findViewById<TextView>(R.id.tv_amount)
             if (binding.edtInputQuantity.text.trim().toString().isNotEmpty()) {
-                tvAmount.text = DecimalFormatUtil.format8.format(
-                    BigDecimal(binding.edtInputQuantity.text.trim().toString())
+                tvAmount.text = DecimalFormatUtil.format(
+                    BigDecimal(binding.edtInputQuantity.text.trim().toString()), 8
                 ) + " " + transferUnit
             }
             val edtSendingAddress = window.findViewById<EditText>(R.id.edt_sending_address)
@@ -719,16 +719,16 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 .divide(BigDecimal("1000000000"))
             window.findViewById<TextView>(R.id.tv_transfer_gas_fast).text =
                 "${
-                    DecimalFormatUtil.format8.format(
+                    DecimalFormatUtil.format(
                         BigDecimal(fastGasPrice).multiply(BigDecimal(gasLimit))
-                            .divide(BigDecimal("1000000000"))
+                            .divide(BigDecimal("1000000000")), 8
                     )
                 } ETH"
             window.findViewById<TextView>(R.id.tv_transfer_gas_slow).text =
                 "${
-                    DecimalFormatUtil.format8.format(
+                    DecimalFormatUtil.format(
                         BigDecimal(slowGasPrice).multiply(BigDecimal(gasLimit))
-                            .divide(BigDecimal("1000000000"))
+                            .divide(BigDecimal("1000000000")), 8
                     )
                 } ETH"
 
@@ -799,16 +799,16 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             btcFee = btcFeeFast
             window.findViewById<TextView>(R.id.tv_transfer_gas_fast).text =
                 "${
-                    DecimalFormatUtil.format8.format(
+                    DecimalFormatUtil.format(
                         BigDecimal(btcFeeFast).multiply(BigDecimal("72"))
-                            .divide(BigDecimal("1000000000"))
+                            .divide(BigDecimal("1000000000")), 8
                     )
                 } BTC"
             window.findViewById<TextView>(R.id.tv_transfer_gas_slow).text =
                 "${
-                    DecimalFormatUtil.format8.format(
+                    DecimalFormatUtil.format(
                         BigDecimal(btcFeeSlow).multiply(BigDecimal("72"))
-                            .divide(BigDecimal("1000000000"))
+                            .divide(BigDecimal("1000000000")), 8
                     )
                 } BTC"
 

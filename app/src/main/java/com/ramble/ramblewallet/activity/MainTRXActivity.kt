@@ -264,7 +264,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                 if (isClickEyes) {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_open)
                     binding.tvBalanceTotal.text =
-                        strAddComma(DecimalFormatUtil.format2.format(totalBalance))
+                        strAddComma(DecimalFormatUtil.format(totalBalance, 2))
                     isClickEyes = false
                 } else {
                     binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_close)
@@ -357,10 +357,10 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
 
     private fun setBalanceTRX(balance: BigDecimal) {
         postUI {
-            if (DecimalFormatUtil.format2.format(balance) == "0") {
+            if (DecimalFormatUtil.format(balance, 2) == "0") {
                 binding.tvBalanceTotal.text = "0"
             } else {
-                binding.tvBalanceTotal.text = strAddComma(DecimalFormatUtil.format2.format(balance))
+                binding.tvBalanceTotal.text = strAddComma(DecimalFormatUtil.format(balance, 2))
             }
         }
     }
