@@ -198,7 +198,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:background="@null"
-                    android:inputType="numberDecimal"
+                    android:inputType="number"
+                    android:maxLength="8"
                     android:textSize="@dimen/sp_18"
                     android:textStyle="bold" />
 
@@ -227,7 +228,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:background="@null"
-                    android:inputType="numberDecimal"
+                    android:inputType="number"
+                    android:maxLength="8"
                     android:textSize="@dimen/sp_18"
                     android:textStyle="bold" />
 
