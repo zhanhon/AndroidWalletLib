@@ -69,6 +69,12 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             SharedPreferencesUtils.getString(this, WALLETINFO, ""),
             object : TypeToken<ArrayList<Wallet>>() {}.type
         )
+        val list = saveWalletList.iterator()
+        list.forEach {
+            if (it.address.isEmpty()) {
+                list.remove()
+            }
+        }
         saveWalletList = StringUtils.removeDuplicateByAddress(saveWalletList)
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
         initView()
