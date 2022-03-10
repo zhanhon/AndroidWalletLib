@@ -193,7 +193,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                                     toastDefault(getString(R.string.input_secret_key))
                                     return
                                 }
-                                if (binding.edtContributingWords.text.length > 32) {
+                                if (binding.edtContributingWords.text.length < 32) {
                                     toastDefault(getString(R.string.input_correct_secret_key))
                                     return
                                 }
@@ -219,7 +219,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                                     toastDefault(getString(R.string.input_secret_key))
                                     return
                                 }
-                                if (binding.edtContributingWords.text.length > 32) {
+                                if (binding.edtContributingWords.text.length < 32) {
                                     toastDefault(getString(R.string.input_correct_secret_key))
                                     return
                                 }
@@ -245,7 +245,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                                     toastDefault(getString(R.string.input_secret_key))
                                     return
                                 }
-                                if (binding.edtContributingWords.text.length > 32) {
+                                if (binding.edtContributingWords.text.length < 32) {
                                     toastDefault(getString(R.string.input_correct_secret_key))
                                     return
                                 }
