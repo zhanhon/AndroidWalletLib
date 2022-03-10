@@ -193,6 +193,10 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                                     toastDefault(getString(R.string.input_secret_key))
                                     return
                                 }
+                                if (binding.edtContributingWords.text.length > 32) {
+                                    toastDefault(getString(R.string.input_correct_secret_key))
+                                    return
+                                }
                                 recoverWalletETH(2)
                             }
                             3 -> {
@@ -215,6 +219,10 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                                     toastDefault(getString(R.string.input_secret_key))
                                     return
                                 }
+                                if (binding.edtContributingWords.text.length > 32) {
+                                    toastDefault(getString(R.string.input_correct_secret_key))
+                                    return
+                                }
                                 recoverWalletTRX(2)
                             }
                             3 -> {
@@ -235,6 +243,10 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                             2 -> {
                                 if (binding.edtContributingWords.text.isEmpty()) {
                                     toastDefault(getString(R.string.input_secret_key))
+                                    return
+                                }
+                                if (binding.edtContributingWords.text.length > 32) {
+                                    toastDefault(getString(R.string.input_correct_secret_key))
                                     return
                                 }
                                 recoverWalletBTC(2)
