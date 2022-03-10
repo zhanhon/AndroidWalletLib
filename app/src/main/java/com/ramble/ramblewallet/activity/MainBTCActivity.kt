@@ -391,10 +391,17 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                 dialog.dismiss()
             }
             tvGathering.setOnClickListener {
-                startActivity(Intent(this, GatheringActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "BTC-${mainETHTokenBean.symbol}")
-                    putExtra(ARG_PARAM2, walletSelleted.address)
-                })
+                if (mainETHTokenBean.symbol == "BTC") {
+                    startActivity(Intent(this, GatheringActivity::class.java).apply {
+                        putExtra(ARG_PARAM1, "BTC")
+                        putExtra(ARG_PARAM2, walletSelleted.address)
+                    })
+                } else {
+                    startActivity(Intent(this, GatheringActivity::class.java).apply {
+                        putExtra(ARG_PARAM1, "BTC-${mainETHTokenBean.symbol}")
+                        putExtra(ARG_PARAM2, walletSelleted.address)
+                    })
+                }
                 dialog.dismiss()
             }
 
@@ -449,9 +456,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                         mainAdapter = MainAdapter(mainETHTokenBean)
                         binding.rvCurrency.adapter = mainAdapter
                         mainAdapter.setOnItemClickListener { adapter, _, position ->
-                            if ((adapter.getItem(position) is MainETHTokenBean)
-                                && ((adapter.getItem(position) as MainETHTokenBean).symbol != "BTC")
-                            ) {
+                            if (adapter.getItem(position) is MainETHTokenBean) {
                                 showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
                             }
                         }
