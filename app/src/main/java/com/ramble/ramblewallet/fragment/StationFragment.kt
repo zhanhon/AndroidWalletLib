@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.isVisible
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.MessageCenterActivity
@@ -105,11 +106,23 @@ open class StationFragment : BaseFragment() {
     }
 
     private fun loadData() {
-
+      var lang= when (SharedPreferencesUtils.getString(myActivity, CURRENCY, USD)) {
+            CNY -> {
+                1
+            }
+            HKD -> {
+                2
+            }
+            else -> {
+               3
+            }
+        }
         if (records.isNotEmpty()) {
             ArrayList<SimpleRecyclerItem>().apply {
                 records.forEach { item ->
-                    add(StationItem(dataCheck(item)))
+                    if (item.lang==lang){
+                        add(StationItem(dataCheck(item)))
+                    }
                 }
 
                 forEach {

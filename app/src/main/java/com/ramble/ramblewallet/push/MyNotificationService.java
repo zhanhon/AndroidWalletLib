@@ -50,6 +50,17 @@ public class MyNotificationService extends Service {
                 a.setTitle(msg.title);
                 a.setContent(msg.text);
                 a.setCreateTime(msg.extra.get("time"));
+               int lang= 0;
+                if (msg.extra.get("lang").equals("1")){
+                    lang=1;
+                }else if (msg.extra.get("lang").equals("2")){
+                    lang= 2;
+                }else if (msg.extra.get("lang").equals("3")){
+                    lang= 3;
+                }else{
+                    lang= 1;
+                }
+                a.setLang(lang);
                 Boolean isP = SharedPreferencesUtils.getString(
                         this,
                         STATION_INFO,
