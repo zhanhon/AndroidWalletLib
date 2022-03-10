@@ -218,9 +218,11 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                     if ((edtWalletPassword.text.isNotEmpty())
                         && (edtWalletPassword.text.length >= 6)
                     ) {
+                        window.findViewById<Button>(R.id.btn_confirm).isEnabled = true
                         window.findViewById<Button>(R.id.btn_confirm).background =
                             getDrawable(R.drawable.shape_green_bottom_btn)
                     } else {
+                        window.findViewById<Button>(R.id.btn_confirm).isEnabled = false
                         window.findViewById<Button>(R.id.btn_confirm).background =
                             getDrawable(R.drawable.shape_gray_bottom_btn)
                     }
@@ -287,9 +289,11 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
                 override fun afterTextChanged(s: Editable?) {
                     if (edtWalletName.text.isNotEmpty()) {
+                        window.findViewById<Button>(R.id.btn_confirm).isEnabled = true
                         window.findViewById<Button>(R.id.btn_confirm).background =
                             getDrawable(R.drawable.shape_green_bottom_btn)
                     } else {
+                        window.findViewById<Button>(R.id.btn_confirm).isEnabled = false
                         window.findViewById<Button>(R.id.btn_confirm).background =
                             getDrawable(R.drawable.shape_gray_bottom_btn)
                     }

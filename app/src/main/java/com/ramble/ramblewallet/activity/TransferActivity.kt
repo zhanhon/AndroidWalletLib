@@ -507,9 +507,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     if ((edtWalletPassword.text.isNotEmpty())
                         && (edtWalletPassword.text.length >= 6)
                     ) {
+                        window.findViewById<Button>(R.id.btn_confirm).isEnabled = true
                         window.findViewById<Button>(R.id.btn_confirm).background =
                             getDrawable(R.drawable.shape_green_bottom_btn)
                     } else {
+                        window.findViewById<Button>(R.id.btn_confirm).isEnabled = false
                         window.findViewById<Button>(R.id.btn_confirm).background =
                             getDrawable(R.drawable.shape_gray_bottom_btn)
                     }

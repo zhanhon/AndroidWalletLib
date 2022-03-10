@@ -122,8 +122,10 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             && (binding.edtWalletPassword.text.trim().toString()
                     == binding.edtPasswordConfirm.text.trim().toString())
         ) {
+            binding.btnConfirm.isEnabled = true
             binding.btnConfirm.background = getDrawable(R.drawable.shape_green_bottom_btn)
         } else {
+            binding.btnConfirm.isEnabled = false
             binding.btnConfirm.background = getDrawable(R.drawable.shape_gray_bottom_btn)
         }
     }

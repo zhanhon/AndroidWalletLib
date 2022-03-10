@@ -786,9 +786,11 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
 
     private fun contributingWordsConfirmClick() {
         if (myDataBeans.size == 12) {
+            binding.btnContributingWordsCompleted.isEnabled = true
             binding.btnContributingWordsCompleted.background =
                 getDrawable(R.drawable.shape_green_bottom_btn)
         } else {
+            binding.btnContributingWordsCompleted.isEnabled = false
             binding.btnContributingWordsCompleted.background =
                 getDrawable(R.drawable.shape_gray_bottom_btn)
         }
