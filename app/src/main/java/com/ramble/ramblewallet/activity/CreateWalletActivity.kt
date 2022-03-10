@@ -30,14 +30,14 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_wallet)
         walletType = intent.getIntExtra(ARG_PARAM1, 1)
-        walletSource = intent.getIntExtra(ARG_PARAM1, 1)
+        walletSource = intent.getIntExtra(ARG_PARAM2, 1)
         initClick()
         when (walletSource) {
             1 -> {
-                binding.tvCreateWalletTitle.text = getString(R.string.create_wallet)
+                binding.tvCreateWalletTitle.text = getString(R.string.new_wallet)
             }
             2 -> {
-                binding.tvCreateWalletTitle.text = getString(R.string.new_wallet)
+                binding.tvCreateWalletTitle.text = getString(R.string.create_wallet)
             }
         }
         if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
