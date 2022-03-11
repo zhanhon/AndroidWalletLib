@@ -272,6 +272,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_1"
                             android:layout_marginStart="@dimen/dp_20"
+                            android:visibility="gone"
                             android:background="@color/bg_color" />
 
                         <LinearLayout
@@ -279,6 +280,7 @@
                             android:layout_height="@dimen/dp_70"
                             android:paddingStart="@dimen/dp_20"
                             android:paddingEnd="@dimen/dp_20"
+                            android:visibility="gone"
                             android:gravity="center_vertical">
 
                             <TextView

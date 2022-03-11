@@ -103,7 +103,7 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
-        binding.mark.text = trans?.remark
+//        binding.mark.text = trans?.remark
         binding.transactionCode.text = trans?.txHash
         binding.blockNumber.text = trans?.blockNumber
         binding.tvStatus.text = trans?.statusDesc
