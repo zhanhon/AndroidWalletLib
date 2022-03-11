@@ -13,8 +13,11 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.bean.AllTokenBean
 import com.ramble.ramblewallet.bean.StoreInfo
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.TOKEN_INFO_NO
+import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.custom.ItemTouchDelegate
 import com.ramble.ramblewallet.custom.ItemTouchHelperCallback
 import com.ramble.ramblewallet.custom.ItemTouchHelperImpl
@@ -44,6 +47,8 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
     private lateinit var itemTouchHelper: ItemTouchHelperImpl
     private val adapter = RecyclerAdapter()
     private var isShowCheck: Boolean = false
+    private var myAllToken: ArrayList<AllTokenBean> = arrayListOf()
+    private lateinit var walletSelleted: Wallet
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -57,10 +62,19 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
 
     private fun initView() {
         //初始化推荐代币
-        myStores = Gson().fromJson(
+        myAllToken = Gson().fromJson(
             SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
-            object : TypeToken<ArrayList<StoreInfo>>() {}.type
+            object : TypeToken<ArrayList<AllTokenBean>>() {}.type
         )
+        walletSelleted = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            object : TypeToken<Wallet>() {}.type
+        )
+        myAllToken.forEach {
+            if (it.myCurrency == walletSelleted.address) {
+                myStores = it.storeInfos
+            }
+        }
         LinearLayoutManager(this).apply {
             binding.rvTokenManageCurrency.layoutManager = this
         }
@@ -158,10 +172,15 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                     }
 
                 }
+                myAllToken.forEach {
+                    if (it.myCurrency == walletSelleted.address) {
+                          it.storeInfos=myStores
+                    }
+                }
                 SharedPreferencesUtils.saveString(
                     this@TokenManageActivity,
                     TOKEN_INFO_NO,
-                    Gson().toJson(myStores)
+                    Gson().toJson(myAllToken)
                 )
                 RxBus.emitEvent(Pie.EVENT_DEL_TOKEN, saveList)
                 ArrayList<SimpleRecyclerItem>().apply {
@@ -192,7 +211,12 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
                 myStores[position] = item
-                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myStores))
+                myAllToken.forEach {
+                    if (it.myCurrency == walletSelleted.address) {
+                        it.storeInfos=myStores
+                    }
+                }
+                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
                 adapter.notifyItemChanged(position)
                 RxBus.emitEvent(Pie.EVENT_MINUS_TOKEN, item)
             }

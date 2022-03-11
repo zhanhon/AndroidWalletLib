@@ -21,10 +21,7 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.MainETHTokenBean
-import com.ramble.ramblewallet.bean.Page
-import com.ramble.ramblewallet.bean.StoreInfo
-import com.ramble.ramblewallet.bean.Wallet
+import com.ramble.ramblewallet.bean.*
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils
@@ -48,10 +45,10 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mainAdapter: MainAdapter
     private lateinit var currencyUnit: String
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
-    private var myStores: ArrayList<StoreInfo> = arrayListOf()
     private var isClickEyes = false
     private var animator: ObjectAnimator? = null
     private var saveTokenList: ArrayList<StoreInfo> = arrayListOf()
+    private var myAllToken: ArrayList<AllTokenBean> = arrayListOf()
     private lateinit var walletSelleted: Wallet
     private var ethBalance: BigDecimal = BigDecimal("0")
     private var totalBalance: BigDecimal = BigDecimal("0.00")
@@ -69,21 +66,82 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         }
         initClick()
     }
+
     /***
      * 数据初始化
      */
     private fun initView() {
+        walletSelleted = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            object : TypeToken<Wallet>() {}.type
+        )
         if (SharedPreferencesUtils.getString(
                 this,
                 TOKEN_INFO_NO,
                 ""
             ).isNotEmpty()
         ) {
-            myStores = Gson().fromJson(
+            myAllToken = Gson().fromJson(
                 SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
-                object : TypeToken<ArrayList<StoreInfo>>() {}.type
+                object : TypeToken<ArrayList<AllTokenBean>>() {}.type
             )
+            var allAddress: ArrayList<String> = arrayListOf()
+            myAllToken.forEach {
+                allAddress.add(it.myCurrency)
+            }
+            if (!allAddress.contains(walletSelleted.address)) {
+                var allToken = AllTokenBean()
+                var myStores: ArrayList<StoreInfo> = arrayListOf()
+                var r1 = StoreInfo()
+                r1.id = 2396
+                r1.symbol = "WETH"
+                r1.contractAddress = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+                var r2 = StoreInfo()
+                r2.id = 3717
+                r2.symbol = "WBTC"
+                r2.contractAddress = "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+                var r3 = StoreInfo()
+                r3.id = 4943
+                r3.symbol = "DAI"
+                r3.contractAddress = "0x6b175474e89094c44da98b954eedeac495271d0f"
+                var r4 = StoreInfo()
+                r4.symbol = "USDC"
+                r4.id = 3408
+                r4.contractAddress = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+                var r5 = StoreInfo()
+                r5.symbol = "USDT"
+                r5.id = 825
+                r5.contractAddress = "0xdac17f958d2ee523a2206206994597c13d831ec7"
+                r5.isMyToken = 2
+                var r6 = StoreInfo()
+                r6.symbol = "LINK"
+                r6.id = 1975
+                r6.contractAddress = "0x514910771af9ca656af840dff83e8264ecf986ca"
+                var r7 = StoreInfo()
+                r7.symbol = "YFI"
+                r7.id = 5864
+                r7.contractAddress = "0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e"
+                var r8 = StoreInfo()
+                r8.symbol = "UNI"
+                r8.id = 7083
+                r8.contractAddress = "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
+                myStores.add(r5)
+                myStores.add(r2)
+                myStores.add(r3)
+                myStores.add(r4)
+                myStores.add(r8)
+                myStores.add(r6)
+                myStores.add(r1)
+                myStores.add(r7)
+                allToken.storeInfos = myStores
+                allToken.myCurrency = walletSelleted.address
+                myAllToken.add(allToken)
+                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
+            }
+
         } else {
+            var allToken = AllTokenBean()
+            var myStores: ArrayList<StoreInfo> = arrayListOf()
             var r1 = StoreInfo()
             r1.id = 2396
             r1.symbol = "WETH"
@@ -125,8 +183,10 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             myStores.add(r6)
             myStores.add(r1)
             myStores.add(r7)
-
-            SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myStores))
+            allToken.storeInfos = myStores
+            allToken.myCurrency = walletSelleted.address
+            myAllToken.add(allToken)
+            SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
         }
     }
 
@@ -492,17 +552,22 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("CheckResult")
     private fun refreshData() {
-        val tokenInfo = SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, "")
+        myAllToken = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+            object : TypeToken<ArrayList<AllTokenBean>>() {}.type
+        )
+        myAllToken.forEach {
+            if (it.myCurrency == walletSelleted.address) {
+                saveTokenList = it.storeInfos
+            }
+        }
+
         var list: ArrayList<String> = arrayListOf()
         list.add("ETH")
-        if (tokenInfo.isNotEmpty()) {
-            saveTokenList =
-                Gson().fromJson(tokenInfo, object : TypeToken<ArrayList<StoreInfo>>() {}.type)
-            val list = saveTokenList.iterator()
-            list.forEach {
-                if (it.isMyToken == 0) {
-                    list.remove()
-                }
+        val lists = saveTokenList.iterator()
+        lists.forEach {
+            if (it.isMyToken == 0) {
+                lists.remove()
             }
         }
         saveTokenList.forEach {

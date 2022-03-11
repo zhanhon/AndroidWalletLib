@@ -12,8 +12,11 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.bean.AllTokenBean
 import com.ramble.ramblewallet.bean.StoreInfo
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.TOKEN_INFO_NO
+import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityAddTokenBinding
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.item.AddTokenItem
@@ -38,6 +41,8 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
     private var myDataBeansMyAssets: ArrayList<StoreInfo> = arrayListOf()
     private val recommendTokenAdapter = RecyclerAdapter()
     private var myDataBeansRecommendToken: ArrayList<StoreInfo> = arrayListOf()
+    private var myAllToken: ArrayList<AllTokenBean> = arrayListOf()
+    private lateinit var walletSelleted: Wallet
     private var isSpread = false
     private var lastString = ""
 
@@ -50,6 +55,10 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initView() {
+        walletSelleted = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            object : TypeToken<Wallet>() {}.type
+        )
         LinearLayoutManager(this).apply {
             binding.rvMyTokenCurrency.layoutManager = this
         }
@@ -70,10 +79,16 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 .build()
         )
         binding.rvTokenManageCurrency.adapter = recommendTokenAdapter
-        myDataBeansRecommendToken = Gson().fromJson(
+        myAllToken=Gson().fromJson(
             SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
-            object : TypeToken<ArrayList<StoreInfo>>() {}.type
+            object : TypeToken<ArrayList<AllTokenBean>>() {}.type
         )
+        myAllToken.forEach {
+            if (it.myCurrency==walletSelleted.address){
+                myDataBeansRecommendToken = it.storeInfos
+            }
+        }
+
         ArrayList<SimpleRecyclerItem>().apply {
             myDataBeansRecommendToken.forEach { o ->
                 if (o.isMyToken == 0) {
@@ -135,10 +150,15 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 myDataBeansMyAssets = arrayListOf()
                 adapter.clear()
                 recommendTokenAdapter.clear()
-                myDataBeansMyAssets = Gson().fromJson(
+                myAllToken = Gson().fromJson(
                     SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
-                    object : TypeToken<ArrayList<StoreInfo>>() {}.type
+                    object : TypeToken<ArrayList<AllTokenBean>>() {}.type
                 )
+                myAllToken.forEach {
+                    if (it.myCurrency==walletSelleted.address){
+                        myDataBeansMyAssets = it.storeInfos
+                    }
+                }
                 var isOpen = false
                 myDataBeansMyAssets.forEach {
                     if (it.id == event.data<StoreInfo>().id) {
@@ -149,10 +169,15 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 if (!isOpen) {
                     myDataBeansMyAssets.add(event.data())
                 }
+                myAllToken.forEach {
+                    if (it.myCurrency == walletSelleted.address) {
+                        it.storeInfos=myDataBeansMyAssets
+                    }
+                }
                 SharedPreferencesUtils.saveString(
                     this,
                     TOKEN_INFO_NO,
-                    Gson().toJson(myDataBeansMyAssets)
+                    Gson().toJson(myAllToken)
                 )
                 dataCheck()
             }
@@ -161,10 +186,15 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 myDataBeansMyAssets = arrayListOf()
                 adapter.clear()
                 recommendTokenAdapter.clear()
-                myDataBeansMyAssets = Gson().fromJson(
+                myAllToken = Gson().fromJson(
                     SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
-                    object : TypeToken<ArrayList<StoreInfo>>() {}.type
+                    object : TypeToken<ArrayList<AllTokenBean>>() {}.type
                 )
+                myAllToken.forEach {
+                    if (it.myCurrency==walletSelleted.address){
+                        myDataBeansMyAssets = it.storeInfos
+                    }
+                }
                 dataCheck()
             }
 
