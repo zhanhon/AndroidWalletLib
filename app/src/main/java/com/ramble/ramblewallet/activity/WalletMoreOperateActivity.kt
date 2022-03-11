@@ -32,6 +32,7 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
+import com.ramble.ramblewallet.bean.AllTokenBean
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityWalletMoreOperateBinding
@@ -53,6 +54,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
     private lateinit var walletSelleted: Wallet
     var mPermissionListener: PermissionListener? = null
     private var times = 0
+    private var myAllToken: ArrayList<AllTokenBean> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +64,11 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
         walletCurrent = Gson().fromJson(
             intent.getStringExtra(ARG_PARAM1),
             object : TypeToken<Wallet>() {}.type
+        )
+
+        myAllToken = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+            object : TypeToken<ArrayList<AllTokenBean>>() {}.type
         )
         when (walletCurrent.walletType) {
             1 -> {
@@ -177,12 +184,20 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                         list.remove()
                     }
                 }
+
                 SharedPreferencesUtils.saveString(
                     this,
                     WALLETSELECTED,
                     Gson().toJson(saveWalletList[0])
                 )
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+                val lists = myAllToken.iterator()
+                lists.forEach {
+                    if (it.myCurrency==walletCurrent.address) {
+                        lists.remove()
+                    }
+                }
+                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
                 dialog.dismiss()
                 finish()
             }
