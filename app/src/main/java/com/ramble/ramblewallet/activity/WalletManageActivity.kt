@@ -22,6 +22,7 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.WalletManageAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
+import com.ramble.ramblewallet.bean.AllTokenBean
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityWalletManageBinding
@@ -44,6 +45,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private lateinit var walletSelleted: Wallet
     private var times = 0
+    private var myAllToken: ArrayList<AllTokenBean> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -317,9 +319,11 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             }
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+                var delete: ArrayList<Wallet> = arrayListOf()
                 walletManageBean.forEach {
                     if (it.isClickDelete) {
                         detailsList.add(AddressReport.DetailsList(it.address, 2, it.walletType))
+                        delete.add(it)
                     } else {
                         detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
                     }
@@ -349,6 +353,20 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
                 binding.ivAddWallet.visibility = View.VISIBLE
                 loadData(walletManageBean)
+                myAllToken = Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                    object : TypeToken<ArrayList<AllTokenBean>>() {}.type
+                )
+
+                val lists = myAllToken.iterator()
+                lists.forEach {
+                    delete.forEach {wallet->
+                        if (it.myCurrency==wallet.address) {
+                            lists.remove()
+                        }
+                    }
+                }
+                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
                 dialog.dismiss()
             }
         }
