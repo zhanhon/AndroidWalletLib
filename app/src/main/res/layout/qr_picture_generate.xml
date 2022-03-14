@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_save_confirm"
+    android:layout_width="300dp"
+    android:layout_height="500dp"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_qr_picture_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#6F7988"
+        android:gravity="center">
+
+        <LinearLayout
+            android:id="@+id/ll_qr_picture"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="280dp"
+            android:layout_gravity="center"
+            android:background="@mipmap/qr_picture_bg"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_qr_picture"
+                android:layout_width="@dimen/dp_150"
+                android:layout_height="@dimen/dp_150"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@mipmap/ic_logo_qrcode"
+                android:gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="KEYSTORE">
+
+            </TextView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

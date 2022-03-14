@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -137,13 +138,22 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
             tvContent.text = getText(R.string.save_scan)
             val ivImg = window.findViewById<ImageView>(R.id.iv_img)
             ivImg.visibility = View.VISIBLE
+            val bmp: Bitmap = BitmapFactory.decodeResource(resources, R.mipmap.ic_logo_qrcode)
+            val bitmap: Bitmap = QRCodeUtil.createQRCodeBitmap(
+                gatherAddress,
+                450,
+                450,
+                "UTF-8",
+                "L",//设置密度
+                "1",
+                Color.BLACK,
+                Color.WHITE,
+                bmp,
+                0.2f,
+                null
+            )
             try {
-                ivImg.setImageBitmap(
-                    QRCodeUtil.createQRCode(
-                        gatherAddress,
-                        DisplayHelper.dpToPx(200)
-                    )
-                )
+                ivImg.setImageBitmap(bitmap)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -167,7 +177,10 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
                         fun onGranted() {
                             try {
                                 val bitmap: Bitmap = viewConversionBitmap(ivImg)
-                                saveBitmap(bitmap)
+                                val view: View = layoutInflater.inflate(R.layout.qr_picture_generate, null)
+                                val ivQrPicture = view.findViewById<ImageView>(R.id.iv_qr_picture)
+                                ivQrPicture.setImageBitmap(bitmap)
+                                saveBitmap(createBitmap(view, 800, 1400))
                                 bitmap.recycle()
                             } catch (e: Exception) {
                                 e.printStackTrace()
@@ -182,6 +195,20 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
                 dialog.dismiss()
             }
         }
+    }
+
+    fun createBitmap(v: View, width: Int, height: Int): Bitmap {
+        //测量使得view指定大小
+        val measuredWidth = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY)
+        val measuredHeight = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
+        v.measure(measuredWidth, measuredHeight)
+        //调用layout方法布局后，可以得到view的尺寸大小
+        v.layout(0, 0, v.measuredWidth, v.measuredHeight)
+        val bmp = Bitmap.createBitmap(v.width, v.height, Bitmap.Config.ARGB_8888)
+        val c = Canvas(bmp)
+        c.drawColor(Color.WHITE)
+        v.draw(c)
+        return bmp
     }
 
     //生成图片
@@ -237,7 +264,7 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
                 Uri.parse("file://" + "/sdcard/namecard/")
             )
         )
-        showScan()
+        //showScan()
         toastDefault(getString(R.string.save_success))
     }
 
