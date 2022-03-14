@@ -150,6 +150,7 @@
     <string name="input_keystore">請輸入Keystore</string>
     <string name="input_secret_key">請輸入密鑰</string>
     <string name="input_mnemonic_words">請輸入助記詞並按照原有助記詞順序進行輸入</string>
+    <string name="input_mnemonic_words_mnemonic">請鍵入正確的助記詞</string>
     <string name="input_correct_keystore">請輸入正確的Keystore</string>
     <string name="input_correct_secret_key">請輸入正確的密鑰</string>
     <string name="input_correct_mnemonic_words">請輸入正確的助記詞</string>

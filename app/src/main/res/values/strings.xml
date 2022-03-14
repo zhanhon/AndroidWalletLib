@@ -150,6 +150,7 @@
     <string name="input_keystore">请输入Keystore</string>
     <string name="input_secret_key">请输入密钥</string>
     <string name="input_mnemonic_words">请输入助记词并按照原有助记词顺序进行输入</string>
+    <string name="input_mnemonic_words_mnemonic">请键入正确的助记词</string>
     <string name="input_correct_keystore">请输入正确的Keystore</string>
     <string name="input_correct_secret_key">请输入正确的密钥</string>
     <string name="input_correct_mnemonic_words">请输入正确的助记词</string>
@@ -173,7 +174,7 @@
     <string name="di_wallet">的钱包</string>
     <string name="repeat_wallet_tips">与其他钱包名称重复，请重新输入！</string>
     <string name="wallet_password">钱包密码</string>
-    <string name="contributing_words_hint">请输入中文或英文助记词，每个单字中间请加上空白以便系统判定</string>
+    <string name="contributing_words_hint">请输入中</string>
     <string name="transaction_query">交易记录</string>
     <string name="sender">发送人</string>
     <string name="receiver_address">收件人地址</string>

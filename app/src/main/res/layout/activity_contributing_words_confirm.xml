@@ -39,7 +39,7 @@
                     android:id="@+id/tv_contributing_words_confirm_tips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/contributing_words_hint"
+                    android:text="@string/input_mnemonic_words_mnemonic"
                     android:textColor="@color/color_9598AA"
                     android:textSize="@dimen/sp_15" />
 

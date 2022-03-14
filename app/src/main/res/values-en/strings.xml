@@ -149,6 +149,7 @@
     <string name="input_keystore">Please Enter Keystore</string>
     <string name="input_secret_key">Please enter the secret key</string>
     <string name="input_mnemonic_words">Please enter the Mnemonic Phrase identical with the original plain sequence.</string>
+    <string name="input_mnemonic_words_mnemonic">Please click the right mnemonic phrase.</string>
     <string name="input_correct_keystore">Please enter the correct keystore</string>
     <string name="input_correct_secret_key">Please enter the correct secret</string>
     <string name="input_correct_mnemonic_words">Please enter the correct mnemonic words</string>
