@@ -169,7 +169,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 var walletETH = WalletETHUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim(),
+                    mnemonicList[0],
                     mnemonicList
                 )
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
@@ -210,7 +210,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim(),
+                    mnemonicList[0],
                     mnemonicList
                 )
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
@@ -251,7 +251,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 val walletBTC = WalletBTCUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim(),
+                    mnemonicList[0],
                     mnemonicList
                 )
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
@@ -292,21 +292,21 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 var walletETH = WalletETHUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim(),
+                    mnemonicList[0],
                     mnemonicList
                 )
 
                 val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim(),
+                    mnemonicList[0],
                     mnemonicList
                 )
 
                 val walletBTC = WalletBTCUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim(),
+                    mnemonicList[0],
                     mnemonicList
                 )
 

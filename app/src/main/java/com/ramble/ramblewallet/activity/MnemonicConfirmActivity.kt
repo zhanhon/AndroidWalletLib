@@ -98,7 +98,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 var walletETH = WalletETHUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim(),
+                    mnemonicETH[0],
                     mnemonicETH
                 )
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
@@ -143,7 +143,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim(),
+                    mnemonicETH[0],
                     mnemonicETH
                 )
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
@@ -188,7 +188,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 val walletBTC = WalletBTCUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim(),
+                    mnemonicETH[0],
                     mnemonicETH
                 )
                 if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
@@ -229,21 +229,21 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 var walletETH = WalletETHUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim(),
+                    mnemonicETH[0],
                     mnemonicETH
                 )
 
                 val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim(),
+                    mnemonicETH[0],
                     mnemonicETH
                 )
 
                 val walletBTC = WalletBTCUtils.generateWalletByMnemonic(
                     walletName,
                     walletPassword,
-                    walletETHString.trim(),
+                    mnemonicETH[0],
                     mnemonicETH
                 )
 

@@ -114,11 +114,11 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun btnIsClick() {
-        if ((binding.edtWalletName.text.toString().isNotEmpty())
-            && (binding.edtWalletPassword.text.toString().isNotEmpty())
-            && (binding.edtPasswordConfirm.text.toString().isNotEmpty())
-            && (binding.edtContributingWords.text.toString().isNotEmpty())
-            && (binding.edtWalletPassword.text.toString().length >= 6)
+        if ((binding.edtWalletName.text.trim().toString().isNotEmpty())
+            && (binding.edtWalletPassword.text.trim().toString().isNotEmpty())
+            && (binding.edtPasswordConfirm.text.trim().toString().isNotEmpty())
+            && (binding.edtContributingWords.text.trim().toString().isNotEmpty())
+            && (binding.edtWalletPassword.text.trim().toString().length >= 6)
             && (binding.edtWalletPassword.text.trim().toString()
                     == binding.edtPasswordConfirm.text.trim().toString())
         ) {
@@ -309,7 +309,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 walletETH = WalletETHUtils.generateWalletByMnemonic(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
-                    binding.edtContributingWords.text.toString(),
+                    mnemonicList[0],
                     mnemonicList
                 )
             }
@@ -436,7 +436,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 walletTRX = WalletTRXUtils.generateWalletByMnemonic(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
-                    binding.edtContributingWords.text.toString(),
+                    mnemonicList[0],
                     mnemonicList
                 )
             }
@@ -508,7 +508,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 walletBTC = WalletBTCUtils.generateWalletByMnemonic(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
-                    binding.edtContributingWords.text.toString(),
+                    mnemonicList[0],
                     mnemonicList
                 )
             }
