@@ -34,10 +34,10 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
         initClick()
         when (walletSource) {
             1 -> {
-                binding.tvCreateWalletTitle.text = getString(R.string.new_wallet)
+                binding.tvCreateWalletTitle.text = getString(R.string.create_wallet)
             }
             2 -> {
-                binding.tvCreateWalletTitle.text = getString(R.string.create_wallet)
+                binding.tvCreateWalletTitle.text = getString(R.string.new_wallet)
             }
         }
         if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
