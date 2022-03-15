@@ -26,9 +26,9 @@ class ReportTransferInfo @SuppressWarnings("unused") constructor() {
         @Json(name = "gasPrice")
         var gasPrice: String?,  //gas_price 单位WEI
         @Json(name = "inputs")
-        var inputs: List<InRecord> = emptyList(),//BTC转出信息
+        var inputs: ArrayList<InRecord> = arrayListOf(),//BTC转出信息
         @Json(name = "outputs")
-        var outputs: List<InRecord> = emptyList(),//BTC转入信息
+        var outputs:  ArrayList<InRecord> = arrayListOf(),//BTC转入信息
         @Json(name = "toAddress")
         var toAddress: String?, //转入地址
         @Json(name = "txHash")

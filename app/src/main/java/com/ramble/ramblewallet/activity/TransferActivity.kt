@@ -619,7 +619,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         postUI {
             transactionFinishConfirmDialog(transactionHash)
         }
-        putTransAddress(transactionHash,utxos)
+        putTransAddress(transactionHash, utxos)
     }
 
     /***
@@ -629,12 +629,32 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private fun putTransAddress(hash: String, utxos: Array<MutableList<UTXO>>?) {
         var inputs: ArrayList<ReportTransferInfo.InRecord> = arrayListOf()//BTC转出信息
         var outputs: ArrayList<ReportTransferInfo.InRecord> = arrayListOf()//BTC转出信息
-        if (walletSelleted.walletType==3){
-            inputs.add(ReportTransferInfo.InRecord( binding.edtReceiverAddress.text.trim().toString(),binding.edtInputQuantity.text.trim().toString(),0))
-            inputs.add(ReportTransferInfo.InRecord( binding.tvWalletAddress.text.trim().toString(),(transferBalance-BigDecimal(btcFee)-BigDecimal(binding.edtInputQuantity.text.trim().toString())).toString(),1))
+        if (walletSelleted.walletType == 3) {
+            inputs.add(
+                ReportTransferInfo.InRecord(
+                    binding.edtReceiverAddress.text.trim().toString(),
+                    binding.edtInputQuantity.text.trim().toString(),
+                    0
+                )
+            )
+            inputs.add(
+                ReportTransferInfo.InRecord(
+                    binding.tvWalletAddress.text.trim().toString(),
+                    (transferBalance - BigDecimal(btcFee) - BigDecimal(
+                        binding.edtInputQuantity.text.trim().toString()
+                    )).toString(),
+                    1
+                )
+            )
             utxos?.forEach {
-                it.forEach { utxo->
-                    outputs.add(ReportTransferInfo.InRecord(utxo.address,utxo.value.toString(),utxo.index.toInt()))
+                it.forEach { utxo ->
+                    outputs.add(
+                        ReportTransferInfo.InRecord(
+                            utxo.address,
+                            utxo.value.toString(),
+                            utxo.index.toInt()
+                        )
+                    )
                 }
             }
         }
@@ -659,7 +679,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
                 } else {
                     if (times < 3) {
-                        putTransAddress(hash,utxos)
+                        putTransAddress(hash, utxos)
                         times++
                     }
                     println("-=-=-=->putAddress:${it.message()}")
