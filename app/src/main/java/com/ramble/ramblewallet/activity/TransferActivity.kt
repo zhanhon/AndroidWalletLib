@@ -22,10 +22,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.BtcMinerConfig
-import com.ramble.ramblewallet.bean.EthMinerConfig
-import com.ramble.ramblewallet.bean.MainETHTokenBean
-import com.ramble.ramblewallet.bean.Wallet
+import com.ramble.ramblewallet.bean.*
 import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.balanceOfBtc
 import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.transferBTC
 import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
@@ -34,14 +31,13 @@ import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.*
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.helper.start
-import com.ramble.ramblewallet.network.getBtcMinerConfigUrl
-import com.ramble.ramblewallet.network.getEthMinerConfigUrl
-import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.network.*
 import com.ramble.ramblewallet.tron.TransferTrxUtils.*
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.StringUtils.inputWatch
 import com.ramble.ramblewallet.utils.StringUtils.strAddComma
+import org.bitcoinj.core.UTXO
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -62,7 +58,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private var btcFee: String? = ""
     private var btcFeeFast: String? = ""
     private var btcFeeSlow: String? = ""
-
+    private var times = 0
     private var isCustom = false
     private lateinit var walletSelleted: Wallet
     private lateinit var transferTitle: String
@@ -618,12 +614,62 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    fun transferSuccess(transactionHash: String) {
+    fun transferSuccess(transactionHash: String, utxos: Array<MutableList<UTXO>>?) {
         println("-=-=-=-=->transactionHash:${transactionHash}")
         postUI {
             transactionFinishConfirmDialog(transactionHash)
         }
+        putTransAddress(transactionHash,utxos)
     }
+
+    /***
+     *上报转出交易记录
+     */
+    @SuppressLint("CheckResult")
+    private fun putTransAddress(hash: String, utxos: Array<MutableList<UTXO>>?) {
+        var inputs: ArrayList<ReportTransferInfo.InRecord> = arrayListOf()//BTC转出信息
+        var outputs: ArrayList<ReportTransferInfo.InRecord> = arrayListOf()//BTC转出信息
+        if (walletSelleted.walletType==3){
+            inputs.add(ReportTransferInfo.InRecord( binding.edtReceiverAddress.text.trim().toString(),binding.edtInputQuantity.text.trim().toString(),0))
+            inputs.add(ReportTransferInfo.InRecord( binding.tvWalletAddress.text.trim().toString(),(transferBalance-BigDecimal(btcFee)-BigDecimal(binding.edtInputQuantity.text.trim().toString())).toString(),1))
+            utxos?.forEach {
+                it.forEach { utxo->
+                    outputs.add(ReportTransferInfo.InRecord(utxo.address,utxo.value.toString(),utxo.index.toInt()))
+                }
+            }
+        }
+        mApiService.reportTransferRecord(
+            ReportTransferInfo.Req(
+                walletSelleted.walletType,
+                binding.edtInputQuantity.text.trim().toString(),
+                tokenBean.contractAddress,
+                tokenBean.symbol,
+                binding.tvWalletAddress.text.trim().toString(),
+                gasLimit,
+                gasPrice,
+                inputs,
+                outputs,
+                binding.edtReceiverAddress.text.trim().toString(),
+                hash
+            )
+                .toApiRequest(reportTransferUrl)
+        ).applyIo().subscribe(
+            {
+                if (it.code() == 1) {
+                    it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
+                } else {
+                    if (times < 3) {
+                        putTransAddress(hash,utxos)
+                        times++
+                    }
+                    println("-=-=-=->putAddress:${it.message()}")
+                }
+            }, {
+                println("-=-=-=->putAddress:${it.printStackTrace()}")
+            }
+        )
+    }
+
 
     fun transferFail(strFail: String) {
         postUI {

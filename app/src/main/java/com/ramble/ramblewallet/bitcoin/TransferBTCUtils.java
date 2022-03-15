@@ -184,7 +184,7 @@ public class TransferBTCUtils {
                                 org.json.JSONObject trans = new org.json.JSONObject(result);
                                 String constantResult = trans.getJSONObject("data").optString("txid");
                                 if (context instanceof TransferActivity) {
-                                    ((TransferActivity) context).transferSuccess(constantResult);
+                                    ((TransferActivity) context).transferSuccess(constantResult,utxos);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();

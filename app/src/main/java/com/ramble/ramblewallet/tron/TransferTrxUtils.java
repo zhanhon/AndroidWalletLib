@@ -263,7 +263,7 @@ public class TransferTrxUtils {
                                 JSONObject trans = new JSONObject(string);
                                 String constantResult = trans.optString("txid");
                                 if (context instanceof TransferActivity) {
-                                    ((TransferActivity) context).transferSuccess(constantResult);
+                                    ((TransferActivity) context).transferSuccess(constantResult,null);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -329,7 +329,7 @@ public class TransferTrxUtils {
                                 JSONObject trans = new JSONObject(string);
                                 String constantResult = trans.optString("txid");
                                 if (context instanceof TransferActivity) {
-                                    ((TransferActivity) context).transferSuccess(constantResult);
+                                    ((TransferActivity) context).transferSuccess(constantResult,null);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
