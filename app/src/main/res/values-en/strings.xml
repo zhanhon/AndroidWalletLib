@@ -145,6 +145,8 @@
     <string name="retry">Retry</string>
     <string name="error_tips_backup">You have entered the wrong input more than three times, Whether to cancel or return to the previous page</string>
     <string name="btc_minimum_amount_prompt">The minimum amount is 0.0001, Please try again.</string>
+    <string name="save_qr_picture_title"> WALLET\'S KEYSTORE</string>
+
 
     <string name="input_keystore">Please Enter Keystore</string>
     <string name="input_secret_key">Please enter the secret key</string>

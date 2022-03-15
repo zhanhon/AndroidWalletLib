@@ -145,6 +145,7 @@
     <string name="retry">重試</string>
     <string name="error_tips_backup">您已輸入錯誤超過三次,是否取消或返回上個頁面</string>
     <string name="btc_minimum_amount_prompt">最小轉賬金額為0.0001，請重新輸入</string>
+    <string name="save_qr_picture_title">錢包的KEYSTORE</string>
 
 
     <string name="input_keystore">請輸入Keystore</string>

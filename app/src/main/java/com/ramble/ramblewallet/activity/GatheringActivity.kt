@@ -177,9 +177,12 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
                         fun onGranted() {
                             try {
                                 val bitmap: Bitmap = viewConversionBitmap(ivImg)
-                                val view: View = layoutInflater.inflate(R.layout.qr_picture_generate, null)
+                                val view: View =
+                                    layoutInflater.inflate(R.layout.qr_picture_generate, null)
                                 val ivQrPicture = view.findViewById<ImageView>(R.id.iv_qr_picture)
+                                val tvTitle = view.findViewById<TextView>(R.id.tv_title)
                                 ivQrPicture.setImageBitmap(bitmap)
+                                tvTitle.text = gatherAddress
                                 saveBitmap(createBitmap(view, 800, 1400))
                                 bitmap.recycle()
                             } catch (e: Exception) {
