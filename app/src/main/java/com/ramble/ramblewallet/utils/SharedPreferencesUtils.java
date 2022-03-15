@@ -2,15 +2,7 @@ package com.ramble.ramblewallet.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Base64;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.StreamCorruptedException;
-import java.util.List;
 
 public class SharedPreferencesUtils {
 
