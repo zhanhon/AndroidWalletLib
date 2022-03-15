@@ -10,8 +10,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ramble.ramblewallet.R;
 import com.ramble.ramblewallet.bean.Page;
+import com.ramble.ramblewallet.utils.Pie;
+import com.ramble.ramblewallet.utils.RxBus;
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UTrack;
@@ -50,38 +54,33 @@ public class MyNotificationService extends Service {
                 a.setTitle(msg.title);
                 a.setContent(msg.text);
                 a.setCreateTime(msg.extra.get("time"));
-               int lang= 0;
-                if (msg.extra.get("lang").equals("1")){
-                    lang=1;
-                }else if (msg.extra.get("lang").equals("2")){
-                    lang= 2;
-                }else if (msg.extra.get("lang").equals("3")){
-                    lang= 3;
-                }else{
-                    lang= 1;
+                int lang = 0;
+                if (msg.extra.get("lang").equals("1")) {
+                    lang = 1;
+                } else if (msg.extra.get("lang").equals("2")) {
+                    lang = 2;
+                } else if (msg.extra.get("lang").equals("3")) {
+                    lang = 3;
+                } else {
+                    lang = 1;
                 }
                 a.setLang(lang);
-                Boolean isP = SharedPreferencesUtils.getString(
+                if (!SharedPreferencesUtils.getString(
                         this,
                         STATION_INFO,
                         ""
-                ).isEmpty();
-                if (!isP) {
-                    records = (ArrayList<Page.Record>) SharedPreferencesUtils.string2SceneList(
-                            SharedPreferencesUtils.getString(
-                                    this,
-                                    STATION_INFO,
-                                    ""
-                            )
+                ).isEmpty()) {
+                    records = new Gson().fromJson(
+                            SharedPreferencesUtils.getString(this, STATION_INFO, ""),
+                            new TypeToken<ArrayList<Page.Record>>() {
+                            }.getType()
                     );
-
-                } else {
+                }else {
                     records = new ArrayList<Page.Record>();
                 }
                 records.add(a);
-                String addId = SharedPreferencesUtils.sceneList2String(records);
-                SharedPreferencesUtils.saveString(this, STATION_INFO, addId);
-
+                SharedPreferencesUtils.saveString(this, STATION_INFO, new Gson().toJson(records));
+                RxBus.INSTANCE.emitEvent(Pie.EVENT_PUSH_MSG, true);
             } else if (msg.extra.get(MESSAGE_TYPE).equals("202")) {//公告
 
             } else if (msg.extra.get(MESSAGE_TYPE).equals("1") || msg.extra.get(MESSAGE_TYPE).equals("2") ||

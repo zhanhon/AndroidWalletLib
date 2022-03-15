@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.MessageCenterActivity
 import com.ramble.ramblewallet.activity.MsgDetailsActivity
 import com.ramble.ramblewallet.base.BaseFragment
 import com.ramble.ramblewallet.bean.Page
+import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.FragmentProclamationBinding
 import com.ramble.ramblewallet.helper.dataBinding
@@ -39,7 +42,7 @@ open class StationFragment : BaseFragment() {
     var isShowCheck: Boolean = false
     var isShowALLCheck: Boolean = false
     var isEmpty: Boolean = false
-    private var list = mutableListOf<Any?>()
+    private var list: ArrayList<Int> = arrayListOf()
     private var saveList: ArrayList<Int> = arrayListOf()
     private var records: ArrayList<Page.Record> = arrayListOf()
     private var saveTokenList: ArrayList<StationItem> = arrayListOf()
@@ -86,14 +89,10 @@ open class StationFragment : BaseFragment() {
                 ""
             ).isNotEmpty()
         ) {
-            SharedPreferencesUtils.string2SceneList(
-                SharedPreferencesUtils.getString(
-                    myActivity,
-                    STATION_INFO,
-                    ""
-                )
-            ) as ArrayList<Page.Record>
-
+            Gson().fromJson(
+                SharedPreferencesUtils.getString(myActivity, STATION_INFO, ""),
+                object : TypeToken<ArrayList<Page.Record>>() {}.type
+            )
         } else {
             arrayListOf()
         }
@@ -105,22 +104,23 @@ open class StationFragment : BaseFragment() {
 
     }
 
+
     private fun loadData() {
-      var lang= when (SharedPreferencesUtils.getString(myActivity, CURRENCY, USD)) {
-            CNY -> {
+        var lang = when (SharedPreferencesUtils.getString(myActivity, LANGUAGE, CN)) {
+            CN -> {
                 1
             }
-            HKD -> {
+            TW -> {
                 2
             }
             else -> {
-               3
+                3
             }
         }
         if (records.isNotEmpty()) {
             ArrayList<SimpleRecyclerItem>().apply {
                 records.forEach { item ->
-                    if (item.lang==lang){
+                    if (item.lang == lang) {
                         add(StationItem(dataCheck(item)))
                     }
                 }
@@ -144,19 +144,15 @@ open class StationFragment : BaseFragment() {
 
     private fun dataCheck(item: Page.Record): Page.Record {
         if (SharedPreferencesUtils.getString(myActivity, READ_ID, "").isNotEmpty()) {
-            if (SharedPreferencesUtils.string2SceneList(
-                    SharedPreferencesUtils.getString(
-                        myActivity,
-                        READ_ID,
-                        ""
-                    )
-                ).contains(item.id)
-            ) {
+            list = Gson().fromJson(
+                SharedPreferencesUtils.getString(myActivity, READ_ID, ""),
+                object : TypeToken<ArrayList<Int>>() {}.type
+            )
+            if (list.contains(item.id)) {
                 item.isRead = 1
             } else {
                 item.isRead = 0
             }
-
         } else {
             item.isRead = 0
         }
@@ -188,15 +184,12 @@ open class StationFragment : BaseFragment() {
                         ""
                     ).isNotEmpty()
                 ) {
-                    SharedPreferencesUtils.string2SceneList(
-                        SharedPreferencesUtils.getString(
-                            myActivity,
-                            READ_ID,
-                            ""
-                        )
+                    Gson().fromJson(
+                        SharedPreferencesUtils.getString(myActivity, READ_ID, ""),
+                        object : TypeToken<ArrayList<Int>>() {}.type
                     )
                 } else {
-                    mutableListOf()
+                    arrayListOf()
                 }
                 if (list.isNotEmpty()) {
                     if (!list.contains(itemBean.id)) {
@@ -205,9 +198,9 @@ open class StationFragment : BaseFragment() {
                 } else {
                     list.add(itemBean.id)
                 }
-                var addId = SharedPreferencesUtils.sceneList2String(list)
+
                 itemBean.isRead = 1
-                SharedPreferencesUtils.saveString(myActivity, READ_ID, addId)
+                SharedPreferencesUtils.saveString(myActivity, READ_ID, Gson().toJson(list))
                 adapter.notifyItemChanged(AdapterUtils.getHolder(v).adapterPosition)
                 start2(MsgDetailsActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, itemBean.title)
@@ -270,11 +263,17 @@ open class StationFragment : BaseFragment() {
                             list.remove()
                         }
                     }
-                    var addId = SharedPreferencesUtils.sceneList2String(records)
-                    SharedPreferencesUtils.saveString(myActivity, STATION_INFO, addId)
+                    SharedPreferencesUtils.saveString(
+                        myActivity,
+                        STATION_INFO,
+                        Gson().toJson(records)
+                    )
                     apply(adapter.itemCount)
                 }
                 passStatus(event.data())
+            }
+            Pie.EVENT_PUSH_MSG -> {
+                reFreshData()
             }
             else -> return
         }

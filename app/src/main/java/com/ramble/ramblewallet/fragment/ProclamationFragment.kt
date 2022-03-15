@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.MessageCenterActivity
 import com.ramble.ramblewallet.activity.MsgDetailsActivity
@@ -41,7 +43,7 @@ class ProclamationFragment : BaseFragment() {
         private set
     var isShowCheck: Boolean = false
     var isShowALLCheck: Boolean = false
-    private var list = mutableListOf<Any?>()
+    private var list: ArrayList<Int> = arrayListOf()
     private var currentPage = 1
     private var totalPage = 1
     private val adapter = RecyclerAdapter()
@@ -158,13 +160,11 @@ class ProclamationFragment : BaseFragment() {
         if (SharedPreferencesUtils.getString(myActivity, READ_ID_NEW, "")
                 .isNotEmpty()
         ) {
-            if (SharedPreferencesUtils.string2SceneList(
-                    SharedPreferencesUtils.getString(
-                        myActivity,
-                        READ_ID_NEW,
-                        ""
-                    )
-                ).contains(item.id)
+            list=   Gson().fromJson(
+                SharedPreferencesUtils.getString(myActivity, READ_ID_NEW, ""),
+                object : TypeToken<ArrayList<Int>>() {}.type
+            )
+            if (list.contains(item.id)
             ) {
                 item.isRead = 1
             } else {
@@ -215,15 +215,12 @@ class ProclamationFragment : BaseFragment() {
                         ""
                     ).isNotEmpty()
                 ) {
-                    SharedPreferencesUtils.string2SceneList(
-                        SharedPreferencesUtils.getString(
-                            myActivity,
-                            READ_ID_NEW,
-                            ""
-                        )
+                    Gson().fromJson(
+                        SharedPreferencesUtils.getString(myActivity, READ_ID_NEW, ""),
+                        object : TypeToken<ArrayList<Int>>() {}.type
                     )
                 } else {
-                    mutableListOf()
+                    arrayListOf()
                 }
                 if (list.isNotEmpty()) {
                     if (!list.contains(itemBean.id)) {
@@ -232,8 +229,8 @@ class ProclamationFragment : BaseFragment() {
                 } else {
                     list.add(itemBean.id)
                 }
-                var addId = SharedPreferencesUtils.sceneList2String(list)
-                SharedPreferencesUtils.saveString(myActivity, READ_ID_NEW, addId)
+
+                SharedPreferencesUtils.saveString(myActivity, READ_ID_NEW, Gson().toJson(list))
                 itemBean.isRead = 1
                 adapter.notifyItemChanged(AdapterUtils.getHolder(v).adapterPosition)
                 start2(MsgDetailsActivity::class.java, Bundle().also {

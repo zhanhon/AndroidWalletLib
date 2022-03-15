@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.PrivacyPolicyInfo
@@ -18,6 +20,7 @@ import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.LanguageSetting
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
+import java.util.ArrayList
 
 /**
  * 时间　: 2021/12/16 13:54
@@ -31,7 +34,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
     private var createTime = ""
     private var typeText = 0
     private var id = 0
-    private var list = mutableListOf<Any?>()
+    private var list : ArrayList<Int> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,15 +94,12 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
                     ""
                 ).isNotEmpty()
             ) {
-                SharedPreferencesUtils.string2SceneList(
-                    SharedPreferencesUtils.getString(
-                        this,
-                        READ_ID,
-                        ""
-                    )
+                Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, READ_ID, ""),
+                    object : TypeToken<ArrayList<Int>>() {}.type
                 )
             } else {
-                mutableListOf()
+                arrayListOf()
             }
             if (list.isNotEmpty()) {
                 if (!list.contains(id)) {
@@ -108,8 +108,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
             } else {
                 list.add(id)
             }
-            var addId = SharedPreferencesUtils.sceneList2String(list)
-            SharedPreferencesUtils.saveString(this, READ_ID, addId)
+            SharedPreferencesUtils.saveString(this, READ_ID, Gson().toJson(list))
         }
     }
 
@@ -121,15 +120,12 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
                     ""
                 ).isNotEmpty()
             ) {
-                SharedPreferencesUtils.string2SceneList(
-                    SharedPreferencesUtils.getString(
-                        this,
-                        READ_ID_NEW,
-                        ""
-                    )
+                Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
+                    object : TypeToken<ArrayList<Int>>() {}.type
                 )
             } else {
-                mutableListOf()
+                arrayListOf()
             }
             if (list.isNotEmpty()) {
                 if (!list.contains(id)) {
@@ -138,8 +134,8 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
             } else {
                 list.add(id)
             }
-            var addId = SharedPreferencesUtils.sceneList2String(list)
-            SharedPreferencesUtils.saveString(this, READ_ID_NEW, addId)
+
+            SharedPreferencesUtils.saveString(this, READ_ID_NEW, Gson().toJson(list))
         }
     }
 

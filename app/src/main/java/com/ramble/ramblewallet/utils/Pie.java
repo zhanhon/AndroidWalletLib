@@ -68,4 +68,8 @@ public class Pie {
      * 转账页面地址扫描二维码
      */
     public static final int EVENT_RESS_TRANS_SCAN = 2010;
+    /**
+     * 收到消息，刷新接口
+     */
+    public static final int EVENT_PUSH_MSG = 2011;
 }

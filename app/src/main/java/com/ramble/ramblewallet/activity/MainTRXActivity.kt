@@ -113,14 +113,11 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                             println("==================>getTransferInfo:${data}")
 
                             data.records.forEach { item ->
-
-                                if (SharedPreferencesUtils.string2SceneList(
-                                        SharedPreferencesUtils.getString(
-                                            this,
-                                            READ_ID_NEW,
-                                            ""
-                                        )
-                                    ).contains(item.id)
+                                var read:ArrayList<Int> = Gson().fromJson(
+                                    SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
+                                    object : TypeToken<ArrayList<Int>>() {}.type
+                                )
+                                if (read.contains(item.id)
                                 ) {
                                     item.isRead = 1
                                 } else {
@@ -134,13 +131,10 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                     ""
                                 ).isNotEmpty()
                             ) {
-                                SharedPreferencesUtils.string2SceneList(
-                                    SharedPreferencesUtils.getString(
-                                        this,
-                                        STATION_INFO,
-                                        ""
-                                    )
-                                ) as ArrayList<Page.Record>
+                                Gson().fromJson(
+                                    SharedPreferencesUtils.getString(this, STATION_INFO, ""),
+                                    object : TypeToken<ArrayList<Page.Record>>() {}.type
+                                )
 
                             } else {
                                 arrayListOf()
@@ -154,13 +148,11 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                             ""
                                         ).isNotEmpty()
                                     ) {
-                                        if (SharedPreferencesUtils.string2SceneList(
-                                                SharedPreferencesUtils.getString(
-                                                    this,
-                                                    READ_ID,
-                                                    ""
-                                                )
-                                            ).contains(item.id)
+                                        var read:ArrayList<Int> = Gson().fromJson(
+                                            SharedPreferencesUtils.getString(this, READ_ID, ""),
+                                            object : TypeToken<ArrayList<Int>>() {}.type
+                                        )
+                                        if (read.contains(item.id)
                                         ) {
                                             item.isRead = 1
                                         } else {
@@ -196,6 +188,16 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
         }
 
+    }
+
+    override fun onRxBus(event: RxBus.Event) {
+        super.onRxBus(event)
+        when (event.id()) {
+            Pie.EVENT_PUSH_MSG -> {
+                redPoint()
+            }
+            else -> return
+        }
     }
 
 

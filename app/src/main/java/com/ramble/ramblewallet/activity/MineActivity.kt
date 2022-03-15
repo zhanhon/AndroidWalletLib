@@ -29,9 +29,7 @@ import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.utils.LanguageSetting
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.applyIo
+import com.ramble.ramblewallet.utils.*
 
 /***
  * 我的管理页面
@@ -143,14 +141,10 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 ""
             ).isNotEmpty()
         ) {
-            SharedPreferencesUtils.string2SceneList(
-                SharedPreferencesUtils.getString(
-                    this,
-                    STATION_INFO,
-                    ""
-                )
-            ) as ArrayList<Page.Record>
-
+            Gson().fromJson(
+                SharedPreferencesUtils.getString(this, STATION_INFO, ""),
+                object : TypeToken<ArrayList<Page.Record>>() {}.type
+            )
         } else {
             arrayListOf()
         }
@@ -209,13 +203,11 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
     private fun dataCheck(data: List<Page.Record>) {
         data.forEach { item ->
-            if (SharedPreferencesUtils.string2SceneList(
-                    SharedPreferencesUtils.getString(
-                        this,
-                        READ_ID_NEW,
-                        ""
-                    )
-                ).contains(item.id)
+            var read:ArrayList<Int> = Gson().fromJson(
+                SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
+                object : TypeToken<ArrayList<Int>>() {}.type
+            )
+            if (read.contains(item.id)
             ) {
                 item.isRead = 1
             } else {
@@ -225,7 +217,6 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         }
 
         if (records2.isNotEmpty()) {
-
             records2.forEach { item ->
                 if (SharedPreferencesUtils.getString(
                         this,
@@ -233,13 +224,11 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                         ""
                     ).isNotEmpty()
                 ) {
-                    if (SharedPreferencesUtils.string2SceneList(
-                            SharedPreferencesUtils.getString(
-                                this,
-                                READ_ID,
-                                ""
-                            )
-                        ).contains(item.id)
+                    var read:ArrayList<Int> = Gson().fromJson(
+                        SharedPreferencesUtils.getString(this, READ_ID, ""),
+                        object : TypeToken<ArrayList<Int>>() {}.type
+                    )
+                    if (read.contains(item.id)
                     ) {
                         item.isRead = 1
                     } else {
@@ -275,6 +264,17 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             }
         }
     }
+
+    override fun onRxBus(event: RxBus.Event) {
+        super.onRxBus(event)
+        when (event.id()) {
+            Pie.EVENT_PUSH_MSG -> {
+                redPoint()
+            }
+            else -> return
+        }
+    }
+
 
     override fun onClick(v: View?) {
         when (v!!.id) {
