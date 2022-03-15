@@ -50,7 +50,7 @@ public class WalletBTCUtils {
                 networkParameters = TestNet3Params.get();
 
             String publicKey = Numeric.toHexStringNoPrefixZeroPadded(new BigInteger(ecKeyPair.getPubKey()), 66);
-            String privateKey = ecKeyPair.getPrivateKeyEncoded(networkParameters).toString();
+            String privateKey = ecKeyPair.getPrivateKeyAsHex();//测试链方式：ecKeyPair.getPrivateKeyEncoded(networkParameters).toString();
 
             //bc1开头的地址
             SegwitAddress segwitAddress = SegwitAddress.fromKey(networkParameters, ecKeyPair);

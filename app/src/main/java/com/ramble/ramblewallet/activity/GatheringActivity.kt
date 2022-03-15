@@ -264,7 +264,7 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
                 Uri.parse("file://" + "/sdcard/namecard/")
             )
         )
-        //showScan()
+        showScan()
         toastDefault(getString(R.string.save_success))
     }
 
