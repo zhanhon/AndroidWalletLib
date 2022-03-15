@@ -199,7 +199,9 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btnMenu -> {
-                startActivity(Intent(this, WalletManageActivity::class.java))
+                startActivity(Intent(this, WalletManageActivity::class.java).apply {
+                    putExtra(ARG_PARAM1, false)
+                })
             }
             R.id.iv_notice_top -> {
                 startActivity(Intent(this, MessageCenterActivity::class.java))

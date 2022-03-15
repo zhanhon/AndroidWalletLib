@@ -311,7 +311,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 })
             }
             R.id.inc_manage_wallet -> {
-                start(WalletManageActivity::class.java)
+                start(WalletManageActivity::class.java, Bundle().also {
+                    it.putBoolean(ARG_PARAM1, true)
+                })
             }
             R.id.inc_address_book -> {
                 start(AddressBookActivity::class.java, Bundle().also {

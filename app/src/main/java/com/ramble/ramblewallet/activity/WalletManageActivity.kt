@@ -46,12 +46,13 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     private lateinit var walletSelleted: Wallet
     private var times = 0
     private var myAllToken: ArrayList<AllTokenBean> = arrayListOf()
+    private var isFromMine = false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_wallet_manage)
-
+        isFromMine = intent.getBooleanExtra(ARG_PARAM1, false)
         binding.lyPullRefresh.setRefreshHeader(ClassicsHeader(this))
         binding.lyPullRefresh.setRefreshFooter(ClassicsFooter(this))
         //刷新的监听事件
@@ -254,15 +255,19 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     binding.ivAddWallet.visibility = View.VISIBLE
                     loadData(walletManageBean)
                 } else {
-                    when (walletSelleted.walletType) {
-                        1 -> {
-                            start(MainETHActivity::class.java)
-                        }
-                        2 -> {
-                            start(MainTRXActivity::class.java)
-                        }
-                        3 -> {
-                            start(MainBTCActivity::class.java)
+                    if (isFromMine) {
+                        start(MineActivity::class.java)
+                    } else {
+                        when (walletSelleted.walletType) {
+                            1 -> {
+                                start(MainETHActivity::class.java)
+                            }
+                            2 -> {
+                                start(MainTRXActivity::class.java)
+                            }
+                            3 -> {
+                                start(MainBTCActivity::class.java)
+                            }
                         }
                     }
                 }
