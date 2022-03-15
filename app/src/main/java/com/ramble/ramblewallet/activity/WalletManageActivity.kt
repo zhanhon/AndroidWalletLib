@@ -360,8 +360,8 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
 
                 val lists = myAllToken.iterator()
                 lists.forEach {
-                    delete.forEach {wallet->
-                        if (it.myCurrency==wallet.address) {
+                    delete.forEach { wallet ->
+                        if (it.myCurrency == wallet.address) {
                             lists.remove()
                         }
                     }

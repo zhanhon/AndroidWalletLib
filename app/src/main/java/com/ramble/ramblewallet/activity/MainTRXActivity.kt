@@ -34,8 +34,6 @@ import com.ramble.ramblewallet.tron.TransferTrxUtils.balanceOfTrx
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.StringUtils.strAddComma
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter
-import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import java.math.BigDecimal
 
 class MainTRXActivity : BaseActivity(), View.OnClickListener {
@@ -113,7 +111,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                             println("==================>getTransferInfo:${data}")
 
                             data.records.forEach { item ->
-                                var read:ArrayList<Int> = Gson().fromJson(
+                                var read: ArrayList<Int> = Gson().fromJson(
                                     SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
                                     object : TypeToken<ArrayList<Int>>() {}.type
                                 )
@@ -148,7 +146,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                                             ""
                                         ).isNotEmpty()
                                     ) {
-                                        var read:ArrayList<Int> = Gson().fromJson(
+                                        var read: ArrayList<Int> = Gson().fromJson(
                                             SharedPreferencesUtils.getString(this, READ_ID, ""),
                                             object : TypeToken<ArrayList<Int>>() {}.type
                                         )

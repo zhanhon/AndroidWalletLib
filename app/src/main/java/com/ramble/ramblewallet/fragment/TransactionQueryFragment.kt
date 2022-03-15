@@ -23,7 +23,10 @@ import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.TransferItem
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.network.transferInfoUrl
-import com.ramble.ramblewallet.utils.*
+import com.ramble.ramblewallet.utils.Pie
+import com.ramble.ramblewallet.utils.RxBus
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
@@ -51,7 +54,7 @@ class TransactionQueryFragment : BaseFragment(),
     private var transferType: Int? = null
     private var endTime: Long? = null
     private var startTime: Long? = null
-    private var dateType:String?=null
+    private var dateType: String? = null
     private var currentPage = 1
     private var totalPage = 1
     private val adapter = RecyclerAdapter()
@@ -181,7 +184,7 @@ class TransactionQueryFragment : BaseFragment(),
     @SuppressLint("CheckResult")
     private fun loadData() {
         var req = QueryTransferRecord.Req(
-            dateType ,
+            dateType,
             currentPage,
             20,
             address,
@@ -291,21 +294,21 @@ class TransactionQueryFragment : BaseFragment(),
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
         when (checkedId) {
             R.id.all -> {
-               dateType=null
+                dateType = null
                 reFreshData()
             }
             R.id.week -> {
-                dateType="WW"
+                dateType = "WW"
                 startDay = LocalDateTime.of(chooseDay.plusDays(-7).toLocalDate(), LocalTime.MIN)
                 reFreshData()
             }
             R.id.month -> {
-                dateType="MM"
+                dateType = "MM"
                 startDay = LocalDateTime.of(chooseDay.plusMonths(-1).toLocalDate(), LocalTime.MIN)
                 reFreshData()
             }
             R.id.year -> {
-                dateType="YY"
+                dateType = "YY"
                 startDay = LocalDateTime.of(chooseDay.plusYears(-1).toLocalDate(), LocalTime.MIN)
                 reFreshData()
             }

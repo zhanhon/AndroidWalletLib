@@ -174,7 +174,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                 }
                 myAllToken.forEach {
                     if (it.myCurrency == walletSelleted.address) {
-                          it.storeInfos=myStores
+                        it.storeInfos = myStores
                     }
                 }
                 SharedPreferencesUtils.saveString(
@@ -213,7 +213,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                 myStores[position] = item
                 myAllToken.forEach {
                     if (it.myCurrency == walletSelleted.address) {
-                        it.storeInfos=myStores
+                        it.storeInfos = myStores
                     }
                 }
                 SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))

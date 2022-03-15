@@ -203,7 +203,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
     private fun dataCheck(data: List<Page.Record>) {
         data.forEach { item ->
-            var read:ArrayList<Int> = Gson().fromJson(
+            var read: ArrayList<Int> = Gson().fromJson(
                 SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
                 object : TypeToken<ArrayList<Int>>() {}.type
             )
@@ -224,7 +224,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                         ""
                     ).isNotEmpty()
                 ) {
-                    var read:ArrayList<Int> = Gson().fromJson(
+                    var read: ArrayList<Int> = Gson().fromJson(
                         SharedPreferencesUtils.getString(this, READ_ID, ""),
                         object : TypeToken<ArrayList<Int>>() {}.type
                     )

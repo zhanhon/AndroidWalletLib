@@ -90,7 +90,7 @@ public abstract class AndroidNotification extends UmengNotification {
             }
             policyJson.put(key, value);
         } else {
-            if (key.equals("payload") || key.equals("body") || key.equals("policy")  || key.equals("extra")) {
+            if (key.equals("payload") || key.equals("body") || key.equals("policy") || key.equals("extra")) {
                 throw new Exception(
                         "You don't need to set value for " + key + " , just set values for the sub keys in it.");
             } else {

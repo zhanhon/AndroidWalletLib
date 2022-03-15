@@ -82,13 +82,13 @@ class AddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
         when (data.isMyToken) {
             0 -> {
                 binding.ivTokenStatus.setImageResource(R.drawable.vector_token_add)
-                binding.ivTokenStatus.isVisible=true
+                binding.ivTokenStatus.isVisible = true
             }
             1 -> {
                 binding.ivTokenStatus.setImageResource(R.drawable.vector_token_reduce)
-                binding.ivTokenStatus.isVisible=true
+                binding.ivTokenStatus.isVisible = true
             }
-            else->  binding.ivTokenStatus.isVisible=false
+            else -> binding.ivTokenStatus.isVisible = false
         }
 
         binding.tvTokenName.text = data.symbol

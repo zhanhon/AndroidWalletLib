@@ -27,19 +27,19 @@ class TokenManageItem(val data: StoreInfo) : CheckableSimpleRecyclerItem(), View
         binding.ivDelete.setOnClickListener(this)
         if (isEditable) {
             binding.ivTokenStatus.setImageResource(R.drawable.vector_token_move)
-            binding.ivTokenStatus.visibility=View.VISIBLE
+            binding.ivTokenStatus.visibility = View.VISIBLE
         } else {
             when (data.isMyToken) {
                 1 -> {
                     binding.ivTokenStatus.setImageResource(R.drawable.vector_token_reduce)
-                    binding.ivTokenStatus.visibility=View.VISIBLE
+                    binding.ivTokenStatus.visibility = View.VISIBLE
                 }
                 0 -> {
                     binding.ivTokenStatus.setImageResource(R.drawable.vector_token_add)
-                    binding.ivTokenStatus.visibility=View.VISIBLE
+                    binding.ivTokenStatus.visibility = View.VISIBLE
                 }
                 else -> {
-                    binding.ivTokenStatus.visibility=View.INVISIBLE
+                    binding.ivTokenStatus.visibility = View.INVISIBLE
                 }
             }
         }
@@ -104,16 +104,16 @@ class TokenManageItem(val data: StoreInfo) : CheckableSimpleRecyclerItem(), View
             }
             else -> binding.ivTokenIcon.setImageResource(R.mipmap.def_token_img)
         }
-        if (isEditable){
-            if (data.isMyToken==2){
-                binding.ivDelete.isVisible=false
-                binding.vDelete.isVisible=true
-            }else{
-                binding.vDelete.isVisible=false
-                binding.ivDelete.isVisible=isEditable
+        if (isEditable) {
+            if (data.isMyToken == 2) {
+                binding.ivDelete.isVisible = false
+                binding.vDelete.isVisible = true
+            } else {
+                binding.vDelete.isVisible = false
+                binding.ivDelete.isVisible = isEditable
             }
-        }else{
-            binding.vDelete.isVisible=isEditable
+        } else {
+            binding.vDelete.isVisible = isEditable
 
         }
         holder.attachOnClickListener(R.id.iv_token_status)

@@ -20,7 +20,7 @@ import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.LanguageSetting
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.applyIo
-import java.util.ArrayList
+import java.util.*
 
 /**
  * 时间　: 2021/12/16 13:54
@@ -34,7 +34,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
     private var createTime = ""
     private var typeText = 0
     private var id = 0
-    private var list : ArrayList<Int> = arrayListOf()
+    private var list: ArrayList<Int> = arrayListOf()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -160,7 +160,7 @@ class ProclamationFragment : BaseFragment() {
         if (SharedPreferencesUtils.getString(myActivity, READ_ID_NEW, "")
                 .isNotEmpty()
         ) {
-            list=   Gson().fromJson(
+            list = Gson().fromJson(
                 SharedPreferencesUtils.getString(myActivity, READ_ID_NEW, ""),
                 object : TypeToken<ArrayList<Int>>() {}.type
             )

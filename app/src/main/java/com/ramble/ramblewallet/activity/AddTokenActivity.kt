@@ -79,12 +79,12 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 .build()
         )
         binding.rvTokenManageCurrency.adapter = recommendTokenAdapter
-        myAllToken=Gson().fromJson(
+        myAllToken = Gson().fromJson(
             SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
             object : TypeToken<ArrayList<AllTokenBean>>() {}.type
         )
         myAllToken.forEach {
-            if (it.myCurrency==walletSelleted.address){
+            if (it.myCurrency == walletSelleted.address) {
                 myDataBeansRecommendToken = it.storeInfos
             }
         }
@@ -100,7 +100,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         }
         ArrayList<SimpleRecyclerItem>().apply {
             myDataBeansRecommendToken.forEach { o ->
-                if (o.isMyToken == 1||o.isMyToken == 2) {
+                if (o.isMyToken == 1 || o.isMyToken == 2) {
                     this.add(UnAddTokenItem(o))
                 }
             }
@@ -155,7 +155,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                     object : TypeToken<ArrayList<AllTokenBean>>() {}.type
                 )
                 myAllToken.forEach {
-                    if (it.myCurrency==walletSelleted.address){
+                    if (it.myCurrency == walletSelleted.address) {
                         myDataBeansMyAssets = it.storeInfos
                     }
                 }
@@ -171,7 +171,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 }
                 myAllToken.forEach {
                     if (it.myCurrency == walletSelleted.address) {
-                        it.storeInfos=myDataBeansMyAssets
+                        it.storeInfos = myDataBeansMyAssets
                     }
                 }
                 SharedPreferencesUtils.saveString(
@@ -191,7 +191,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                     object : TypeToken<ArrayList<AllTokenBean>>() {}.type
                 )
                 myAllToken.forEach {
-                    if (it.myCurrency==walletSelleted.address){
+                    if (it.myCurrency == walletSelleted.address) {
                         myDataBeansMyAssets = it.storeInfos
                     }
                 }
@@ -213,7 +213,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         }
         ArrayList<SimpleRecyclerItem>().apply {
             myDataBeansMyAssets.forEach { o ->
-                if (o.isMyToken == 1||o.isMyToken == 2) {
+                if (o.isMyToken == 1 || o.isMyToken == 2) {
                     this.add(UnAddTokenItem(o))
                 }
             }
@@ -257,7 +257,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
             R.id.add_view -> {
                 when (val item = AdapterUtils.getHolder(v).getItem<SimpleRecyclerItem>()) {
                     is AddTokenItem -> {//增加代币到我的
-                        if (item.data.isMyToken==2){
+                        if (item.data.isMyToken == 2) {
                             return
                         }
                         myDataBeansMyAssets.clear()
@@ -273,7 +273,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                         RxBus.emitEvent(Pie.EVENT_ADD_TOKEN, item.data)
                     }
                     is UnAddTokenItem -> {//减到代币到我的
-                        if (item.data.isMyToken==2){
+                        if (item.data.isMyToken == 2) {
                             return
                         }
                         myDataBeansMyAssets.clear()

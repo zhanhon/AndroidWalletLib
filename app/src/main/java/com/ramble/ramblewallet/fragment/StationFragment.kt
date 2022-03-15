@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.view.isVisible
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -14,7 +13,6 @@ import com.ramble.ramblewallet.activity.MessageCenterActivity
 import com.ramble.ramblewallet.activity.MsgDetailsActivity
 import com.ramble.ramblewallet.base.BaseFragment
 import com.ramble.ramblewallet.bean.Page
-import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.FragmentProclamationBinding
 import com.ramble.ramblewallet.helper.dataBinding

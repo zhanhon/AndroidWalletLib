@@ -4,12 +4,14 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
+
 import com.ramble.ramblewallet.bean.Wallet;
+
 import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toCollection;
@@ -23,6 +25,7 @@ public class StringUtils {
     private StringUtils() {
         throw new IllegalStateException("StringUtils");
     }
+
     //小写字母
     public static final String REG_LOWERCASE = ".*[a-z]+.*";
 

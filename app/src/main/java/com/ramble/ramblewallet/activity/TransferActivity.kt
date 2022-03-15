@@ -439,7 +439,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         binding.tvMinerFeeValue.text = "${
             DecimalFormatUtil.format(
                 BigDecimal(btcFee).multiply(BigDecimal("72"))
-                    .divide(BigDecimal("1000000000")),8
+                    .divide(BigDecimal("1000000000")), 8
             )
         } BTC"
         binding.tvMinerFeeValueConvert.text = "≈${currencyUnit} ${currencySymbol}${
@@ -457,7 +457,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         postUI {
             binding.tvQuantityBalance.text =
                 getString(R.string.transfer_balance) + " " + DecimalFormatUtil.format(
-                    balance,8
+                    balance, 8
                 ) + " " + transferUnit
         }
     }

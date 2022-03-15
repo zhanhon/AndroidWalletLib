@@ -15,6 +15,7 @@ public class ClipboardUtils {
     private ClipboardUtils() {
         throw new IllegalStateException("ClipboardUtils");
     }
+
     public static void copy(String value, Context context) {
         ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         cm.setPrimaryClip(ClipData.newPlainText(null, value));

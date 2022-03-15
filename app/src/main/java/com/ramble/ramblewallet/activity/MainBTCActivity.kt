@@ -33,8 +33,6 @@ import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.StringUtils.strAddComma
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter
-import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import java.math.BigDecimal
 
 class MainBTCActivity : BaseActivity(), View.OnClickListener {
@@ -119,7 +117,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                             println("==================>getTransferInfo:${data}")
 
                             data.records.forEach { item ->
-                                var read:ArrayList<Int> = Gson().fromJson(
+                                var read: ArrayList<Int> = Gson().fromJson(
                                     SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
                                     object : TypeToken<ArrayList<Int>>() {}.type
                                 )
@@ -154,7 +152,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                                             ""
                                         ).isNotEmpty()
                                     ) {
-                                        var read:ArrayList<Int> = Gson().fromJson(
+                                        var read: ArrayList<Int> = Gson().fromJson(
                                             SharedPreferencesUtils.getString(this, READ_ID, ""),
                                             object : TypeToken<ArrayList<Int>>() {}.type
                                         )

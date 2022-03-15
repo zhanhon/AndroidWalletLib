@@ -75,7 +75,7 @@ public class MyNotificationService extends Service {
                             new TypeToken<ArrayList<Page.Record>>() {
                             }.getType()
                     );
-                }else {
+                } else {
                     records = new ArrayList<Page.Record>();
                 }
                 records.add(a);

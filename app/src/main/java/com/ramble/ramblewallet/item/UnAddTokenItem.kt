@@ -79,10 +79,10 @@ class UnAddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
             else -> binding.ivTokenIcon.setImageResource(R.mipmap.def_token_img)
         }
         when (data.isMyToken) {
-            2->binding.ivTokenStatus.isVisible=false
+            2 -> binding.ivTokenStatus.isVisible = false
             else -> {
                 binding.ivTokenStatus.setImageResource(R.drawable.vector_token_reduce)
-                binding.ivTokenStatus.isVisible=true
+                binding.ivTokenStatus.isVisible = true
             }
         }
         binding.tvTokenName.text = data.symbol
