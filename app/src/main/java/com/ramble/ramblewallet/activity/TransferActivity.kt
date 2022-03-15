@@ -627,17 +627,17 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
      */
     @SuppressLint("CheckResult")
     private fun putTransAddress(hash: String, utxos: Array<MutableList<UTXO>>?) {
-        var inputs: ArrayList<ReportTransferInfo.InRecord> = arrayListOf()//BTC转出信息
-        var outputs: ArrayList<ReportTransferInfo.InRecord> = arrayListOf()//BTC转出信息
+        var inputs: ArrayList<ReportTransferInfo.InRecord>? = null//BTC转出信息
+        var outputs: ArrayList<ReportTransferInfo.InRecord>? = null//BTC转出信息
         if (walletSelleted.walletType == 3) {
-            inputs.add(
+            inputs?.add(
                 ReportTransferInfo.InRecord(
                     binding.edtReceiverAddress.text.trim().toString(),
                     binding.edtInputQuantity.text.trim().toString(),
                     0
                 )
             )
-            inputs.add(
+            inputs?.add(
                 ReportTransferInfo.InRecord(
                     binding.tvWalletAddress.text.trim().toString(),
                     (transferBalance - BigDecimal(btcFee) - BigDecimal(
@@ -648,7 +648,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             )
             utxos?.forEach {
                 it.forEach { utxo ->
-                    outputs.add(
+                    outputs?.add(
                         ReportTransferInfo.InRecord(
                             utxo.address,
                             utxo.value.toString(),
