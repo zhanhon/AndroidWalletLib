@@ -43,14 +43,18 @@ public class WalletBTCUtils {
         try {
             DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(mnemonic, 0);
             ECKey ecKeyPair = ECKey.fromPrivate(deterministicKey.getPrivKey());
-            NetworkParameters networkParameters = null;
+            NetworkParameters networkParameters;
             if (ISMAINNET)
                 networkParameters = MainNetParams.get();
             else
                 networkParameters = TestNet3Params.get();
 
             String publicKey = Numeric.toHexStringNoPrefixZeroPadded(new BigInteger(ecKeyPair.getPubKey()), 66);
-            String privateKey = ecKeyPair.getPrivateKeyAsHex();//测试链方式：ecKeyPair.getPrivateKeyEncoded(networkParameters).toString();
+            String privateKey;
+            if (ISMAINNET)
+                privateKey = ecKeyPair.getPrivateKeyAsHex(); //正式链方式
+            else
+                privateKey = ecKeyPair.getPrivateKeyEncoded(networkParameters).toString(); //测试链方式
 
             //bc1开头的地址
             SegwitAddress segwitAddress = SegwitAddress.fromKey(networkParameters, ecKeyPair);
