@@ -65,10 +65,12 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             object : TypeToken<Wallet>() {}.type
         )
 
-        myAllToken = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
-            object : TypeToken<ArrayList<AllTokenBean>>() {}.type
-        )
+        if( walletCurrent.walletType==1){
+            myAllToken = Gson().fromJson(
+                SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                object : TypeToken<ArrayList<AllTokenBean>>() {}.type
+            )
+        }
         when (walletCurrent.walletType) {
             1 -> {
                 binding.tvRecoverWalletTitle.text =
@@ -190,13 +192,15 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                     Gson().toJson(saveWalletList[0])
                 )
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
-                val lists = myAllToken.iterator()
-                lists.forEach {
-                    if (it.myCurrency == walletCurrent.address) {
-                        lists.remove()
+                if( walletCurrent.walletType==1){
+                    val lists = myAllToken.iterator()
+                    lists.forEach {
+                        if (it.myCurrency == walletCurrent.address) {
+                            lists.remove()
+                        }
                     }
+                    SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
                 }
-                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
                 dialog.dismiss()
                 finish()
             }
