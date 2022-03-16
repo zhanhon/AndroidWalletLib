@@ -211,10 +211,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun btnIsClick() {
-        if ((binding.edtReceiverAddress.text.isNotEmpty())
-            && (binding.edtInputQuantity.text.isNotEmpty())
-            && (BigDecimal(binding.edtInputQuantity.text.toString()).compareTo(BigDecimal("0")) == 1)
-        ) {
+        if ((binding.edtReceiverAddress.text.trim().toString().isNotEmpty())
+            && (binding.edtInputQuantity.text.trim().toString().isNotEmpty())) {
             binding.btnConfirm.isEnabled = true
             binding.btnConfirm.background = getDrawable(R.drawable.shape_green_bottom_btn)
         } else {

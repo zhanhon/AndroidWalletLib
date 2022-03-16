@@ -129,9 +129,6 @@ public class TransferBTCUtils {
                         return;
                     }
                     JSONArray unspentOutputs = jsonObject.getJSONObject("data").getJSONArray("txs");
-//                    if (remark != null) {
-//                        jsonObject.getJSONObject("raw_data").put("data", Hex.toHexString(remark.getBytes()));
-//                    }
                     List<Map> outputs = parseArray(unspentOutputs.toJSONString(), Map.class);
                     if (outputs.isEmpty()) {
                         Log.v("-=-=->", "交易异常，余额不足");
@@ -166,7 +163,6 @@ public class TransferBTCUtils {
                     }
                     JSONObject jsonObjectTransaction = new JSONObject();
                     jsonObjectTransaction.put("tx_hex", toHex);
-                    jsonObjectTransaction.put("op_return", Hex.toHexString(remark.getBytes()));
                     String url = ISMAINNET ? "https://chain.so/api/v2/send_tx/BTC" : "https://chain.so/api/v2/send_tx/BTCTEST";
                     Call callTransaction = getCall(url, jsonObjectTransaction);
                     callTransaction.enqueue(new Callback() {
