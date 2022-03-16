@@ -358,20 +358,22 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
                 binding.ivAddWallet.visibility = View.VISIBLE
                 loadData(walletManageBean)
-                myAllToken = Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
-                    object : TypeToken<ArrayList<AllTokenBean>>() {}.type
-                )
+                if (!SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, "").isNullOrEmpty()){
+                    myAllToken = Gson().fromJson(
+                        SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                        object : TypeToken<ArrayList<AllTokenBean>>() {}.type
+                    )
 
-                val lists = myAllToken.iterator()
-                lists.forEach {
-                    delete.forEach { wallet ->
-                        if (it.myCurrency == wallet.address) {
-                            lists.remove()
+                    val lists = myAllToken.iterator()
+                    lists.forEach {
+                        delete.forEach { wallet ->
+                            if (it.myCurrency == wallet.address) {
+                                lists.remove()
+                            }
                         }
                     }
+                    SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
                 }
-                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
                 dialog.dismiss()
             }
         }
