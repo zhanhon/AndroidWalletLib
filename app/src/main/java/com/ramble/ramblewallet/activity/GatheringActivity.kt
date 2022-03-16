@@ -20,6 +20,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
@@ -28,13 +29,9 @@ import androidx.databinding.DataBindingUtil
 import com.google.zxing.WriterException
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.constant.ARG_PARAM2
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityGatheringBinding
-import com.ramble.ramblewallet.utils.ClipboardUtils
-import com.ramble.ramblewallet.utils.DisplayHelper
-import com.ramble.ramblewallet.utils.QRCodeUtil
-import com.ramble.ramblewallet.utils.toastDefault
+import com.ramble.ramblewallet.utils.*
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -166,6 +163,7 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
                 dialog.dismiss()
             }
+            val lang = SharedPreferencesUtils.getString(this, LANGUAGE, CN)
             btnNext.setOnClickListener {
                 requestRuntimePermission(
                     arrayOf(
@@ -179,7 +177,13 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
                                 val bitmap: Bitmap = viewConversionBitmap(ivImg)
                                 val view: View =
                                     layoutInflater.inflate(R.layout.qr_picture_generate, null)
+                                val llQrPicture = view.findViewById<LinearLayout>(R.id.ll_qr_picture)
                                 val ivQrPicture = view.findViewById<ImageView>(R.id.iv_qr_picture)
+                                when (lang) {
+                                    CN -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_cn)
+                                    TW -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_tw)
+                                    EN -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_en)
+                                }
                                 val tvTitle = view.findViewById<TextView>(R.id.tv_title)
                                 ivQrPicture.setImageBitmap(bitmap)
                                 tvTitle.text = gatherAddress

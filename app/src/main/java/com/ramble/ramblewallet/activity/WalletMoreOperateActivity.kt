@@ -20,10 +20,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -475,6 +472,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             btnCancel.setOnClickListener {
                 dialog.dismiss()
             }
+            val lang = SharedPreferencesUtils.getString(this, LANGUAGE, CN)
             btnNext.setOnClickListener {
                 requestRuntimePermission(
                     arrayOf(
@@ -488,9 +486,15 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                                 val bitmap: Bitmap = viewConversionBitmap(ivImg)
                                 val view: View =
                                     layoutInflater.inflate(R.layout.qr_picture_generate, null)
+                                val llQrPicture = view.findViewById<LinearLayout>(R.id.ll_qr_picture)
                                 val ivQrPicture = view.findViewById<ImageView>(R.id.iv_qr_picture)
                                 val tvTitle = view.findViewById<TextView>(R.id.tv_title)
                                 ivQrPicture.setImageBitmap(bitmap)
+                                when (lang) {
+                                    CN -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_cn)
+                                    TW -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_tw)
+                                    EN -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_en)
+                                }
                                 tvTitle.text =
                                     walletCurrent.walletName + getString(R.string.save_qr_picture_title)
                                 saveBitmap(createBitmap(view, 800, 1400))
