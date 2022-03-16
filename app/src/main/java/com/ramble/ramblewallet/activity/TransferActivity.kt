@@ -212,7 +212,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun btnIsClick() {
         if ((binding.edtReceiverAddress.text.trim().toString().isNotEmpty())
-            && (binding.edtInputQuantity.text.trim().toString().isNotEmpty())) {
+            && (binding.edtInputQuantity.text.trim().toString().isNotEmpty())
+        ) {
             binding.btnConfirm.isEnabled = true
             binding.btnConfirm.background = getDrawable(R.drawable.shape_green_bottom_btn)
         } else {
@@ -612,62 +613,65 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    fun transferSuccess(transactionHash: String, utxos: Array<MutableList<UTXO>>?) {
+    fun transferSuccess(transactionHash: String, utxos: MutableList<UTXO>?) {
+        println("-=-=-=-=->transactionUTXO:${Gson().toJson(utxos)}")
         println("-=-=-=-=->transactionHash:${transactionHash}")
         postUI {
             transactionFinishConfirmDialog(transactionHash)
         }
         putTransAddress(transactionHash, utxos)
+
     }
 
     /***
      *上报转出交易记录
      */
     @SuppressLint("CheckResult")
-    private fun putTransAddress(hash: String, utxos: Array<MutableList<UTXO>>?) {
-        var inputs: ArrayList<ReportTransferInfo.InRecord>? = null//BTC转出信息
-        var outputs: ArrayList<ReportTransferInfo.InRecord>? = null//BTC转出信息
+    private fun putTransAddress(hash: String, utxos: MutableList<UTXO>?) {
+        var inputs: ArrayList<ReportTransferInfo.InRecord>? = arrayListOf()//BTC转出信息
+        var outputs: ArrayList<ReportTransferInfo.InRecord>? = arrayListOf()//BTC转出信息
+        var edtReceiverAddress = binding.edtReceiverAddress.text.trim().toString()
+        var edtInputQuantity = binding.edtInputQuantity.text.trim().toString()
+        var tvWalletAddress = binding.tvWalletAddress.text.trim().toString()
         if (walletSelleted.walletType == 3) {
-            inputs?.add(
-                ReportTransferInfo.InRecord(
-                    binding.edtReceiverAddress.text.trim().toString(),
-                    binding.edtInputQuantity.text.trim().toString(),
-                    0
-                )
+            var a = ReportTransferInfo.InRecord(
+                edtReceiverAddress,
+                edtInputQuantity,
+                0
             )
-            inputs?.add(
-                ReportTransferInfo.InRecord(
-                    binding.tvWalletAddress.text.trim().toString(),
-                    (transferBalance - BigDecimal(btcFee) - BigDecimal(
-                        binding.edtInputQuantity.text.trim().toString()
-                    )).toString(),
-                    1
-                )
+            inputs?.add(a)
+            var tferb= (transferBalance - BigDecimal(
+                DecimalFormatUtil.format(BigDecimal(btcFee).multiply(BigDecimal("72")).divide(BigDecimal("1000000000")), 8)
+            ) - BigDecimal(edtInputQuantity)).toString()
+            var a1 = ReportTransferInfo.InRecord(
+                tvWalletAddress,
+                tferb,
+                1
             )
-            utxos?.forEach {
-                it.forEach { utxo ->
-                    outputs?.add(
-                        ReportTransferInfo.InRecord(
-                            utxo.address,
-                            utxo.value.toString(),
-                            utxo.index.toInt()
-                        )
+            inputs?.add(a1)
+            utxos?.forEach { utxo ->
+                outputs?.add(
+                    ReportTransferInfo.InRecord(
+                        utxo.address,
+                        BigDecimal(utxo.value.toString()).divide(BigDecimal("10").pow(8))
+                            .toString(),
+                        utxo.index.toInt()
                     )
-                }
+                )
             }
         }
         mApiService.reportTransferRecord(
             ReportTransferInfo.Req(
                 walletSelleted.walletType,
-                binding.edtInputQuantity.text.trim().toString(),
+                edtInputQuantity,
                 tokenBean.contractAddress,
                 tokenBean.symbol,
-                binding.tvWalletAddress.text.trim().toString(),
+                tvWalletAddress,
                 gasLimit,
                 gasPrice,
-                inputs,
-                outputs,
-                binding.edtReceiverAddress.text.trim().toString(),
+                inputs?.toList(),
+                outputs?.toList(),
+                edtReceiverAddress,
                 hash
             )
                 .toApiRequest(reportTransferUrl)
@@ -979,5 +983,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             isCustom = false
         }
     }
+
 
 }
