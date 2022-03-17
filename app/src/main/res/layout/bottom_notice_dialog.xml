@@ -7,8 +7,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shape_white_rectangle"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/dp_10"
-        android:paddingRight="@dimen/dp_10"
         android:paddingBottom="10dp">
 
         <LinearLayout
@@ -20,7 +18,7 @@
                 android:id="@+id/tv_type"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_68"
-                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginLeft="@dimen/dp_25"
                 android:gravity="left|center_vertical"
                 tools:text="@string/currency_choose"
                 android:textColor="@color/color_000000"

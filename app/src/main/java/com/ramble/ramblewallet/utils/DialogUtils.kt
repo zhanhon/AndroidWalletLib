@@ -3,11 +3,10 @@ package com.ramble.ramblewallet.utils
 import android.app.Activity
 import android.app.Dialog
 import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
@@ -49,10 +48,11 @@ fun showBottomDialog(
         )
 
     return AlertDialog.Builder(activity).create().apply {
-        window?.setBackgroundDrawableResource(android.R.color.transparent)
-        window?.setGravity(Gravity.BOTTOM)
         show()
         setContentView(binding.root)
+        window?.setGravity(Gravity.BOTTOM)
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT)
         binding.tvTitle.text = tvName
         binding.tvType.text = when (tvType) {
             1 -> {
@@ -80,6 +80,8 @@ fun showBottomDialog(
     }
 }
 
+
+
 /**
  * 时间　: 2022/1/5 15:52
  * 作者　: potato
@@ -98,10 +100,11 @@ fun showBottomDialog2(
         )
 
     return AlertDialog.Builder(activity).create().apply {
-        window?.setBackgroundDrawableResource(android.R.color.transparent)
-        window?.setGravity(Gravity.BOTTOM)
         show()
         setContentView(binding.root)
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT)
+        window?.setGravity(Gravity.BOTTOM)
         binding.editName.setText(tvName)
         binding.editAddress.setText(address)
         when (type) {
