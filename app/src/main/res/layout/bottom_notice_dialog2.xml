@@ -6,15 +6,14 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shape_white_rectangle"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/dp_10"
-        android:paddingRight="@dimen/dp_10"
         android:paddingBottom="10dp">
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
+
             android:layout_height="@dimen/dp_68"
-            android:layout_marginLeft="@dimen/dp_25"
+            android:layout_marginStart="@dimen/dp_25"
             android:gravity="left|center_vertical"
             android:text="@string/currency_choose"
             android:textColor="@color/color_000000"
@@ -29,7 +28,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_52"
-            android:layout_marginLeft="@dimen/dp_25"
+            android:layout_marginStart="@dimen/dp_25"
             android:gravity="left|center_vertical"
             android:text="@string/name"
             android:textColor="@color/color_000000"
@@ -66,7 +65,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginLeft="@dimen/dp_25"
+            android:layout_marginStart="@dimen/dp_25"
             android:gravity="left|center_vertical"
             android:text="@string/address"
             android:textColor="@color/color_000000"
@@ -80,6 +79,7 @@
 
             <EditText
                 android:id="@+id/edit_address"
+                android:paddingEnd="@dimen/dp_16"
                 android:layout_width="0dp"
                 android:paddingStart="@dimen/dp_16"
                 android:layout_height="match_parent"
@@ -106,7 +106,6 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="50dp"
-                android:layout_marginLeft="@dimen/dp_10"
                 android:gravity="center"
                 android:text="@string/cancel"
                 android:textColor="@color/color_3BB7A5"
@@ -118,7 +117,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="50dp"
-                android:layout_marginLeft="@dimen/dp_25"
+                android:layout_marginStart="@dimen/dp_25"
                 android:gravity="center"
                 android:text="@string/edit"
                 android:background="@drawable/shape_green_bottom_btn"
