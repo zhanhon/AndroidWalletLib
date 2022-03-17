@@ -75,7 +75,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toStartOf="@+id/flag_new"
                 app:layout_constraintStart_toEndOf="@+id/img_first"
-                app:layout_constraintTop_toTopOf="@+id/img_first">
+                app:layout_constraintTop_toTopOf="@+id/cardview">
 
                 <TextView
                     android:id="@+id/title1"
@@ -109,7 +109,7 @@
                 android:layout_marginTop="@dimen/dp_10"
                 app:layout_constraintEnd_toEndOf="@+id/cardview"
                 app:layout_constraintStart_toStartOf="@+id/cardview"
-                app:layout_constraintTop_toBottomOf="@+id/img_first" />
+                app:layout_constraintTop_toBottomOf="@+id/cardview" />
 
             <TextView
                 android:id="@+id/tv_content"
