@@ -61,6 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dp_4"
                     android:text="ETH"
+                    android:textColor="@color/color_000000"
                     android:textSize="@dimen/sp_12" />
 
                 <ImageView
