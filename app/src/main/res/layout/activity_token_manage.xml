@@ -46,9 +46,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
             android:background="@color/color_FFFFFF"
-            android:padding="@dimen/dp_10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -62,10 +63,11 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <RelativeLayout
+                    android:paddingStart="@dimen/dp_20"
+                    android:paddingEnd="@dimen/dp_20"
                     android:id="@+id/rl_token_title"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_50"
-                    android:padding="@dimen/dp_10">
+                    android:layout_height="@dimen/dp_50">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -104,9 +106,8 @@
                     android:id="@+id/rv_token_manage_currency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
                     android:orientation="vertical"
-                    android:padding="@dimen/dp_10"
+                    android:paddingStart="@dimen/dp_20"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </LinearLayout>
