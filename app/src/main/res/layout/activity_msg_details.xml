@@ -6,7 +6,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/app_theme"
+        android:background="@color/color_FFFFFF"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -69,80 +69,59 @@
 
         <androidx.core.widget.NestedScrollView style="@style/MatchWrap">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 style="@style/MatchWrap"
-                android:layout_margin="@dimen/dp_10"
                 android:background="@drawable/shape_round_white_10dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="@dimen/dp_8">
-
-                <ImageView
-                    android:id="@+id/img_first"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
+                android:paddingBottom="@dimen/dp_8"
+                android:orientation="vertical">
+                <View
+                    android:background="@color/app_theme"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_10"/>
                 <TextView
                     android:id="@+id/title1"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginEnd="@dimen/dp_20"
                     android:gravity="left"
                     android:textStyle="bold"
                     android:textColor="@color/front_one"
                     android:textSize="@dimen/sp_16"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/img_first"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    tools:text="123sdsdddsdffdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfddfdfdf"/>
 
                 <TextView
                     android:id="@+id/time2"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginEnd="@dimen/dp_20"
                     android:textColor="@color/front_four"
                     android:textSize="@dimen/sp_12"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/img_first"
-                    app:layout_constraintTop_toBottomOf="@+id/title1"
                     tools:text="123" />
 
-                <View
-                    android:id="@+id/view"
-                    style="@style/GameActionDivider"
-                    android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintStart_toStartOf="@+id/img_first"
-                    app:layout_constraintTop_toBottomOf="@+id/time2" />
 
                 <TextView
                     android:id="@+id/tv_content"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginEnd="@dimen/dp_20"
                     android:textColor="@color/front_three"
                     android:textSize="@dimen/sp_12"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/img_first"
-                    app:layout_constraintTop_toBottomOf="@+id/view"
                     tools:text="123" />
 
                 <com.ramble.ramblewallet.wight.HtmlWebView
                     android:id="@+id/web"
                     style="@style/MatchWrap"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/img_first"
-                    app:layout_constraintTop_toBottomOf="@+id/view" />
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginEnd="@dimen/dp_20" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
     </androidx.appcompat.widget.LinearLayoutCompat>
