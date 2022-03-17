@@ -4,16 +4,13 @@
     android:layout_height="wrap_content"
     android:background="@drawable/shape_white_rectangle"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/dp_10"
-    android:paddingRight="@dimen/dp_10"
     android:paddingBottom="10dp">
 
     <TextView
         android:id="@+id/tv_language_title"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginTop="10dp"
+        android:layout_height="@dimen/dp_74"
+        android:layout_marginLeft="@dimen/dp_25"
         android:gravity="left|center_vertical"
         android:text="@string/language_choose"
         android:textColor="@color/color_000000"
@@ -28,9 +25,8 @@
     <TextView
         android:id="@+id/tv_language1"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginTop="10dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="@dimen/dp_20"
         android:gravity="left|center_vertical"
         android:text="@string/language_simplified_chinese"
         android:textColor="@color/color_000000"
@@ -39,13 +35,14 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginStart="@dimen/dp_20"
         android:background="@color/color_E7E7E7" />
 
     <TextView
         android:id="@+id/tv_language2"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_height="60dp"
+        android:layout_marginStart="@dimen/dp_20"
         android:gravity="left|center_vertical"
         android:text="@string/language_traditional_chinese"
         android:textColor="@color/color_000000"
@@ -54,13 +51,14 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginStart="@dimen/dp_20"
         android:background="@color/color_E7E7E7" />
 
     <TextView
         android:id="@+id/tv_language3"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_height="60dp"
+        android:layout_marginStart="@dimen/dp_20"
         android:gravity="left|center_vertical"
         android:text="@string/language_english"
         android:textColor="@color/color_000000"
@@ -69,6 +67,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginStart="@dimen/dp_20"
         android:background="@color/color_E7E7E7" />
 
 </LinearLayout>
