@@ -57,7 +57,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
         }
         binding.rvTokenManageCurrency.addItemDecoration(
             QuickItemDecoration.builder(this)
-                .color(R.color.driver_gray, R.dimen.dp_08)
+                .color(R.color.driver_gray, R.dimen.dp_08).leftMargin(R.dimen.dp_54)
                 .build()
         )
         binding.rvTokenManageCurrency.adapter = adapter
