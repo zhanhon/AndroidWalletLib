@@ -388,6 +388,7 @@
                             android:id="@+id/tv_miner_fee_value_convert"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/color_9598AA"
                             android:gravity="right"
                             android:textSize="@dimen/sp_14"
                             tools:text="1111" />
@@ -400,7 +401,7 @@
                         android:paddingLeft="@dimen/dp_10"
                         android:paddingTop="@dimen/dp_15"
                         android:paddingBottom="@dimen/dp_15"
-                        android:src="@mipmap/ic_arrow_right"
+                        android:src="@drawable/vector_arrow_right"
                         android:textColor="@color/color_000000" />
                 </LinearLayout>
 
@@ -420,7 +421,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:textColor="@color/color_E4E4E9"
+                    android:textColor="@color/color_C7C8D2"
                     android:textSize="@dimen/sp_12"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
