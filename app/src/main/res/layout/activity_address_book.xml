@@ -120,8 +120,7 @@
                 android:layout_weight="1"
                 android:background="@color/color_FFFFFF"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/dp_25"
-
+                android:paddingStart="@dimen/dp_20"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -129,7 +128,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_66"
                     android:gravity="center_vertical"
-                    android:paddingRight="@dimen/dp_25">
+                    android:paddingEnd="@dimen/dp_25">
 
                     <TextView
                         android:layout_width="@dimen/dp_0"
@@ -161,12 +160,15 @@
                         android:visibility="gone"
                         android:layout_marginEnd="5dp" />
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_08"
+                    android:background="@color/driver_gray"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_main_currency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/dp_20"
                     android:background="@drawable/shape_white_bottom_btn" />
 
             </LinearLayout>

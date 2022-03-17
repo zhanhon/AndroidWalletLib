@@ -58,7 +58,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         binding.tvManageWalletTitle.text = getString(R.string.address_page)
         binding.rvMainCurrency.addItemDecoration(
             QuickItemDecoration.builder(this)
-                .color(R.color.driver_gray, R.dimen.dp_08).leftMargin(R.dimen.dp_50)
+                .color(R.color.driver_gray, R.dimen.dp_08).leftMargin(R.dimen.dp_45)
                 .build()
         )
         LinearLayoutManager(this).apply {

@@ -24,7 +24,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/dp_10">
+            android:padding="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_20">
 
             <TextView
                 android:id="@+id/tv_main_currency_name"
@@ -64,11 +65,10 @@
                 android:id="@+id/tv_wallet_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
                 android:layout_marginEnd="@dimen/dp_10"
                 android:textColor="@color/front_five"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_main_currency_name"
                 tools:text="0x2232sdower...2323s" />
 
             <ImageView
