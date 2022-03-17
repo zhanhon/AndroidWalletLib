@@ -10,8 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_white_rectangle"
-        android:orientation="vertical"
-        android:paddingHorizontal="@dimen/dp_10">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_title"
@@ -25,7 +24,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_1"
-            android:layout_marginStart="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginBottom="@dimen/dp_20"
             android:background="@color/color_E2E2E2" />
@@ -175,7 +173,7 @@
             android:id="@+id/ll_gwei_gas_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_30"
+            android:layout_marginStart="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_20"
             android:orientation="horizontal"
             android:visibility="gone">
@@ -205,7 +203,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_1"
-                    android:layout_marginRight="@dimen/dp_30"
+                    android:layout_marginRight="@dimen/dp_20"
                     android:background="@color/color_E2E2E2" />
             </LinearLayout>
         </LinearLayout>

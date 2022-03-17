@@ -398,7 +398,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="right|center_vertical"
                         android:paddingLeft="@dimen/dp_10"
-                        android:paddingRight="@dimen/dp_10"
                         android:paddingTop="@dimen/dp_15"
                         android:paddingBottom="@dimen/dp_15"
                         android:src="@mipmap/ic_arrow_right"
