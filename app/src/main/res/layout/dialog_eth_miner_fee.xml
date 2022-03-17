@@ -175,7 +175,7 @@
             android:id="@+id/ll_gwei_gas_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_30"
+            android:layout_marginStart="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_20"
             android:orientation="horizontal"
             android:visibility="gone">
@@ -244,7 +244,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_30"
+            android:layout_marginStart="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_10"
             android:text="@string/miner_fee_formulae"
             android:textColor="@color/color_9598AA"
