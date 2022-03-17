@@ -117,41 +117,38 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/dp_10"
                     android:layout_marginEnd="@dimen/dp_10"
-                    android:layout_marginBottom="@dimen/dp_10"
                     android:background="@color/color_FFFFFF"
-                    android:padding="@dimen/dp_10"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_token_title"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/dp_10"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical"
                         android:text="@string/search_result"
-                        android:textColor="@color/color_000000"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:paddingStart="10dp"
+                        android:textColor="@color/color_000000" />
+                    <View
+                        android:background="@color/driver_gray"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_08"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_token_manage_currency"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="@dimen/dp_10"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_token_title" />
+                        android:paddingStart="@dimen/dp_10"
+                        android:paddingEnd="@dimen/dp_10"
+                        android:paddingBottom="@dimen/dp_10"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
+                </LinearLayout>
                 <RelativeLayout
                     android:id="@+id/txt_empty"
                     android:layout_width="match_parent"
