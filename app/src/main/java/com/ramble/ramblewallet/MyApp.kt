@@ -8,6 +8,7 @@ import com.ramble.ramblewallet.constant.setupArchLibrary
 import com.ramble.ramblewallet.helper.MyPreferences
 import com.ramble.ramblewallet.push.UmInitConfig
 import com.umeng.commonsdk.UMConfigure
+import com.umeng.message.PushAgent
 
 
 /**
@@ -45,15 +46,8 @@ class MyApp : Application() {
         //预初始化
 
         UmInitConfig.preInit(this)
-
-        //是否同意隐私政策
-        val agreed: Boolean = MyPreferences.getInstance(this).hasAgreePrivacyAgreement()
-        if (!agreed) {
-            return
-        }
-
         UmInitConfig.umInit(this)
-
+        PushAgent.getInstance(this).onAppStart()
     }
 
     companion object {

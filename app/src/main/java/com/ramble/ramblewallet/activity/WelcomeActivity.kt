@@ -13,12 +13,8 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
-import com.ramble.ramblewallet.helper.MyPreferences
-import com.ramble.ramblewallet.push.UmInitConfig
 import com.ramble.ramblewallet.utils.LanguageSetting.setLanguage
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.umeng.commonsdk.UMConfigure
-import com.umeng.message.PushAgent
 import java.util.*
 
 class WelcomeActivity : BaseActivity() {
@@ -29,13 +25,6 @@ class WelcomeActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
-        if (MyPreferences.getInstance(this).hasAgreePrivacyAgreement()) {
-            PushAgent.getInstance(this).onAppStart()
-            val deviceToken = PushAgent.getInstance(this).registrationId
-            SharedPreferencesUtils.saveString(this, DEVICE_TOKEN, deviceToken)
-        } else {
-            showAgreement()
-        }
         Handler().postDelayed({
             if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isEmpty()) {
                 startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
@@ -59,17 +48,6 @@ class WelcomeActivity : BaseActivity() {
             }
         }, 3000)
 
-    }
-
-    private fun showAgreement() {
-        //用户点击隐私协议同意按钮后，初始化PushSDK
-        MyPreferences.getInstance(applicationContext).setAgreePrivacyAgreement(true)
-        UMConfigure.submitPolicyGrantResult(applicationContext, true)
-        /*** 友盟sdk正式初始化 */
-
-        UmInitConfig.umInit(this@WelcomeActivity)
-        //推送平台多维度推送决策必须调用方法(需要同意隐私协议之后初始化完成调用)
-        PushAgent.getInstance(this@WelcomeActivity).onAppStart()
     }
 
     @SuppressLint("CheckResult")
