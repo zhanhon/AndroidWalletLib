@@ -117,7 +117,6 @@
                             android:layout_width="@dimen/dp_0"
                             android:layout_height="@dimen/dp_64"
                             android:layout_weight="1"
-                            android:background="@color/cardview_shadow_end_color"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -142,7 +141,6 @@
                             android:layout_marginStart="@dimen/dp_10"
                             android:layout_marginEnd="@dimen/dp_10"
                             android:layout_weight="1"
-                            android:background="@color/cardview_shadow_end_color"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -164,7 +162,6 @@
                             android:layout_width="@dimen/dp_0"
                             android:layout_height="@dimen/dp_64"
                             android:layout_weight="1"
-                            android:background="@color/cardview_shadow_end_color"
                             android:gravity="center"
                             android:orientation="vertical">
 
