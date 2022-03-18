@@ -13,7 +13,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
@@ -333,11 +332,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 currencyDialog()
             }
             R.id.clear_text -> {
-                Toast.makeText(
-                    this,
-                    getString(R.string.clear_suc),
-                    Toast.LENGTH_SHORT
-                ).show()
+                toastDefault(getString(R.string.clear_suc))
             }
         }
     }

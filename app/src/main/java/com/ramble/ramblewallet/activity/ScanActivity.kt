@@ -30,6 +30,7 @@ import com.ramble.ramblewallet.helper.startMatisseActivity
 import com.ramble.ramblewallet.network.ObjUtils.isCameraPermission
 import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
+import com.ramble.ramblewallet.utils.toastDefault
 import com.zhihu.matisse.Matisse
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -98,11 +99,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
                 if (result != null) {
                     onScanQRCodeSuccess(result.text)
                 } else {
-                    Toast.makeText(
-                        this@ScanActivity,
-                        MyApp.sInstance.getString(R.string.scan_qr_code_fail),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    toastDefault(getString(R.string.scan_qr_code_fail))
                 }
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
