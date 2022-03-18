@@ -23,7 +23,7 @@ import razerdp.basepopup.BasePopupWindow
 class TransPopupRecord (val mContext: Activity) : BasePopupWindow(mContext) {
 
     private lateinit var binding: TopNoticeDialogBinding
-    var type=0
+
 
     override fun onCreateContentView(): View {
         val view = createPopupById(R.layout.top_notice_dialog)
