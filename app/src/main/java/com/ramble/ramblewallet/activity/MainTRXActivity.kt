@@ -59,6 +59,8 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_E11334)
+        //设置状态栏字体颜色，true:代表黑色，false代表白色
+        StateUtils.setLightStatusBar(this, false)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_trx)
         binding.lyPullRefresh.setOnRefreshListener {
             initData()

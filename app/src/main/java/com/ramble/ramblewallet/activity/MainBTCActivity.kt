@@ -54,6 +54,8 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_CA7C14)
+        //设置状态栏字体颜色，true:代表黑色，false代表白色
+        StateUtils.setLightStatusBar(this, false)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_btc)
         binding.lyPullRefresh.setOnRefreshListener {
             initData()
