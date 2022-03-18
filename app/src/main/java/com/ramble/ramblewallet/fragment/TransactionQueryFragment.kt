@@ -229,7 +229,9 @@ class TransactionQueryFragment : BaseFragment(),
         super.onRxBus(event)
         when (event.id()) {
             Pie.EVENT_TRAN_TYPE -> {
-                reFreshData()
+                if (event.data<Int>()!=5){
+                    reFreshData()
+                }
             }
         }
     }

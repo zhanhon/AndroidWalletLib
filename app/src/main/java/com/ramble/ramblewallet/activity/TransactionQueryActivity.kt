@@ -2,6 +2,7 @@ package com.ramble.ramblewallet.activity
 
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
@@ -15,11 +16,11 @@ import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.CURRENCY_TRAN
 import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityTransactionQueryBinding
+import com.ramble.ramblewallet.fragment.TransPopupRecord
 import com.ramble.ramblewallet.fragment.TransactionQueryFragment
 import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.showTopTranDialog
 import com.ramble.ramblewallet.wight.adapter.FragmentPagerAdapter2
 
 /**
@@ -129,7 +130,10 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
                 } else {
                     binding.ivMyCurrency.setBackgroundResource(R.drawable.vector_three_up)
                     isSpread = true
-                    showTopTranDialog(this, binding.topView)
+                    TransPopupRecord(this)
+                        .setPopupGravity(Gravity.BOTTOM)
+                        .setAlignBackground(true)
+                        .showPopupWindow(binding.topView)
                 }
             }
         }
