@@ -109,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_1"
             android:layout_marginStart="@dimen/dp_60"
-            android:background="@color/color_F9F9F9" />
+            android:background="@color/color_E7E7E7" />
 
         <RelativeLayout
             android:id="@+id/rl_btc"
@@ -169,7 +169,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_1"
             android:layout_marginStart="@dimen/dp_60"
-            android:background="@color/color_F9F9F9" />
+            android:background="@color/color_E7E7E7" />
 
         <RelativeLayout
             android:id="@+id/rl_trx"
