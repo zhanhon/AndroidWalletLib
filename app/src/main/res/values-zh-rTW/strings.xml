@@ -119,6 +119,7 @@
     <string name="backup_memorization_words">助記詞備份</string>
     <string name="contributing_words_completed">助記詞完成</string>
     <string name="contributing_words_confirm">助記詞確認</string>
+    <string name="contributing_words_confirm_second">助記確認</string>
     <string name="cash_out">轉出</string>
     <string name="cash_in">轉入</string>
     <string name="transfer">轉賬</string>

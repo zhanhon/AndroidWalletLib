@@ -119,6 +119,7 @@
     <string name="backup_memorization_words">Mnemonic Phrase backup</string>
     <string name="contributing_words_completed">Mnemonic Phrase complete</string>
     <string name="contributing_words_confirm">Mnemonic Phrase confirm</string>
+    <string name="contributing_words_confirm_second">Mnemonic Phrase confirm</string>
     <string name="cash_out">Withdrawal</string>
     <string name="cash_in">Deposit</string>
     <string name="transfer">Transfer</string>
