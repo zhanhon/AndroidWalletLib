@@ -2,12 +2,10 @@ package com.ramble.ramblewallet.utils
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -17,12 +15,10 @@ import com.ramble.ramblewallet.activity.AddressBookActivity
 import com.ramble.ramblewallet.activity.ScanActivity
 import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.MyAddressBean
-import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.bitcoin.WalletBTCUtils.isBtcValidAddress
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.BottomNoticeDialog2Binding
 import com.ramble.ramblewallet.databinding.BottomNoticeDialogBinding
-import com.ramble.ramblewallet.databinding.TopNoticeDialogBinding
 import com.ramble.ramblewallet.ethereum.WalletETHUtils.isEthValidAddress
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start
@@ -52,7 +48,10 @@ fun showBottomDialog(
         setContentView(binding.root)
         window?.setGravity(Gravity.BOTTOM)
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT)
+        window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
         binding.tvTitle.text = tvName
         binding.tvType.text = when (tvType) {
             1 -> {
@@ -81,7 +80,6 @@ fun showBottomDialog(
 }
 
 
-
 /**
  * 时间　: 2022/1/5 15:52
  * 作者　: potato
@@ -103,7 +101,10 @@ fun showBottomDialog2(
         show()
         setContentView(binding.root)
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT)
+        window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
         window?.setGravity(Gravity.BOTTOM)
         binding.editName.setText(tvName)
         binding.editAddress.setText(address)
@@ -145,13 +146,19 @@ fun showBottomDialog2(
             when (type) {
                 1 -> {
                     if (binding.editName.text.isNullOrEmpty() || binding.editAddress.text.isNullOrEmpty()) {
-                        activity.toastDefault(activity.getString(R.string.address_already_null))
+                        ToastUtils.showToastFree(
+                            activity,
+                            activity.getString(R.string.address_already_null)
+                        )
                         return@setOnClickListener
                     }
                 }
                 else -> {
                     if (binding.editAddress.text.isNullOrEmpty()) {
-                        activity.toastDefault(activity.getString(R.string.address_already_null))
+                        ToastUtils.showToastFree(
+                            activity,
+                            activity.getString(R.string.address_already_null)
+                        )
                         return@setOnClickListener
                     }
                 }
@@ -244,7 +251,10 @@ fun showBottomDialog2(
                     1 -> {
                         myData.forEach {
                             if (it.userName != tvName && (it.userName == name || it.address == binding.editAddress.text.toString())) {
-                                activity.toastDefault(activity.getString(R.string.address_already_exists))
+                                ToastUtils.showToastFree(
+                                    activity,
+                                    activity.getString(R.string.address_already_exists)
+                                )
                                 return@setOnClickListener
                             }
                         }
@@ -252,7 +262,10 @@ fun showBottomDialog2(
                     else -> {
                         myData.forEach {
                             if (it.address == binding.editAddress.text.toString() || it.userName == name) {
-                                activity.toastDefault(activity.getString(R.string.address_already_exists))
+                                ToastUtils.showToastFree(
+                                    activity,
+                                    activity.getString(R.string.address_already_exists)
+                                )
                                 return@setOnClickListener
                             }
                         }
@@ -278,25 +291,34 @@ fun showBottomDialog2(
             }
             if (isBtcValidAddress(data.address)) {
                 if (data.address.length < 26) {
-                    activity.toastDefault(activity.getString(R.string.address_already_err))
+                    ToastUtils.showToastFree(
+                        activity,
+                        activity.getString(R.string.address_already_err)
+                    )
                     return@setOnClickListener
                 }
             } else if (isEthValidAddress(data.address)) {
                 if (data.address.length < 42) {
-                    activity.toastDefault(activity.getString(R.string.address_already_err))
+                    ToastUtils.showToastFree(
+                        activity,
+                        activity.getString(R.string.address_already_err)
+                    )
                     return@setOnClickListener
                 }
             } else if (isTrxValidAddress(data.address)) {
                 if (data.address.length < 34) {
-                    activity.toastDefault(activity.getString(R.string.address_already_err))
+                    ToastUtils.showToastFree(
+                        activity,
+                        activity.getString(R.string.address_already_err)
+                    )
                     return@setOnClickListener
                 }
             } else {
-                activity.toastDefault(activity.getString(R.string.address_already_err))
+                ToastUtils.showToastFree(activity, activity.getString(R.string.address_already_err))
                 return@setOnClickListener
             }
             if (data.type == 4 || data.type == 0) {
-                activity.toastDefault(activity.getString(R.string.address_already_err))
+                ToastUtils.showToastFree(activity, activity.getString(R.string.address_already_err))
                 return@setOnClickListener
             }
             var myData2: ArrayList<MyAddressBean> = arrayListOf()

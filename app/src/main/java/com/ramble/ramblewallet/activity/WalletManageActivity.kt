@@ -282,7 +282,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                         isAllClickDelete = isAllClickDelete && it.isClickDelete
                     }
                     if (isAllClickDelete) {
-                        toastDefault(getString(R.string.least_save_wallet))
+                        ToastUtils.showToastFree(this, getString(R.string.least_save_wallet))
                         isDeletePage = false
                         binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
                         binding.ivAddWallet.visibility = View.VISIBLE
@@ -358,7 +358,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
                 binding.ivAddWallet.visibility = View.VISIBLE
                 loadData(walletManageBean)
-                if (!SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, "").isNullOrEmpty()){
+                if (!SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, "").isNullOrEmpty()) {
                     myAllToken = Gson().fromJson(
                         SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
                         object : TypeToken<ArrayList<AllTokenBean>>() {}.type
@@ -372,7 +372,11 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                             }
                         }
                     }
-                    SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
+                    SharedPreferencesUtils.saveString(
+                        this,
+                        TOKEN_INFO_NO,
+                        Gson().toJson(myAllToken)
+                    )
                 }
                 dialog.dismiss()
             }

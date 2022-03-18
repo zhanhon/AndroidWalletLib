@@ -113,7 +113,7 @@ public class TransferEthUtils {
             } else {
                 String transactionHash = ethSendTransaction.getTransactionHash();
                 if (context instanceof TransferActivity) {
-                    ((TransferActivity) context).transferSuccess(transactionHash,null);
+                    ((TransferActivity) context).transferSuccess(transactionHash, null);
                 }
             }
         } catch (ExecutionException | InterruptedException e) {
@@ -157,7 +157,7 @@ public class TransferEthUtils {
             } else {
                 String transactionHash = ethSendTransaction.getTransactionHash();
                 if (context instanceof TransferActivity) {
-                    ((TransferActivity) context).transferSuccess(transactionHash,null);
+                    ((TransferActivity) context).transferSuccess(transactionHash, null);
                 }
             }
         } catch (InterruptedException | ExecutionException e) {

@@ -157,19 +157,19 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         transferBalance
                     ) == 1
                 ) {
-                    toastDefault(getString(R.string.balance_insufficient))
+                    ToastUtils.showToastFree(this, getString(R.string.balance_insufficient))
                     return
                 }
                 when (walletSelleted.walletType) { //链类型|1:ETH|2:TRX|3:BTC
                     1 -> {
                         if (!WalletETHUtils.isEthValidAddress(binding.edtReceiverAddress.text.toString())) {
-                            toastDefault(getString(R.string.address_already_err))
+                            ToastUtils.showToastFree(this, getString(R.string.address_already_err))
                             return
                         }
                     }
                     2 -> {
                         if (!WalletTRXUtils.isTrxValidAddress(binding.edtReceiverAddress.text.toString())) {
-                            toastDefault(getString(R.string.address_already_err))
+                            ToastUtils.showToastFree(this, getString(R.string.address_already_err))
                             return
                         }
                         if (isToken) {
@@ -184,14 +184,17 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     }
                     3 -> {
                         if (!WalletBTCUtils.isBtcValidAddress(binding.edtReceiverAddress.text.toString())) {
-                            toastDefault(getString(R.string.address_already_err))
+                            ToastUtils.showToastFree(this, getString(R.string.address_already_err))
                             return
                         }
                         if (BigDecimal(binding.edtInputQuantity.text.toString()).compareTo(
                                 BigDecimal("0.0001")
                             ) == -1
                         ) {
-                            toastDefault(getString(R.string.btc_minimum_amount_prompt))
+                            ToastUtils.showToastFree(
+                                this,
+                                getString(R.string.btc_minimum_amount_prompt)
+                            )
                             return
                         }
                     }
@@ -201,7 +204,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         binding.edtReceiverAddress.text.toString()
                     )
                 ) {
-                    toastDefault(getString(R.string.repeat_address))
+                    ToastUtils.showToastFree(this, getString(R.string.repeat_address))
                     return
                 }
                 transactionConfirmationDialog()
@@ -532,7 +535,10 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     transfer()
                     dialog.dismiss()
                 } else {
-                    toastDefault(getString(R.string.input_correct_wallet_password))
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_correct_wallet_password)
+                    )
                 }
             }
 
@@ -640,8 +646,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 0
             )
             inputs?.add(a)
-            var tferb= (transferBalance - BigDecimal(
-                DecimalFormatUtil.format(BigDecimal(btcFee).multiply(BigDecimal("72")).divide(BigDecimal("1000000000")), 8)
+            var tferb = (transferBalance - BigDecimal(
+                DecimalFormatUtil.format(
+                    BigDecimal(btcFee).multiply(BigDecimal("72")).divide(BigDecimal("1000000000")),
+                    8
+                )
             ) - BigDecimal(edtInputQuantity)).toString()
             var a1 = ReportTransferInfo.InRecord(
                 tvWalletAddress,
@@ -695,7 +704,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     fun transferFail(strFail: String) {
         postUI {
-            toastDefault(getString(R.string.transaction_failed))
+            ToastUtils.showToastFree(this, getString(R.string.transaction_failed))
         }
     }
 

@@ -291,7 +291,10 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                     }
                     dialog.dismiss()
                 } else {
-                    toastDefault(getString(R.string.input_correct_wallet_password))
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_correct_wallet_password)
+                    )
                 }
             }
         }
@@ -552,7 +555,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 Uri.parse("file://" + "/sdcard/namecard/")
             )
         )
-        toastDefault(getString(R.string.save_success))
+        ToastUtils.showToastFree(this, getString(R.string.save_success))
     }
 
     interface PermissionListener {

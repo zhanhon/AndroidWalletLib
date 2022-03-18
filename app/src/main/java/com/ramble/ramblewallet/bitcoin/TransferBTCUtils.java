@@ -30,7 +30,6 @@ import org.bitcoinj.params.TestNet3Params;
 import org.bitcoinj.script.Script;
 import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.script.ScriptPattern;
-import org.bouncycastle.util.encoders.Hex;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -180,7 +179,7 @@ public class TransferBTCUtils {
                                 org.json.JSONObject trans = new org.json.JSONObject(result);
                                 String constantResult = trans.getJSONObject("data").optString("txid");
                                 if (context instanceof TransferActivity) {
-                                    ((TransferActivity) context).transferSuccess(constantResult,utxos[0]);
+                                    ((TransferActivity) context).transferSuccess(constantResult, utxos[0]);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();

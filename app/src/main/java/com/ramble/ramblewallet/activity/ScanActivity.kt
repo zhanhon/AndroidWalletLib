@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import cn.bingoogolapple.qrcode.core.QRCodeView
@@ -16,7 +15,6 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView
 import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.QRCodeReader
-import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MainETHTokenBean
@@ -30,7 +28,7 @@ import com.ramble.ramblewallet.helper.startMatisseActivity
 import com.ramble.ramblewallet.network.ObjUtils.isCameraPermission
 import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
-import com.ramble.ramblewallet.utils.toastDefault
+import com.ramble.ramblewallet.utils.ToastUtils
 import com.zhihu.matisse.Matisse
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -99,7 +97,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
                 if (result != null) {
                     onScanQRCodeSuccess(result.text)
                 } else {
-                    toastDefault(getString(R.string.scan_qr_code_fail))
+                    ToastUtils.showToastFree(this, getString(R.string.scan_qr_code_fail))
                 }
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()

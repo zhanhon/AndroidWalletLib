@@ -28,14 +28,14 @@ class ReportTransferInfo @SuppressWarnings("unused") constructor() {
         @Json(name = "inputs")
         var inputs: List<InRecord>? = emptyList(),//BTC转出信息
         @Json(name = "outputs")
-        var outputs:  List<InRecord>? = emptyList(),//BTC转入信息
+        var outputs: List<InRecord>? = emptyList(),//BTC转入信息
         @Json(name = "toAddress")
         var toAddress: String?, //转入地址
         @Json(name = "txHash")
-        var txHash:  String?,   //交易hash
+        var txHash: String?,   //交易hash
     ) : ApiRequest.Body()
 
-    data  class InRecord(
+    data class InRecord(
         @Json(name = "address")
         var address: String = "",//地址
 

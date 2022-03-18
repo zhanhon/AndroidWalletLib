@@ -74,10 +74,12 @@
                 android:background="@drawable/shape_round_white_10dp"
                 android:paddingBottom="@dimen/dp_8"
                 android:orientation="vertical">
+
                 <View
                     android:background="@color/app_theme"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_10"/>
+                    android:layout_height="@dimen/dp_10" />
+
                 <TextView
                     android:id="@+id/title1"
                     android:layout_width="match_parent"
@@ -89,7 +91,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/front_one"
                     android:textSize="@dimen/sp_16"
-                    tools:text="123sdsdddsdffdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfddfdfdf"/>
+                    tools:text="123sdsdddsdffdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfddfdfdf" />
 
                 <TextView
                     android:id="@+id/time2"

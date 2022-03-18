@@ -229,7 +229,7 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
             )
         )
         showScan()
-        toastDefault(getString(R.string.save_success))
+        ToastUtils.showToastFree(this, getString(R.string.save_success))
     }
 
     interface PermissionListener {

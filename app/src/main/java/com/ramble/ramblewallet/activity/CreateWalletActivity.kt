@@ -16,7 +16,7 @@ import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityCreateWalletBinding
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.toastDefault
+import com.ramble.ramblewallet.utils.ToastUtils
 
 class CreateWalletActivity : BaseActivity(), View.OnClickListener {
 
@@ -122,23 +122,23 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
                 if (saveWalletList.size > 0) {
                     saveWalletList.forEach {
                         if (it.walletName == binding.edtWalletName.text.toString()) {
-                            toastDefault(getString(R.string.repeat_wallet_tips))
+                            ToastUtils.showToastFree(this, getString(R.string.repeat_wallet_tips))
                             return
                         }
                     }
                 }
                 if (binding.edtWalletPassword.text.isEmpty()) {
-                    toastDefault(getString(R.string.please_input_password))
+                    ToastUtils.showToastFree(this, getString(R.string.please_input_password))
                     return
                 }
                 if (binding.edtWalletPassword.text.length < 6) {
-                    toastDefault(getString(R.string.password_less_six_tips))
+                    ToastUtils.showToastFree(this, getString(R.string.password_less_six_tips))
                     return
                 }
                 if (binding.edtWalletPassword.text.trim()
                         .toString() != binding.edtPasswordConfirm.text.trim().toString()
                 ) {
-                    toastDefault(getString(R.string.different_password))
+                    ToastUtils.showToastFree(this, getString(R.string.different_password))
                     return
                 }
                 startActivity(Intent(this, MnemonicActivity::class.java).apply {

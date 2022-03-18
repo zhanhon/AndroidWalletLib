@@ -34,8 +34,8 @@ import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.ToastUtils
 import com.ramble.ramblewallet.utils.applyIo
-import com.ramble.ramblewallet.utils.toastDefault
 
 
 class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
@@ -84,7 +84,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                     createWallet()
                 }
             } else {
-                toastDefault(getString(R.string.confirm_contributing_words_error))
+                ToastUtils.showToastFree(this, getString(R.string.confirm_contributing_words_error))
             }
         }
     }

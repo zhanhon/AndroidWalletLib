@@ -9,10 +9,10 @@ import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.ramble.ramblewallet.R;
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils;
+import com.ramble.ramblewallet.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.MsgConstant;
@@ -94,7 +94,7 @@ public class UmInitConfig {
                 Log.i(TAG, "deviceToken 11--> " + msg);
                 handler.post(() -> {
                     UTrack.getInstance(context).trackMsgClick(msg);
-                    Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
+                    ToastUtils.showToastFree(context, msg.custom);
                 });
             }
 
@@ -167,7 +167,7 @@ public class UmInitConfig {
 
             @Override
             public void dealWithCustomAction(Context context, UMessage msg) {
-                Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
+                ToastUtils.showToastFree(context, msg.custom);
             }
         };
         //使用自定义的NotificationHandler

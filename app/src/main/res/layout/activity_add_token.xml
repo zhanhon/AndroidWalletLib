@@ -246,6 +246,7 @@
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_08"
@@ -253,6 +254,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/rl_my_assets" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_token_manage_currency"
                         android:layout_width="match_parent"

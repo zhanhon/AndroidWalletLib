@@ -404,7 +404,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 ClipboardUtils.copy(walletSelleted.address, this)
             }
             R.id.tv_ntf -> {
-                toastDefault(getString(R.string.coming_soon))
+                ToastUtils.showToastFree(this, getString(R.string.coming_soon))
             }
         }
     }

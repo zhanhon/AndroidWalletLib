@@ -133,10 +133,11 @@
                         android:text="@string/search_result"
                         android:paddingStart="10dp"
                         android:textColor="@color/color_000000" />
+
                     <View
                         android:background="@color/driver_gray"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_08"/>
+                        android:layout_height="@dimen/dp_08" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_token_manage_currency"
@@ -147,6 +148,7 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 </LinearLayout>
+
                 <RelativeLayout
                     android:id="@+id/txt_empty"
                     android:layout_width="match_parent"

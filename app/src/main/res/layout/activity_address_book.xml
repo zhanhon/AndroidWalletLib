@@ -160,10 +160,11 @@
                         android:visibility="gone"
                         android:layout_marginEnd="5dp" />
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_08"
-                    android:background="@color/driver_gray"/>
+                    android:background="@color/driver_gray" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_main_currency"

@@ -332,7 +332,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 currencyDialog()
             }
             R.id.clear_text -> {
-                toastDefault(getString(R.string.clear_suc))
+                ToastUtils.showToastFree(this, getString(R.string.clear_suc))
             }
         }
     }

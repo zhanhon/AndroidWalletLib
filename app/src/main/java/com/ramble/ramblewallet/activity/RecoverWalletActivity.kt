@@ -30,8 +30,8 @@ import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.StringUtils.*
+import com.ramble.ramblewallet.utils.ToastUtils
 import com.ramble.ramblewallet.utils.applyIo
-import com.ramble.ramblewallet.utils.toastDefault
 
 class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
 
@@ -165,21 +165,21 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.btn_confirm -> {
                 if (binding.edtWalletName.text.isEmpty()) {
-                    toastDefault(getString(R.string.please_input_wallet_name))
+                    ToastUtils.showToastFree(this, getString(R.string.please_input_wallet_name))
                     return
                 }
                 if (binding.edtWalletPassword.text.isEmpty()) {
-                    toastDefault(getString(R.string.please_input_password))
+                    ToastUtils.showToastFree(this, getString(R.string.please_input_password))
                     return
                 }
                 if (binding.edtWalletPassword.text.length < 6) {
-                    toastDefault(getString(R.string.password_less_six_tips))
+                    ToastUtils.showToastFree(this, getString(R.string.password_less_six_tips))
                     return
                 }
                 if (binding.edtWalletPassword.text.trim()
                         .toString() != binding.edtPasswordConfirm.text.trim().toString()
                 ) {
-                    toastDefault(getString(R.string.different_password))
+                    ToastUtils.showToastFree(this, getString(R.string.different_password))
                     return
                 }
 
@@ -192,18 +192,27 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                             }
                             2 -> {
                                 if (binding.edtContributingWords.text.isEmpty()) {
-                                    toastDefault(getString(R.string.input_secret_key))
+                                    ToastUtils.showToastFree(
+                                        this,
+                                        getString(R.string.input_secret_key)
+                                    )
                                     return
                                 }
                                 if (binding.edtContributingWords.text.length < 32) {
-                                    toastDefault(getString(R.string.input_correct_secret_key))
+                                    ToastUtils.showToastFree(
+                                        this,
+                                        getString(R.string.input_correct_secret_key)
+                                    )
                                     return
                                 }
                                 recoverWalletETH(2)
                             }
                             3 -> {
                                 if (binding.edtContributingWords.text.isEmpty()) {
-                                    toastDefault(getString(R.string.input_keystore))
+                                    ToastUtils.showToastFree(
+                                        this,
+                                        getString(R.string.input_keystore)
+                                    )
                                     return
                                 }
                                 recoverWalletETH(3)
@@ -218,18 +227,27 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                             }
                             2 -> {
                                 if (binding.edtContributingWords.text.isEmpty()) {
-                                    toastDefault(getString(R.string.input_secret_key))
+                                    ToastUtils.showToastFree(
+                                        this,
+                                        getString(R.string.input_secret_key)
+                                    )
                                     return
                                 }
                                 if (binding.edtContributingWords.text.length < 32) {
-                                    toastDefault(getString(R.string.input_correct_secret_key))
+                                    ToastUtils.showToastFree(
+                                        this,
+                                        getString(R.string.input_correct_secret_key)
+                                    )
                                     return
                                 }
                                 recoverWalletTRX(2)
                             }
                             3 -> {
                                 if (binding.edtContributingWords.text.isEmpty()) {
-                                    toastDefault(getString(R.string.input_keystore))
+                                    ToastUtils.showToastFree(
+                                        this,
+                                        getString(R.string.input_keystore)
+                                    )
                                     return
                                 }
                                 recoverWalletTRX(3)
@@ -244,11 +262,17 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                             }
                             2 -> {
                                 if (binding.edtContributingWords.text.isEmpty()) {
-                                    toastDefault(getString(R.string.input_secret_key))
+                                    ToastUtils.showToastFree(
+                                        this,
+                                        getString(R.string.input_secret_key)
+                                    )
                                     return
                                 }
                                 if (binding.edtContributingWords.text.length < 32) {
-                                    toastDefault(getString(R.string.input_correct_secret_key))
+                                    ToastUtils.showToastFree(
+                                        this,
+                                        getString(R.string.input_correct_secret_key)
+                                    )
                                     return
                                 }
                                 recoverWalletBTC(2)
@@ -262,35 +286,35 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
 
     private fun validMnemonic(): Boolean {
         if (binding.edtContributingWords.text.isEmpty()) {
-            toastDefault(getString(R.string.input_mnemonic_words))
+            ToastUtils.showToastFree(this, getString(R.string.input_mnemonic_words))
             return true
         }
         var str = binding.edtContributingWords.text.toString().replace(" ", "")
         if (isHasLowerChar(str) || isChinese(str)) {
             if (!binding.edtContributingWords.text.trim().toString().contains(" ")) {
-                toastDefault(getString(R.string.input_mnemonic_words))
+                ToastUtils.showToastFree(this, getString(R.string.input_mnemonic_words))
                 return true
             }
             mnemonic =
                 binding.edtContributingWords.text.trim().toString().split(" ") as ArrayList<String>
             if (mnemonic.size != 12) {
-                toastDefault(getString(R.string.input_mnemonic_words))
+                ToastUtils.showToastFree(this, getString(R.string.input_mnemonic_words))
                 return true
             }
             mnemonic.forEach {
                 if (isHasLowerChar(str) && !English.words.contains(it)) {
-                    toastDefault(getString(R.string.input_mnemonic_words))
+                    ToastUtils.showToastFree(this, getString(R.string.input_mnemonic_words))
                     return true
                 }
                 if (isChinese(str) && !ChineseSimplified.words.contains(it)
                     && !ChineseTraditional.words.contains(it)
                 ) {
-                    toastDefault(getString(R.string.input_mnemonic_words))
+                    ToastUtils.showToastFree(this, getString(R.string.input_mnemonic_words))
                     return true
                 }
             }
         } else {
-            toastDefault(getString(R.string.input_mnemonic_words))
+            ToastUtils.showToastFree(this, getString(R.string.input_mnemonic_words))
             return true
         }
         return false
@@ -348,26 +372,29 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             } else {
                 when (chooseMode) {
                     1 -> {
-                        toastDefault(getString(R.string.input_correct_mnemonic_words))
+                        ToastUtils.showToastFree(
+                            this,
+                            getString(R.string.input_correct_mnemonic_words)
+                        )
                     }
                     2 -> {
-                        toastDefault(getString(R.string.input_correct_secret_key))
+                        ToastUtils.showToastFree(this, getString(R.string.input_correct_secret_key))
                     }
                     3 -> {
-                        toastDefault(getString(R.string.input_correct_keystore))
+                        ToastUtils.showToastFree(this, getString(R.string.input_correct_keystore))
                     }
                 }
             }
         } else {
             when (chooseMode) {
                 1 -> {
-                    toastDefault(getString(R.string.input_correct_mnemonic_words))
+                    ToastUtils.showToastFree(this, getString(R.string.input_correct_mnemonic_words))
                 }
                 2 -> {
-                    toastDefault(getString(R.string.input_correct_secret_key))
+                    ToastUtils.showToastFree(this, getString(R.string.input_correct_secret_key))
                 }
                 3 -> {
-                    toastDefault(getString(R.string.input_correct_keystore))
+                    ToastUtils.showToastFree(this, getString(R.string.input_correct_keystore))
                 }
             }
         }
@@ -475,26 +502,29 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             } else {
                 when (chooseMode) {
                     1 -> {
-                        toastDefault(getString(R.string.input_correct_mnemonic_words))
+                        ToastUtils.showToastFree(
+                            this,
+                            getString(R.string.input_correct_mnemonic_words)
+                        )
                     }
                     2 -> {
-                        toastDefault(getString(R.string.input_correct_secret_key))
+                        ToastUtils.showToastFree(this, getString(R.string.input_correct_secret_key))
                     }
                     3 -> {
-                        toastDefault(getString(R.string.input_correct_keystore))
+                        ToastUtils.showToastFree(this, getString(R.string.input_correct_keystore))
                     }
                 }
             }
         } else {
             when (chooseMode) {
                 1 -> {
-                    toastDefault(getString(R.string.input_correct_mnemonic_words))
+                    ToastUtils.showToastFree(this, getString(R.string.input_correct_mnemonic_words))
                 }
                 2 -> {
-                    toastDefault(getString(R.string.input_correct_secret_key))
+                    ToastUtils.showToastFree(this, getString(R.string.input_correct_secret_key))
                 }
                 3 -> {
-                    toastDefault(getString(R.string.input_correct_keystore))
+                    ToastUtils.showToastFree(this, getString(R.string.input_correct_keystore))
                 }
             }
         }
@@ -539,20 +569,23 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             } else {
                 when (chooseMode) {
                     1 -> {
-                        toastDefault(getString(R.string.input_correct_mnemonic_words))
+                        ToastUtils.showToastFree(
+                            this,
+                            getString(R.string.input_correct_mnemonic_words)
+                        )
                     }
                     2 -> {
-                        toastDefault(getString(R.string.input_correct_secret_key))
+                        ToastUtils.showToastFree(this, getString(R.string.input_correct_secret_key))
                     }
                 }
             }
         } else {
             when (chooseMode) {
                 1 -> {
-                    toastDefault(getString(R.string.input_correct_mnemonic_words))
+                    ToastUtils.showToastFree(this, getString(R.string.input_correct_mnemonic_words))
                 }
                 2 -> {
-                    toastDefault(getString(R.string.input_correct_secret_key))
+                    ToastUtils.showToastFree(this, getString(R.string.input_correct_secret_key))
                 }
             }
         }

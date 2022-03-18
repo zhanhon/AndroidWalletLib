@@ -5,6 +5,7 @@ import android.os.Build;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -15,7 +16,7 @@ import java.lang.reflect.Method;
 public class StateUtils {
 
     /**
-     *  2.修改状态栏文字颜色，这里小米，魅族区别对待。
+     * 2.修改状态栏文字颜色，这里小米，魅族区别对待。
      */
     public static void setLightStatusBar(final Activity activity, final boolean dark) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -37,6 +38,7 @@ public class StateUtils {
 
     /**
      * 小米修改状态栏字体
+     *
      * @param activity
      * @param dark
      * @return
@@ -76,6 +78,7 @@ public class StateUtils {
 
     /**
      * 魅族修改字体颜色
+     *
      * @param activity
      * @param dark
      * @return
@@ -109,6 +112,7 @@ public class StateUtils {
 
     /**
      * 谷歌原生方式修改
+     *
      * @param activity
      * @param dark
      */

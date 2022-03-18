@@ -20,7 +20,7 @@ import razerdp.basepopup.BasePopupWindow
  * 作者　: potato
  * 描述　:历史记录上部弹窗
  */
-class TransPopupRecord (val mContext: Activity) : BasePopupWindow(mContext) {
+class TransPopupRecord(val mContext: Activity) : BasePopupWindow(mContext) {
 
     private lateinit var binding: TopNoticeDialogBinding
 
