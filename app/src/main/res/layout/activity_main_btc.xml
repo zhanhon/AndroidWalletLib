@@ -42,21 +42,21 @@
                     android:id="@+id/iv_gathering_top"
                     android:layout_width="@dimen/dp_18"
                     android:layout_height="@dimen/dp_20"
-                    android:layout_margin="@dimen/dp_10"
+                    android:layout_margin="@dimen/dp_8"
                     android:background="@drawable/vector_gathering_small" />
 
                 <ImageView
                     android:id="@+id/iv_transfer_top"
                     android:layout_width="@dimen/dp_18"
                     android:layout_height="@dimen/dp_20"
-                    android:layout_margin="@dimen/dp_10"
+                    android:layout_margin="@dimen/dp_8"
                     android:background="@drawable/vector_transfer_small" />
 
                 <ImageView
                     android:id="@+id/iv_scan_top"
                     android:layout_width="@dimen/dp_18"
                     android:layout_height="@dimen/dp_20"
-                    android:layout_margin="@dimen/dp_10"
+                    android:layout_margin="@dimen/dp_8"
                     android:background="@drawable/vector_scan_small" />
             </LinearLayout>
 
