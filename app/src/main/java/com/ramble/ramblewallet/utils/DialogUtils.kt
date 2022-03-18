@@ -145,21 +145,13 @@ fun showBottomDialog2(
             when (type) {
                 1 -> {
                     if (binding.editName.text.isNullOrEmpty() || binding.editAddress.text.isNullOrEmpty()) {
-                        Toast.makeText(
-                            activity,
-                            activity.getString(R.string.address_already_null),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        activity.toastDefault(activity.getString(R.string.address_already_null))
                         return@setOnClickListener
                     }
                 }
                 else -> {
                     if (binding.editAddress.text.isNullOrEmpty()) {
-                        Toast.makeText(
-                            activity,
-                            activity.getString(R.string.address_already_null),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        activity.toastDefault(activity.getString(R.string.address_already_null))
                         return@setOnClickListener
                     }
                 }
@@ -252,11 +244,7 @@ fun showBottomDialog2(
                     1 -> {
                         myData.forEach {
                             if (it.userName != tvName && (it.userName == name || it.address == binding.editAddress.text.toString())) {
-                                Toast.makeText(
-                                    activity,
-                                    activity.getString(R.string.address_already_exists),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                activity.toastDefault(activity.getString(R.string.address_already_exists))
                                 return@setOnClickListener
                             }
                         }
@@ -264,11 +252,7 @@ fun showBottomDialog2(
                     else -> {
                         myData.forEach {
                             if (it.address == binding.editAddress.text.toString() || it.userName == name) {
-                                Toast.makeText(
-                                    activity,
-                                    activity.getString(R.string.address_already_exists),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                activity.toastDefault(activity.getString(R.string.address_already_exists))
                                 return@setOnClickListener
                             }
                         }
@@ -294,45 +278,25 @@ fun showBottomDialog2(
             }
             if (isBtcValidAddress(data.address)) {
                 if (data.address.length < 26) {
-                    Toast.makeText(
-                        activity,
-                        activity.getString(R.string.address_already_err),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    activity.toastDefault(activity.getString(R.string.address_already_err))
                     return@setOnClickListener
                 }
             } else if (isEthValidAddress(data.address)) {
                 if (data.address.length < 42) {
-                    Toast.makeText(
-                        activity,
-                        activity.getString(R.string.address_already_err),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    activity.toastDefault(activity.getString(R.string.address_already_err))
                     return@setOnClickListener
                 }
             } else if (isTrxValidAddress(data.address)) {
                 if (data.address.length < 34) {
-                    Toast.makeText(
-                        activity,
-                        activity.getString(R.string.address_already_err),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    activity.toastDefault(activity.getString(R.string.address_already_err))
                     return@setOnClickListener
                 }
             } else {
-                Toast.makeText(
-                    activity,
-                    activity.getString(R.string.address_already_err),
-                    Toast.LENGTH_SHORT
-                ).show()
+                activity.toastDefault(activity.getString(R.string.address_already_err))
                 return@setOnClickListener
             }
             if (data.type == 4 || data.type == 0) {
-                Toast.makeText(
-                    activity,
-                    activity.getString(R.string.address_already_err),
-                    Toast.LENGTH_SHORT
-                ).show()
+                activity.toastDefault(activity.getString(R.string.address_already_err))
                 return@setOnClickListener
             }
             var myData2: ArrayList<MyAddressBean> = arrayListOf()
