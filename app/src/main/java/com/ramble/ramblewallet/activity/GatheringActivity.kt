@@ -1,24 +1,18 @@
 package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.view.Gravity
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -107,7 +101,7 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.ll_save -> {
-                showSaveDialog()
+                savePicture()
             }
             R.id.ll_copy -> {
                 ClipboardUtils.copy(binding.tvAddress.text.toString(), this)
@@ -115,93 +109,56 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun showSaveDialog() {
-        var dialog = AlertDialog.Builder(this).create()
-        dialog.show()
-        val window: Window? = dialog.window
-        if (window != null) {
-            window.setContentView(R.layout.dialog_common)
-            window.setGravity(Gravity.CENTER)
-            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            //设置属性
-            val params = window.attributes
-            params.width = WindowManager.LayoutParams.MATCH_PARENT
-            //弹出一个窗口，让背后的窗口变暗一点
-            params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-            //dialog背景层
-            params.dimAmount = 0.5f
-            window.attributes = params
-            val tvContent = window.findViewById<TextView>(R.id.tv_content)
-            tvContent.text = getText(R.string.save_scan)
-            val ivImg = window.findViewById<ImageView>(R.id.iv_img)
-            ivImg.visibility = View.VISIBLE
-            val bmp: Bitmap = BitmapFactory.decodeResource(resources, R.mipmap.ic_logo_qrcode)
-            val bitmap: Bitmap = QRCodeUtil.createQRCodeBitmap(
-                gatherAddress,
-                450,
-                450,
-                "UTF-8",
-                "L",//设置密度
-                "1",
-                Color.BLACK,
-                Color.WHITE,
-                bmp,
-                0.2f,
-                null
-            )
-            try {
-                ivImg.setImageBitmap(bitmap)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            val btnNext = window.findViewById<Button>(R.id.btn_next)
-            btnNext.text = getText(R.string.gathering_save)
-            val btnCancel = window.findViewById<Button>(R.id.btn_cancel)
-            btnCancel.setOnClickListener {
-                dialog.dismiss()
-            }
-            window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
-                dialog.dismiss()
-            }
-            val lang = SharedPreferencesUtils.getString(this, LANGUAGE, CN)
-            btnNext.setOnClickListener {
-                requestRuntimePermission(
-                    arrayOf(
-                        "android.permission.CAMERA",
-                        "android.permission.WRITE_EXTERNAL_STORAGE",
-                        "android.permission.READ_EXTERNAL_STORAGE"
-                    ), object : PermissionListener {
-                        override
-                        fun onGranted() {
-                            try {
-                                val bitmap: Bitmap = viewConversionBitmap(ivImg)
-                                val view: View =
-                                    layoutInflater.inflate(R.layout.qr_picture_generate, null)
-                                val llQrPicture = view.findViewById<LinearLayout>(R.id.ll_qr_picture)
-                                val ivQrPicture = view.findViewById<ImageView>(R.id.iv_qr_picture)
-                                when (lang) {
-                                    CN -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_cn)
-                                    TW -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_tw)
-                                    EN -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_en)
-                                }
-                                val tvTitle = view.findViewById<TextView>(R.id.tv_title)
-                                ivQrPicture.setImageBitmap(bitmap)
-                                tvTitle.text = gatherAddress
-                                saveBitmap(createBitmap(view, 800, 1400))
-                                bitmap.recycle()
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
+    private fun savePicture() {
+        val lang = SharedPreferencesUtils.getString(this, LANGUAGE, CN)
+        requestRuntimePermission(
+            arrayOf(
+                "android.permission.CAMERA",
+                "android.permission.WRITE_EXTERNAL_STORAGE",
+                "android.permission.READ_EXTERNAL_STORAGE"
+            ), object : PermissionListener {
+                override
+                fun onGranted() {
+                    try {
+                        val bmp: Bitmap =
+                            BitmapFactory.decodeResource(resources, R.mipmap.ic_logo_qrcode)
+                        val bitmap: Bitmap = QRCodeUtil.createQRCodeBitmap(
+                            gatherAddress,
+                            450,
+                            450,
+                            "UTF-8",
+                            "L",//设置密度
+                            "1",
+                            Color.BLACK,
+                            Color.WHITE,
+                            bmp,
+                            0.2f,
+                            null
+                        )
+                        val view: View =
+                            layoutInflater.inflate(R.layout.qr_picture_generate, null)
+                        val llQrPicture = view.findViewById<LinearLayout>(R.id.ll_qr_picture)
+                        val ivQrPicture = view.findViewById<ImageView>(R.id.iv_qr_picture)
+                        when (lang) {
+                            CN -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_cn)
+                            TW -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_tw)
+                            EN -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_en)
                         }
+                        val tvTitle = view.findViewById<TextView>(R.id.tv_title)
+                        ivQrPicture.setImageBitmap(bitmap)
+                        tvTitle.text = gatherAddress
+                        saveBitmap(createBitmap(view, 800, 1400))
+                        bitmap.recycle()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
 
-                        override
-                        fun onDenied(deniedPermissions: List<String?>?) {
-                            println("-=-=->${deniedPermissions.toString()}")
-                        }
-                    })
-                dialog.dismiss()
-            }
-        }
+                override
+                fun onDenied(deniedPermissions: List<String?>?) {
+                    println("-=-=->${deniedPermissions.toString()}")
+                }
+            })
     }
 
     fun createBitmap(v: View, width: Int, height: Int): Bitmap {

@@ -65,7 +65,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             object : TypeToken<Wallet>() {}.type
         )
 
-        if( walletCurrent.walletType==1){
+        if (walletCurrent.walletType == 1) {
             myAllToken = Gson().fromJson(
                 SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
                 object : TypeToken<ArrayList<AllTokenBean>>() {}.type
@@ -192,14 +192,18 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                     Gson().toJson(saveWalletList[0])
                 )
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
-                if( walletCurrent.walletType==1){
+                if (walletCurrent.walletType == 1) {
                     val lists = myAllToken.iterator()
                     lists.forEach {
                         if (it.myCurrency == walletCurrent.address) {
                             lists.remove()
                         }
                     }
-                    SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
+                    SharedPreferencesUtils.saveString(
+                        this,
+                        TOKEN_INFO_NO,
+                        Gson().toJson(myAllToken)
+                    )
                 }
                 dialog.dismiss()
                 finish()
@@ -400,7 +404,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 ClipboardUtils.copy(walletCurrent.keystore.toString(), this)
             }
             window.findViewById<Button>(R.id.btn_generate_qr_code).setOnClickListener {
-                showSaveDialog()
+                savePicture()
                 dialog.dismiss()
             }
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
@@ -428,94 +432,57 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
-    private fun showSaveDialog() {
-        var dialog = AlertDialog.Builder(this).create()
-        dialog.show()
-        val window: Window? = dialog.window
-        if (window != null) {
-            window.setContentView(R.layout.dialog_common)
-            window.setGravity(Gravity.CENTER)
-            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            //设置属性
-            val params = window.attributes
-            params.width = WindowManager.LayoutParams.MATCH_PARENT
-            //弹出一个窗口，让背后的窗口变暗一点
-            params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-            //dialog背景层
-            params.dimAmount = 0.5f
-            window.attributes = params
-            val tvContent = window.findViewById<TextView>(R.id.tv_content)
-            tvContent.text = getText(R.string.save_scan)
-            val ivImg = window.findViewById<ImageView>(R.id.iv_img)
-            ivImg.visibility = View.VISIBLE
-            val bmp: Bitmap = BitmapFactory.decodeResource(resources, R.mipmap.ic_logo_qrcode)
-            val bitmap: Bitmap = QRCodeUtil.createQRCodeBitmap(
-                walletCurrent.keystore.toString(),
-                450,
-                450,
-                "UTF-8",
-                "L",//设置密度
-                "1",
-                Color.BLACK,
-                Color.WHITE,
-                bmp,
-                0.2f,
-                null
-            )
-            try {
-                ivImg.setImageBitmap(bitmap)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            val btnNext = window.findViewById<Button>(R.id.btn_next)
-            btnNext.text = getText(R.string.gathering_save)
-            val btnCancel = window.findViewById<Button>(R.id.btn_cancel)
-            window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
-                dialog.dismiss()
-            }
-            btnCancel.setOnClickListener {
-                dialog.dismiss()
-            }
-            val lang = SharedPreferencesUtils.getString(this, LANGUAGE, CN)
-            btnNext.setOnClickListener {
-                requestRuntimePermission(
-                    arrayOf(
-                        "android.permission.CAMERA",
-                        "android.permission.WRITE_EXTERNAL_STORAGE",
-                        "android.permission.READ_EXTERNAL_STORAGE"
-                    ), object : PermissionListener {
-                        override
-                        fun onGranted() {
-                            try {
-                                val bitmap: Bitmap = viewConversionBitmap(ivImg)
-                                val view: View =
-                                    layoutInflater.inflate(R.layout.qr_picture_generate, null)
-                                val llQrPicture = view.findViewById<LinearLayout>(R.id.ll_qr_picture)
-                                val ivQrPicture = view.findViewById<ImageView>(R.id.iv_qr_picture)
-                                val tvTitle = view.findViewById<TextView>(R.id.tv_title)
-                                ivQrPicture.setImageBitmap(bitmap)
-                                when (lang) {
-                                    CN -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_cn)
-                                    TW -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_tw)
-                                    EN -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_en)
-                                }
-                                tvTitle.text =
-                                    walletCurrent.walletName + getString(R.string.save_qr_picture_title)
-                                saveBitmap(createBitmap(view, 800, 1400))
-                                bitmap.recycle()
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
+    private fun savePicture() {
+        val lang = SharedPreferencesUtils.getString(this, LANGUAGE, CN)
+        requestRuntimePermission(
+            arrayOf(
+                "android.permission.CAMERA",
+                "android.permission.WRITE_EXTERNAL_STORAGE",
+                "android.permission.READ_EXTERNAL_STORAGE"
+            ), object : PermissionListener {
+                override
+                fun onGranted() {
+                    try {
+                        val bmp: Bitmap =
+                            BitmapFactory.decodeResource(resources, R.mipmap.ic_logo_qrcode)
+                        val bitmap: Bitmap = QRCodeUtil.createQRCodeBitmap(
+                            walletCurrent.keystore.toString(),
+                            450,
+                            450,
+                            "UTF-8",
+                            "L",//设置密度
+                            "1",
+                            Color.BLACK,
+                            Color.WHITE,
+                            bmp,
+                            0.2f,
+                            null
+                        )
+                        val view: View =
+                            layoutInflater.inflate(R.layout.qr_picture_generate, null)
+                        val llQrPicture = view.findViewById<LinearLayout>(R.id.ll_qr_picture)
+                        val ivQrPicture = view.findViewById<ImageView>(R.id.iv_qr_picture)
+                        val tvTitle = view.findViewById<TextView>(R.id.tv_title)
+                        ivQrPicture.setImageBitmap(bitmap)
+                        when (lang) {
+                            CN -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_cn)
+                            TW -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_tw)
+                            EN -> llQrPicture.setBackgroundResource(R.mipmap.qr_picture_bg_en)
                         }
+                        tvTitle.text =
+                            walletCurrent.walletName + getString(R.string.save_qr_picture_title)
+                        saveBitmap(createBitmap(view, 800, 1400))
+                        bitmap.recycle()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
 
-                        override
-                        fun onDenied(deniedPermissions: List<String?>?) {
-                            //暂时不需要实现此方法
-                        }
-                    })
-                dialog.dismiss()
-            }
-        }
+                override
+                fun onDenied(deniedPermissions: List<String?>?) {
+                    println("-=-=->${deniedPermissions.toString()}")
+                }
+            })
     }
 
     fun createBitmap(v: View, width: Int, height: Int): Bitmap {
