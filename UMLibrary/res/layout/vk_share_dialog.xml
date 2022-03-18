@@ -75,6 +75,7 @@
                 android:paddingLeft="@dimen/vk_share_top_button_padding_left"
                 android:paddingRight="@dimen/vk_share_top_button_padding_right"
                 android:textAllCaps="false"
+                android:outlineProvider="none"
                 android:text="@string/vk_send"
                 android:textColor="@color/vk_white"
                 android:textSize="@dimen/vk_share_send_text_size"
@@ -180,6 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAllCaps="false"
+                android:outlineProvider="none"
                 android:background="@drawable/vk_share_send_button_background"
                 android:text="@string/vk_new_post_settings"
                 android:textColor="@color/vk_share_blue_color" />

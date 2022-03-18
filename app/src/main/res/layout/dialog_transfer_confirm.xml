@@ -81,6 +81,7 @@
             android:background="@drawable/shape_green_bottom_btn"
             android:text="@string/btn_confirm"
             android:textAllCaps="false"
+            android:outlineProvider="none"
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/sp_14" />
 

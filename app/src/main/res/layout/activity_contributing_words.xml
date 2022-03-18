@@ -98,9 +98,9 @@
                 android:layout_marginEnd="@dimen/dp_20"
                 android:layout_weight="1"
                 android:textAllCaps="false"
+                android:outlineProvider="none"
                 android:background="@drawable/shape_white_bottom_green_line_btn"
                 android:gravity="center"
-                android:outlineProvider="none"
                 android:text="@string/one_copy"
                 android:textColor="@color/color_3BB7A5" />
 

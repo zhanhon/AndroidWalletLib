@@ -216,10 +216,10 @@
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginEnd="@dimen/dp_20"
             android:background="@drawable/shape_green_bottom_btn"
-            android:outlineProvider="none"
             android:text="@string/confirm"
-            android:textAllCaps="false"
             android:textColor="@color/color_FFFFFF"
+            android:textAllCaps="false"
+            android:outlineProvider="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cl_miner_fee" />
