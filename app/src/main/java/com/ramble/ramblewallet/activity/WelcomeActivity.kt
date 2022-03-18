@@ -11,20 +11,27 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.bean.AddressReport
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
+import com.ramble.ramblewallet.network.reportAddressUrl
+import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.LanguageSetting.setLanguage
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.applyIo
 import java.util.*
 
 class WelcomeActivity : BaseActivity() {
 
     private lateinit var wallet: Wallet
+    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
+    private var times = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
+        skipConfirmHandle()
         Handler().postDelayed({
             if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isEmpty()) {
                 startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
@@ -49,6 +56,56 @@ class WelcomeActivity : BaseActivity() {
         }, 3000)
 
     }
+
+    /***
+     *上传友盟DEVICE_TOKEN失效问题
+     *
+     */
+
+    private fun skipConfirmHandle() {
+        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+            saveWalletList =
+                Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                    object : TypeToken<ArrayList<Wallet>>() {}.type
+                )
+            var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+            saveWalletList.forEach {
+                detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
+            }
+            if (detailsList.size > 0) {
+                putAddress(detailsList)
+            }
+        }
+    }
+
+    /***
+     *上传友盟DEVICE_TOKEN失效问题
+     */
+    @SuppressLint("CheckResult")
+    private fun putAddress(detailsList: ArrayList<AddressReport.DetailsList>) {
+        val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
+        val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
+        if (detailsList.size == 0) return
+        mApiService.putAddress(
+            AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)
+        ).applyIo().subscribe(
+            {
+                if (it.code() == 1) {
+                    it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
+                } else {
+                    if (times < 3) {
+                        putAddress(detailsList)
+                        times++
+                    }
+                    println("-=-=-=->putAddress:${it.message()}")
+                }
+            }, {
+                println("-=-=-=->putAddress:${it.printStackTrace()}")
+            }
+        )
+    }
+
 
     @SuppressLint("CheckResult")
     override fun onResume() {
