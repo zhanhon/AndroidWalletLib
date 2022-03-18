@@ -22,7 +22,7 @@
             app:qrcv_cornerSize="1dp"
             app:qrcv_isBarcode="false"
             app:qrcv_isOnlyDecodeScanBoxArea="false"
-            app:qrcv_isScanLineReverse="true"
+            app:qrcv_isScanLineReverse="false"
             app:qrcv_isShowDefaultGridScanLineDrawable="false"
             app:qrcv_isShowDefaultScanLineDrawable="true"
             app:qrcv_isShowTipBackground="true"
@@ -37,7 +37,7 @@
             app:qrcv_customScanLineDrawable="@drawable/sao_miao_qi"
             app:qrcv_tipTextColor="@android:color/white"
             app:qrcv_tipTextSize="12sp"
-            app:qrcv_toolbarHeight="112px"
+            app:qrcv_toolbarHeight="10dp"
             app:qrcv_topOffset="100dp" />
 
         <RelativeLayout
@@ -84,11 +84,12 @@
             android:id="@+id/bottom_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_64"
             android:background="@color/color_000000"
             app:layout_constraintBottom_toBottomOf="@+id/zxingview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+
             app:layout_constraintVertical_bias="0.8">
 
             <ImageView
