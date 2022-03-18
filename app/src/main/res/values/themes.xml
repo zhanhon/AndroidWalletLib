@@ -1,9 +1,9 @@
 <resources>
 
     <style name="AppMainTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
-        <item name="colorPrimary">@color/color_3700B3</item>
-        <item name="colorPrimaryDark">@color/color_3700B3</item>
-        <item name="colorAccent">@color/color_3700B3</item>
+        <item name="colorPrimary">@color/color_3bb7a5</item>
+        <item name="colorPrimaryDark">@color/color_3bb7a5</item>
+        <item name="colorAccent">@color/color_3bb7a5</item>
         <item name="android:textSize">@dimen/dp_15</item>
     </style>
 
