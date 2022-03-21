@@ -341,15 +341,15 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                     walletTRX.walletName = "TRX" + String.format("%02d", index2)
                     walletBTC.walletName = "BTC" + String.format("%02d", index3)
                 }
-                saveWalletList.add(walletETH)
                 saveWalletList.add(walletTRX)
                 saveWalletList.add(walletBTC)
+                saveWalletList.add(walletETH)
                 println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
                 detailsList.add(AddressReport.DetailsList(walletETH.address, 0, 1))
-                detailsList.add(AddressReport.DetailsList(walletTRX.address, 0, 2))
                 detailsList.add(AddressReport.DetailsList(walletBTC.address, 0, 3))
+                detailsList.add(AddressReport.DetailsList(walletTRX.address, 0, 2))
 
                 //2、之后地址校验
                 var isValidEthSuccess = isEthValidAddress(walletETH.address)

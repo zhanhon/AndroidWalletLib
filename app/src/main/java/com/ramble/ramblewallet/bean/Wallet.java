@@ -6,6 +6,7 @@ import java.util.List;
  * @author Ricky
  */
 public class Wallet {
+    private int index;
     private String walletName;
     private String walletPassword;
     private String mnemonic;
@@ -48,6 +49,14 @@ public class Wallet {
                   String privateKey, String publicKey, String keystore, int walletType, List<String> mnemonicList, boolean isClickDelete) {
         this(walletName, walletPassword, mnemonic, address, privateKey, publicKey, keystore, walletType, mnemonicList);
         this.isClickDelete = isClickDelete;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public List<String> getMnemonicList() {
