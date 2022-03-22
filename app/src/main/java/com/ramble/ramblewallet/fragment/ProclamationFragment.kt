@@ -193,11 +193,6 @@ class ProclamationFragment : BaseFragment() {
         loadData()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
-
 
     override fun actualLazyLoad() {
         super.actualLazyLoad()

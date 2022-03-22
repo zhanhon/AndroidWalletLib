@@ -14,14 +14,11 @@ public abstract class UmengNotification {
     protected String appMasterSecret;
 
     // Keys can be set in the root level
-    protected static final HashSet<String> ROOT_KEYS = new HashSet<>(Arrays.asList(new String[]{
-            "appkey", "timestamp", "type", "device_tokens", "alias", "alias_type", "file_id",
-            "filter", "production_mode", "feedback", "description", "thirdparty_id"}));
+    protected static final HashSet<String> ROOT_KEYS = new HashSet<>(Arrays.asList("appkey", "timestamp", "type", "device_tokens", "alias", "alias_type", "file_id",
+            "filter", "production_mode", "feedback", "description", "thirdparty_id"));
 
     // Keys can be set in the policy level
-    protected static final HashSet<String> POLICY_KEYS = new HashSet<>(Arrays.asList(new String[]{
-            "start_time", "expire_time", "max_send_num"
-    }));
+    protected static final HashSet<String> POLICY_KEYS = new HashSet<>(Arrays.asList("start_time", "expire_time", "max_send_num"));
 
     // Set predefined keys in the rootJson, for extra keys(Android) or customized keys(IOS) please
     // refer to corresponding methods in the subclass.

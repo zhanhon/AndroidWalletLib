@@ -36,7 +36,7 @@ public class TrxApi {
     /**
      * 41 开头的地址
      */
-    private String addressNumber;
+    private final String addressNumber;
     /**
      * T开头地址
      */
@@ -44,7 +44,7 @@ public class TrxApi {
     /**
      * 秘钥
      */
-    private String prikeyHex;
+    private final String prikeyHex;
 
     /**
      * 41 ---- > T

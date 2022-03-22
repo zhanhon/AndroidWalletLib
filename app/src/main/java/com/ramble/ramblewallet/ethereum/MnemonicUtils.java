@@ -7,6 +7,7 @@ import com.ramble.ramblewallet.ethereum.utils.English;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.develop.mnemonic.MnemonicUtils.generateMnemonic;
 
@@ -27,7 +28,7 @@ public class MnemonicUtils {
      *
      * @return
      */
-    public static ArrayList<String> generateMnemonicEnglishChinese() {
+    public static List<String> generateMnemonicEnglishChinese() {
         byte[] initialEntropy = new byte[16];
         ArrayList<String> mnemonicList = new ArrayList<>();
         secureRandom.nextBytes(initialEntropy);
@@ -43,7 +44,7 @@ public class MnemonicUtils {
      *
      * @return
      */
-    public static ArrayList<String> generateMnemonicChineseTraditional() {
+    public static List<String> generateMnemonicChineseTraditional() {
         byte[] initialEntropy = new byte[16];
         ArrayList<String> mnemonicList = new ArrayList<>();
         secureRandom.nextBytes(initialEntropy);

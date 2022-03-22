@@ -167,7 +167,7 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
 
     @Override
     public void replaceAll(@NonNull List<T> list) {
-        if (data.size() > 0) {
+        if (!data.isEmpty()) {
             data.clear();
         }
         data.addAll(list);

@@ -22,7 +22,7 @@ public class StringTronUtil {
         throw new IllegalStateException("StringTronUtil");
     }
 
-    private static final String RULE = "^([A-Z]|[a-z]|[0-9]|[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）――+|{}【】‘；：”“'。，、？]){8,16}$";
+    private static final String RULE = "^([A-Z]|[a-z]|[0-9]|[`~!@#$%^&*()+=|{}':;,[\\\\].<>/?￥…（）―【】‘；：”“。，、？]){8,16}$";
 
     /**
      * 判断是否为空

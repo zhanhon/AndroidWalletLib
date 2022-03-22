@@ -360,14 +360,14 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                             transferBalance =
                                 getBalanceToken(walletSelleted.address, tokenBean)
                             if (transferBalance != BigDecimal("0")) {
-                                setBalance(transferBalance)
+                                setBalanceView(transferBalance)
                             }
                         }.start()
                     } else {
                         Thread {
                             transferBalance = getBalanceETH(walletSelleted.address)
                             if (transferBalance != BigDecimal("0")) {
-                                setBalance(transferBalance)
+                                setBalanceView(transferBalance)
                             }
                         }.start()
                     }
@@ -409,19 +409,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    fun setTrxBalance(balance: BigDecimal) {
+    fun setBalance(balance: BigDecimal) {
         transferBalance = balance
-        setBalance(transferBalance)
-    }
-
-    fun setTokenBalance(balance: BigDecimal) {
-        transferBalance = balance
-        setBalance(transferBalance)
-    }
-
-    fun setBtcBalance(balance: BigDecimal) {
-        transferBalance = balance
-        setBalance(transferBalance)
+        setBalanceView(transferBalance)
     }
 
     private fun setEthMinerFee() {
@@ -451,7 +441,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         binding.tvTips.visibility = View.INVISIBLE
     }
 
-    private fun setBalance(balance: BigDecimal) {
+    private fun setBalanceView(balance: BigDecimal) {
         postUI {
             binding.tvQuantityBalance.text =
                 getString(R.string.transfer_balance) + " " + DecimalFormatUtil.format(
@@ -611,8 +601,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
                             BigDecimal("100000000")
                         ),
-                        btcFee,
-                        binding.edtInputTransferRemarks.text.trim().toString()
+                        btcFee
                     )
                 }
             }

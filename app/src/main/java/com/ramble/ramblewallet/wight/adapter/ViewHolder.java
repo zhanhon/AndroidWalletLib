@@ -38,10 +38,6 @@ public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttac
     @NonNull
     private Object binding;
     /**
-     * adapter position
-     */
-    private int position = -1;
-    /**
      * adapter size
      */
     private int size = 0;
@@ -54,12 +50,7 @@ public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttac
         super(itemView);
         this.listenerAttach = new ListenerAttachImpl(provider, this);
         try {
-            Class<?> clazz;
-            try {
-                clazz = Class.forName("android.databinding.DataBindingUtil");
-            } catch (Exception ignored) {
-                clazz = Class.forName("androidx.databinding.DataBindingUtil");
-            }
+            Class<?> clazz = Class.forName("androidx.databinding.DataBindingUtil");
             Method method = clazz.getMethod("bind", View.class);
             binding = method.invoke(null, itemView);
         } catch (Exception ignored) {
@@ -90,40 +81,10 @@ public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttac
         return (V) item;
     }
 
-    /**
-     * is first item
-     *
-     * @return
-     */
-    public boolean isFirstItem() {
-        if (position == 0) return true;
-        return false;
-    }
-
-    /**
-     * is last item
-     *
-     * @return
-     */
-    public boolean isLastItem() {
-        if (position == size - 1) return true;
-        return false;
-    }
-
-    /**
-     * get adapter position , just used in ListView,GridView,Spinner,ViewPager
-     *
-     * @return
-     */
-    public int getCurrentPosition() {
-        return position;
-    }
-
     void setCurrentPosition(int position) {
         if (position < 0) {
             throw new UnsupportedOperationException("position = -1");
         }
-        this.position = position;
     }
 
     void setCurrentItem(Item item) {

@@ -116,8 +116,7 @@ public class WalletETHUtils {
      */
     public static ECKeyPair generateBip32ECKeyPair(String mnemonic) {
         byte[] privateKeyBytes = KeyPairUtils.generatePrivateKey(mnemonic, KeyPairUtils.CoinTypes.ETH);
-        ECKeyPair keyPair = ECKeyPair.create(privateKeyBytes);
-        return keyPair;
+        return ECKeyPair.create(privateKeyBytes);
     }
 
     /**

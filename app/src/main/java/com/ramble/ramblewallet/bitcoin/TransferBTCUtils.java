@@ -75,7 +75,7 @@ public class TransferBTCUtils {
                     ((MainBTCActivity) context).setBtcBalance(new BigDecimal("0"));
                 }
                 if (context instanceof TransferActivity) {
-                    ((TransferActivity) context).setBtcBalance(new BigDecimal("0"));
+                    ((TransferActivity) context).setBalance(new BigDecimal("0"));
                 }
             }
 
@@ -90,14 +90,14 @@ public class TransferBTCUtils {
                         ((MainBTCActivity) context).setBtcBalance(new BigDecimal(balanceBefore));
                     }
                     if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).setBtcBalance(new BigDecimal(balanceBefore));
+                        ((TransferActivity) context).setBalance(new BigDecimal(balanceBefore));
                     }
                 } catch (Exception e) {
                     if (context instanceof MainBTCActivity) {
                         ((MainBTCActivity) context).setBtcBalance(new BigDecimal("0"));
                     }
                     if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).setBtcBalance(new BigDecimal("0"));
+                        ((TransferActivity) context).setBalance(new BigDecimal("0"));
                     }
                     e.printStackTrace();
                 }
@@ -106,7 +106,7 @@ public class TransferBTCUtils {
     }
 
     public static void transferBTC(Activity context, String fromAddress, String toAddress,
-                                   String privateKey, BigDecimal amount, String btcFee, String remark) {
+                                   String privateKey, BigDecimal amount, String btcFee) {
         final List<UTXO>[] utxos = new List[]{Lists.newArrayList()};
         final String[] host = {ISMAINNET ? "BTC" : "BTCTEST"};
         String url = "https://chain.so/api/v2/get_tx_unspent/" + host[0] + "/" + fromAddress;

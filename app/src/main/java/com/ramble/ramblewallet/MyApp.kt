@@ -5,7 +5,6 @@ import android.content.Context
 import androidx.multidex.MultiDex
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.ramble.ramblewallet.constant.setupArchLibrary
-import com.ramble.ramblewallet.helper.MyPreferences
 import com.ramble.ramblewallet.push.UmInitConfig
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.message.PushAgent

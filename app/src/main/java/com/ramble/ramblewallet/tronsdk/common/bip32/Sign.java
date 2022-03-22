@@ -329,7 +329,7 @@ public class Sign {
 
         @Override
         public int hashCode() {
-            int result = (int) v;
+            int result = v;
             result = 31 * result + Arrays.hashCode(r);
             result = 31 * result + Arrays.hashCode(s);
             return result;

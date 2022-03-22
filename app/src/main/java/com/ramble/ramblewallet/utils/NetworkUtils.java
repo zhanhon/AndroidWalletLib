@@ -79,9 +79,7 @@ public class NetworkUtils {
                 checkNetwork(context);
                 dialog.dismiss();
             });
-            window.findViewById(R.id.tv_cancel).setOnClickListener(v -> {
-                dialog.dismiss();
-            });
+            window.findViewById(R.id.tv_cancel).setOnClickListener(v -> dialog.dismiss());
         }
     }
 

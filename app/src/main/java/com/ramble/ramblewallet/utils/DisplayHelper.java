@@ -40,7 +40,7 @@ public class DisplayHelper {
     /**
      * 屏幕密度
      */
-    public static float SDENSITY = 0f;
+    public static float sdensity = 0f;
     /**
      * 是否有摄像头
      */
@@ -82,10 +82,10 @@ public class DisplayHelper {
     }
 
     public static float getDensity(Context context) {
-        if (SDENSITY == 0f) {
-            SDENSITY = getDisplayMetrics(context).density;
+        if (sdensity == 0f) {
+            sdensity = getDisplayMetrics(context).density;
         }
-        return SDENSITY;
+        return sdensity;
     }
 
     /**

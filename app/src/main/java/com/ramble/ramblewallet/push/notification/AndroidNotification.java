@@ -8,14 +8,12 @@ import java.util.HashSet;
 public abstract class AndroidNotification extends UmengNotification {
 
     // Keys can be set in the payload level
-    protected static final HashSet<String> PAYLOAD_KEYS = new HashSet<>(Arrays.asList(new String[]{
-            "display_type"}));
+    protected static final HashSet<String> PAYLOAD_KEYS = new HashSet<>(Arrays.asList("display_type"));
 
     // Keys can be set in the body level
-    protected static final HashSet<String> BODY_KEYS = new HashSet<>(Arrays.asList(new String[]{
-            "ticker", "title", "text", "builder_id", "icon", "largeIcon", "img", "play_vibrate", "play_lights",
+    protected static final HashSet<String> BODY_KEYS = new HashSet<>(Arrays.asList("ticker", "title", "text", "builder_id", "icon", "largeIcon", "img", "play_vibrate", "play_lights",
             "play_sound",
-            "sound", "after_open", "url", "activity", "custom"}));
+            "sound", "after_open", "url", "activity", "custom"));
 
     public enum DisplayType {
         NOTIFICATION {

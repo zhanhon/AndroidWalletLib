@@ -5,16 +5,8 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import com.ramble.ramblewallet.bean.Wallet;
-
-import java.util.ArrayList;
-import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toCollection;
 
 /**
  * @创建人： Ricky
@@ -28,15 +20,6 @@ public class StringUtils {
 
     //小写字母
     public static final String REG_LOWERCASE = ".*[a-z]+.*";
-
-    //根据对象的某个字段去重
-    public static ArrayList<Wallet> removeDuplicateByAddress(ArrayList<Wallet> list) {
-        ArrayList<Wallet> removedDuplicateList = list.stream().collect(
-                collectingAndThen(
-                        toCollection(() -> new TreeSet<>(comparing(n -> n.getAddress()))), ArrayList::new)
-        );
-        return removedDuplicateList;
-    }
 
     /**
      * 处理文本，将文本位数限制为maxLen，中文两个字符，英文一个字符
@@ -121,18 +104,15 @@ public class StringUtils {
     public static boolean isContainChinese(String str) {
         Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
         Matcher m = p.matcher(str);
-        if (m.find()) {
-            return true;
-        }
-        return false;
+        return m.find();
     }
 
     /**
      * 传入区间值   假设:1-100   1-10
      *
-     * @param edit    控件
-     * @param max     最大数
-     * @param min     最小数
+     * @param edit 控件
+     * @param max  最大数
+     * @param min  最小数
      */
     public static void inputWatch(final EditText edit, final int max, final int min) {
 

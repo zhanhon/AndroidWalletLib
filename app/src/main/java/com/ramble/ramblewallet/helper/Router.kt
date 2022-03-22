@@ -290,7 +290,7 @@ fun Activity.okFinish(intent: Intent? = null) {
 }
 
 fun EditText.showKeyboard() {
-    (this.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)?.let {
+    (this.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).let {
         it.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
     }
 }
@@ -303,7 +303,7 @@ fun Dialog.showKeyboardInDialog(target: EditText) {
 fun Activity.hideKeyboard() = this.window.decorView.hideKeyboard()
 
 fun View.hideKeyboard() {
-    (this.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)?.let {
+    (this.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).let {
         it.hideSoftInputFromWindow(this.windowToken, 0)
     }
 }

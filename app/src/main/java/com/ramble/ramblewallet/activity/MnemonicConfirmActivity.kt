@@ -91,7 +91,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun createWallet() {
-        if (DoubleUtils.isFastDoubleClick())return
+        if (DoubleUtils.isFastDoubleClick()) return
         mnemonicETHOriginal.forEach {
             walletETHString = "$walletETHString$it "
         }
@@ -286,12 +286,12 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 if (saveWalletList.size == 0) {
                     walletTRX.index = 0
                 } else {
-                    walletTRX.index = saveWalletList[saveWalletList.size-1].index + 1
+                    walletTRX.index = saveWalletList[saveWalletList.size - 1].index + 1
                 }
                 saveWalletList.add(walletTRX)
-                walletBTC.index = saveWalletList[saveWalletList.size-1].index + 1
+                walletBTC.index = saveWalletList[saveWalletList.size - 1].index + 1
                 saveWalletList.add(walletBTC)
-                walletETH.index = saveWalletList[saveWalletList.size-1].index + 1
+                walletETH.index = saveWalletList[saveWalletList.size - 1].index + 1
                 saveWalletList.add(walletETH)
                 println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))

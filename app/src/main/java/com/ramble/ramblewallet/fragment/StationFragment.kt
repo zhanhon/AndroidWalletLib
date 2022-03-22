@@ -97,11 +97,6 @@ open class StationFragment : BaseFragment() {
         loadData()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
-
 
     private fun loadData() {
         var lang = when (SharedPreferencesUtils.getString(myActivity, LANGUAGE, CN)) {

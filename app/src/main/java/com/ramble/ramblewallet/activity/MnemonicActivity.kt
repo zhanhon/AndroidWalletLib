@@ -38,7 +38,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
     private var myDataBeans: ArrayList<MyDataBean> = arrayListOf()
     private lateinit var contributingWordsAdapter: ContributingWordsAdapter
     private lateinit var mnemonicETH: ArrayList<String>
-    private lateinit var mnemonicList: ArrayList<String>
+    private lateinit var mnemonicList: List<String>
     private lateinit var walletName: String
     private lateinit var walletPassword: String
     private var currentTab = "english"
@@ -144,7 +144,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         binding.rvContributingWords.adapter = contributingWordsAdapter
         binding.btnContributingWordsConfirm.setOnClickListener {
             startActivity(Intent(this, MnemonicConfirmActivity::class.java).apply {
-                putStringArrayListExtra(ARG_PARAM1, mnemonicList)
+                putStringArrayListExtra(ARG_PARAM1, ArrayList(mnemonicList))
                 putExtra(ARG_PARAM2, walletName)
                 putExtra(ARG_PARAM3, walletPassword)
                 putExtra(ARG_PARAM4, currentTab)
@@ -156,7 +156,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun skipConfirmHandle() {
-        if (DoubleUtils.isFastDoubleClick())return
+        if (DoubleUtils.isFastDoubleClick()) return
         when (currentTab) {
             "english" -> {
                 walletETHString = mnemonicList[0]
@@ -349,12 +349,12 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 if (saveWalletList.size == 0) {
                     walletTRX.index = 0
                 } else {
-                    walletTRX.index = saveWalletList[saveWalletList.size-1].index + 1
+                    walletTRX.index = saveWalletList[saveWalletList.size - 1].index + 1
                 }
                 saveWalletList.add(walletTRX)
-                walletBTC.index = saveWalletList[saveWalletList.size-1].index + 1
+                walletBTC.index = saveWalletList[saveWalletList.size - 1].index + 1
                 saveWalletList.add(walletBTC)
-                walletETH.index = saveWalletList[saveWalletList.size-1].index + 1
+                walletETH.index = saveWalletList[saveWalletList.size - 1].index + 1
                 saveWalletList.add(walletETH)
                 println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))

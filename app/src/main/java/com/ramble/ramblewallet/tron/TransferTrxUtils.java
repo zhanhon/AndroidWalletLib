@@ -133,7 +133,7 @@ public class TransferTrxUtils {
                     ((MainTRXActivity) context).setTrxBalance(new BigDecimal("0"));
                 }
                 if (context instanceof TransferActivity) {
-                    ((TransferActivity) context).setTrxBalance(new BigDecimal("0"));
+                    ((TransferActivity) context).setBalance(new BigDecimal("0"));
                 }
             }
 
@@ -148,14 +148,14 @@ public class TransferTrxUtils {
                         ((MainTRXActivity) context).setTrxBalance(divide);
                     }
                     if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).setTrxBalance(divide);
+                        ((TransferActivity) context).setBalance(divide);
                     }
                 } catch (Exception e) {
                     if (context instanceof MainTRXActivity) {
                         ((MainTRXActivity) context).setTrxBalance(new BigDecimal("0"));
                     }
                     if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).setTrxBalance(new BigDecimal("0"));
+                        ((TransferActivity) context).setBalance(new BigDecimal("0"));
                     }
                     e.printStackTrace();
                 }
@@ -183,7 +183,7 @@ public class TransferTrxUtils {
                     ((MainTRXActivity) context).setTokenBalance(new BigDecimal("0"));
                 }
                 if (context instanceof TransferActivity) {
-                    ((TransferActivity) context).setTokenBalance(new BigDecimal("0"));
+                    ((TransferActivity) context).setBalance(new BigDecimal("0"));
                 }
             }
 
@@ -200,14 +200,14 @@ public class TransferTrxUtils {
                         ((MainTRXActivity) context).setTokenBalance(value);
                     }
                     if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).setTokenBalance(value);
+                        ((TransferActivity) context).setBalance(value);
                     }
                 } catch (Exception e) {
                     if (context instanceof MainTRXActivity) {
                         ((MainTRXActivity) context).setTokenBalance(new BigDecimal("0"));
                     }
                     if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).setTokenBalance(new BigDecimal("0"));
+                        ((TransferActivity) context).setBalance(new BigDecimal("0"));
                     }
                     e.printStackTrace();
                 }

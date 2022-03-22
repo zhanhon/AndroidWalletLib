@@ -28,18 +28,6 @@ public class SymmEncoder {
         return AesEcbDecode(encoded, key);
     }
 
-
-    private static byte[] AesEcbEncode(byte[] plainText, SecretKey key) {
-        try {
-            Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
-            cipher.init(Cipher.ENCRYPT_MODE, key);
-            return cipher.doFinal(plainText);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return new byte[0];
-        }
-    }
-
     private static byte[] AesEcbDecode(byte[] encodedText, SecretKey key) {
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
@@ -51,37 +39,4 @@ public class SymmEncoder {
         }
     }
 
-    public static byte[] AESEcbEnc(byte[] plain, byte[] aesKey) {
-        if (aesKey == null || aesKey.length != 16) {
-            return new byte[0];
-        }
-        if (plain == null) {
-            return new byte[0];
-        }
-
-        SecretKey key = restoreSecretKey(aesKey, "AES");
-        return AesEcbPKCS7Encode(plain, key);
-    }
-
-    private static byte[] AesEcbPKCS7Encode(byte[] plainText, SecretKey key) {
-        try {
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS7Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, key);
-            return cipher.doFinal(plainText);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return new byte[0];
-        }
-    }
-
-    private static byte[] AesEcbPKCS7Decode(byte[] encodedText, SecretKey key) {
-        try {
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS7Padding");
-            cipher.init(Cipher.DECRYPT_MODE, key);
-            return cipher.doFinal(encodedText);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return new byte[0];
-        }
-    }
 }

@@ -59,6 +59,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -616,10 +617,10 @@ public class ECKey implements Serializable {
         // Compressed allKeys require you to know an extra bit of data about the
         // y-coord as there are two possibilities.
         // So it's encoded in the recId.
-        ECPoint R = decompressKey(x, (recId & 1) == 1);
+        ECPoint ecPoint = decompressKey(x, (recId & 1) == 1);
         //   1.4. If nR != point at infinity, then do another iteration of
         // Step 1 (callers responsibility).
-        if (!R.multiply(n).isInfinity()) {
+        if (!ecPoint.multiply(n).isInfinity()) {
             return null;
         }
         //   1.5. Compute e from M using Steps 2 and 3 of ECDSA signature
@@ -647,7 +648,7 @@ public class ECKey implements Serializable {
         BigInteger srInv = rInv.multiply(sig.s).mod(n);
         BigInteger eInvrInv = rInv.multiply(eInv).mod(n);
         ECPoint.Fp q = (ECPoint.Fp) ECAlgorithms.sumOfTwoMultiplies(CURVE
-                .getG(), eInvrInv, R, srInv);
+                .getG(), eInvrInv, ecPoint, srInv);
         return q.getEncoded(/* compressed */ false);
     }
 
@@ -1172,7 +1173,7 @@ public class ECKey implements Serializable {
             sigData[0] = v;
             System.arraycopy(bigIntegerToBytes(this.r, 32), 0, sigData, 1, 32);
             System.arraycopy(bigIntegerToBytes(this.s, 32), 0, sigData, 33, 32);
-            return new String(Base64.encode(sigData), Charset.forName("UTF-8"));
+            return new String(Base64.encode(sigData), StandardCharsets.UTF_8);
         }
 
         public byte[] toByteArray() {

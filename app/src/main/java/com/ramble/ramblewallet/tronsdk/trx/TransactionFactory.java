@@ -15,8 +15,8 @@ public class TransactionFactory {
         throw new IllegalStateException("TransactionFactory");
     }
 
-    private static Map<ContractType, Class<? extends Actuator>> actuatorMap = new ConcurrentHashMap<>();
-    private static Map<ContractType, Class<? extends GeneratedMessageV3>> contractMap = new ConcurrentHashMap<>();
+    private static final Map<ContractType, Class<? extends Actuator>> actuatorMap = new ConcurrentHashMap<>();
+    private static final Map<ContractType, Class<? extends GeneratedMessageV3>> contractMap = new ConcurrentHashMap<>();
 
     static {
         register(ContractType.CreateSmartContract, null, Contract.CreateSmartContract.class);

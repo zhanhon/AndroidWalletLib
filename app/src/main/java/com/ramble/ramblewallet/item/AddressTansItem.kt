@@ -17,7 +17,7 @@ class AddressTansItem(val data: QueryTransferRecord.InRecord) : SimpleRecyclerIt
 
     override fun bind(holder: ViewHolder) {
         var binding: ItemAddressTranBinding = holder.binding()
-        binding.tvToAddress.text = data?.address
+        binding.tvToAddress.text = data.address
         holder.attachOnClickListener(R.id.pay_copy)
     }
 }

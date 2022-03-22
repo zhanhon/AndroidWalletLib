@@ -135,7 +135,7 @@ public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
 
     @Override
     public void clear() {
-        if (data.size() > 0) {
+        if (!data.isEmpty()) {
             data.clear();
         }
         notifyDataSetChanged();

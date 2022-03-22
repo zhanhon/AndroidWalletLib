@@ -1,12 +1,5 @@
 package com.ramble.ramblewallet.network;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SignatureException;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateExpiredException;
-import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.X509TrustManager;
@@ -28,19 +21,7 @@ public class TrustAllCerts implements X509TrustManager {
             try {
                 cert.checkValidity();
                 cert.verify(cert.getPublicKey());
-            } catch (CertificateNotYetValidException e) {
-                e.printStackTrace();
-            } catch (CertificateExpiredException e) {
-                e.printStackTrace();
-            } catch (CertificateException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (SignatureException e) {
-                e.printStackTrace();
-            } catch (NoSuchProviderException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

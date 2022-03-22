@@ -13,7 +13,7 @@ public class MyPreferences {
     private static final String NAME = "app_settings";
     private static final String KEY_PRIVACY_AGREEMENT = "agreement_accepted";
 
-    private static volatile MyPreferences instance;
+    private static MyPreferences instance;
 
     private final SharedPreferences preferences;
 
@@ -23,11 +23,7 @@ public class MyPreferences {
 
     public static MyPreferences getInstance(Context context) {
         if (instance == null) {
-            synchronized (MyPreferences.class) {
-                if (instance == null) {
-                    instance = new MyPreferences(context);
-                }
-            }
+            instance = new MyPreferences(context);
         }
         return instance;
     }

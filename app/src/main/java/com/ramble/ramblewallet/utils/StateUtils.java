@@ -22,7 +22,7 @@ public class StateUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             switch (RomUtils.getLightStatusBarAvailableRomType()) {
                 case RomUtils.AvailableRomType.MIUI:
-                    MIUISetStatusBarLightMode(activity, dark);
+                    miuiSetStatusBarLightMode(activity, dark);
                     break;
                 case RomUtils.AvailableRomType.FLYME: //魅族修改字体颜色
                     setFlymeLightStatusBar(activity, dark);
@@ -31,7 +31,8 @@ public class StateUtils {
                 case RomUtils.AvailableRomType.ANDROID_NATIVE: //谷歌原生方式修改字体颜色
                     setAndroidNativeLightStatusBar(activity, dark);
                     break;
-
+                default:
+                    break;
             }
         }
     }
@@ -43,7 +44,7 @@ public class StateUtils {
      * @param dark
      * @return
      */
-    public static boolean MIUISetStatusBarLightMode(Activity activity, boolean dark) {
+    public static boolean miuiSetStatusBarLightMode(Activity activity, boolean dark) {
         boolean result = false;
         Window window = activity.getWindow();
         if (window != null) {
@@ -70,7 +71,7 @@ public class StateUtils {
                     }
                 }
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
         return result;
@@ -105,6 +106,7 @@ public class StateUtils {
                 activity.getWindow().setAttributes(lp);
                 result = true;
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return result;

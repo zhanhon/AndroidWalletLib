@@ -59,7 +59,7 @@ public class Parameter {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Parameter) == false) {
+        if (!(other instanceof Parameter)) {
             return false;
         }
         Parameter rhs = ((Parameter) other);
