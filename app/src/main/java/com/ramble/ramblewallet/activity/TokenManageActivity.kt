@@ -154,39 +154,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.confirm_button -> {//完成
-                binding.ivDeleteToken.isVisible = true
-                binding.confirmButton.isVisible = false
-                isShowCheck = false
-                itemTouchHelper.setDragEnable(false)
-                setIDlist()
-                if (saveList.isNotEmpty()) {
-                    saveTokenList.forEach {
-                        adapter.remove(it)
-                    }
-                    adapter.notifyDataSetChanged()
-                    var list = myStores.iterator()
-                    list.forEach {
-                        if (saveList.contains(it.id)) {
-                            list.remove()
-                        }
-                    }
-
-                }
-                myAllToken.forEach {
-                    if (it.myCurrency == walletSelleted.address) {
-                        it.storeInfos = myStores
-                    }
-                }
-                SharedPreferencesUtils.saveString(
-                    this@TokenManageActivity,
-                    TOKEN_INFO_NO,
-                    Gson().toJson(myAllToken)
-                )
-                RxBus.emitEvent(Pie.EVENT_DEL_TOKEN, saveList)
-                ArrayList<SimpleRecyclerItem>().apply {
-                    myStores.forEach { o -> this.add(TokenManageItem(o)) }
-                    adapter.replaceAll(this.toList())
-                }
+                confirmData()
             }
             R.id.iv_delete_token -> {
                 binding.ivDeleteToken.isVisible = false
@@ -221,6 +189,42 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                 RxBus.emitEvent(Pie.EVENT_MINUS_TOKEN, item)
             }
 
+        }
+    }
+
+    private fun confirmData() {
+        binding.ivDeleteToken.isVisible = true
+        binding.confirmButton.isVisible = false
+        isShowCheck = false
+        itemTouchHelper.setDragEnable(false)
+        setIDlist()
+        if (saveList.isNotEmpty()) {
+            saveTokenList.forEach {
+                adapter.remove(it)
+            }
+            adapter.notifyDataSetChanged()
+            var list = myStores.iterator()
+            list.forEach {
+                if (saveList.contains(it.id)) {
+                    list.remove()
+                }
+            }
+
+        }
+        myAllToken.forEach {
+            if (it.myCurrency == walletSelleted.address) {
+                it.storeInfos = myStores
+            }
+        }
+        SharedPreferencesUtils.saveString(
+            this@TokenManageActivity,
+            TOKEN_INFO_NO,
+            Gson().toJson(myAllToken)
+        )
+        RxBus.emitEvent(Pie.EVENT_DEL_TOKEN, saveList)
+        ArrayList<SimpleRecyclerItem>().apply {
+            myStores.forEach { o -> this.add(TokenManageItem(o)) }
+            adapter.replaceAll(this.toList())
         }
     }
 }
