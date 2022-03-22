@@ -48,7 +48,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     private var zxingview: ZXingView? = null
     private var type = 0
     private lateinit var tokenBean: MainETHTokenBean
-    var isChecked: Boolean = false
+
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
