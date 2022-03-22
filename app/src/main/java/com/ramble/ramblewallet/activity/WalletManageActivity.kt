@@ -43,6 +43,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     private lateinit var walletManageAdapter: WalletManageAdapter
     private var isDeletePage = false
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
+    private var saveWalletListSorted: ArrayList<Wallet> = arrayListOf()
     private lateinit var walletSelleted: Wallet
     private var times = 0
     private var myAllToken: ArrayList<AllTokenBean> = arrayListOf()
@@ -78,19 +79,15 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 list.remove()
             }
         }
-        saveWalletList.forEachIndexed { index, element ->
-            element.index = index
-        }
-        saveWalletList = StringUtils.removeDuplicateByAddress(saveWalletList)
-        saveWalletList.sortByDescending { it.index }
-        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        saveWalletListSorted = ArrayList(saveWalletList.sortedByDescending { it.index })
+        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletListSorted))
         initView()
     }
 
     @SuppressLint("WrongConstant")
     private fun initView() {
-        if (saveWalletList.isNotEmpty()) {
-            walletManageBean = saveWalletList
+        if (saveWalletListSorted.isNotEmpty()) {
+            walletManageBean = saveWalletListSorted
             loadData(walletManageBean)
         }
         binding.groupButton.check(R.id.check_all)

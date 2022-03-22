@@ -33,6 +33,7 @@ import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.tron.WalletTRXUtils.isTrxValidAddress
+import com.ramble.ramblewallet.utils.DoubleUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.ToastUtils
 import com.ramble.ramblewallet.utils.applyIo
@@ -90,6 +91,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun createWallet() {
+        if (DoubleUtils.isFastDoubleClick())return
         mnemonicETHOriginal.forEach {
             walletETHString = "$walletETHString$it "
         }
@@ -120,6 +122,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                     }
                     walletETH.walletName = "ETH" + String.format("%02d", index)
                 }
+                walletETH.index = saveWalletList[0].index + 1
                 saveWalletList.add(walletETH)
                 SharedPreferencesUtils.saveString(
                     this,
@@ -165,6 +168,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                     }
                     walletTRX.walletName = "TRX" + String.format("%02d", index)
                 }
+                walletTRX.index = saveWalletList[0].index + 1
                 saveWalletList.add(walletTRX)
                 SharedPreferencesUtils.saveString(
                     this,
@@ -210,6 +214,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                     }
                     walletBTC.walletName = "BTC" + String.format("%02d", index)
                 }
+                walletBTC.index = saveWalletList[0].index + 1
                 saveWalletList.add(walletBTC)
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
                 var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
@@ -278,8 +283,15 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                     walletTRX.walletName = "TRX" + String.format("%02d", index2)
                     walletBTC.walletName = "BTC" + String.format("%02d", index3)
                 }
+                if (saveWalletList.size == 0) {
+                    walletTRX.index = 0
+                } else {
+                    walletTRX.index = saveWalletList[saveWalletList.size-1].index + 1
+                }
                 saveWalletList.add(walletTRX)
+                walletBTC.index = saveWalletList[saveWalletList.size-1].index + 1
                 saveWalletList.add(walletBTC)
+                walletETH.index = saveWalletList[saveWalletList.size-1].index + 1
                 saveWalletList.add(walletETH)
                 println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
                 SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
