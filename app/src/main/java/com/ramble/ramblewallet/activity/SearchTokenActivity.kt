@@ -3,6 +3,7 @@ package com.ramble.ramblewallet.activity
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
@@ -12,6 +13,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
+import com.ramble.ramblewallet.bean.AllTokenBean
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.TOKEN_INFO_NO
@@ -28,6 +30,9 @@ import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.QuickItemDecoration
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
+import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
+import io.reactivex.ObservableOnSubscribe
 import java.util.*
 
 /**
@@ -39,6 +44,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivitySearchTokenBinding
     private val adapter = RecyclerAdapter()
+    private var myAllToken: ArrayList<AllTokenBean> = arrayListOf()
     private var myDataBeansMyAssets: ArrayList<StoreInfo> = arrayListOf()
     private var lastString = ""
     private lateinit var wallet: Wallet
@@ -103,6 +109,15 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
                 1027
             }
         }
+        myAllToken = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+            object : TypeToken<ArrayList<AllTokenBean>>() {}.type
+        )
+        myAllToken.forEach {
+            if (it.myCurrency == wallet.address) {
+                myDataBeansMyAssets = it.storeInfos
+            }
+        }
 
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
@@ -111,11 +126,14 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
                     data.forEach { info ->
                         myDataBeansMyAssets.forEach { bean ->
                             if (info.id == bean.id) {
-                                info.isMyToken = 1
+                                if (bean.id == 825 && bean.symbol == "USDT"){
+                                    info.isMyToken = 2
+                                } else {
+                                    info.isMyToken = 1
+                                }
                             }
                         }
                     }
-
                     ArrayList<SimpleRecyclerItem>().apply {
                         data.forEach { o -> this.add(AddTokenItem(o)) }
                         adapter.replaceAll(this.toList())
@@ -157,8 +175,10 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
                 val item = AdapterUtils.getHolder(v).getItem<AddTokenItem>().data
                 if (item.isMyToken == 0) {
                     item.isMyToken = 1
-                } else {
+                } else if (item.isMyToken == 1) {
                     item.isMyToken = 0
+                }else{
+                    return
                 }
                 adapter.notifyItemChanged(position)
                 RxBus.emitEvent(Pie.EVENT_MINUS_TOKEN, item)
