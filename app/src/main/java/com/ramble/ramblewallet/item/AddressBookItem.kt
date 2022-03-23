@@ -29,15 +29,15 @@ class AddressBookItem(val data: MyAddressBean) : SimpleRecyclerItem() {
         }
         when (data.type) {
             1 -> {
-                binding.clIcon.setImageResource(R.drawable.vector_eth_unselcetor)
+                binding.clIcon.setImageResource(R.drawable.ic_eth_unselect)
                 binding.tvMainCurrencyName.text = "ETH"
             }
             2 -> {
-                binding.clIcon.setImageResource(R.drawable.vector_bt_unselecter)
+                binding.clIcon.setImageResource(R.drawable.ic_btc_unselcetor)
                 binding.tvMainCurrencyName.text = "BTC"
             }
             3 -> {
-                binding.clIcon.setImageResource(R.drawable.vector_trx_unselecter)
+                binding.clIcon.setImageResource(R.drawable.ic_trx_selcetor)
                 binding.tvMainCurrencyName.text = "TRX"
             }
         }
