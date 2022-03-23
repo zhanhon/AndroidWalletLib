@@ -113,6 +113,13 @@
                         app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
                         <LinearLayout
+                            android:layout_width="@dimen/dp_0"
+                            android:layout_height="@dimen/dp_64"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical"/>
+
+                        <LinearLayout
                             android:id="@+id/ll_gathering"
                             android:layout_width="@dimen/dp_0"
                             android:layout_height="@dimen/dp_64"
@@ -133,6 +140,13 @@
                                 android:text="@string/gathering"
                                 android:textColor="@color/color_FFFFFF" />
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="@dimen/dp_0"
+                            android:layout_height="@dimen/dp_64"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical"/>
 
                         <LinearLayout
                             android:id="@+id/ll_transfer"
@@ -158,6 +172,13 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:layout_width="@dimen/dp_0"
+                            android:layout_height="@dimen/dp_64"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical"/>
+
+                        <LinearLayout
                             android:id="@+id/ll_scan"
                             android:layout_width="@dimen/dp_0"
                             android:layout_height="@dimen/dp_64"
@@ -177,6 +198,13 @@
                                 android:text="@string/scan"
                                 android:textColor="@color/color_FFFFFF" />
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="@dimen/dp_0"
+                            android:layout_height="@dimen/dp_64"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical"/>
 
                     </LinearLayout>
 
