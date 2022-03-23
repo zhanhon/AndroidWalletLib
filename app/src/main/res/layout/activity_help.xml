@@ -44,6 +44,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             style="@style/MatchMatch"
+            android:overScrollMode="never"
             android:clipToPadding="false"
             android:scrollbars="vertical" />
     </LinearLayout>

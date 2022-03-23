@@ -67,7 +67,9 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.core.widget.NestedScrollView style="@style/MatchWrap">
+        <androidx.core.widget.NestedScrollView
+            style="@style/MatchWrap"
+            android:overScrollMode="never">
 
             <LinearLayout
                 style="@style/MatchWrap"

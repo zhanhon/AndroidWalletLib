@@ -114,6 +114,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
                 style="@style/MatchMatch"
+                android:overScrollMode="never"
                 android:background="@color/color_FFFFFF"
                 android:scrollbars="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
