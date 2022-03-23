@@ -1,6 +1,5 @@
 package com.ramble.ramblewallet.tronsdk.common.utils;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 
