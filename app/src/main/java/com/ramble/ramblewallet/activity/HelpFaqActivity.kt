@@ -12,6 +12,7 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.QueryFaqInfos
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityHelpBinding
+import com.ramble.ramblewallet.databinding.ActivityHelpFaqBinding
 import com.ramble.ramblewallet.helper.getExtras
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.item.Help
@@ -30,7 +31,7 @@ import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
  * 描述　:
  */
 class HelpFaqActivity : BaseActivity(), View.OnClickListener {
-    private lateinit var binding: ActivityHelpBinding
+    private lateinit var binding: ActivityHelpFaqBinding
     private val adapter = RecyclerAdapter()
     private var title = ""
     private var id = 0
@@ -38,7 +39,7 @@ class HelpFaqActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_help)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_help_faq)
         title = getExtras().getString(ARG_PARAM1, "")
         id = getExtras().getInt(ARG_PARAM2, 0)
         initView()
