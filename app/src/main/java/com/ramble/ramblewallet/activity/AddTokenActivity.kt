@@ -146,7 +146,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         super.onRxBus(event)
 
         when (event.id()) {
-            Pie.EVENT_MINUS_TOKEN ,Pie.EVENT_ADD_TOKEN-> {
+            Pie.EVENT_MINUS_TOKEN, Pie.EVENT_ADD_TOKEN -> {
                 myDataBeansMyAssets = arrayListOf()
                 adapter.clear()
                 recommendTokenAdapter.clear()
@@ -181,7 +181,6 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 )
                 dataCheck()
             }
-
             Pie.EVENT_DEL_TOKEN -> {
                 myDataBeansMyAssets = arrayListOf()
                 adapter.clear()
@@ -197,8 +196,6 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 }
                 dataCheck()
             }
-
-
         }
     }
 
@@ -272,8 +269,6 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                         myDataBeansMyAssets.clear()
                         item.data.isMyToken = 0
                         RxBus.emitEvent(Pie.EVENT_ADD_TOKEN, item.data)
-                        myDataBeansMyAssets.add(item.data)
-
                     }
                 }
             }
