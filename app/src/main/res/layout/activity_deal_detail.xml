@@ -148,7 +148,7 @@
                                 android:id="@+id/tv_money_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="@dimen/sp_18"
+                                android:textSize="@dimen/sp_15"
                                 android:layout_marginEnd="5dp"
                                 tools:text="100" />
 
@@ -197,8 +197,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textColor="@color/black"
+                                    android:layout_marginEnd="5dp"
                                     android:textSize="@dimen/sp_15"
-                                    tools:text="000ETH" />
+                                    tools:text="0.00" />
 
                                 <TextView
                                     android:id="@+id/miner_fees_usd"
@@ -207,7 +208,7 @@
                                     android:gravity="right"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/sp_15"
-                                    tools:text="0.00USD" />
+                                    tools:text="USD" />
 
                             </LinearLayout>
 
