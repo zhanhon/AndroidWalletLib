@@ -146,7 +146,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         super.onRxBus(event)
 
         when (event.id()) {
-            Pie.EVENT_MINUS_TOKEN -> {
+            Pie.EVENT_MINUS_TOKEN ,Pie.EVENT_ADD_TOKEN-> {
                 myDataBeansMyAssets = arrayListOf()
                 adapter.clear()
                 recommendTokenAdapter.clear()
@@ -197,6 +197,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 }
                 dataCheck()
             }
+
 
         }
     }
@@ -262,14 +263,6 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                         }
                         myDataBeansMyAssets.clear()
                         item.data.isMyToken = 1
-                        myDataBeansMyAssets.add(item.data)
-                        recommendTokenAdapter.remove(item)
-                        recommendTokenAdapter.notifyDataSetChanged()
-                        ArrayList<SimpleRecyclerItem>().apply {
-                            myDataBeansMyAssets.forEach { o -> this.add(UnAddTokenItem(o)) }
-                            trimDuplicate(this)
-                            adapter.addAll(this.toList())
-                        }
                         RxBus.emitEvent(Pie.EVENT_ADD_TOKEN, item.data)
                     }
                     is UnAddTokenItem -> {//减到代币到我的
@@ -280,13 +273,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                         item.data.isMyToken = 0
                         RxBus.emitEvent(Pie.EVENT_ADD_TOKEN, item.data)
                         myDataBeansMyAssets.add(item.data)
-                        adapter.remove(item)
-                        adapter.notifyDataSetChanged()
-                        ArrayList<SimpleRecyclerItem>().apply {
-                            myDataBeansMyAssets.forEach { o -> this.add(AddTokenItem(o)) }
-                            trimDuplicate(this)
-                            recommendTokenAdapter.addAll(this.toList())
-                        }
+
                     }
                 }
             }
