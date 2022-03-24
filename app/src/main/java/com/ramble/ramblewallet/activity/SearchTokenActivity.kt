@@ -3,7 +3,6 @@ package com.ramble.ramblewallet.activity
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
@@ -30,9 +29,6 @@ import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.QuickItemDecoration
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
-import io.reactivex.ObservableOnSubscribe
 import java.util.*
 
 /**
@@ -58,6 +54,11 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initView() {
+        wallet =
+            Gson().fromJson(
+                SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+                object : TypeToken<Wallet>() {}.type
+            )
         LinearLayoutManager(this).apply {
             binding.rvTokenManageCurrency.layoutManager = this
         }
@@ -79,22 +80,6 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("CheckResult")
     private fun searchData(condition: String) {
-        myDataBeansMyAssets = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
-            object : TypeToken<ArrayList<StoreInfo>>() {}.type
-        )
-        var list = myDataBeansMyAssets.iterator()
-        list.forEach {
-            if (it.isMyToken == 0) {
-                list.remove()
-            }
-        }
-        wallet =
-            Gson().fromJson(
-                SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
-                object : TypeToken<Wallet>() {}.type
-            )
-
         var req = StoreInfo.Req()
         req.condition = "symbol"
         req.symbol = condition
