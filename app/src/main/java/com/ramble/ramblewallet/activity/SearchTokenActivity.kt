@@ -129,7 +129,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
                                 if (bean.id == 825 && bean.symbol == "USDT"){
                                     info.isMyToken = 2
                                 } else {
-                                    info.isMyToken = 1
+                                    info.isMyToken = bean.isMyToken
                                 }
                             }
                         }
