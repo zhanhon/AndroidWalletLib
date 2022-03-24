@@ -96,6 +96,17 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                     Collections.swap(myStores, srcPosition, targetPosition)
                     // 更新UI中的Item的位置，主要是给用户看到交互效果
                     adapter.notifyItemMoved(srcPosition, targetPosition)
+                    myAllToken.forEach {
+                        if (it.myCurrency == walletSelleted.address) {
+                            it.storeInfos = myStores
+                        }
+                    }
+                    SharedPreferencesUtils.saveString(
+                        this@TokenManageActivity,
+                        TOKEN_INFO_NO,
+                        Gson().toJson(myAllToken)
+                    )
+                    RxBus.emitEvent(Pie.EVENT_DEL_TOKEN, saveList)
                     return true
                 }
                 return false
