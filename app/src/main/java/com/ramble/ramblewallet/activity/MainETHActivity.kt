@@ -568,14 +568,10 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 
         var list: ArrayList<String> = arrayListOf()
         list.add("ETH")
-        val lists = saveTokenList.iterator()
-        lists.forEach {
-            if (it.isMyToken == 0) {
-                lists.remove()
-            }
-        }
         saveTokenList.forEach {
-            list.add(it.symbol)
+            if (it.isMyToken != 0) {
+                list.add(it.symbol)
+            }
         }
         var req = StoreInfo.Req()
         req.list = list
