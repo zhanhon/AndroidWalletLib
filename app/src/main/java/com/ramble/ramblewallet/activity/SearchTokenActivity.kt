@@ -111,11 +111,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
                     data.forEach { info ->
                         myDataBeansMyAssets.forEach { bean ->
                             if (info.id == bean.id) {
-                                if (bean.id == 825 && bean.symbol == "USDT"){
-                                    info.isMyToken = 2
-                                } else {
-                                    info.isMyToken = bean.isMyToken
-                                }
+                                info.isMyToken = bean.isMyToken
                             }
                         }
                     }
