@@ -11,7 +11,6 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.QueryFaqInfos
 import com.ramble.ramblewallet.constant.*
-import com.ramble.ramblewallet.databinding.ActivityHelpBinding
 import com.ramble.ramblewallet.databinding.ActivityHelpFaqBinding
 import com.ramble.ramblewallet.helper.getExtras
 import com.ramble.ramblewallet.helper.start

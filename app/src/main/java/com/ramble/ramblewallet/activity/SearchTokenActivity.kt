@@ -111,7 +111,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
                     data.forEach { info ->
                         myDataBeansMyAssets.forEach { bean ->
                             if (info.id == bean.id) {
-                                if (bean.id == 825 && bean.symbol == "USDT"){
+                                if (bean.id == 825 && bean.symbol == "USDT") {
                                     info.isMyToken = 2
                                 } else {
                                     info.isMyToken = bean.isMyToken
@@ -162,7 +162,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
                     item.isMyToken = 1
                 } else if (item.isMyToken == 1) {
                     item.isMyToken = 0
-                }else{
+                } else {
                     return
                 }
                 adapter.notifyItemChanged(position)
