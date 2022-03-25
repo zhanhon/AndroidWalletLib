@@ -361,7 +361,11 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     object : TypeToken<ArrayList<Wallet>>() {}.type
                 )
         }
-        walletETH.index = saveWalletList[0].index + 1
+        if (saveWalletList.size == 0) {
+            walletETH.index = 0
+        } else {
+            walletETH.index = saveWalletList[0].index + 1
+        }
         saveWalletList.add(walletETH)
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
@@ -492,7 +496,11 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     object : TypeToken<ArrayList<Wallet>>() {}.type
                 )
         }
-        walletTRX.index = saveWalletList[0].index + 1
+        if (saveWalletList.size == 0) {
+            walletTRX.index = 0
+        } else {
+            walletTRX.index = saveWalletList[0].index + 1
+        }
         saveWalletList.add(walletTRX)
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
@@ -560,7 +568,11 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                     object : TypeToken<ArrayList<Wallet>>() {}.type
                 )
         }
-        walletBTC.index = saveWalletList[0].index + 1
+        if (saveWalletList.size == 0) {
+            walletBTC.index = 0
+        } else {
+            walletBTC.index = saveWalletList[0].index + 1
+        }
         saveWalletList.add(walletBTC)
         println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
