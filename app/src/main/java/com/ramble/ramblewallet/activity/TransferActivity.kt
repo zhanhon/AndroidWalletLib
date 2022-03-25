@@ -125,17 +125,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.iv_back -> {
-                when (walletSelleted.walletType) {
-                    1 -> {
-                        start(MainETHActivity::class.java)
-                    }
-                    2 -> {
-                        start(MainTRXActivity::class.java)
-                    }
-                    3 -> {
-                        start(MainBTCActivity::class.java)
-                    }
-                }
+                backChoosePurpose()
             }
             R.id.iv_transfer_scan -> {
                 start(ScanActivity::class.java, Bundle().also {
@@ -150,74 +140,97 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 })
             }
             R.id.cl_miner_fee -> {
-                when (walletSelleted.walletType) {
-                    1 -> {
-                        showEthDialog()
-                    }
-                    3 -> {
-                        showBtcDialog()
-                    }
-                }
+                showMinerFeeDialog()
             }
             R.id.tv_select_all -> {
                 binding.edtInputQuantity.setText(DecimalFormatUtil.format(transferBalance, 8))
             }
             R.id.btn_confirm -> {
-                if (BigDecimal(binding.edtInputQuantity.text.trim().toString()).compareTo(
-                        transferBalance
-                    ) == 1
-                ) {
-                    ToastUtils.showToastFree(this, getString(R.string.balance_insufficient))
-                    return
-                }
-                when (walletSelleted.walletType) { //链类型|1:ETH|2:TRX|3:BTC
-                    1 -> {
-                        if (!WalletETHUtils.isEthValidAddress(binding.edtReceiverAddress.text.toString())) {
-                            ToastUtils.showToastFree(this, getString(R.string.address_already_err))
-                            return
-                        }
-                    }
-                    2 -> {
-                        if (!WalletTRXUtils.isTrxValidAddress(binding.edtReceiverAddress.text.toString())) {
-                            ToastUtils.showToastFree(this, getString(R.string.address_already_err))
-                            return
-                        }
-                        if (isToken) {
-                            isAddressActivateToken(
-                                this,
-                                binding.edtReceiverAddress.text.toString(),
-                                tokenBean.contractAddress
-                            )
-                        } else {
-                            isAddressActivate(this, binding.edtReceiverAddress.text.toString())
-                        }
-                    }
-                    3 -> {
-                        if (!WalletBTCUtils.isBtcValidAddress(binding.edtReceiverAddress.text.toString())) {
-                            ToastUtils.showToastFree(this, getString(R.string.address_already_err))
-                            return
-                        }
-                        if (BigDecimal(binding.edtInputQuantity.text.toString()).compareTo(
-                                BigDecimal("0.0001")
-                            ) == -1
-                        ) {
-                            ToastUtils.showToastFree(
-                                this,
-                                getString(R.string.btc_minimum_amount_prompt)
-                            )
-                            return
-                        }
-                    }
-                }
-                if (StrUtil.equalsIgnoreCase(
-                        binding.tvWalletAddress.text.toString(),
-                        binding.edtReceiverAddress.text.toString()
-                    )
-                ) {
-                    ToastUtils.showToastFree(this, getString(R.string.repeat_address))
-                    return
-                }
+                if (confirmValidForTransfer()) return
                 transactionConfirmationDialog()
+            }
+        }
+    }
+
+    private fun confirmValidForTransfer(): Boolean {
+        if (BigDecimal(binding.edtInputQuantity.text.trim().toString()).compareTo(
+                transferBalance
+            ) == 1
+        ) {
+            ToastUtils.showToastFree(this, getString(R.string.balance_insufficient))
+            return true
+        }
+        when (walletSelleted.walletType) { //链类型|1:ETH|2:TRX|3:BTC
+            1 -> {
+                if (!WalletETHUtils.isEthValidAddress(binding.edtReceiverAddress.text.toString())) {
+                    ToastUtils.showToastFree(this, getString(R.string.address_already_err))
+                    return true
+                }
+            }
+            2 -> {
+                if (!WalletTRXUtils.isTrxValidAddress(binding.edtReceiverAddress.text.toString())) {
+                    ToastUtils.showToastFree(this, getString(R.string.address_already_err))
+                    return true
+                }
+                if (isToken) {
+                    isAddressActivateToken(
+                        this,
+                        binding.edtReceiverAddress.text.toString(),
+                        tokenBean.contractAddress
+                    )
+                } else {
+                    isAddressActivate(this, binding.edtReceiverAddress.text.toString())
+                }
+            }
+            3 -> {
+                if (!WalletBTCUtils.isBtcValidAddress(binding.edtReceiverAddress.text.toString())) {
+                    ToastUtils.showToastFree(this, getString(R.string.address_already_err))
+                    return true
+                }
+                if (BigDecimal(binding.edtInputQuantity.text.toString()).compareTo(
+                        BigDecimal("0.0001")
+                    ) == -1
+                ) {
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.btc_minimum_amount_prompt)
+                    )
+                    return true
+                }
+            }
+        }
+        if (StrUtil.equalsIgnoreCase(
+                binding.tvWalletAddress.text.toString(),
+                binding.edtReceiverAddress.text.toString()
+            )
+        ) {
+            ToastUtils.showToastFree(this, getString(R.string.repeat_address))
+            return true
+        }
+        return false
+    }
+
+    private fun showMinerFeeDialog() {
+        when (walletSelleted.walletType) {
+            1 -> {
+                showEthDialog()
+            }
+            3 -> {
+                showBtcDialog()
+            }
+        }
+    }
+
+    private fun backChoosePurpose() {
+        when (walletSelleted.walletType) {
+            1 -> {
+                start(MainETHActivity::class.java)
+            }
+            2 -> {
+                start(MainTRXActivity::class.java)
+            }
+            3 -> {
+                start(MainBTCActivity::class.java)
             }
         }
     }
@@ -266,51 +279,10 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
         when (walletSelleted.walletType) {  //链类型|1:ETH|2:TRX|3:BTC
             1 -> {
-                mApiService.getEthMinerConfig(
-                    EthMinerConfig.Req(transferTitle).toApiRequest(getEthMinerConfigUrl)
-                ).applyIo().subscribe(
-                    {
-                        if (it.code() == 1) {
-                            it.data()?.let { data ->
-                                gasLimit = data.gasLimit
-                                fastGasPrice = data.fastGasPrice
-                                slowGasPrice = data.slowGasPrice
-
-                                //默认
-                                gasPrice = fastGasPrice
-                                setEthMinerFee()
-                            }
-                        } else {
-                            println("-=-=-=->ETH:${it.message()}")
-                        }
-                    }, {
-                        println("-=-=-=->ETH:${it.printStackTrace()}")
-                    }
-                )
+                initEthMinerFee()
             }
             3 -> {
-                mApiService.getBtcMinerConfig(
-                    BtcMinerConfig.Req().toApiRequest(getBtcMinerConfigUrl)
-                ).applyIo().subscribe(
-                    {
-                        if (it.code() == 1) {
-                            it.data()?.let { data ->
-                                btcFeeFast = data.fastestFee
-                                btcFeeSlow = data.generalFee
-
-                                //默认
-                                btcFee = btcFeeFast
-                                if (!btcFee.isNullOrEmpty()) {
-                                    setBtcMinerFee()
-                                }
-                            }
-                        } else {
-                            println("-=-=-=->BTC:${it.message()}")
-                        }
-                    }, {
-                        println("-=-=-=->BTC:${it.printStackTrace()}")
-                    }
-                )
+                initBtcMiner()
             }
         }
 
@@ -362,38 +334,19 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         binding.tvTransferTitle.text = transferTitle + " " + getString(R.string.transfer)
         binding.tvQuantityBalance.text =
             getString(R.string.transfer_balance) + " " + "0" + " " + transferUnit
+        initBalanceForTransfer()
+    }
+
+    private fun initBalanceForTransfer() {
         when (walletSelleted.walletType) {
             1 -> {
                 if (WalletETHUtils.isEthValidAddress(walletSelleted.address)) {
-                    if (isToken) {
-                        Thread {
-                            transferBalance =
-                                getBalanceToken(walletSelleted.address, tokenBean)
-                            if (transferBalance != BigDecimal("0")) {
-                                setBalanceView(transferBalance)
-                            }
-                        }.start()
-                    } else {
-                        Thread {
-                            transferBalance = getBalanceETH(walletSelleted.address)
-                            if (transferBalance != BigDecimal("0")) {
-                                setBalanceView(transferBalance)
-                            }
-                        }.start()
-                    }
+                    initBalanceForEth()
                 }
             }
             2 -> {
                 if (WalletTRXUtils.isTrxValidAddress(walletSelleted.address)) {
-                    if (isToken) {
-                        balanceOfTrc20(
-                            this,
-                            walletSelleted.address,
-                            tokenBean.contractAddress
-                        )
-                    } else {
-                        balanceOfTrx(this, walletSelleted.address)
-                    }
+                    initBalanceForTrx()
                 }
             }
             3 -> {
@@ -402,6 +355,86 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    private fun initBalanceForTrx() {
+        if (isToken) {
+            balanceOfTrc20(
+                this,
+                walletSelleted.address,
+                tokenBean.contractAddress
+            )
+        } else {
+            balanceOfTrx(this, walletSelleted.address)
+        }
+    }
+
+    private fun initBalanceForEth() {
+        if (isToken) {
+            Thread {
+                transferBalance =
+                    getBalanceToken(walletSelleted.address, tokenBean)
+                if (transferBalance != BigDecimal("0")) {
+                    setBalanceView(transferBalance)
+                }
+            }.start()
+        } else {
+            Thread {
+                transferBalance = getBalanceETH(walletSelleted.address)
+                if (transferBalance != BigDecimal("0")) {
+                    setBalanceView(transferBalance)
+                }
+            }.start()
+        }
+    }
+
+    private fun initBtcMiner() {
+        mApiService.getBtcMinerConfig(
+            BtcMinerConfig.Req().toApiRequest(getBtcMinerConfigUrl)
+        ).applyIo().subscribe(
+            {
+                if (it.code() == 1) {
+                    it.data()?.let { data ->
+                        btcFeeFast = data.fastestFee
+                        btcFeeSlow = data.generalFee
+
+                        //默认
+                        btcFee = btcFeeFast
+                        if (!btcFee.isNullOrEmpty()) {
+                            setBtcMinerFee()
+                        }
+                    }
+                } else {
+                    println("-=-=-=->BTC:${it.message()}")
+                }
+            }, {
+                println("-=-=-=->BTC:${it.printStackTrace()}")
+            }
+        )
+    }
+
+    private fun initEthMinerFee() {
+        mApiService.getEthMinerConfig(
+            EthMinerConfig.Req(transferTitle).toApiRequest(getEthMinerConfigUrl)
+        ).applyIo().subscribe(
+            {
+                if (it.code() == 1) {
+                    it.data()?.let { data ->
+                        gasLimit = data.gasLimit
+                        fastGasPrice = data.fastGasPrice
+                        slowGasPrice = data.slowGasPrice
+
+                        //默认
+                        gasPrice = fastGasPrice
+                        setEthMinerFee()
+                    }
+                } else {
+                    println("-=-=-=->ETH:${it.message()}")
+                }
+            }, {
+                println("-=-=-=->ETH:${it.printStackTrace()}")
+            }
+        )
     }
 
     fun isTrxAddressActivate(isAddressActivate: Boolean) {
@@ -824,33 +857,41 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 setEthMinerFee()
                 dialog.dismiss()
                 if (isToken) {
-                    if ((BigDecimal(gasPrice) < BigDecimal("60"))
-                        || (BigDecimal(gasLimit) < BigDecimal("62000"))
-                    ) {
-                        transactionFailDialog(getString(R.string.miner_fee_low_tips))
-                        return@setOnClickListener
-                    }
-                    if ((BigDecimal(gasPrice) > BigDecimal("300"))
-                        || (BigDecimal(gasLimit) > BigDecimal("100000"))
-                    ) {
-                        transactionFailDialog(getString(R.string.miner_fee_high_tips))
-                        return@setOnClickListener
-                    }
+                    tokenFeeTipsLogic()
                 } else {
-                    if ((BigDecimal(gasPrice) < BigDecimal("60"))
-                        || (BigDecimal(gasLimit) < BigDecimal("21000"))
-                    ) {
-                        transactionFailDialog(getString(R.string.miner_fee_low_tips))
-                        return@setOnClickListener
-                    }
-                    if ((BigDecimal(gasPrice) > BigDecimal("300"))
-                        || (BigDecimal(gasLimit) > BigDecimal("26000"))
-                    ) {
-                        transactionFailDialog(getString(R.string.miner_fee_high_tips))
-                        return@setOnClickListener
-                    }
+                    mainFeeTipsLogic()
                 }
             }
+        }
+    }
+
+    private fun mainFeeTipsLogic() {
+        if ((BigDecimal(gasPrice) < BigDecimal("60"))
+            || (BigDecimal(gasLimit) < BigDecimal("21000"))
+        ) {
+            transactionFailDialog(getString(R.string.miner_fee_low_tips))
+            return
+        }
+        if ((BigDecimal(gasPrice) > BigDecimal("300"))
+            || (BigDecimal(gasLimit) > BigDecimal("26000"))
+        ) {
+            transactionFailDialog(getString(R.string.miner_fee_high_tips))
+            return
+        }
+    }
+
+    private fun tokenFeeTipsLogic() {
+        if ((BigDecimal(gasPrice) < BigDecimal("60"))
+            || (BigDecimal(gasLimit) < BigDecimal("62000"))
+        ) {
+            transactionFailDialog(getString(R.string.miner_fee_low_tips))
+            return
+        }
+        if ((BigDecimal(gasPrice) > BigDecimal("300"))
+            || (BigDecimal(gasLimit) > BigDecimal("100000"))
+        ) {
+            transactionFailDialog(getString(R.string.miner_fee_high_tips))
+            return
         }
     }
 
