@@ -44,175 +44,146 @@
             android:name=".activity.WalletMoreOperateActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.AddTokenActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.TokenManageActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.TokenActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SearchTokenActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.RecoverWalletListActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.GatheringActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.TransferActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.NewAddActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.WalletManageActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.AddressBookActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ScanActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MineActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MessageCenterActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MsgDetailsActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.HelpActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.HelpFaqActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.DealDetailActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.TransactionQueryActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MnemonicConfirmActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MnemonicActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".base.BaseActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.RecoverWalletActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.CreateWalletActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.CreateRecoverWalletActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.CreateWalletListActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MainETHActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MainTRXActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MainBTCActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <meta-data

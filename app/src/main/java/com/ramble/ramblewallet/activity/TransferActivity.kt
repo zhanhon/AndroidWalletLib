@@ -125,7 +125,17 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.iv_back -> {
-                finish()
+                when (walletSelleted.walletType) {
+                    1 -> {
+                        start(MainETHActivity::class.java)
+                    }
+                    2 -> {
+                        start(MainTRXActivity::class.java)
+                    }
+                    3 -> {
+                        start(MainBTCActivity::class.java)
+                    }
+                }
             }
             R.id.iv_transfer_scan -> {
                 start(ScanActivity::class.java, Bundle().also {
