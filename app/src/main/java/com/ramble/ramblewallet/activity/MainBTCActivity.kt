@@ -28,6 +28,7 @@ import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.balanceOfBtc
 import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainBtcBinding
+import com.ramble.ramblewallet.network.ApiResponse
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -115,72 +116,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
             ).applyIo().subscribe(
                 {
                     if (it.code() == 1) {
-                        it.data()?.let { data ->
-                            println("==================>getTransferInfo:${data}")
-
-                            data.records.forEach { item ->
-                                var read: ArrayList<Int> = Gson().fromJson(
-                                    SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
-                                    object : TypeToken<ArrayList<Int>>() {}.type
-                                )
-                                if (read.contains(item.id)
-                                ) {
-                                    item.isRead = 1
-                                } else {
-                                    item.isRead = 0
-                                    redList.add(item)
-                                }
-                            }
-                            records2 = if (SharedPreferencesUtils.getString(
-                                    this,
-                                    STATION_INFO,
-                                    ""
-                                ).isNotEmpty()
-                            ) {
-                                Gson().fromJson(
-                                    SharedPreferencesUtils.getString(this, STATION_INFO, ""),
-                                    object : TypeToken<ArrayList<Page.Record>>() {}.type
-                                )
-
-                            } else {
-                                arrayListOf()
-                            }
-                            if (records2.isNotEmpty()) {
-
-                                records2.forEach { item ->
-                                    if (SharedPreferencesUtils.getString(
-                                            this,
-                                            READ_ID,
-                                            ""
-                                        ).isNotEmpty()
-                                    ) {
-                                        var read: ArrayList<Int> = Gson().fromJson(
-                                            SharedPreferencesUtils.getString(this, READ_ID, ""),
-                                            object : TypeToken<ArrayList<Int>>() {}.type
-                                        )
-                                        if (read.contains(item.id)
-                                        ) {
-                                            item.isRead = 1
-                                        } else {
-                                            item.isRead = 0
-                                            redList.add(item)
-                                        }
-
-                                    } else {
-                                        item.isRead = 0
-                                        redList.add(item)
-                                    }
-
-                                }
-
-
-                            }
-                            if (redList.isNotEmpty()) {
-                                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
-                            } else {
-                                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center)
-                            }
-                        }
+                        redPointBtcHandle(it, redList, records2)
                     } else {
                         println("==================>getTransferInfo1:${it.message()}")
                     }
@@ -194,6 +130,81 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
             binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
         }
 
+    }
+
+    private fun redPointBtcHandle(
+        it: ApiResponse<Page>,
+        redList: ArrayList<Page.Record>,
+        records2: ArrayList<Page.Record>
+    ) {
+        var records21 = records2
+        it.data()?.let { data ->
+            println("==================>getTransferInfo:${data}")
+            data.records.forEach { item ->
+                var read: ArrayList<Int> = Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
+                    object : TypeToken<ArrayList<Int>>() {}.type
+                )
+                if (read.contains(item.id)
+                ) {
+                    item.isRead = 1
+                } else {
+                    item.isRead = 0
+                    redList.add(item)
+                }
+            }
+            records21 = if (SharedPreferencesUtils.getString(
+                    this,
+                    STATION_INFO,
+                    ""
+                ).isNotEmpty()
+            ) {
+                Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, STATION_INFO, ""),
+                    object : TypeToken<ArrayList<Page.Record>>() {}.type
+                )
+
+            } else {
+                arrayListOf()
+            }
+            redPointEthHandleSub(records21, redList)
+            if (redList.isNotEmpty()) {
+                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
+            } else {
+                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center)
+            }
+        }
+    }
+
+    private fun redPointEthHandleSub(
+        records21: ArrayList<Page.Record>,
+        redList: ArrayList<Page.Record>
+    ) {
+        if (records21.isNotEmpty()) {
+            records21.forEach { item ->
+                if (SharedPreferencesUtils.getString(
+                        this,
+                        READ_ID,
+                        ""
+                    ).isNotEmpty()
+                ) {
+                    var read: ArrayList<Int> = Gson().fromJson(
+                        SharedPreferencesUtils.getString(this, READ_ID, ""),
+                        object : TypeToken<ArrayList<Int>>() {}.type
+                    )
+                    if (read.contains(item.id)
+                    ) {
+                        item.isRead = 1
+                    } else {
+                        item.isRead = 0
+                        redList.add(item)
+                    }
+                } else {
+                    item.isRead = 0
+                    redList.add(item)
+                }
+            }
+        }
     }
 
 
@@ -434,40 +445,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         req.platformId = 1 //BTC 1,ETH 1027,TRX 1958
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
-                it.data()?.let { data ->
-                    mainETHTokenBean.clear()
-                    totalBalance = BigDecimal("0.00")
-                    data.forEach { storeInfo ->
-                        storeInfo.quote.forEach { quote ->
-                            if (quote.symbol == currencyUnit) {
-                                unitPrice = quote.price
-                            }
-                        }
-                        if (storeInfo.symbol == "BTC") {
-                            mainETHTokenBean.add(
-                                MainETHTokenBean(
-                                    "BTC",
-                                    storeInfo.symbol,
-                                    btcBalance,
-                                    unitPrice,
-                                    currencyUnit,
-                                    null,
-                                    0,
-                                    false
-                                )
-                            )
-                            totalBalance += btcBalance.multiply(BigDecimal(unitPrice))
-                        }
-                        mainAdapter = MainAdapter(mainETHTokenBean)
-                        binding.rvCurrency.adapter = mainAdapter
-                        mainAdapter.setOnItemClickListener { adapter, _, position ->
-                            if (adapter.getItem(position) is MainETHTokenBean) {
-                                showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
-                            }
-                        }
-                    }
-                    setBalanceBTC(totalBalance)
-                }
+                btcHomeDataHandle(it)
             } else {
                 println("-=-=-=->BTC${it.message()}")
             }
@@ -478,5 +456,42 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
             binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         })
+    }
+
+    private fun btcHomeDataHandle(it: ApiResponse<List<StoreInfo>>) {
+        it.data()?.let { data ->
+            mainETHTokenBean.clear()
+            totalBalance = BigDecimal("0.00")
+            data.forEach { storeInfo ->
+                storeInfo.quote.forEach { quote ->
+                    if (quote.symbol == currencyUnit) {
+                        unitPrice = quote.price
+                    }
+                }
+                if (storeInfo.symbol == "BTC") {
+                    mainETHTokenBean.add(
+                        MainETHTokenBean(
+                            "BTC",
+                            storeInfo.symbol,
+                            btcBalance,
+                            unitPrice,
+                            currencyUnit,
+                            null,
+                            0,
+                            false
+                        )
+                    )
+                    totalBalance += btcBalance.multiply(BigDecimal(unitPrice))
+                }
+                mainAdapter = MainAdapter(mainETHTokenBean)
+                binding.rvCurrency.adapter = mainAdapter
+                mainAdapter.setOnItemClickListener { adapter, _, position ->
+                    if (adapter.getItem(position) is MainETHTokenBean) {
+                        showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
+                    }
+                }
+            }
+            setBalanceBTC(totalBalance)
+        }
     }
 }

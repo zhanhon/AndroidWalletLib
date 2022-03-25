@@ -27,6 +27,7 @@ import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
 import com.ramble.ramblewallet.ethereum.TransferEthUtils
 import com.ramble.ramblewallet.ethereum.TransferEthUtils.getBalanceETH
 import com.ramble.ramblewallet.ethereum.WalletETHUtils
+import com.ramble.ramblewallet.network.ApiResponse
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -234,80 +235,14 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             var redList: ArrayList<Page.Record> = arrayListOf()
-            var records2: ArrayList<Page.Record>
+            var records2: ArrayList<Page.Record> = arrayListOf()
             var req = Page.Req(1, 1000, lang)
             mApiService.getNotice(
                 req.toApiRequest(noticeInfoUrl)
             ).applyIo().subscribe(
                 {
                     if (it.code() == 1) {
-                        it.data()?.let { data ->
-                            println("==================>getTransferInfo:${data}")
-
-                            data.records.forEach { item ->
-                                var read: ArrayList<Int> = Gson().fromJson(
-                                    SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
-                                    object : TypeToken<ArrayList<Int>>() {}.type
-                                )
-                                if (read.contains(item.id)
-                                ) {
-                                    item.isRead = 1
-                                } else {
-                                    item.isRead = 0
-                                    redList.add(item)
-                                }
-                            }
-                            records2 = if (SharedPreferencesUtils.getString(
-                                    this,
-                                    STATION_INFO,
-                                    ""
-                                ).isNotEmpty()
-                            ) {
-                                Gson().fromJson(
-                                    SharedPreferencesUtils.getString(this, STATION_INFO, ""),
-                                    object : TypeToken<ArrayList<Page.Record>>() {}.type
-                                )
-
-
-                            } else {
-                                arrayListOf()
-                            }
-                            if (records2.isNotEmpty()) {
-
-                                records2.forEach { item ->
-                                    if (SharedPreferencesUtils.getString(
-                                            this,
-                                            READ_ID,
-                                            ""
-                                        ).isNotEmpty()
-                                    ) {
-                                        var read: ArrayList<Int> = Gson().fromJson(
-                                            SharedPreferencesUtils.getString(this, READ_ID, ""),
-                                            object : TypeToken<ArrayList<Int>>() {}.type
-                                        )
-                                        if (read.contains(item.id)
-                                        ) {
-                                            item.isRead = 1
-                                        } else {
-                                            item.isRead = 0
-                                            redList.add(item)
-                                        }
-
-                                    } else {
-                                        item.isRead = 0
-                                        redList.add(item)
-                                    }
-
-                                }
-
-
-                            }
-                            if (redList.isNotEmpty()) {
-                                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
-                            } else {
-                                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center)
-                            }
-                        }
+                        redPointEthHandle(it, redList, records2)
                     } else {
                         println("==================>getTransferInfo1:${it.message()}")
                     }
@@ -321,6 +256,82 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
         }
 
+    }
+
+    private fun redPointEthHandle(
+        it: ApiResponse<Page>,
+        redList: ArrayList<Page.Record>,
+        records2: ArrayList<Page.Record>
+    ) {
+        var records21 = records2
+        it.data()?.let { data ->
+            println("==================>getTransferInfo:${data}")
+
+            data.records.forEach { item ->
+                var read: ArrayList<Int> = Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
+                    object : TypeToken<ArrayList<Int>>() {}.type
+                )
+                if (read.contains(item.id)
+                ) {
+                    item.isRead = 1
+                } else {
+                    item.isRead = 0
+                    redList.add(item)
+                }
+            }
+            records21 = if (SharedPreferencesUtils.getString(
+                    this,
+                    STATION_INFO,
+                    ""
+                ).isNotEmpty()
+            ) {
+                Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, STATION_INFO, ""),
+                    object : TypeToken<ArrayList<Page.Record>>() {}.type
+                )
+            } else {
+                arrayListOf()
+            }
+            redPointEthHandleSub(records21, redList)
+            if (redList.isNotEmpty()) {
+                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
+            } else {
+                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center)
+            }
+        }
+    }
+
+    private fun redPointEthHandleSub(
+        records21: ArrayList<Page.Record>,
+        redList: ArrayList<Page.Record>
+    ) {
+        if (records21.isNotEmpty()) {
+            records21.forEach { item ->
+                if (SharedPreferencesUtils.getString(
+                        this,
+                        READ_ID,
+                        ""
+                    ).isNotEmpty()
+                ) {
+                    var read: ArrayList<Int> = Gson().fromJson(
+                        SharedPreferencesUtils.getString(this, READ_ID, ""),
+                        object : TypeToken<ArrayList<Int>>() {}.type
+                    )
+                    if (read.contains(item.id)
+                    ) {
+                        item.isRead = 1
+                    } else {
+                        item.isRead = 0
+                        redList.add(item)
+                    }
+
+                } else {
+                    item.isRead = 0
+                    redList.add(item)
+                }
+            }
+        }
     }
 
 
@@ -579,71 +590,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         req.platformId = 1027 //BTC 1,ETH 1027,TRX 1958
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
-                it.data()?.let { data ->
-                    mainETHTokenBean.clear()
-                    totalBalance = BigDecimal("0.00")
-                    data.forEach { storeInfo ->
-                        storeInfo.quote.forEach { quote ->
-                            if (quote.symbol == currencyUnit) {
-                                unitPrice = quote.price
-                                storeInfo.price = quote.price
-                            }
-                        }
-                        if (storeInfo.symbol == "ETH") {
-                            mainETHTokenBean.add(
-                                MainETHTokenBean(
-                                    "ETH",
-                                    storeInfo.symbol,
-                                    ethBalance,
-                                    unitPrice,
-                                    currencyUnit,
-                                    null,
-                                    18,
-                                    false
-                                )
-                            )
-                            totalBalance += ethBalance.multiply(BigDecimal(unitPrice))
-                        }
-                    }
-                    data.forEach { storeInfo ->
-                        if ((storeInfo.symbol == "UNI") && (storeInfo.contractAddress != "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984")) {
-                            return@forEach
-                        }
-                        if (storeInfo.symbol == "ETH") {
-                            return@forEach
-                        }
-                        var tokenBean = MainETHTokenBean(
-                            "ETH-${storeInfo.symbol}",
-                            storeInfo.symbol,
-                            BigDecimal("0"),
-                            storeInfo.price,
-                            currencyUnit,
-                            storeInfo.contractAddress,
-                            storeInfo.decimalPoints,
-                            true
-                        )
-                        mainETHTokenBean.add(tokenBean)
-                        Thread {
-                            TransferEthUtils.getBalanceToken(walletSelleted.address, tokenBean)
-                        }.start()
-                        TransferEthUtils().setOnListener { tokenBean, tokenBalance ->
-                            postUI {
-                                tokenBean.balance = tokenBalance
-                                totalBalance += tokenBalance.multiply(BigDecimal(tokenBean.unitPrice))
-                                mainAdapter.notifyDataSetChanged()
-                                setBalanceETH(totalBalance)
-                            }
-                        }
-                    }
-                    mainAdapter = MainAdapter(mainETHTokenBean)
-                    binding.rvCurrency.adapter = mainAdapter
-                    mainAdapter.setOnItemClickListener { adapter, _, position ->
-                        if (adapter.getItem(position) is MainETHTokenBean) {
-                            showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
-                        }
-                    }
-                    setBalanceETH(totalBalance)
-                }
+                ethHomeDataHandle(it)
             } else {
                 println("-=-=-=->ETH${it.message()}")
             }
@@ -654,5 +601,77 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         })
+    }
+
+    private fun ethHomeDataHandle(it: ApiResponse<List<StoreInfo>>) {
+        it.data()?.let { data ->
+            mainETHTokenBean.clear()
+            totalBalance = BigDecimal("0.00")
+            ethHomeDataHandleSub(data)
+            mainAdapter = MainAdapter(mainETHTokenBean)
+            binding.rvCurrency.adapter = mainAdapter
+            mainAdapter.setOnItemClickListener { adapter, _, position ->
+                if (adapter.getItem(position) is MainETHTokenBean) {
+                    showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
+                }
+            }
+            setBalanceETH(totalBalance)
+        }
+    }
+
+    private fun ethHomeDataHandleSub(data: List<StoreInfo>) {
+        data.forEach { storeInfo ->
+            storeInfo.quote.forEach { quote ->
+                if (quote.symbol == currencyUnit) {
+                    unitPrice = quote.price
+                    storeInfo.price = quote.price
+                }
+            }
+            if (storeInfo.symbol == "ETH") {
+                mainETHTokenBean.add(
+                    MainETHTokenBean(
+                        "ETH",
+                        storeInfo.symbol,
+                        ethBalance,
+                        unitPrice,
+                        currencyUnit,
+                        null,
+                        18,
+                        false
+                    )
+                )
+                totalBalance += ethBalance.multiply(BigDecimal(unitPrice))
+            }
+        }
+        data.forEach { storeInfo ->
+            if ((storeInfo.symbol == "UNI") && (storeInfo.contractAddress != "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984")) {
+                return@forEach
+            }
+            if (storeInfo.symbol == "ETH") {
+                return@forEach
+            }
+            var tokenBean = MainETHTokenBean(
+                "ETH-${storeInfo.symbol}",
+                storeInfo.symbol,
+                BigDecimal("0"),
+                storeInfo.price,
+                currencyUnit,
+                storeInfo.contractAddress,
+                storeInfo.decimalPoints,
+                true
+            )
+            mainETHTokenBean.add(tokenBean)
+            Thread {
+                TransferEthUtils.getBalanceToken(walletSelleted.address, tokenBean)
+            }.start()
+            TransferEthUtils().setOnListener { tokenBean, tokenBalance ->
+                postUI {
+                    tokenBean.balance = tokenBalance
+                    totalBalance += tokenBalance.multiply(BigDecimal(tokenBean.unitPrice))
+                    mainAdapter.notifyDataSetChanged()
+                    setBalanceETH(totalBalance)
+                }
+            }
+        }
     }
 }

@@ -26,6 +26,7 @@ import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainTrxBinding
+import com.ramble.ramblewallet.network.ApiResponse
 import com.ramble.ramblewallet.network.getStoreUrl
 import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -102,79 +103,14 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             var redList: ArrayList<Page.Record> = arrayListOf()
-            var records2: ArrayList<Page.Record>
+            var records2: ArrayList<Page.Record> = arrayListOf()
             var req = Page.Req(1, 1000, lang)
             mApiService.getNotice(
                 req.toApiRequest(noticeInfoUrl)
             ).applyIo().subscribe(
                 {
                     if (it.code() == 1) {
-                        it.data()?.let { data ->
-                            println("==================>getTransferInfo:${data}")
-
-                            data.records.forEach { item ->
-                                var read: ArrayList<Int> = Gson().fromJson(
-                                    SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
-                                    object : TypeToken<ArrayList<Int>>() {}.type
-                                )
-                                if (read.contains(item.id)
-                                ) {
-                                    item.isRead = 1
-                                } else {
-                                    item.isRead = 0
-                                    redList.add(item)
-                                }
-                            }
-                            records2 = if (SharedPreferencesUtils.getString(
-                                    this,
-                                    STATION_INFO,
-                                    ""
-                                ).isNotEmpty()
-                            ) {
-                                Gson().fromJson(
-                                    SharedPreferencesUtils.getString(this, STATION_INFO, ""),
-                                    object : TypeToken<ArrayList<Page.Record>>() {}.type
-                                )
-
-                            } else {
-                                arrayListOf()
-                            }
-                            if (records2.isNotEmpty()) {
-
-                                records2.forEach { item ->
-                                    if (SharedPreferencesUtils.getString(
-                                            this,
-                                            READ_ID,
-                                            ""
-                                        ).isNotEmpty()
-                                    ) {
-                                        var read: ArrayList<Int> = Gson().fromJson(
-                                            SharedPreferencesUtils.getString(this, READ_ID, ""),
-                                            object : TypeToken<ArrayList<Int>>() {}.type
-                                        )
-                                        if (read.contains(item.id)
-                                        ) {
-                                            item.isRead = 1
-                                        } else {
-                                            item.isRead = 0
-                                            redList.add(item)
-                                        }
-
-                                    } else {
-                                        item.isRead = 0
-                                        redList.add(item)
-                                    }
-
-                                }
-
-
-                            }
-                            if (redList.isNotEmpty()) {
-                                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
-                            } else {
-                                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center)
-                            }
-                        }
+                        redPointHandle(it, redList, records2)
                     } else {
                         println("==================>getTransferInfo1:${it.message()}")
                     }
@@ -188,6 +124,81 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
         }
 
+    }
+
+    private fun redPointHandle(
+        it: ApiResponse<Page>,
+        redList: ArrayList<Page.Record>,
+        records2: ArrayList<Page.Record>
+    ) {
+        var records21 = records2
+        it.data()?.let { data ->
+            println("==================>getTransferInfo:${data}")
+            data.records.forEach { item ->
+                var read: ArrayList<Int> = Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
+                    object : TypeToken<ArrayList<Int>>() {}.type
+                )
+                if (read.contains(item.id)
+                ) {
+                    item.isRead = 1
+                } else {
+                    item.isRead = 0
+                    redList.add(item)
+                }
+            }
+            records21 = if (SharedPreferencesUtils.getString(
+                    this,
+                    STATION_INFO,
+                    ""
+                ).isNotEmpty()
+            ) {
+                Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, STATION_INFO, ""),
+                    object : TypeToken<ArrayList<Page.Record>>() {}.type
+                )
+
+            } else {
+                arrayListOf()
+            }
+            redPointHandleSub(records21, redList)
+            if (redList.isNotEmpty()) {
+                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
+            } else {
+                binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center)
+            }
+        }
+    }
+
+    private fun redPointHandleSub(
+        records21: ArrayList<Page.Record>,
+        redList: ArrayList<Page.Record>
+    ) {
+        if (records21.isNotEmpty()) {
+            records21.forEach { item ->
+                if (SharedPreferencesUtils.getString(
+                        this,
+                        READ_ID,
+                        ""
+                    ).isNotEmpty()
+                ) {
+                    var read: ArrayList<Int> = Gson().fromJson(
+                        SharedPreferencesUtils.getString(this, READ_ID, ""),
+                        object : TypeToken<ArrayList<Int>>() {}.type
+                    )
+                    if (read.contains(item.id)
+                    ) {
+                        item.isRead = 1
+                    } else {
+                        item.isRead = 0
+                        redList.add(item)
+                    }
+                } else {
+                    item.isRead = 0
+                    redList.add(item)
+                }
+            }
+        }
     }
 
     override fun onRxBus(event: RxBus.Event) {
@@ -444,62 +455,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
         req.platformId = 1958 //BTC 1,ETH 1027,TRX 1958
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
-                it.data()?.let { data ->
-                    mainETHTokenBean.clear()
-                    totalBalance = BigDecimal("0.00")
-                    data.forEach { storeInfo ->
-                        storeInfo.quote.forEach { quote ->
-                            if (quote.symbol == currencyUnit) {
-                                unitPrice = quote.price
-                            }
-                        }
-                        if (storeInfo.symbol == "TRX") {
-                            mainETHTokenBean.add(
-                                MainETHTokenBean(
-                                    "TRX",
-                                    storeInfo.symbol,
-                                    trxBalance,
-                                    unitPrice,
-                                    currencyUnit,
-                                    null,
-                                    0,
-                                    false
-                                )
-                            )
-                            totalBalance += trxBalance.multiply(BigDecimal(unitPrice))
-                        }
-                    }
-                    data.forEach { storeInfo ->
-                        storeInfo.quote.forEach { quote ->
-                            if (quote.symbol == currencyUnit) {
-                                unitPrice = quote.price
-                            }
-                        }
-                        if (storeInfo.symbol != "TRX") {
-                            mainETHTokenBean.add(
-                                MainETHTokenBean(
-                                    "TRX-${storeInfo.symbol}",
-                                    storeInfo.symbol,
-                                    if (storeInfo.symbol == "USDT") tokenBalance else BigDecimal("0"),
-                                    unitPrice,
-                                    currencyUnit,
-                                    contractAddress,
-                                    0,
-                                    true
-                                )
-                            )
-                            totalBalance += tokenBalance.multiply(BigDecimal(unitPrice))
-                        }
-                    }
-                    mainAdapter = MainAdapter(mainETHTokenBean)
-                    binding.rvCurrency.adapter = mainAdapter
-                    mainAdapter.setOnItemClickListener { adapter, _, position ->
-                        if (adapter.getItem(position) is MainETHTokenBean) {
-                            showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
-                        }
-                    }
-                    setBalanceTRX(totalBalance)
-                }
+                trxHomeDataHandle(it)
             } else {
                 println("-=-=-=->ETH${it.message()}")
             }
@@ -510,5 +466,68 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         })
+    }
+
+    private fun trxHomeDataHandle(it: ApiResponse<List<StoreInfo>>) {
+        it.data()?.let { data ->
+            mainETHTokenBean.clear()
+            totalBalance = BigDecimal("0.00")
+            trxHomeDataHandleSub(data)
+            mainAdapter = MainAdapter(mainETHTokenBean)
+            binding.rvCurrency.adapter = mainAdapter
+            mainAdapter.setOnItemClickListener { adapter, _, position ->
+                if (adapter.getItem(position) is MainETHTokenBean) {
+                    showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
+                }
+            }
+            setBalanceTRX(totalBalance)
+        }
+    }
+
+    private fun trxHomeDataHandleSub(data: List<StoreInfo>) {
+        data.forEach { storeInfo ->
+            storeInfo.quote.forEach { quote ->
+                if (quote.symbol == currencyUnit) {
+                    unitPrice = quote.price
+                }
+            }
+            if (storeInfo.symbol == "TRX") {
+                mainETHTokenBean.add(
+                    MainETHTokenBean(
+                        "TRX",
+                        storeInfo.symbol,
+                        trxBalance,
+                        unitPrice,
+                        currencyUnit,
+                        null,
+                        0,
+                        false
+                    )
+                )
+                totalBalance += trxBalance.multiply(BigDecimal(unitPrice))
+            }
+        }
+        data.forEach { storeInfo ->
+            storeInfo.quote.forEach { quote ->
+                if (quote.symbol == currencyUnit) {
+                    unitPrice = quote.price
+                }
+            }
+            if (storeInfo.symbol != "TRX") {
+                mainETHTokenBean.add(
+                    MainETHTokenBean(
+                        "TRX-${storeInfo.symbol}",
+                        storeInfo.symbol,
+                        if (storeInfo.symbol == "USDT") tokenBalance else BigDecimal("0"),
+                        unitPrice,
+                        currencyUnit,
+                        contractAddress,
+                        0,
+                        true
+                    )
+                )
+                totalBalance += tokenBalance.multiply(BigDecimal(unitPrice))
+            }
+        }
     }
 }
