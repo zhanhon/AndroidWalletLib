@@ -16,6 +16,7 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
@@ -138,50 +139,59 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         walletManageAdapter.addChildClickViewIds(R.id.iv_wallet_more)
         walletManageAdapter.addChildClickViewIds(R.id.cl_delete)
         walletManageAdapter.setOnItemChildClickListener { adapter, view, position ->
-            when (view.id) {
-                R.id.iv_copy_address -> {
-                    if (adapter.getItem(position) is Wallet) {
-                        ClipboardUtils.copy((adapter.getItem(position) as Wallet).address, this)
-                    }
+            walletManageItemClick(view, adapter, position, walletManageBean)
+        }
+    }
+
+    private fun walletManageItemClick(
+        view: View,
+        adapter: BaseQuickAdapter<*, *>,
+        position: Int,
+        walletManageBean: ArrayList<Wallet>
+    ) {
+        when (view.id) {
+            R.id.iv_copy_address -> {
+                if (adapter.getItem(position) is Wallet) {
+                    ClipboardUtils.copy((adapter.getItem(position) as Wallet).address, this)
                 }
-                R.id.iv_wallet_more -> {
-                    startActivity(Intent(this, WalletMoreOperateActivity::class.java).apply {
-                        putExtra(ARG_PARAM1, Gson().toJson(adapter.getItem(position) as Wallet))
-                    })
-                }
-                R.id.cl_delete -> {
-                    if (adapter.getItem(position) is Wallet) {
-                        if ((adapter.getItem(position) as Wallet).isClickDelete) {
-                            walletManageBean[position] =
-                                Wallet(
-                                    (adapter.getItem(position) as Wallet).walletName,
-                                    (adapter.getItem(position) as Wallet).walletPassword,
-                                    (adapter.getItem(position) as Wallet).mnemonic,
-                                    (adapter.getItem(position) as Wallet).address,
-                                    (adapter.getItem(position) as Wallet).privateKey,
-                                    (adapter.getItem(position) as Wallet).publicKey,
-                                    (adapter.getItem(position) as Wallet).keystore,
-                                    (adapter.getItem(position) as Wallet).walletType,
-                                    (adapter.getItem(position) as Wallet).mnemonicList,
-                                    false,
-                                )
-                            walletManageAdapter.notifyItemChanged(position)
-                        } else {
-                            walletManageBean[position] =
-                                Wallet(
-                                    (adapter.getItem(position) as Wallet).walletName,
-                                    (adapter.getItem(position) as Wallet).walletPassword,
-                                    (adapter.getItem(position) as Wallet).mnemonic,
-                                    (adapter.getItem(position) as Wallet).address,
-                                    (adapter.getItem(position) as Wallet).privateKey,
-                                    (adapter.getItem(position) as Wallet).publicKey,
-                                    (adapter.getItem(position) as Wallet).keystore,
-                                    (adapter.getItem(position) as Wallet).walletType,
-                                    (adapter.getItem(position) as Wallet).mnemonicList,
-                                    true
-                                )
-                            walletManageAdapter.notifyItemChanged(position)
-                        }
+            }
+            R.id.iv_wallet_more -> {
+                startActivity(Intent(this, WalletMoreOperateActivity::class.java).apply {
+                    putExtra(ARG_PARAM1, Gson().toJson(adapter.getItem(position) as Wallet))
+                })
+            }
+            R.id.cl_delete -> {
+                if (adapter.getItem(position) is Wallet) {
+                    if ((adapter.getItem(position) as Wallet).isClickDelete) {
+                        walletManageBean[position] =
+                            Wallet(
+                                (adapter.getItem(position) as Wallet).walletName,
+                                (adapter.getItem(position) as Wallet).walletPassword,
+                                (adapter.getItem(position) as Wallet).mnemonic,
+                                (adapter.getItem(position) as Wallet).address,
+                                (adapter.getItem(position) as Wallet).privateKey,
+                                (adapter.getItem(position) as Wallet).publicKey,
+                                (adapter.getItem(position) as Wallet).keystore,
+                                (adapter.getItem(position) as Wallet).walletType,
+                                (adapter.getItem(position) as Wallet).mnemonicList,
+                                false,
+                            )
+                        walletManageAdapter.notifyItemChanged(position)
+                    } else {
+                        walletManageBean[position] =
+                            Wallet(
+                                (adapter.getItem(position) as Wallet).walletName,
+                                (adapter.getItem(position) as Wallet).walletPassword,
+                                (adapter.getItem(position) as Wallet).mnemonic,
+                                (adapter.getItem(position) as Wallet).address,
+                                (adapter.getItem(position) as Wallet).privateKey,
+                                (adapter.getItem(position) as Wallet).publicKey,
+                                (adapter.getItem(position) as Wallet).keystore,
+                                (adapter.getItem(position) as Wallet).walletType,
+                                (adapter.getItem(position) as Wallet).mnemonicList,
+                                true
+                            )
+                        walletManageAdapter.notifyItemChanged(position)
                     }
                 }
             }
@@ -198,53 +208,65 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 loadData(walletManageBean)
             }
             R.id.check_eth -> {
-                walletManageCurrencyBean.clear()
-                walletManageBean.forEach {
-                    if (it.walletType == 1) {
-                        walletManageCurrencyBean.add(it)
-                    }
-                }
-                if (walletManageCurrencyBean.size == 0) {
-                    binding.tvDefaultWallet.visibility = View.VISIBLE
-                    binding.lyPullRefresh.visibility = View.GONE
-                } else {
-                    binding.tvDefaultWallet.visibility = View.GONE
-                    binding.lyPullRefresh.visibility = View.VISIBLE
-                    loadData(walletManageCurrencyBean)
-                }
+                checkEth()
             }
             R.id.check_btc -> {
-                walletManageCurrencyBean.clear()
-                walletManageBean.forEach {
-                    if (it.walletType == 3) {
-                        walletManageCurrencyBean.add(it)
-                    }
-                }
-                if (walletManageCurrencyBean.size == 0) {
-                    binding.tvDefaultWallet.visibility = View.VISIBLE
-                    binding.lyPullRefresh.visibility = View.GONE
-                } else {
-                    binding.tvDefaultWallet.visibility = View.GONE
-                    binding.lyPullRefresh.visibility = View.VISIBLE
-                    loadData(walletManageCurrencyBean)
-                }
+                checkBtc()
             }
             R.id.check_trx -> {
-                walletManageCurrencyBean.clear()
-                walletManageBean.forEach {
-                    if (it.walletType == 2) {
-                        walletManageCurrencyBean.add(it)
-                    }
-                }
-                if (walletManageCurrencyBean.size == 0) {
-                    binding.tvDefaultWallet.visibility = View.VISIBLE
-                    binding.lyPullRefresh.visibility = View.GONE
-                } else {
-                    binding.tvDefaultWallet.visibility = View.GONE
-                    binding.lyPullRefresh.visibility = View.VISIBLE
-                    loadData(walletManageCurrencyBean)
-                }
+                checkTrx()
             }
+        }
+    }
+
+    private fun checkTrx() {
+        walletManageCurrencyBean.clear()
+        walletManageBean.forEach {
+            if (it.walletType == 2) {
+                walletManageCurrencyBean.add(it)
+            }
+        }
+        if (walletManageCurrencyBean.size == 0) {
+            binding.tvDefaultWallet.visibility = View.VISIBLE
+            binding.lyPullRefresh.visibility = View.GONE
+        } else {
+            binding.tvDefaultWallet.visibility = View.GONE
+            binding.lyPullRefresh.visibility = View.VISIBLE
+            loadData(walletManageCurrencyBean)
+        }
+    }
+
+    private fun checkBtc() {
+        walletManageCurrencyBean.clear()
+        walletManageBean.forEach {
+            if (it.walletType == 3) {
+                walletManageCurrencyBean.add(it)
+            }
+        }
+        if (walletManageCurrencyBean.size == 0) {
+            binding.tvDefaultWallet.visibility = View.VISIBLE
+            binding.lyPullRefresh.visibility = View.GONE
+        } else {
+            binding.tvDefaultWallet.visibility = View.GONE
+            binding.lyPullRefresh.visibility = View.VISIBLE
+            loadData(walletManageCurrencyBean)
+        }
+    }
+
+    private fun checkEth() {
+        walletManageCurrencyBean.clear()
+        walletManageBean.forEach {
+            if (it.walletType == 1) {
+                walletManageCurrencyBean.add(it)
+            }
+        }
+        if (walletManageCurrencyBean.size == 0) {
+            binding.tvDefaultWallet.visibility = View.VISIBLE
+            binding.lyPullRefresh.visibility = View.GONE
+        } else {
+            binding.tvDefaultWallet.visibility = View.GONE
+            binding.lyPullRefresh.visibility = View.VISIBLE
+            loadData(walletManageCurrencyBean)
         }
     }
 
@@ -257,51 +279,59 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     binding.ivAddWallet.visibility = View.VISIBLE
                     loadData(walletManageBean)
                 } else {
-                    if (isFromMine) {
-                        start(MineActivity::class.java)
-                    } else {
-                        when (walletSelleted.walletType) {
-                            1 -> {
-                                start(MainETHActivity::class.java)
-                            }
-                            2 -> {
-                                start(MainTRXActivity::class.java)
-                            }
-                            3 -> {
-                                start(MainBTCActivity::class.java)
-                            }
-                        }
-                    }
+                    backClickSub()
                 }
             }
             R.id.iv_add_wallet -> {
                 startActivity(Intent(this, CreateWalletListActivity::class.java))
             }
             R.id.iv_manage_wallet_right -> {
-                if (isDeletePage) {
-                    var isAllClickDelete = true
-                    walletManageBean.iterator().forEach {
-                        isAllClickDelete = isAllClickDelete && it.isClickDelete
-                    }
-                    if (isAllClickDelete) {
-                        ToastUtils.showToastFree(this, getString(R.string.least_save_wallet))
-                        isDeletePage = false
-                        binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
-                        binding.ivAddWallet.visibility = View.VISIBLE
-                        loadData(walletManageBean)
-                    } else {
-                        deleteConfirmTipsDialog()
-                    }
-                } else {
-                    binding.checkAll.performClick()
-                    isDeletePage = true
-                    binding.ivManageWalletRight.setBackgroundResource(R.drawable.ic_delelet_line)
-                    binding.ivAddWallet.visibility = View.INVISIBLE
-                    loadData(walletManageBean)
-                }
+                manageWalletRightSub()
             }
             R.id.tv_default_wallet -> {
                 startActivity(Intent(this, CreateWalletListActivity::class.java))
+            }
+        }
+    }
+
+    private fun manageWalletRightSub() {
+        if (isDeletePage) {
+            var isAllClickDelete = true
+            walletManageBean.iterator().forEach {
+                isAllClickDelete = isAllClickDelete && it.isClickDelete
+            }
+            if (isAllClickDelete) {
+                ToastUtils.showToastFree(this, getString(R.string.least_save_wallet))
+                isDeletePage = false
+                binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
+                binding.ivAddWallet.visibility = View.VISIBLE
+                loadData(walletManageBean)
+            } else {
+                deleteConfirmTipsDialog()
+            }
+        } else {
+            binding.checkAll.performClick()
+            isDeletePage = true
+            binding.ivManageWalletRight.setBackgroundResource(R.drawable.ic_delelet_line)
+            binding.ivAddWallet.visibility = View.INVISIBLE
+            loadData(walletManageBean)
+        }
+    }
+
+    private fun backClickSub() {
+        if (isFromMine) {
+            start(MineActivity::class.java)
+        } else {
+            when (walletSelleted.walletType) {
+                1 -> {
+                    start(MainETHActivity::class.java)
+                }
+                2 -> {
+                    start(MainTRXActivity::class.java)
+                }
+                3 -> {
+                    start(MainBTCActivity::class.java)
+                }
             }
         }
     }
@@ -325,63 +355,67 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 dialog.dismiss()
             }
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
-                var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
-                var delete: ArrayList<Wallet> = arrayListOf()
-                walletManageBean.forEach {
-                    if (it.isClickDelete) {
-                        detailsList.add(AddressReport.DetailsList(it.address, 2, it.walletType))
-                        delete.add(it)
-                    } else {
-                        detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
-                    }
-                }
-                putAddress(detailsList)
-                val list = walletManageBean.iterator()
-                list.forEach {
-                    if (it.isClickDelete) {
-                        list.remove()
-                        if (it.isChoose) {
-                            walletManageBean[0].isChoose = true
-                        }
-                    }
-                }
-                SharedPreferencesUtils.saveString(
-                    this,
-                    WALLETSELECTED,
-                    Gson().toJson(walletManageBean[0])
-                )
-                saveWalletList = walletManageBean
-                SharedPreferencesUtils.saveString(
-                    this,
-                    WALLETINFO,
-                    Gson().toJson(saveWalletList)
-                )
-                isDeletePage = false
-                binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
-                binding.ivAddWallet.visibility = View.VISIBLE
-                loadData(walletManageBean)
-                if (!SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, "").isNullOrEmpty()) {
-                    myAllToken = Gson().fromJson(
-                        SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
-                        object : TypeToken<ArrayList<AllTokenBean>>() {}.type
-                    )
-
-                    val lists = myAllToken.iterator()
-                    lists.forEach {
-                        delete.forEach { wallet ->
-                            if (it.myCurrency == wallet.address) {
-                                lists.remove()
-                            }
-                        }
-                    }
-                    SharedPreferencesUtils.saveString(
-                        this,
-                        TOKEN_INFO_NO,
-                        Gson().toJson(myAllToken)
-                    )
-                }
+                btnConfirmSub()
                 dialog.dismiss()
             }
+        }
+    }
+
+    private fun btnConfirmSub() {
+        var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+        var delete: ArrayList<Wallet> = arrayListOf()
+        walletManageBean.forEach {
+            if (it.isClickDelete) {
+                detailsList.add(AddressReport.DetailsList(it.address, 2, it.walletType))
+                delete.add(it)
+            } else {
+                detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
+            }
+        }
+        putAddress(detailsList)
+        val list = walletManageBean.iterator()
+        list.forEach {
+            if (it.isClickDelete) {
+                list.remove()
+                if (it.isChoose) {
+                    walletManageBean[0].isChoose = true
+                }
+            }
+        }
+        SharedPreferencesUtils.saveString(
+            this,
+            WALLETSELECTED,
+            Gson().toJson(walletManageBean[0])
+        )
+        saveWalletList = walletManageBean
+        SharedPreferencesUtils.saveString(
+            this,
+            WALLETINFO,
+            Gson().toJson(saveWalletList)
+        )
+        isDeletePage = false
+        binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
+        binding.ivAddWallet.visibility = View.VISIBLE
+        loadData(walletManageBean)
+        if (!SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, "").isNullOrEmpty()) {
+            myAllToken = Gson().fromJson(
+                SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                object : TypeToken<ArrayList<AllTokenBean>>() {}.type
+            )
+
+            val lists = myAllToken.iterator()
+            lists.forEach {
+                delete.forEach { wallet ->
+                    if (it.myCurrency == wallet.address) {
+                        lists.remove()
+                    }
+                }
+            }
+            SharedPreferencesUtils.saveString(
+                this,
+                TOKEN_INFO_NO,
+                Gson().toJson(myAllToken)
+            )
         }
     }
 

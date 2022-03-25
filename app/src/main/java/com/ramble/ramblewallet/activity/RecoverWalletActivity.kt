@@ -164,122 +164,138 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.btn_confirm -> {
-                if (binding.edtWalletName.text.isEmpty()) {
-                    ToastUtils.showToastFree(this, getString(R.string.please_input_wallet_name))
-                    return
-                }
-                if (binding.edtWalletPassword.text.isEmpty()) {
-                    ToastUtils.showToastFree(this, getString(R.string.please_input_password))
-                    return
-                }
-                if (binding.edtWalletPassword.text.length < 6) {
-                    ToastUtils.showToastFree(this, getString(R.string.password_less_six_tips))
-                    return
-                }
-                if (binding.edtWalletPassword.text.trim()
-                        .toString() != binding.edtPasswordConfirm.text.trim().toString()
-                ) {
-                    ToastUtils.showToastFree(this, getString(R.string.different_password))
-                    return
-                }
+                btnConfirmValid()
+            }
+        }
+    }
 
-                when (walletType) {
-                    1 -> { //以太坊
-                        when (chooseMode) {
-                            1 -> {
-                                if (validMnemonic()) return
-                                recoverWalletETH(1)
-                            }
-                            2 -> {
-                                if (binding.edtContributingWords.text.isEmpty()) {
-                                    ToastUtils.showToastFree(
-                                        this,
-                                        getString(R.string.input_secret_key)
-                                    )
-                                    return
-                                }
-                                if (binding.edtContributingWords.text.length < 32) {
-                                    ToastUtils.showToastFree(
-                                        this,
-                                        getString(R.string.input_correct_secret_key)
-                                    )
-                                    return
-                                }
-                                recoverWalletETH(2)
-                            }
-                            3 -> {
-                                if (binding.edtContributingWords.text.isEmpty()) {
-                                    ToastUtils.showToastFree(
-                                        this,
-                                        getString(R.string.input_keystore)
-                                    )
-                                    return
-                                }
-                                recoverWalletETH(3)
-                            }
-                        }
-                    }
-                    2 -> { //波场
-                        when (chooseMode) {
-                            1 -> {
-                                if (validMnemonic()) return
-                                recoverWalletTRX(1)
-                            }
-                            2 -> {
-                                if (binding.edtContributingWords.text.isEmpty()) {
-                                    ToastUtils.showToastFree(
-                                        this,
-                                        getString(R.string.input_secret_key)
-                                    )
-                                    return
-                                }
-                                if (binding.edtContributingWords.text.length < 32) {
-                                    ToastUtils.showToastFree(
-                                        this,
-                                        getString(R.string.input_correct_secret_key)
-                                    )
-                                    return
-                                }
-                                recoverWalletTRX(2)
-                            }
-                            3 -> {
-                                if (binding.edtContributingWords.text.isEmpty()) {
-                                    ToastUtils.showToastFree(
-                                        this,
-                                        getString(R.string.input_keystore)
-                                    )
-                                    return
-                                }
-                                recoverWalletTRX(3)
-                            }
-                        }
-                    }
-                    3 -> { //比特币
-                        when (chooseMode) {
-                            1 -> {
-                                if (validMnemonic()) return
-                                recoverWalletBTC(1)
-                            }
-                            2 -> {
-                                if (binding.edtContributingWords.text.isEmpty()) {
-                                    ToastUtils.showToastFree(
-                                        this,
-                                        getString(R.string.input_secret_key)
-                                    )
-                                    return
-                                }
-                                if (binding.edtContributingWords.text.length < 32) {
-                                    ToastUtils.showToastFree(
-                                        this,
-                                        getString(R.string.input_correct_secret_key)
-                                    )
-                                    return
-                                }
-                                recoverWalletBTC(2)
-                            }
-                        }
-                    }
+    private fun btnConfirmValid() {
+        if (binding.edtWalletName.text.isEmpty()) {
+            ToastUtils.showToastFree(this, getString(R.string.please_input_wallet_name))
+            return
+        }
+        if (binding.edtWalletPassword.text.isEmpty()) {
+            ToastUtils.showToastFree(this, getString(R.string.please_input_password))
+            return
+        }
+        if (binding.edtWalletPassword.text.length < 6) {
+            ToastUtils.showToastFree(this, getString(R.string.password_less_six_tips))
+            return
+        }
+        if (binding.edtWalletPassword.text.trim()
+                .toString() != binding.edtPasswordConfirm.text.trim().toString()
+        ) {
+            ToastUtils.showToastFree(this, getString(R.string.different_password))
+            return
+        }
+
+        when (walletType) {
+            1 -> { //以太坊
+                ethValidHandle()
+            }
+            2 -> { //波场
+                trxValidHandle()
+            }
+            3 -> { //比特币
+                btcValidHandle()
+            }
+        }
+    }
+
+    private fun btcValidHandle() {
+        when (chooseMode) {
+            1 -> {
+                if (validMnemonic()) return
+                recoverWalletBTC(1)
+            }
+            2 -> {
+                if (binding.edtContributingWords.text.isEmpty()) {
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_secret_key)
+                    )
+                    return
                 }
+                if (binding.edtContributingWords.text.length < 32) {
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_correct_secret_key)
+                    )
+                    return
+                }
+                recoverWalletBTC(2)
+            }
+        }
+    }
+
+    private fun trxValidHandle() {
+        when (chooseMode) {
+            1 -> {
+                if (validMnemonic()) return
+                recoverWalletTRX(1)
+            }
+            2 -> {
+                if (binding.edtContributingWords.text.isEmpty()) {
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_secret_key)
+                    )
+                    return
+                }
+                if (binding.edtContributingWords.text.length < 32) {
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_correct_secret_key)
+                    )
+                    return
+                }
+                recoverWalletTRX(2)
+            }
+            3 -> {
+                if (binding.edtContributingWords.text.isEmpty()) {
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_keystore)
+                    )
+                    return
+                }
+                recoverWalletTRX(3)
+            }
+        }
+    }
+
+    private fun ethValidHandle() {
+        when (chooseMode) {
+            1 -> {
+                if (validMnemonic()) return
+                recoverWalletETH(1)
+            }
+            2 -> {
+                if (binding.edtContributingWords.text.isEmpty()) {
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_secret_key)
+                    )
+                    return
+                }
+                if (binding.edtContributingWords.text.length < 32) {
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_correct_secret_key)
+                    )
+                    return
+                }
+                recoverWalletETH(2)
+            }
+            3 -> {
+                if (binding.edtContributingWords.text.isEmpty()) {
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_keystore)
+                    )
+                    return
+                }
+                recoverWalletETH(3)
             }
         }
     }

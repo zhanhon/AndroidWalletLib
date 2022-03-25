@@ -170,44 +170,48 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 dialog.dismiss()
             }
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
-                var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
-                saveWalletList.forEach {
-                    if (it.isClickDelete) {
-                        detailsList.add(AddressReport.DetailsList(it.address, 2, it.walletType))
-                    } else {
-                        detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
-                    }
-                }
-                putAddress(detailsList)
-                val list = saveWalletList.iterator()
-                list.forEach {
-                    if (it.address == walletCurrent.address) {
-                        list.remove()
-                    }
-                }
-
-                SharedPreferencesUtils.saveString(
-                    this,
-                    WALLETSELECTED,
-                    Gson().toJson(saveWalletList[0])
-                )
-                SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
-                if (walletCurrent.walletType == 1) {
-                    val lists = myAllToken.iterator()
-                    lists.forEach {
-                        if (it.myCurrency == walletCurrent.address) {
-                            lists.remove()
-                        }
-                    }
-                    SharedPreferencesUtils.saveString(
-                        this,
-                        TOKEN_INFO_NO,
-                        Gson().toJson(myAllToken)
-                    )
-                }
+                btnConfirmSub()
                 dialog.dismiss()
                 finish()
             }
+        }
+    }
+
+    private fun btnConfirmSub() {
+        var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+        saveWalletList.forEach {
+            if (it.isClickDelete) {
+                detailsList.add(AddressReport.DetailsList(it.address, 2, it.walletType))
+            } else {
+                detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
+            }
+        }
+        putAddress(detailsList)
+        val list = saveWalletList.iterator()
+        list.forEach {
+            if (it.address == walletCurrent.address) {
+                list.remove()
+            }
+        }
+
+        SharedPreferencesUtils.saveString(
+            this,
+            WALLETSELECTED,
+            Gson().toJson(saveWalletList[0])
+        )
+        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        if (walletCurrent.walletType == 1) {
+            val lists = myAllToken.iterator()
+            lists.forEach {
+                if (it.myCurrency == walletCurrent.address) {
+                    lists.remove()
+                }
+            }
+            SharedPreferencesUtils.saveString(
+                this,
+                TOKEN_INFO_NO,
+                Gson().toJson(myAllToken)
+            )
         }
     }
 
