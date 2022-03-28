@@ -121,6 +121,7 @@
                 <com.ramble.ramblewallet.wight.HtmlWebView
                     android:id="@+id/web"
                     style="@style/MatchWrap"
+                    android:exported="false"
                     android:layout_marginTop="20dp"
                     android:layout_marginStart="@dimen/dp_20"
                     android:layout_marginEnd="@dimen/dp_20" />
