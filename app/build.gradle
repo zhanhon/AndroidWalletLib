@@ -141,7 +141,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
-    implementation files('libs\\tron-sdk-1.jar')
+    implementation files('libs/tron-sdk-1.jar')
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     //RecyclerView
@@ -202,12 +202,10 @@ dependencies {
     implementation files('libs/umeng-asms-v1.2.2.aar') // asms包依赖(必选)
     // 显式依赖umeng apm库
     implementation files('libs/umeng-apm-v1.1.1.aar') // native crash包依赖(必选)
-
     implementation fileTree(dir: 'libs', include: ['umeng-push-6.4.4.aar'])
     implementation fileTree(dir: 'libs', include: ['umeng-agoo_tnet4android-3.1.14.10.1.aar'])
     //下拉刷新，上拉加载
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
-
     implementation 'com.qmuiteam:qmui:1.4.0'
     implementation 'com.jakewharton:process-phoenix:2.0.0'
     implementation 'org.jooq:joor-java-6:0.9.9'
@@ -222,21 +220,11 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
     implementation 'com.squareup.okhttp3:mockwebserver:3.12.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
     implementation 'com.squareup.okio:okio:1.17.3'
-    implementation 'com.squareup.moshi:moshi-kotlin-codegen:1.8.0'
     // Retrofit
-
-    implementation 'androidx.lifecycle:lifecycle-runtime:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata:2.2.0'
     implementation 'javax.inject:javax.inject:1'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
-    implementation 'com.tencent:mmkv:1.0.22'
     implementation 'com.jakewharton.timber:timber:4.7.1'
-
     //扫码
     implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.3.7'
     implementation 'cn.bingoogolapple:bga-photopicker:1.2.8@aar'
