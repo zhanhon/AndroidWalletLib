@@ -59,6 +59,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("WrongConstant")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_E11334)
         //设置状态栏字体颜色，true:代表黑色，false代表白色
         StateUtils.setLightStatusBar(this, false)

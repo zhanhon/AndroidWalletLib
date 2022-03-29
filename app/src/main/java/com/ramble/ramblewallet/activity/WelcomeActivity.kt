@@ -6,6 +6,7 @@ import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -30,6 +31,7 @@ class WelcomeActivity : BaseActivity() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         setContentView(R.layout.activity_welcome)
         skipConfirmHandle()
         Handler().postDelayed({

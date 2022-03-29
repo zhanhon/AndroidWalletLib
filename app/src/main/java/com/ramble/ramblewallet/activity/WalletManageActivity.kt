@@ -56,6 +56,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_wallet_manage)
         isFromMine = intent.getBooleanExtra(ARG_PARAM1, false)
         binding.lyPullRefresh.setRefreshHeader(ClassicsHeader(this))

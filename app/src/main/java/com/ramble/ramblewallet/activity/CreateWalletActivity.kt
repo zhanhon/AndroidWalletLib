@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
@@ -28,6 +29,7 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_wallet)
         walletType = intent.getIntExtra(ARG_PARAM1, 1)
         walletSource = intent.getIntExtra(ARG_PARAM2, 1)

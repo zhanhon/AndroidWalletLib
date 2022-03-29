@@ -69,6 +69,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_transfer)
         transferReceiverAddress = intent.getStringExtra(ARG_PARAM1)
         tokenBean = intent.getSerializableExtra(ARG_PARAM2) as MainETHTokenBean

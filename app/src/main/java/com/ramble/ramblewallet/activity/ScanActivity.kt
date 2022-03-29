@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import cn.bingoogolapple.qrcode.core.QRCodeView
@@ -53,6 +54,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scan)
         type = getExtras().getInt(ARG_PARAM1, 0)
         tokenBean = intent.getSerializableExtra(ARG_PARAM2) as MainETHTokenBean

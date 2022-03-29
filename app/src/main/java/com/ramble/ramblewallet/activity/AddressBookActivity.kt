@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager.LayoutParams
 import android.widget.RadioGroup
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
@@ -47,6 +48,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(LayoutParams.FLAG_SECURE, LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_address_book)
         isFromTransfer = intent.getBooleanExtra(ARG_PARAM1, false)
         initView()

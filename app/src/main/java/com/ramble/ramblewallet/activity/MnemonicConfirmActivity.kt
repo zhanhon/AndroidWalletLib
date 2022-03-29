@@ -61,6 +61,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contributing_words_confirm)
         mnemonicETH = intent.getStringArrayListExtra(ARG_PARAM1)
         walletName = intent.getStringExtra(ARG_PARAM2)
