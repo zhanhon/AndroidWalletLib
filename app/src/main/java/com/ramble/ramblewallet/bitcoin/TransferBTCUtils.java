@@ -15,8 +15,10 @@ import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.Context;
 import org.bitcoinj.core.DumpedPrivateKey;
+import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.LegacyAddress;
 import org.bitcoinj.core.NetworkParameters;
+import org.bitcoinj.core.Sha256Hash;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.core.TransactionConfidence;
 import org.bitcoinj.core.TransactionInput;
@@ -31,6 +33,7 @@ import org.bitcoinj.script.Script;
 import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.script.ScriptPattern;
 import org.jetbrains.annotations.NotNull;
+import org.web3j.utils.Numeric;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -141,7 +144,7 @@ public class TransferBTCUtils {
                         String script = outputsMap.get("script_hex").toString();
                         String value = outputsMap.get("value").toString();
                         UTXO utxo = new UTXO(
-                                org.bitcoinj.core.Sha256Hash.wrap(txHash),
+                                Sha256Hash.wrap(txHash),
                                 Long.valueOf(txOutput),
                                 Coin.valueOf(new BigDecimal(value).multiply(new BigDecimal("100000000")).intValue()),
                                 0,
@@ -259,12 +262,17 @@ public class TransferBTCUtils {
             }
             //输出-转给自己(找零)
             if (changeAmount > 0) {
-                transaction.addOutput(Coin.valueOf(changeAmount), org.bitcoinj.core.Address.fromString(networkParameters, changeAddress));
+                transaction.addOutput(Coin.valueOf(changeAmount), Address.fromString(networkParameters, changeAddress));
             }
             transaction.addOutput(Coin.valueOf(amount), Address.fromString(networkParameters, toAddress));
             //输入未消费列表项
-            DumpedPrivateKey dumpedPrivateKey = DumpedPrivateKey.fromBase58(networkParameters, privateKey);
-            org.bitcoinj.core.ECKey ecKey = dumpedPrivateKey.getKey();
+            ECKey ecKey;
+            if (ISMAINNET) {
+                ecKey = ECKey.fromPrivate(Numeric.toBigInt(privateKey));
+            } else {
+                DumpedPrivateKey dumpedPrivateKey = DumpedPrivateKey.fromBase58(networkParameters, privateKey);
+                ecKey = dumpedPrivateKey.getKey();
+            }
             for (UTXO utxo : needUtxos) {
                 TransactionOutPoint outPoint = new TransactionOutPoint(networkParameters, utxo.getIndex(), utxo.getHash());
                 Script scriptPubKey = utxo.getScript();
