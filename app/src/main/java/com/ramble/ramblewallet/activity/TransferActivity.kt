@@ -866,13 +866,13 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun mainFeeTipsLogic() {
-        if ((BigDecimal(gasPrice) < BigDecimal("60"))
+        if ((BigDecimal(gasPrice) <= BigDecimal(slowGasPrice).multiply(BigDecimal("0.9")))
             || (BigDecimal(gasLimit) < BigDecimal("21000"))
         ) {
             transactionFailDialog(getString(R.string.miner_fee_low_tips))
             return
         }
-        if ((BigDecimal(gasPrice) > BigDecimal("300"))
+        if ((BigDecimal(gasPrice) >= BigDecimal(fastGasPrice).multiply(BigDecimal("1.2")))
             || (BigDecimal(gasLimit) > BigDecimal("26000"))
         ) {
             transactionFailDialog(getString(R.string.miner_fee_high_tips))
