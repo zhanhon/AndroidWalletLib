@@ -50,7 +50,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private lateinit var walletSelleted: Wallet
     private var ethBalance: BigDecimal = BigDecimal("0")
     private var totalBalance: BigDecimal = BigDecimal("0.00")
-    private var unitPrice = ""
+    private var unitPriceETH = ""
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -363,7 +363,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                             "ETH",
                             "ETH",
                             ethBalance,
-                            unitPrice,
+                            unitPriceETH,
                             currencyUnit,
                             null,
                             18,
@@ -380,7 +380,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                             "ETH",
                             "ETH",
                             ethBalance,
-                            unitPrice,
+                            unitPriceETH,
                             currencyUnit,
                             null,
                             18,
@@ -624,24 +624,24 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         data.forEach { storeInfo ->
             storeInfo.quote.forEach { quote ->
                 if (quote.symbol == currencyUnit) {
-                    unitPrice = quote.price
                     storeInfo.price = quote.price
                 }
             }
             if (storeInfo.symbol == "ETH") {
+                unitPriceETH = storeInfo.price
                 mainETHTokenBean.add(
                     MainETHTokenBean(
                         "ETH",
                         storeInfo.symbol,
                         ethBalance,
-                        unitPrice,
+                        unitPriceETH,
                         currencyUnit,
                         null,
                         18,
                         false
                     )
                 )
-                totalBalance += ethBalance.multiply(BigDecimal(unitPrice))
+                totalBalance += ethBalance.multiply(BigDecimal(unitPriceETH))
             }
         }
         data.forEach { storeInfo ->
