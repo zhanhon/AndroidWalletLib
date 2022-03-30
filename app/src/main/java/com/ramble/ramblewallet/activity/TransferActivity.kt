@@ -462,7 +462,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         gas = BigDecimal(gasPrice).multiply(BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
         binding.tvMinerFeeValue.text = "${DecimalFormatUtil.format(gas, 8)} ETH"
         binding.tvMinerFeeValueConvert.text = "≈${currencyUnit} ${currencySymbol}${
-            DecimalFormatUtil.format(BigDecimal(rate).multiply(gas), 6)
+            DecimalFormatUtil.format(BigDecimal(rate).multiply(gas), 8)
         }"
         binding.tvTips.text = "$gasPrice Gwei * Gas Limit (${strAddComma(gasLimit)})"
     }
