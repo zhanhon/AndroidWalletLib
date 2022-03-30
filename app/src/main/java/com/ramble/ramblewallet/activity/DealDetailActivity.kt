@@ -114,37 +114,11 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
         when (trans?.status) {
             1 -> {
                 binding.ivStatus.setImageResource(R.drawable.ic_transing)
-                when (trans?.transferType) {
-                    2 -> {//转入
-                        binding.tvMoneyCount.text = "+" + trans?.amount
-                        binding.tvMoneyType.text = trans?.unit
-                        binding.tvMoneyCount.setTextColor(Color.parseColor("#009474"))
-                        binding.tvMoneyType.setTextColor(Color.parseColor("#009474"))
-                    }
-                    1 -> {//转出
-                        binding.tvMoneyCount.text = "-" + trans?.amount
-                        binding.tvMoneyType.text = trans?.unit
-                        binding.tvMoneyCount.setTextColor(Color.parseColor("#e11334"))
-                        binding.tvMoneyType.setTextColor(Color.parseColor("#e11334"))
-                    }
-                }
+                initTransView()
             }
             2 -> {
                 binding.ivStatus.setImageResource(R.drawable.ic_success)
-                when (trans?.transferType) {
-                    2 -> {//转入
-                        binding.tvMoneyCount.text = "+" + trans?.amount
-                        binding.tvMoneyType.text = trans?.unit
-                        binding.tvMoneyCount.setTextColor(Color.parseColor("#009474"))
-                        binding.tvMoneyType.setTextColor(Color.parseColor("#009474"))
-                    }
-                    1 -> {//转出
-                        binding.tvMoneyCount.text = "-" + trans?.amount
-                        binding.tvMoneyType.text = trans?.unit
-                        binding.tvMoneyCount.setTextColor(Color.parseColor("#e11334"))
-                        binding.tvMoneyType.setTextColor(Color.parseColor("#e11334"))
-                    }
-                }
+                initTransView()
             }
             3 -> {
                 binding.ivStatus.setImageResource(R.drawable.ic_fail)
@@ -155,6 +129,22 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
+    }
+    private fun initTransView(){
+        when (trans?.transferType) {
+            2 -> {//转入
+                binding.tvMoneyCount.text = "+" + trans?.amount
+                binding.tvMoneyType.text = trans?.unit
+                binding.tvMoneyCount.setTextColor(Color.parseColor("#009474"))
+                binding.tvMoneyType.setTextColor(Color.parseColor("#009474"))
+            }
+            1 -> {//转出
+                binding.tvMoneyCount.text = "-" + trans?.amount
+                binding.tvMoneyType.text = trans?.unit
+                binding.tvMoneyCount.setTextColor(Color.parseColor("#e11334"))
+                binding.tvMoneyType.setTextColor(Color.parseColor("#e11334"))
+            }
+        }
     }
 
     private fun initListener() {
