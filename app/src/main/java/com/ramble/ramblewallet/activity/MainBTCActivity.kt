@@ -118,7 +118,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         ).applyIo().subscribe(
             {
                 if (it.code() == 1) {
-                    redPointBtcHandle(it, redList, records2)
+                    redPointBtcHandle(it, redList, records2,lang)
                 } else {
                     println("==================>getTransferInfo1:${it.message()}")
                 }
@@ -133,16 +133,22 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
     private fun redPointBtcHandle(
         it: ApiResponse<Page>,
         redList: ArrayList<Page.Record>,
-        records2: ArrayList<Page.Record>
+        records2: ArrayList<Page.Record>,
+        lang:Int
     ) {
         var records21 = records2
         it.data()?.let { data ->
             println("==================>getTransferInfo:${data}")
-            data.records.forEach { item ->
-                var read: ArrayList<Int> = Gson().fromJson(
+            var read: ArrayList<Int> =  if (SharedPreferencesUtils.getString(this, READ_ID_NEW, "").isNotEmpty()) {
+                Gson().fromJson(
                     SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
                     object : TypeToken<ArrayList<Int>>() {}.type
                 )
+            } else {
+                arrayListOf()
+            }
+            data.records.forEach { item ->
+
                 if (read.contains(item.id)
                 ) {
                     item.isRead = 1
@@ -165,7 +171,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
             } else {
                 arrayListOf()
             }
-            redPointEthHandleSub(records21, redList)
+            redPointEthHandleSub(records21, redList,lang)
             if (redList.isNotEmpty()) {
                 binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
             } else {
@@ -176,30 +182,33 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
 
     private fun redPointEthHandleSub(
         records21: ArrayList<Page.Record>,
-        redList: ArrayList<Page.Record>
+        redList: ArrayList<Page.Record>,
+        lang:Int
     ) {
         if (records21.isNotEmpty()) {
             records21.forEach { item ->
-                if (SharedPreferencesUtils.getString(
-                        this,
-                        READ_ID,
-                        ""
-                    ).isNotEmpty()
-                ) {
-                    var read: ArrayList<Int> = Gson().fromJson(
-                        SharedPreferencesUtils.getString(this, READ_ID, ""),
-                        object : TypeToken<ArrayList<Int>>() {}.type
-                    )
-                    if (read.contains(item.id)
+                if (item.lang == lang) {
+                    if (SharedPreferencesUtils.getString(
+                            this,
+                            READ_ID,
+                            ""
+                        ).isNotEmpty()
                     ) {
-                        item.isRead = 1
+                        var read: ArrayList<Int> = Gson().fromJson(
+                            SharedPreferencesUtils.getString(this, READ_ID, ""),
+                            object : TypeToken<ArrayList<Int>>() {}.type
+                        )
+                        if (read.contains(item.id)
+                        ) {
+                            item.isRead = 1
+                        } else {
+                            item.isRead = 0
+                            redList.add(item)
+                        }
                     } else {
                         item.isRead = 0
                         redList.add(item)
                     }
-                } else {
-                    item.isRead = 0
-                    redList.add(item)
                 }
             }
         }
