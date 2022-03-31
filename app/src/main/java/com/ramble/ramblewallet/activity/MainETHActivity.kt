@@ -56,7 +56,10 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("WrongConstant")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_078DC2)
         //设置状态栏字体颜色，true:代表黑色，false代表白色
         StateUtils.setLightStatusBar(this, false)
@@ -221,42 +224,36 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
      */
     @SuppressLint("CheckResult")
     private fun redPoint() {
-        if (SharedPreferencesUtils.getString(this, READ_ID_NEW, "")
-                .isNotEmpty()
-        ) {
-            var lang = when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
-                CN -> {
-                    1
-                }
-                TW -> {
-                    2
-                }
-                else -> {
-                    3
-                }
+
+        var lang = when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
+            CN -> {
+                1
             }
-            var redList: ArrayList<Page.Record> = arrayListOf()
-            var records2: ArrayList<Page.Record> = arrayListOf()
-            var req = Page.Req(1, 1000, lang)
-            mApiService.getNotice(
-                req.toApiRequest(noticeInfoUrl)
-            ).applyIo().subscribe(
-                {
-                    if (it.code() == 1) {
-                        redPointEthHandle(it, redList, records2)
-                    } else {
-                        println("==================>getTransferInfo1:${it.message()}")
-                    }
-
-                }, {
-
-                    println("==================>getTransferInfo1:${it.printStackTrace()}")
-                }
-            )
-        } else {
-            binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
+            TW -> {
+                2
+            }
+            else -> {
+                3
+            }
         }
+        var redList: ArrayList<Page.Record> = arrayListOf()
+        var records2: ArrayList<Page.Record> = arrayListOf()
+        var req = Page.Req(1, 1000, lang)
+        mApiService.getNotice(
+            req.toApiRequest(noticeInfoUrl)
+        ).applyIo().subscribe(
+            {
+                if (it.code() == 1) {
+                    redPointEthHandle(it, redList, records2)
+                } else {
+                    println("==================>getTransferInfo1:${it.message()}")
+                }
 
+            }, {
+
+                println("==================>getTransferInfo1:${it.printStackTrace()}")
+            }
+        )
     }
 
     private fun redPointEthHandle(

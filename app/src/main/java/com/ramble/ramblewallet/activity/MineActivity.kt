@@ -25,6 +25,7 @@ import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMineBinding
 import com.ramble.ramblewallet.helper.start
+import com.ramble.ramblewallet.network.ApiResponse
 import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -47,9 +48,11 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
         binding = DataBindingUtil.setContentView(this, R.layout.activity_mine)
-        initView()
         initListener()
     }
 
@@ -135,19 +138,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        records2 = if (SharedPreferencesUtils.getString(
-                this,
-                STATION_INFO,
-                ""
-            ).isNotEmpty()
-        ) {
-            Gson().fromJson(
-                SharedPreferencesUtils.getString(this, STATION_INFO, ""),
-                object : TypeToken<ArrayList<Page.Record>>() {}.type
-            )
-        } else {
-            arrayListOf()
-        }
+        initView()
         redPoint()
         walletSelleted = Gson().fromJson(
             SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
@@ -161,63 +152,90 @@ class MineActivity : BaseActivity(), View.OnClickListener {
      */
     @SuppressLint("CheckResult")
     private fun redPoint() {
-        if (SharedPreferencesUtils.getString(this, READ_ID_NEW, "")
-                .isNotEmpty()
-        ) {
-            var lang = when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
-                CN -> {
-                    1
+        var lang = when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
+            CN -> {
+                1
+            }
+            TW -> {
+                2
+            }
+            else -> {
+                3
+            }
+        }
+        var redList: ArrayList<Page.Record> = arrayListOf()
+        var records2: ArrayList<Page.Record> = arrayListOf()
+        var req = Page.Req(1, 1000, lang)
+        mApiService.getNotice(
+            req.toApiRequest(noticeInfoUrl)
+        ).applyIo().subscribe(
+            {
+                if (it.code() == 1) {
+                    redPointMineHandle(it, redList, records2)
+                } else {
+                    println("==================>getTransferInfo1:${it.message()}")
                 }
-                TW -> {
-                    2
+
+            }, {
+
+                println("==================>getTransferInfo1:${it.printStackTrace()}")
+            }
+        )
+    }
+    private fun redPointMineHandle(
+        it: ApiResponse<Page>,
+        redList: ArrayList<Page.Record>,
+        records2: ArrayList<Page.Record>
+    ) {
+        var records21 = records2
+        it.data()?.let { data ->
+            println("==================>getTransferInfo:${data}")
+            data.records.forEach { item ->
+                var read: ArrayList<Int> = if (SharedPreferencesUtils.getString(this, READ_ID_NEW, "").isNotEmpty()){
+                    Gson().fromJson(
+                        SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
+                        object : TypeToken<ArrayList<Int>>() {}.type
+                    )
+                }else{
+                    arrayListOf()
                 }
-                else -> {
-                    3
+                if (read.contains(item.id)
+                ) {
+                    item.isRead = 1
+                } else {
+                    item.isRead = 0
+                    redList.add(item)
                 }
             }
+            records21 = if (SharedPreferencesUtils.getString(
+                    this,
+                    STATION_INFO,
+                    ""
+                ).isNotEmpty()
+            ) {
+                Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, STATION_INFO, ""),
+                    object : TypeToken<ArrayList<Page.Record>>() {}.type
+                )
 
-            var req = Page.Req(1, 1000, lang)
-            mApiService.getNotice(
-                req.toApiRequest(noticeInfoUrl)
-            ).applyIo().subscribe(
-                {
-                    if (it.code() == 1) {
-                        it.data()?.let { data ->
-                            println("==================>getTransferInfo:${data}")
-                            dataCheck(data.records)
-                        }
-                    } else {
-                        println("==================>getTransferInfo1:${it.message()}")
-                    }
-
-                }, {
-
-                    println("==================>getTransferInfo1:${it.printStackTrace()}")
-                }
-            )
-        } else {
-            binding.ivMineRight.setImageResource(R.drawable.ic_bell_unread)
+            } else {
+                arrayListOf()
+            }
+            redPointMineHandleSub(records21, redList)
+            if (redList.isNotEmpty()) {
+                binding.ivMineRight.setImageResource(R.drawable.ic_bell_unread)
+            } else {
+                binding.ivMineRight.setImageResource(R.drawable.ic_bell_read)
+            }
         }
-
     }
 
-    private fun dataCheck(data: List<Page.Record>) {
-        data.forEach { item ->
-            var read: ArrayList<Int> = Gson().fromJson(
-                SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
-                object : TypeToken<ArrayList<Int>>() {}.type
-            )
-            if (read.contains(item.id)
-            ) {
-                item.isRead = 1
-            } else {
-                item.isRead = 0
-                redList.add(item)
-            }
-        }
-
-        if (records2.isNotEmpty()) {
-            records2.forEach { item ->
+    private fun redPointMineHandleSub(
+        records21: ArrayList<Page.Record>,
+        redList: ArrayList<Page.Record>
+    ) {
+        if (records21.isNotEmpty()) {
+            records21.forEach { item ->
                 if (SharedPreferencesUtils.getString(
                         this,
                         READ_ID,
@@ -235,20 +253,14 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                         item.isRead = 0
                         redList.add(item)
                     }
-
                 } else {
                     item.isRead = 0
                     redList.add(item)
                 }
-
             }
         }
-        if (redList.isNotEmpty()) {
-            binding.ivMineRight.setImageResource(R.drawable.ic_bell_unread)
-        } else {
-            binding.ivMineRight.setImageResource(R.drawable.ic_bell_read)
-        }
     }
+
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -269,7 +281,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         super.onRxBus(event)
         when (event.id()) {
             Pie.EVENT_PUSH_MSG -> {
-                redPoint()
+                onResume()
             }
             else -> return
         }
@@ -396,21 +408,21 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<View>(R.id.tv_language1).setOnClickListener {
                 SharedPreferencesUtils.saveString(this, LANGUAGE, CN)
                 setLanguage()
-                initView()
+                onResume()
                 dialogLanguage.dismiss()
 
             }
             window.findViewById<View>(R.id.tv_language2).setOnClickListener {
                 SharedPreferencesUtils.saveString(this, LANGUAGE, TW)
                 setLanguage()
-                initView()
+                onResume()
                 dialogLanguage.dismiss()
 
             }
             window.findViewById<View>(R.id.tv_language3).setOnClickListener {
                 SharedPreferencesUtils.saveString(this, LANGUAGE, EN)
                 setLanguage()
-                initView()
+                onResume()
                 dialogLanguage.dismiss()
 
             }
