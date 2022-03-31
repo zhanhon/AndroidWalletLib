@@ -77,7 +77,7 @@
     <string name="confirm">Confirm</string>
     <string name="passord_confirm">Confirm Password</string>
     <string name="confirm_delete">Delete</string>
-    <string name="scan">Scan QRcode</string>
+    <string name="scan">Scan</string>
     <string name="generate_QR_code_store">Generate QRcode and save them</string>
     <string name="fail">Failed</string>
     <string name="gathering">Deposit</string>
