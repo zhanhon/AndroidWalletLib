@@ -8,6 +8,7 @@ import com.ramble.ramblewallet.MyApp;
 
 import java.io.File;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
@@ -64,7 +65,7 @@ public class ApiRetrofit {
                 .readTimeout(20, TimeUnit.SECONDS)
                 .build();
         mRetrofit = new Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_SERVER_URL[0])
+                .baseUrl(FastUrlTask.INSTANCE.getFastUrl(Arrays.asList(BuildConfig.BASE_SERVER_URL)))
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//支持RxJava
