@@ -171,9 +171,21 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
                 ClipboardUtils.copy(binding.transactionCode.text.toString(), this)
             }
             R.id.btn_detail -> {
+              var   urlString = when (trans?.addressType){
+                    1->{
+                        "https://etherscan.io/tx/${trans?.txHash}"
+                    }
+                    2->{
+                        "https://tronscan.org/#/transaction/${trans?.txHash}"
+                    }
+                    3->{
+                        "https://btcscan.org/tx/${trans?.txHash}"
+                    }
+                    else->""
+                }
                 var intent = Intent()
                 intent.action = "android.intent.action.VIEW"
-                intent.data = Uri.parse("https://etherscan.io/tx/${trans?.txHash}")
+                intent.data = Uri.parse(urlString)
                 startActivity(intent)
             }
         }
