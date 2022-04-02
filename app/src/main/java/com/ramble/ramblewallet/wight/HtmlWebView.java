@@ -46,6 +46,7 @@ public class HtmlWebView extends WebView {
         settings.setLoadWithOverviewMode(true);
         settings.setDomStorageEnabled(true);
         settings.setSavePassword(false);
+        settings.setAllowFileAccess(false);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         settings.setTextZoom(100);
 
