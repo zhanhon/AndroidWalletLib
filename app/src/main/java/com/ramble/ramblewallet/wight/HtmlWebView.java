@@ -36,7 +36,7 @@ public class HtmlWebView extends WebView {
 
     private void initWebViewSet() {
         WebSettings settings = getSettings();
-        settings.setJavaScriptEnabled(true);
+        settings.setJavaScriptEnabled(false);
         settings.setDefaultTextEncodingName(UTF8);
         settings.setBlockNetworkImage(false);
         settings.setSupportZoom(true);
