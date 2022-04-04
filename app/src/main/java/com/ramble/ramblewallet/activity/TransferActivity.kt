@@ -658,8 +658,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         postUI {
             transactionFinishConfirmDialog(transactionHash)
         }
-        putTransAddress(transactionHash, utxos)
-
+        if (transactionHash.isNotEmpty()){
+            putTransAddress(transactionHash, utxos)
+        }
     }
 
     /***
