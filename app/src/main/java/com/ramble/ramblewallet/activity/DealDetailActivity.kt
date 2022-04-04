@@ -179,7 +179,7 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
                         "https://tronscan.org/#/transaction/${trans?.txHash}"
                     }
                     3->{
-                        "https://btcscan.org/tx/${trans?.txHash}"
+                        "https://btc.com/btc/transaction/${trans?.txHash}"
                     }
                     else->""
                 }
