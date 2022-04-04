@@ -41,7 +41,7 @@ public class WalletTRXUtils {
      */
     public static Wallet generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic, List<String> mnemonicList) {
         try {
-            DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(mnemonic, 1);
+            DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(mnemonic, 0);
             ECKeyPair ecKeyPair = ECKeyPair.create(deterministicKey.getPrivKey());
             ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
             WalletFile walletFile = createLight(walletPassword, ecKeyPair);
