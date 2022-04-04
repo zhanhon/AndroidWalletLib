@@ -655,11 +655,15 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     fun transferSuccess(transactionHash: String, utxos: MutableList<UTXO>?) {
         println("-=-=-=-=->transactionUTXO:${Gson().toJson(utxos)}")
         println("-=-=-=-=->transactionHash:${transactionHash}")
-        postUI {
-            transactionFinishConfirmDialog(transactionHash)
-        }
         if (transactionHash.isNotEmpty()){
+            postUI {
+                transactionFinishConfirmDialog(transactionHash)
+            }
             putTransAddress(transactionHash, utxos)
+        }else{
+            postUI {
+                ToastUtils.showToastFree(this, getString(R.string.transaction_failed))
+            }
         }
     }
 
