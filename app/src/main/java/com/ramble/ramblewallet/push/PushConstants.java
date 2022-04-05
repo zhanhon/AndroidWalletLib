@@ -14,12 +14,12 @@ public class PushConstants {
     /**
      * 应用申请的Appkey
      */
-    public static final String APP_KEY = "61cc2cb0cccde77a8a5cc2e7";
+    public static final String APP_KEY = "621eea8d3cf78e2eaac25bc8";//测试61cc2cb0cccde77a8a5cc2e7
 
     /**
      * 应用申请的UmengMessageSecret
      */
-    public static final String MESSAGE_SECRET = "50bb050a3c372095dfbb6610b89bc987";
+    public static final String MESSAGE_SECRET = "6c2214961a6e9c7789e84d4ec9510ad1";//测试50bb050a3c372095dfbb6610b89bc987
 
     /**
      * 后台加密消息的密码（仅Demo用，请勿将此密码泄漏）
