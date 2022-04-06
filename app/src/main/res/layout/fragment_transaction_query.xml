@@ -132,7 +132,6 @@
                 android:id="@+id/text1"
                 style="@style/WrapWrap"
                 android:layout_centerHorizontal="true"
-                android:drawableTop="@drawable/ic_no_records"
                 android:gravity="center"
                 android:text="@string/no_records"
                 android:textColor="@color/front_three"
