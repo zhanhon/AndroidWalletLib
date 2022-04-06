@@ -436,11 +436,11 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 }
                 if (scrollRange + verticalOffset == 0) {
                     binding.toolbarLeft.visibility = View.VISIBLE
-                    binding.txtTitle.visibility = View.INVISIBLE
+                    //binding.txtTitle.visibility = View.INVISIBLE
                     isShow = true
                 } else if (isShow) {
                     binding.toolbarLeft.visibility = View.GONE
-                    binding.txtTitle.visibility = View.VISIBLE
+                    //binding.txtTitle.visibility = View.VISIBLE
                     isShow = false
                 }
             }

@@ -135,7 +135,7 @@
     <string name="address">Address</string>
     <string name="contributing_address_hint">Please enter the address</string>
     <string name="edit_address_wallet">Edit address</string>
-    <string name="no_records">No data</string>
+    <string name="no_records">No Information</string>
     <string name="no_results">No result</string>
     <string name="app_name">Ramble Wallet</string>
     <string name="balance_insufficient">Balance Not Enough</string>
