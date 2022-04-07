@@ -62,8 +62,8 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         instance = this
         window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contributing_words)
-        walletName = intent.getStringExtra(ARG_PARAM1)
-        walletPassword = intent.getStringExtra(ARG_PARAM2)
+        walletName = intent.getStringExtra(ARG_PARAM1).toString()
+        walletPassword = intent.getStringExtra(ARG_PARAM2).toString()
         walletType = intent.getIntExtra(ARG_PARAM3, 1)
         isBackupMnemonic = intent.getBooleanExtra(ARG_PARAM4, false)
         mnemonic = intent.getStringExtra(ARG_PARAM5)

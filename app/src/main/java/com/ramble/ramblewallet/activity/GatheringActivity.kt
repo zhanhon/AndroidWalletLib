@@ -47,8 +47,8 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_gathering)
-        gatherTitle = intent.getStringExtra(ARG_PARAM1)
-        gatherAddress = intent.getStringExtra(ARG_PARAM2)
+        gatherTitle = intent.getStringExtra(ARG_PARAM1).toString()
+        gatherAddress = intent.getStringExtra(ARG_PARAM2).toString()
         setOnClickListener()
         initData()
     }

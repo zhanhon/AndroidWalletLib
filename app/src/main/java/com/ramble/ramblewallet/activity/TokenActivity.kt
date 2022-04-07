@@ -48,7 +48,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_token)
-        tokenTitle = intent.getStringExtra(ARG_PARAM1)
+        tokenTitle = intent.getStringExtra(ARG_PARAM1).toString()
         initView()
         initListener()
     }
