@@ -116,12 +116,6 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        if (SharedPreferencesUtils.getBoolean(this, IS_CONFIRM_MNEMONIC, false)) {
-            MnemonicSaveFile.saveFile.content(
-                walletCurrent.walletName,
-                walletCurrent.mnemonic
-            )
-        }
     }
 
     private fun initClick() {
@@ -384,12 +378,6 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 ClipboardUtils.copy(walletCurrent.privateKey.toString(), this)
             }
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
-                if (walletCurrent.privateKey.toString() != null) {
-                    PrivateKeySaveFile.saveFile.content(
-                        walletCurrent.walletName,
-                        walletCurrent.privateKey
-                    )
-                }
                 dialog.dismiss()
             }
         }
@@ -416,12 +404,6 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 dialog.dismiss()
             }
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
-                if (walletCurrent.keystore.toString() != null) {
-                    KeyStoreSaveFile.saveFile.content(
-                        walletCurrent.walletName,
-                        walletCurrent.keystore.toString()
-                    )
-                }
                 dialog.dismiss()
             }
         }
