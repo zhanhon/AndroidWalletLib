@@ -74,8 +74,11 @@ class Account {
             val solanaBip44 = SolanaBip44(walletIndex)
             val seed = MnemonicCode.toSeed(words, passphrase)
             val privateKey: ByteArray = solanaBip44.getPrivateKeyFromSeed(seed, DerivationPath.BIP44CHANGE)
-            Log.v("-=-=-=->privateKey11111:", Base64Utils.encode(privateKey))
             return Account(TweetNaclFast.Signature.keyPair_fromSeed(privateKey))
+        }
+
+        fun privateKeyToWallet(secretKey: ByteArray): Account {
+            return Account(secretKey)
         }
     }
 }
