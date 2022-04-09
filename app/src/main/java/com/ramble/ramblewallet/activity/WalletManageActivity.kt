@@ -133,6 +133,9 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     3 -> {
                         startActivity(Intent(this, MainBTCActivity::class.java))
                     }
+                    4 -> {
+                        startActivity(Intent(this, MainSOLActivity::class.java))
+                    }
                 }
             }
         }

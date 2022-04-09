@@ -22,7 +22,7 @@ import com.ramble.ramblewallet.utils.ToastUtils
 class CreateWalletActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityCreateWalletBinding
-    private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4：BTC、ETH、TRX
+    private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4:SOL|5:DOGE|100:BTC、ETH、TRX、SOL、DOGE
     private var walletSource = 1
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
 

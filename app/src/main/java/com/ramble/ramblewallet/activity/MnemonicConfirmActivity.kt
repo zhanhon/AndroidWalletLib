@@ -53,7 +53,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var currentTab = ""
     private lateinit var mnemonicETH: List<String>
-    private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4：BTC、ETH、TRX
+    private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4:SOL|5:DOGE|100:BTC、ETH、TRX、SOL、DOGE
     private var isBackupMnemonic = false
     private var mnemonic: String? = null
     private var times = 0
@@ -106,7 +106,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             3 -> { //BTC
                 btcLogicHandle()
             }
-            4 -> { //ALL
+            100 -> { //ALL
                 allLogicHandle()
             }
         }

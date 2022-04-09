@@ -56,6 +56,10 @@ public class WalletManageAdapter extends BaseQuickAdapter<Wallet, BaseViewHolder
                 baseViewHolder.setText(R.id.tv_currency_name, "BTC");
                 baseViewHolder.setBackgroundResource(R.id.cy_wallet_manage_item, R.drawable.shape_wallet_manage_btc);
                 break;
+            case 4:
+                baseViewHolder.setText(R.id.tv_currency_name, "SOL");
+                baseViewHolder.setBackgroundResource(R.id.cy_wallet_manage_item, R.drawable.shape_wallet_manage_btc);
+                break;
             default:
                 break;
         }

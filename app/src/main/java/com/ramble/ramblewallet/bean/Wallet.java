@@ -15,7 +15,7 @@ public class Wallet {
     private String publicKey;
     private String keystore;
     private String filename;
-    private int walletType;  //链类型|1:ETH|2:TRX|3:BTC
+    private int walletType;  //链类型|1:ETH|2:TRX|3:BTC|4:SOL|5:DOGE
     private boolean isClickDelete;
     private boolean isChoose;
     private List<String> mnemonicList;

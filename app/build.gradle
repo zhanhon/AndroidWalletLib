@@ -26,7 +26,6 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/*'
-
     }
     configurations {
         //排除  重复jar包
@@ -138,7 +137,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
+    //implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation files('libs/tron-sdk-1.jar')
@@ -173,10 +172,11 @@ dependencies {
     //SmartRefreshLayout
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
     //BTC
-    implementation('org.bitcoinj:bitcoinj-core:0.15.8') {
-        exclude group: 'org.bouncycastle'
-        exclude group: 'com.google.protobuf'
-    }
+    implementation 'com.github.bitcoinj:bitcoinj:0.15.10'
+//    implementation('org.bitcoinj:bitcoinj-core:0.15.8') {
+//        exclude group: 'org.bouncycastle'
+//        exclude group: 'com.google.protobuf'
+//    }
     implementation 'commons-codec:commons-codec:1.13'
     //TRX
     implementation 'org.fusesource.leveldbjni:leveldbjni-all:1.8'
@@ -195,6 +195,8 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.2.47'
     //比较两个字符串忽略大小写
     implementation 'cn.hutool:hutool-all:4.6.2'
+    //SOL
+    implementation project(':solanaj')
 
     //友盟推送
     implementation project(':UMLibrary')

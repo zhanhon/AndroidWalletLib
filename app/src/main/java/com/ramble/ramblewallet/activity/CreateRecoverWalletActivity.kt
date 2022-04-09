@@ -52,7 +52,7 @@ class CreateRecoverWalletActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.btn_create_wallet -> {
                 startActivity(Intent(this, CreateWalletActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, 4)
+                    putExtra(ARG_PARAM1, 100)
                     putExtra(ARG_PARAM2, 1)
                 })
             }

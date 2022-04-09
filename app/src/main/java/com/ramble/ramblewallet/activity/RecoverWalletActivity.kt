@@ -37,7 +37,7 @@ import com.ramble.ramblewallet.utils.applyIo
 class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityRecoverWalletBinding
-    private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4：BTC、ETH、TRX
+    private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4:SOL|5:DOGE|100:BTC、ETH、TRX、SOL、DOGE
     private var chooseMode = 0 //选择方式|1:助记词|2:私钥|3:keystore
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var mnemonic: ArrayList<String> = arrayListOf()

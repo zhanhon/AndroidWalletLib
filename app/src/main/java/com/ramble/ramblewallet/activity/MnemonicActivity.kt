@@ -25,6 +25,7 @@ import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.ethereum.WalletETHUtils.isEthValidAddress
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.solana.WalletSOLUtils
 import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.utils.ClipboardUtils
@@ -45,7 +46,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
     private var currentTab = "english"
     private var walletETHString: String = ""
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
-    private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4：BTC、ETH、TRX
+    private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4:SOL|5:DOGE|100:BTC、ETH、TRX、SOL、DOGE
     private var isBackupMnemonic = false
     private var mnemonic: String? = null
     private var fromMnemonicList: ArrayList<String>? = arrayListOf()
@@ -178,7 +179,10 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
             3 -> { //BTC
                 btcLogicHandle()
             }
-            4 -> { //ALL
+            4 -> { //SOL
+                solLogicHandle()
+            }
+            100 -> { //ALL
                 allLogicHandle()
             }
         }
@@ -206,6 +210,13 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
             mnemonicList
         )
 
+        val walletSOL = WalletSOLUtils.generateWalletByMnemonic(
+            walletName,
+            walletPassword,
+            mnemonicList[0],
+            mnemonicList
+        )
+
         if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
             saveWalletList =
                 Gson().fromJson(
@@ -213,12 +224,14 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                     object : TypeToken<ArrayList<Wallet>>() {}.type
                 )
         }
-        allLogicHandleSub(walletETH, walletTRX, walletBTC)
+        allLogicHandleSub(walletETH, walletTRX, walletBTC, walletSOL)
         if (saveWalletList.size == 0) {
-            walletTRX.index = 0
+            walletSOL.index = 0
         } else {
-            walletTRX.index = saveWalletList[saveWalletList.size - 1].index + 1
+            walletSOL.index = saveWalletList[saveWalletList.size - 1].index + 1
         }
+        saveWalletList.add(walletSOL)
+        walletTRX.index = saveWalletList[saveWalletList.size - 1].index + 1
         saveWalletList.add(walletTRX)
         walletBTC.index = saveWalletList[saveWalletList.size - 1].index + 1
         saveWalletList.add(walletBTC)
@@ -230,6 +243,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         detailsList.add(AddressReport.DetailsList(walletETH.address, 0, 1))
         detailsList.add(AddressReport.DetailsList(walletBTC.address, 0, 3))
         detailsList.add(AddressReport.DetailsList(walletTRX.address, 0, 2))
+        detailsList.add(AddressReport.DetailsList(walletSOL.address, 0, 4))
 
         //2、之后地址校验
         var isValidEthSuccess = isEthValidAddress(walletETH.address)
@@ -252,15 +266,18 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
     private fun allLogicHandleSub(
         walletETH: Wallet,
         walletTRX: Wallet,
-        walletBTC: Wallet
+        walletBTC: Wallet,
+        walletSOL: Wallet,
     ) {
         if (walletName.isEmpty()) {
             var index1 = 1
             var index2 = 1
             var index3 = 1
+            var index4 = 1
             walletETH.walletName = "ETH" + String.format("%02d", index1)
             walletTRX.walletName = "TRX" + String.format("%02d", index2)
             walletBTC.walletName = "BTC" + String.format("%02d", index3)
+            walletSOL.walletName = "SOL" + String.format("%02d", index4)
             if (saveWalletList.size > 0) {
                 saveWalletList.forEach {
                     if (it.walletName == walletETH.walletName) {
@@ -272,12 +289,59 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                     if (it.walletName == walletBTC.walletName) {
                         index3++
                     }
+                    if (it.walletName == walletBTC.walletName) {
+                        index4++
+                    }
                 }
             }
             walletETH.walletName = "ETH" + String.format("%02d", index1)
             walletTRX.walletName = "TRX" + String.format("%02d", index2)
             walletBTC.walletName = "BTC" + String.format("%02d", index3)
+            walletSOL.walletName = "SOL" + String.format("%02d", index4)
         }
+    }
+
+    private fun solLogicHandle() {
+        val walletSOL = WalletSOLUtils.generateWalletByMnemonic(
+            walletName,
+            walletPassword,
+            mnemonicList[0],
+            mnemonicList
+        )
+        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+            saveWalletList =
+                Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                    object : TypeToken<ArrayList<Wallet>>() {}.type
+                )
+        }
+        if (walletName.isEmpty()) {
+            var index = 1
+            walletSOL.walletName = "SOL" + String.format("%02d", index)
+            if (saveWalletList.size > 0) {
+                saveWalletList.forEach {
+                    if (it.walletName == walletSOL.walletName) {
+                        index++
+                    }
+                }
+            }
+            walletSOL.walletName = "SOL" + String.format("%02d", index)
+        }
+        walletSOL.index = saveWalletList[0].index + 1
+        saveWalletList.add(walletSOL)
+        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+        detailsList.add(AddressReport.DetailsList(walletSOL.address, 0, 3))
+        //var isValidBtcSuccess = isBtcValidAddress(walletSOL.address)
+        //if (isValidBtcSuccess) {
+            putAddress(detailsList)
+            SharedPreferencesUtils.saveString(
+                this,
+                WALLETSELECTED,
+                Gson().toJson(walletSOL)
+            )
+            startActivity(Intent(this, MainBTCActivity::class.java))
+        //}
     }
 
     private fun btcLogicHandle() {
