@@ -57,7 +57,18 @@ class UnAddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
                 binding.ivTokenStatus.isVisible = true
             }
         }
+        binding.tvTokenAddress.text = addressHandle(data.contractAddress)
         binding.tvTokenName.text = data.symbol
         holder.attachOnClickListener(R.id.add_view)
+    }
+
+    private fun addressHandle(str: String): String? {
+        if (str.isEmpty()) {
+            return null
+        }
+        val subStr1 = str.substring(0, 10)
+        val strLength = str.length
+        val subStr2 = str.substring(strLength - 6, strLength)
+        return "$subStr1...$subStr2"
     }
 }

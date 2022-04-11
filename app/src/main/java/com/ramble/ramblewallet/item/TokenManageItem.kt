@@ -21,6 +21,7 @@ class TokenManageItem(val data: StoreInfo) : CheckableSimpleRecyclerItem(), View
 
     override fun bind(holder: ViewHolder) {
         val binding: TokenManageItemBinding = holder.binding()
+        binding.tvTokenAddress.text = addressHandle(data.contractAddress)
         binding.tvTokenName.text = data.symbol
         binding.ivDelete.isVisible = isEditable
         binding.ivDelete.isChecked = isChecked
@@ -98,5 +99,15 @@ class TokenManageItem(val data: StoreInfo) : CheckableSimpleRecyclerItem(), View
     override fun bindPayloads(holder: ViewHolder, payloads: MutableList<Any>) {
         val binding: TokenManageItemBinding = holder.binding()
         binding.ivDelete.isVisible = isEditable
+    }
+
+    private fun addressHandle(str: String): String? {
+        if (str.isEmpty()) {
+            return null
+        }
+        val subStr1 = str.substring(0, 10)
+        val strLength = str.length
+        val subStr2 = str.substring(strLength - 6, strLength)
+        return "$subStr1...$subStr2"
     }
 }
