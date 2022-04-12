@@ -3,11 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/shape_wallet_manage_btc.xml" value="0.2075" />
-        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_main_doge.xml" value="0.36594202898550726" />
-        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_main_sol.xml" value="0.36594202898550726" />
-        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_wallet_manage_item.xml" value="0.36594202898550726" />
-        <entry key="..\:/Workspace/RambleWallet/solanaj/src/main/res/drawable/ic_hide.xml" value="0.238" />
+        <entry key="..\:/Workspace/RambleWallet/solanaj/src/main/res/drawable/ic_hide.xml" value="0.215" />
       </map>
     </option>
   </component>

@@ -3,8 +3,8 @@ package com.ramble.ramblewallet.solana
 import android.util.Base64
 import android.util.Log
 import com.ramble.ramblewallet.bean.Wallet
-import org.p2p.solanaj.core.Account
-import org.p2p.solanaj.core.Account.Companion.privateKeyToWallet
+import com.ramble.ramblewallet.solana.solanasdk.core.Account
+import com.ramble.ramblewallet.solana.solanasdk.core.Account.Companion.privateKeyToWallet
 
 class WalletSOLUtils {
 
@@ -39,12 +39,12 @@ class WalletSOLUtils {
                 passphrase.add("utility")
                 passphrase.add("cotton")
                 passphrase.add("rhythm")
-                val account = Account.fromBip44MnemonicWithChange(
+                val account = Account.fromBip44Mnemonic(
                     passphrase,
                     Base64.DEFAULT
                 )
                 val address = account.publicKey.toBase58()
-                val privateKey = Base64.encodeToString(account.secretKey, Base64.DEFAULT)
+                val privateKey = Base64.encodeToString(account.secretKey, Base64.NO_WRAP)
                 Log.v("-=-=->privateKey:", privateKey)
                 Log.v("-=-=->address:", address)
                 Wallet(

@@ -7,11 +7,11 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.ramble.ramblewallet.BuildConfig;
 import com.ramble.ramblewallet.activity.MainTRXActivity;
 import com.ramble.ramblewallet.activity.TransferActivity;
-import com.ramble.ramblewallet.tronsdk.common.crypto.ECKey;
-import com.ramble.ramblewallet.tronsdk.common.utils.ByteArray;
-import com.ramble.ramblewallet.tronsdk.common.utils.Sha256Hash;
-import com.ramble.ramblewallet.tronsdk.trx.TrxApi;
-import com.ramble.ramblewallet.tronsdk.trx.Util;
+import com.ramble.ramblewallet.tron.tronsdk.common.crypto.ECKey;
+import com.ramble.ramblewallet.tron.tronsdk.common.utils.ByteArray;
+import com.ramble.ramblewallet.tron.tronsdk.common.utils.Sha256Hash;
+import com.ramble.ramblewallet.tron.tronsdk.trx.TrxApi;
+import com.ramble.ramblewallet.tron.tronsdk.trx.Util;
 
 import org.bouncycastle.util.encoders.Hex;
 import org.jetbrains.annotations.NotNull;

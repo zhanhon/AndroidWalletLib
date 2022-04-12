@@ -2,8 +2,8 @@ package com.ramble.ramblewallet.tron;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ramble.ramblewallet.bean.Wallet;
-import com.ramble.ramblewallet.tronsdk.StringTronUtil;
-import com.ramble.ramblewallet.tronsdk.common.utils.ByteArray;
+import com.ramble.ramblewallet.tron.tronsdk.StringTronUtil;
+import com.ramble.ramblewallet.tron.tronsdk.common.utils.ByteArray;
 
 import org.bitcoinj.crypto.ChildNumber;
 import org.bitcoinj.crypto.DeterministicHierarchy;

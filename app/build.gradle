@@ -12,7 +12,6 @@ android {
         configurations.all {
             resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
         }
-        //applicationId "com.ramble.ramblewallet"
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 6
@@ -173,10 +172,6 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
     //BTC
     implementation 'com.github.bitcoinj:bitcoinj:0.15.10'
-//    implementation('org.bitcoinj:bitcoinj-core:0.15.8') {
-//        exclude group: 'org.bouncycastle'
-//        exclude group: 'com.google.protobuf'
-//    }
     implementation 'commons-codec:commons-codec:1.13'
     //TRX
     implementation 'org.fusesource.leveldbjni:leveldbjni-all:1.8'
@@ -196,7 +191,7 @@ dependencies {
     //比较两个字符串忽略大小写
     implementation 'cn.hutool:hutool-all:4.6.2'
     //SOL
-    implementation project(':solanaj')
+    implementation 'net.i2p.crypto:eddsa:0.3.0'
 
     //友盟推送
     implementation project(':UMLibrary')

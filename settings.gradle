@@ -1,4 +1,3 @@
 include ':app'
 include ':UMLibrary'
 rootProject.name = "RambleWallet"
-include ':solanaj'
