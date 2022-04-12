@@ -26,7 +26,6 @@ import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
-import java.util.*
 
 /**
  * 时间　: 2021/12/16 9:29

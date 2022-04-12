@@ -1,5 +1,10 @@
 package com.ramble.ramblewallet.adapter;
 
+import static com.ramble.ramblewallet.constant.ConstantsKt.CNY;
+import static com.ramble.ramblewallet.constant.ConstantsKt.HKD;
+import static com.ramble.ramblewallet.constant.ConstantsKt.USD;
+import static com.ramble.ramblewallet.utils.StringUtils.strAddComma;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.ramble.ramblewallet.R;
@@ -10,11 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.List;
-
-import static com.ramble.ramblewallet.constant.ConstantsKt.CNY;
-import static com.ramble.ramblewallet.constant.ConstantsKt.HKD;
-import static com.ramble.ramblewallet.constant.ConstantsKt.USD;
-import static com.ramble.ramblewallet.utils.StringUtils.strAddComma;
 
 /**
  * @创建人： Ricky

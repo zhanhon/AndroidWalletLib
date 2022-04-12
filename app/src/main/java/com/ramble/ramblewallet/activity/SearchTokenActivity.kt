@@ -30,7 +30,6 @@ import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.QuickItemDecoration
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
-import java.util.*
 
 /**
  * 时间　: 2022/1/14 9:25
@@ -49,7 +48,10 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search_token)
         initView()
         initListener()
@@ -160,7 +162,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
                     item.isMyToken = 1
                 } else if (item.isMyToken == 1) {
                     item.isMyToken = 0
-                }else{
+                } else {
                     return
                 }
                 adapter.notifyItemChanged(position)

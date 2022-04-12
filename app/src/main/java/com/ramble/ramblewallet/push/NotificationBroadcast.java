@@ -1,5 +1,11 @@
 package com.ramble.ramblewallet.push;
 
+import static com.ramble.ramblewallet.constant.ConstantsKt.ARG_PARAM1;
+import static com.ramble.ramblewallet.constant.ConstantsKt.ARG_PARAM2;
+import static com.ramble.ramblewallet.constant.ConstantsKt.ARG_PARAM3;
+import static com.ramble.ramblewallet.constant.ConstantsKt.ARG_PARAM4;
+import static com.ramble.ramblewallet.constant.ConstantsKt.ARG_PARAM5;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,12 +18,6 @@ import com.umeng.message.UTrack;
 import com.umeng.message.entity.UMessage;
 
 import org.json.JSONObject;
-
-import static com.ramble.ramblewallet.constant.ConstantsKt.ARG_PARAM1;
-import static com.ramble.ramblewallet.constant.ConstantsKt.ARG_PARAM2;
-import static com.ramble.ramblewallet.constant.ConstantsKt.ARG_PARAM3;
-import static com.ramble.ramblewallet.constant.ConstantsKt.ARG_PARAM4;
-import static com.ramble.ramblewallet.constant.ConstantsKt.ARG_PARAM5;
 
 
 public class NotificationBroadcast extends BroadcastReceiver {

@@ -16,18 +16,18 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
 import com.ramble.ramblewallet.bean.MyDataBean
 import com.ramble.ramblewallet.bean.Wallet
-import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
-import com.ramble.ramblewallet.bitcoin.WalletBTCUtils.isBtcValidAddress
+import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils
+import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils.isBtcValidAddress
+import com.ramble.ramblewallet.blockchain.ethereum.MnemonicUtils
+import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils
+import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils.isEthValidAddress
+import com.ramble.ramblewallet.blockchain.solana.WalletSOLUtils
+import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils
+import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityContributingWordsBinding
-import com.ramble.ramblewallet.ethereum.MnemonicUtils
-import com.ramble.ramblewallet.ethereum.WalletETHUtils
-import com.ramble.ramblewallet.ethereum.WalletETHUtils.isEthValidAddress
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.solana.WalletSOLUtils
-import com.ramble.ramblewallet.tron.WalletTRXUtils
-import com.ramble.ramblewallet.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.utils.ClipboardUtils
 import com.ramble.ramblewallet.utils.DoubleUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
@@ -61,7 +61,10 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         instance = this
-        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contributing_words)
         walletName = intent.getStringExtra(ARG_PARAM1).toString()
         walletPassword = intent.getStringExtra(ARG_PARAM2).toString()
@@ -334,13 +337,13 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         detailsList.add(AddressReport.DetailsList(walletSOL.address, 0, 3))
         //var isValidBtcSuccess = isBtcValidAddress(walletSOL.address)
         //if (isValidBtcSuccess) {
-            putAddress(detailsList)
-            SharedPreferencesUtils.saveString(
-                this,
-                WALLETSELECTED,
-                Gson().toJson(walletSOL)
-            )
-            startActivity(Intent(this, MainBTCActivity::class.java))
+        putAddress(detailsList)
+        SharedPreferencesUtils.saveString(
+            this,
+            WALLETSELECTED,
+            Gson().toJson(walletSOL)
+        )
+        startActivity(Intent(this, MainBTCActivity::class.java))
         //}
     }
 

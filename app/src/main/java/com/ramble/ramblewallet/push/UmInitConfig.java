@@ -1,5 +1,8 @@
 package com.ramble.ramblewallet.push;
 
+import static android.os.Looper.getMainLooper;
+import static com.ramble.ramblewallet.constant.ConstantsKt.DEVICE_TOKEN;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -22,9 +25,6 @@ import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.api.UPushRegisterCallback;
 import com.umeng.message.entity.UMessage;
-
-import static android.os.Looper.getMainLooper;
-import static com.ramble.ramblewallet.constant.ConstantsKt.DEVICE_TOKEN;
 
 
 public class UmInitConfig {

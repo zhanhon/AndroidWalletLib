@@ -23,16 +23,16 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
 import com.ramble.ramblewallet.bean.MyDataBean
 import com.ramble.ramblewallet.bean.Wallet
-import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
+import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils
+import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils
+import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils.isEthValidAddress
+import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils
+import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.custom.AutoLineFeedLayoutManager
 import com.ramble.ramblewallet.databinding.ActivityContributingWordsConfirmBinding
-import com.ramble.ramblewallet.ethereum.WalletETHUtils
-import com.ramble.ramblewallet.ethereum.WalletETHUtils.isEthValidAddress
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.tron.WalletTRXUtils
-import com.ramble.ramblewallet.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.utils.DoubleUtils
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.ToastUtils
@@ -61,7 +61,10 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contributing_words_confirm)
         mnemonicETH = intent.getStringArrayListExtra(ARG_PARAM1)!!
         walletName = intent.getStringExtra(ARG_PARAM2).toString()

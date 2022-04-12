@@ -1,6 +1,8 @@
 package com.ramble.ramblewallet.utils;
 
 
+import static android.graphics.Color.BLACK;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.text.TextUtils;
@@ -16,8 +18,6 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.util.HashMap;
 import java.util.Hashtable;
-
-import static android.graphics.Color.BLACK;
 
 public class QRCodeUtil {
 

@@ -15,20 +15,20 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
 import com.ramble.ramblewallet.bean.Wallet
-import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
-import com.ramble.ramblewallet.bitcoin.WalletBTCUtils.isBtcValidAddress
+import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils
+import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils.isBtcValidAddress
+import com.ramble.ramblewallet.blockchain.ethereum.MnemonicUtils
+import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils
+import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils.isEthValidAddress
+import com.ramble.ramblewallet.blockchain.ethereum.utils.ChineseSimplified
+import com.ramble.ramblewallet.blockchain.ethereum.utils.ChineseTraditional
+import com.ramble.ramblewallet.blockchain.ethereum.utils.English
+import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils
+import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityRecoverWalletBinding
-import com.ramble.ramblewallet.ethereum.MnemonicUtils
-import com.ramble.ramblewallet.ethereum.WalletETHUtils
-import com.ramble.ramblewallet.ethereum.WalletETHUtils.isEthValidAddress
-import com.ramble.ramblewallet.ethereum.utils.ChineseSimplified
-import com.ramble.ramblewallet.ethereum.utils.ChineseTraditional
-import com.ramble.ramblewallet.ethereum.utils.English
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.tron.WalletTRXUtils
-import com.ramble.ramblewallet.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.StringUtils.*
 import com.ramble.ramblewallet.utils.ToastUtils
@@ -47,7 +47,10 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
         binding = DataBindingUtil.setContentView(this, R.layout.activity_recover_wallet)
         initClick()
         initData()

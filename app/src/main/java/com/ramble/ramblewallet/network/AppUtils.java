@@ -1,5 +1,7 @@
 package com.ramble.ramblewallet.network;
 
+import static com.ramble.ramblewallet.constant.ConstantsKt.getAppContext;
+
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -7,8 +9,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 import java.util.List;
-
-import static com.ramble.ramblewallet.constant.ConstantsKt.getAppContext;
 
 
 /**

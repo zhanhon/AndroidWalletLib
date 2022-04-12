@@ -40,7 +40,10 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
         binding = DataBindingUtil.setContentView(this, R.layout.activity_deal_detail)
         initView()
         initListener()
@@ -130,7 +133,8 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
         }
 
     }
-    private fun initTransView(){
+
+    private fun initTransView() {
         when (trans?.transferType) {
             2 -> {//转入
                 binding.tvMoneyCount.text = "+" + trans?.amount
@@ -171,17 +175,17 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
                 ClipboardUtils.copy(binding.transactionCode.text.toString(), this)
             }
             R.id.btn_detail -> {
-              var   urlString = when (trans?.addressType){
-                    1->{
+                var urlString = when (trans?.addressType) {
+                    1 -> {
                         "https://etherscan.io/tx/${trans?.txHash}"
                     }
-                    2->{
+                    2 -> {
                         "https://tronscan.org/#/transaction/${trans?.txHash}"
                     }
-                    3->{
+                    3 -> {
                         "https://btc.com/btc/transaction/${trans?.txHash}"
                     }
-                    else->""
+                    else -> ""
                 }
                 var intent = Intent()
                 intent.action = "android.intent.action.VIEW"

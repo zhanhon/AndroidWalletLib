@@ -23,17 +23,17 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.*
-import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.balanceOfBtc
-import com.ramble.ramblewallet.bitcoin.TransferBTCUtils.transferBTC
-import com.ramble.ramblewallet.bitcoin.WalletBTCUtils
+import com.ramble.ramblewallet.blockchain.bitcoin.TransferBTCUtils.balanceOfBtc
+import com.ramble.ramblewallet.blockchain.bitcoin.TransferBTCUtils.transferBTC
+import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils
+import com.ramble.ramblewallet.blockchain.ethereum.TransferEthUtils.*
+import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils
+import com.ramble.ramblewallet.blockchain.tron.TransferTrxUtils.*
+import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
-import com.ramble.ramblewallet.ethereum.TransferEthUtils.*
-import com.ramble.ramblewallet.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.*
-import com.ramble.ramblewallet.tron.TransferTrxUtils.*
-import com.ramble.ramblewallet.tron.WalletTRXUtils
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.StringUtils.inputWatch
 import com.ramble.ramblewallet.utils.StringUtils.strAddComma
@@ -69,7 +69,10 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
         binding = DataBindingUtil.setContentView(this, R.layout.activity_transfer)
         transferReceiverAddress = intent.getStringExtra(ARG_PARAM1)
         tokenBean = intent.getSerializableExtra(ARG_PARAM2) as MainETHTokenBean
@@ -655,12 +658,12 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     fun transferSuccess(transactionHash: String, utxos: MutableList<UTXO>?) {
         println("-=-=-=-=->transactionUTXO:${Gson().toJson(utxos)}")
         println("-=-=-=-=->transactionHash:${transactionHash}")
-        if (transactionHash.isNotEmpty()){
+        if (transactionHash.isNotEmpty()) {
             postUI {
                 transactionFinishConfirmDialog(transactionHash)
             }
             putTransAddress(transactionHash, utxos)
-        }else{
+        } else {
             postUI {
                 ToastUtils.showToastFree(this, getString(R.string.transaction_failed))
             }

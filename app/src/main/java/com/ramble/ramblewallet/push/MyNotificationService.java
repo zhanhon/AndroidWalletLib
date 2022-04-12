@@ -1,5 +1,7 @@
 package com.ramble.ramblewallet.push;
 
+import static com.ramble.ramblewallet.constant.ConstantsKt.STATION_INFO;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -26,8 +28,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Random;
-
-import static com.ramble.ramblewallet.constant.ConstantsKt.STATION_INFO;
 
 public class MyNotificationService extends Service {
     public static UMessage oldMessage = null;
