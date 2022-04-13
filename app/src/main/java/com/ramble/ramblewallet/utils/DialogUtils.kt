@@ -5,7 +5,10 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -18,7 +21,9 @@ import com.ramble.ramblewallet.bean.MyAddressBean
 import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils.isBtcValidAddress
 import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils.isEthValidAddress
 import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils.isTrxValidAddress
-import com.ramble.ramblewallet.constant.*
+import com.ramble.ramblewallet.constant.ADDRESS_BOOK_INFO
+import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.databinding.BottomNoticeDialog2Binding
 import com.ramble.ramblewallet.databinding.BottomNoticeDialogBinding
 import com.ramble.ramblewallet.helper.dataBinding

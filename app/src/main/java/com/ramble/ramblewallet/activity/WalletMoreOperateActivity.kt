@@ -117,10 +117,6 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
         initClick()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     private fun initClick() {
         binding.ivBack.setOnClickListener(this)
         binding.rlEditWallet.setOnClickListener(this)

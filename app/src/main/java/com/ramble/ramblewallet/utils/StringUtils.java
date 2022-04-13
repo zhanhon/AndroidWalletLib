@@ -88,7 +88,7 @@ public class StringUtils {
             strTemp = strTemp.substring(0, strTemp.length() - 1);
         }
         // 将数字重新反转,并将小数拼接到末尾
-        String resultStr = new StringBuilder(strTemp).reverse().toString() + tmpCommaStr;
+        String resultStr = new StringBuilder(strTemp).reverse() + tmpCommaStr;
         return resultStr;
     }
 

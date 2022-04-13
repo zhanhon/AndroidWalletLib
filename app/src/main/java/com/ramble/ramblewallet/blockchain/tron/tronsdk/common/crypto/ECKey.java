@@ -183,7 +183,7 @@ public class ECKey implements Serializable {
             throw new IllegalArgumentException(
                     "Expected EC private key, given a private key object with" +
                             " class " +
-                            privKey.getClass().toString() +
+                            privKey.getClass() +
                             " and algorithm " + privKey.getAlgorithm());
         }
 
@@ -827,7 +827,7 @@ public class ECKey implements Serializable {
      */
     public String toStringWithPrivate() {
         StringBuilder b = new StringBuilder();
-        b.append(toString());
+        b.append(this);
         if (privKey != null && privKey instanceof BCECPrivateKey) {
             b.append(" priv:").append(Hex.toHexString(((BCECPrivateKey)
                     privKey).getD().toByteArray()));

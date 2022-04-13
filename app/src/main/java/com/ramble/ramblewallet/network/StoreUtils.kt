@@ -2,11 +2,8 @@ package com.ramble.ramblewallet.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import okhttp3.OkHttpClient
-import okio.ByteString
 import java.io.IOException
 import java.lang.reflect.Type
-import java.util.concurrent.TimeUnit
 
 /**
  * 时间　: 2021/12/21 14:01

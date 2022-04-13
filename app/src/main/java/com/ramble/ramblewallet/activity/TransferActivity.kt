@@ -33,7 +33,10 @@ import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
 import com.ramble.ramblewallet.helper.start
-import com.ramble.ramblewallet.network.*
+import com.ramble.ramblewallet.network.getBtcMinerConfigUrl
+import com.ramble.ramblewallet.network.getEthMinerConfigUrl
+import com.ramble.ramblewallet.network.reportTransferUrl
+import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.StringUtils.inputWatch
 import com.ramble.ramblewallet.utils.StringUtils.strAddComma

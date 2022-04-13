@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.text.InputFilter
 import android.view.*
 import android.widget.TextView
@@ -401,24 +400,24 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 })
             }
             R.id.iv_balance_refresh -> {
-                //TransferSOLUtils.loadBalance()
-                TransferSOLUtils.makeTransfer()
+                TransferSOLUtils.loadBalance()
 //                startSyncAnimation()
 //                Handler().postDelayed({
 //                    initData()
 //                }, 2000)
             }
             R.id.iv_eyes -> {
-                if (isClickEyes) {
-                    binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_open)
-                    binding.tvBalanceTotal.text =
-                        strAddComma(DecimalFormatUtil.format(totalBalance, 2))
-                    isClickEyes = false
-                } else {
-                    binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_close)
-                    binding.tvBalanceTotal.text = "******"
-                    isClickEyes = true
-                }
+                TransferSOLUtils.makeTransfer()
+//                if (isClickEyes) {
+//                    binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_open)
+//                    binding.tvBalanceTotal.text =
+//                        strAddComma(DecimalFormatUtil.format(totalBalance, 2))
+//                    isClickEyes = false
+//                } else {
+//                    binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_close)
+//                    binding.tvBalanceTotal.text = "******"
+//                    isClickEyes = true
+//                }
             }
             R.id.iv_copy -> {
                 ClipboardUtils.copy(walletSelleted.address, this)

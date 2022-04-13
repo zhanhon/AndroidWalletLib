@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.protobuf'
+    id 'kotlinx-serialization'
+    id 'kotlin-kapt'
+    id 'maven-publish'
 }
 
 android {
@@ -132,6 +135,34 @@ protobuf {
     }
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
+    }
+}
+task sourcesJar(type: Jar) {
+    archiveClassifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier = 'javadoc'
+    from javadoc.destinationDir
+}
+afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                artifact sourcesJar
+                artifact javadocJar
+            }
+        }
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -190,9 +221,15 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.2.47'
     //比较两个字符串忽略大小写
     implementation 'cn.hutool:hutool-all:4.6.2'
-    //SOL
+    //SOL生成钱包
     implementation 'net.i2p.crypto:eddsa:0.3.0'
-    implementation project(':ksolana')
+    //SOL转账
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    implementation 'com.github.komputing:KBase58:0.2'
+    implementation 'io.github.instantwebp2p:tweetnacl-java:1.1.2'
+
 
     //友盟推送
     implementation project(':UMLibrary')

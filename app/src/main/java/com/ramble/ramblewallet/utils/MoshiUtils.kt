@@ -2,11 +2,8 @@
 
 package com.ramble.ramblewallet.utils
 
-import android.content.Context
-import androidx.annotation.DimenRes
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import okio.ByteString
 import java.io.IOException
 import java.lang.reflect.Type
 
