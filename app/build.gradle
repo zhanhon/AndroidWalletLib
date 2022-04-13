@@ -229,6 +229,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     implementation 'com.github.komputing:KBase58:0.2'
     implementation 'io.github.instantwebp2p:tweetnacl-java:1.1.2'
+    //远程更新
+    implementation 'com.github.yjfnypeu:UpdatePlugin:3.1.2'
 
 
     //友盟推送

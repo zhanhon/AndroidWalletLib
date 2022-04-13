@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        style="@style/WrapWrap"
+        android:background="@android:color/transparent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dialog_ios"
+            android:layout_width="350dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_round_white_10dp"
+            android:padding="@dimen/dp_12">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_vertical_center"
+                style="@style/WrapWrap"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <TextView
+                android:id="@+id/txt_title"
+                style="@style/WrapWrap"
+                android:gravity="center"
+                android:text="有新版本啦"
+                android:textColor="@color/front_four"
+                android:textSize="@dimen/sp_15"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/cancel"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:background="@drawable/cash_payway_diss"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="0dp"
+                android:layout_height="0.8dp"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_12"
+                android:layout_marginRight="@dimen/dp_16"
+                android:background="#f2f2f2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_title" />
+
+
+            <TextView
+                android:id="@+id/txt_message"
+                style="@style/ConCon"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_12"
+                android:layout_marginRight="@dimen/dp_16"
+                android:layout_marginBottom="@dimen/dp_12"
+                android:gravity="left"
+                android:textColor="@color/front_one"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintBottom_toTopOf="@id/btn_yes"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/btn_no"
+                style="@style/GameCartSetQuickAmountButton"
+                android:background="@drawable/shape_ios_cancel_btn"
+                android:text="不再提醒"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.8"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/gl_vertical_center" />
+
+            <Button
+                android:id="@+id/btn_yes"
+                style="@style/GameCartSetQuickAmountButton"
+                android:background="@drawable/shape_ios_commit_btn"
+                android:text="立即更新"
+                app:layout_constraintLeft_toRightOf="@+id/gl_vertical_center"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/btn_no" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+</layout>
+
