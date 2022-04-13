@@ -25,6 +25,7 @@ import com.ramble.ramblewallet.bean.*
 import com.ramble.ramblewallet.blockchain.ethereum.TransferEthUtils
 import com.ramble.ramblewallet.blockchain.ethereum.TransferEthUtils.getBalanceETH
 import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils
+import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
 import com.ramble.ramblewallet.network.ApiResponse
@@ -400,10 +401,12 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 })
             }
             R.id.iv_balance_refresh -> {
-                startSyncAnimation()
-                Handler().postDelayed({
-                    initData()
-                }, 2000)
+                //TransferSOLUtils.loadBalance()
+                TransferSOLUtils.makeTransfer()
+//                startSyncAnimation()
+//                Handler().postDelayed({
+//                    initData()
+//                }, 2000)
             }
             R.id.iv_eyes -> {
                 if (isClickEyes) {

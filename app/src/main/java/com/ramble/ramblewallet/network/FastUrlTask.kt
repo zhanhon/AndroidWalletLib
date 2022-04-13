@@ -32,7 +32,7 @@ object FastUrlTask {
     private fun provideSSLContext(x509TrustManager: X509TrustManager): SSLContext1 {
         val sslContext: SSLContext1
         try {
-            sslContext = Platform.get().sslContext
+            sslContext = Platform.get().newSSLContext()
             sslContext.init(null, arrayOf<TrustManager>(x509TrustManager), SecureRandom())
         } catch (e: NoSuchAlgorithmException) {
             throw RuntimeException(e)
@@ -66,7 +66,7 @@ object FastUrlTask {
                     .build()
                 try {
                     checkConnectClient.newCall(request).execute().use { response ->
-                        if (response.isSuccessful && response.body() != null) {
+                        if (response.isSuccessful && response.body != null) {
                             return@Callable url
                         }
                     }

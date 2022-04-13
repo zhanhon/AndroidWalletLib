@@ -32,6 +32,3 @@ fun <T> fromJson(json: String, type: Type, moshi: Moshi? = null): T {
     val mMoshi = moshi ?: Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
     return mMoshi!!.adapter<T>(type).lenient().serializeNulls().nullSafe().fromJson(json)!!
 }
-
-fun String.md5() = ByteString.encodeUtf8(this).md5().hex()!!
-fun Context.dimensionPixelSize(@DimenRes id: Int) = this.resources.getDimensionPixelSize(id)

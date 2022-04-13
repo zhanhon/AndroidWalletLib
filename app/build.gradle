@@ -192,6 +192,7 @@ dependencies {
     implementation 'cn.hutool:hutool-all:4.6.2'
     //SOL
     implementation 'net.i2p.crypto:eddsa:0.3.0'
+    implementation project(':ksolana')
 
     //友盟推送
     implementation project(':UMLibrary')
