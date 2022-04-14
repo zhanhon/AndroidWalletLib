@@ -13,7 +13,7 @@ class MyAddressBean @SuppressWarnings("unused") constructor() {
     var address: String = ""
 
 
-    var type: Int = 0//1:eth 2：比特币 3: trx  选择图标//4 :sola
+    var type: Int = 0//1:eth 2：比特币 3: trx  选择图标//4 :sola//5:doge
     var isNeedDelete: Boolean = false
 
 }

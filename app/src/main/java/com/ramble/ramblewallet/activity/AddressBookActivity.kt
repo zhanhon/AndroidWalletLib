@@ -140,6 +140,17 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 }
                 loadData()
             }
+            5 -> {//doge
+                binding.groupButton.check(R.id.check_doge)
+                idButton = 5
+                myDataBeans = arrayListOf()
+                myData.forEach {
+                    if (it.type == 5) {
+                        myDataBeans.add(it)
+                    }
+                }
+                loadData()
+            }
         }
 
     }
@@ -213,6 +224,16 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 }
                 loadData()
             }
+            R.id.check_doge -> {
+                idButton = 5
+                myDataBeans = arrayListOf()
+                myData.forEach {
+                    if (it.type == 5) {
+                        myDataBeans.add(it)
+                    }
+                }
+                loadData()
+            }
         }
     }
 
@@ -271,6 +292,14 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                         myDataBeans = arrayListOf()
                         myData.forEach {
                             if (it.type == 4) {
+                                myDataBeans.add(it)
+                            }
+                        }
+                    }
+                    5 -> {
+                        myDataBeans = arrayListOf()
+                        myData.forEach {
+                            if (it.type == 5) {
                                 myDataBeans.add(it)
                             }
                         }
