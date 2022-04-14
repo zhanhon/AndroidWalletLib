@@ -115,6 +115,9 @@ public class WalletBTCUtils {
     }
 
     public static boolean isBtcValidAddress(String address) {
+        if (address.isEmpty()) {
+            return false;
+        }
         try {
             NetworkParameters networkParameters = null;
             if (ISMAINNET)

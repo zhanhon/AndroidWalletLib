@@ -39,8 +39,9 @@ class RecoverWalletListActivity : BaseActivity(), View.OnClickListener {
     private fun setOnClickListener() {
         binding.ivBack.setOnClickListener(this)
         binding.rlEth.setOnClickListener(this)
-        binding.rlTrx.setOnClickListener(this)
         binding.rlBtc.setOnClickListener(this)
+        binding.rlTrx.setOnClickListener(this)
+        binding.rlSol.setOnClickListener(this)
     }
 
     private fun showDialogList(walletType: Int) {
@@ -60,10 +61,10 @@ class RecoverWalletListActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<TextView>(R.id.tv_title).text = getString(R.string.import_wallet)
 
             when (walletType) {
-                1, 2 -> {
+                1, 2 -> { //ETH、TRX
                     window.findViewById<LinearLayout>(R.id.rl_keystore).visibility = View.VISIBLE
                 }
-                3 -> {
+                3, 4 -> { //BTC、SOL
                     window.findViewById<LinearLayout>(R.id.rl_keystore).visibility = View.GONE
                 }
             }
@@ -107,6 +108,9 @@ class RecoverWalletListActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.rl_btc -> {
                 showDialogList(3)
+            }
+            R.id.rl_sol -> {
+                showDialogList(4)
             }
         }
     }

@@ -39,8 +39,9 @@ class CreateWalletListActivity : BaseActivity(), View.OnClickListener {
     private fun initClick() {
         binding.ivBack.setOnClickListener(this)
         binding.rlEth.setOnClickListener(this)
-        binding.rlTrx.setOnClickListener(this)
         binding.rlBtc.setOnClickListener(this)
+        binding.rlTrx.setOnClickListener(this)
+        binding.rlSol.setOnClickListener(this)
     }
 
     private fun showDialog(title: String, walletType: Int) {
@@ -60,10 +61,10 @@ class CreateWalletListActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<TextView>(R.id.tv_title).text = title
 
             when (walletType) {
-                1, 2 -> {
+                1, 2 -> { //ETH、TRX
                     window.findViewById<LinearLayout>(R.id.rl_keystore).visibility = View.VISIBLE
                 }
-                3 -> {
+                3, 4 -> { //BTC、SOL
                     window.findViewById<LinearLayout>(R.id.rl_keystore).visibility = View.GONE
                 }
             }
@@ -115,6 +116,9 @@ class CreateWalletListActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.rl_btc -> {
                 showDialog(binding.tvBtcCurrencyName.text.toString(), 3)
+            }
+            R.id.rl_sol -> {
+                showDialog(binding.tvBtcCurrencyName.text.toString(), 4)
             }
         }
     }

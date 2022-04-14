@@ -98,5 +98,12 @@ class WalletSOLUtils {
                 Wallet("", "", "", "", "", "", "", 4, null)
             }
         }
+
+        fun isSolValidAddress(address: String): Boolean {
+            if (address.isEmpty()) {
+                return false
+            }
+            return address.length == 44
+        }
     }
 }

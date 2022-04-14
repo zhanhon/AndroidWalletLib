@@ -23,6 +23,8 @@ import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils.isEthValidAddr
 import com.ramble.ramblewallet.blockchain.ethereum.utils.ChineseSimplified
 import com.ramble.ramblewallet.blockchain.ethereum.utils.ChineseTraditional
 import com.ramble.ramblewallet.blockchain.ethereum.utils.English
+import com.ramble.ramblewallet.blockchain.solana.WalletSOLUtils
+import com.ramble.ramblewallet.blockchain.solana.WalletSOLUtils.Companion.isSolValidAddress
 import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils
 import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.constant.*
@@ -42,7 +44,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var mnemonic: ArrayList<String> = arrayListOf()
     private var walletSelleted: Wallet? = null
-    private var times = 0
+    private var putAddressTimes = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -193,7 +195,13 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             ToastUtils.showToastFree(this, getString(R.string.different_password))
             return
         }
-
+        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+            saveWalletList =
+                Gson().fromJson(
+                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                    object : TypeToken<ArrayList<Wallet>>() {}.type
+                )
+        }
         when (walletType) {
             1 -> { //以太坊
                 ethValidHandle()
@@ -203,6 +211,35 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             }
             3 -> { //比特币
                 btcValidHandle()
+            }
+            4 -> { //索拉纳币
+                solValidHandle()
+            }
+        }
+    }
+
+    private fun solValidHandle() {
+        when (chooseMode) {
+            1 -> {
+                if (validMnemonic()) return
+                recoverWalletSOL(1)
+            }
+            2 -> {
+                if (binding.edtContributingWords.text.isEmpty()) {
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_secret_key)
+                    )
+                    return
+                }
+                if (binding.edtContributingWords.text.length < 32) {
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_correct_secret_key)
+                    )
+                    return
+                }
+                recoverWalletSOL(2)
             }
         }
     }
@@ -302,6 +339,8 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 }
                 recoverWalletETH(3)
             }
+            4 -> {
+            }
         }
     }
 
@@ -347,11 +386,11 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     private var mnemonicOther: String = ""
     private var mnemonicIndexList: ArrayList<Int> = arrayListOf()
     private fun recoverWalletETH(chooseMode: Int) {
-        lateinit var walletETH: Wallet
+        lateinit var wallet: Wallet
         when (chooseMode) {
             1 -> {
                 dictionaryMnemonic()
-                walletETH = WalletETHUtils.generateWalletByMnemonic(
+                wallet = WalletETHUtils.generateWalletByMnemonic(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     mnemonicList[0],
@@ -359,7 +398,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 )
             }
             2 -> {
-                walletETH = WalletETHUtils.generateWalletByPrivateKey(
+                wallet = WalletETHUtils.generateWalletByPrivateKey(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
@@ -367,7 +406,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 )
             }
             3 -> {
-                walletETH = WalletETHUtils.generateWalletByKeyStore(
+                wallet = WalletETHUtils.generateWalletByKeyStore(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
@@ -375,46 +414,24 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 )
             }
         }
-        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
-            saveWalletList =
-                Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                    object : TypeToken<ArrayList<Wallet>>() {}.type
-                )
-        }
-        if (saveWalletList.size == 0) {
-            walletETH.index = 0
+        if (saveWalletList.isEmpty()) {
+            wallet.index = 0
         } else {
-            walletETH.index = saveWalletList[0].index + 1
+            wallet.index = saveWalletList[0].index + 1
         }
-        saveWalletList.add(walletETH)
-        println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
+        saveWalletList.add(wallet)
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
-        if (walletETH.address.isNotEmpty()) {
-            if (isEthValidAddress(walletETH.address)) {
-                putAddress(walletETH, 1)
-                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
-                startActivity(Intent(this, MainETHActivity::class.java))
-            } else {
-                when (chooseMode) {
-                    1 -> {
-                        ToastUtils.showToastFree(
-                            this,
-                            getString(R.string.input_correct_mnemonic_words)
-                        )
-                    }
-                    2 -> {
-                        ToastUtils.showToastFree(this, getString(R.string.input_correct_secret_key))
-                    }
-                    3 -> {
-                        ToastUtils.showToastFree(this, getString(R.string.input_correct_keystore))
-                    }
-                }
-            }
+        if (isEthValidAddress(wallet.address)) {
+            putAddress(wallet, 1)
+            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(wallet))
+            startActivity(Intent(this, MainETHActivity::class.java))
         } else {
             when (chooseMode) {
                 1 -> {
-                    ToastUtils.showToastFree(this, getString(R.string.input_correct_mnemonic_words))
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_correct_mnemonic_words)
+                    )
                 }
                 2 -> {
                     ToastUtils.showToastFree(this, getString(R.string.input_correct_secret_key))
@@ -482,11 +499,11 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun recoverWalletTRX(chooseMode: Int) {
-        lateinit var walletTRX: Wallet
+        lateinit var wallet: Wallet
         when (chooseMode) {
             1 -> {
                 dictionaryMnemonic()
-                walletTRX = WalletTRXUtils.generateWalletByMnemonic(
+                wallet = WalletTRXUtils.generateWalletByMnemonic(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     mnemonicList[0],
@@ -494,7 +511,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 )
             }
             2 -> {
-                walletTRX = WalletTRXUtils.generateWalletByPrivateKey(
+                wallet = WalletTRXUtils.generateWalletByPrivateKey(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
@@ -502,7 +519,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 )
             }
             3 -> {
-                walletTRX = WalletTRXUtils.generateWalletByKeyStore(
+                wallet = WalletTRXUtils.generateWalletByKeyStore(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
@@ -510,46 +527,24 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 )
             }
         }
-        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
-            saveWalletList =
-                Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                    object : TypeToken<ArrayList<Wallet>>() {}.type
-                )
-        }
-        if (saveWalletList.size == 0) {
-            walletTRX.index = 0
+        if (saveWalletList.isEmpty()) {
+            wallet.index = 0
         } else {
-            walletTRX.index = saveWalletList[0].index + 1
+            wallet.index = saveWalletList[0].index + 1
         }
-        saveWalletList.add(walletTRX)
-        println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
+        saveWalletList.add(wallet)
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
-        if (walletTRX.address.isNotEmpty()) {
-            if (isTrxValidAddress(walletTRX.address)) {
-                putAddress(walletTRX, 2)
-                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletTRX))
-                startActivity(Intent(this, MainTRXActivity::class.java))
-            } else {
-                when (chooseMode) {
-                    1 -> {
-                        ToastUtils.showToastFree(
-                            this,
-                            getString(R.string.input_correct_mnemonic_words)
-                        )
-                    }
-                    2 -> {
-                        ToastUtils.showToastFree(this, getString(R.string.input_correct_secret_key))
-                    }
-                    3 -> {
-                        ToastUtils.showToastFree(this, getString(R.string.input_correct_keystore))
-                    }
-                }
-            }
+        if (isTrxValidAddress(wallet.address)) {
+            putAddress(wallet, 2)
+            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(wallet))
+            startActivity(Intent(this, MainTRXActivity::class.java))
         } else {
             when (chooseMode) {
                 1 -> {
-                    ToastUtils.showToastFree(this, getString(R.string.input_correct_mnemonic_words))
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_correct_mnemonic_words)
+                    )
                 }
                 2 -> {
                     ToastUtils.showToastFree(this, getString(R.string.input_correct_secret_key))
@@ -562,11 +557,11 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun recoverWalletBTC(chooseMode: Int) {
-        lateinit var walletBTC: Wallet
+        lateinit var wallet: Wallet
         when (chooseMode) {
             1 -> {
                 dictionaryMnemonic()
-                walletBTC = WalletBTCUtils.generateWalletByMnemonic(
+                wallet = WalletBTCUtils.generateWalletByMnemonic(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     mnemonicList[0],
@@ -574,7 +569,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 )
             }
             2 -> {
-                walletBTC = WalletBTCUtils.generateWalletByPrivateKey(
+                wallet = WalletBTCUtils.generateWalletByPrivateKey(
                     binding.edtWalletName.text.trim().toString(),
                     binding.edtWalletPassword.text.trim().toString(),
                     binding.edtContributingWords.text.toString(),
@@ -582,43 +577,71 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 )
             }
         }
-        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
-            saveWalletList =
-                Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
-                    object : TypeToken<ArrayList<Wallet>>() {}.type
-                )
-        }
-        if (saveWalletList.size == 0) {
-            walletBTC.index = 0
+        if (saveWalletList.isEmpty()) {
+            wallet.index = 0
         } else {
-            walletBTC.index = saveWalletList[0].index + 1
+            wallet.index = saveWalletList[0].index + 1
         }
-        saveWalletList.add(walletBTC)
-        println("-=-=-=->walletJson:${Gson().toJson(saveWalletList)}")
+        saveWalletList.add(wallet)
         SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
-        if (walletBTC.address.isNotEmpty()) {
-            if (isBtcValidAddress(walletBTC.address)) {
-                putAddress(walletBTC, 3)
-                SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletBTC))
-                startActivity(Intent(this, MainBTCActivity::class.java))
-            } else {
-                when (chooseMode) {
-                    1 -> {
-                        ToastUtils.showToastFree(
-                            this,
-                            getString(R.string.input_correct_mnemonic_words)
-                        )
-                    }
-                    2 -> {
-                        ToastUtils.showToastFree(this, getString(R.string.input_correct_secret_key))
-                    }
-                }
-            }
+        if (isBtcValidAddress(wallet.address)) {
+            putAddress(wallet, 3)
+            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(wallet))
+            startActivity(Intent(this, MainBTCActivity::class.java))
         } else {
             when (chooseMode) {
                 1 -> {
-                    ToastUtils.showToastFree(this, getString(R.string.input_correct_mnemonic_words))
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_correct_mnemonic_words)
+                    )
+                }
+                2 -> {
+                    ToastUtils.showToastFree(this, getString(R.string.input_correct_secret_key))
+                }
+            }
+        }
+    }
+
+    private fun recoverWalletSOL(chooseMode: Int) {
+        lateinit var walletSOL: Wallet
+        when (chooseMode) {
+            1 -> {
+                dictionaryMnemonic()
+                walletSOL = WalletSOLUtils.generateWalletByMnemonic(
+                    binding.edtWalletName.text.trim().toString(),
+                    binding.edtWalletPassword.text.trim().toString(),
+                    mnemonicList[0],
+                    mnemonicList
+                )
+            }
+            2 -> {
+                walletSOL = WalletSOLUtils.generateWalletByPrivateKey(
+                    binding.edtWalletName.text.trim().toString(),
+                    binding.edtWalletPassword.text.trim().toString(),
+                    binding.edtContributingWords.text.toString(),
+                    mnemonicList
+                )
+            }
+        }
+        if (saveWalletList.isEmpty()) {
+            walletSOL.index = 0
+        } else {
+            walletSOL.index = saveWalletList[0].index + 1
+        }
+        saveWalletList.add(walletSOL)
+        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        if (isSolValidAddress(walletSOL.address)) {
+            putAddress(walletSOL, 4)
+            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletSOL))
+            startActivity(Intent(this, MainBTCActivity::class.java))
+        } else {
+            when (chooseMode) {
+                1 -> {
+                    ToastUtils.showToastFree(
+                        this,
+                        getString(R.string.input_correct_mnemonic_words)
+                    )
                 }
                 2 -> {
                     ToastUtils.showToastFree(this, getString(R.string.input_correct_secret_key))
@@ -630,11 +653,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     private fun putAddress(wallet: Wallet, walletType: Int) {
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
         detailsList.add(
-            AddressReport.DetailsList(
-                wallet.address,
-                0,
-                walletType
-            )
+            AddressReport.DetailsList(wallet.address, 0, walletType)
         ) //链类型|1:ETH|2:TRX|3:ETC
         val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
         val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
@@ -644,11 +663,13 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         ).applyIo().subscribe(
             {
                 if (it.code() == 1) {
-                    it.data()?.let { data -> println("-=-=-=->putAddress-recover:${data}") }
+                    it.data()?.let { data ->
+                        println("-=-=-=->putAddress-recover:${data}")
+                    }
                 } else {
-                    if (times < 3) {
+                    if (putAddressTimes < 3) {
                         putAddress(wallet, walletType)
-                        times++
+                        putAddressTimes++
                     }
                     println("-=-=-=->putAddress-recover:${it.message()}")
                 }
