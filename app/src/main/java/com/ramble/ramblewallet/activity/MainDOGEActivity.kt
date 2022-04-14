@@ -287,7 +287,7 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
                     isClickEyes = true
                 }
             }
-            R.id.iv_copy -> {
+            R.id.ll_copy_address -> {
                 ClipboardUtils.copy(walletSelleted.address, this)
             }
             R.id.tv_ntf -> {
@@ -332,7 +332,7 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
 
         binding.ivBalanceRefresh.setOnClickListener(this)
         binding.ivEyes.setOnClickListener(this)
-        binding.ivCopy.setOnClickListener(this)
+        binding.llCopyAddress.setOnClickListener(this)
         binding.tvNtf.setOnClickListener(this)
 
     }
