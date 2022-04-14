@@ -27,10 +27,11 @@
 
             <ImageView
                 android:id="@+id/btnMenu"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:layout_margin="@dimen/dp_7"
-                android:background="@drawable/vector_menu" />
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/vector_menu"
+                android:padding="@dimen/dp_6" />
 
             <LinearLayout
                 android:id="@+id/toolbar_left"
@@ -41,24 +42,27 @@
 
                 <ImageView
                     android:id="@+id/iv_gathering_top"
-                    android:layout_width="@dimen/dp_18"
-                    android:layout_height="@dimen/dp_20"
-                    android:layout_margin="@dimen/dp_7"
-                    android:background="@drawable/vector_gathering_small" />
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dp_6"
+                    android:src="@drawable/vector_gathering_small" />
 
                 <ImageView
                     android:id="@+id/iv_transfer_top"
-                    android:layout_width="@dimen/dp_18"
-                    android:layout_height="@dimen/dp_20"
-                    android:layout_margin="@dimen/dp_7"
-                    android:background="@drawable/vector_transfer_small" />
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dp_6"
+                    android:src="@drawable/vector_transfer_small" />
 
                 <ImageView
                     android:id="@+id/iv_scan_top"
-                    android:layout_width="@dimen/dp_18"
-                    android:layout_height="@dimen/dp_20"
-                    android:layout_margin="@dimen/dp_7"
-                    android:background="@drawable/vector_scan_small" />
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dp_6"
+                    android:src="@drawable/vector_scan_small" />
             </LinearLayout>
 
             <LinearLayout
@@ -69,17 +73,19 @@
 
                 <ImageView
                     android:id="@+id/iv_notice_top"
-                    android:layout_width="@dimen/dp_18"
-                    android:layout_height="@dimen/dp_20"
-                    android:layout_margin="@dimen/dp_7"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dp_6"
                     android:src="@drawable/vector_message_center_red" />
 
                 <ImageView
                     android:id="@+id/iv_mine_top"
-                    android:layout_width="@dimen/dp_18"
-                    android:layout_height="@dimen/dp_20"
-                    android:layout_margin="@dimen/dp_7"
-                    android:background="@drawable/vector_personal" />
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/dp_6"
+                    android:src="@drawable/vector_personal" />
             </LinearLayout>
         </RelativeLayout>
 
