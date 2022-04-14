@@ -168,14 +168,11 @@ class TransactionQueryFragment : BaseFragment(),
             when (currencyUnit) {
                 "ETH" -> 1
                 "BTC" -> 3
-                else -> 2
+                "TRX"-> 2
+                else -> 4
             }
         } else {
-            when (wallet.walletType) {
-                3 -> 3
-                1 -> 1
-                else -> 2
-            }
+           wallet.walletType
         }
         address = saveData(saveWalletList)
     }
@@ -241,7 +238,8 @@ class TransactionQueryFragment : BaseFragment(),
             var walletType = when (currencyUnit) {
                 "ETH" -> 1
                 "BTC" -> 3
-                else -> 2
+                "TRX"-> 2
+                else -> 4
             }
             list.forEach {
                 if (walletType == it.walletType) {

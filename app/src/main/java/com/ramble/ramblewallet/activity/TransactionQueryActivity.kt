@@ -70,6 +70,10 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
                     binding.tvMyCurrency.text = "TRX"
                     binding.tvMineTitle.text = getString(R.string.transaction_query_trx)
                 }
+                "SOLANA" -> {
+                    binding.tvMyCurrency.text = "SOLANA"
+                    binding.tvMineTitle.text = getString(R.string.transaction_query_sola)
+                }
             }
         } else {
             when (wallet.walletType) {
@@ -84,6 +88,10 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
                 3 -> {
                     binding.tvMyCurrency.text = "BTC"
                     binding.tvMineTitle.text = getString(R.string.transaction_query_btc)
+                }
+                4 -> {
+                    binding.tvMyCurrency.text = "SOLANA"
+                    binding.tvMineTitle.text = getString(R.string.transaction_query_sola)
                 }
             }
         }
@@ -110,6 +118,10 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
                     2 -> {
                         binding.tvMineTitle.text = getString(R.string.transaction_query_trx)
                         binding.tvMyCurrency.text = "TRX"
+                    }
+                    3 -> {
+                        binding.tvMineTitle.text = getString(R.string.transaction_query_sola)
+                        binding.tvMyCurrency.text = "SOLANA"
                     }
                 }
                 binding.ivMyCurrency.setBackgroundResource(R.drawable.vector_three_down)

@@ -39,16 +39,25 @@ class TransPopupRecord(val mContext: Activity) : BasePopupWindow(mContext) {
                     binding.ivEth.visibility = View.VISIBLE
                     binding.ivBtc.visibility = View.INVISIBLE
                     binding.ivTrx.visibility = View.INVISIBLE
+                    binding.ivSola.visibility = View.INVISIBLE
                 }
                 "BTC" -> {
                     binding.ivEth.visibility = View.INVISIBLE
                     binding.ivBtc.visibility = View.VISIBLE
                     binding.ivTrx.visibility = View.INVISIBLE
+                    binding.ivSola.visibility = View.INVISIBLE
                 }
                 "TRX" -> {
                     binding.ivEth.visibility = View.INVISIBLE
                     binding.ivBtc.visibility = View.INVISIBLE
                     binding.ivTrx.visibility = View.VISIBLE
+                    binding.ivSola.visibility = View.INVISIBLE
+                }
+                "SOLANA" -> {
+                    binding.ivEth.visibility = View.INVISIBLE
+                    binding.ivBtc.visibility = View.INVISIBLE
+                    binding.ivTrx.visibility = View.INVISIBLE
+                    binding.ivSola.visibility = View.VISIBLE
                 }
             }
         } else {
@@ -57,16 +66,25 @@ class TransPopupRecord(val mContext: Activity) : BasePopupWindow(mContext) {
                     binding.ivEth.visibility = View.VISIBLE
                     binding.ivBtc.visibility = View.INVISIBLE
                     binding.ivTrx.visibility = View.INVISIBLE
+                    binding.ivSola.visibility = View.INVISIBLE
                 }
                 2 -> {
                     binding.ivEth.visibility = View.INVISIBLE
                     binding.ivBtc.visibility = View.INVISIBLE
                     binding.ivTrx.visibility = View.VISIBLE
+                    binding.ivSola.visibility = View.INVISIBLE
                 }
                 3 -> {
                     binding.ivEth.visibility = View.INVISIBLE
                     binding.ivBtc.visibility = View.VISIBLE
                     binding.ivTrx.visibility = View.INVISIBLE
+                    binding.ivSola.visibility = View.INVISIBLE
+                }
+                4 -> {
+                    binding.ivEth.visibility = View.INVISIBLE
+                    binding.ivBtc.visibility = View.INVISIBLE
+                    binding.ivTrx.visibility = View.INVISIBLE
+                    binding.ivSola.visibility = View.VISIBLE
                 }
             }
         }
@@ -84,6 +102,11 @@ class TransPopupRecord(val mContext: Activity) : BasePopupWindow(mContext) {
         binding.rlTrx.setOnClickListener {
             SharedPreferencesUtils.saveString(mContext, CURRENCY_TRAN, "TRX")
             RxBus.emitEvent(Pie.EVENT_TRAN_TYPE, 2)
+            dismiss()
+        }
+        binding.rlSola.setOnClickListener {
+            SharedPreferencesUtils.saveString(mContext, CURRENCY_TRAN, "SOLANA")
+            RxBus.emitEvent(Pie.EVENT_TRAN_TYPE, 3)
             dismiss()
         }
         return view
