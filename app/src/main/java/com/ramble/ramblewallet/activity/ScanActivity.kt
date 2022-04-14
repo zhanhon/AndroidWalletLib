@@ -7,29 +7,26 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import cn.bingoogolapple.qrcode.zxing.ZXingView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.QRCodeReader
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MainETHTokenBean
-import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.constant.ARG_PARAM2
-import com.ramble.ramblewallet.constant.REQUEST_CODE_1029
+import com.ramble.ramblewallet.bean.Wallet
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityScanBinding
 import com.ramble.ramblewallet.helper.getExtras
-import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.helper.startMatisseActivity
 import com.ramble.ramblewallet.network.ObjUtils.isCameraPermission
-import com.ramble.ramblewallet.utils.Pie
-import com.ramble.ramblewallet.utils.RxBus
-import com.ramble.ramblewallet.utils.ToastUtils
+import com.ramble.ramblewallet.utils.*
 import com.zhihu.matisse.Matisse
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -49,6 +46,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     private var zxingview: ZXingView? = null
     private var type = 0
     private lateinit var tokenBean: MainETHTokenBean
+    private lateinit var walletSelleted: Wallet
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -64,7 +62,10 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
         zxingview = findViewById(R.id.zxingview)
         zxingview?.setDelegate(this)
         initListener()
-
+        walletSelleted = Gson().fromJson(
+            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            object : TypeToken<Wallet>() {}.type
+        )
     }
 
 
@@ -210,17 +211,11 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
                 RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_SCAN, result)
                 finish()
             }
-            2 -> {
-                RxBus.emitEvent(Pie.EVENT_RESS_TRANS_SCAN, result)
-                finish()
-            }
-            3 -> {
-                start(TransferActivity::class.java, Bundle().also {
-                    it.putString(ARG_PARAM1, result)
-                    it.putSerializable(ARG_PARAM2, tokenBean)
-                })
+            else -> {
+                if (result != null) {
+                    showBottomSan(this,result,walletSelleted.walletType,tokenBean,type)
+                }
 
-                finish()
             }
         }
     }

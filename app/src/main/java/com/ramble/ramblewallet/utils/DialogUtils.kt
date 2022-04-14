@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.widget.CheckBox
 import androidx.appcompat.app.AlertDialog
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -16,6 +17,7 @@ import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.AddressBookActivity
 import com.ramble.ramblewallet.activity.ScanActivity
+import com.ramble.ramblewallet.activity.TransferActivity
 import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.MyAddressBean
 import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils.isBtcValidAddress
@@ -26,6 +28,7 @@ import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.databinding.BottomNoticeDialog2Binding
 import com.ramble.ramblewallet.databinding.BottomNoticeDialogBinding
+import com.ramble.ramblewallet.databinding.DialogTransItemBinding
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start
 
@@ -278,6 +281,7 @@ fun showBottomDialog2(
                 }
 
             }
+
             editListener?.onClick(it)
             var data = MyAddressBean()
             data.address = binding.editAddress.text.toString()
@@ -359,6 +363,237 @@ fun showBottomDialog2(
 
         })
 
+    }
+}
+
+/**
+ * 时间　: 2022/1/5 15:52
+ * 作者　: potato
+ * 描述　:扫描编辑，创造底部弹窗
+ */
+fun showBottomSan(
+    activity: ScanActivity,
+    address: String,
+    walletType: Int,
+    tokenBean: MainETHTokenBean,
+    type: Int,
+): Dialog {
+    val binding: DialogTransItemBinding =
+        LayoutInflater.from(activity).dataBinding(
+            R.layout.dialog_trans_item
+        )
+    var myDataBeans: ArrayList<MyAddressBean> = arrayListOf()
+    if (SharedPreferencesUtils.getString(activity, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
+        myDataBeans =
+            Gson().fromJson(
+                SharedPreferencesUtils.getString(activity, ADDRESS_BOOK_INFO, ""),
+                object : TypeToken<java.util.ArrayList<MyAddressBean>>() {}.type
+            )
+    }
+    return AlertDialog.Builder(activity).create().apply {
+        show()
+        setContentView(binding.root)
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        window?.setGravity(Gravity.BOTTOM)
+        binding.tvTransferTitle.text = when (walletType) {
+            1 -> {//ETH
+                "ETH"
+            }
+            2 -> {//TRX
+                "TRX"
+            }
+            3 -> {//btc
+                "BTC"
+            }
+            else -> "SOLANA"
+        }
+        var isSame = false
+        var num = -1
+        var name = ""
+        if (myDataBeans.isNotEmpty()) {
+            myDataBeans.forEachIndexed { index, myAddressBean ->
+                if (myAddressBean.address == address) {
+                    num = index
+                    binding.editName.setText(myAddressBean.userName)
+                    name = myAddressBean.userName
+                    isSame = true
+                }
+            }
+        }
+        binding.tvAddress.text = address
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+       var isChecked=false
+        binding.tvCheck.setOnClickListener {
+            isChecked = (it as CheckBox).isChecked
+        }
+        binding.ok.setOnClickListener {
+            if (isChecked ) {
+                if (isSame) {
+                    if (binding.editName.text.toString().trim() != name) {
+                        myDataBeans[num].userName = binding.editName.text.toString().trim()
+                        SharedPreferencesUtils.saveString(
+                            activity,
+                            ADDRESS_BOOK_INFO,
+                            Gson().toJson(myDataBeans)
+                        )
+                    }
+                } else {
+                    name = when (type) {
+                        1 -> {
+                            binding.editName.text.toString()
+                        }
+                        else -> {
+                            if (SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
+                                    .isNotEmpty()
+                            ) {
+
+                                if (binding.editName.text.toString().isNotEmpty()) {
+                                    binding.editName.text.toString()
+                                } else {
+                                    var myData: ArrayList<MyAddressBean> =
+                                        Gson().fromJson(
+                                            SharedPreferencesUtils.getString(
+                                                MyApp.sInstance,
+                                                ADDRESS_BOOK_INFO,
+                                                ""
+                                            ),
+                                            object : TypeToken<ArrayList<MyAddressBean>>() {}.type
+                                        )
+                                    var number = 0
+                                    when {
+                                        isBtcValidAddress(binding.tvAddress.text.toString()) -> {
+                                            number = 2
+                                        }
+                                        isEthValidAddress(binding.tvAddress.text.toString()) -> {
+                                            number = 1
+                                        }
+                                        isTrxValidAddress(binding.tvAddress.text.toString()) -> {
+                                            number = 3
+                                        }
+                                    }
+                                    var cout = 1
+                                    myData.forEach {
+                                        if (it.type == number) {
+                                            cout++
+                                        }
+                                    }
+
+                                    when {
+                                        isBtcValidAddress(binding.tvAddress.text.toString()) -> {
+                                            "BTC" + String.format("%02d", cout)
+                                        }
+                                        isEthValidAddress(binding.tvAddress.text.toString()) -> {
+                                            "ETH" + String.format("%02d", cout)
+                                        }
+                                        isTrxValidAddress(binding.tvAddress.text.toString()) -> {
+                                            "TRX" + String.format("%02d", cout)
+                                        }
+                                        else -> ""
+                                    }
+
+                                }
+
+                            } else {
+                                if (binding.editName.text.toString().isNotEmpty()) {
+                                    binding.editName.text.toString()
+                                } else {
+                                    when {
+                                        isBtcValidAddress(binding.tvAddress.text.toString()) -> {
+                                            "BTC01"
+                                        }
+                                        isEthValidAddress(binding.tvAddress.text.toString()) -> {
+                                            "ETH01"
+                                        }
+                                        isTrxValidAddress(binding.tvAddress.text.toString()) -> {
+                                            "TRX01"
+                                        }
+                                        else -> "ETH01"
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                    val data = MyAddressBean()
+                    data.address = binding.tvAddress.text.toString()
+                    data.userName = name
+                    data.type = when {
+                        isBtcValidAddress(binding.tvAddress.text.toString()) -> {
+                            2
+                        }
+                        isEthValidAddress(binding.tvAddress.text.toString()) -> {
+                            1
+                        }
+                        isTrxValidAddress(binding.tvAddress.text.toString()) -> {
+                            3
+                        }
+                        else -> 4
+                    }
+                    if (isBtcValidAddress(data.address)) {
+                        if (data.address.length < 26) {
+                            ToastUtils.showToastFree(
+                                activity,
+                                activity.getString(R.string.address_already_err)
+                            )
+                            return@setOnClickListener
+                        }
+                    } else if (isEthValidAddress(data.address)) {
+                        if (data.address.length < 42) {
+                            ToastUtils.showToastFree(
+                                activity,
+                                activity.getString(R.string.address_already_err)
+                            )
+                            return@setOnClickListener
+                        }
+                    } else if (isTrxValidAddress(data.address)) {
+                        if (data.address.length < 34) {
+                            ToastUtils.showToastFree(
+                                activity,
+                                activity.getString(R.string.address_already_err)
+                            )
+                            return@setOnClickListener
+                        }
+                    } else {
+                        ToastUtils.showToastFree(
+                            activity,
+                            activity.getString(R.string.address_already_err)
+                        )
+                        return@setOnClickListener
+                    }
+                    if (data.type == 4 || data.type == 0) {
+                        ToastUtils.showToastFree(
+                            activity,
+                            activity.getString(R.string.address_already_err)
+                        )
+                        return@setOnClickListener
+                    }
+                    myDataBeans.add(data)
+                    SharedPreferencesUtils.saveString(
+                        activity,
+                        ADDRESS_BOOK_INFO,
+                        Gson().toJson(myDataBeans)
+                    )
+                }
+            }
+            when (type) {
+                2 -> {
+                    RxBus.emitEvent(Pie.EVENT_RESS_TRANS_SCAN, address)
+                    activity.finish()
+                }
+                3 -> {
+                    activity.start(TransferActivity::class.java, Bundle().also {
+                        it.putString(ARG_PARAM1, address)
+                        it.putSerializable(ARG_PARAM2, tokenBean)
+                    })
+                    activity.finish()
+                }
+            }
+            dismiss()
+        }
     }
 }
 
