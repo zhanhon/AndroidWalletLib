@@ -51,7 +51,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
     private var isBackupMnemonic = false
     private var mnemonic: String? = null
     private var fromMnemonicList: ArrayList<String>? = arrayListOf()
-    private var times = 0
+    private var putAddressTimes = 0
 
     companion object {
         @JvmField
@@ -429,9 +429,9 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 if (it.code() == 1) {
                     it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
                 } else {
-                    if (times < 3) {
+                    if (putAddressTimes < 3) {
                         putAddress(detailsList)
-                        times++
+                        putAddressTimes++
                     }
                     println("-=-=-=->putAddress:${it.message()}")
                 }
