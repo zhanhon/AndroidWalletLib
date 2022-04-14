@@ -128,6 +128,18 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 }
                 loadData()
             }
+
+            4 -> {//solana
+                binding.groupButton.check(R.id.check_sola)
+                idButton = 4
+                myDataBeans = arrayListOf()
+                myData.forEach {
+                    if (it.type == 4) {
+                        myDataBeans.add(it)
+                    }
+                }
+                loadData()
+            }
         }
 
     }
@@ -191,6 +203,16 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 }
                 loadData()
             }
+            R.id.check_sola -> {
+                idButton = 4
+                myDataBeans = arrayListOf()
+                myData.forEach {
+                    if (it.type == 4) {
+                        myDataBeans.add(it)
+                    }
+                }
+                loadData()
+            }
         }
     }
 
@@ -241,6 +263,14 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                         myDataBeans = arrayListOf()
                         myData.forEach {
                             if (it.type == 3) {
+                                myDataBeans.add(it)
+                            }
+                        }
+                    }
+                    4 -> {
+                        myDataBeans = arrayListOf()
+                        myData.forEach {
+                            if (it.type == 4) {
                                 myDataBeans.add(it)
                             }
                         }

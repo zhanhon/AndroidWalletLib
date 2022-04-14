@@ -105,6 +105,15 @@
                         android:id="@+id/check_trx"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp_20"
+                        android:background="@drawable/selector_check_trx"
+                        android:button="@null"
+                        android:gravity="center" />
+
+                    <RadioButton
+                        android:id="@+id/check_sola"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/dp_10"
                         android:background="@drawable/selector_check_trx"
                         android:button="@null"

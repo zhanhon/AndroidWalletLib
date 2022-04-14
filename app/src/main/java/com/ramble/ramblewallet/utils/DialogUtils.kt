@@ -68,8 +68,11 @@ fun showBottomDialog(
             2 -> {
                 "BTC"
             }
-            else -> {
+            3 -> {
                 "TRX"
+            }
+            else -> {
+                "SOLANA"
             }
         }
         binding.tvCopy.setOnClickListener {
@@ -322,11 +325,12 @@ fun showBottomDialog2(
                     )
                     return@setOnClickListener
                 }
-            } else {
-                ToastUtils.showToastFree(activity, activity.getString(R.string.address_already_err))
-                return@setOnClickListener
             }
-            if (data.type == 4 || data.type == 0) {
+//            else {
+//                ToastUtils.showToastFree(activity, activity.getString(R.string.address_already_err))
+//                return@setOnClickListener
+//            }
+            if (data.type == 0) {
                 ToastUtils.showToastFree(activity, activity.getString(R.string.address_already_err))
                 return@setOnClickListener
             }
@@ -557,13 +561,14 @@ fun showBottomSan(
                             )
                             return@setOnClickListener
                         }
-                    } else {
-                        ToastUtils.showToastFree(
-                            activity,
-                            activity.getString(R.string.address_already_err)
-                        )
-                        return@setOnClickListener
                     }
+//                     else {
+//                        ToastUtils.showToastFree(
+//                            activity,
+//                            activity.getString(R.string.address_already_err)
+//                        )
+//                        return@setOnClickListener
+//                    }
                     if (data.type == 4 || data.type == 0) {
                         ToastUtils.showToastFree(
                             activity,

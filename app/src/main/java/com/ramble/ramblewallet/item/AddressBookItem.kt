@@ -40,6 +40,10 @@ class AddressBookItem(val data: MyAddressBean) : SimpleRecyclerItem() {
                 binding.clIcon.setImageResource(R.drawable.ic_trx_selcetor)
                 binding.tvMainCurrencyName.text = "TRX"
             }
+            4 -> {
+                binding.clIcon.setImageResource(R.drawable.ic_trx_selcetor)
+                binding.tvMainCurrencyName.text = "SOLA"
+            }
         }
         binding.tvWalletAddress.text = addressHandle(data.address)
         binding.tvWalletName.text = data.userName
