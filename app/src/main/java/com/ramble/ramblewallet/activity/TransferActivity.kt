@@ -40,9 +40,12 @@ import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.StringUtils.inputWatch
 import com.ramble.ramblewallet.utils.StringUtils.strAddComma
+import com.ramble.ramblewallet.wight.FingerprintDialogFragment
+import com.ramble.ramblewallet.wight.FingerprintDialogFragment.OnFingerprintSetting
 import org.bitcoinj.core.UTXO
 import java.math.BigDecimal
 import java.math.BigInteger
+import javax.crypto.Cipher
 
 
 class TransferActivity : BaseActivity(), View.OnClickListener {
@@ -68,6 +71,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private var transferReceiverAddress: String? = null
     private var isToken: Boolean = false
     private lateinit var tokenBean: MainETHTokenBean
+    private var isFinger=false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,6 +100,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
+        isFinger= SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY, false)
         initData()
         if (walletSelleted.walletType == 2) {
             binding.edtInputQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(24))
@@ -133,6 +138,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         when (v.id) {
             R.id.iv_back -> {
                 backChoosePurpose()
+
             }
             R.id.iv_transfer_scan -> {
                 start(ScanActivity::class.java, Bundle().also {
@@ -253,6 +259,31 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             binding.btnConfirm.isEnabled = false
             binding.btnConfirm.background = getDrawable(R.drawable.shape_gray_bottom_btn)
         }
+    }
+    private var cipher: Cipher? = null
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    private  fun setFingerprint() {
+        if (ToolUtils.supportFingerprint(this)) {
+            ToolUtils.initKey() //生成一个对称加密的key
+            //生成一个Cipher对象
+            cipher = ToolUtils.initCipher()
+        }
+        cipher?.let { showFingerPrintDialog(it) }
+    }
+
+    private fun showFingerPrintDialog(cipher: Cipher) {
+      val  dialogFragment = FingerprintDialogFragment()
+        dialogFragment.setCipher(cipher)
+        dialogFragment.show(supportFragmentManager, "fingerprint")
+        dialogFragment.setOnFingerprintSetting(OnFingerprintSetting { isSucceed ->
+            if (isSucceed) {
+                ToastUtils.showToastFree(this,"指纹解锁成功！")
+//                startActivity(MainActivity::class.java)
+//                finish()
+            } else {
+                ToastUtils.showToastFree(this,"指纹解锁失败！")
+            }
+        })
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////
@@ -521,7 +552,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             edtReceivingAdreess.setText(binding.edtReceiverAddress.text.trim().toString())
             val btnNext = window.findViewById<Button>(R.id.btn_confirm)
             btnNext.setOnClickListener {
-                passwordConfirmationDialog()
+                if (isFinger){//开启指纹验证
+                    setFingerprint()
+                }else{
+                    passwordConfirmationDialog()
+                }
                 dialog.dismiss()
             }
 
