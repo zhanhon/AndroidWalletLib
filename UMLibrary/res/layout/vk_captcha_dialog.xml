@@ -5,24 +5,24 @@
     android:padding="20dp">
 
     <RelativeLayout
+        android:id="@+id/captcha_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/captcha_container">
+        android:layout_centerHorizontal="true">
 
         <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:id="@+id/progressBar" />
+            android:layout_centerInParent="true" />
 
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView"
             android:layout_alignParentTop="true"
-            android:visibility="gone"
-            android:contentDescription="@string/vk_enter_captcha_text" />
+            android:contentDescription="@string/vk_enter_captcha_text"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -31,10 +31,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/captcha_container"
-        android:hint="@string/vk_enter_captcha_text"
         android:gravity="center"
-        android:textColor="@color/vk_color"
-        android:textColorHint="@color/vk_light_color"
+        android:hint="@string/vk_enter_captcha_text"
         android:imeOptions="actionSend"
-        android:inputType="textFilter|textNoSuggestions|textVisiblePassword" />
+        android:inputType="textFilter|textNoSuggestions|textVisiblePassword"
+        android:textColor="@color/vk_color"
+        android:textColorHint="@color/vk_light_color" />
 </RelativeLayout>

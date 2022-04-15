@@ -21,6 +21,9 @@ public class Value {
     @SerializedName("amount")
     @Expose
     private String amount;
+    @SerializedName("to_address")
+    @Expose
+    private String toAddress;
 
     public String getAmount() {
         return amount;
@@ -37,10 +40,6 @@ public class Value {
     public void setToAddress(String toAddress) {
         this.toAddress = toAddress;
     }
-
-    @SerializedName("to_address")
-    @Expose
-    private String toAddress;
 
     /**
      * @return The data

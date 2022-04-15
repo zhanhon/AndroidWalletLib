@@ -33,9 +33,9 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/dp_10"
                 android:text="@string/message_center"
-                android:textStyle="bold"
-                android:textSize="@dimen/sp_17"
                 android:textColor="@color/color_000000"
+                android:textSize="@dimen/sp_17"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -74,8 +74,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/bg_color">
+                android:background="@color/bg_color"
+                android:orientation="vertical">
 
 
                 <LinearLayout
@@ -148,8 +148,8 @@
                                 android:id="@+id/tv_money_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="@dimen/sp_15"
                                 android:layout_marginEnd="5dp"
+                                android:textSize="@dimen/sp_15"
                                 tools:text="100" />
 
                             <TextView
@@ -196,8 +196,8 @@
                                     android:id="@+id/miner_fees"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textColor="@color/black"
                                     android:layout_marginEnd="5dp"
+                                    android:textColor="@color/black"
                                     android:textSize="@dimen/sp_15"
                                     tools:text="0.00" />
 
@@ -233,17 +233,17 @@
                             <TextView
                                 android:layout_width="80dp"
                                 android:layout_height="70dp"
-                                android:text="@string/payment_address"
                                 android:gravity="center_vertical"
+                                android:text="@string/payment_address"
                                 android:textColor="@color/gray_8F95AA"
                                 android:textSize="@dimen/sp_14" />
 
                             <androidx.recyclerview.widget.RecyclerView
-                                android:layout_marginStart="@dimen/dp_10"
                                 android:id="@+id/rv_currency"
-                                android:overScrollMode="never"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10"
+                                android:overScrollMode="never" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -258,17 +258,17 @@
                             <TextView
                                 android:layout_width="@dimen/dp_80"
                                 android:layout_height="@dimen/dp_70"
-                                android:text="@string/to_address"
                                 android:gravity="center_vertical"
+                                android:text="@string/to_address"
                                 android:textColor="@color/gray_8F95AA"
                                 android:textSize="@dimen/sp_14" />
 
                             <androidx.recyclerview.widget.RecyclerView
-                                android:layout_marginStart="@dimen/dp_10"
                                 android:id="@+id/rv_currency_address"
-                                android:overScrollMode="never"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10"
+                                android:overScrollMode="never" />
 
                         </LinearLayout>
 
@@ -276,23 +276,23 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_1"
                             android:layout_marginStart="@dimen/dp_20"
-                            android:visibility="gone"
-                            android:background="@color/bg_color" />
+                            android:background="@color/bg_color"
+                            android:visibility="gone" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_70"
+                            android:gravity="center_vertical"
                             android:paddingStart="@dimen/dp_20"
                             android:paddingEnd="@dimen/dp_20"
-                            android:visibility="gone"
-                            android:gravity="center_vertical">
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
+                                android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:text="@string/remark"
-                                android:layout_weight="1"
                                 android:textColor="@color/gray_8F95AA"
                                 android:textSize="@dimen/sp_14" />
 
@@ -316,10 +316,10 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_70"
-                            android:paddingStart="@dimen/dp_20"
-                            android:paddingEnd="@dimen/dp_20"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingStart="@dimen/dp_20"
+                            android:paddingEnd="@dimen/dp_20">
 
 
                             <TextView
@@ -333,9 +333,9 @@
                             <TextView
                                 android:id="@+id/transaction_code"
                                 android:layout_width="0dp"
-                                android:layout_weight="1"
-                                android:layout_marginStart="@dimen/dp_10"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10"
+                                android:layout_weight="1"
                                 android:ellipsize="end"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/sp_13"
@@ -358,10 +358,10 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_70"
-                            android:paddingStart="@dimen/dp_20"
-                            android:paddingEnd="@dimen/dp_20"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingStart="@dimen/dp_20"
+                            android:paddingEnd="@dimen/dp_20">
 
 
                             <TextView
@@ -393,9 +393,9 @@
                             android:id="@+id/btn_detail"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_70"
+                            android:gravity="center"
                             android:paddingStart="@dimen/dp_20"
-                            android:paddingEnd="@dimen/dp_20"
-                            android:gravity="center">
+                            android:paddingEnd="@dimen/dp_20">
 
                             <TextView
                                 android:layout_width="wrap_content"

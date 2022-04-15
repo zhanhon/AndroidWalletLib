@@ -12,8 +12,8 @@
         <TextView
             android:id="@+id/tv_to_address"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:ellipsize="end"
             android:textColor="@color/black"
             android:textSize="@dimen/sp_13"

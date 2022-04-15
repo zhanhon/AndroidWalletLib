@@ -71,6 +71,10 @@ public class Wallet {
         return isClickDelete;
     }
 
+    public void setClickDelete(boolean clickDelete) {
+        isClickDelete = clickDelete;
+    }
+
     public boolean isChoose() {
         return isChoose;
     }
@@ -149,10 +153,6 @@ public class Wallet {
 
     public void setWalletType(int walletType) {
         this.walletType = walletType;
-    }
-
-    public void setClickDelete(boolean clickDelete) {
-        isClickDelete = clickDelete;
     }
 
 }

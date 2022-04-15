@@ -22,29 +22,27 @@ import lombok.Data;
 @Data
 public class TrxApi {
 
-    public TrxApi(String addressNumber, String prikeyHex) {
-        this.addressNumber = addressNumber;
-        this.prikeyHex = prikeyHex;
-    }
-
-    public TrxApi(String addressNumber, String addressT, String prikeyHex) {
-        this.addressNumber = addressNumber;
-        this.addressT = addressT;
-        this.prikeyHex = prikeyHex;
-    }
-
     /**
      * 41 开头的地址
      */
     private final String addressNumber;
     /**
-     * T开头地址
-     */
-    private String addressT;
-    /**
      * 秘钥
      */
     private final String prikeyHex;
+    /**
+     * T开头地址
+     */
+    private String addressT;
+    public TrxApi(String addressNumber, String prikeyHex) {
+        this.addressNumber = addressNumber;
+        this.prikeyHex = prikeyHex;
+    }
+    public TrxApi(String addressNumber, String addressT, String prikeyHex) {
+        this.addressNumber = addressNumber;
+        this.addressT = addressT;
+        this.prikeyHex = prikeyHex;
+    }
 
     /**
      * 41 ---- > T

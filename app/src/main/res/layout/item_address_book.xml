@@ -43,10 +43,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_10"
                 android:layout_marginEnd="@dimen/dp_40"
-                android:textColor="@color/black"
-                android:singleLine="true"
                 android:ellipsize="end"
                 android:maxEms="8"
+                android:singleLine="true"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@id/tv_main_currency_name"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="12345678901234567890" />

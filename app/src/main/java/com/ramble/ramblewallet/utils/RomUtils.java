@@ -14,12 +14,7 @@ import java.util.Properties;
  */
 public class RomUtils {
 
-    class AvailableRomType {
-        public static final int MIUI = 1;
-        public static final int FLYME = 2;
-        public static final int ANDROID_NATIVE = 3;
-        public static final int NA = 4;
-    }
+    private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
 
     public static int getLightStatusBarAvailableRomType() {
         //开发版 7.7.13 及以后版本采用了系统API，旧方法无效但不会报错
@@ -63,8 +58,6 @@ public class RomUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
-    private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
-
     private static boolean isMiUIV6OrAbove() {
         try {
             final Properties properties = new Properties();
@@ -99,6 +92,13 @@ public class RomUtils {
             return false;
         }
 
+    }
+
+    class AvailableRomType {
+        public static final int MIUI = 1;
+        public static final int FLYME = 2;
+        public static final int ANDROID_NATIVE = 3;
+        public static final int NA = 4;
     }
 
 }

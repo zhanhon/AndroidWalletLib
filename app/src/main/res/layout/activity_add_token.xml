@@ -119,8 +119,8 @@
 
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="@dimen/dp_20"
+                            android:layout_weight="1"
                             android:text="@string/my_assets"
                             android:textColor="@color/color_000000"
                             android:textStyle="bold" />
@@ -232,8 +232,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_10"
-                    android:layout_marginEnd="@dimen/dp_10"
                     android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginEnd="@dimen/dp_10"
                     android:background="@color/color_FFFFFF"
                     android:orientation="vertical">
 
@@ -241,8 +241,8 @@
                         android:id="@+id/tv_token_title"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/dp_50"
-                        android:gravity="center_vertical"
                         android:layout_marginStart="@dimen/dp_10"
+                        android:gravity="center_vertical"
                         android:text="@string/recommend_tokens"
                         android:textColor="@color/color_000000"
                         android:textStyle="bold"

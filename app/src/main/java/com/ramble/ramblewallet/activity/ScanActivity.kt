@@ -7,7 +7,8 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.*
+import android.view.View
+import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import cn.bingoogolapple.qrcode.core.QRCodeView
@@ -21,7 +22,10 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.Wallet
-import com.ramble.ramblewallet.constant.*
+import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
+import com.ramble.ramblewallet.constant.REQUEST_CODE_1029
+import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityScanBinding
 import com.ramble.ramblewallet.helper.getExtras
 import com.ramble.ramblewallet.helper.startMatisseActivity
@@ -213,7 +217,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
             }
             else -> {
                 if (result != null) {
-                    showBottomSan(this,result,walletSelleted.walletType,tokenBean,type)
+                    showBottomSan(this, result, walletSelleted.walletType, tokenBean, type)
                 }
 
             }

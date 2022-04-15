@@ -7,12 +7,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.ramble.ramblewallet.R;
+
 import org.lzh.framework.updatepluginlib.base.DownloadCallback;
 import org.lzh.framework.updatepluginlib.base.DownloadNotifier;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
 import org.lzh.framework.updatepluginlib.util.SafeDialogHandle;
+
 import java.io.File;
 
 public class AkDownloadNotifier extends DownloadNotifier {

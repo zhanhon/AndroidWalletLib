@@ -14,12 +14,12 @@ import java.util.regex.Pattern;
  */
 public class StringUtils {
 
+    //小写字母
+    public static final String REG_LOWERCASE = ".*[a-z]+.*";
+
     private StringUtils() {
         throw new IllegalStateException("StringUtils");
     }
-
-    //小写字母
-    public static final String REG_LOWERCASE = ".*[a-z]+.*";
 
     /**
      * 处理文本，将文本位数限制为maxLen，中文两个字符，英文一个字符

@@ -31,8 +31,8 @@
                 android:layout_width="12dp"
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
-                android:background="@drawable/umeng_socialize_back_icon"
                 android:layout_marginLeft="15dp"
+                android:background="@drawable/umeng_socialize_back_icon"
                 android:scaleType="center" />
         </RelativeLayout>
 
@@ -91,9 +91,9 @@
         android:id="@+id/webView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#F2F5F6"
         android:layout_above="@id/umeng_socialize_follow"
         android:layout_below="@id/umeng_socialize_titlebar"
+        android:background="#F2F5F6"
         android:visibility="visible" />
 
     <RelativeLayout

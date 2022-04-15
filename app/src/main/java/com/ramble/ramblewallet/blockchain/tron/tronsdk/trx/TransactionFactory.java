@@ -11,16 +11,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class TransactionFactory {
 
-    private TransactionFactory() {
-        throw new IllegalStateException("TransactionFactory");
-    }
-
     private static final Map<ContractType, Class<? extends Actuator>> actuatorMap = new ConcurrentHashMap<>();
     private static final Map<ContractType, Class<? extends GeneratedMessageV3>> contractMap = new ConcurrentHashMap<>();
 
     static {
         register(ContractType.CreateSmartContract, null, Contract.CreateSmartContract.class);
         register(ContractType.TriggerSmartContract, null, Contract.TriggerSmartContract.class);
+    }
+
+    private TransactionFactory() {
+        throw new IllegalStateException("TransactionFactory");
     }
 
     public static void register(ContractType type, Class<? extends Actuator> actuatorClass,

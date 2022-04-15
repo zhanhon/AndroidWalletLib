@@ -45,10 +45,10 @@
         android:id="@+id/notification_small_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="5dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
         android:scaleType="fitXY"
         android:src="@mipmap/ic_logo" />
 

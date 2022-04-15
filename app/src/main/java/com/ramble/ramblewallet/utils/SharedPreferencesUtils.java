@@ -6,12 +6,11 @@ import android.content.SharedPreferences;
 
 public class SharedPreferencesUtils {
 
+    private static final String SP_NAME = "xz";
+    private static SharedPreferences sp;
     private SharedPreferencesUtils() {
         throw new IllegalStateException("SharedPreferencesUtils");
     }
-
-    private static final String SP_NAME = "xz";
-    private static SharedPreferences sp;
 
     public static void saveBoolean(Context context, String key, boolean value) {
         if (sp == null)

@@ -130,8 +130,8 @@
                     android:id="@+id/ll_address_input_down"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginTop="@dimen/dp_10"
+                    android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/v_address_input_middle">
@@ -148,8 +148,8 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_0"
-                        android:layout_weight="1"
                         android:layout_marginTop="@dimen/dp_5"
+                        android:layout_weight="1"
                         android:orientation="horizontal">
 
                         <EditText
@@ -182,10 +182,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_5"
-                        android:visibility="gone"
-                        android:textSize="@dimen/sp_11"
+                        android:text="@string/trx_address_no_activate"
                         android:textColor="@color/color_E11334"
-                        android:text="@string/trx_address_no_activate" />
+                        android:textSize="@dimen/sp_11"
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -255,8 +255,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignParentLeft="true"
-                        android:background="@null"
                         android:layout_gravity="center_vertical"
+                        android:background="@null"
                         android:hint="0.00"
                         android:inputType="numberDecimal"
                         android:maxLength="26"
@@ -389,8 +389,8 @@
                             android:id="@+id/tv_miner_fee_value_convert"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/color_9598AA"
                             android:gravity="right"
+                            android:textColor="@color/color_9598AA"
                             android:textSize="@dimen/sp_14"
                             tools:text="1111" />
                     </LinearLayout>
@@ -420,8 +420,8 @@
                     android:id="@+id/tv_tips"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
                     android:layout_marginTop="@dimen/dp_10"
+                    android:gravity="right"
                     android:textColor="@color/color_C7C8D2"
                     android:textSize="@dimen/sp_12"
                     app:layout_constraintEnd_toEndOf="parent"

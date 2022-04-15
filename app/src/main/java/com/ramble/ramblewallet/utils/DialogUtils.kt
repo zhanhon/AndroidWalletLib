@@ -429,12 +429,12 @@ fun showBottomSan(
         }
         binding.tvAddress.text = address
         window?.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
-       var isChecked=false
+        var isChecked = false
         binding.tvCheck.setOnClickListener {
             isChecked = (it as CheckBox).isChecked
         }
         binding.ok.setOnClickListener {
-            if (isChecked ) {
+            if (isChecked) {
                 if (isSame) {
                     if (binding.editName.text.toString().trim() != name) {
                         myDataBeans[num].userName = binding.editName.text.toString().trim()
@@ -450,7 +450,11 @@ fun showBottomSan(
                             binding.editName.text.toString()
                         }
                         else -> {
-                            if (SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
+                            if (SharedPreferencesUtils.getString(
+                                    MyApp.sInstance,
+                                    ADDRESS_BOOK_INFO,
+                                    ""
+                                )
                                     .isNotEmpty()
                             ) {
 
@@ -567,7 +571,7 @@ fun showBottomSan(
                         )
                         return@setOnClickListener
                     }
-                    if ( data.type == 0) {
+                    if (data.type == 0) {
                         ToastUtils.showToastFree(
                             activity,
                             activity.getString(R.string.address_already_err)

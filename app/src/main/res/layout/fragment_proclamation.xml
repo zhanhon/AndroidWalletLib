@@ -17,12 +17,12 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
                 style="@style/MatchMatch"
-                android:background="@drawable/shape_white_bottom_btn"
-                android:scrollbars="vertical"
-                android:overScrollMode="never"
-                android:paddingBottom="@dimen/dp_10"
                 android:layout_marginStart="@dimen/dp_10"
                 android:layout_marginEnd="@dimen/dp_10"
+                android:background="@drawable/shape_white_bottom_btn"
+                android:overScrollMode="never"
+                android:paddingBottom="@dimen/dp_10"
+                android:scrollbars="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>

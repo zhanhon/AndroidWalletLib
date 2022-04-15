@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_76"
-    android:orientation="horizontal"
+    android:background="@color/white"
     android:gravity="center_vertical"
-    android:background="@color/white">
+    android:orientation="horizontal">
 
 
     <ImageView
         android:id="@+id/cl_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/vector_trx_selecter"
         android:paddingLeft="@dimen/dp_10"
-        android:paddingRight="@dimen/dp_10" />
+        android:paddingRight="@dimen/dp_10"
+        android:src="@drawable/vector_trx_selecter" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -74,8 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/dp_10"
-            android:visibility="gone"
             android:src="@drawable/vector_reduce_address"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

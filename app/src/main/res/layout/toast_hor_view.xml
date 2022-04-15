@@ -5,8 +5,8 @@
     android:background="@drawable/shape_green_bottom_btn"
     android:orientation="horizontal"
     android:paddingStart="@dimen/dp_20"
-    android:paddingEnd="@dimen/dp_20"
     android:paddingTop="@dimen/dp_10"
+    android:paddingEnd="@dimen/dp_20"
     android:paddingBottom="@dimen/dp_10">
 
     <TextView

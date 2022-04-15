@@ -26,29 +26,6 @@ public class ECKeyPair {
         this.publicKey = publicKey;
     }
 
-    public BigInteger getPrivateKey() {
-        return privateKey;
-    }
-
-    public BigInteger getPublicKey() {
-        return publicKey;
-    }
-
-    /**
-     * Sign a hash with the private key of this key pair.
-     *
-     * @param transactionHash the hash to sign
-     */
-    public ECKey.ECDSASignature sign(byte[] transactionHash) {
-        ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
-
-        ECPrivateKeyParameters privKey = new ECPrivateKeyParameters(privateKey, Sign.CURVE);
-        signer.init(true, privKey);
-        BigInteger[] components = signer.generateSignature(transactionHash);
-
-        return new ECKey.ECDSASignature(components[0], components[1]).toCanonicalised();
-    }
-
     public static ECKeyPair create(KeyPair keyPair) {
         BCECPrivateKey privateKey = (BCECPrivateKey) keyPair.getPrivate();
         BCECPublicKey publicKey = (BCECPublicKey) keyPair.getPublic();
@@ -71,6 +48,29 @@ public class ECKeyPair {
 
     public static ECKeyPair create(byte[] privateKey) {
         return create(Numeric.toBigInt(privateKey));
+    }
+
+    public BigInteger getPrivateKey() {
+        return privateKey;
+    }
+
+    public BigInteger getPublicKey() {
+        return publicKey;
+    }
+
+    /**
+     * Sign a hash with the private key of this key pair.
+     *
+     * @param transactionHash the hash to sign
+     */
+    public ECKey.ECDSASignature sign(byte[] transactionHash) {
+        ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
+
+        ECPrivateKeyParameters privKey = new ECPrivateKeyParameters(privateKey, Sign.CURVE);
+        signer.init(true, privKey);
+        BigInteger[] components = signer.generateSignature(transactionHash);
+
+        return new ECKey.ECDSASignature(components[0], components[1]).toCanonicalised();
     }
 
     @Override

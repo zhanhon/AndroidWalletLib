@@ -30,12 +30,11 @@ import java.util.Arrays;
  */
 public class Sign {
 
+    static final String MESSAGE_PREFIX = "\u0019Ethereum Signed Message:\n";
     private static final X9ECParameters CURVE_PARAMS = CustomNamedCurves.getByName("secp256k1");
     static final ECDomainParameters CURVE = new ECDomainParameters(
             CURVE_PARAMS.getCurve(), CURVE_PARAMS.getG(), CURVE_PARAMS.getN(), CURVE_PARAMS.getH());
     static final BigInteger HALF_CURVE_ORDER = CURVE_PARAMS.getN().shiftRight(1);
-
-    static final String MESSAGE_PREFIX = "\u0019Ethereum Signed Message:\n";
 
     private Sign() {
         throw new IllegalStateException("Sign");

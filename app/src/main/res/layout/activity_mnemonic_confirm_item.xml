@@ -23,8 +23,8 @@
             android:layout_margin="@dimen/dp_3"
             android:background="@drawable/shape_white_line_gray_bottom_btn"
             android:paddingLeft="@dimen/dp_8"
-            android:paddingRight="@dimen/dp_8"
             android:paddingTop="@dimen/dp_3"
+            android:paddingRight="@dimen/dp_8"
             android:paddingBottom="@dimen/dp_3"
             android:textColor="@color/color_000000"
             tools:text="addict" />

@@ -2,10 +2,12 @@ package com.ramble.ramblewallet.update;
 
 import org.lzh.framework.updatepluginlib.base.DownloadWorker;
 import org.lzh.framework.updatepluginlib.impl.ForcedUpdateStrategy;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;

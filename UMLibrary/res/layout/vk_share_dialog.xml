@@ -31,9 +31,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/vk_share_top_image_margin"
+                android:contentDescription="@string/vk_name"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_ab_app"
-                android:contentDescription="@string/vk_name" />
+                android:src="@drawable/ic_ab_app" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -72,11 +72,11 @@
                 android:background="@drawable/vk_share_send_button_background"
                 android:drawableLeft="@drawable/ic_ab_done"
                 android:drawablePadding="3dp"
+                android:outlineProvider="none"
                 android:paddingLeft="@dimen/vk_share_top_button_padding_left"
                 android:paddingRight="@dimen/vk_share_top_button_padding_right"
-                android:textAllCaps="false"
-                android:outlineProvider="none"
                 android:text="@string/vk_send"
+                android:textAllCaps="false"
                 android:textColor="@color/vk_white"
                 android:textSize="@dimen/vk_share_send_text_size"
                 android:textStyle="bold" />
@@ -94,19 +94,19 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:overScrollMode="never"
             android:background="@color/vk_white"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            android:overScrollMode="never">
 
             <LinearLayout
                 android:id="@+id/postContentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/vk_share_dialog_padding"
                 android:paddingLeft="@dimen/vk_share_dialog_padding"
+                android:paddingTop="@dimen/vk_share_dialog_padding_top"
                 android:paddingRight="@dimen/vk_share_dialog_padding"
-                android:paddingTop="@dimen/vk_share_dialog_padding_top">
+                android:paddingBottom="@dimen/vk_share_dialog_padding">
 
                 <EditText
                     android:id="@+id/shareText"
@@ -123,8 +123,8 @@
                     android:id="@+id/imagesScrollView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    android:layout_marginTop="@dimen/vk_share_dialog_padding">
+                    android:layout_marginTop="@dimen/vk_share_dialog_padding"
+                    android:overScrollMode="never">
 
                     <LinearLayout
                         android:id="@+id/imagesContainer"
@@ -137,8 +137,8 @@
                     android:id="@+id/attachmentLinkLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/vk_share_link_top_margin"
                     android:layout_marginTop="@dimen/vk_share_top_image_margin"
+                    android:layout_marginBottom="@dimen/vk_share_link_top_margin"
                     android:orientation="vertical"
                     android:visibility="gone">
 
@@ -182,10 +182,10 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAllCaps="false"
-                android:outlineProvider="none"
                 android:background="@drawable/vk_share_send_button_background"
+                android:outlineProvider="none"
                 android:text="@string/vk_new_post_settings"
+                android:textAllCaps="false"
                 android:textColor="@color/vk_share_blue_color" />
         </LinearLayout>
     </LinearLayout>

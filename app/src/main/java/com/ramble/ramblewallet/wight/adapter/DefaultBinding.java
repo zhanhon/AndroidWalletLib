@@ -42,14 +42,13 @@ import androidx.annotation.StringRes;
 public final class DefaultBinding {
 
     /**
-     * View SparseArray, to cache views
-     */
-    private final SparseArray<View> views;
-
-    /**
      * item view
      */
     public final View itemView;
+    /**
+     * View SparseArray, to cache views
+     */
+    private final SparseArray<View> views;
 
     public DefaultBinding(View itemView) {
         this.itemView = itemView;

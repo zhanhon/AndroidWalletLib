@@ -98,11 +98,11 @@
                 android:layout_marginStart="@dimen/dp_20"
                 android:layout_marginEnd="@dimen/dp_20"
                 android:layout_weight="1"
-                android:textAllCaps="false"
-                android:outlineProvider="none"
                 android:background="@drawable/shape_white_bottom_green_line_btn"
                 android:gravity="center"
+                android:outlineProvider="none"
                 android:text="@string/one_copy"
+                android:textAllCaps="false"
                 android:textColor="@color/color_3BB7A5" />
 
             <Button
@@ -114,9 +114,9 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_green_bottom_btn"
                 android:gravity="center"
-                android:textAllCaps="false"
                 android:outlineProvider="none"
                 android:text="@string/contributing_words_confirm_second"
+                android:textAllCaps="false"
                 android:textColor="@color/color_FFFFFF" />
         </LinearLayout>
 
@@ -125,17 +125,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_30"
-            android:layout_marginBottom="@dimen/dp_30"
             android:layout_marginEnd="@dimen/dp_30"
+            android:layout_marginBottom="@dimen/dp_30"
             android:background="@drawable/shape_white_bottom_green_line_btn"
             android:gravity="center"
-            android:textAllCaps="false"
             android:outlineProvider="none"
             android:text="@string/skip_this_step"
+            android:textAllCaps="false"
             android:textColor="@color/color_3BB7A5"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

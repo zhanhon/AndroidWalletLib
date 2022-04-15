@@ -26,11 +26,11 @@ import java.nio.ByteBuffer;
 
 public class ByteArray {
 
+    public static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     private ByteArray() {
         throw new IllegalStateException("ByteArray");
     }
-
-    public static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     public static String toHexString(byte[] data) {
         return data == null ? "" : Hex.toHexString(data);

@@ -29,8 +29,8 @@ import com.umeng.message.entity.UMessage;
 
 public class UmInitConfig {
 
-    private static final String TAG = "UmInitConfig";
     public static final String UPDATE_STATUS_ACTION = "com.umeng.message.example.action.UPDATE_STATUS";
+    private static final String TAG = "UmInitConfig";
     private static Handler handler;
 
     private UmInitConfig() {

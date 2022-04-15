@@ -7,23 +7,16 @@ package com.ramble.ramblewallet.utils;
  */
 public class Pie {
 
-    private Pie() {
-        throw new IllegalStateException("Pie");
-    }
-
     public static final String MMKV_DEVICE_ID = "MMKV_DEVICE_ID";
     public static final int EVENT_CHECK_MSG = 2001270;
     /**
      * pref 存储服务端cdn
      */
     public static final String PREFS_SERVER_CDN = "server_cdn";
-
     /**
      * pref 存储服务端cdn
      */
     public static final String PREFS_SERVER_CDN_SELECT = "server_cdn_select";
-
-
     /**
      * 地址本扫描二维码
      */
@@ -36,7 +29,6 @@ public class Pie {
      * 新增地址本地址
      */
     public static final int EVENT_ADDRESS_BOOK_ADD = 2003;
-
     /**
      * 新增代币
      */
@@ -53,17 +45,14 @@ public class Pie {
      * 转账地址扫描二维码
      */
     public static final int EVENT_ADDRESS_TRANS_SCAN = 2007;
-
     /**
      * 消除消息
      */
     public static final int EVENT_DELETE_MSG = 2008;
-
     /**
      * 历史筛选
      */
     public static final int EVENT_TRAN_TYPE = 2009;
-
     /**
      * 转账页面地址扫描二维码
      */
@@ -72,4 +61,7 @@ public class Pie {
      * 收到消息，刷新接口
      */
     public static final int EVENT_PUSH_MSG = 2011;
+    private Pie() {
+        throw new IllegalStateException("Pie");
+    }
 }

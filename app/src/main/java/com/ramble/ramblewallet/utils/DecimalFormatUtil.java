@@ -6,13 +6,12 @@ import java.text.DecimalFormat;
 
 public class DecimalFormatUtil {
 
+    public static final DecimalFormat format8 = new DecimalFormat("0.########");
+    public static final DecimalFormat format2 = new DecimalFormat("0.##");
+
     private DecimalFormatUtil() {
         throw new IllegalStateException("DecimalFormatUtil");
     }
-
-    public static final DecimalFormat format8 = new DecimalFormat("0.########");
-
-    public static final DecimalFormat format2 = new DecimalFormat("0.##");
 
     public static String format(BigDecimal value, int maximum) {
         DecimalFormat formater = new DecimalFormat();

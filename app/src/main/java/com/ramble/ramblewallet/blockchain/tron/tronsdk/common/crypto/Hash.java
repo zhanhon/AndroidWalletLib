@@ -37,15 +37,9 @@ import java.security.Security;
 
 public class Hash {
 
-    private Hash() {
-        throw new IllegalStateException("Hash");
-    }
-
     private static final Provider CRYPTO_PROVIDER;
-
     private static final String HASH_256_ALGORITHM_NAME;
     private static final String HASH_512_ALGORITHM_NAME;
-
     private static final MessageDigest sha256digest;
 
     static {
@@ -59,6 +53,10 @@ public class Hash {
             throw new RuntimeException(e); // Can't happen.
         }
 
+    }
+
+    private Hash() {
+        throw new IllegalStateException("Hash");
     }
 
     /**

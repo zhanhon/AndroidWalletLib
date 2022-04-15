@@ -20,6 +20,7 @@
             app:qrcv_cornerColor="@color/color_000000"
             app:qrcv_cornerLength="20dp"
             app:qrcv_cornerSize="1dp"
+            app:qrcv_customScanLineDrawable="@drawable/sao_miao_qi"
             app:qrcv_isBarcode="false"
             app:qrcv_isOnlyDecodeScanBoxArea="false"
             app:qrcv_isScanLineReverse="false"
@@ -34,7 +35,6 @@
             app:qrcv_scanLineColor="@color/color_3BB7A5"
             app:qrcv_scanLineMargin="0dp"
             app:qrcv_scanLineSize="1dp"
-            app:qrcv_customScanLineDrawable="@drawable/sao_miao_qi"
             app:qrcv_tipTextColor="@android:color/white"
             app:qrcv_tipTextSize="12sp"
             app:qrcv_toolbarHeight="10dp"
@@ -65,9 +65,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/scan"
-                android:textStyle="bold"
                 android:textColor="@color/color_FFFFFF"
-                android:textSize="@dimen/sp_17" />
+                android:textSize="@dimen/sp_17"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/imv_gallery"

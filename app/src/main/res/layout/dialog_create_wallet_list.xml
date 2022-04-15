@@ -25,8 +25,8 @@
         android:id="@+id/rl_create_wallet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingLeft="@dimen/dp_20">
 
         <ImageView
@@ -73,21 +73,21 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_F9F9F9"
+        android:gravity="center_vertical"
         android:paddingLeft="@dimen/dp_20"
         android:paddingTop="@dimen/dp_10"
         android:paddingBottom="@dimen/dp_10"
-        android:gravity="center_vertical"
         android:text="@string/import_wallet"
-        android:textSize="@dimen/sp_14"
         android:textColor="@color/color_000000"
-        android:background="@color/color_F9F9F9" />
+        android:textSize="@dimen/sp_14" />
 
     <LinearLayout
         android:id="@+id/rl_contributing_words"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingLeft="@dimen/dp_20">
 
         <ImageView
@@ -141,8 +141,8 @@
         android:id="@+id/rl_secret_key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingLeft="@dimen/dp_20">
 
         <ImageView
@@ -196,8 +196,8 @@
         android:id="@+id/rl_keystore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingLeft="@dimen/dp_20">
 
         <ImageView

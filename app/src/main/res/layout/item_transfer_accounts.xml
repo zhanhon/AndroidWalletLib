@@ -7,8 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_86"
         android:background="@color/white"
-        android:orientation="vertical"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,18 +34,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_5"
-                    tools:text="0x2232sdower...2323s"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/sp_14" />
+                    android:textSize="@dimen/sp_14"
+                    tools:text="0x2232sdower...2323s" />
 
                 <TextView
                     android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_5"
-                    tools:text="星期四 11/06"
                     android:textColor="@color/front_five"
-                    android:textSize="@dimen/sp_12" />
+                    android:textSize="@dimen/sp_12"
+                    tools:text="星期四 11/06" />
             </LinearLayout>
 
             <LinearLayout
@@ -58,9 +58,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_5"
-                    tools:text="0.0000000000"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/sp_14" />
+                    android:textSize="@dimen/sp_14"
+                    tools:text="0.0000000000" />
 
                 <TextView
                     android:id="@+id/tv_money_type"
@@ -70,16 +70,16 @@
                     android:drawablePadding="@dimen/dp_5"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_15"
-                    tools:text="usdt"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:text="usdt" />
             </LinearLayout>
 
         </LinearLayout>
 
         <View
-            android:layout_marginStart="@dimen/dp_55"
-            android:background="@color/path_game_item_selected"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_08" />
+            android:layout_height="@dimen/dp_08"
+            android:layout_marginStart="@dimen/dp_55"
+            android:background="@color/path_game_item_selected" />
     </LinearLayout>
 </layout>

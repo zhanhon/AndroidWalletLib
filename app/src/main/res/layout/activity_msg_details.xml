@@ -32,9 +32,9 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/dp_10"
                 android:text="@string/message_details"
-                android:textStyle="bold"
-                android:textSize="@dimen/sp_17"
                 android:textColor="@color/color_000000"
+                android:textSize="@dimen/sp_17"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -59,9 +59,9 @@
                     android:layout_width="@dimen/dp_20"
                     android:layout_height="@dimen/dp_20"
                     android:layout_centerVertical="true"
-                    android:visibility="gone"
                     android:layout_marginEnd="@dimen/dp_10"
-                    android:background="@drawable/ic_launcher_background" />
+                    android:background="@drawable/ic_launcher_background"
+                    android:visibility="gone" />
             </LinearLayout>
 
 
@@ -74,33 +74,33 @@
             <LinearLayout
                 style="@style/MatchWrap"
                 android:background="@drawable/shape_round_white_10dp"
-                android:paddingBottom="@dimen/dp_8"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dp_8">
 
                 <View
-                    android:background="@color/app_theme"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_10" />
+                    android:layout_height="@dimen/dp_10"
+                    android:background="@color/app_theme" />
 
                 <TextView
                     android:id="@+id/title1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginEnd="@dimen/dp_20"
                     android:gravity="left"
-                    android:textStyle="bold"
                     android:textColor="@color/front_one"
                     android:textSize="@dimen/sp_16"
+                    android:textStyle="bold"
                     tools:text="123sdsdddsdffdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfddfdfdf" />
 
                 <TextView
                     android:id="@+id/time2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="5dp"
                     android:layout_marginEnd="@dimen/dp_20"
                     android:textColor="@color/front_four"
                     android:textSize="@dimen/sp_12"
@@ -111,8 +111,8 @@
                     android:id="@+id/tv_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="@dimen/dp_20"
                     android:textColor="@color/front_three"
                     android:textSize="@dimen/sp_12"
@@ -121,10 +121,10 @@
                 <com.ramble.ramblewallet.wight.HtmlWebView
                     android:id="@+id/web"
                     style="@style/MatchWrap"
-                    android:exported="false"
-                    android:layout_marginTop="20dp"
                     android:layout_marginStart="@dimen/dp_20"
-                    android:layout_marginEnd="@dimen/dp_20" />
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="@dimen/dp_20"
+                    android:exported="false" />
 
             </LinearLayout>
 

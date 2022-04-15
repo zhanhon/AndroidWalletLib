@@ -11,21 +11,21 @@
             android:id="@+id/table_header"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_64"
-            android:paddingStart="@dimen/dp_10"
-            android:paddingEnd="@dimen/dp_10"
-            android:orientation="horizontal"
+            android:background="@color/white"
             android:gravity="center_vertical"
-            android:background="@color/white">
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_10">
 
             <RadioButton
                 android:id="@+id/all"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="@dimen/dp_30"
                 android:layout_marginLeft="@dimen/dp_2"
                 android:layout_marginTop="@dimen/dp_10"
                 android:layout_marginRight="@dimen/dp_2"
                 android:layout_marginBottom="@dimen/dp_10"
+                android:layout_weight="1"
                 android:background="@drawable/selector_checkbox_wash_bg"
                 android:button="@null"
                 android:gravity="center"
@@ -40,12 +40,12 @@
             <RadioButton
                 android:id="@+id/week"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="@dimen/dp_30"
                 android:layout_marginLeft="@dimen/dp_2"
                 android:layout_marginTop="@dimen/dp_10"
                 android:layout_marginRight="@dimen/dp_2"
                 android:layout_marginBottom="@dimen/dp_10"
+                android:layout_weight="1"
                 android:background="@drawable/selector_checkbox_wash_bg"
                 android:button="@null"
                 android:gravity="center"
@@ -60,12 +60,12 @@
             <RadioButton
                 android:id="@+id/month"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="@dimen/dp_30"
                 android:layout_marginLeft="@dimen/dp_2"
                 android:layout_marginTop="@dimen/dp_10"
                 android:layout_marginRight="@dimen/dp_2"
                 android:layout_marginBottom="@dimen/dp_10"
+                android:layout_weight="1"
                 android:background="@drawable/selector_checkbox_wash_bg"
                 android:button="@null"
                 android:gravity="center"
@@ -80,12 +80,12 @@
             <RadioButton
                 android:id="@+id/year"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="@dimen/dp_30"
                 android:layout_marginLeft="@dimen/dp_2"
                 android:layout_marginTop="@dimen/dp_10"
                 android:layout_marginRight="@dimen/dp_2"
                 android:layout_marginBottom="@dimen/dp_10"
+                android:layout_weight="1"
                 android:background="@drawable/selector_checkbox_wash_bg"
                 android:button="@null"
                 android:gravity="center"
@@ -114,8 +114,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
                 style="@style/MatchMatch"
-                android:overScrollMode="never"
                 android:background="@color/color_FFFFFF"
+                android:overScrollMode="never"
                 android:scrollbars="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 

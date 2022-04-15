@@ -5,10 +5,6 @@ import java.nio.charset.StandardCharsets;
 
 public class Base58 {
 
-    private Base58() {
-        throw new IllegalStateException("Base58");
-    }
-
     protected static final char[] ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
             .toCharArray();
     private static final int[] INDEXES = new int[128];
@@ -20,6 +16,10 @@ public class Base58 {
         for (int i = 0; i < ALPHABET.length; i++) {
             INDEXES[ALPHABET[i]] = i;
         }
+    }
+
+    private Base58() {
+        throw new IllegalStateException("Base58");
     }
 
     /**

@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MyNotificationService extends Service {
+    private static final String MESSAGE_TYPE = "messageType";
     public static UMessage oldMessage = null;
     private ArrayList<Page.Record> records = null;
-    private static final String MESSAGE_TYPE = "messageType";
 
     @Override
     public void onCreate() {

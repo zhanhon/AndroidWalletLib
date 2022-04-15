@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginBottom="@dimen/dp_10"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dp_10">
 
     <RelativeLayout
         android:id="@+id/cl_delete"
@@ -25,45 +25,45 @@
         android:id="@+id/cy_wallet_manage_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_80"
-        android:padding="@dimen/dp_10"
-        android:background="@drawable/shape_wallet_manage_eth">
+        android:background="@drawable/shape_wallet_manage_eth"
+        android:padding="@dimen/dp_10">
 
         <TextView
             android:id="@+id/tv_currency_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_5"
             android:text="@string/my_wallet"
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/sp_14"
-            android:layout_marginStart="@dimen/dp_5"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_wallet_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/my_wallet"
+            android:layout_marginStart="@dimen/dp_10"
             android:maxEms="8"
             android:singleLine="true"
+            android:text="@string/my_wallet"
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/sp_13"
-            android:layout_marginStart="@dimen/dp_10"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_currency_name" />
+            app:layout_constraintStart_toEndOf="@id/tv_currency_name"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_is_choose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_10"
             android:text="@string/wallet_status_selected"
             android:textColor="@color/color_8CCCE3"
             android:textSize="@dimen/sp_11"
-            android:layout_marginStart="@dimen/dp_10"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/tv_currency_name"
-            app:layout_constraintStart_toEndOf="@id/tv_wallet_name" />
+            app:layout_constraintStart_toEndOf="@id/tv_wallet_name"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_wallet_more"
@@ -71,17 +71,17 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_5"
             android:background="@drawable/vector_wallet_more"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_currency_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_5"
             android:text="0x01fdrr3423...232rwqr"
             android:textColor="@color/color_80FFFFFF"
             android:textSize="@dimen/dp_11"
-            android:layout_marginStart="@dimen/dp_5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

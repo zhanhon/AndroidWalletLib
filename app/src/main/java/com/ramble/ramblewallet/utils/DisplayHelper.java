@@ -28,10 +28,6 @@ import java.util.Locale;
 
 public class DisplayHelper {
 
-    private DisplayHelper() {
-        throw new IllegalStateException("DisplayHelper");
-    }
-
     /**
      * 屏幕密度,系统源码注释不推荐使用
      */
@@ -45,6 +41,9 @@ public class DisplayHelper {
      * 是否有摄像头
      */
     private static Boolean sHasCamera = null;
+    private DisplayHelper() {
+        throw new IllegalStateException("DisplayHelper");
+    }
 
     /**
      * 获取 DisplayMetrics

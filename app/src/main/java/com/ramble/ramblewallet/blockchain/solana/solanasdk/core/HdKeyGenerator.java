@@ -15,8 +15,8 @@ import java.util.Arrays;
 
 public class HdKeyGenerator {
 
-    private static final EdDSAParameterSpec ED25519SPEC = EdDSANamedCurveTable.getByName("ed25519");
     public static final String MASTER_PATH = "m";
+    private static final EdDSAParameterSpec ED25519SPEC = EdDSANamedCurveTable.getByName("ed25519");
 
     public HdAddress getAddressFromSeed(byte[] seed, SolanaCoin solanaCoin) {
 

@@ -16,881 +16,11 @@ import java.util.concurrent.atomic.AtomicLong;
 public final class TweetNaclFast {
 
     private final static String TAG = "TweetNaclFast";
-
-    /*
-     * @description
-     *   Box algorithm, Public-key authenticated encryption
-     * */
-    public static final class Box {
-
-        private final static String TAG = "Box";
-
-        private final AtomicLong nonce;
-
-        private final byte[] theirPublicKey;
-        private final byte[] mySecretKey;
-        private byte[] sharedKey;
-
-        public Box(byte[] theirPublicKey, byte[] mySecretKey) {
-            this(theirPublicKey, mySecretKey, 68);
-        }
-
-        public Box(byte[] theirPublicKey, byte[] mySecretKey, long nonce) {
-            this.theirPublicKey = theirPublicKey;
-            this.mySecretKey = mySecretKey;
-
-            this.nonce = new AtomicLong(nonce);
-
-            // generate pre-computed shared key
-            before();
-        }
-
-        public void setNonce(long nonce) {
-            this.nonce.set(nonce);
-        }
-
-        public long getNonce() {
-            return this.nonce.get();
-        }
-
-        public long incrNonce() {
-            return this.nonce.incrementAndGet();
-        }
-
-        private byte[] generateNonce() {
-            // generate nonce
-            long nonce = this.nonce.get();
-
-            byte[] n = new byte[nonceLength];
-            for (int i = 0; i < nonceLength; i += 8) {
-                n[i + 0] = (byte) (nonce >>> 0);
-                n[i + 1] = (byte) (nonce >>> 8);
-                n[i + 2] = (byte) (nonce >>> 16);
-                n[i + 3] = (byte) (nonce >>> 24);
-                n[i + 4] = (byte) (nonce >>> 32);
-                n[i + 5] = (byte) (nonce >>> 40);
-                n[i + 6] = (byte) (nonce >>> 48);
-                n[i + 7] = (byte) (nonce >>> 56);
-            }
-
-            return n;
-        }
-
-        /*
-         * @description
-         *   Encrypt and authenticates message using peer's public key,
-         *   our secret key, and the given nonce, which must be unique
-         *   for each distinct message for a key pair.
-         *
-         *   Returns an encrypted and authenticated message,
-         *   which is nacl.box.overheadLength longer than the original message.
-         * */
-        public byte[] box(byte[] message) {
-            if (message == null) return null;
-            return box(message, 0, message.length);
-        }
-
-        public byte[] box(byte[] message, final int moff) {
-            if (!(message != null && message.length > moff)) return null;
-            return box(message, moff, message.length - moff);
-        }
-
-        public byte[] box(byte[] message, final int moff, final int mlen) {
-            if (!(message != null && message.length >= (moff + mlen))) return null;
-
-            // prepare shared key
-            if (this.sharedKey == null) before();
-
-            return after(message, moff, mlen);
-        }
-
-        /*
-         * @description
-         *   Encrypt and authenticates message using peer's public key,
-         *   our secret key, and the given nonce, which must be unique
-         *   for each distinct message for a key pair.
-         *
-         *   Explicitly pass the nonce
-         *
-         *   Returns an encrypted and authenticated message,
-         *   which is nacl.box.overheadLength longer than the original message.
-         * */
-        public byte[] box(byte[] message, byte[] theNonce) {
-            if (message == null) return null;
-            return box(message, 0, message.length, theNonce);
-        }
-
-        public byte[] box(byte[] message, final int moff, byte[] theNonce) {
-            if (!(message != null && message.length > moff)) return null;
-            return box(message, moff, message.length - moff, theNonce);
-        }
-
-        public byte[] box(byte[] message, final int moff, final int mlen, byte[] theNonce) {
-            if (!(message != null && message.length >= (moff + mlen) &&
-                    theNonce != null && theNonce.length == nonceLength))
-                return null;
-
-            // prepare shared key
-            if (this.sharedKey == null) before();
-
-            return after(message, moff, mlen, theNonce);
-        }
-
-        /*
-         * @description
-         *   Authenticates and decrypts the given box with peer's public key,
-         *   our secret key, and the given nonce.
-         *
-         *   Returns the original message, or null if authentication fails.
-         * */
-        public byte[] open(byte[] box) {
-            if (box == null) return null;
-
-            // prepare shared key
-            if (this.sharedKey == null) before();
-
-            return open_after(box, 0, box.length);
-        }
-
-        public byte[] open(byte[] box, final int boxoff) {
-            if (!(box != null && box.length > boxoff)) return null;
-
-            // prepare shared key
-            if (this.sharedKey == null) before();
-
-            return open_after(box, boxoff, box.length - boxoff);
-        }
-
-        public byte[] open(byte[] box, final int boxoff, final int boxlen) {
-            if (!(box != null && box.length >= (boxoff + boxlen))) return null;
-
-            // prepare shared key
-            if (this.sharedKey == null) before();
-
-            return open_after(box, boxoff, boxlen);
-        }
-
-
-        /*
-         * @description
-         *   Authenticates and decrypts the given box with peer's public key,
-         *   our secret key, and the given nonce.
-         *   Explicit passing of nonce
-         *   Returns the original message, or null if authentication fails.
-         * */
-        public byte[] open(byte[] box, byte[] theNonce) {
-            if (!(box != null &&
-                    theNonce != null && theNonce.length == nonceLength))
-                return null;
-
-            // prepare shared key
-            if (this.sharedKey == null) before();
-
-            return open_after(box, 0, box.length, theNonce);
-        }
-
-        public byte[] open(byte[] box, final int boxoff, byte[] theNonce) {
-            if (!(box != null && box.length > boxoff &&
-                    theNonce != null && theNonce.length == nonceLength))
-                return null;
-
-            // prepare shared key
-            if (this.sharedKey == null) before();
-
-            return open_after(box, boxoff, box.length - boxoff, theNonce);
-        }
-
-        public byte[] open(byte[] box, final int boxoff, final int boxlen, byte[] theNonce) {
-            if (!(box != null && box.length >= (boxoff + boxlen) &&
-                    theNonce != null && theNonce.length == nonceLength))
-                return null;
-
-            // prepare shared key
-            if (this.sharedKey == null) before();
-
-            return open_after(box, boxoff, boxlen, theNonce);
-        }
-
-
-        /*
-         * @description
-         *   Returns a precomputed shared key
-         *   which can be used in nacl.box.after and nacl.box.open.after.
-         * */
-        public byte[] before() {
-            if (this.sharedKey == null) {
-                this.sharedKey = new byte[sharedKeyLength];
-                crypto_box_beforenm(this.sharedKey, this.theirPublicKey, this.mySecretKey);
-            }
-
-            return this.sharedKey;
-        }
-
-        /*
-         * @description
-         *   Same as nacl.box, but uses a shared key precomputed with nacl.box.before.
-         * */
-        public byte[] after(byte[] message, final int moff, final int mlen) {
-            return after(message, moff, mlen, generateNonce());
-        }
-
-        /*
-         * @description
-         *   Same as nacl.box, but uses a shared key precomputed with nacl.box.before,
-         *   and passes a nonce explicitly.
-         * */
-        public byte[] after(byte[] message, final int moff, final int mlen, byte[] theNonce) {
-            // check message
-            if (!(message != null && message.length >= (moff + mlen) &&
-                    theNonce != null && theNonce.length == nonceLength))
-                return null;
-
-            // message buffer
-            byte[] m = new byte[mlen + zerobytesLength];
-
-            // cipher buffer
-            byte[] c = new byte[m.length];
-
-            for (int i = 0; i < mlen; i++)
-                m[i + zerobytesLength] = message[i + moff];
-
-            if (0 != crypto_box_afternm(c, m, m.length, theNonce, sharedKey))
-                return null;
-
-            // wrap byte_buf_t on c offset@boxzerobytesLength
-            ///return new byte_buf_t(c, boxzerobytesLength, c.length-boxzerobytesLength);
-            byte[] ret = new byte[c.length - boxzerobytesLength];
-
-            for (int i = 0; i < ret.length; i++)
-                ret[i] = c[i + boxzerobytesLength];
-
-            return ret;
-        }
-
-        /*
-         * @description
-         *   Same as nacl.box.open,
-         *   but uses a shared key pre-computed with nacl.box.before.
-         * */
-        public byte[] open_after(byte[] box, final int boxoff, final int boxlen) {
-            return open_after(box, boxoff, boxlen, generateNonce());
-        }
-
-        public byte[] open_after(byte[] box, final int boxoff, final int boxlen, byte[] theNonce) {
-            // check message
-            if (!(box != null && box.length >= (boxoff + boxlen) && boxlen >= boxzerobytesLength))
-                return null;
-
-            // cipher buffer
-            byte[] c = new byte[boxlen + boxzerobytesLength];
-
-            // message buffer
-            byte[] m = new byte[c.length];
-
-            for (int i = 0; i < boxlen; i++)
-                c[i + boxzerobytesLength] = box[i + boxoff];
-
-            if (crypto_box_open_afternm(m, c, c.length, theNonce, sharedKey) != 0)
-                return null;
-
-            // wrap byte_buf_t on m offset@zerobytesLength
-            ///return new byte_buf_t(m, zerobytesLength, m.length-zerobytesLength);
-            byte[] ret = new byte[m.length - zerobytesLength];
-
-            for (int i = 0; i < ret.length; i++)
-                ret[i] = m[i + zerobytesLength];
-
-            return ret;
-        }
-
-        /*
-         * @description
-         *   Length of public key in bytes.
-         * */
-        public static final int publicKeyLength = 32;
-
-        /*
-         * @description
-         *   Length of secret key in bytes.
-         * */
-        public static final int secretKeyLength = 32;
-
-        /*
-         * @description
-         *   Length of precomputed shared key in bytes.
-         * */
-        public static final int sharedKeyLength = 32;
-
-        /*
-         * @description
-         *   Length of nonce in bytes.
-         * */
-        public static final int nonceLength = 24;
-
-        /*
-         * @description
-         *   zero bytes in case box
-         * */
-        public static final int zerobytesLength = 32;
-        /*
-         * @description
-         *   zero bytes in case open box
-         * */
-        public static final int boxzerobytesLength = 16;
-
-        /*
-         * @description
-         *   Length of overhead added to box compared to original message.
-         * */
-        public static final int overheadLength = 16;
-
-        public static class KeyPair {
-            private final byte[] publicKey;
-            private final byte[] secretKey;
-
-            public KeyPair() {
-                publicKey = new byte[publicKeyLength];
-                secretKey = new byte[secretKeyLength];
-            }
-
-            public byte[] getPublicKey() {
-                return publicKey;
-            }
-
-            public byte[] getSecretKey() {
-                return secretKey;
-            }
-        }
-
-        /*
-         * @description
-         *   Generates a new random key pair for box and
-         *   returns it as an object with publicKey and secretKey members:
-         * */
-        public static KeyPair keyPair() {
-            KeyPair kp = new KeyPair();
-
-            crypto_box_keypair(kp.getPublicKey(), kp.getSecretKey());
-            return kp;
-        }
-
-        public static KeyPair keyPair_fromSecretKey(byte[] secretKey) {
-            KeyPair kp = new KeyPair();
-            byte[] sk = kp.getSecretKey();
-            byte[] pk = kp.getPublicKey();
-
-            // copy sk
-            for (int i = 0; i < sk.length; i++)
-                sk[i] = secretKey[i];
-
-            crypto_scalarmult_base(pk, sk);
-            return kp;
-        }
-
-    }
-
-    /*
-     * @description
-     *   Secret Box algorithm, secret key
-     * */
-    public static final class SecretBox {
-
-        private final static String TAG = "SecretBox";
-
-        private final AtomicLong nonce;
-
-        private final byte[] key;
-
-        public SecretBox(byte[] key) {
-            this(key, 68);
-        }
-
-        public SecretBox(byte[] key, long nonce) {
-            this.key = key;
-
-            this.nonce = new AtomicLong(nonce);
-        }
-
-        public void setNonce(long nonce) {
-            this.nonce.set(nonce);
-        }
-
-        public long getNonce() {
-            return this.nonce.get();
-        }
-
-        public long incrNonce() {
-            return this.nonce.incrementAndGet();
-        }
-
-        private byte[] generateNonce() {
-            // generate nonce
-            long nonce = this.nonce.get();
-
-            byte[] n = new byte[nonceLength];
-            for (int i = 0; i < nonceLength; i += 8) {
-                n[i + 0] = (byte) (nonce >>> 0);
-                n[i + 1] = (byte) (nonce >>> 8);
-                n[i + 2] = (byte) (nonce >>> 16);
-                n[i + 3] = (byte) (nonce >>> 24);
-                n[i + 4] = (byte) (nonce >>> 32);
-                n[i + 5] = (byte) (nonce >>> 40);
-                n[i + 6] = (byte) (nonce >>> 48);
-                n[i + 7] = (byte) (nonce >>> 56);
-            }
-
-            return n;
-        }
-
-        /*
-         * @description
-         *   Encrypt and authenticates message using the key and the nonce.
-         *   The nonce must be unique for each distinct message for this key.
-         *
-         *   Returns an encrypted and authenticated message,
-         *   which is nacl.secretbox.overheadLength longer than the original message.
-         * */
-        public byte[] box(byte[] message) {
-            if (message == null) return null;
-            return box(message, 0, message.length);
-        }
-
-        public byte[] box(byte[] message, final int moff) {
-            if (!(message != null && message.length > moff)) return null;
-            return box(message, moff, message.length - moff);
-        }
-
-        public byte[] box(byte[] message, final int moff, final int mlen) {
-            // check message
-            if (!(message != null && message.length >= (moff + mlen)))
-                return null;
-            return box(message, moff, message.length - moff, generateNonce());
-        }
-
-        public byte[] box(byte[] message, byte[] theNonce) {
-            if (message == null) return null;
-            return box(message, 0, message.length, theNonce);
-        }
-
-        public byte[] box(byte[] message, final int moff, byte[] theNonce) {
-            if (!(message != null && message.length > moff)) return null;
-            return box(message, moff, message.length - moff, theNonce);
-        }
-
-        public byte[] box(byte[] message, final int moff, final int mlen, byte[] theNonce) {
-            // check message
-            if (!(message != null && message.length >= (moff + mlen) &&
-                    theNonce != null && theNonce.length == nonceLength))
-                return null;
-
-            // message buffer
-            byte[] m = new byte[mlen + zerobytesLength];
-
-            // cipher buffer
-            byte[] c = new byte[m.length];
-
-            for (int i = 0; i < mlen; i++)
-                m[i + zerobytesLength] = message[i + moff];
-
-            if (0 != crypto_secretbox(c, m, m.length, theNonce, key))
-                return null;
-
-            // TBD optimizing ...
-            // wrap byte_buf_t on c offset@boxzerobytesLength
-            ///return new byte_buf_t(c, boxzerobytesLength, c.length-boxzerobytesLength);
-            byte[] ret = new byte[c.length - boxzerobytesLength];
-
-            for (int i = 0; i < ret.length; i++)
-                ret[i] = c[i + boxzerobytesLength];
-
-            return ret;
-        }
-
-        /*
-         * @description
-         *   Authenticates and decrypts the given secret box
-         *   using the key and the nonce.
-         *
-         *   Returns the original message, or null if authentication fails.
-         * */
-        public byte[] open(byte[] box) {
-            if (box == null) return null;
-            return open(box, 0, box.length);
-        }
-
-        public byte[] open(byte[] box, final int boxoff) {
-            if (!(box != null && box.length > boxoff)) return null;
-            return open(box, boxoff, box.length - boxoff);
-        }
-
-        public byte[] open(byte[] box, final int boxoff, final int boxlen) {
-            // check message
-            if (!(box != null && box.length >= (boxoff + boxlen) && boxlen >= boxzerobytesLength))
-                return null;
-            return open(box, boxoff, box.length - boxoff, generateNonce());
-        }
-
-        public byte[] open(byte[] box, byte[] theNonce) {
-            if (box == null) return null;
-            return open(box, 0, box.length, theNonce);
-        }
-
-        public byte[] open(byte[] box, final int boxoff, byte[] theNonce) {
-            if (!(box != null && box.length > boxoff)) return null;
-            return open(box, boxoff, box.length - boxoff, theNonce);
-        }
-
-        public byte[] open(byte[] box, final int boxoff, final int boxlen, byte[] theNonce) {
-            // check message
-            if (!(box != null && box.length >= (boxoff + boxlen) && boxlen >= boxzerobytesLength &&
-                    theNonce != null && theNonce.length == nonceLength))
-                return null;
-
-            // cipher buffer
-            byte[] c = new byte[boxlen + boxzerobytesLength];
-
-            // message buffer
-            byte[] m = new byte[c.length];
-
-            for (int i = 0; i < boxlen; i++)
-                c[i + boxzerobytesLength] = box[i + boxoff];
-
-            if (0 != crypto_secretbox_open(m, c, c.length, theNonce, key))
-                return null;
-
-            // wrap byte_buf_t on m offset@zerobytesLength
-            ///return new byte_buf_t(m, zerobytesLength, m.length-zerobytesLength);
-            byte[] ret = new byte[m.length - zerobytesLength];
-
-            for (int i = 0; i < ret.length; i++)
-                ret[i] = m[i + zerobytesLength];
-
-            return ret;
-        }
-
-        /*
-         * @description
-         *   Length of key in bytes.
-         * */
-        public static final int keyLength = 32;
-
-        /*
-         * @description
-         *   Length of nonce in bytes.
-         * */
-        public static final int nonceLength = 24;
-
-        /*
-         * @description
-         *   Length of overhead added to secret box compared to original message.
-         * */
-        public static final int overheadLength = 16;
-
-        /*
-         * @description
-         *   zero bytes in case box
-         * */
-        public static final int zerobytesLength = 32;
-        /*
-         * @description
-         *   zero bytes in case open box
-         * */
-        public static final int boxzerobytesLength = 16;
-
-    }
-
-    /*
-     * @description
-     *   Scalar multiplication, Implements curve25519.
-     * */
-    public static final class ScalarMult {
-
-        private final static String TAG = "ScalarMult";
-
-        /*
-         * @description
-         *   Multiplies an integer n by a group element p and
-         *   returns the resulting group element.
-         * */
-        public static byte[] scalseMult(byte[] n, byte[] p) {
-            if (!(n.length == scalarLength && p.length == groupElementLength))
-                return null;
-
-            byte[] q = new byte[scalarLength];
-
-            crypto_scalarmult(q, n, p);
-
-            return q;
-        }
-
-        /*
-         * @description
-         *   Multiplies an integer n by a standard group element and
-         *   returns the resulting group element.
-         * */
-        public static byte[] scalseMult_base(byte[] n) {
-            if (!(n.length == scalarLength))
-                return null;
-
-            byte[] q = new byte[scalarLength];
-
-            crypto_scalarmult_base(q, n);
-
-            return q;
-        }
-
-        /*
-         * @description
-         *   Length of scalar in bytes.
-         * */
-        public static final int scalarLength = 32;
-
-        /*
-         * @description
-         *   Length of group element in bytes.
-         * */
-        public static final int groupElementLength = 32;
-
-    }
-
-
-    /*
-     * @description
-     *   Hash algorithm, Implements SHA-512.
-     * */
-    public static final class Hash {
-
-        private final static String TAG = "Hash";
-
-        /*
-         * @description
-         *   Returns SHA-512 hash of the message.
-         * */
-        public static byte[] sha512(byte[] message) {
-            if (!(message != null && message.length > 0))
-                return null;
-
-            byte[] out = new byte[hashLength];
-
-            crypto_hash(out, message);
-
-            return out;
-        }
-
-        public static byte[] sha512(String message) throws UnsupportedEncodingException {
-            return sha512(message.getBytes(StandardCharsets.UTF_8));
-        }
-
-        /*
-         * @description
-         *   Length of hash in bytes.
-         * */
-        public static final int hashLength = 64;
-
-    }
-
-
-    /*
-     * @description
-     *   Signature algorithm, Implements ed25519.
-     * */
-    public static final class Signature {
-
-        private final static String TAG = "Signature";
-
-        private final byte[] theirPublicKey;
-        private final byte[] mySecretKey;
-
-        public Signature(byte[] theirPublicKey, byte[] mySecretKey) {
-            this.theirPublicKey = theirPublicKey;
-            this.mySecretKey = mySecretKey;
-        }
-
-        /*
-         * @description
-         *   Signs the message using the secret key and returns a signed message.
-         * */
-        public byte[] sign(byte[] message) {
-            if (message == null) return null;
-
-            return sign(message, 0, message.length);
-        }
-
-        public byte[] sign(byte[] message, final int moff) {
-            if (!(message != null && message.length > moff)) return null;
-
-            return sign(message, moff, message.length - moff);
-        }
-
-        public byte[] sign(byte[] message, final int moff, final int mlen) {
-            // check message
-            if (!(message != null && message.length >= (moff + mlen)))
-                return null;
-
-            // signed message
-            byte[] sm = new byte[mlen + signatureLength];
-
-            crypto_sign(sm, -1, message, moff, mlen, mySecretKey);
-
-            return sm;
-        }
-
-        /*
-         * @description
-         *   Verifies the signed message and returns the message without signature.
-         *   Returns null if verification failed.
-         * */
-        public byte[] open(byte[] signedMessage) {
-            if (signedMessage == null) return null;
-
-            return open(signedMessage, 0, signedMessage.length);
-        }
-
-        public byte[] open(byte[] signedMessage, final int smoff) {
-            if (!(signedMessage != null && signedMessage.length > smoff)) return null;
-
-            return open(signedMessage, smoff, signedMessage.length - smoff);
-        }
-
-        public byte[] open(byte[] signedMessage, final int smoff, final int smlen) {
-            // check sm length
-            if (!(signedMessage != null && signedMessage.length >= (smoff + smlen) && smlen >= signatureLength))
-                return null;
-
-            // temp buffer
-            byte[] tmp = new byte[smlen];
-
-            if (0 != crypto_sign_open(tmp, -1, signedMessage, smoff, smlen, theirPublicKey))
-                return null;
-
-            // message
-            byte[] msg = new byte[smlen - signatureLength];
-            for (int i = 0; i < msg.length; i++)
-                msg[i] = signedMessage[smoff + i + signatureLength];
-
-            return msg;
-        }
-
-        /*
-         * @description
-         *   Signs the message using the secret key and returns a signature.
-         * */
-        public byte[] detached(byte[] message) {
-            byte[] signedMsg = this.sign(message);
-            byte[] sig = new byte[signatureLength];
-            for (int i = 0; i < sig.length; i++)
-                sig[i] = signedMsg[i];
-            return sig;
-        }
-
-        /*
-         * @description
-         *   Verifies the signature for the message and
-         *   returns true if verification succeeded or false if it failed.
-         * */
-        public boolean detached_verify(byte[] message, byte[] signature) {
-            if (signature.length != signatureLength)
-                return false;
-            if (theirPublicKey.length != publicKeyLength)
-                return false;
-            byte[] sm = new byte[signatureLength + message.length];
-            byte[] m = new byte[signatureLength + message.length];
-            for (int i = 0; i < signatureLength; i++)
-                sm[i] = signature[i];
-            for (int i = 0; i < message.length; i++)
-                sm[i + signatureLength] = message[i];
-            return (crypto_sign_open(m, -1, sm, 0, sm.length, theirPublicKey) >= 0);
-        }
-
-        /*
-         * @description
-         *   Generates new random key pair for signing and
-         *   returns it as an object with publicKey and secretKey members
-         * */
-        public static class KeyPair {
-            private final byte[] publicKey;
-            private final byte[] secretKey;
-
-            public KeyPair() {
-                publicKey = new byte[publicKeyLength];
-                secretKey = new byte[secretKeyLength];
-            }
-
-            public byte[] getPublicKey() {
-                return publicKey;
-            }
-
-            public byte[] getSecretKey() {
-                return secretKey;
-            }
-        }
-
-        /*
-         * @description
-         *   Signs the message using the secret key and returns a signed message.
-         * */
-        public static KeyPair keyPair() {
-            KeyPair kp = new KeyPair();
-
-            crypto_sign_keypair(kp.getPublicKey(), kp.getSecretKey(), false);
-            return kp;
-        }
-
-        public static KeyPair keyPair_fromSecretKey(byte[] secretKey) {
-            KeyPair kp = new KeyPair();
-            byte[] pk = kp.getPublicKey();
-            byte[] sk = kp.getSecretKey();
-
-            // copy sk
-            for (int i = 0; i < kp.getSecretKey().length; i++)
-                sk[i] = secretKey[i];
-
-            // copy pk from sk
-            for (int i = 0; i < kp.getPublicKey().length; i++)
-                pk[i] = secretKey[32 + i]; // hard-copy
-
-            return kp;
-        }
-
-        public static KeyPair keyPair_fromSeed(byte[] seed) {
-            KeyPair kp = new KeyPair();
-            byte[] pk = kp.getPublicKey();
-            byte[] sk = kp.getSecretKey();
-
-            // copy sk
-            for (int i = 0; i < seedLength; i++)
-                sk[i] = seed[i];
-
-            // generate pk from sk
-            crypto_sign_keypair(pk, sk, true);
-
-            return kp;
-        }
-
-        /*
-         * @description
-         *   Length of signing public key in bytes.
-         * */
-        public static final int publicKeyLength = 32;
-
-        /*
-         * @description
-         *   Length of signing secret key in bytes.
-         * */
-        public static final int secretKeyLength = 64;
-
-        /*
-         * @description
-         *   Length of seed for nacl.sign.keyPair.fromSeed in bytes.
-         * */
-        public static final int seedLength = 32;
-
-        /*
-         * @description
-         *   Length of signature in bytes.
-         * */
-        public static final int signatureLength = 64;
-    }
+    private static final byte[] _0 = new byte[16];
+    private static final byte[] _9 = new byte[32];
+    private static final long[] gf0 = new long[16];
+    private static final long[] gf1 = new long[16];
+    private static final long[] _121665 = new long[16];
 
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -898,32 +28,6 @@ public final class TweetNaclFast {
      * @description
      *   Codes below are ported tweetnacl-fast.js from TweetNacl.c/TweetNacl.h
      * */
-
-    private static final byte[] _0 = new byte[16];
-    private static final byte[] _9 = new byte[32];
-
-    static {
-        ///for (int i = 0; i < _0.length; i ++) _0[i] = 0;
-
-        ///for (int i = 0; i < _9.length; i ++) _9[i] = 0;
-        _9[0] = 9;
-    }
-
-    private static final long[] gf0 = new long[16];
-    private static final long[] gf1 = new long[16];
-    private static final long[] _121665 = new long[16];
-
-    static {
-        ///for (int i = 0; i < gf0.length; i ++) gf0[i] = 0;
-
-        ///for (int i = 0; i < gf1.length; i ++)  gf1[i] = 0;
-        gf1[0] = 1;
-
-        ///for (int i = 0; i < _121665.length; i ++) _121665[i] = 0;
-        _121665[0] = 0xDB41;
-        _121665[1] = 1;
-    }
-
     private static final long[] D = new long[]{
             0x78a3, 0x1359, 0x4dca, 0x75eb,
             0xd8ab, 0x4141, 0x0a4d, 0x0070,
@@ -954,6 +58,59 @@ public final class TweetNaclFast {
             0xd7a7, 0x3dfb, 0x0099, 0x2b4d,
             0xdf0b, 0x4fc1, 0x2480, 0x2b83
     };
+    // "expand 32-byte k"
+    private static final byte[] sigma = {101, 120, 112, 97, 110, 100, 32, 51, 50, 45, 98, 121, 116, 101, 32, 107};
+    private static final long[] K = {
+            0x428a2f98d728ae22L, 0x7137449123ef65cdL, 0xb5c0fbcfec4d3b2fL, 0xe9b5dba58189dbbcL,
+            0x3956c25bf348b538L, 0x59f111f1b605d019L, 0x923f82a4af194f9bL, 0xab1c5ed5da6d8118L,
+            0xd807aa98a3030242L, 0x12835b0145706fbeL, 0x243185be4ee4b28cL, 0x550c7dc3d5ffb4e2L,
+            0x72be5d74f27b896fL, 0x80deb1fe3b1696b1L, 0x9bdc06a725c71235L, 0xc19bf174cf692694L,
+            0xe49b69c19ef14ad2L, 0xefbe4786384f25e3L, 0x0fc19dc68b8cd5b5L, 0x240ca1cc77ac9c65L,
+            0x2de92c6f592b0275L, 0x4a7484aa6ea6e483L, 0x5cb0a9dcbd41fbd4L, 0x76f988da831153b5L,
+            0x983e5152ee66dfabL, 0xa831c66d2db43210L, 0xb00327c898fb213fL, 0xbf597fc7beef0ee4L,
+            0xc6e00bf33da88fc2L, 0xd5a79147930aa725L, 0x06ca6351e003826fL, 0x142929670a0e6e70L,
+            0x27b70a8546d22ffcL, 0x2e1b21385c26c926L, 0x4d2c6dfc5ac42aedL, 0x53380d139d95b3dfL,
+            0x650a73548baf63deL, 0x766a0abb3c77b2a8L, 0x81c2c92e47edaee6L, 0x92722c851482353bL,
+            0xa2bfe8a14cf10364L, 0xa81a664bbc423001L, 0xc24b8b70d0f89791L, 0xc76c51a30654be30L,
+            0xd192e819d6ef5218L, 0xd69906245565a910L, 0xf40e35855771202aL, 0x106aa07032bbd1b8L,
+            0x19a4c116b8d2d0c8L, 0x1e376c085141ab53L, 0x2748774cdf8eeb99L, 0x34b0bcb5e19b48a8L,
+            0x391c0cb3c5c95a63L, 0x4ed8aa4ae3418acbL, 0x5b9cca4f7763e373L, 0x682e6ff3d6b2b8a3L,
+            0x748f82ee5defb2fcL, 0x78a5636f43172f60L, 0x84c87814a1f0ab72L, 0x8cc702081a6439ecL,
+            0x90befffa23631e28L, 0xa4506cebde82bde9L, 0xbef9a3f7b2c67915L, 0xc67178f2e372532bL,
+            0xca273eceea26619cL, 0xd186b8c721c0c207L, 0xeada7dd6cde0eb1eL, 0xf57d4f7fee6ed178L,
+            0x06f067aa72176fbaL, 0x0a637dc5a2c898a6L, 0x113f9804bef90daeL, 0x1b710b35131c471bL,
+            0x28db77f523047d84L, 0x32caab7b40c72493L, 0x3c9ebe0a15c9bebcL, 0x431d67c49c100d4cL,
+            0x4cc5d4becb3e42b6L, 0x597f299cfc657e2aL, 0x5fcb6fab3ad6faecL, 0x6c44198c4a475817L
+    };
+    private static final long[] L = {
+            0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58,
+            0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0x10
+    };
+    /*
+     * @description
+     *   Java SecureRandom generator
+     * */
+    private static final SecureRandom jrandom = new SecureRandom();
+
+    static {
+        ///for (int i = 0; i < _0.length; i ++) _0[i] = 0;
+
+        ///for (int i = 0; i < _9.length; i ++) _9[i] = 0;
+        _9[0] = 9;
+    }
+
+    static {
+        ///for (int i = 0; i < gf0.length; i ++) gf0[i] = 0;
+
+        ///for (int i = 0; i < gf1.length; i ++)  gf1[i] = 0;
+        gf1[0] = 1;
+
+        ///for (int i = 0; i < _121665.length; i ++) _121665[i] = 0;
+        _121665[0] = 0xDB41;
+        _121665[1] = 1;
+    }
 
     private static void ts64(byte[] x, final int xoff, long u) {
         ///int i;
@@ -1368,17 +525,6 @@ public final class TweetNaclFast {
         return 0;
     }
 
-    // "expand 32-byte k"
-    private static final byte[] sigma = {101, 120, 112, 97, 110, 100, 32, 51, 50, 45, 98, 121, 116, 101, 32, 107};
-
-	/*static {
-		try {
-			sigma = "expand 32-byte k".getBytes("utf-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-	}*/
-
     private static int crypto_stream_salsa20_xor(byte[] c, int cpos, byte[] m, int mpos, long b, byte[] n, byte[] k) {
         byte[] z = new byte[16], x = new byte[64];
         int u, i;
@@ -1438,6 +584,14 @@ public final class TweetNaclFast {
         return 0;
     }
 
+	/*static {
+		try {
+			sigma = "expand 32-byte k".getBytes("utf-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}*/
+
     public static int crypto_stream(byte[] c, int cpos, long d, byte[] n, byte[] k) {
         byte[] s = new byte[32];
         crypto_core_hsalsa20(s, n, k, sigma);
@@ -1462,429 +616,6 @@ public final class TweetNaclFast {
         byte[] sn = new byte[8];
         for (int i = 0; i < 8; i++) sn[i] = n[i + 16];
         return crypto_stream_salsa20_xor(c, cpos, m, mpos, d, sn, s);
-    }
-
-    /*
-     * Port of Andrew Moon's Poly1305-donna-16. Public domain.
-     * https://github.com/floodyberry/poly1305-donna
-     */
-    public static final class poly1305 {
-
-        private final byte[] buffer;
-        private final int[] r;
-        private final int[] h;
-        private final int[] pad;
-        private int leftover;
-        private int fin;
-
-        public poly1305(byte[] key) {
-            this.buffer = new byte[16];
-            this.r = new int[10];
-            this.h = new int[10];
-            this.pad = new int[8];
-            this.leftover = 0;
-            this.fin = 0;
-
-            int t0, t1, t2, t3, t4, t5, t6, t7;
-
-            t0 = key[0] & 0xff | (key[1] & 0xff) << 8;
-            this.r[0] = (t0) & 0x1fff;
-            t1 = key[2] & 0xff | (key[3] & 0xff) << 8;
-            this.r[1] = ((t0 >>> 13) | (t1 << 3)) & 0x1fff;
-            t2 = key[4] & 0xff | (key[5] & 0xff) << 8;
-            this.r[2] = ((t1 >>> 10) | (t2 << 6)) & 0x1f03;
-            t3 = key[6] & 0xff | (key[7] & 0xff) << 8;
-            this.r[3] = ((t2 >>> 7) | (t3 << 9)) & 0x1fff;
-            t4 = key[8] & 0xff | (key[9] & 0xff) << 8;
-            this.r[4] = ((t3 >>> 4) | (t4 << 12)) & 0x00ff;
-            this.r[5] = ((t4 >>> 1)) & 0x1ffe;
-            t5 = key[10] & 0xff | (key[11] & 0xff) << 8;
-            this.r[6] = ((t4 >>> 14) | (t5 << 2)) & 0x1fff;
-            t6 = key[12] & 0xff | (key[13] & 0xff) << 8;
-            this.r[7] = ((t5 >>> 11) | (t6 << 5)) & 0x1f81;
-            t7 = key[14] & 0xff | (key[15] & 0xff) << 8;
-            this.r[8] = ((t6 >>> 8) | (t7 << 8)) & 0x1fff;
-            this.r[9] = ((t7 >>> 5)) & 0x007f;
-
-            this.pad[0] = key[16] & 0xff | (key[17] & 0xff) << 8;
-            this.pad[1] = key[18] & 0xff | (key[19] & 0xff) << 8;
-            this.pad[2] = key[20] & 0xff | (key[21] & 0xff) << 8;
-            this.pad[3] = key[22] & 0xff | (key[23] & 0xff) << 8;
-            this.pad[4] = key[24] & 0xff | (key[25] & 0xff) << 8;
-            this.pad[5] = key[26] & 0xff | (key[27] & 0xff) << 8;
-            this.pad[6] = key[28] & 0xff | (key[29] & 0xff) << 8;
-            this.pad[7] = key[30] & 0xff | (key[31] & 0xff) << 8;
-        }
-
-        public poly1305 blocks(byte[] m, int mpos, int bytes) {
-            int hibit = this.fin != 0 ? 0 : (1 << 11);
-            int t0, t1, t2, t3, t4, t5, t6, t7, c;
-            int d0, d1, d2, d3, d4, d5, d6, d7, d8, d9;
-
-            int h0 = this.h[0],
-                    h1 = this.h[1],
-                    h2 = this.h[2],
-                    h3 = this.h[3],
-                    h4 = this.h[4],
-                    h5 = this.h[5],
-                    h6 = this.h[6],
-                    h7 = this.h[7],
-                    h8 = this.h[8],
-                    h9 = this.h[9];
-
-            int r0 = this.r[0],
-                    r1 = this.r[1],
-                    r2 = this.r[2],
-                    r3 = this.r[3],
-                    r4 = this.r[4],
-                    r5 = this.r[5],
-                    r6 = this.r[6],
-                    r7 = this.r[7],
-                    r8 = this.r[8],
-                    r9 = this.r[9];
-
-            while (bytes >= 16) {
-                t0 = m[mpos + 0] & 0xff | (m[mpos + 1] & 0xff) << 8;
-                h0 += (t0) & 0x1fff;
-                t1 = m[mpos + 2] & 0xff | (m[mpos + 3] & 0xff) << 8;
-                h1 += ((t0 >>> 13) | (t1 << 3)) & 0x1fff;
-                t2 = m[mpos + 4] & 0xff | (m[mpos + 5] & 0xff) << 8;
-                h2 += ((t1 >>> 10) | (t2 << 6)) & 0x1fff;
-                t3 = m[mpos + 6] & 0xff | (m[mpos + 7] & 0xff) << 8;
-                h3 += ((t2 >>> 7) | (t3 << 9)) & 0x1fff;
-                t4 = m[mpos + 8] & 0xff | (m[mpos + 9] & 0xff) << 8;
-                h4 += ((t3 >>> 4) | (t4 << 12)) & 0x1fff;
-                h5 += ((t4 >>> 1)) & 0x1fff;
-                t5 = m[mpos + 10] & 0xff | (m[mpos + 11] & 0xff) << 8;
-                h6 += ((t4 >>> 14) | (t5 << 2)) & 0x1fff;
-                t6 = m[mpos + 12] & 0xff | (m[mpos + 13] & 0xff) << 8;
-                h7 += ((t5 >>> 11) | (t6 << 5)) & 0x1fff;
-                t7 = m[mpos + 14] & 0xff | (m[mpos + 15] & 0xff) << 8;
-                h8 += ((t6 >>> 8) | (t7 << 8)) & 0x1fff;
-                h9 += ((t7 >>> 5)) | hibit;
-
-                c = 0;
-
-                d0 = c;
-                d0 += h0 * r0;
-                d0 += h1 * (5 * r9);
-                d0 += h2 * (5 * r8);
-                d0 += h3 * (5 * r7);
-                d0 += h4 * (5 * r6);
-                c = (d0 >>> 13);
-                d0 &= 0x1fff;
-                d0 += h5 * (5 * r5);
-                d0 += h6 * (5 * r4);
-                d0 += h7 * (5 * r3);
-                d0 += h8 * (5 * r2);
-                d0 += h9 * (5 * r1);
-                c += (d0 >>> 13);
-                d0 &= 0x1fff;
-
-                d1 = c;
-                d1 += h0 * r1;
-                d1 += h1 * r0;
-                d1 += h2 * (5 * r9);
-                d1 += h3 * (5 * r8);
-                d1 += h4 * (5 * r7);
-                c = (d1 >>> 13);
-                d1 &= 0x1fff;
-                d1 += h5 * (5 * r6);
-                d1 += h6 * (5 * r5);
-                d1 += h7 * (5 * r4);
-                d1 += h8 * (5 * r3);
-                d1 += h9 * (5 * r2);
-                c += (d1 >>> 13);
-                d1 &= 0x1fff;
-
-                d2 = c;
-                d2 += h0 * r2;
-                d2 += h1 * r1;
-                d2 += h2 * r0;
-                d2 += h3 * (5 * r9);
-                d2 += h4 * (5 * r8);
-                c = (d2 >>> 13);
-                d2 &= 0x1fff;
-                d2 += h5 * (5 * r7);
-                d2 += h6 * (5 * r6);
-                d2 += h7 * (5 * r5);
-                d2 += h8 * (5 * r4);
-                d2 += h9 * (5 * r3);
-                c += (d2 >>> 13);
-                d2 &= 0x1fff;
-
-                d3 = c;
-                d3 += h0 * r3;
-                d3 += h1 * r2;
-                d3 += h2 * r1;
-                d3 += h3 * r0;
-                d3 += h4 * (5 * r9);
-                c = (d3 >>> 13);
-                d3 &= 0x1fff;
-                d3 += h5 * (5 * r8);
-                d3 += h6 * (5 * r7);
-                d3 += h7 * (5 * r6);
-                d3 += h8 * (5 * r5);
-                d3 += h9 * (5 * r4);
-                c += (d3 >>> 13);
-                d3 &= 0x1fff;
-
-                d4 = c;
-                d4 += h0 * r4;
-                d4 += h1 * r3;
-                d4 += h2 * r2;
-                d4 += h3 * r1;
-                d4 += h4 * r0;
-                c = (d4 >>> 13);
-                d4 &= 0x1fff;
-                d4 += h5 * (5 * r9);
-                d4 += h6 * (5 * r8);
-                d4 += h7 * (5 * r7);
-                d4 += h8 * (5 * r6);
-                d4 += h9 * (5 * r5);
-                c += (d4 >>> 13);
-                d4 &= 0x1fff;
-
-                d5 = c;
-                d5 += h0 * r5;
-                d5 += h1 * r4;
-                d5 += h2 * r3;
-                d5 += h3 * r2;
-                d5 += h4 * r1;
-                c = (d5 >>> 13);
-                d5 &= 0x1fff;
-                d5 += h5 * r0;
-                d5 += h6 * (5 * r9);
-                d5 += h7 * (5 * r8);
-                d5 += h8 * (5 * r7);
-                d5 += h9 * (5 * r6);
-                c += (d5 >>> 13);
-                d5 &= 0x1fff;
-
-                d6 = c;
-                d6 += h0 * r6;
-                d6 += h1 * r5;
-                d6 += h2 * r4;
-                d6 += h3 * r3;
-                d6 += h4 * r2;
-                c = (d6 >>> 13);
-                d6 &= 0x1fff;
-                d6 += h5 * r1;
-                d6 += h6 * r0;
-                d6 += h7 * (5 * r9);
-                d6 += h8 * (5 * r8);
-                d6 += h9 * (5 * r7);
-                c += (d6 >>> 13);
-                d6 &= 0x1fff;
-
-                d7 = c;
-                d7 += h0 * r7;
-                d7 += h1 * r6;
-                d7 += h2 * r5;
-                d7 += h3 * r4;
-                d7 += h4 * r3;
-                c = (d7 >>> 13);
-                d7 &= 0x1fff;
-                d7 += h5 * r2;
-                d7 += h6 * r1;
-                d7 += h7 * r0;
-                d7 += h8 * (5 * r9);
-                d7 += h9 * (5 * r8);
-                c += (d7 >>> 13);
-                d7 &= 0x1fff;
-
-                d8 = c;
-                d8 += h0 * r8;
-                d8 += h1 * r7;
-                d8 += h2 * r6;
-                d8 += h3 * r5;
-                d8 += h4 * r4;
-                c = (d8 >>> 13);
-                d8 &= 0x1fff;
-                d8 += h5 * r3;
-                d8 += h6 * r2;
-                d8 += h7 * r1;
-                d8 += h8 * r0;
-                d8 += h9 * (5 * r9);
-                c += (d8 >>> 13);
-                d8 &= 0x1fff;
-
-                d9 = c;
-                d9 += h0 * r9;
-                d9 += h1 * r8;
-                d9 += h2 * r7;
-                d9 += h3 * r6;
-                d9 += h4 * r5;
-                c = (d9 >>> 13);
-                d9 &= 0x1fff;
-                d9 += h5 * r4;
-                d9 += h6 * r3;
-                d9 += h7 * r2;
-                d9 += h8 * r1;
-                d9 += h9 * r0;
-                c += (d9 >>> 13);
-                d9 &= 0x1fff;
-
-                c = (((c << 2) + c)) | 0;
-                c = (c + d0) | 0;
-                d0 = c & 0x1fff;
-                c = (c >>> 13);
-                d1 += c;
-
-                h0 = d0;
-                h1 = d1;
-                h2 = d2;
-                h3 = d3;
-                h4 = d4;
-                h5 = d5;
-                h6 = d6;
-                h7 = d7;
-                h8 = d8;
-                h9 = d9;
-
-                mpos += 16;
-                bytes -= 16;
-            }
-            this.h[0] = h0;
-            this.h[1] = h1;
-            this.h[2] = h2;
-            this.h[3] = h3;
-            this.h[4] = h4;
-            this.h[5] = h5;
-            this.h[6] = h6;
-            this.h[7] = h7;
-            this.h[8] = h8;
-            this.h[9] = h9;
-
-            return this;
-        }
-
-        public poly1305 finish(byte[] mac, int macpos) {
-            int[] g = new int[10];
-            int c, mask, f, i;
-
-            if (this.leftover != 0) {
-                i = this.leftover;
-                this.buffer[i++] = 1;
-                for (; i < 16; i++) this.buffer[i] = 0;
-                this.fin = 1;
-                this.blocks(this.buffer, 0, 16);
-            }
-
-            c = this.h[1] >>> 13;
-            this.h[1] &= 0x1fff;
-            for (i = 2; i < 10; i++) {
-                this.h[i] += c;
-                c = this.h[i] >>> 13;
-                this.h[i] &= 0x1fff;
-            }
-            this.h[0] += (c * 5);
-            c = this.h[0] >>> 13;
-            this.h[0] &= 0x1fff;
-            this.h[1] += c;
-            c = this.h[1] >>> 13;
-            this.h[1] &= 0x1fff;
-            this.h[2] += c;
-
-            g[0] = this.h[0] + 5;
-            c = g[0] >>> 13;
-            g[0] &= 0x1fff;
-            for (i = 1; i < 10; i++) {
-                g[i] = this.h[i] + c;
-                c = g[i] >>> 13;
-                g[i] &= 0x1fff;
-            }
-            g[9] -= (1 << 13);
-            g[9] &= 0xffff;
-
-                        /*
-                        backport from tweetnacl-fast.js https://github.com/dchest/tweetnacl-js/releases/tag/v0.14.3
-                        <<<
-                        "The issue was not properly detecting if st->h was >= 2^130 - 5,
-                        coupled with [testing mistake] not catching the failure.
-                        The chance of the bug affecting anything in the real world is essentially zero luckily,
-                        but it's good to have it fixed."
-                        >>>
-                        */
-            ///change mask = (g[9] >>> ((2 * 8) - 1)) - 1; to as
-            mask = (c ^ 1) - 1;
-            mask &= 0xffff;
-            ///////////////////////////////////////
-
-            for (i = 0; i < 10; i++) g[i] &= mask;
-            mask = ~mask;
-            for (i = 0; i < 10; i++) this.h[i] = (this.h[i] & mask) | g[i];
-
-            this.h[0] = ((this.h[0]) | (this.h[1] << 13)) & 0xffff;
-            this.h[1] = ((this.h[1] >>> 3) | (this.h[2] << 10)) & 0xffff;
-            this.h[2] = ((this.h[2] >>> 6) | (this.h[3] << 7)) & 0xffff;
-            this.h[3] = ((this.h[3] >>> 9) | (this.h[4] << 4)) & 0xffff;
-            this.h[4] = ((this.h[4] >>> 12) | (this.h[5] << 1) | (this.h[6] << 14)) & 0xffff;
-            this.h[5] = ((this.h[6] >>> 2) | (this.h[7] << 11)) & 0xffff;
-            this.h[6] = ((this.h[7] >>> 5) | (this.h[8] << 8)) & 0xffff;
-            this.h[7] = ((this.h[8] >>> 8) | (this.h[9] << 5)) & 0xffff;
-
-            f = this.h[0] + this.pad[0];
-            this.h[0] = f & 0xffff;
-            for (i = 1; i < 8; i++) {
-                f = (((this.h[i] + this.pad[i]) | 0) + (f >>> 16)) | 0;
-                this.h[i] = f & 0xffff;
-            }
-
-            mac[macpos + 0] = (byte) ((this.h[0] >>> 0) & 0xff);
-            mac[macpos + 1] = (byte) ((this.h[0] >>> 8) & 0xff);
-            mac[macpos + 2] = (byte) ((this.h[1] >>> 0) & 0xff);
-            mac[macpos + 3] = (byte) ((this.h[1] >>> 8) & 0xff);
-            mac[macpos + 4] = (byte) ((this.h[2] >>> 0) & 0xff);
-            mac[macpos + 5] = (byte) ((this.h[2] >>> 8) & 0xff);
-            mac[macpos + 6] = (byte) ((this.h[3] >>> 0) & 0xff);
-            mac[macpos + 7] = (byte) ((this.h[3] >>> 8) & 0xff);
-            mac[macpos + 8] = (byte) ((this.h[4] >>> 0) & 0xff);
-            mac[macpos + 9] = (byte) ((this.h[4] >>> 8) & 0xff);
-            mac[macpos + 10] = (byte) ((this.h[5] >>> 0) & 0xff);
-            mac[macpos + 11] = (byte) ((this.h[5] >>> 8) & 0xff);
-            mac[macpos + 12] = (byte) ((this.h[6] >>> 0) & 0xff);
-            mac[macpos + 13] = (byte) ((this.h[6] >>> 8) & 0xff);
-            mac[macpos + 14] = (byte) ((this.h[7] >>> 0) & 0xff);
-            mac[macpos + 15] = (byte) ((this.h[7] >>> 8) & 0xff);
-
-            return this;
-        }
-
-        public poly1305 update(byte[] m, int mpos, int bytes) {
-            int i, want;
-
-            if (this.leftover != 0) {
-                want = (16 - this.leftover);
-                if (want > bytes)
-                    want = bytes;
-                for (i = 0; i < want; i++)
-                    this.buffer[this.leftover + i] = m[mpos + i];
-                bytes -= want;
-                mpos += want;
-                this.leftover += want;
-                if (this.leftover < 16)
-                    return this;
-                this.blocks(buffer, 0, 16);
-                this.leftover = 0;
-            }
-
-            if (bytes >= 16) {
-                want = bytes - (bytes % 16);
-                this.blocks(m, mpos, want);
-                mpos += want;
-                bytes -= want;
-            }
-
-            if (bytes != 0) {
-                for (i = 0; i < bytes; i++)
-                    this.buffer[this.leftover + i] = m[mpos + i];
-                this.leftover += bytes;
-            }
-
-            return this;
-        }
-
     }
 
     private static int crypto_onetimeauth(
@@ -2650,29 +1381,6 @@ public final class TweetNaclFast {
         return crypto_box_open_afternm(m, c, d, n, k);
     }
 
-    private static final long[] K = {
-            0x428a2f98d728ae22L, 0x7137449123ef65cdL, 0xb5c0fbcfec4d3b2fL, 0xe9b5dba58189dbbcL,
-            0x3956c25bf348b538L, 0x59f111f1b605d019L, 0x923f82a4af194f9bL, 0xab1c5ed5da6d8118L,
-            0xd807aa98a3030242L, 0x12835b0145706fbeL, 0x243185be4ee4b28cL, 0x550c7dc3d5ffb4e2L,
-            0x72be5d74f27b896fL, 0x80deb1fe3b1696b1L, 0x9bdc06a725c71235L, 0xc19bf174cf692694L,
-            0xe49b69c19ef14ad2L, 0xefbe4786384f25e3L, 0x0fc19dc68b8cd5b5L, 0x240ca1cc77ac9c65L,
-            0x2de92c6f592b0275L, 0x4a7484aa6ea6e483L, 0x5cb0a9dcbd41fbd4L, 0x76f988da831153b5L,
-            0x983e5152ee66dfabL, 0xa831c66d2db43210L, 0xb00327c898fb213fL, 0xbf597fc7beef0ee4L,
-            0xc6e00bf33da88fc2L, 0xd5a79147930aa725L, 0x06ca6351e003826fL, 0x142929670a0e6e70L,
-            0x27b70a8546d22ffcL, 0x2e1b21385c26c926L, 0x4d2c6dfc5ac42aedL, 0x53380d139d95b3dfL,
-            0x650a73548baf63deL, 0x766a0abb3c77b2a8L, 0x81c2c92e47edaee6L, 0x92722c851482353bL,
-            0xa2bfe8a14cf10364L, 0xa81a664bbc423001L, 0xc24b8b70d0f89791L, 0xc76c51a30654be30L,
-            0xd192e819d6ef5218L, 0xd69906245565a910L, 0xf40e35855771202aL, 0x106aa07032bbd1b8L,
-            0x19a4c116b8d2d0c8L, 0x1e376c085141ab53L, 0x2748774cdf8eeb99L, 0x34b0bcb5e19b48a8L,
-            0x391c0cb3c5c95a63L, 0x4ed8aa4ae3418acbL, 0x5b9cca4f7763e373L, 0x682e6ff3d6b2b8a3L,
-            0x748f82ee5defb2fcL, 0x78a5636f43172f60L, 0x84c87814a1f0ab72L, 0x8cc702081a6439ecL,
-            0x90befffa23631e28L, 0xa4506cebde82bde9L, 0xbef9a3f7b2c67915L, 0xc67178f2e372532bL,
-            0xca273eceea26619cL, 0xd186b8c721c0c207L, 0xeada7dd6cde0eb1eL, 0xf57d4f7fee6ed178L,
-            0x06f067aa72176fbaL, 0x0a637dc5a2c898a6L, 0x113f9804bef90daeL, 0x1b710b35131c471bL,
-            0x28db77f523047d84L, 0x32caab7b40c72493L, 0x3c9ebe0a15c9bebcL, 0x431d67c49c100d4cL,
-            0x4cc5d4becb3e42b6L, 0x597f299cfc657e2aL, 0x5fcb6fab3ad6faecL, 0x6c44198c4a475817L
-    };
-
     private static int crypto_hashblocks_hl(int[] hh, int[] hl, byte[] m, final int moff, int n) {
 
         ///String dbgt = "";
@@ -3296,13 +2004,6 @@ public final class TweetNaclFast {
         return 0;
     }
 
-    private static final long[] L = {
-            0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58,
-            0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0x10
-    };
-
     private static void modL(byte[] r, final int roff, long[] x) {
         long carry;
         int i, j;
@@ -3484,12 +2185,6 @@ public final class TweetNaclFast {
         return 0;
     }
 
-    /*
-     * @description
-     *   Java SecureRandom generator
-     * */
-    private static final SecureRandom jrandom = new SecureRandom();
-
     public static byte[] randombytes(byte[] x) {
         jrandom.nextBytes(x);
         return x;
@@ -3504,30 +2199,6 @@ public final class TweetNaclFast {
         System.arraycopy(b, 0, x, 0, len);
         return x;
     }
-
-/*
-  public static byte[] randombytes(byte [] x, int len) {
-		int ret = len % 8;
-		long rnd;
-		for (int i = 0; i < len-ret; i += 8) {
-			rnd = jrandom.nextLong();
-			x[i+0] = (byte) (rnd >>>  0);
-			x[i+1] = (byte) (rnd >>>  8);
-			x[i+2] = (byte) (rnd >>> 16);
-			x[i+3] = (byte) (rnd >>> 24);
-			x[i+4] = (byte) (rnd >>> 32);
-			x[i+5] = (byte) (rnd >>> 40);
-			x[i+6] = (byte) (rnd >>> 48);
-			x[i+7] = (byte) (rnd >>> 56);
-		}
-		if (ret > 0) {
-			rnd = jrandom.nextLong();
-			for (int i = len-ret; i < len; i ++)
-				x[i] = (byte) (rnd >>> 8*i);
-		}
-		return x;
-	}
-*/
 
     public static byte[] makeBoxNonce() {
         return randombytes(Box.nonceLength);
@@ -3555,8 +2226,6 @@ public final class TweetNaclFast {
         }
         return b;
     }
-
-    // public static boolean java.util.Arrays.equals(array1, array2);
 
     // Check that a pubkey is on the curve.
     public static int is_on_curve(byte[] p) {
@@ -3597,6 +2266,1304 @@ public final class TweetNaclFast {
         M(chk, chk, den);
         if (neq25519(chk, num) != 0) return 0;
         return 1;
+    }
+
+    /*
+     * @description
+     *   Box algorithm, Public-key authenticated encryption
+     * */
+    public static final class Box {
+
+        /*
+         * @description
+         *   Length of public key in bytes.
+         * */
+        public static final int publicKeyLength = 32;
+        /*
+         * @description
+         *   Length of secret key in bytes.
+         * */
+        public static final int secretKeyLength = 32;
+        /*
+         * @description
+         *   Length of precomputed shared key in bytes.
+         * */
+        public static final int sharedKeyLength = 32;
+        /*
+         * @description
+         *   Length of nonce in bytes.
+         * */
+        public static final int nonceLength = 24;
+        /*
+         * @description
+         *   zero bytes in case box
+         * */
+        public static final int zerobytesLength = 32;
+        /*
+         * @description
+         *   zero bytes in case open box
+         * */
+        public static final int boxzerobytesLength = 16;
+        /*
+         * @description
+         *   Length of overhead added to box compared to original message.
+         * */
+        public static final int overheadLength = 16;
+        private final static String TAG = "Box";
+        private final AtomicLong nonce;
+        private final byte[] theirPublicKey;
+        private final byte[] mySecretKey;
+        private byte[] sharedKey;
+
+        public Box(byte[] theirPublicKey, byte[] mySecretKey) {
+            this(theirPublicKey, mySecretKey, 68);
+        }
+
+        public Box(byte[] theirPublicKey, byte[] mySecretKey, long nonce) {
+            this.theirPublicKey = theirPublicKey;
+            this.mySecretKey = mySecretKey;
+
+            this.nonce = new AtomicLong(nonce);
+
+            // generate pre-computed shared key
+            before();
+        }
+
+        /*
+         * @description
+         *   Generates a new random key pair for box and
+         *   returns it as an object with publicKey and secretKey members:
+         * */
+        public static KeyPair keyPair() {
+            KeyPair kp = new KeyPair();
+
+            crypto_box_keypair(kp.getPublicKey(), kp.getSecretKey());
+            return kp;
+        }
+
+        public static KeyPair keyPair_fromSecretKey(byte[] secretKey) {
+            KeyPair kp = new KeyPair();
+            byte[] sk = kp.getSecretKey();
+            byte[] pk = kp.getPublicKey();
+
+            // copy sk
+            for (int i = 0; i < sk.length; i++)
+                sk[i] = secretKey[i];
+
+            crypto_scalarmult_base(pk, sk);
+            return kp;
+        }
+
+        public long getNonce() {
+            return this.nonce.get();
+        }
+
+        public void setNonce(long nonce) {
+            this.nonce.set(nonce);
+        }
+
+        public long incrNonce() {
+            return this.nonce.incrementAndGet();
+        }
+
+        private byte[] generateNonce() {
+            // generate nonce
+            long nonce = this.nonce.get();
+
+            byte[] n = new byte[nonceLength];
+            for (int i = 0; i < nonceLength; i += 8) {
+                n[i + 0] = (byte) (nonce >>> 0);
+                n[i + 1] = (byte) (nonce >>> 8);
+                n[i + 2] = (byte) (nonce >>> 16);
+                n[i + 3] = (byte) (nonce >>> 24);
+                n[i + 4] = (byte) (nonce >>> 32);
+                n[i + 5] = (byte) (nonce >>> 40);
+                n[i + 6] = (byte) (nonce >>> 48);
+                n[i + 7] = (byte) (nonce >>> 56);
+            }
+
+            return n;
+        }
+
+        /*
+         * @description
+         *   Encrypt and authenticates message using peer's public key,
+         *   our secret key, and the given nonce, which must be unique
+         *   for each distinct message for a key pair.
+         *
+         *   Returns an encrypted and authenticated message,
+         *   which is nacl.box.overheadLength longer than the original message.
+         * */
+        public byte[] box(byte[] message) {
+            if (message == null) return null;
+            return box(message, 0, message.length);
+        }
+
+        public byte[] box(byte[] message, final int moff) {
+            if (!(message != null && message.length > moff)) return null;
+            return box(message, moff, message.length - moff);
+        }
+
+        public byte[] box(byte[] message, final int moff, final int mlen) {
+            if (!(message != null && message.length >= (moff + mlen))) return null;
+
+            // prepare shared key
+            if (this.sharedKey == null) before();
+
+            return after(message, moff, mlen);
+        }
+
+        /*
+         * @description
+         *   Encrypt and authenticates message using peer's public key,
+         *   our secret key, and the given nonce, which must be unique
+         *   for each distinct message for a key pair.
+         *
+         *   Explicitly pass the nonce
+         *
+         *   Returns an encrypted and authenticated message,
+         *   which is nacl.box.overheadLength longer than the original message.
+         * */
+        public byte[] box(byte[] message, byte[] theNonce) {
+            if (message == null) return null;
+            return box(message, 0, message.length, theNonce);
+        }
+
+        public byte[] box(byte[] message, final int moff, byte[] theNonce) {
+            if (!(message != null && message.length > moff)) return null;
+            return box(message, moff, message.length - moff, theNonce);
+        }
+
+        public byte[] box(byte[] message, final int moff, final int mlen, byte[] theNonce) {
+            if (!(message != null && message.length >= (moff + mlen) &&
+                    theNonce != null && theNonce.length == nonceLength))
+                return null;
+
+            // prepare shared key
+            if (this.sharedKey == null) before();
+
+            return after(message, moff, mlen, theNonce);
+        }
+
+        /*
+         * @description
+         *   Authenticates and decrypts the given box with peer's public key,
+         *   our secret key, and the given nonce.
+         *
+         *   Returns the original message, or null if authentication fails.
+         * */
+        public byte[] open(byte[] box) {
+            if (box == null) return null;
+
+            // prepare shared key
+            if (this.sharedKey == null) before();
+
+            return open_after(box, 0, box.length);
+        }
+
+        public byte[] open(byte[] box, final int boxoff) {
+            if (!(box != null && box.length > boxoff)) return null;
+
+            // prepare shared key
+            if (this.sharedKey == null) before();
+
+            return open_after(box, boxoff, box.length - boxoff);
+        }
+
+        public byte[] open(byte[] box, final int boxoff, final int boxlen) {
+            if (!(box != null && box.length >= (boxoff + boxlen))) return null;
+
+            // prepare shared key
+            if (this.sharedKey == null) before();
+
+            return open_after(box, boxoff, boxlen);
+        }
+
+        /*
+         * @description
+         *   Authenticates and decrypts the given box with peer's public key,
+         *   our secret key, and the given nonce.
+         *   Explicit passing of nonce
+         *   Returns the original message, or null if authentication fails.
+         * */
+        public byte[] open(byte[] box, byte[] theNonce) {
+            if (!(box != null &&
+                    theNonce != null && theNonce.length == nonceLength))
+                return null;
+
+            // prepare shared key
+            if (this.sharedKey == null) before();
+
+            return open_after(box, 0, box.length, theNonce);
+        }
+
+        public byte[] open(byte[] box, final int boxoff, byte[] theNonce) {
+            if (!(box != null && box.length > boxoff &&
+                    theNonce != null && theNonce.length == nonceLength))
+                return null;
+
+            // prepare shared key
+            if (this.sharedKey == null) before();
+
+            return open_after(box, boxoff, box.length - boxoff, theNonce);
+        }
+
+        public byte[] open(byte[] box, final int boxoff, final int boxlen, byte[] theNonce) {
+            if (!(box != null && box.length >= (boxoff + boxlen) &&
+                    theNonce != null && theNonce.length == nonceLength))
+                return null;
+
+            // prepare shared key
+            if (this.sharedKey == null) before();
+
+            return open_after(box, boxoff, boxlen, theNonce);
+        }
+
+        /*
+         * @description
+         *   Returns a precomputed shared key
+         *   which can be used in nacl.box.after and nacl.box.open.after.
+         * */
+        public byte[] before() {
+            if (this.sharedKey == null) {
+                this.sharedKey = new byte[sharedKeyLength];
+                crypto_box_beforenm(this.sharedKey, this.theirPublicKey, this.mySecretKey);
+            }
+
+            return this.sharedKey;
+        }
+
+        /*
+         * @description
+         *   Same as nacl.box, but uses a shared key precomputed with nacl.box.before.
+         * */
+        public byte[] after(byte[] message, final int moff, final int mlen) {
+            return after(message, moff, mlen, generateNonce());
+        }
+
+        /*
+         * @description
+         *   Same as nacl.box, but uses a shared key precomputed with nacl.box.before,
+         *   and passes a nonce explicitly.
+         * */
+        public byte[] after(byte[] message, final int moff, final int mlen, byte[] theNonce) {
+            // check message
+            if (!(message != null && message.length >= (moff + mlen) &&
+                    theNonce != null && theNonce.length == nonceLength))
+                return null;
+
+            // message buffer
+            byte[] m = new byte[mlen + zerobytesLength];
+
+            // cipher buffer
+            byte[] c = new byte[m.length];
+
+            for (int i = 0; i < mlen; i++)
+                m[i + zerobytesLength] = message[i + moff];
+
+            if (0 != crypto_box_afternm(c, m, m.length, theNonce, sharedKey))
+                return null;
+
+            // wrap byte_buf_t on c offset@boxzerobytesLength
+            ///return new byte_buf_t(c, boxzerobytesLength, c.length-boxzerobytesLength);
+            byte[] ret = new byte[c.length - boxzerobytesLength];
+
+            for (int i = 0; i < ret.length; i++)
+                ret[i] = c[i + boxzerobytesLength];
+
+            return ret;
+        }
+
+        /*
+         * @description
+         *   Same as nacl.box.open,
+         *   but uses a shared key pre-computed with nacl.box.before.
+         * */
+        public byte[] open_after(byte[] box, final int boxoff, final int boxlen) {
+            return open_after(box, boxoff, boxlen, generateNonce());
+        }
+
+        public byte[] open_after(byte[] box, final int boxoff, final int boxlen, byte[] theNonce) {
+            // check message
+            if (!(box != null && box.length >= (boxoff + boxlen) && boxlen >= boxzerobytesLength))
+                return null;
+
+            // cipher buffer
+            byte[] c = new byte[boxlen + boxzerobytesLength];
+
+            // message buffer
+            byte[] m = new byte[c.length];
+
+            for (int i = 0; i < boxlen; i++)
+                c[i + boxzerobytesLength] = box[i + boxoff];
+
+            if (crypto_box_open_afternm(m, c, c.length, theNonce, sharedKey) != 0)
+                return null;
+
+            // wrap byte_buf_t on m offset@zerobytesLength
+            ///return new byte_buf_t(m, zerobytesLength, m.length-zerobytesLength);
+            byte[] ret = new byte[m.length - zerobytesLength];
+
+            for (int i = 0; i < ret.length; i++)
+                ret[i] = m[i + zerobytesLength];
+
+            return ret;
+        }
+
+        public static class KeyPair {
+            private final byte[] publicKey;
+            private final byte[] secretKey;
+
+            public KeyPair() {
+                publicKey = new byte[publicKeyLength];
+                secretKey = new byte[secretKeyLength];
+            }
+
+            public byte[] getPublicKey() {
+                return publicKey;
+            }
+
+            public byte[] getSecretKey() {
+                return secretKey;
+            }
+        }
+
+    }
+
+/*
+  public static byte[] randombytes(byte [] x, int len) {
+		int ret = len % 8;
+		long rnd;
+		for (int i = 0; i < len-ret; i += 8) {
+			rnd = jrandom.nextLong();
+			x[i+0] = (byte) (rnd >>>  0);
+			x[i+1] = (byte) (rnd >>>  8);
+			x[i+2] = (byte) (rnd >>> 16);
+			x[i+3] = (byte) (rnd >>> 24);
+			x[i+4] = (byte) (rnd >>> 32);
+			x[i+5] = (byte) (rnd >>> 40);
+			x[i+6] = (byte) (rnd >>> 48);
+			x[i+7] = (byte) (rnd >>> 56);
+		}
+		if (ret > 0) {
+			rnd = jrandom.nextLong();
+			for (int i = len-ret; i < len; i ++)
+				x[i] = (byte) (rnd >>> 8*i);
+		}
+		return x;
+	}
+*/
+
+    /*
+     * @description
+     *   Secret Box algorithm, secret key
+     * */
+    public static final class SecretBox {
+
+        /*
+         * @description
+         *   Length of key in bytes.
+         * */
+        public static final int keyLength = 32;
+        /*
+         * @description
+         *   Length of nonce in bytes.
+         * */
+        public static final int nonceLength = 24;
+        /*
+         * @description
+         *   Length of overhead added to secret box compared to original message.
+         * */
+        public static final int overheadLength = 16;
+        /*
+         * @description
+         *   zero bytes in case box
+         * */
+        public static final int zerobytesLength = 32;
+        /*
+         * @description
+         *   zero bytes in case open box
+         * */
+        public static final int boxzerobytesLength = 16;
+        private final static String TAG = "SecretBox";
+        private final AtomicLong nonce;
+        private final byte[] key;
+
+        public SecretBox(byte[] key) {
+            this(key, 68);
+        }
+
+        public SecretBox(byte[] key, long nonce) {
+            this.key = key;
+
+            this.nonce = new AtomicLong(nonce);
+        }
+
+        public long getNonce() {
+            return this.nonce.get();
+        }
+
+        public void setNonce(long nonce) {
+            this.nonce.set(nonce);
+        }
+
+        public long incrNonce() {
+            return this.nonce.incrementAndGet();
+        }
+
+        private byte[] generateNonce() {
+            // generate nonce
+            long nonce = this.nonce.get();
+
+            byte[] n = new byte[nonceLength];
+            for (int i = 0; i < nonceLength; i += 8) {
+                n[i + 0] = (byte) (nonce >>> 0);
+                n[i + 1] = (byte) (nonce >>> 8);
+                n[i + 2] = (byte) (nonce >>> 16);
+                n[i + 3] = (byte) (nonce >>> 24);
+                n[i + 4] = (byte) (nonce >>> 32);
+                n[i + 5] = (byte) (nonce >>> 40);
+                n[i + 6] = (byte) (nonce >>> 48);
+                n[i + 7] = (byte) (nonce >>> 56);
+            }
+
+            return n;
+        }
+
+        /*
+         * @description
+         *   Encrypt and authenticates message using the key and the nonce.
+         *   The nonce must be unique for each distinct message for this key.
+         *
+         *   Returns an encrypted and authenticated message,
+         *   which is nacl.secretbox.overheadLength longer than the original message.
+         * */
+        public byte[] box(byte[] message) {
+            if (message == null) return null;
+            return box(message, 0, message.length);
+        }
+
+        public byte[] box(byte[] message, final int moff) {
+            if (!(message != null && message.length > moff)) return null;
+            return box(message, moff, message.length - moff);
+        }
+
+        public byte[] box(byte[] message, final int moff, final int mlen) {
+            // check message
+            if (!(message != null && message.length >= (moff + mlen)))
+                return null;
+            return box(message, moff, message.length - moff, generateNonce());
+        }
+
+        public byte[] box(byte[] message, byte[] theNonce) {
+            if (message == null) return null;
+            return box(message, 0, message.length, theNonce);
+        }
+
+        public byte[] box(byte[] message, final int moff, byte[] theNonce) {
+            if (!(message != null && message.length > moff)) return null;
+            return box(message, moff, message.length - moff, theNonce);
+        }
+
+        public byte[] box(byte[] message, final int moff, final int mlen, byte[] theNonce) {
+            // check message
+            if (!(message != null && message.length >= (moff + mlen) &&
+                    theNonce != null && theNonce.length == nonceLength))
+                return null;
+
+            // message buffer
+            byte[] m = new byte[mlen + zerobytesLength];
+
+            // cipher buffer
+            byte[] c = new byte[m.length];
+
+            for (int i = 0; i < mlen; i++)
+                m[i + zerobytesLength] = message[i + moff];
+
+            if (0 != crypto_secretbox(c, m, m.length, theNonce, key))
+                return null;
+
+            // TBD optimizing ...
+            // wrap byte_buf_t on c offset@boxzerobytesLength
+            ///return new byte_buf_t(c, boxzerobytesLength, c.length-boxzerobytesLength);
+            byte[] ret = new byte[c.length - boxzerobytesLength];
+
+            for (int i = 0; i < ret.length; i++)
+                ret[i] = c[i + boxzerobytesLength];
+
+            return ret;
+        }
+
+        /*
+         * @description
+         *   Authenticates and decrypts the given secret box
+         *   using the key and the nonce.
+         *
+         *   Returns the original message, or null if authentication fails.
+         * */
+        public byte[] open(byte[] box) {
+            if (box == null) return null;
+            return open(box, 0, box.length);
+        }
+
+        public byte[] open(byte[] box, final int boxoff) {
+            if (!(box != null && box.length > boxoff)) return null;
+            return open(box, boxoff, box.length - boxoff);
+        }
+
+        public byte[] open(byte[] box, final int boxoff, final int boxlen) {
+            // check message
+            if (!(box != null && box.length >= (boxoff + boxlen) && boxlen >= boxzerobytesLength))
+                return null;
+            return open(box, boxoff, box.length - boxoff, generateNonce());
+        }
+
+        public byte[] open(byte[] box, byte[] theNonce) {
+            if (box == null) return null;
+            return open(box, 0, box.length, theNonce);
+        }
+
+        public byte[] open(byte[] box, final int boxoff, byte[] theNonce) {
+            if (!(box != null && box.length > boxoff)) return null;
+            return open(box, boxoff, box.length - boxoff, theNonce);
+        }
+
+        public byte[] open(byte[] box, final int boxoff, final int boxlen, byte[] theNonce) {
+            // check message
+            if (!(box != null && box.length >= (boxoff + boxlen) && boxlen >= boxzerobytesLength &&
+                    theNonce != null && theNonce.length == nonceLength))
+                return null;
+
+            // cipher buffer
+            byte[] c = new byte[boxlen + boxzerobytesLength];
+
+            // message buffer
+            byte[] m = new byte[c.length];
+
+            for (int i = 0; i < boxlen; i++)
+                c[i + boxzerobytesLength] = box[i + boxoff];
+
+            if (0 != crypto_secretbox_open(m, c, c.length, theNonce, key))
+                return null;
+
+            // wrap byte_buf_t on m offset@zerobytesLength
+            ///return new byte_buf_t(m, zerobytesLength, m.length-zerobytesLength);
+            byte[] ret = new byte[m.length - zerobytesLength];
+
+            for (int i = 0; i < ret.length; i++)
+                ret[i] = m[i + zerobytesLength];
+
+            return ret;
+        }
+
+    }
+
+    /*
+     * @description
+     *   Scalar multiplication, Implements curve25519.
+     * */
+    public static final class ScalarMult {
+
+        /*
+         * @description
+         *   Length of scalar in bytes.
+         * */
+        public static final int scalarLength = 32;
+        /*
+         * @description
+         *   Length of group element in bytes.
+         * */
+        public static final int groupElementLength = 32;
+        private final static String TAG = "ScalarMult";
+
+        /*
+         * @description
+         *   Multiplies an integer n by a group element p and
+         *   returns the resulting group element.
+         * */
+        public static byte[] scalseMult(byte[] n, byte[] p) {
+            if (!(n.length == scalarLength && p.length == groupElementLength))
+                return null;
+
+            byte[] q = new byte[scalarLength];
+
+            crypto_scalarmult(q, n, p);
+
+            return q;
+        }
+
+        /*
+         * @description
+         *   Multiplies an integer n by a standard group element and
+         *   returns the resulting group element.
+         * */
+        public static byte[] scalseMult_base(byte[] n) {
+            if (!(n.length == scalarLength))
+                return null;
+
+            byte[] q = new byte[scalarLength];
+
+            crypto_scalarmult_base(q, n);
+
+            return q;
+        }
+
+    }
+
+    /*
+     * @description
+     *   Hash algorithm, Implements SHA-512.
+     * */
+    public static final class Hash {
+
+        /*
+         * @description
+         *   Length of hash in bytes.
+         * */
+        public static final int hashLength = 64;
+        private final static String TAG = "Hash";
+
+        /*
+         * @description
+         *   Returns SHA-512 hash of the message.
+         * */
+        public static byte[] sha512(byte[] message) {
+            if (!(message != null && message.length > 0))
+                return null;
+
+            byte[] out = new byte[hashLength];
+
+            crypto_hash(out, message);
+
+            return out;
+        }
+
+        public static byte[] sha512(String message) throws UnsupportedEncodingException {
+            return sha512(message.getBytes(StandardCharsets.UTF_8));
+        }
+
+    }
+
+    /*
+     * @description
+     *   Signature algorithm, Implements ed25519.
+     * */
+    public static final class Signature {
+
+        /*
+         * @description
+         *   Length of signing public key in bytes.
+         * */
+        public static final int publicKeyLength = 32;
+        /*
+         * @description
+         *   Length of signing secret key in bytes.
+         * */
+        public static final int secretKeyLength = 64;
+        /*
+         * @description
+         *   Length of seed for nacl.sign.keyPair.fromSeed in bytes.
+         * */
+        public static final int seedLength = 32;
+        /*
+         * @description
+         *   Length of signature in bytes.
+         * */
+        public static final int signatureLength = 64;
+        private final static String TAG = "Signature";
+        private final byte[] theirPublicKey;
+        private final byte[] mySecretKey;
+
+        public Signature(byte[] theirPublicKey, byte[] mySecretKey) {
+            this.theirPublicKey = theirPublicKey;
+            this.mySecretKey = mySecretKey;
+        }
+
+        /*
+         * @description
+         *   Signs the message using the secret key and returns a signed message.
+         * */
+        public static KeyPair keyPair() {
+            KeyPair kp = new KeyPair();
+
+            crypto_sign_keypair(kp.getPublicKey(), kp.getSecretKey(), false);
+            return kp;
+        }
+
+        public static KeyPair keyPair_fromSecretKey(byte[] secretKey) {
+            KeyPair kp = new KeyPair();
+            byte[] pk = kp.getPublicKey();
+            byte[] sk = kp.getSecretKey();
+
+            // copy sk
+            for (int i = 0; i < kp.getSecretKey().length; i++)
+                sk[i] = secretKey[i];
+
+            // copy pk from sk
+            for (int i = 0; i < kp.getPublicKey().length; i++)
+                pk[i] = secretKey[32 + i]; // hard-copy
+
+            return kp;
+        }
+
+        public static KeyPair keyPair_fromSeed(byte[] seed) {
+            KeyPair kp = new KeyPair();
+            byte[] pk = kp.getPublicKey();
+            byte[] sk = kp.getSecretKey();
+
+            // copy sk
+            for (int i = 0; i < seedLength; i++)
+                sk[i] = seed[i];
+
+            // generate pk from sk
+            crypto_sign_keypair(pk, sk, true);
+
+            return kp;
+        }
+
+        /*
+         * @description
+         *   Signs the message using the secret key and returns a signed message.
+         * */
+        public byte[] sign(byte[] message) {
+            if (message == null) return null;
+
+            return sign(message, 0, message.length);
+        }
+
+        public byte[] sign(byte[] message, final int moff) {
+            if (!(message != null && message.length > moff)) return null;
+
+            return sign(message, moff, message.length - moff);
+        }
+
+        public byte[] sign(byte[] message, final int moff, final int mlen) {
+            // check message
+            if (!(message != null && message.length >= (moff + mlen)))
+                return null;
+
+            // signed message
+            byte[] sm = new byte[mlen + signatureLength];
+
+            crypto_sign(sm, -1, message, moff, mlen, mySecretKey);
+
+            return sm;
+        }
+
+        /*
+         * @description
+         *   Verifies the signed message and returns the message without signature.
+         *   Returns null if verification failed.
+         * */
+        public byte[] open(byte[] signedMessage) {
+            if (signedMessage == null) return null;
+
+            return open(signedMessage, 0, signedMessage.length);
+        }
+
+        public byte[] open(byte[] signedMessage, final int smoff) {
+            if (!(signedMessage != null && signedMessage.length > smoff)) return null;
+
+            return open(signedMessage, smoff, signedMessage.length - smoff);
+        }
+
+        public byte[] open(byte[] signedMessage, final int smoff, final int smlen) {
+            // check sm length
+            if (!(signedMessage != null && signedMessage.length >= (smoff + smlen) && smlen >= signatureLength))
+                return null;
+
+            // temp buffer
+            byte[] tmp = new byte[smlen];
+
+            if (0 != crypto_sign_open(tmp, -1, signedMessage, smoff, smlen, theirPublicKey))
+                return null;
+
+            // message
+            byte[] msg = new byte[smlen - signatureLength];
+            for (int i = 0; i < msg.length; i++)
+                msg[i] = signedMessage[smoff + i + signatureLength];
+
+            return msg;
+        }
+
+        /*
+         * @description
+         *   Signs the message using the secret key and returns a signature.
+         * */
+        public byte[] detached(byte[] message) {
+            byte[] signedMsg = this.sign(message);
+            byte[] sig = new byte[signatureLength];
+            for (int i = 0; i < sig.length; i++)
+                sig[i] = signedMsg[i];
+            return sig;
+        }
+
+        /*
+         * @description
+         *   Verifies the signature for the message and
+         *   returns true if verification succeeded or false if it failed.
+         * */
+        public boolean detached_verify(byte[] message, byte[] signature) {
+            if (signature.length != signatureLength)
+                return false;
+            if (theirPublicKey.length != publicKeyLength)
+                return false;
+            byte[] sm = new byte[signatureLength + message.length];
+            byte[] m = new byte[signatureLength + message.length];
+            for (int i = 0; i < signatureLength; i++)
+                sm[i] = signature[i];
+            for (int i = 0; i < message.length; i++)
+                sm[i + signatureLength] = message[i];
+            return (crypto_sign_open(m, -1, sm, 0, sm.length, theirPublicKey) >= 0);
+        }
+
+        /*
+         * @description
+         *   Generates new random key pair for signing and
+         *   returns it as an object with publicKey and secretKey members
+         * */
+        public static class KeyPair {
+            private final byte[] publicKey;
+            private final byte[] secretKey;
+
+            public KeyPair() {
+                publicKey = new byte[publicKeyLength];
+                secretKey = new byte[secretKeyLength];
+            }
+
+            public byte[] getPublicKey() {
+                return publicKey;
+            }
+
+            public byte[] getSecretKey() {
+                return secretKey;
+            }
+        }
+    }
+
+    // public static boolean java.util.Arrays.equals(array1, array2);
+
+    /*
+     * Port of Andrew Moon's Poly1305-donna-16. Public domain.
+     * https://github.com/floodyberry/poly1305-donna
+     */
+    public static final class poly1305 {
+
+        private final byte[] buffer;
+        private final int[] r;
+        private final int[] h;
+        private final int[] pad;
+        private int leftover;
+        private int fin;
+
+        public poly1305(byte[] key) {
+            this.buffer = new byte[16];
+            this.r = new int[10];
+            this.h = new int[10];
+            this.pad = new int[8];
+            this.leftover = 0;
+            this.fin = 0;
+
+            int t0, t1, t2, t3, t4, t5, t6, t7;
+
+            t0 = key[0] & 0xff | (key[1] & 0xff) << 8;
+            this.r[0] = (t0) & 0x1fff;
+            t1 = key[2] & 0xff | (key[3] & 0xff) << 8;
+            this.r[1] = ((t0 >>> 13) | (t1 << 3)) & 0x1fff;
+            t2 = key[4] & 0xff | (key[5] & 0xff) << 8;
+            this.r[2] = ((t1 >>> 10) | (t2 << 6)) & 0x1f03;
+            t3 = key[6] & 0xff | (key[7] & 0xff) << 8;
+            this.r[3] = ((t2 >>> 7) | (t3 << 9)) & 0x1fff;
+            t4 = key[8] & 0xff | (key[9] & 0xff) << 8;
+            this.r[4] = ((t3 >>> 4) | (t4 << 12)) & 0x00ff;
+            this.r[5] = ((t4 >>> 1)) & 0x1ffe;
+            t5 = key[10] & 0xff | (key[11] & 0xff) << 8;
+            this.r[6] = ((t4 >>> 14) | (t5 << 2)) & 0x1fff;
+            t6 = key[12] & 0xff | (key[13] & 0xff) << 8;
+            this.r[7] = ((t5 >>> 11) | (t6 << 5)) & 0x1f81;
+            t7 = key[14] & 0xff | (key[15] & 0xff) << 8;
+            this.r[8] = ((t6 >>> 8) | (t7 << 8)) & 0x1fff;
+            this.r[9] = ((t7 >>> 5)) & 0x007f;
+
+            this.pad[0] = key[16] & 0xff | (key[17] & 0xff) << 8;
+            this.pad[1] = key[18] & 0xff | (key[19] & 0xff) << 8;
+            this.pad[2] = key[20] & 0xff | (key[21] & 0xff) << 8;
+            this.pad[3] = key[22] & 0xff | (key[23] & 0xff) << 8;
+            this.pad[4] = key[24] & 0xff | (key[25] & 0xff) << 8;
+            this.pad[5] = key[26] & 0xff | (key[27] & 0xff) << 8;
+            this.pad[6] = key[28] & 0xff | (key[29] & 0xff) << 8;
+            this.pad[7] = key[30] & 0xff | (key[31] & 0xff) << 8;
+        }
+
+        public poly1305 blocks(byte[] m, int mpos, int bytes) {
+            int hibit = this.fin != 0 ? 0 : (1 << 11);
+            int t0, t1, t2, t3, t4, t5, t6, t7, c;
+            int d0, d1, d2, d3, d4, d5, d6, d7, d8, d9;
+
+            int h0 = this.h[0],
+                    h1 = this.h[1],
+                    h2 = this.h[2],
+                    h3 = this.h[3],
+                    h4 = this.h[4],
+                    h5 = this.h[5],
+                    h6 = this.h[6],
+                    h7 = this.h[7],
+                    h8 = this.h[8],
+                    h9 = this.h[9];
+
+            int r0 = this.r[0],
+                    r1 = this.r[1],
+                    r2 = this.r[2],
+                    r3 = this.r[3],
+                    r4 = this.r[4],
+                    r5 = this.r[5],
+                    r6 = this.r[6],
+                    r7 = this.r[7],
+                    r8 = this.r[8],
+                    r9 = this.r[9];
+
+            while (bytes >= 16) {
+                t0 = m[mpos + 0] & 0xff | (m[mpos + 1] & 0xff) << 8;
+                h0 += (t0) & 0x1fff;
+                t1 = m[mpos + 2] & 0xff | (m[mpos + 3] & 0xff) << 8;
+                h1 += ((t0 >>> 13) | (t1 << 3)) & 0x1fff;
+                t2 = m[mpos + 4] & 0xff | (m[mpos + 5] & 0xff) << 8;
+                h2 += ((t1 >>> 10) | (t2 << 6)) & 0x1fff;
+                t3 = m[mpos + 6] & 0xff | (m[mpos + 7] & 0xff) << 8;
+                h3 += ((t2 >>> 7) | (t3 << 9)) & 0x1fff;
+                t4 = m[mpos + 8] & 0xff | (m[mpos + 9] & 0xff) << 8;
+                h4 += ((t3 >>> 4) | (t4 << 12)) & 0x1fff;
+                h5 += ((t4 >>> 1)) & 0x1fff;
+                t5 = m[mpos + 10] & 0xff | (m[mpos + 11] & 0xff) << 8;
+                h6 += ((t4 >>> 14) | (t5 << 2)) & 0x1fff;
+                t6 = m[mpos + 12] & 0xff | (m[mpos + 13] & 0xff) << 8;
+                h7 += ((t5 >>> 11) | (t6 << 5)) & 0x1fff;
+                t7 = m[mpos + 14] & 0xff | (m[mpos + 15] & 0xff) << 8;
+                h8 += ((t6 >>> 8) | (t7 << 8)) & 0x1fff;
+                h9 += ((t7 >>> 5)) | hibit;
+
+                c = 0;
+
+                d0 = c;
+                d0 += h0 * r0;
+                d0 += h1 * (5 * r9);
+                d0 += h2 * (5 * r8);
+                d0 += h3 * (5 * r7);
+                d0 += h4 * (5 * r6);
+                c = (d0 >>> 13);
+                d0 &= 0x1fff;
+                d0 += h5 * (5 * r5);
+                d0 += h6 * (5 * r4);
+                d0 += h7 * (5 * r3);
+                d0 += h8 * (5 * r2);
+                d0 += h9 * (5 * r1);
+                c += (d0 >>> 13);
+                d0 &= 0x1fff;
+
+                d1 = c;
+                d1 += h0 * r1;
+                d1 += h1 * r0;
+                d1 += h2 * (5 * r9);
+                d1 += h3 * (5 * r8);
+                d1 += h4 * (5 * r7);
+                c = (d1 >>> 13);
+                d1 &= 0x1fff;
+                d1 += h5 * (5 * r6);
+                d1 += h6 * (5 * r5);
+                d1 += h7 * (5 * r4);
+                d1 += h8 * (5 * r3);
+                d1 += h9 * (5 * r2);
+                c += (d1 >>> 13);
+                d1 &= 0x1fff;
+
+                d2 = c;
+                d2 += h0 * r2;
+                d2 += h1 * r1;
+                d2 += h2 * r0;
+                d2 += h3 * (5 * r9);
+                d2 += h4 * (5 * r8);
+                c = (d2 >>> 13);
+                d2 &= 0x1fff;
+                d2 += h5 * (5 * r7);
+                d2 += h6 * (5 * r6);
+                d2 += h7 * (5 * r5);
+                d2 += h8 * (5 * r4);
+                d2 += h9 * (5 * r3);
+                c += (d2 >>> 13);
+                d2 &= 0x1fff;
+
+                d3 = c;
+                d3 += h0 * r3;
+                d3 += h1 * r2;
+                d3 += h2 * r1;
+                d3 += h3 * r0;
+                d3 += h4 * (5 * r9);
+                c = (d3 >>> 13);
+                d3 &= 0x1fff;
+                d3 += h5 * (5 * r8);
+                d3 += h6 * (5 * r7);
+                d3 += h7 * (5 * r6);
+                d3 += h8 * (5 * r5);
+                d3 += h9 * (5 * r4);
+                c += (d3 >>> 13);
+                d3 &= 0x1fff;
+
+                d4 = c;
+                d4 += h0 * r4;
+                d4 += h1 * r3;
+                d4 += h2 * r2;
+                d4 += h3 * r1;
+                d4 += h4 * r0;
+                c = (d4 >>> 13);
+                d4 &= 0x1fff;
+                d4 += h5 * (5 * r9);
+                d4 += h6 * (5 * r8);
+                d4 += h7 * (5 * r7);
+                d4 += h8 * (5 * r6);
+                d4 += h9 * (5 * r5);
+                c += (d4 >>> 13);
+                d4 &= 0x1fff;
+
+                d5 = c;
+                d5 += h0 * r5;
+                d5 += h1 * r4;
+                d5 += h2 * r3;
+                d5 += h3 * r2;
+                d5 += h4 * r1;
+                c = (d5 >>> 13);
+                d5 &= 0x1fff;
+                d5 += h5 * r0;
+                d5 += h6 * (5 * r9);
+                d5 += h7 * (5 * r8);
+                d5 += h8 * (5 * r7);
+                d5 += h9 * (5 * r6);
+                c += (d5 >>> 13);
+                d5 &= 0x1fff;
+
+                d6 = c;
+                d6 += h0 * r6;
+                d6 += h1 * r5;
+                d6 += h2 * r4;
+                d6 += h3 * r3;
+                d6 += h4 * r2;
+                c = (d6 >>> 13);
+                d6 &= 0x1fff;
+                d6 += h5 * r1;
+                d6 += h6 * r0;
+                d6 += h7 * (5 * r9);
+                d6 += h8 * (5 * r8);
+                d6 += h9 * (5 * r7);
+                c += (d6 >>> 13);
+                d6 &= 0x1fff;
+
+                d7 = c;
+                d7 += h0 * r7;
+                d7 += h1 * r6;
+                d7 += h2 * r5;
+                d7 += h3 * r4;
+                d7 += h4 * r3;
+                c = (d7 >>> 13);
+                d7 &= 0x1fff;
+                d7 += h5 * r2;
+                d7 += h6 * r1;
+                d7 += h7 * r0;
+                d7 += h8 * (5 * r9);
+                d7 += h9 * (5 * r8);
+                c += (d7 >>> 13);
+                d7 &= 0x1fff;
+
+                d8 = c;
+                d8 += h0 * r8;
+                d8 += h1 * r7;
+                d8 += h2 * r6;
+                d8 += h3 * r5;
+                d8 += h4 * r4;
+                c = (d8 >>> 13);
+                d8 &= 0x1fff;
+                d8 += h5 * r3;
+                d8 += h6 * r2;
+                d8 += h7 * r1;
+                d8 += h8 * r0;
+                d8 += h9 * (5 * r9);
+                c += (d8 >>> 13);
+                d8 &= 0x1fff;
+
+                d9 = c;
+                d9 += h0 * r9;
+                d9 += h1 * r8;
+                d9 += h2 * r7;
+                d9 += h3 * r6;
+                d9 += h4 * r5;
+                c = (d9 >>> 13);
+                d9 &= 0x1fff;
+                d9 += h5 * r4;
+                d9 += h6 * r3;
+                d9 += h7 * r2;
+                d9 += h8 * r1;
+                d9 += h9 * r0;
+                c += (d9 >>> 13);
+                d9 &= 0x1fff;
+
+                c = (((c << 2) + c)) | 0;
+                c = (c + d0) | 0;
+                d0 = c & 0x1fff;
+                c = (c >>> 13);
+                d1 += c;
+
+                h0 = d0;
+                h1 = d1;
+                h2 = d2;
+                h3 = d3;
+                h4 = d4;
+                h5 = d5;
+                h6 = d6;
+                h7 = d7;
+                h8 = d8;
+                h9 = d9;
+
+                mpos += 16;
+                bytes -= 16;
+            }
+            this.h[0] = h0;
+            this.h[1] = h1;
+            this.h[2] = h2;
+            this.h[3] = h3;
+            this.h[4] = h4;
+            this.h[5] = h5;
+            this.h[6] = h6;
+            this.h[7] = h7;
+            this.h[8] = h8;
+            this.h[9] = h9;
+
+            return this;
+        }
+
+        public poly1305 finish(byte[] mac, int macpos) {
+            int[] g = new int[10];
+            int c, mask, f, i;
+
+            if (this.leftover != 0) {
+                i = this.leftover;
+                this.buffer[i++] = 1;
+                for (; i < 16; i++) this.buffer[i] = 0;
+                this.fin = 1;
+                this.blocks(this.buffer, 0, 16);
+            }
+
+            c = this.h[1] >>> 13;
+            this.h[1] &= 0x1fff;
+            for (i = 2; i < 10; i++) {
+                this.h[i] += c;
+                c = this.h[i] >>> 13;
+                this.h[i] &= 0x1fff;
+            }
+            this.h[0] += (c * 5);
+            c = this.h[0] >>> 13;
+            this.h[0] &= 0x1fff;
+            this.h[1] += c;
+            c = this.h[1] >>> 13;
+            this.h[1] &= 0x1fff;
+            this.h[2] += c;
+
+            g[0] = this.h[0] + 5;
+            c = g[0] >>> 13;
+            g[0] &= 0x1fff;
+            for (i = 1; i < 10; i++) {
+                g[i] = this.h[i] + c;
+                c = g[i] >>> 13;
+                g[i] &= 0x1fff;
+            }
+            g[9] -= (1 << 13);
+            g[9] &= 0xffff;
+
+                        /*
+                        backport from tweetnacl-fast.js https://github.com/dchest/tweetnacl-js/releases/tag/v0.14.3
+                        <<<
+                        "The issue was not properly detecting if st->h was >= 2^130 - 5,
+                        coupled with [testing mistake] not catching the failure.
+                        The chance of the bug affecting anything in the real world is essentially zero luckily,
+                        but it's good to have it fixed."
+                        >>>
+                        */
+            ///change mask = (g[9] >>> ((2 * 8) - 1)) - 1; to as
+            mask = (c ^ 1) - 1;
+            mask &= 0xffff;
+            ///////////////////////////////////////
+
+            for (i = 0; i < 10; i++) g[i] &= mask;
+            mask = ~mask;
+            for (i = 0; i < 10; i++) this.h[i] = (this.h[i] & mask) | g[i];
+
+            this.h[0] = ((this.h[0]) | (this.h[1] << 13)) & 0xffff;
+            this.h[1] = ((this.h[1] >>> 3) | (this.h[2] << 10)) & 0xffff;
+            this.h[2] = ((this.h[2] >>> 6) | (this.h[3] << 7)) & 0xffff;
+            this.h[3] = ((this.h[3] >>> 9) | (this.h[4] << 4)) & 0xffff;
+            this.h[4] = ((this.h[4] >>> 12) | (this.h[5] << 1) | (this.h[6] << 14)) & 0xffff;
+            this.h[5] = ((this.h[6] >>> 2) | (this.h[7] << 11)) & 0xffff;
+            this.h[6] = ((this.h[7] >>> 5) | (this.h[8] << 8)) & 0xffff;
+            this.h[7] = ((this.h[8] >>> 8) | (this.h[9] << 5)) & 0xffff;
+
+            f = this.h[0] + this.pad[0];
+            this.h[0] = f & 0xffff;
+            for (i = 1; i < 8; i++) {
+                f = (((this.h[i] + this.pad[i]) | 0) + (f >>> 16)) | 0;
+                this.h[i] = f & 0xffff;
+            }
+
+            mac[macpos + 0] = (byte) ((this.h[0] >>> 0) & 0xff);
+            mac[macpos + 1] = (byte) ((this.h[0] >>> 8) & 0xff);
+            mac[macpos + 2] = (byte) ((this.h[1] >>> 0) & 0xff);
+            mac[macpos + 3] = (byte) ((this.h[1] >>> 8) & 0xff);
+            mac[macpos + 4] = (byte) ((this.h[2] >>> 0) & 0xff);
+            mac[macpos + 5] = (byte) ((this.h[2] >>> 8) & 0xff);
+            mac[macpos + 6] = (byte) ((this.h[3] >>> 0) & 0xff);
+            mac[macpos + 7] = (byte) ((this.h[3] >>> 8) & 0xff);
+            mac[macpos + 8] = (byte) ((this.h[4] >>> 0) & 0xff);
+            mac[macpos + 9] = (byte) ((this.h[4] >>> 8) & 0xff);
+            mac[macpos + 10] = (byte) ((this.h[5] >>> 0) & 0xff);
+            mac[macpos + 11] = (byte) ((this.h[5] >>> 8) & 0xff);
+            mac[macpos + 12] = (byte) ((this.h[6] >>> 0) & 0xff);
+            mac[macpos + 13] = (byte) ((this.h[6] >>> 8) & 0xff);
+            mac[macpos + 14] = (byte) ((this.h[7] >>> 0) & 0xff);
+            mac[macpos + 15] = (byte) ((this.h[7] >>> 8) & 0xff);
+
+            return this;
+        }
+
+        public poly1305 update(byte[] m, int mpos, int bytes) {
+            int i, want;
+
+            if (this.leftover != 0) {
+                want = (16 - this.leftover);
+                if (want > bytes)
+                    want = bytes;
+                for (i = 0; i < want; i++)
+                    this.buffer[this.leftover + i] = m[mpos + i];
+                bytes -= want;
+                mpos += want;
+                this.leftover += want;
+                if (this.leftover < 16)
+                    return this;
+                this.blocks(buffer, 0, 16);
+                this.leftover = 0;
+            }
+
+            if (bytes >= 16) {
+                want = bytes - (bytes % 16);
+                this.blocks(m, mpos, want);
+                mpos += want;
+                bytes -= want;
+            }
+
+            if (bytes != 0) {
+                for (i = 0; i < bytes; i++)
+                    this.buffer[this.leftover + i] = m[mpos + i];
+                this.leftover += bytes;
+            }
+
+            return this;
+        }
+
     }
 
 }

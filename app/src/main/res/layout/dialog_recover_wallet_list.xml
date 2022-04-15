@@ -27,8 +27,8 @@
         android:id="@+id/rl_contributing_words"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingLeft="@dimen/dp_20">
 
         <ImageView
@@ -84,8 +84,8 @@
         android:id="@+id/rl_secret_key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingLeft="@dimen/dp_20">
 
         <ImageView
@@ -141,8 +141,8 @@
         android:id="@+id/rl_keystore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingLeft="@dimen/dp_20">
 
         <ImageView

@@ -3,11 +3,14 @@ package com.ramble.ramblewallet.update;
 import org.lzh.framework.updatepluginlib.base.CheckWorker;
 import org.lzh.framework.updatepluginlib.impl.DefaultCheckWorker;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
+
 import okhttp3.Call;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;

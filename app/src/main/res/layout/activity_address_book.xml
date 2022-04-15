@@ -30,9 +30,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/dp_10"
-                android:textStyle="bold"
-                android:textSize="@dimen/sp_17"
                 android:textColor="@color/color_000000"
+                android:textSize="@dimen/sp_17"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -44,8 +44,8 @@
                 android:layout_height="@dimen/dp_20"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/dp_10"
-                android:visibility="gone"
                 android:background="@drawable/ic_launcher_background"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -127,7 +127,7 @@
                         android:background="@drawable/selector_check_trx"
                         android:button="@null"
                         android:gravity="center"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
                 </RadioGroup>
 
             </LinearLayout>
@@ -151,11 +151,11 @@
 
                     <TextView
                         android:layout_width="@dimen/dp_0"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="@string/my_address"
-                        android:textStyle="bold"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/add"
@@ -165,19 +165,19 @@
 
                     <ImageView
                         android:id="@+id/delete"
-                        android:layout_marginStart="@dimen/dp_22"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_22"
                         android:src="@drawable/vector_delect_unline" />
 
                     <TextView
                         android:id="@+id/confirm_button"
-                        android:text="@string/address_tips"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:text="@string/address_tips"
                         android:textColor="@color/color_3BB7A5"
-                        android:visibility="gone"
-                        android:layout_marginEnd="5dp" />
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <View
@@ -189,8 +189,8 @@
                     android:id="@+id/rv_main_currency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    android:background="@drawable/shape_white_bottom_btn" />
+                    android:background="@drawable/shape_white_bottom_btn"
+                    android:overScrollMode="never" />
 
             </LinearLayout>
 
