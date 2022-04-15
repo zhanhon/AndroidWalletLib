@@ -38,7 +38,7 @@
     <string name="about_us">About Us</string>
     <string name="manage_wallet">Wallet Management</string>
     <string name="no_wallet_yet_click_create">Still don\'t have the Wallet. Please click and create.</string>
-    <string name="recover_wallet">Recover The Wallet</string>
+    <string name="recover_wallet">Restore Wallet</string>
     <string name="back_previous_page">Back to the last page and Remember the Mnemonic Phrase again</string>
     <string name="currency_unit">Unit</string>
     <string name="encrypt_private_key_json_file">JSON document</string>
