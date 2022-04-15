@@ -9,7 +9,7 @@
         tools:context=".activity.MnemonicConfirmActivity">
 
         <LinearLayout
-            android:id="@+id/ll_contributing_words_confirm"
+            android:id="@+id/ll_mnemonic_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
@@ -20,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/tv_contributing_words_confirm"
+                android:id="@+id/tv_mnemonic_confirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_30"
@@ -28,7 +28,7 @@
                 android:textColor="@color/color_000000" />
 
             <LinearLayout
-                android:id="@+id/edt_contributing_words_confirm"
+                android:id="@+id/edt_mnemonic_confirm"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_140"
                 android:layout_marginTop="@dimen/dp_10"
@@ -36,7 +36,7 @@
                 android:padding="@dimen/dp_5">
 
                 <TextView
-                    android:id="@+id/tv_contributing_words_confirm_tips"
+                    android:id="@+id/tv_mnemonic_confirm_tips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/input_mnemonic_words_mnemonic"
@@ -44,7 +44,7 @@
                     android:textSize="@dimen/sp_15" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_contributing_words"
+                    android:id="@+id/rv_mnemonic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:overScrollMode="never"
@@ -65,7 +65,7 @@
             android:layout_marginEnd="@dimen/dp_100"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_contributing_words_confirm">
+            app:layout_constraintTop_toBottomOf="@id/ll_mnemonic_confirm">
 
             <LinearLayout
                 android:id="@+id/ll_english"
@@ -116,7 +116,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_contributing_words_1"
+            android:id="@+id/ll_mnemonic_1"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:layout_marginTop="@dimen/dp_30"
@@ -126,7 +126,7 @@
             app:layout_constraintTop_toBottomOf="@id/ll_title">
 
             <TextView
-                android:id="@+id/tv_contributing_words_name_1"
+                android:id="@+id/tv_mnemonic_name_1"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginStart="@dimen/dp_20"
@@ -137,51 +137,7 @@
                 tools:text="addict" />
 
             <TextView
-                android:id="@+id/tv_contributing_words_name_2"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="@dimen/dp_40"
-                android:layout_marginStart="@dimen/dp_20"
-                android:layout_marginEnd="@dimen/dp_20"
-                android:layout_weight="1"
-                android:background="@drawable/shape_white_line_gray_bottom_btn"
-                android:gravity="center"
-                android:textColor="@color/color_000000"
-                tools:text="addict" />
-
-            <TextView
-                android:id="@+id/tv_contributing_words_name_3"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="@dimen/dp_40"
-                android:layout_marginEnd="@dimen/dp_20"
-                android:layout_weight="1"
-                android:background="@drawable/shape_white_line_gray_bottom_btn"
-                android:gravity="center"
-                android:textColor="@color/color_000000"
-                tools:text="addict" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_contributing_words_2"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_50"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_contributing_words_1">
-
-            <TextView
-                android:id="@+id/tv_contributing_words_name_4"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="@dimen/dp_40"
-                android:layout_marginStart="@dimen/dp_20"
-                android:layout_weight="1"
-                android:background="@drawable/shape_white_line_gray_bottom_btn"
-                android:gravity="center"
-                android:textColor="@color/color_000000"
-                tools:text="addict" />
-
-            <TextView
-                android:id="@+id/tv_contributing_words_name_5"
+                android:id="@+id/tv_mnemonic_name_2"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginStart="@dimen/dp_20"
@@ -193,7 +149,7 @@
                 tools:text="addict" />
 
             <TextView
-                android:id="@+id/tv_contributing_words_name_6"
+                android:id="@+id/tv_mnemonic_name_3"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginEnd="@dimen/dp_20"
@@ -205,16 +161,16 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_contributing_words_3"
+            android:id="@+id/ll_mnemonic_2"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_contributing_words_2">
+            app:layout_constraintTop_toBottomOf="@id/ll_mnemonic_1">
 
             <TextView
-                android:id="@+id/tv_contributing_words_name_7"
+                android:id="@+id/tv_mnemonic_name_4"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginStart="@dimen/dp_20"
@@ -225,7 +181,7 @@
                 tools:text="addict" />
 
             <TextView
-                android:id="@+id/tv_contributing_words_name_8"
+                android:id="@+id/tv_mnemonic_name_5"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginStart="@dimen/dp_20"
@@ -237,7 +193,7 @@
                 tools:text="addict" />
 
             <TextView
-                android:id="@+id/tv_contributing_words_name_9"
+                android:id="@+id/tv_mnemonic_name_6"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginEnd="@dimen/dp_20"
@@ -249,16 +205,16 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_contributing_words_4"
+            android:id="@+id/ll_mnemonic_3"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_contributing_words_3">
+            app:layout_constraintTop_toBottomOf="@id/ll_mnemonic_2">
 
             <TextView
-                android:id="@+id/tv_contributing_words_name_10"
+                android:id="@+id/tv_mnemonic_name_7"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginStart="@dimen/dp_20"
@@ -269,7 +225,7 @@
                 tools:text="addict" />
 
             <TextView
-                android:id="@+id/tv_contributing_words_name_11"
+                android:id="@+id/tv_mnemonic_name_8"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginStart="@dimen/dp_20"
@@ -281,7 +237,51 @@
                 tools:text="addict" />
 
             <TextView
-                android:id="@+id/tv_contributing_words_name_12"
+                android:id="@+id/tv_mnemonic_name_9"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_weight="1"
+                android:background="@drawable/shape_white_line_gray_bottom_btn"
+                android:gravity="center"
+                android:textColor="@color/color_000000"
+                tools:text="addict" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_mnemonic_4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_mnemonic_3">
+
+            <TextView
+                android:id="@+id/tv_mnemonic_name_10"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_weight="1"
+                android:background="@drawable/shape_white_line_gray_bottom_btn"
+                android:gravity="center"
+                android:textColor="@color/color_000000"
+                tools:text="addict" />
+
+            <TextView
+                android:id="@+id/tv_mnemonic_name_11"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_weight="1"
+                android:background="@drawable/shape_white_line_gray_bottom_btn"
+                android:gravity="center"
+                android:textColor="@color/color_000000"
+                tools:text="addict" />
+
+            <TextView
+                android:id="@+id/tv_mnemonic_name_12"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginEnd="@dimen/dp_20"
@@ -293,7 +293,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_contributing_words_completed"
+            android:id="@+id/btn_mnemonic_completed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_30"

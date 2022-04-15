@@ -15,11 +15,11 @@ import java.util.List;
  * @创建人： Ricky
  * @创建时间： 2021/12/5
  */
-public class ContributingWordsConfirmAdapter extends BaseQuickAdapter<MyDataBean, BaseViewHolder> {
+public class MnemonicConfirmAdapter extends BaseQuickAdapter<MyDataBean, BaseViewHolder> {
 
 
-    public ContributingWordsConfirmAdapter(List<MyDataBean> datas) {
-        super(R.layout.activity_contributing_words_confirm_item, datas);
+    public MnemonicConfirmAdapter(List<MyDataBean> datas) {
+        super(R.layout.activity_mnemonic_confirm_item, datas);
     }
 
     @Override

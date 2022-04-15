@@ -13,9 +13,9 @@ import java.util.List;
  * @创建人： Ricky
  * @创建时间： 2021/12/5
  */
-public class ContributingWordsAdapter extends BaseQuickAdapter<MyDataBean, BaseViewHolder> {
-    public ContributingWordsAdapter(List<MyDataBean> datas) {
-        super(R.layout.activity_contributing_words_item, datas);
+public class MnemonicAdapter extends BaseQuickAdapter<MyDataBean, BaseViewHolder> {
+    public MnemonicAdapter(List<MyDataBean> datas) {
+        super(R.layout.activity_mnemonic_item, datas);
     }
 
     @Override

@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
-import com.ramble.ramblewallet.adapter.ContributingWordsAdapter
+import com.ramble.ramblewallet.adapter.MnemonicAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
 import com.ramble.ramblewallet.bean.MyDataBean
@@ -26,7 +26,7 @@ import com.ramble.ramblewallet.blockchain.solana.WalletSOLUtils.Companion.isSolV
 import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils
 import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.constant.*
-import com.ramble.ramblewallet.databinding.ActivityContributingWordsBinding
+import com.ramble.ramblewallet.databinding.ActivityMnemonicBinding
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.ClipboardUtils
@@ -37,14 +37,14 @@ import com.ramble.ramblewallet.utils.applyIo
 
 class MnemonicActivity : BaseActivity(), View.OnClickListener {
 
-    private lateinit var binding: ActivityContributingWordsBinding
+    private lateinit var binding: ActivityMnemonicBinding
     private var myDataBeans: ArrayList<MyDataBean> = arrayListOf()
-    private lateinit var contributingWordsAdapter: ContributingWordsAdapter
+    private lateinit var contributingWordsAdapter: MnemonicAdapter
     private lateinit var mnemonicETH: ArrayList<String>
     private lateinit var mnemonicList: List<String>
     private lateinit var walletName: String
     private lateinit var walletPassword: String
-    private var currentTab = "english"
+    private lateinit var currentTab: String
     private var walletETHString: String = ""
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4:SOL|5:DOGE|100:BTC、ETH、TRX、SOL、DOGE
@@ -66,7 +66,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
             WindowManager.LayoutParams.FLAG_SECURE,
             WindowManager.LayoutParams.FLAG_SECURE
         )
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_contributing_words)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_mnemonic)
         walletName = intent.getStringExtra(ARG_PARAM1).toString()
         walletPassword = intent.getStringExtra(ARG_PARAM2).toString()
         walletType = intent.getIntExtra(ARG_PARAM3, 1)
@@ -74,10 +74,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         mnemonic = intent.getStringExtra(ARG_PARAM5)
         fromMnemonicList = intent.getStringArrayListExtra(ARG_PARAM6)
 
-        binding.llEnglish.setOnClickListener(this)
-        binding.llChinese.setOnClickListener(this)
-        binding.btnOneCopy.setOnClickListener(this)
-        binding.btnSkipThis.setOnClickListener(this)
+        initClick()
     }
 
     override fun onResume() {
@@ -88,7 +85,6 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         if ((mnemonic != null) && (fromMnemonicList != null)) {
             mnemonicList = fromMnemonicList as ArrayList<String>
         } else {
-            // 生成钱包助记词
             when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
                 EN, CN -> {
                     mnemonicList = MnemonicUtils.generateMnemonicEnglishChinese()
@@ -141,13 +137,21 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    private fun initClick() {
+        binding.llEnglish.setOnClickListener(this)
+        binding.llChinese.setOnClickListener(this)
+        binding.btnOneCopy.setOnClickListener(this)
+        binding.btnSkipThis.setOnClickListener(this)
+    }
+
     private fun createContributingWordsPage(mnemonicString: String) {
         myDataBeans.clear()
         mnemonicETH = mnemonicString.split(" ") as ArrayList<String>
         mnemonicETH.forEachIndexed { index, element ->
             myDataBeans.add(MyDataBean(index + 1, element, false))
         }
-        contributingWordsAdapter = ContributingWordsAdapter(myDataBeans)
+        contributingWordsAdapter =
+            MnemonicAdapter(myDataBeans)
         binding.rvContributingWords.adapter = contributingWordsAdapter
         binding.btnContributingWordsConfirm.setOnClickListener {
             startActivity(Intent(this, MnemonicConfirmActivity::class.java).apply {
@@ -174,7 +178,8 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         }
         val walletList = SharedPreferencesUtils.getString(this, WALLETINFO, "")
         if (walletList.isNotEmpty()) {
-            saveWalletList = Gson().fromJson(walletList, object : TypeToken<ArrayList<Wallet>>() {}.type)
+            saveWalletList =
+                Gson().fromJson(walletList, object : TypeToken<ArrayList<Wallet>>() {}.type)
         }
         when (walletType) {
             1 -> { //ETH
