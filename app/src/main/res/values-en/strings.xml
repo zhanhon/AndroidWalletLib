@@ -226,5 +226,5 @@
     <string name="contributing_name_hint">Please enter the nickname</string>
     <string name="address_tips">Done</string>
     <string name="release_date">Release date：</string>
-
+    <string name="fingerprint_transaction">fingerprint transaction</string>
 </resources>

@@ -102,6 +102,10 @@
                     android:id="@+id/inc_currency_unit"
                     layout="@layout/activity_mine_item" />
 
+                <include
+                    android:id="@+id/inc_finger_print"
+                    layout="@layout/activity_mine_item" />
+
                 <View
                     android:id="@+id/v_3"
                     android:layout_width="match_parent"

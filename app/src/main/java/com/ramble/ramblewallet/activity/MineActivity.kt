@@ -115,6 +115,10 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).visibility = View.INVISIBLE
         binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text = "V1.0.0"
         binding.clearText.text = getString(R.string.clear_cache)
+        binding.incFingerPrint.findViewById<TextView>(R.id.iv_mine_next).text =
+            getString(R.string.fingerprint_transaction)
+        binding.incFingerPrint.findViewById<ImageView>(R.id.iv_mine_icon)
+            .setImageResource(R.drawable.ic_about)
     }
 
 
@@ -134,6 +138,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incCurrencyUnit.setOnClickListener(this)
         binding.incAboutUs.setOnClickListener(this)
         binding.clearText.setOnClickListener(this)
+        binding.incFingerPrint.setOnClickListener(this)
     }
 
     override fun onResume() {
@@ -344,6 +349,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.inc_transaction_query -> {
                 start(TransactionQueryActivity::class.java)
+            }
+            R.id.inc_finger_print -> {
+                languageDialog()
             }
             R.id.inc_multi_language -> {//多语言
                 languageDialog()
