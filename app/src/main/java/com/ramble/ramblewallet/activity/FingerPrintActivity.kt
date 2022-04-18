@@ -1,10 +1,17 @@
 package com.ramble.ramblewallet.activity
 
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import android.view.Window
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.CompoundButton
+import android.widget.TextView
 
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
@@ -21,7 +28,7 @@ import com.ramble.ramblewallet.utils.SharedPreferencesUtils
  * 作者　: potato
  * 描述　: 指纹交易
  */
-class FingerPrintActivity : BaseActivity(), View.OnClickListener ,
+class FingerPrintActivity : BaseActivity(), View.OnClickListener,
     CompoundButton.OnCheckedChangeListener {
     private lateinit var binding: ActivityFingerPrintBinding
 
@@ -62,9 +69,64 @@ class FingerPrintActivity : BaseActivity(), View.OnClickListener ,
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
         when (buttonView!!.id) {
-            R.id.toggle_all ->  SharedPreferencesUtils.saveBoolean(this, ISFINGERPRINT_KEY_ALL, isChecked)
-            R.id.toggle_common ->  SharedPreferencesUtils.saveBoolean(this, ISFINGERPRINT_KEY_COMMON, isChecked)
-            R.id.toggle_trans ->  SharedPreferencesUtils.saveBoolean(this, ISFINGERPRINT_KEY, isChecked)
+            R.id.toggle_all -> {
+                if (isChecked) {
+                    confirmTipsDialog(buttonView,isChecked)
+                } else {
+                    SharedPreferencesUtils.saveBoolean(this, ISFINGERPRINT_KEY_ALL, isChecked)
+                }
+            }
+            R.id.toggle_common ->{
+                if (isChecked) {
+                    confirmTipsDialog(buttonView,isChecked)
+                } else {
+                    SharedPreferencesUtils.saveBoolean(this, ISFINGERPRINT_KEY_COMMON, isChecked)
+                }
+            }
+            R.id.toggle_trans -> {
+                if (isChecked) {
+                    confirmTipsDialog(buttonView,isChecked)
+                } else {
+                    SharedPreferencesUtils.saveBoolean(this, ISFINGERPRINT_KEY, isChecked)
+                }
+            }
         }
+    }
+
+    private fun confirmTipsDialog(buttonView: CompoundButton,isChecked: Boolean) {
+        var dialog = AlertDialog.Builder(this).create()
+        dialog.show()
+        val window: Window? = dialog.window
+        if (window != null) {
+            window.setContentView(R.layout.dialog_delete_confirm_tips)
+            dialogCenterTheme(window)
+            window.findViewById<TextView>(R.id.tv_content).text =
+                getString(R.string.fingerprint_toggle_text)
+            window.findViewById<Button>(R.id.btn_cancel).setOnClickListener {
+                dialog.dismiss()
+                buttonView.isChecked=false
+            }
+            window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
+                dialog.dismiss()
+                buttonView.isChecked=false
+            }
+            window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
+                SharedPreferencesUtils.saveBoolean(this, ISFINGERPRINT_KEY_ALL, isChecked)
+                dialog.dismiss()
+            }
+        }
+    }
+
+    private fun dialogCenterTheme(window: Window) {
+        //设置属性
+        val params = window.attributes
+        params.width = WindowManager.LayoutParams.MATCH_PARENT
+        //弹出一个窗口，让背后的窗口变暗一点
+        params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        //dialog背景层
+        params.dimAmount = 0.5f
+        window.attributes = params
+        window.setGravity(Gravity.CENTER)
+        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 }

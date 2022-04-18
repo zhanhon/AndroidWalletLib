@@ -228,6 +228,9 @@
     <string name="release_date">Release date：</string>
     <string name="fingerprint_transaction">Fingerprint Transaction</string>
     <string name="fingerprint_all">Select all</string>
-    <string name="fingerprint_common_toggle">全选</string>
-    <string name="fingerprint_trans_toggle">指纹交易開關</string>
+    <string name="fingerprint_common_toggle">General management fingerprint switch</string>
+    <string name="fingerprint_trans_toggle">Fingerprint transaction switch</string>
+    <string name="fingerprint_toggle_text">Turning on the fingerprint recognition function will speed up the management convenience.
+But there are primary security concerns.
+Please confirm to open.</string>
 </resources>

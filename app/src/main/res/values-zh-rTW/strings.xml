@@ -230,4 +230,5 @@
     <string name="fingerprint_all">全選</string>
     <string name="fingerprint_common_toggle">一般管理指紋開關</string>
     <string name="fingerprint_trans_toggle">指紋交易開關</string>
+    <string name="fingerprint_toggle_text">開啟指紋辨識功能，將加速管理便利但有基礎安全隱憂，請確認開啟</string>
 </resources>
