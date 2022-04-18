@@ -118,7 +118,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incFingerPrint.findViewById<TextView>(R.id.iv_mine_next).text =
             getString(R.string.fingerprint_transaction)
         binding.incFingerPrint.findViewById<ImageView>(R.id.iv_mine_icon)
-            .setImageResource(R.drawable.ic_about)
+            .setImageResource(R.drawable.ic_finger_print)
     }
 
 
