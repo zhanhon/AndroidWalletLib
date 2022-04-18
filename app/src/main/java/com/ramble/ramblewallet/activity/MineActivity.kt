@@ -112,7 +112,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             getString(R.string.about_us)
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_icon)
             .setImageResource(R.drawable.ic_about)
-        binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).visibility = View.INVISIBLE
+        binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).setImageResource(R.drawable.ic_mine_cycle)
         binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text = "V1.0.0"
         binding.clearText.text = getString(R.string.clear_cache)
         binding.incFingerPrint.findViewById<TextView>(R.id.tv_mine_title).text =
@@ -358,6 +358,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.inc_currency_unit -> {//货币
                 currencyDialog()
+            }
+            R.id.inc_about_us -> {
+//                start(HelpActivity::class.java)
             }
             R.id.clear_text -> {
                 ToastUtils.showToastFree(this, getString(R.string.clear_suc))
