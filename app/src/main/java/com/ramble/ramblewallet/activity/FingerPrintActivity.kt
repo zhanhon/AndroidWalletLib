@@ -71,21 +71,21 @@ class FingerPrintActivity : BaseActivity(), View.OnClickListener,
         when (buttonView!!.id) {
             R.id.toggle_all -> {
                 if (isChecked) {
-                    confirmTipsDialog(buttonView,isChecked)
+                    confirmTipsDialog(buttonView,ISFINGERPRINT_KEY_ALL)
                 } else {
                     SharedPreferencesUtils.saveBoolean(this, ISFINGERPRINT_KEY_ALL, isChecked)
                 }
             }
             R.id.toggle_common ->{
                 if (isChecked) {
-                    confirmTipsDialog(buttonView,isChecked)
+                    confirmTipsDialog(buttonView,ISFINGERPRINT_KEY_COMMON)
                 } else {
                     SharedPreferencesUtils.saveBoolean(this, ISFINGERPRINT_KEY_COMMON, isChecked)
                 }
             }
             R.id.toggle_trans -> {
                 if (isChecked) {
-                    confirmTipsDialog(buttonView,isChecked)
+                    confirmTipsDialog(buttonView,ISFINGERPRINT_KEY)
                 } else {
                     SharedPreferencesUtils.saveBoolean(this, ISFINGERPRINT_KEY, isChecked)
                 }
@@ -93,7 +93,7 @@ class FingerPrintActivity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    private fun confirmTipsDialog(buttonView: CompoundButton,isChecked: Boolean) {
+    private fun confirmTipsDialog(buttonView: CompoundButton,key: String) {
         var dialog = AlertDialog.Builder(this).create()
         dialog.show()
         val window: Window? = dialog.window
@@ -111,7 +111,7 @@ class FingerPrintActivity : BaseActivity(), View.OnClickListener,
                 buttonView.isChecked=false
             }
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
-                SharedPreferencesUtils.saveBoolean(this, ISFINGERPRINT_KEY_ALL, isChecked)
+                SharedPreferencesUtils.saveBoolean(this, key, true)
                 dialog.dismiss()
             }
         }
