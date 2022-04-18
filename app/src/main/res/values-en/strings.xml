@@ -222,7 +222,7 @@
     <string name="transaction_query_eth">ETH Transaction</string>
     <string name="transaction_query_btc">BTC Transaction</string>
     <string name="transaction_query_trx">TRX Transaction</string>
-    <string name="transaction_query_sola">SOLANA Transaction</string>
+    <string name="transaction_query_sola">SOL Transaction</string>
     <string name="contributing_name_hint">Please enter the nickname</string>
     <string name="address_tips">Done</string>
     <string name="release_date">Release date：</string>

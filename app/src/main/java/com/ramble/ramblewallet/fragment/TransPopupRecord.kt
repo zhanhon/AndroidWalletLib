@@ -105,7 +105,7 @@ class TransPopupRecord(val mContext: Activity) : BasePopupWindow(mContext) {
             dismiss()
         }
         binding.rlSola.setOnClickListener {
-            SharedPreferencesUtils.saveString(mContext, CURRENCY_TRAN, "SOLANA")
+            SharedPreferencesUtils.saveString(mContext, CURRENCY_TRAN, "SOL")
             RxBus.emitEvent(Pie.EVENT_TRAN_TYPE, 3)
             dismiss()
         }

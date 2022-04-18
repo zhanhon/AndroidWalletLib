@@ -70,8 +70,8 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
                     binding.tvMyCurrency.text = "TRX"
                     binding.tvMineTitle.text = getString(R.string.transaction_query_trx)
                 }
-                "SOLANA" -> {
-                    binding.tvMyCurrency.text = "SOLANA"
+                "SOL" -> {
+                    binding.tvMyCurrency.text = "SOL"
                     binding.tvMineTitle.text = getString(R.string.transaction_query_sola)
                 }
             }
@@ -90,7 +90,7 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
                     binding.tvMineTitle.text = getString(R.string.transaction_query_btc)
                 }
                 4 -> {
-                    binding.tvMyCurrency.text = "SOLANA"
+                    binding.tvMyCurrency.text = "SOL"
                     binding.tvMineTitle.text = getString(R.string.transaction_query_sola)
                 }
             }
@@ -121,7 +121,7 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
                     }
                     3 -> {
                         binding.tvMineTitle.text = getString(R.string.transaction_query_sola)
-                        binding.tvMyCurrency.text = "SOLANA"
+                        binding.tvMyCurrency.text = "SOL"
                     }
                 }
                 binding.ivMyCurrency.setBackgroundResource(R.drawable.vector_three_down)
