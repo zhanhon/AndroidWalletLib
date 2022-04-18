@@ -45,7 +45,7 @@ class AddressBookItem(val data: MyAddressBean) : SimpleRecyclerItem() {
                 binding.tvMainCurrencyName.text = "SOL"
             }
             5 -> {
-                binding.clIcon.setImageResource(R.drawable.ic_trx_selcetor)
+                binding.clIcon.setImageResource(R.drawable.ic_doge_address)
                 binding.tvMainCurrencyName.text = "DOGE"
             }
         }
