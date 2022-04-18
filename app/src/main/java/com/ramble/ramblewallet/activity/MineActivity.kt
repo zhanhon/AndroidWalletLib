@@ -115,7 +115,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).visibility = View.INVISIBLE
         binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text = "V1.0.0"
         binding.clearText.text = getString(R.string.clear_cache)
-        binding.incFingerPrint.findViewById<TextView>(R.id.iv_mine_next).text =
+        binding.incFingerPrint.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.fingerprint_transaction)
         binding.incFingerPrint.findViewById<ImageView>(R.id.iv_mine_icon)
             .setImageResource(R.drawable.ic_finger_print)
