@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_46"
+            android:background="@color/color_FFFFFF"
+            android:padding="@dimen/dp_10">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:src="@drawable/vector_left_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_mine_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_10"
+                android:text="@string/message_center"
+                android:textColor="@color/color_000000"
+                android:textSize="@dimen/sp_17"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="25323232323" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_shake_all"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_60"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:text="@string/fingerprint_all"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <ToggleButton
+                android:id="@+id/toggle_all"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/skin_toggle_selector"
+                android:checked="true"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:textOff=""
+                android:textOn="" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_shake_common"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_60"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:text="@string/fingerprint_common_toggle"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <ToggleButton
+                android:id="@+id/toggle_common"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/skin_toggle_selector"
+                android:checked="true"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:textOff=""
+                android:textOn="" />
+        </LinearLayout>
+        <View
+            android:background="@color/white"
+            android:layout_width="20dp"
+            android:layout_height="1dp"/>
+        <LinearLayout
+            android:id="@+id/layout_shake"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_60"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:text="@string/fingerprint_trans_toggle"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <ToggleButton
+                android:id="@+id/toggle_trans"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/skin_toggle_selector"
+                android:checked="true"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:textOff=""
+                android:textOn="" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

@@ -75,3 +75,11 @@ const val IS_CONFIRM_MNEMONIC = "is_confirm_mnemonic"
  * 是否设置指纹解锁key
  */
 const val ISFINGERPRINT_KEY="fingerprint_key"
+/**
+ * 是否设置指纹解锁key
+ */
+const val ISFINGERPRINT_KEY_ALL="fingerprint_key_all"
+/**
+ * 是否设置指纹解锁key
+ */
+const val ISFINGERPRINT_KEY_COMMON="fingerprint_key_common"

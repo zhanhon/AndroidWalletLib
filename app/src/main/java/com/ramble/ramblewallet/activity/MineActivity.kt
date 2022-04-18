@@ -351,7 +351,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 start(TransactionQueryActivity::class.java)
             }
             R.id.inc_finger_print -> {
-                languageDialog()
+                start(FingerPrintActivity::class.java)
             }
             R.id.inc_multi_language -> {//多语言
                 languageDialog()

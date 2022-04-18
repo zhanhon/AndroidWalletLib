@@ -227,4 +227,7 @@
     <string name="address_tips">完成</string>
     <string name="release_date">發佈日期：</string>
     <string name="fingerprint_transaction">指紋交易</string>
+    <string name="fingerprint_all">全選</string>
+    <string name="fingerprint_common_toggle">一般管理指紋開關</string>
+    <string name="fingerprint_trans_toggle">指紋交易開關</string>
 </resources>
