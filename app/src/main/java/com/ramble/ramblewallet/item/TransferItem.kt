@@ -29,30 +29,21 @@ class TransferItem(val activity: Activity, val data: QueryTransferRecord.Record)
         }
         binding.tvTime.text = dateToWeek(activity, data.createTime) + "  " + data.createTime
         binding.tvMoneyType.isVisible = false
-        when (data.addressType) {
-            1 -> {
-                binding.ivMoneyType.setImageResource(R.drawable.vector_eth_selecet)
-            }
-            2 -> {
-                binding.ivMoneyType.setImageResource(R.drawable.vector_trx_selecter)
-            }
-            3 -> {
-                binding.ivMoneyType.setImageResource(R.drawable.vector_bt_selecter)
-            }
-        }
         when (data.status) {
             1 -> {
+                binding.ivMoneyType.setImageResource(R.drawable.vector_tans_ing)
                 binding.tvMoney.setText(R.string.in_transaction)
                 binding.tvMoney.setTextColor(Color.parseColor("#333333"))
-
             }
             2 -> {
                 when (data.transferType) {
                     2 -> {//转入
+                        binding.ivMoneyType.setImageResource(R.drawable.vector_tans_in)
                         binding.tvMoney.setTextColor(Color.parseColor("#009474"))
                         binding.tvMoney.text = "+" + data.amount
                     }
                     1 -> {//转出
+                        binding.ivMoneyType.setImageResource(R.drawable.vector_tans_out)
                         binding.tvMoney.setTextColor(Color.parseColor("#e11334"))
                         binding.tvMoney.text = "-" + data.amount
                     }
@@ -60,6 +51,7 @@ class TransferItem(val activity: Activity, val data: QueryTransferRecord.Record)
 
             }
             3 -> {
+                binding.ivMoneyType.setImageResource(R.drawable.vector_tans_faild)
                 binding.tvMoney.setText(R.string.transaction_failed)
                 binding.tvMoney.setTextColor(Color.parseColor("#a1a1a1"))
             }
