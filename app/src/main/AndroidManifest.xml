@@ -142,6 +142,11 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.QueryActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.MnemonicConfirmActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
