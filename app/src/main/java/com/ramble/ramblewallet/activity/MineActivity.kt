@@ -486,37 +486,19 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun languageDialog() {
-        var dialogLanguage = AlertDialog.Builder(this).create()
-        dialogLanguage.show()
-        val window: Window? = dialogLanguage.window
-        if (window != null) {
-            window.setContentView(R.layout.dialog_language)
-
-            window.findViewById<View>(R.id.tv_language1).setOnClickListener {
-                SharedPreferencesUtils.saveString(this, LANGUAGE, CN)
-                setLanguage()
-                onResume()
-                dialogLanguage.dismiss()
-
-            }
-            window.findViewById<View>(R.id.tv_language2).setOnClickListener {
-                SharedPreferencesUtils.saveString(this, LANGUAGE, TW)
-                setLanguage()
-                onResume()
-                dialogLanguage.dismiss()
-
-            }
-            window.findViewById<View>(R.id.tv_language3).setOnClickListener {
-                SharedPreferencesUtils.saveString(this, LANGUAGE, EN)
-                setLanguage()
-                onResume()
-                dialogLanguage.dismiss()
-
-            }
-
-            dialogTheme(window)
-//            dialogLanguage.show()
-        }
+        showLanguageDialog(this,cnListener = {
+            SharedPreferencesUtils.saveString(this, LANGUAGE, CN)
+            setLanguage()
+            onResume()
+        },twListener = {
+            SharedPreferencesUtils.saveString(this, LANGUAGE, TW)
+            setLanguage()
+            onResume()
+        },enListener = {
+            SharedPreferencesUtils.saveString(this, LANGUAGE, EN)
+            setLanguage()
+            onResume()
+        })
     }
 
     private fun currencyDialog() {

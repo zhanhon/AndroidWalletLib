@@ -28,6 +28,7 @@ import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.databinding.BottomNoticeDialog2Binding
 import com.ramble.ramblewallet.databinding.BottomNoticeDialogBinding
+import com.ramble.ramblewallet.databinding.DialogLanguageBinding
 import com.ramble.ramblewallet.databinding.DialogTransItemBinding
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start
@@ -603,4 +604,46 @@ fun showBottomSan(
         }
     }
 }
+
+
+/**
+ * 时间　: 2022/4/19 15:52
+ * 作者　: potato
+ * 描述　:語言选择弹窗
+ */
+fun showLanguageDialog(
+    activity: Activity,
+    cnListener: View.OnClickListener? = null,
+    twListener: View.OnClickListener? = null,
+    enListener: View.OnClickListener? = null
+): Dialog {
+    val binding: DialogLanguageBinding =
+        LayoutInflater.from(activity).dataBinding(
+            R.layout.dialog_language
+        )
+
+    return AlertDialog.Builder(activity).create().apply {
+        show()
+        setContentView(binding.root)
+        window?.setGravity(Gravity.BOTTOM)
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        binding.tvLanguage1.setOnClickListener {
+            dismiss()
+            cnListener?.onClick(it)
+        }
+        binding.tvLanguage2.setOnClickListener {
+            twListener?.onClick(it)
+            dismiss()
+        }
+        binding.tvLanguage3.setOnClickListener {
+            enListener?.onClick(it)
+            dismiss()
+        }
+    }
+}
+
 
