@@ -232,4 +232,5 @@
     <string name="fingerprint_toggle_text">开启指纹辨识功能，将加速管理便利但有基础安全隐忧，请确认开启</string>
     <string name="fingerprint_success">指纹解锁成功！</string>
     <string name="fingerprint_failed">指纹解锁失败！</string>
+    <string name="check_version">将进行版本与更新\n请按确认后开始执行</string>
 </resources>

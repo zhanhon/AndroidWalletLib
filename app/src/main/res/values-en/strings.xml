@@ -235,4 +235,5 @@ But there are primary security concerns.
 Please confirm to open.</string>
     <string name="fingerprint_success">Fingerprint unlocked successfully！</string>
     <string name="fingerprint_failed">Fingerprint unlock failed！</string>
+    <string name="check_version">The version and update will be carried out, please press the confirmation to start the execution</string>
 </resources>
