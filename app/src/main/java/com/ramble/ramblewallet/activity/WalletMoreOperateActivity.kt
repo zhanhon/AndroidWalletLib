@@ -37,10 +37,12 @@ import com.ramble.ramblewallet.databinding.ActivityWalletMoreOperateBinding
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
+import com.ramble.ramblewallet.wight.FingerprintDialogFragment
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import javax.crypto.Cipher
 
 
 class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
@@ -54,6 +56,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
     var mPermissionListener: PermissionListener? = null
     private var times = 0
     private var myAllToken: ArrayList<AllTokenBean> = arrayListOf()
+    private var isFinger = false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,21 +135,85 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.rl_edit_wallet -> {
-                inputPasswordDialog(getString(R.string.edit_wallet))
+                if (isFinger) {//开启指纹验证
+                    setFingerprint(getString(R.string.edit_wallet))
+                } else {
+                    inputPasswordDialog(getString(R.string.edit_wallet))
+                }
             }
             R.id.rl_contributing_words_backups -> {
-                inputPasswordDialog(getString(R.string.backup_memorization_words))
+                if (isFinger) {//开启指纹验证
+                    setFingerprint(getString(R.string.backup_memorization_words))
+                } else {
+                    inputPasswordDialog(getString(R.string.backup_memorization_words))
+                }
             }
             R.id.rl_secret_key_backups -> {
+                if (isFinger) {//开启指纹验证
+                    setFingerprint(getString(R.string.secret_key_backup))
+                } else {
+                    inputPasswordDialog(getString(R.string.secret_key_backup))
+                }
                 inputPasswordDialog(getString(R.string.secret_key_backup))
             }
             R.id.rl_keystore_backups -> {
-                inputPasswordDialog(getString(R.string.keystore_backup))
+                if (isFinger) {//开启指纹验证
+                    setFingerprint(getString(R.string.keystore_backup))
+                } else {
+                    inputPasswordDialog(getString(R.string.keystore_backup))
+                }
             }
             R.id.tv_delete_wallet -> {
                 deleteConfirmTipsDialog()
             }
         }
+    }
+
+    private var cipher: Cipher? = null
+    private fun setFingerprint(title: String) {
+        if (ToolUtils.supportFingerprint(this)) {
+            ToolUtils.initKey() //生成一个对称加密的key
+            //生成一个Cipher对象
+            cipher = ToolUtils.initCipher()
+        }
+        cipher?.let { showFingerPrintDialog(it,title) }
+    }
+
+    private fun showFingerPrintDialog(cipher: Cipher,title: String) {
+        val dialogFragment = FingerprintDialogFragment()
+        dialogFragment.setCipher(cipher)
+        dialogFragment.show(supportFragmentManager, "fingerprint")
+        dialogFragment.setOnFingerprintSetting(FingerprintDialogFragment.OnFingerprintSetting { isSucceed ->
+            if (isSucceed) {
+                ToastUtils.showToastFree(this, getString(R.string.fingerprint_success))
+                when (title) {
+                    getString(R.string.edit_wallet) -> {
+                        editWalletDialog(title)
+                    }
+                    getString(R.string.backup_memorization_words) -> {
+                        startActivity(Intent(this, MnemonicActivity::class.java).apply {
+                            putExtra(ARG_PARAM1, walletCurrent.walletName)
+                            putExtra(ARG_PARAM2, walletCurrent.walletPassword)
+                            putExtra(ARG_PARAM3, walletCurrent.walletType)
+                            putExtra(ARG_PARAM4, true)
+                            putExtra(ARG_PARAM5, walletCurrent.mnemonic)
+                            putStringArrayListExtra(
+                                ARG_PARAM6,
+                                walletCurrent.mnemonicList as java.util.ArrayList<String>?
+                            )
+                        })
+                    }
+                    getString(R.string.secret_key_backup) -> {
+                        secretKeyDialog(title)
+                    }
+                    getString(R.string.keystore_backup) -> {
+                        keystoreDialog(title)
+                    }
+                }
+            } else {
+                ToastUtils.showToastFree(this, getString(R.string.fingerprint_failed))
+            }
+        })
     }
 
     private fun deleteConfirmTipsDialog() {
@@ -207,6 +274,15 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 Gson().toJson(myAllToken)
             )
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isFinger = SharedPreferencesUtils.getBoolean(
+            this,
+            ISFINGERPRINT_KEY_COMMON,
+            false
+        ) || SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY_ALL, false)
     }
 
     private fun dialogCenterTheme(window: Window) {
