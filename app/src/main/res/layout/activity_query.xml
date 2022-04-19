@@ -106,7 +106,7 @@
             <TextView
                 android:id="@+id/tv_transfer"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:background="@color/white"
                 android:gravity="center"
                 android:text="@string/transfer"
@@ -121,7 +121,7 @@
             <TextView
                 android:id="@+id/tv_gathering"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:gravity="center"
                 android:background="@color/white"
                 android:text="@string/gathering"

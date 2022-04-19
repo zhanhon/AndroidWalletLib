@@ -495,7 +495,13 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                 binding.rvCurrency.adapter = mainAdapter
                 mainAdapter.setOnItemClickListener { adapter, _, position ->
                     if (adapter.getItem(position) is MainETHTokenBean) {
-                        showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
+                        var symbol=(adapter.getItem(position) as MainETHTokenBean).title
+                        startActivity(Intent(this, QueryActivity::class.java).apply {
+                            putExtra(ARG_PARAM1, walletSelleted.address)
+                            putExtra(ARG_PARAM2, adapter.getItem(position) as MainETHTokenBean)
+                            putExtra(ARG_PARAM3, symbol)
+                        })
+//                        showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
                     }
                 }
             }
