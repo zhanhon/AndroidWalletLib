@@ -20,16 +20,18 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
+import com.ramble.ramblewallet.bean.FaqInfos
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMineBinding
 import com.ramble.ramblewallet.helper.start
-import com.ramble.ramblewallet.network.ApiResponse
-import com.ramble.ramblewallet.network.noticeInfoUrl
-import com.ramble.ramblewallet.network.reportAddressUrl
-import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.network.*
+import com.ramble.ramblewallet.update.AppVersion
+import com.ramble.ramblewallet.update.UpdateUtils
 import com.ramble.ramblewallet.utils.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 /***
  * 我的管理页面
@@ -113,6 +115,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_icon)
             .setImageResource(R.drawable.ic_about)
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).setImageResource(R.drawable.ic_mine_cycle)
+        binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).setOnClickListener {
+            checkVersion()
+        }
         binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text = "V1.0.0"
         binding.clearText.text = getString(R.string.clear_cache)
         binding.incFingerPrint.findViewById<TextView>(R.id.tv_mine_title).text =
@@ -122,6 +127,30 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
 
+    @SuppressLint("CheckResult")
+    private fun checkVersion() {
+        mApiService.appVersion(AppVersion.Req().toApiRequest(faqInfoUrl)).subscribe({
+            if (it.code()==1) {
+                GlobalScope.launch {
+//                    delay(800)
+                    checkAppVersion(it.data()!!)
+                }
+
+            }
+        }, {
+        })
+    }
+
+    private fun checkAppVersion(version:AppVersion) {
+        if (version.isNeedUpdate == 1) {
+            UpdateUtils().checkUpdate(version,false)
+//            if (version.isForceUpdate == 1) {
+////                start(ForceUpdateActivity::class.java)
+//            } else if (version.isPopPrompt == 1 && MMKVManager.getVersionIgnore() != version.version) {
+//                UpdateUtils().checkUpdate(version,false)
+//            }
+        }
+    }
     /****
      * 事件监听
      */

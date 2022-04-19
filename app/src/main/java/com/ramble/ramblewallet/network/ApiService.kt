@@ -1,6 +1,7 @@
 package com.ramble.ramblewallet.network
 
 import com.ramble.ramblewallet.bean.*
+import com.ramble.ramblewallet.update.AppVersion
 import io.reactivex.Observable
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -24,6 +25,7 @@ const val queryFaqInfoUrl = "wallet-decentralized-api/faq/queryAllFaqByType"
 const val getStoreUrl = "wallet-decentralized-api/sys/listStoreCoinmarketcap"
 const val getPrivacyInfo = "wallet-decentralized-api/sys/getPrivacyPolicy"
 const val reportTransferUrl = "wallet-decentralized-api/transfer/reportTransferRecord"
+const val getAppVersion = "wallet-decentralized-api/transfer/reportTransferRecord"
 
 
 interface ApiService {
@@ -76,5 +78,7 @@ interface ApiService {
     @POST(getDogeMinerConfigUrl)
     fun getDogeMinerConfig(@Body req: ApiRequest<DogeMinerConfig.Req>): Observable<ApiResponse<DogeMinerConfig>>
 
-
+    /**  更新版本 */
+    @POST(getAppVersion)
+    fun appVersion(@Body req: ApiRequest<AppVersion.Req>): Observable<ApiResponse<AppVersion>>
 }
