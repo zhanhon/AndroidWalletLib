@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.ramble.ramblewallet.BuildConfig
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
@@ -118,7 +119,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).setOnClickListener {
             checkVersion()
         }
-        binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text = "V1.0.0"
+        binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text = BuildConfig.VERSION_NAME
         binding.clearText.text = getString(R.string.clear_cache)
         binding.incFingerPrint.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.fingerprint_transaction)
