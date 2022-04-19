@@ -21,7 +21,6 @@ import com.ramble.ramblewallet.BuildConfig
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
-import com.ramble.ramblewallet.bean.FaqInfos
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
@@ -117,9 +116,6 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             .setImageResource(R.drawable.ic_about)
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next)
             .setImageResource(R.drawable.ic_mine_cycle)
-        binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).setOnClickListener {
-            checkVersion()
-        }
         binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text =
             BuildConfig.VERSION_NAME
         binding.clearText.text = getString(R.string.clear_cache)
@@ -172,6 +168,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incAboutUs.setOnClickListener(this)
         binding.clearText.setOnClickListener(this)
         binding.incFingerPrint.setOnClickListener(this)
+        binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).setOnClickListener {
+            checkVersion()
+        }
     }
 
     override fun onResume() {
