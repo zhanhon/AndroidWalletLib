@@ -71,7 +71,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private var transferReceiverAddress: String? = null
     private var isToken: Boolean = false
     private lateinit var tokenBean: MainETHTokenBean
-    private var isFinger=false
+    private var isFinger = false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,7 +100,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        isFinger= SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY, false)
+        isFinger = SharedPreferencesUtils.getBoolean(
+            this,
+            ISFINGERPRINT_KEY,
+            false
+        ) || SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY_ALL, false)
         initData()
         if (walletSelleted.walletType == 2) {
             binding.edtInputQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(24))
@@ -260,9 +264,11 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             binding.btnConfirm.background = getDrawable(R.drawable.shape_gray_bottom_btn)
         }
     }
+
     private var cipher: Cipher? = null
+
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    private  fun setFingerprint() {
+    private fun setFingerprint() {
         if (ToolUtils.supportFingerprint(this)) {
             ToolUtils.initKey() //生成一个对称加密的key
             //生成一个Cipher对象
@@ -272,16 +278,15 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun showFingerPrintDialog(cipher: Cipher) {
-      val  dialogFragment = FingerprintDialogFragment()
+        val dialogFragment = FingerprintDialogFragment()
         dialogFragment.setCipher(cipher)
         dialogFragment.show(supportFragmentManager, "fingerprint")
         dialogFragment.setOnFingerprintSetting(OnFingerprintSetting { isSucceed ->
             if (isSucceed) {
-                ToastUtils.showToastFree(this,"指纹解锁成功！")
-//                startActivity(MainActivity::class.java)
-//                finish()
+                ToastUtils.showToastFree(this, getString(R.string.fingerprint_success))
+                transfer()
             } else {
-                ToastUtils.showToastFree(this,"指纹解锁失败！")
+                ToastUtils.showToastFree(this, getString(R.string.fingerprint_failed))
             }
         })
     }
@@ -426,6 +431,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun initBtcMiner() {
         mApiService.getBtcMinerConfig(
             BtcMinerConfig.Req().toApiRequest(getBtcMinerConfigUrl)
@@ -451,6 +457,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         )
     }
 
+    @SuppressLint("CheckResult")
     private fun initEthMinerFee() {
         mApiService.getEthMinerConfig(
             EthMinerConfig.Req(transferTitle).toApiRequest(getEthMinerConfigUrl)
@@ -552,9 +559,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             edtReceivingAdreess.setText(binding.edtReceiverAddress.text.trim().toString())
             val btnNext = window.findViewById<Button>(R.id.btn_confirm)
             btnNext.setOnClickListener {
-                if (isFinger){//开启指纹验证
+                if (isFinger) {//开启指纹验证
                     setFingerprint()
-                }else{
+                } else {
                     passwordConfirmationDialog()
                 }
                 dialog.dismiss()
