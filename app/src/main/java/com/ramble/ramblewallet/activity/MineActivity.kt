@@ -115,11 +115,13 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             getString(R.string.about_us)
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_icon)
             .setImageResource(R.drawable.ic_about)
-        binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).setImageResource(R.drawable.ic_mine_cycle)
+        binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next)
+            .setImageResource(R.drawable.ic_mine_cycle)
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).setOnClickListener {
             checkVersion()
         }
-        binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text = BuildConfig.VERSION_NAME
+        binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text =
+            BuildConfig.VERSION_NAME
         binding.clearText.text = getString(R.string.clear_cache)
         binding.incFingerPrint.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.fingerprint_transaction)
@@ -131,7 +133,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("CheckResult")
     private fun checkVersion() {
         mApiService.appVersion(AppVersion.Req().toApiRequest(faqInfoUrl)).subscribe({
-            if (it.code()==1) {
+            if (it.code() == 1) {
                 GlobalScope.launch {
 //                    delay(800)
                     checkAppVersion(it.data()!!)
@@ -142,9 +144,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         })
     }
 
-    private fun checkAppVersion(version:AppVersion) {
+    private fun checkAppVersion(version: AppVersion) {
         if (version.isNeedUpdate == 1) {
-            UpdateUtils().checkUpdate(version,false)
+            UpdateUtils().checkUpdate(version, false)
 //            if (version.isForceUpdate == 1) {
 ////                start(ForceUpdateActivity::class.java)
 //            } else if (version.isPopPrompt == 1 && MMKVManager.getVersionIgnore() != version.version) {
@@ -152,6 +154,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 //            }
         }
     }
+
     /****
      * 事件监听
      */
@@ -489,17 +492,17 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
             window.findViewById<View>(R.id.tv_language1).setOnClickListener {
                 SharedPreferencesUtils.saveString(this, CURRENCY, CNY)
-                setCurrency()
+                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = CNY
                 dialogCurrency.dismiss()
             }
             window.findViewById<View>(R.id.tv_language2).setOnClickListener {
                 SharedPreferencesUtils.saveString(this, CURRENCY, HKD)
-                setCurrency()
+                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = HKD
                 dialogCurrency.dismiss()
             }
             window.findViewById<View>(R.id.tv_language3).setOnClickListener {
                 SharedPreferencesUtils.saveString(this, CURRENCY, USD)
-                setCurrency()
+                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = USD
                 dialogCurrency.dismiss()
             }
 
@@ -543,23 +546,4 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         times = 0
         skipConfirmHandle()
     }
-
-    private fun setCurrency() {
-        when (SharedPreferencesUtils.getString(this, CURRENCY, USD)) {
-            CNY -> {
-                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text =
-                    "CNY"
-            }
-            HKD -> {
-                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text =
-                    "HKD"
-            }
-            USD -> {
-                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text =
-                    "USD"
-            }
-        }
-
-    }
-
 }
