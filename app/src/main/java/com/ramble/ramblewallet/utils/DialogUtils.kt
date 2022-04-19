@@ -26,10 +26,7 @@ import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.constant.ADDRESS_BOOK_INFO
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
-import com.ramble.ramblewallet.databinding.BottomNoticeDialog2Binding
-import com.ramble.ramblewallet.databinding.BottomNoticeDialogBinding
-import com.ramble.ramblewallet.databinding.DialogLanguageBinding
-import com.ramble.ramblewallet.databinding.DialogTransItemBinding
+import com.ramble.ramblewallet.databinding.*
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start
 
@@ -645,5 +642,46 @@ fun showLanguageDialog(
         }
     }
 }
+/**
+ * 时间　: 2022/4/19 15:52
+ * 作者　: potato
+ * 描述　:货币选择弹窗
+ */
+fun showCurrencyDialog(
+    activity: Activity,
+    cnyListener: View.OnClickListener? = null,
+    hkdListener: View.OnClickListener? = null,
+    usdListener: View.OnClickListener? = null
+): Dialog {
+    val binding: DialogCurrencyBinding =
+        LayoutInflater.from(activity).dataBinding(
+            R.layout.dialog_currency
+        )
+
+    return AlertDialog.Builder(activity).create().apply {
+        show()
+        setContentView(binding.root)
+        window?.setGravity(Gravity.BOTTOM)
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        binding.tvLanguage1.setOnClickListener {
+            dismiss()
+            cnyListener?.onClick(it)
+        }
+        binding.tvLanguage2.setOnClickListener {
+            hkdListener?.onClick(it)
+            dismiss()
+        }
+        binding.tvLanguage3.setOnClickListener {
+            usdListener?.onClick(it)
+            dismiss()
+        }
+    }
+}
+
+
 
 

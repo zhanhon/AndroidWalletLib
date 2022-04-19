@@ -12,7 +12,6 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
-import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -428,9 +427,6 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             R.id.inc_currency_unit -> {//货币
                 currencyDialog()
             }
-            R.id.inc_about_us -> {
-//                start(HelpActivity::class.java)
-            }
             R.id.clear_text -> {
                 ToastUtils.showToastFree(this, getString(R.string.clear_suc))
             }
@@ -502,45 +498,18 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun currencyDialog() {
-        var dialogCurrency = AlertDialog.Builder(this).create()
-        dialogCurrency.show()
-        val window: Window? = dialogCurrency.window
-        if (window != null) {
-            window.setContentView(R.layout.dialog_currency)
-
-            window.findViewById<View>(R.id.tv_language1).setOnClickListener {
-                SharedPreferencesUtils.saveString(this, CURRENCY, CNY)
-                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = CNY
-                dialogCurrency.dismiss()
-            }
-            window.findViewById<View>(R.id.tv_language2).setOnClickListener {
-                SharedPreferencesUtils.saveString(this, CURRENCY, HKD)
-                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = HKD
-                dialogCurrency.dismiss()
-            }
-            window.findViewById<View>(R.id.tv_language3).setOnClickListener {
-                SharedPreferencesUtils.saveString(this, CURRENCY, USD)
-                binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = USD
-                dialogCurrency.dismiss()
-            }
-
-            dialogTheme(window)
-//            dialogCurrency.show()
-        }
+        showCurrencyDialog(this,cnyListener = {
+            SharedPreferencesUtils.saveString(this, CURRENCY, CNY)
+            binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = CNY
+        },hkdListener = {
+            SharedPreferencesUtils.saveString(this, CURRENCY, HKD)
+            binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = HKD
+        },usdListener = {
+            SharedPreferencesUtils.saveString(this, CURRENCY, USD)
+            binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = USD
+        })
     }
 
-    private fun dialogTheme(window: Window) {
-        //设置属性
-        val params = window.attributes
-        params.width = WindowManager.LayoutParams.MATCH_PARENT
-        //弹出一个窗口，让背后的窗口变暗一点
-        params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-        //dialog背景层
-        params.dimAmount = 0.5f
-        window.attributes = params
-        window.setGravity(Gravity.BOTTOM)
-        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
 
     private fun setLanguage() {
         when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
