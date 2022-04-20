@@ -98,61 +98,25 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             1 -> {//ETH
                 binding.groupButton.check(R.id.check_eth)
                 idButton = 2
-                myDataBeans = arrayListOf()
-                myData.forEach {
-                    if (it.type == 1) {
-                        myDataBeans.add(it)
-                    }
-                }
-                loadData()
             }
             2 -> {//TRX
                 binding.groupButton.check(R.id.check_trx)
                 idButton = 3
-                myDataBeans = arrayListOf()
-                myData.forEach {
-                    if (it.type == 3) {
-                        myDataBeans.add(it)
-                    }
-                }
-                loadData()
             }
             3 -> {//btc
                 binding.groupButton.check(R.id.check_bt)
                 idButton = 1
-                myDataBeans = arrayListOf()
-                myData.forEach {
-                    if (it.type == 2) {
-                        myDataBeans.add(it)
-                    }
-                }
-                loadData()
             }
-
             4 -> {//solana
                 binding.groupButton.check(R.id.check_sola)
                 idButton = 4
-                myDataBeans = arrayListOf()
-                myData.forEach {
-                    if (it.type == 4) {
-                        myDataBeans.add(it)
-                    }
-                }
-                loadData()
             }
             5 -> {//doge
                 binding.groupButton.check(R.id.check_doge)
                 idButton = 5
-                myDataBeans = arrayListOf()
-                myData.forEach {
-                    if (it.type == 5) {
-                        myDataBeans.add(it)
-                    }
-                }
-                loadData()
             }
         }
-
+        selectData(idButton)
     }
 
     private fun initListener() {
@@ -174,69 +138,56 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         }
     }
 
+    private fun selectData(idButton:Int){
+        myDataBeans = arrayListOf()
+        myData.forEach {
+            when(idButton){
+                0->myDataBeans.add(it)
+                1-> if (it.type == 2) {
+                    myDataBeans.add(it)
+                }
+                2->  if (it.type == 1) {
+                    myDataBeans.add(it)
+                }
+                else->if (it.type == idButton) {
+                    myDataBeans.add(it)
+                }
+            }
+            myDataBeans.add(it)
+        }
+        loadData()
+    }
+
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
         when (checkedId) {
             R.id.check_all -> {
                 idButton = 0
-                myDataBeans = arrayListOf()
-                myData.forEach {
-                    myDataBeans.add(it)
-                }
-                loadData()
+                selectData(idButton)
             }
             R.id.check_bt -> {
                 idButton = 1
-                myDataBeans = arrayListOf()
-                myData.forEach {
-                    if (it.type == 2) {
-                        myDataBeans.add(it)
-                    }
-                }
-                loadData()
+                selectData(idButton)
             }
             R.id.check_eth -> {
                 idButton = 2
-                myDataBeans = arrayListOf()
-                myData.forEach {
-                    if (it.type == 1) {
-                        myDataBeans.add(it)
-                    }
-                }
-                loadData()
+                selectData(idButton)
             }
             R.id.check_trx -> {
                 idButton = 3
-                myDataBeans = arrayListOf()
-                myData.forEach {
-                    if (it.type == 3) {
-                        myDataBeans.add(it)
-                    }
-                }
-                loadData()
+                selectData(idButton)
             }
             R.id.check_sola -> {
                 idButton = 4
-                myDataBeans = arrayListOf()
-                myData.forEach {
-                    if (it.type == 4) {
-                        myDataBeans.add(it)
-                    }
-                }
-                loadData()
+                selectData(idButton)
             }
             R.id.check_doge -> {
                 idButton = 5
-                myDataBeans = arrayListOf()
-                myData.forEach {
-                    if (it.type == 5) {
-                        myDataBeans.add(it)
-                    }
-                }
-                loadData()
+                selectData(idButton)
             }
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onRxBus(event: RxBus.Event) {
         super.onRxBus(event)
         when (event.id()) {
@@ -251,61 +202,12 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 adapter.notifyDataSetChanged()
             }
             Pie.EVENT_ADDRESS_BOOK_ADD -> {
-
                 myData = arrayListOf()
                 myData = Gson().fromJson(
                     SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, ""),
                     object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                 )
-                when (idButton) {
-                    0 -> {
-                        myDataBeans = arrayListOf()
-                        myData.forEach {
-                            myDataBeans.add(it)
-                        }
-                    }
-                    1 -> {
-                        myDataBeans = arrayListOf()
-                        myData.forEach {
-                            if (it.type == 2) {
-                                myDataBeans.add(it)
-                            }
-                        }
-                    }
-                    2 -> {
-                        myDataBeans = arrayListOf()
-                        myData.forEach {
-                            if (it.type == 1) {
-                                myDataBeans.add(it)
-                            }
-                        }
-                    }
-                    3 -> {
-                        myDataBeans = arrayListOf()
-                        myData.forEach {
-                            if (it.type == 3) {
-                                myDataBeans.add(it)
-                            }
-                        }
-                    }
-                    4 -> {
-                        myDataBeans = arrayListOf()
-                        myData.forEach {
-                            if (it.type == 4) {
-                                myDataBeans.add(it)
-                            }
-                        }
-                    }
-                    5 -> {
-                        myDataBeans = arrayListOf()
-                        myData.forEach {
-                            if (it.type == 5) {
-                                myDataBeans.add(it)
-                            }
-                        }
-                    }
-                }
-                loadData()
+                selectData(idButton)
             }
             else -> return
         }
@@ -326,6 +228,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> finish()
