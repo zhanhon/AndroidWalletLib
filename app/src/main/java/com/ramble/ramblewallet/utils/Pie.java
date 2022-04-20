@@ -6,17 +6,7 @@ package com.ramble.ramblewallet.utils;
  * 描述　:
  */
 public class Pie {
-
-    public static final String MMKV_DEVICE_ID = "MMKV_DEVICE_ID";
     public static final int EVENT_CHECK_MSG = 2001270;
-    /**
-     * pref 存储服务端cdn
-     */
-    public static final String PREFS_SERVER_CDN = "server_cdn";
-    /**
-     * pref 存储服务端cdn
-     */
-    public static final String PREFS_SERVER_CDN_SELECT = "server_cdn_select";
     /**
      * 地址本扫描二维码
      */
@@ -41,10 +31,6 @@ public class Pie {
      * 删除代币
      */
     public static final int EVENT_DEL_TOKEN = 2006;
-    /**
-     * 转账地址扫描二维码
-     */
-    public static final int EVENT_ADDRESS_TRANS_SCAN = 2007;
     /**
      * 消除消息
      */
