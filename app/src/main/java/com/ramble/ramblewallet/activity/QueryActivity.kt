@@ -79,7 +79,7 @@ class QueryActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    class MyAdapter(fm: FragmentManager, activity: QueryActivity, address: String) :
+    class MyAdapter(fm: FragmentManager, activity: QueryActivity, address: String?) :
         FragmentPagerAdapter2(fm) {
         private val address=address
         private val titles: Array<String> = arrayOf(

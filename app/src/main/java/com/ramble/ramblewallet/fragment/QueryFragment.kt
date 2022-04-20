@@ -218,7 +218,7 @@ class QueryFragment : BaseFragment(),
 
     companion object {
         @JvmStatic
-        fun newInstance(gameType: Int,address:String): QueryFragment {
+        fun newInstance(gameType: Int,address:String?): QueryFragment {
             return QueryFragment().apply {
                 arguments = Bundle().also {
                     it.putInt(ARG_PARAM1, gameType)
