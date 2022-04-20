@@ -22,6 +22,7 @@ import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.MyAddressBean
 import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils.isBtcValidAddress
 import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils.isEthValidAddress
+import com.ramble.ramblewallet.blockchain.solana.WalletSOLUtils.Companion.isSolValidAddress
 import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.constant.ADDRESS_BOOK_INFO
 import com.ramble.ramblewallet.constant.ARG_PARAM1
@@ -204,6 +205,9 @@ fun showBottomDialog2(
                                 isTrxValidAddress(binding.editAddress.text.toString()) -> {
                                     number = 3
                                 }
+                                isSolValidAddress(binding.editAddress.text.toString()) -> {
+                                    number = 4
+                                }
                             }
                             var cout = 1
                             myData.forEach {
@@ -221,6 +225,9 @@ fun showBottomDialog2(
                                 }
                                 isTrxValidAddress(binding.editAddress.text.toString()) -> {
                                     "TRX" + String.format("%02d", cout)
+                                }
+                                isSolValidAddress(binding.editAddress.text.toString()) -> {
+                                    "SOL" + String.format("%02d", cout)
                                 }
                                 else -> ""
                             }
@@ -240,6 +247,9 @@ fun showBottomDialog2(
                                 }
                                 isTrxValidAddress(binding.editAddress.text.toString()) -> {
                                     "TRX01"
+                                }
+                                isSolValidAddress(binding.editAddress.text.toString()) -> {
+                                    "SOL01"
                                 }
                                 else -> "ETH01"
                             }
@@ -290,9 +300,12 @@ fun showBottomDialog2(
                 isTrxValidAddress(binding.editAddress.text.toString()) -> {
                     3
                 }
-                else -> 4
+                isSolValidAddress(binding.editAddress.text.toString()) -> {
+                    4
+                }
+                else -> 6
             }
-            if (!isBtcValidAddress(data.address)&&!isEthValidAddress(data.address)&&!isTrxValidAddress(data.address)) {
+            if (data.type ==6) {
                 ToastUtils.showToastFree(activity, activity.getString(R.string.address_already_err))
                 return@setOnClickListener
             }
@@ -374,6 +387,12 @@ fun showBottomSan(
             3 -> {//btc
                 "BTC"
             }
+            4 -> {//btc
+                "SOL"
+            }
+            5 -> {//btc
+                "DOGE"
+            }
             else -> "SOL"
         }
         var isSame = false
@@ -443,6 +462,9 @@ fun showBottomSan(
                                         isTrxValidAddress(binding.tvAddress.text.toString()) -> {
                                             number = 3
                                         }
+                                        isSolValidAddress(binding.tvAddress.text.toString()) -> {
+                                            number = 4
+                                        }
                                     }
                                     var cout = 1
                                     myData.forEach {
@@ -460,6 +482,9 @@ fun showBottomSan(
                                         }
                                         isTrxValidAddress(binding.tvAddress.text.toString()) -> {
                                             "TRX" + String.format("%02d", cout)
+                                        }
+                                        isSolValidAddress(binding.tvAddress.text.toString()) -> {
+                                            "SOL" + String.format("%02d", cout)
                                         }
                                         else -> ""
                                     }
@@ -479,6 +504,9 @@ fun showBottomSan(
                                         }
                                         isTrxValidAddress(binding.tvAddress.text.toString()) -> {
                                             "TRX01"
+                                        }
+                                        isSolValidAddress(binding.tvAddress.text.toString()) -> {
+                                            "SOL01"
                                         }
                                         else -> "ETH01"
                                     }
@@ -500,9 +528,12 @@ fun showBottomSan(
                         isTrxValidAddress(binding.tvAddress.text.toString()) -> {
                             3
                         }
-                        else -> 4
+                        isSolValidAddress(binding.tvAddress.text.toString()) -> {
+                            4
+                        }
+                        else -> 6
                     }
-                    if (!isBtcValidAddress(data.address)&&!isEthValidAddress(data.address)&&!isTrxValidAddress(data.address)) {
+                    if (data.type ==6) {
                         ToastUtils.showToastFree(
                             activity,
                             activity.getString(R.string.address_already_err)
