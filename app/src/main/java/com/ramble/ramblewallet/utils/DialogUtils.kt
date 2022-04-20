@@ -682,6 +682,47 @@ fun showCurrencyDialog(
     }
 }
 
+/**
+ * 时间　: 2022/4/20 8:56
+ * 作者　: potato
+ * 描述　:货币选择弹窗
+ */
+fun showCommonDialog(
+    activity: Activity,
+    title : String,
+    confirmListener: View.OnClickListener? = null,
+    tvcListener: View.OnClickListener? = null,
+    btcListener: View.OnClickListener? = null
+): Dialog {
+    val binding: DialogDeleteConfirmTipsBinding =
+        LayoutInflater.from(activity).dataBinding(
+            R.layout.dialog_delete_confirm_tips
+        )
+
+    return AlertDialog.Builder(activity).create().apply {
+        show()
+        setContentView(binding.root)
+        window?.setGravity(Gravity.CENTER)
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        binding.tvContent.text=title
+        binding.btnConfirm.setOnClickListener {
+            dismiss()
+            confirmListener?.onClick(it)
+        }
+        binding.tvCancel.setOnClickListener {
+            tvcListener?.onClick(it)
+            dismiss()
+        }
+        binding.btnCancel.setOnClickListener {
+            btcListener?.onClick(it)
+            dismiss()
+        }
+    }
+}
 
 
 

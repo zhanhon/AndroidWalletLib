@@ -2,16 +2,10 @@ package com.ramble.ramblewallet.activity
 
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
-import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -175,38 +169,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun confirmTipsDialog() {
-        var dialog = AlertDialog.Builder(this).create()
-        dialog.show()
-        val window: Window? = dialog.window
-        if (window != null) {
-            window.setContentView(R.layout.dialog_delete_confirm_tips)
-            dialogCenterTheme(window)
-            window.findViewById<TextView>(R.id.tv_content).text =
-                getString(R.string.check_version)
-            window.findViewById<Button>(R.id.btn_cancel).setOnClickListener {
-                dialog.dismiss()
-            }
-            window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
-                dialog.dismiss()
-            }
-            window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
-                checkVersion()
-                dialog.dismiss()
-            }
-        }
-    }
-
-    private fun dialogCenterTheme(window: Window) {
-        //设置属性
-        val params = window.attributes
-        params.width = WindowManager.LayoutParams.MATCH_PARENT
-        //弹出一个窗口，让背后的窗口变暗一点
-        params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-        //dialog背景层
-        params.dimAmount = 0.5f
-        window.attributes = params
-        window.setGravity(Gravity.CENTER)
-        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        showCommonDialog(this,getString(R.string.check_version),confirmListener = {
+            checkVersion()
+        })
     }
 
     override fun onResume() {

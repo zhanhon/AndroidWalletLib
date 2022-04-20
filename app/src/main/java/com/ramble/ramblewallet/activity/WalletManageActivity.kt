@@ -1,19 +1,12 @@
 package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
-import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.RadioGroup
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -30,10 +23,7 @@ import com.ramble.ramblewallet.databinding.ActivityWalletManageBinding
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.utils.ClipboardUtils
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.ToastUtils
-import com.ramble.ramblewallet.utils.applyIo
+import com.ramble.ramblewallet.utils.*
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 
@@ -344,28 +334,14 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     }
 
     private fun deleteConfirmTipsDialog() {
-        var dialog = AlertDialog.Builder(this).create()
-        dialog.show()
-        val window: Window? = dialog.window
-        if (window != null) {
-            window.setContentView(R.layout.dialog_delete_confirm_tips)
-            dialogCenterTheme(window)
-
-            window.findViewById<Button>(R.id.btn_cancel).setOnClickListener {
-                dialog.dismiss()
-                isDeletePage = false
-                binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
-                binding.ivAddWallet.visibility = View.VISIBLE
-                loadData(walletManageBean)
-            }
-            window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
-                dialog.dismiss()
-            }
-            window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
-                btnConfirmSub()
-                dialog.dismiss()
-            }
-        }
+        showCommonDialog(this, getString(R.string.please_confirm_delete_wallet), confirmListener = {
+            btnConfirmSub()
+        }, btcListener = {
+            isDeletePage = false
+            binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
+            binding.ivAddWallet.visibility = View.VISIBLE
+            loadData(walletManageBean)
+        })
     }
 
     private fun btnConfirmSub() {
@@ -424,19 +400,6 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 Gson().toJson(myAllToken)
             )
         }
-    }
-
-    private fun dialogCenterTheme(window: Window) {
-        //设置属性
-        val params = window.attributes
-        params.width = WindowManager.LayoutParams.MATCH_PARENT
-        //弹出一个窗口，让背后的窗口变暗一点
-        params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-        //dialog背景层
-        params.dimAmount = 0.5f
-        window.attributes = params
-        window.setGravity(Gravity.CENTER)
-        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     @SuppressLint("CheckResult")

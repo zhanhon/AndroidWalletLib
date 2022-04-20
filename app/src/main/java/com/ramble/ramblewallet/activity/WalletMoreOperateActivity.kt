@@ -217,25 +217,10 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun deleteConfirmTipsDialog() {
-        var dialog = AlertDialog.Builder(this).create()
-        dialog.show()
-        val window: Window? = dialog.window
-        if (window != null) {
-            window.setContentView(R.layout.dialog_delete_confirm_tips)
-            dialogCenterTheme(window)
-
-            window.findViewById<Button>(R.id.btn_cancel).setOnClickListener {
-                dialog.dismiss()
-            }
-            window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
-                dialog.dismiss()
-            }
-            window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
-                btnConfirmSub()
-                dialog.dismiss()
-                finish()
-            }
-        }
+        showCommonDialog(this, getString(R.string.please_confirm_delete_wallet), confirmListener = {
+            btnConfirmSub()
+            finish()
+        })
     }
 
     private fun btnConfirmSub() {
@@ -283,19 +268,6 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             ISFINGERPRINT_KEY_COMMON,
             false
         ) || SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY_ALL, false)
-    }
-
-    private fun dialogCenterTheme(window: Window) {
-        //设置属性
-        val params = window.attributes
-        params.width = WindowManager.LayoutParams.MATCH_PARENT
-        //弹出一个窗口，让背后的窗口变暗一点
-        params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-        //dialog背景层
-        params.dimAmount = 0.5f
-        window.attributes = params
-        window.setGravity(Gravity.CENTER)
-        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private fun inputPasswordDialog(title: String) {
