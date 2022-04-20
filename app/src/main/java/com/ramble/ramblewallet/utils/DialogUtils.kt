@@ -296,10 +296,6 @@ fun showBottomDialog2(
                 ToastUtils.showToastFree(activity, activity.getString(R.string.address_already_err))
                 return@setOnClickListener
             }
-            if (data.type == 0) {
-                ToastUtils.showToastFree(activity, activity.getString(R.string.address_already_err))
-                return@setOnClickListener
-            }
             var myData2: ArrayList<MyAddressBean> = arrayListOf()
             if (SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
                     .isNotEmpty()
@@ -311,7 +307,6 @@ fun showBottomDialog2(
                     )
             }
             myData2.add(data)
-
             when (type) {
                 1 -> RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_UPDATA, data)
                 2 -> {
@@ -507,38 +502,7 @@ fun showBottomSan(
                         }
                         else -> 4
                     }
-                    if (isBtcValidAddress(data.address)) {
-                        if (data.address.length < 26) {
-                            ToastUtils.showToastFree(
-                                activity,
-                                activity.getString(R.string.address_already_err)
-                            )
-                            return@setOnClickListener
-                        }
-                    } else if (isEthValidAddress(data.address)) {
-                        if (data.address.length < 42) {
-                            ToastUtils.showToastFree(
-                                activity,
-                                activity.getString(R.string.address_already_err)
-                            )
-                            return@setOnClickListener
-                        }
-                    } else if (isTrxValidAddress(data.address)) {
-                        if (data.address.length < 34) {
-                            ToastUtils.showToastFree(
-                                activity,
-                                activity.getString(R.string.address_already_err)
-                            )
-                            return@setOnClickListener
-                        }
-                    } else {
-                        ToastUtils.showToastFree(
-                            activity,
-                            activity.getString(R.string.address_already_err)
-                        )
-                        return@setOnClickListener
-                    }
-                    if (data.type == 0) {
+                    if (!isBtcValidAddress(data.address)&&!isEthValidAddress(data.address)&&!isTrxValidAddress(data.address)) {
                         ToastUtils.showToastFree(
                             activity,
                             activity.getString(R.string.address_already_err)
