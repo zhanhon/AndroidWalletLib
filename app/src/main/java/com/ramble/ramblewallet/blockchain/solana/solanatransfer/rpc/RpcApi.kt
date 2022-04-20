@@ -8,6 +8,9 @@ import com.ramble.ramblewallet.blockchain.solana.solanatransfer.rpc.types.Recent
 import com.ramble.ramblewallet.blockchain.solana.solanatransfer.rpc.types.RpcResultTypes
 import com.ramble.ramblewallet.blockchain.solana.solanatransfer.rpc.types.config.Commitment
 import com.ramble.ramblewallet.blockchain.solana.solanatransfer.rpc.types.config.RpcSendTransactionConfig
+import com.solana.models.RPC
+import com.solana.models.TokenResultObjects
+import com.squareup.moshi.Types
 import kotlinx.serialization.builtins.serializer
 
 
@@ -60,14 +63,20 @@ class RpcApi(private val client: RpcClient) {
     }
 
     @Throws(RpcException::class)
-    fun getBalance(account: TransactionPublicKey, commitment: Commitment? = null): Long {
-
+    fun getBalance(account: TransactionPublicKey): Long {
         val params = mutableListOf<Any>()
         params.add(account.toString())
-
-        commitment?.let {
-            params.add(mapOf("commitment" to it.value))
-        }
         return client.call("getBalance", params, RpcResultTypes.ValueLong.serializer()).value
+    }
+
+    @Throws(RpcException::class)
+    fun getTokenBalance(account: TransactionPublicKey, commitment: Commitment? = null): Long {
+        val params = mutableListOf<Any>()
+        params.add(account.toString())
+        val type = Types.newParameterizedType(
+            RPC::class.java,
+            TokenResultObjects.TokenAmountInfo::class.java
+        )
+        return client.call("getTokenAccountBalance", params, RpcResultTypes.ValueLong.serializer()).value
     }
 }

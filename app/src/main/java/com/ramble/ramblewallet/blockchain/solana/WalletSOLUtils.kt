@@ -4,7 +4,7 @@ import android.util.Base64
 import android.util.Log
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.blockchain.solana.solanasdk.core.Account
-import com.ramble.ramblewallet.blockchain.solana.solanasdk.core.Account.Companion.privateKeyToWallet
+import com.solana.core.Account.Companion.privateKeyToWallet
 
 class WalletSOLUtils {
 

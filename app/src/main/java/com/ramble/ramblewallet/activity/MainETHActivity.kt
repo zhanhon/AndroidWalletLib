@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.text.InputFilter
 import android.view.*
 import android.widget.TextView
@@ -400,24 +401,22 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 })
             }
             R.id.iv_balance_refresh -> {
-                TransferSOLUtils.loadBalance()
-//                startSyncAnimation()
-//                Handler().postDelayed({
-//                    initData()
-//                }, 2000)
+                startSyncAnimation()
+                Handler().postDelayed({
+                    initData()
+                }, 2000)
             }
             R.id.iv_eyes -> {
-                TransferSOLUtils.makeTransfer()
-//                if (isClickEyes) {
-//                    binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_open)
-//                    binding.tvBalanceTotal.text =
-//                        strAddComma(DecimalFormatUtil.format(totalBalance, 2))
-//                    isClickEyes = false
-//                } else {
-//                    binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_close)
-//                    binding.tvBalanceTotal.text = "******"
-//                    isClickEyes = true
-//                }
+                if (isClickEyes) {
+                    binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_open)
+                    binding.tvBalanceTotal.text =
+                        strAddComma(DecimalFormatUtil.format(totalBalance, 2))
+                    isClickEyes = false
+                } else {
+                    binding.ivEyes.background = getDrawable(R.drawable.vector_home_address_close)
+                    binding.tvBalanceTotal.text = "******"
+                    isClickEyes = true
+                }
             }
             R.id.ll_copy_address -> {
                 ClipboardUtils.copy(walletSelleted.address, this)
