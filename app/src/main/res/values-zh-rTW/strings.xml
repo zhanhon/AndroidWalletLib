@@ -234,4 +234,7 @@
     <string name="fingerprint_success">指紋解鎖成功！</string>
     <string name="fingerprint_failed">指紋解鎖失敗！</string>
     <string name="check_version">將進行版本與更新\n請按確定後開始執行</string>
+    <string name="fingerprint_not_support">您的手機不支持指紋功能</string>
+    <string name="fingerprint_setting">您還未設置鎖屏，請先設置鎖屏並添加一個指紋</string>
+    <string name="fingerprint_need_add">您至少需要在系統設置中添加一個指紋</string>
 </resources>

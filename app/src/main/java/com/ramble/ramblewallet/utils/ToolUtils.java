@@ -11,6 +11,8 @@ import android.security.keystore.KeyProperties;
 
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 
+import com.ramble.ramblewallet.R;
+
 import java.security.KeyStore;
 
 import javax.crypto.Cipher;
@@ -41,15 +43,15 @@ public class ToolUtils {
             FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(mContext);
             //判断硬件是否支持指纹
             if (!fingerprintManager.isHardwareDetected()) {
-                ToastUtils.showToastFree(mContext, "您的手机不支持指纹功能");
+                ToastUtils.showToastFree(mContext, mContext.getString(R.string.fingerprint_not_support));
                 return false;
             } else if (!keyguardManager.isKeyguardSecure()) {
                 //判断是否处于安全保护中（你的设备必须是使用屏幕锁保护的，这个屏幕锁可以是password，PIN或者图案都行）  判断 是否开启锁屏密码
-                ToastUtils.showToastFree(mContext, "您还未设置锁屏，请先设置锁屏并添加一个指纹");
+                ToastUtils.showToastFree(mContext, mContext.getString(R.string.fingerprint_setting));
                 return false;
             } else if (!fingerprintManager.hasEnrolledFingerprints()) {
                 //设备支持指纹识别但是没有指纹数据
-                ToastUtils.showToastFree(mContext, "您至少需要在系统设置中添加一个指纹");
+                ToastUtils.showToastFree(mContext, mContext.getString(R.string.fingerprint_need_add));
                 return false;
             }
         }
