@@ -2,16 +2,12 @@ package com.ramble.ramblewallet.activity
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.text.InputFilter
 import android.view.*
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -25,7 +21,6 @@ import com.ramble.ramblewallet.bean.*
 import com.ramble.ramblewallet.blockchain.ethereum.TransferEthUtils
 import com.ramble.ramblewallet.blockchain.ethereum.TransferEthUtils.getBalanceETH
 import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils
-import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
 import com.ramble.ramblewallet.network.ApiResponse
@@ -523,55 +518,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         animator = null
     }
 
-    private fun showTransferGatheringDialog(mainETHTokenBean: MainETHTokenBean) {
-        var dialog = AlertDialog.Builder(this).create()
-        dialog.show()
-        val window: Window? = dialog.window
-        if (window != null) {
-            window.setContentView(R.layout.dialog_transfer_gathering)
-            window.setGravity(Gravity.BOTTOM)
-            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-            val tvTokenTitle = window.findViewById<TextView>(R.id.tv_currency_title)
-            val tvTransfer = window.findViewById<TextView>(R.id.tv_transfer)
-            val tvGathering = window.findViewById<TextView>(R.id.tv_gathering)
-
-            tvTokenTitle.text = mainETHTokenBean.symbol
-
-            tvTransfer.setOnClickListener {
-                startActivity(Intent(this, TransferActivity::class.java).apply {
-                    putExtra(ARG_PARAM2, mainETHTokenBean)
-                })
-                dialog.dismiss()
-            }
-            tvGathering.setOnClickListener {
-                if (mainETHTokenBean.symbol == "ETH") {
-                    startActivity(Intent(this, GatheringActivity::class.java).apply {
-                        putExtra(ARG_PARAM1, "ETH")
-                        putExtra(ARG_PARAM2, walletSelleted.address)
-                    })
-                } else {
-                    startActivity(Intent(this, GatheringActivity::class.java).apply {
-                        putExtra(ARG_PARAM1, "ETH-${mainETHTokenBean.symbol}")
-                        putExtra(ARG_PARAM2, walletSelleted.address)
-                    })
-                }
-                dialog.dismiss()
-            }
-
-            //设置属性
-            val params = window.attributes
-            params.width = WindowManager.LayoutParams.MATCH_PARENT
-            //弹出一个窗口，让背后的窗口变暗一点
-            params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-            //dialog背景层
-            params.dimAmount = 0.5f
-            window.attributes = params
-            //点击空白处不关闭dialog
-            dialog.show()
-        }
-    }
-
     @SuppressLint("CheckResult")
     private fun refreshData() {
         myAllToken = Gson().fromJson(
@@ -625,7 +571,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                         putExtra(ARG_PARAM2, adapter.getItem(position) as MainETHTokenBean)
                         putExtra(ARG_PARAM3, symbol)
                     })
-//                    showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
                 }
             }
             setBalanceETH(totalBalance)
