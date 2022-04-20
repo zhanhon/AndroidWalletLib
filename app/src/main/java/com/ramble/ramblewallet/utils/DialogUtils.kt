@@ -685,7 +685,7 @@ fun showCurrencyDialog(
 /**
  * 时间　: 2022/4/20 8:56
  * 作者　: potato
- * 描述　:货币选择弹窗
+ * 描述　:通用样式选择弹窗
  */
 fun showCommonDialog(
     activity: Activity,
