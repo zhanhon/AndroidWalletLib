@@ -70,7 +70,7 @@ fun showBottomDialog(
                 "TRX"
             }
             else -> {
-                "SOLANA"
+                "SOL"
             }
         }
         binding.tvCopy.setOnClickListener {
@@ -184,7 +184,7 @@ fun showBottomDialog2(
                         if (binding.editName.text.toString().isNotEmpty()) {
                             binding.editName.text.toString()
                         } else {
-                            var myData: ArrayList<MyAddressBean> =
+                            val myData: ArrayList<MyAddressBean> =
                                 Gson().fromJson(
                                     SharedPreferencesUtils.getString(
                                         MyApp.sInstance,
@@ -251,40 +251,33 @@ fun showBottomDialog2(
             if (SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
                     .isNotEmpty()
             ) {
-                var myData: ArrayList<MyAddressBean> =
+                val myData: ArrayList<MyAddressBean> =
                     Gson().fromJson(
                         SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, ""),
                         object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                     )
-                when (type) {
-                    1 -> {
-                        myData.forEach {
-                            if (it.userName != tvName && (it.userName == name || it.address == binding.editAddress.text.toString())) {
-                                ToastUtils.showToastFree(
-                                    activity,
-                                    activity.getString(R.string.address_already_exists)
-                                )
-                                return@setOnClickListener
-                            }
+                myData.forEach { bean->
+                    when (type) {
+                        1 -> if (bean.userName != tvName && (bean.userName == name || bean.address == binding.editAddress.text.toString())) {
+                            ToastUtils.showToastFree(
+                                activity,
+                                activity.getString(R.string.address_already_exists)
+                            )
+                            return@setOnClickListener
                         }
-                    }
-                    else -> {
-                        myData.forEach {
-                            if (it.address == binding.editAddress.text.toString() || it.userName == name) {
-                                ToastUtils.showToastFree(
-                                    activity,
-                                    activity.getString(R.string.address_already_exists)
-                                )
-                                return@setOnClickListener
-                            }
+                        else -> if (bean.address == binding.editAddress.text.toString() || bean.userName == name) {
+                            ToastUtils.showToastFree(
+                                activity,
+                                activity.getString(R.string.address_already_exists)
+                            )
+                            return@setOnClickListener
                         }
                     }
                 }
-
             }
 
             editListener?.onClick(it)
-            var data = MyAddressBean()
+            val data = MyAddressBean()
             data.address = binding.editAddress.text.toString()
             data.userName = name
             data.type = when {
@@ -299,31 +292,7 @@ fun showBottomDialog2(
                 }
                 else -> 4
             }
-            if (isBtcValidAddress(data.address)) {
-                if (data.address.length < 26) {
-                    ToastUtils.showToastFree(
-                        activity,
-                        activity.getString(R.string.address_already_err)
-                    )
-                    return@setOnClickListener
-                }
-            } else if (isEthValidAddress(data.address)) {
-                if (data.address.length < 42) {
-                    ToastUtils.showToastFree(
-                        activity,
-                        activity.getString(R.string.address_already_err)
-                    )
-                    return@setOnClickListener
-                }
-            } else if (isTrxValidAddress(data.address)) {
-                if (data.address.length < 34) {
-                    ToastUtils.showToastFree(
-                        activity,
-                        activity.getString(R.string.address_already_err)
-                    )
-                    return@setOnClickListener
-                }
-            } else {
+            if (!isBtcValidAddress(data.address)&&!isEthValidAddress(data.address)&&!isTrxValidAddress(data.address)) {
                 ToastUtils.showToastFree(activity, activity.getString(R.string.address_already_err))
                 return@setOnClickListener
             }
@@ -410,7 +379,7 @@ fun showBottomSan(
             3 -> {//btc
                 "BTC"
             }
-            else -> "SOLANA"
+            else -> "SOL"
         }
         var isSame = false
         var num = -1
@@ -459,7 +428,7 @@ fun showBottomSan(
                                 if (binding.editName.text.toString().isNotEmpty()) {
                                     binding.editName.text.toString()
                                 } else {
-                                    var myData: ArrayList<MyAddressBean> =
+                                    val myData: ArrayList<MyAddressBean> =
                                         Gson().fromJson(
                                             SharedPreferencesUtils.getString(
                                                 MyApp.sInstance,
@@ -642,6 +611,7 @@ fun showLanguageDialog(
         }
     }
 }
+
 /**
  * 时间　: 2022/4/19 15:52
  * 作者　: potato
@@ -689,7 +659,7 @@ fun showCurrencyDialog(
  */
 fun showCommonDialog(
     activity: Activity,
-    title : String,
+    title: String,
     confirmListener: View.OnClickListener? = null,
     tvcListener: View.OnClickListener? = null,
     btcListener: View.OnClickListener? = null
@@ -708,7 +678,7 @@ fun showCommonDialog(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
-        binding.tvContent.text=title
+        binding.tvContent.text = title
         binding.btnConfirm.setOnClickListener {
             dismiss()
             confirmListener?.onClick(it)
