@@ -63,7 +63,7 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
             WindowManager.LayoutParams.FLAG_SECURE,
             WindowManager.LayoutParams.FLAG_SECURE
         )
-        window.statusBarColor = ContextCompat.getColor(this, R.color.color_E11334)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.color_8565FF)
         //设置状态栏字体颜色，true:代表黑色，false代表白色
         StateUtils.setLightStatusBar(this, false)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main_sol)
