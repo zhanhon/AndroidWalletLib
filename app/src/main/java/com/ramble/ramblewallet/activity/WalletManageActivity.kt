@@ -39,9 +39,10 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var saveWalletListSorted: ArrayList<Wallet> = arrayListOf()
     private lateinit var walletSelleted: Wallet
-    private var times = 0
+    private var putAddressTimes = 0
     private var myAllToken: ArrayList<AllTokenBean> = arrayListOf()
     private var isFromMine = false
+    private var isWalletCurrency = false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -193,7 +194,6 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         }
     }
 
-    private var isWalletCurrency = false
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
         when (checkedId) {
             R.id.check_all -> {
@@ -203,55 +203,24 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 loadData(walletManageBean)
             }
             R.id.check_eth -> {
-                checkEth()
+                switchRadio(1)
             }
             R.id.check_btc -> {
-                checkBtc()
+                switchRadio(3)
             }
             R.id.check_trx -> {
-                checkTrx()
+                switchRadio(2)
+            }
+            R.id.check_sol -> {
+                switchRadio(4)
             }
         }
     }
 
-    private fun checkTrx() {
+    private fun switchRadio(walletType: Int) {
         walletManageCurrencyBean.clear()
         walletManageBean.forEach {
-            if (it.walletType == 2) {
-                walletManageCurrencyBean.add(it)
-            }
-        }
-        if (walletManageCurrencyBean.size == 0) {
-            binding.tvDefaultWallet.visibility = View.VISIBLE
-            binding.lyPullRefresh.visibility = View.GONE
-        } else {
-            binding.tvDefaultWallet.visibility = View.GONE
-            binding.lyPullRefresh.visibility = View.VISIBLE
-            loadData(walletManageCurrencyBean)
-        }
-    }
-
-    private fun checkBtc() {
-        walletManageCurrencyBean.clear()
-        walletManageBean.forEach {
-            if (it.walletType == 3) {
-                walletManageCurrencyBean.add(it)
-            }
-        }
-        if (walletManageCurrencyBean.size == 0) {
-            binding.tvDefaultWallet.visibility = View.VISIBLE
-            binding.lyPullRefresh.visibility = View.GONE
-        } else {
-            binding.tvDefaultWallet.visibility = View.GONE
-            binding.lyPullRefresh.visibility = View.VISIBLE
-            loadData(walletManageCurrencyBean)
-        }
-    }
-
-    private fun checkEth() {
-        walletManageCurrencyBean.clear()
-        walletManageBean.forEach {
-            if (it.walletType == 1) {
+            if (it.walletType == walletType) {
                 walletManageCurrencyBean.add(it)
             }
         }
@@ -326,6 +295,9 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 }
                 3 -> {
                     start(MainBTCActivity::class.java)
+                }
+                4 -> {
+                    start(MainSOLActivity::class.java)
                 }
             }
         }
@@ -412,9 +384,9 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 if (it.code() == 1) {
                     it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
                 } else {
-                    if (times < 3) {
+                    if (putAddressTimes < 3) {
                         putAddress(detailsList)
-                        times++
+                        putAddressTimes++
                     }
                     println("-=-=-=->putAddress:${it.message()}")
                 }

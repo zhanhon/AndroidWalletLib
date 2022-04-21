@@ -32,6 +32,7 @@ import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.blockchain.ethereum.TransferEthUtils.*
 import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils.transferSOL
+import com.ramble.ramblewallet.blockchain.solana.WalletSOLUtils
 import com.ramble.ramblewallet.blockchain.solana.solanatokentransfer.WebViewJavascriptBridge
 import com.ramble.ramblewallet.blockchain.tron.TransferTrxUtils.*
 import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils
@@ -191,7 +192,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         when (v.id) {
             R.id.iv_back -> {
                 backChoosePurpose()
-
             }
             R.id.iv_transfer_scan -> {
                 start(ScanActivity::class.java, Bundle().also {
@@ -226,7 +226,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             ToastUtils.showToastFree(this, getString(R.string.balance_insufficient))
             return true
         }
-        when (walletSelleted.walletType) { //链类型|1:ETH|2:TRX|3:BTC
+        when (walletSelleted.walletType) { //链类型|1:ETH|2:TRX|3:BTC|4:SOL
             1 -> {
                 if (!WalletETHUtils.isEthValidAddress(binding.edtReceiverAddress.text.toString())) {
                     ToastUtils.showToastFree(this, getString(R.string.address_already_err))
@@ -264,6 +264,12 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     return true
                 }
             }
+            4 -> {
+                if (!WalletSOLUtils.isSolValidAddress(binding.edtReceiverAddress.text.toString())) {
+                    ToastUtils.showToastFree(this, getString(R.string.address_already_err))
+                    return true
+                }
+            }
         }
         if (StrUtil.equalsIgnoreCase(
                 binding.tvWalletAddress.text.toString(),
@@ -297,6 +303,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
             3 -> {
                 start(MainBTCActivity::class.java)
+            }
+            4 -> {
+                start(MainSOLActivity::class.java)
             }
         }
     }
@@ -420,6 +429,10 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             3 -> {
                 binding.clMinerFee.visibility = View.VISIBLE
                 binding.edtReceiverAddress.hint = "BTC" + getString(R.string.address)
+            }
+            4 -> {
+                binding.clMinerFee.visibility = View.GONE
+                binding.edtReceiverAddress.hint = "SOL" + getString(R.string.address)
             }
         }
 

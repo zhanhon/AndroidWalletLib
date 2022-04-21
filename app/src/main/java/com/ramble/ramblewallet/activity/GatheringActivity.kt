@@ -82,6 +82,12 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
                 gatherTitle
             )
         }
+        if (gatherTitle.contains("SOL")) {
+            binding.tvGatheringTips.text = String.format(
+                getString(R.string.gathering_tips_btc),
+                gatherTitle
+            )
+        }
         binding.tvGatheringScanTips.text = String.format(
             getString(R.string.gathering_scan_tips),
             gatherTitle

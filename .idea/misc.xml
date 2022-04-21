@@ -5,11 +5,19 @@
       <map>
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/color_amount_b_commit.xml" value="0.2215" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/corner_all.xml" value="0.2185" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/selector_check_sol.xml" value="0.213" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/selector_check_trx.xml" value="0.213" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/shape_ios_cancel_btn.xml" value="0.205" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/shape_wallet_manage_btc.xml" value="0.213" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/shape_wallet_manage_doge.xml" value="0.213" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/shape_wallet_manage_sol.xml" value="0.213" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_about.xml" value="0.3605128205128205" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_mine.xml" value="0.36614583333333334" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_mine_item.xml" value="0.36614583333333334" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_transfer.xml" value="0.19322916666666667" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_update.xml" value="0.36793327154772937" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_wallet_manage.xml" value="0.35185185185185186" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_wallet_more_operate.xml" value="0.36614583333333334" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/dialog_ios_updata.xml" value="0.3619791666666667" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/dialog_update_progress.xml" value="0.19739583333333333" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/title_center.xml" value="0.3619791666666667" />

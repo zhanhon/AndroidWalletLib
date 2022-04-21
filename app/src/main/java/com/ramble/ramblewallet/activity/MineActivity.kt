@@ -319,6 +319,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             3 -> {
                 start(MainBTCActivity::class.java)
             }
+            4 -> {
+                start(MainSOLActivity::class.java)
+            }
         }
     }
 
@@ -345,6 +348,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                     }
                     3 -> {
                         start(MainBTCActivity::class.java)
+                    }
+                    4 -> {
+                        start(MainSOLActivity::class.java)
                     }
                 }
             }
