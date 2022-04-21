@@ -5,8 +5,10 @@ import com.solana.models.RPC
 import com.solana.models.TokenResultObjects
 import com.squareup.moshi.Types
 
-fun Api.getTokenLargestAccounts(tokenMint: PublicKey,
-                            onComplete: (Result<List<TokenResultObjects.TokenAccount>>) -> Unit) {
+fun Api.getTokenLargestAccounts(
+    tokenMint: PublicKey,
+    onComplete: (Result<List<TokenResultObjects.TokenAccount>>) -> Unit
+) {
     val params: MutableList<Any> = ArrayList()
     params.add(tokenMint.toString())
     val type = Types.newParameterizedType(
@@ -19,7 +21,7 @@ fun Api.getTokenLargestAccounts(tokenMint: PublicKey,
     router.request<RPC<List<TokenResultObjects.TokenAccount>>>(
         "getTokenLargestAccounts", params,
         type
-    ){ result ->
+    ) { result ->
         result.map {
             it.value!!
         }.onSuccess {

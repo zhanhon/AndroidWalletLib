@@ -3,7 +3,7 @@ package com.solana.models
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Block (
+data class Block(
     val blockTime: Long,
     val blockHeight: String?,
     val blockhash: String?,

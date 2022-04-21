@@ -28,6 +28,7 @@ public class ByteUtil {
 
     public static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
     public static final byte[] ZERO_BYTE_ARRAY = new byte[]{0};
+
     private ByteUtil() {
         throw new IllegalStateException("ByteUtil");
     }

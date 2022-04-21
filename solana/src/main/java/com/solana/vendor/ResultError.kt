@@ -1,7 +1,5 @@
 package com.solana.vendor
 
-import java.lang.Exception
-
 typealias ResultError = Exception
 
 sealed class Result<out A, out E : ResultError> {
@@ -44,11 +42,20 @@ sealed class Result<out A, out E : ResultError> {
             }
         }
 
-        fun <A, B, C, E : ResultError> map2(ra: Result<A, E>, rb: Result<B, E>, f: (A, B) -> C): Result<C, E> {
+        fun <A, B, C, E : ResultError> map2(
+            ra: Result<A, E>,
+            rb: Result<B, E>,
+            f: (A, B) -> C
+        ): Result<C, E> {
             return ra.flatMap { a -> rb.map { b -> f(a, b) } }
         }
 
-        fun <A, B, C, D, E : ResultError> map3(ra: Result<A, E>, rb: Result<B, E>, rc: Result<C, E>, f: (A, B, C) -> D): Result<D, E> {
+        fun <A, B, C, D, E : ResultError> map3(
+            ra: Result<A, E>,
+            rb: Result<B, E>,
+            rc: Result<C, E>,
+            f: (A, B, C) -> D
+        ): Result<D, E> {
             return ra.flatMap { a -> rb.flatMap { b -> rc.map { c -> f(a, b, c) } } }
         }
     }

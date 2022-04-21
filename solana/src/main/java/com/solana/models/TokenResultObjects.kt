@@ -10,7 +10,7 @@ class TokenResultObjects {
         @Json(name = "uiAmountString") var uiAmountString: String
     )
 
-    class TokenAccount (
+    class TokenAccount(
         @Json(name = "amount") val amount: String?,
         @Json(name = "decimals") val decimals: Int,
         @Json(name = "uiAmount") val uiAmount: Double?,
@@ -18,7 +18,7 @@ class TokenResultObjects {
         @Json(name = "address") val address: String?
     )
 
-    class TokenInfo (
+    class TokenInfo(
         @Json(name = "isNative")
         private val isNative: Boolean?,
 
@@ -35,7 +35,7 @@ class TokenResultObjects {
         private val tokenAmount: TokenAmountInfo?
     )
 
-    class ParsedData (
+    class ParsedData(
         @Json(name = "info")
         private val info: TokenInfo,
 
@@ -43,7 +43,7 @@ class TokenResultObjects {
         private val type: String
     )
 
-    class Data (
+    class Data(
         @Json(name = "parsed")
         private val parsed: ParsedData,
 

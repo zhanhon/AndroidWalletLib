@@ -77,6 +77,10 @@ class RpcApi(private val client: RpcClient) {
             RPC::class.java,
             TokenResultObjects.TokenAmountInfo::class.java
         )
-        return client.call("getTokenAccountBalance", params, RpcResultTypes.ValueLong.serializer()).value
+        return client.call(
+            "getTokenAccountBalance",
+            params,
+            RpcResultTypes.ValueLong.serializer()
+        ).value
     }
 }

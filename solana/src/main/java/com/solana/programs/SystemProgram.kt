@@ -4,12 +4,12 @@ import com.solana.core.AccountMeta
 import com.solana.core.PublicKey
 import com.solana.core.TransactionInstruction
 import org.bitcoinj.core.Utils
-import java.util.*
 
 object SystemProgram : Program() {
     val PROGRAM_ID = PublicKey("11111111111111111111111111111111")
     const val PROGRAM_INDEX_CREATE_ACCOUNT = 0
     const val PROGRAM_INDEX_TRANSFER = 2
+
     @JvmStatic
     fun transfer(
         fromPublicKey: PublicKey,

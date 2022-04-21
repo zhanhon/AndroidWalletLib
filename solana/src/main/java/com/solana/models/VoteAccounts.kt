@@ -6,9 +6,9 @@ import com.squareup.moshi.JsonClass
 data class VoteAccounts(
     val current: List<Value>,
     val delinquent: List<Value>,
-){
+) {
     @JsonClass(generateAdapter = true)
-    data class Value (
+    data class Value(
         val commission: Long,
         val epochVoteAccount: Boolean,
         val epochCredits: List<List<Long>>,

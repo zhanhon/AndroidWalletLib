@@ -21,31 +21,104 @@ class AccountTests {
     fun fromBip44Mnemonic() {
         val acc = Account.fromMnemonic(
             Arrays.asList(
-                "hint", "begin", "crowd", "dolphin", "drive", "render", "finger", "above", "sponsor", "prize", "runway", "invest", "dizzy", "pony", "bitter", "trial", "ignore", "crop", "please", "industry", "hockey", "wire", "use", "side"
+                "hint",
+                "begin",
+                "crowd",
+                "dolphin",
+                "drive",
+                "render",
+                "finger",
+                "above",
+                "sponsor",
+                "prize",
+                "runway",
+                "invest",
+                "dizzy",
+                "pony",
+                "bitter",
+                "trial",
+                "ignore",
+                "crop",
+                "please",
+                "industry",
+                "hockey",
+                "wire",
+                "use",
+                "side"
 
-            ), ""
-            , DerivationPath.BIP44_M_44H_501H_0H
+            ), "", DerivationPath.BIP44_M_44H_501H_0H
         )
-        Assert.assertEquals("G75kGJiizyFNdnvvHxkrBrcwLomGJT2CigdXnsYzrFHv", acc.publicKey.toString())
+        Assert.assertEquals(
+            "G75kGJiizyFNdnvvHxkrBrcwLomGJT2CigdXnsYzrFHv",
+            acc.publicKey.toString()
+        )
     }
 
     @Test
     fun fromBip44MnemonicChange() {
         val acc = Account.fromMnemonic(
             Arrays.asList(
-                "hint", "begin", "crowd", "dolphin", "drive", "render", "finger", "above", "sponsor", "prize", "runway", "invest", "dizzy", "pony", "bitter", "trial", "ignore", "crop", "please", "industry", "hockey", "wire", "use", "side"
+                "hint",
+                "begin",
+                "crowd",
+                "dolphin",
+                "drive",
+                "render",
+                "finger",
+                "above",
+                "sponsor",
+                "prize",
+                "runway",
+                "invest",
+                "dizzy",
+                "pony",
+                "bitter",
+                "trial",
+                "ignore",
+                "crop",
+                "please",
+                "industry",
+                "hockey",
+                "wire",
+                "use",
+                "side"
 
-            ), ""
-            , DerivationPath.BIP44_M_44H_501H_0H_OH
+            ), "", DerivationPath.BIP44_M_44H_501H_0H_OH
         )
-        Assert.assertEquals("AaXs7cLGcSVAsEt8QxstVrqhLhYN2iGhFNRemwYnHitV", acc.publicKey.toString())
+        Assert.assertEquals(
+            "AaXs7cLGcSVAsEt8QxstVrqhLhYN2iGhFNRemwYnHitV",
+            acc.publicKey.toString()
+        )
     }
 
     @Test
     fun fromMnemonic() {
         val acc: Account = Account.fromMnemonic(
             Arrays.asList(
-                "hint", "begin", "crowd", "dolphin", "drive", "render", "finger", "above", "sponsor", "prize", "runway", "invest", "dizzy", "pony", "bitter", "trial", "ignore", "crop", "please", "industry", "hockey", "wire", "use", "side"
+                "hint",
+                "begin",
+                "crowd",
+                "dolphin",
+                "drive",
+                "render",
+                "finger",
+                "above",
+                "sponsor",
+                "prize",
+                "runway",
+                "invest",
+                "dizzy",
+                "pony",
+                "bitter",
+                "trial",
+                "ignore",
+                "crop",
+                "please",
+                "industry",
+                "hockey",
+                "wire",
+                "use",
+                "side"
             ), ""
         )
         assertEquals("AaXs7cLGcSVAsEt8QxstVrqhLhYN2iGhFNRemwYnHitV", acc.publicKey.toString())
@@ -55,12 +128,37 @@ class AccountTests {
     fun fromDepricatedMnemonicChange() {
         val acc = Account.fromMnemonic(
             Arrays.asList(
-                "hint", "begin", "crowd", "dolphin", "drive", "render", "finger", "above", "sponsor", "prize", "runway", "invest", "dizzy", "pony", "bitter", "trial", "ignore", "crop", "please", "industry", "hockey", "wire", "use", "side"
+                "hint",
+                "begin",
+                "crowd",
+                "dolphin",
+                "drive",
+                "render",
+                "finger",
+                "above",
+                "sponsor",
+                "prize",
+                "runway",
+                "invest",
+                "dizzy",
+                "pony",
+                "bitter",
+                "trial",
+                "ignore",
+                "crop",
+                "please",
+                "industry",
+                "hockey",
+                "wire",
+                "use",
+                "side"
 
-            ), ""
-            , DerivationPath.DEPRECATED_M_501H_0H_0_0
+            ), "", DerivationPath.DEPRECATED_M_501H_0H_0_0
         )
-        Assert.assertEquals("8knQfbiYmUfwsfcSihzX9FMU64GCc5XWcfcZtyNCoHSB", acc.publicKey.toString())
+        Assert.assertEquals(
+            "8knQfbiYmUfwsfcSihzX9FMU64GCc5XWcfcZtyNCoHSB",
+            acc.publicKey.toString()
+        )
     }
 
     @Test

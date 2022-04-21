@@ -12,8 +12,8 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import org.junit.Test
 import org.junit.Assert.*
+import org.junit.Test
 import java.util.*
 
 class DecodingTests {
@@ -26,16 +26,23 @@ class DecodingTests {
 
     @Test
     fun testDecodingMetaplexMeta() {
-        val blobSrc = "BD8slOrgPZpL+5iD8MJBsTGY+esK0dZd8tlCX14LRmfREFsKKgyOBm9TbEDjhj2CcT+KPJFJ3acbYRLIqSsfsUkVAAAAU29sYW5pbWFsICMxOTYyIC0gQ2F0AAAAAD8AAABodHRwczovL2Fyd2VhdmUubmV0LzREVlNhUjU2V1RrV1Y4TnlvZ2U0LXRQWC1wOXJhSUJScHlZNEtxZVZlUDQAAAEBAAAAPyyU6uA9mkv7mIPwwkGxMZj56wrR1l3y2UJfXgtGZ9EBZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+        val blobSrc =
+            "BD8slOrgPZpL+5iD8MJBsTGY+esK0dZd8tlCX14LRmfREFsKKgyOBm9TbEDjhj2CcT+KPJFJ3acbYRLIqSsfsUkVAAAAU29sYW5pbWFsICMxOTYyIC0gQ2F0AAAAAD8AAABodHRwczovL2Fyd2VhdmUubmV0LzREVlNhUjU2V1RrV1Y4TnlvZ2U0LXRQWC1wOXJhSUJScHlZNEtxZVZlUDQAAAEBAAAAPyyU6uA9mkv7mIPwwkGxMZj56wrR1l3y2UJfXgtGZ9EBZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
 
         val borsh = borsh()
         val byteArray = Base64.getDecoder().decode(blobSrc)
 
         val data = borsh.deserialize(byteArray, MetaplexMeta::class.java)
-        assertEquals("5Fc7Zy7HgRatL8XhX5uqsUFEjGPop1uJXKrp3Ws7m1Tn", data.update_authority.toBase58())
+        assertEquals(
+            "5Fc7Zy7HgRatL8XhX5uqsUFEjGPop1uJXKrp3Ws7m1Tn",
+            data.update_authority.toBase58()
+        )
         assertEquals("26r3GfgqbjMTjZahNgnwa9AtbDg8x2E5AGwzw17KWRC4", data.mint.toBase58())
         assertEquals("Solanimal #1962 - Cat", data.data.name)
-        assertEquals("https://arweave.net/4DVSaR56WTkWV8Nyoge4-tPX-p9raIBRpyY4KqeVeP4", data.data.uri)
+        assertEquals(
+            "https://arweave.net/4DVSaR56WTkWV8Nyoge4-tPX-p9raIBRpyY4KqeVeP4",
+            data.data.uri
+        )
     }
 
     @Test
@@ -63,7 +70,40 @@ class DecodingTests {
     @Test
     fun testDecodingPublicKey() {
         val borsh = borsh()
-        val bytes = byteArrayOf( 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        val bytes = byteArrayOf(
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        )
         val key = PublicKey(bytes)
         assertEquals("CiDwVBFgWV9E5MvXWoLgnEgn2hK7rJikbvfWavzAQz3", key.toBase58())
         val serialized = borsh.serialize(key)

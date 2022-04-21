@@ -8,6 +8,7 @@ public class SharedPreferencesUtils {
 
     private static final String SP_NAME = "xz";
     private static SharedPreferences sp;
+
     private SharedPreferencesUtils() {
         throw new IllegalStateException("SharedPreferencesUtils");
     }

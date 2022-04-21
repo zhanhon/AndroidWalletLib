@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class SolanaVersion (
+data class SolanaVersion(
     @Json(name = "solana-core")
     val solanaCore: String,
 

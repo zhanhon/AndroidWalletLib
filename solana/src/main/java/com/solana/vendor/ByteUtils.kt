@@ -12,6 +12,7 @@ object ByteUtils {
     const val UINT_32_LENGTH = 4
     const val UINT_64_LENGTH = 8
     val HEX_ARRAY = "0123456789ABCDEF".toCharArray()
+
     @JvmStatic
     fun readBytes(buf: ByteArray, offset: Int, length: Int): ByteArray {
         val b = ByteArray(length)

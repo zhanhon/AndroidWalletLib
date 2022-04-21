@@ -41,6 +41,7 @@ public class DisplayHelper {
      * 是否有摄像头
      */
     private static Boolean sHasCamera = null;
+
     private DisplayHelper() {
         throw new IllegalStateException("DisplayHelper");
     }

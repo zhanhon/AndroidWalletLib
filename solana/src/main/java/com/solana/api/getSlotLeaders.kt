@@ -2,9 +2,10 @@ package com.solana.api
 
 import com.solana.core.PublicKey
 
-fun Api.getSlotLeaders(startSlot: Long,
-                   limit: Long,
-                   onComplete: (Result<List<PublicKey>>) -> Unit
+fun Api.getSlotLeaders(
+    startSlot: Long,
+    limit: Long,
+    onComplete: (Result<List<PublicKey>>) -> Unit
 ) {
     val params: MutableList<Any> = ArrayList()
     params.add(startSlot)
@@ -12,7 +13,7 @@ fun Api.getSlotLeaders(startSlot: Long,
     router.request<List<String>>(
         "getSlotLeaders", params,
         List::class.java
-    ){ result ->
+    ) { result ->
         result.map {
             it.filterNotNull()
         }.map {

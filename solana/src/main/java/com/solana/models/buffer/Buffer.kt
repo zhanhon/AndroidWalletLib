@@ -5,15 +5,15 @@ import com.solana.vendor.borshj.Borsh
 import com.solana.vendor.borshj.BorshCodable
 import java.util.*
 
-data class Buffer<T>(val value: T?){
+data class Buffer<T>(val value: T?) {
     companion object {
-        fun <T: BorshCodable>create(borsh: Borsh, rawData: Any, clazz: Class<T>): Buffer<T> {
+        fun <T : BorshCodable> create(borsh: Borsh, rawData: Any, clazz: Class<T>): Buffer<T> {
             if (rawData is String) {
                 return Buffer(clazz.cast(rawData))
             }
 
             val dataList = rawData as List<String>
-            if(dataList[0].isBlank() || dataList[0].length <= 0){
+            if (dataList[0].isBlank() || dataList[0].length <= 0) {
                 return Buffer(null)
             }
 

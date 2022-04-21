@@ -169,7 +169,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun confirmTipsDialog() {
-        showCommonDialog(this,getString(R.string.check_version),confirmListener = {
+        showCommonDialog(this, getString(R.string.check_version), confirmListener = {
             checkVersion()
         })
     }
@@ -453,15 +453,15 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun languageDialog() {
-        showLanguageDialog(this,cnListener = {
+        showLanguageDialog(this, cnListener = {
             SharedPreferencesUtils.saveString(this, LANGUAGE, CN)
             setLanguage()
             onResume()
-        },twListener = {
+        }, twListener = {
             SharedPreferencesUtils.saveString(this, LANGUAGE, TW)
             setLanguage()
             onResume()
-        },enListener = {
+        }, enListener = {
             SharedPreferencesUtils.saveString(this, LANGUAGE, EN)
             setLanguage()
             onResume()
@@ -469,13 +469,13 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun currencyDialog() {
-        showCurrencyDialog(this,cnyListener = {
+        showCurrencyDialog(this, cnyListener = {
             SharedPreferencesUtils.saveString(this, CURRENCY, CNY)
             binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = CNY
-        },hkdListener = {
+        }, hkdListener = {
             SharedPreferencesUtils.saveString(this, CURRENCY, HKD)
             binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = HKD
-        },usdListener = {
+        }, usdListener = {
             SharedPreferencesUtils.saveString(this, CURRENCY, USD)
             binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = USD
         })

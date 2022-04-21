@@ -1,13 +1,12 @@
 package com.solana.core
 
-import com.solana.models.buffer.Buffer
-import com.solana.models.buffer.Mint
 import com.solana.vendor.ByteUtils
 import com.solana.vendor.TweetNaclFast
-import com.solana.vendor.borshj.*
+import com.solana.vendor.borshj.BorshCodable
+import com.solana.vendor.borshj.BorshInput
+import com.solana.vendor.borshj.BorshOutput
+import com.solana.vendor.borshj.BorshRule
 import com.squareup.moshi.FromJson
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import org.bitcoinj.core.Base58
 import org.bitcoinj.core.Sha256Hash
 import java.io.ByteArrayOutputStream
@@ -16,9 +15,9 @@ import java.util.*
 
 class PublicKeyRule(
     override val clazz: Class<PublicKey> = PublicKey::class.java
-): BorshRule<PublicKey> {
+) : BorshRule<PublicKey> {
 
-    fun <Self>writeZeros(output: BorshOutput<Self>): Self{
+    fun <Self> writeZeros(output: BorshOutput<Self>): Self {
         return output.writeFixedArray(ByteArray(size = 32))
     }
 
@@ -26,16 +25,17 @@ class PublicKeyRule(
         return PublicKey(input.readFixedArray(32))
     }
 
-    override fun <Self>write(obj: Any, output: BorshOutput<Self>): Self {
-        val  publicKey = obj as PublicKey
+    override fun <Self> write(obj: Any, output: BorshOutput<Self>): Self {
+        val publicKey = obj as PublicKey
         return output.writeFixedArray(publicKey.toByteArray())
     }
 }
 
 data class PublicKey(val pubkey: ByteArray) : BorshCodable {
-    init{
+    init {
         require(pubkey.size <= PUBLIC_KEY_LENGTH) { "Invalid public key input" }
     }
+
     constructor(pubkeyString: String) : this(Base58.decode(pubkeyString))
 
     fun toByteArray(): ByteArray {

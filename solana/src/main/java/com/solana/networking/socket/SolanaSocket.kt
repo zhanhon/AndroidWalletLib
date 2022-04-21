@@ -10,7 +10,9 @@ import com.solana.models.buffer.moshi.TokenSwapInfoJsonAdapter
 import com.solana.networking.RPCEndpoint
 import com.solana.networking.models.RpcRequest
 import com.solana.networking.models.RpcResponse
-import com.solana.networking.socket.models.*
+import com.solana.networking.socket.models.LogsNotification
+import com.solana.networking.socket.models.SignatureNotification
+import com.solana.networking.socket.models.SocketMethod
 import com.solana.vendor.borshj.Borsh
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -19,10 +21,10 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.*
 import okio.ByteString
 
-sealed class SolanaSocketError: Exception() {
-    object disconnected: SolanaSocketError()
-    object couldNotSerialize: SolanaSocketError()
-    object couldNotWrite: SolanaSocketError()
+sealed class SolanaSocketError : Exception() {
+    object disconnected : SolanaSocketError()
+    object couldNotSerialize : SolanaSocketError()
+    object couldNotWrite : SolanaSocketError()
 }
 
 interface SolanaSocketEventsDelegate {
@@ -42,7 +44,7 @@ class SolanaSocket(
     private val endpoint: RPCEndpoint,
     private val client: OkHttpClient = OkHttpClient(),
     val enableDebugLogs: Boolean = false
-): WebSocketListener() {
+) : WebSocketListener() {
     private val TAG = "SOLANA_SOCKET"
     private var socket: WebSocket? = null
     private var delegate: SolanaSocketEventsDelegate? = null
@@ -52,6 +54,7 @@ class SolanaSocket(
         borsh.setRules(listOf(PublicKeyRule(), AccountInfoRule(), MintRule(), TokenSwapInfoRule()))
         return borsh
     }
+
     private val moshi: Moshi by lazy {
         Moshi.Builder()
             .add(PublicKeyJsonAdapter())
@@ -68,7 +71,7 @@ class SolanaSocket(
         client.dispatcher.executorService.shutdown()
     }
 
-    fun stop(){
+    fun stop() {
         socket?.cancel()
     }
 
@@ -143,79 +146,90 @@ class SolanaSocket(
     fun writeToSocket(request: RpcRequest): Result<String> {
         val rpcRequestJsonAdapter = moshi.adapter(RpcRequest::class.java)
         val json = rpcRequestJsonAdapter.toJson(request)
-        if(socket?.send(json) != true){ return Result.failure(SolanaSocketError.couldNotWrite) }
+        if (socket?.send(json) != true) {
+            return Result.failure(SolanaSocketError.couldNotWrite)
+        }
         return Result.success(request.id)
     }
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
-        if(enableDebugLogs) { println(TAG + " connected")}
+        if (enableDebugLogs) {
+            println(TAG + " connected")
+        }
         delegate?.connected()
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
 
-        if(enableDebugLogs) { println(TAG + " text: $text")}
+        if (enableDebugLogs) {
+            println(TAG + " text: $text")
+        }
         val responseJsonAdapter = moshi.adapter(Map::class.java)
         try {
             val dictJson = responseJsonAdapter.fromJson(text)
             val methodString = dictJson?.get("method")
             methodString?.let {
-                when(it){
+                when (it) {
                     SocketMethod.accountNotification.string -> {
-                        val subscriptionAdapter: JsonAdapter<RpcResponse<BufferInfo<AccountInfo>>> = moshi.adapter(
-                            Types.newParameterizedType(
-                                RpcResponse::class.java,
+                        val subscriptionAdapter: JsonAdapter<RpcResponse<BufferInfo<AccountInfo>>> =
+                            moshi.adapter(
                                 Types.newParameterizedType(
-                                    BufferInfo::class.java,
-                                    AccountInfo::class.java
+                                    RpcResponse::class.java,
+                                    Types.newParameterizedType(
+                                        BufferInfo::class.java,
+                                        AccountInfo::class.java
+                                    )
                                 )
                             )
-                        )
                         subscriptionAdapter.fromJson(text)?.let {
                             delegate?.accountNotification(it)
                         }
                     }
                     SocketMethod.signatureNotification.string -> {
-                        val subscriptionAdapter: JsonAdapter<RpcResponse<SignatureNotification>> = moshi.adapter(
-                            Types.newParameterizedType(
-                                RpcResponse::class.java,
-                                SignatureNotification::class.java
+                        val subscriptionAdapter: JsonAdapter<RpcResponse<SignatureNotification>> =
+                            moshi.adapter(
+                                Types.newParameterizedType(
+                                    RpcResponse::class.java,
+                                    SignatureNotification::class.java
+                                )
                             )
-                        )
                         subscriptionAdapter.fromJson(text)?.let {
                             delegate?.signatureNotification(it)
                         }
                     }
                     SocketMethod.logsNotification.string -> {
-                        val subscriptionAdapter: JsonAdapter<RpcResponse<LogsNotification>> = moshi.adapter(
-                            Types.newParameterizedType(
-                                RpcResponse::class.java,
-                                LogsNotification::class.java
+                        val subscriptionAdapter: JsonAdapter<RpcResponse<LogsNotification>> =
+                            moshi.adapter(
+                                Types.newParameterizedType(
+                                    RpcResponse::class.java,
+                                    LogsNotification::class.java
+                                )
                             )
-                        )
                         subscriptionAdapter.fromJson(text)?.let {
                             delegate?.logsNotification(it)
                         }
                     }
                     SocketMethod.programNotification.string -> {
-                        val subscriptionAdapter: JsonAdapter<RpcResponse<ProgramAccount<AccountInfo>>> = moshi.adapter(
-                            Types.newParameterizedType(
-                                RpcResponse::class.java,
+                        val subscriptionAdapter: JsonAdapter<RpcResponse<ProgramAccount<AccountInfo>>> =
+                            moshi.adapter(
                                 Types.newParameterizedType(
-                                    ProgramAccount::class.java,
-                                    AccountInfo::class.java
+                                    RpcResponse::class.java,
+                                    Types.newParameterizedType(
+                                        ProgramAccount::class.java,
+                                        AccountInfo::class.java
+                                    )
                                 )
                             )
-                        )
                         subscriptionAdapter.fromJson(text)?.let {
                             delegate?.programNotification(it)
                         }
 
                     }
-                    else -> { }
+                    else -> {
+                    }
                 }
             } ?: run {
-                if(dictJson?.get("result") is Double) {
+                if (dictJson?.get("result") is Double) {
                     val subscriptionAdapter: JsonAdapter<RpcResponse<Int>> = moshi.adapter(
                         Types.newParameterizedType(
                             RpcResponse::class.java,
@@ -227,7 +241,7 @@ class SolanaSocket(
                     }
                 }
 
-                if(responseJsonAdapter.fromJson(text)?.get("result") is Boolean){
+                if (responseJsonAdapter.fromJson(text)?.get("result") is Boolean) {
                     val unSubscriptionAdapter: JsonAdapter<RpcResponse<Boolean>> = moshi.adapter(
                         Types.newParameterizedType(
                             RpcResponse::class.java,
@@ -240,28 +254,36 @@ class SolanaSocket(
                 }
             }
 
-        } catch (error: java.lang.Exception){
+        } catch (error: java.lang.Exception) {
             delegate?.error(error)
         }
     }
 
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
-        if(enableDebugLogs) { println(TAG + " bytes")}
+        if (enableDebugLogs) {
+            println(TAG + " bytes")
+        }
 
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-        if(enableDebugLogs) { println(TAG + " closing")}
+        if (enableDebugLogs) {
+            println(TAG + " closing")
+        }
         delegate?.disconnecting(code, reason)
     }
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-        if(enableDebugLogs) { println(TAG + " closed")}
+        if (enableDebugLogs) {
+            println(TAG + " closed")
+        }
         delegate?.disconnected(code, reason)
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-        if(enableDebugLogs) { println(TAG + " failure")}
+        if (enableDebugLogs) {
+            println(TAG + " failure")
+        }
         delegate?.error(Exception(t))
     }
 }

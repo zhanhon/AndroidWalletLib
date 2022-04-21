@@ -20,7 +20,7 @@ class RpcResponse<T>(
     val params: Params<T>?
 )
 
-class Params<T> (
+class Params<T>(
     val result: RPC<T>?,
     val subscription: Int
 )

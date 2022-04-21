@@ -1,8 +1,5 @@
 package com.solana.core
 
-import java.util.ArrayList
-import java.util.HashMap
-
 class AccountKeysList {
     private val accounts: HashMap<String, AccountMeta>
     fun add(accountMeta: AccountMeta) {

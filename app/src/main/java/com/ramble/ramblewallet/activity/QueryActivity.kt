@@ -29,8 +29,8 @@ class QueryActivity : BaseActivity(), View.OnClickListener {
     private lateinit var adapter: MyAdapter
     private lateinit var binding: ActivityQueryBinding
     private lateinit var tokenBean: MainETHTokenBean
-    private lateinit var countAddress:String
-    private lateinit var symbol:String
+    private lateinit var countAddress: String
+    private lateinit var symbol: String
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,12 +65,12 @@ class QueryActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_back -> {
                 finish()
             }
-            R.id.tv_transfer->{
+            R.id.tv_transfer -> {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(ARG_PARAM2, tokenBean)
                 })
             }
-            R.id.tv_gathering->{
+            R.id.tv_gathering -> {
                 startActivity(Intent(this, GatheringActivity::class.java).apply {
                     putExtra(ARG_PARAM1, symbol)
                     putExtra(ARG_PARAM2, countAddress)
@@ -81,7 +81,7 @@ class QueryActivity : BaseActivity(), View.OnClickListener {
 
     class MyAdapter(fm: FragmentManager, activity: QueryActivity, address: String?) :
         FragmentPagerAdapter2(fm) {
-        private val address=address
+        private val address = address
         private val titles: Array<String> = arrayOf(
             activity.getString(R.string.all),
             activity.getString(R.string.cash_out),

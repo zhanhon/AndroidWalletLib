@@ -71,15 +71,18 @@ const val RATEINFO = "rate_info"
 const val ADDRESS_BOOK_INFO = "address_book_info"
 const val SELECTED_TOKENS = "selected_tokens"
 const val IS_CONFIRM_MNEMONIC = "is_confirm_mnemonic"
+
 /**
  * 是否设置指纹解锁key
  */
-const val ISFINGERPRINT_KEY="fingerprint_key"
+const val ISFINGERPRINT_KEY = "fingerprint_key"
+
 /**
  * 是否设置指纹解锁key
  */
-const val ISFINGERPRINT_KEY_ALL="fingerprint_key_all"
+const val ISFINGERPRINT_KEY_ALL = "fingerprint_key_all"
+
 /**
  * 是否设置指纹解锁key
  */
-const val ISFINGERPRINT_KEY_COMMON="fingerprint_key_common"
+const val ISFINGERPRINT_KEY_COMMON = "fingerprint_key_common"

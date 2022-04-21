@@ -266,7 +266,7 @@ fun showBottomDialog2(
                         SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, ""),
                         object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                     )
-                myData.forEach { bean->
+                myData.forEach { bean ->
                     when (type) {
                         1 -> if (bean.userName != tvName && (bean.userName == name || bean.address == binding.editAddress.text.toString())) {
                             ToastUtils.showToastFree(
@@ -305,7 +305,7 @@ fun showBottomDialog2(
                 }
                 else -> 6
             }
-            if (data.type ==6) {
+            if (data.type == 6) {
                 ToastUtils.showToastFree(activity, activity.getString(R.string.address_already_err))
                 return@setOnClickListener
             }
@@ -533,7 +533,7 @@ fun showBottomSan(
                         }
                         else -> 6
                     }
-                    if (data.type ==6) {
+                    if (data.type == 6) {
                         ToastUtils.showToastFree(
                             activity,
                             activity.getString(R.string.address_already_err)

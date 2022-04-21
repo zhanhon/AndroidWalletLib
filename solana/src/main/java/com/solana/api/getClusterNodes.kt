@@ -9,9 +9,9 @@ fun Api.getClusterNodes(onComplete: (Result<List<ClusterNode>>) -> Unit) {
         List::class.java
     ) { result ->   // List<AbstractMap>
         result.onSuccess {
-                onComplete(Result.success(it))
-            }.onFailure {
-                onComplete(Result.failure(it))
-            }
+            onComplete(Result.success(it))
+        }.onFailure {
+            onComplete(Result.failure(it))
+        }
     }
 }

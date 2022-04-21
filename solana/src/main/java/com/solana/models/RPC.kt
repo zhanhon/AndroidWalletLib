@@ -8,6 +8,6 @@ open class RPC<T>(
     open val value: T? = null
 ) {
     @JsonClass(generateAdapter = true)
-    class Context (val slot: Long)
+    class Context(val slot: Long)
 }
 

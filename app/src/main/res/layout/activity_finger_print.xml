@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,9 +43,9 @@
 
         <LinearLayout
             android:id="@+id/layout_shake_all"
-            android:layout_marginTop="@dimen/dp_10"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_60"
+            android:layout_marginTop="@dimen/dp_10"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -71,11 +72,12 @@
                 android:textOff=""
                 android:textOn="" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/layout_shake_common"
-            android:layout_marginTop="@dimen/dp_10"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_60"
+            android:layout_marginTop="@dimen/dp_10"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -102,10 +104,12 @@
                 android:textOff=""
                 android:textOn="" />
         </LinearLayout>
+
         <View
-            android:background="@color/white"
             android:layout_width="20dp"
-            android:layout_height="1dp"/>
+            android:layout_height="1dp"
+            android:background="@color/white" />
+
         <LinearLayout
             android:id="@+id/layout_shake"
             android:layout_width="match_parent"

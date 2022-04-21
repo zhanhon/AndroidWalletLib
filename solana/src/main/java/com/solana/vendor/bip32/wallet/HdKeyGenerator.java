@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2018 orogvany
- *
+ * <p>
  * Distributed under the MIT software license, see the accompanying file
  * LICENSE or https://opensource.org/licenses/mit-license.php
  */
@@ -20,6 +20,7 @@ import net.i2p.crypto.eddsa.spec.EdDSANamedCurveTable;
 import net.i2p.crypto.eddsa.spec.EdDSAParameterSpec;
 import net.i2p.crypto.eddsa.spec.EdDSAPrivateKeySpec;
 import net.i2p.crypto.eddsa.spec.EdDSAPublicKeySpec;
+
 import org.bouncycastle.math.ec.ECPoint;
 
 import java.math.BigInteger;
@@ -28,8 +29,8 @@ import java.util.Arrays;
 
 public class HdKeyGenerator {
 
-    private static final EdDSAParameterSpec ED25519SPEC = EdDSANamedCurveTable.getByName("ed25519");
     public static final String MASTER_PATH = "m";
+    private static final EdDSAParameterSpec ED25519SPEC = EdDSANamedCurveTable.getByName("ed25519");
 
     public HdAddress getAddressFromSeed(byte[] seed, SolanaCoin solanaCoin) {
 
@@ -48,7 +49,7 @@ public class HdKeyGenerator {
         BigInteger masterSecretKey = HdUtil.parse256(IL);
 
         //In case IL is 0 or >=n, the master key is invalid.
-        if ( masterSecretKey.compareTo(BigInteger.ZERO) == 0 || masterSecretKey.compareTo(Secp256k1.getN()) > 0) {
+        if (masterSecretKey.compareTo(BigInteger.ZERO) == 0 || masterSecretKey.compareTo(Secp256k1.getN()) > 0) {
             throw new RuntimeException("The master key is invalid");
         }
 
@@ -189,10 +190,9 @@ public class HdKeyGenerator {
     }
 
     private String getPath(String parentPath, long child, boolean isHardened) {
-        if(parentPath == null)
-        {
+        if (parentPath == null) {
             parentPath = MASTER_PATH;
         }
-        return parentPath + "/" + child + (isHardened ? "H":"");
+        return parentPath + "/" + child + (isHardened ? "H" : "");
     }
 }

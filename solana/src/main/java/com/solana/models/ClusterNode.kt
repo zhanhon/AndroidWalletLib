@@ -1,7 +1,6 @@
 package com.solana.models
 
 import com.solana.core.PublicKey
-import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)

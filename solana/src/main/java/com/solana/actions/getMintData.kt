@@ -10,13 +10,12 @@ import com.solana.vendor.ContResult
 import com.solana.vendor.Result
 import com.solana.vendor.ResultError
 import com.solana.vendor.flatMap
-import java.lang.RuntimeException
 
 fun Action.getMintData(
     mintAddress: PublicKey,
     programId: PublicKey = TokenProgram.PROGRAM_ID,
     onComplete: ((Result<Mint, Exception>) -> Unit)
-){
+) {
     this.api.getAccountInfo(mintAddress, Mint::class.java) {
         it.onSuccess { account ->
             if (account.owner != programId.toBase58()) {
@@ -40,7 +39,7 @@ fun Action.getMultipleMintDatas(
     mintAddresses: List<PublicKey>,
     programId: PublicKey = TokenProgram.PROGRAM_ID,
     onComplete: ((Result<Map<PublicKey, Mint>, Exception>) -> Unit)
-){
+) {
     ContResult<List<BufferInfo<Mint>>, ResultError> { cb ->
         this.api.getMultipleAccounts(mintAddresses, Mint::class.java) { result ->
             result.onSuccess {
@@ -50,15 +49,15 @@ fun Action.getMultipleMintDatas(
             }
         }
     }.flatMap { account ->
-        if(account.find { it.owner == programId.toBase58()} == null) {
+        if (account.find { it.owner == programId.toBase58() } == null) {
             return@flatMap ContResult.failure(ResultError("Invalid mint owner"))
         }
         val values = account.mapNotNull { it.data?.value }
-        if(values.size != mintAddresses.size) {
+        if (values.size != mintAddresses.size) {
             return@flatMap ContResult.failure(ResultError("Some of mint data are missing"))
         }
 
-        val mintDict = mutableMapOf<PublicKey,Mint>()
+        val mintDict = mutableMapOf<PublicKey, Mint>()
         mintAddresses.forEachIndexed { index, address ->
             mintDict[address] = values[index]
         }

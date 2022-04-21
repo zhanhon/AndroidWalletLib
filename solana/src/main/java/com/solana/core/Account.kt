@@ -73,16 +73,27 @@ class Account {
             val seed = MnemonicCode.toSeed(words, passphrase)
             val masterPrivateKey = HDKeyDerivation.createMasterPrivateKey(seed)
             val deterministicHierarchy = DeterministicHierarchy(masterPrivateKey)
-            val child = deterministicHierarchy[HDUtils.parsePath(DerivationPath.DEPRECATED_M_501H_0H_0_0.path), true, true]
+            val child =
+                deterministicHierarchy[HDUtils.parsePath(DerivationPath.DEPRECATED_M_501H_0H_0_0.path), true, true]
             val keyPair = TweetNaclFast.Signature.keyPair_fromSeed(child.privKeyBytes)
             return Account(keyPair)
         }
 
-        fun fromMnemonic(words: List<String>, passphrase: String, derivationPath: DerivationPath = DerivationPath.BIP44_M_44H_501H_0H_OH): Account {
-            return when (derivationPath){
-                is DerivationPath.DEPRECATED_M_501H_0H_0_0 -> fromDeprecatedMnemonic(words, passphrase)
+        fun fromMnemonic(
+            words: List<String>,
+            passphrase: String,
+            derivationPath: DerivationPath = DerivationPath.BIP44_M_44H_501H_0H_OH
+        ): Account {
+            return when (derivationPath) {
+                is DerivationPath.DEPRECATED_M_501H_0H_0_0 -> fromDeprecatedMnemonic(
+                    words,
+                    passphrase
+                )
                 is DerivationPath.BIP44_M_44H_501H_0H -> fromBip44Mnemonic(words, passphrase)
-                is DerivationPath.BIP44_M_44H_501H_0H_OH -> fromBip44MnemonicWithChange(words, passphrase)
+                is DerivationPath.BIP44_M_44H_501H_0H_OH -> fromBip44MnemonicWithChange(
+                    words,
+                    passphrase
+                )
             }
         }
 

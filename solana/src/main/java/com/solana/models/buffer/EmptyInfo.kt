@@ -5,7 +5,7 @@ import com.solana.vendor.borshj.BorshInput
 import com.solana.vendor.borshj.BorshOutput
 import com.solana.vendor.borshj.BorshRule
 
-class EmptyInfo: BorshCodable
+class EmptyInfo : BorshCodable
 
 class EmptyInfoRule(
     override val clazz: Class<EmptyInfo> = EmptyInfo::class.java

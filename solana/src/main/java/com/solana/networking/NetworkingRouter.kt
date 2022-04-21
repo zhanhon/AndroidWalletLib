@@ -77,6 +77,7 @@ class NetworkingRouter(
             override fun onFailure(call: Call, e: IOException) {
                 onComplete(Result.failure(RuntimeException(e)))
             }
+
             override fun onResponse(call: Call, response: Response) {
                 response.body?.let { body ->
                     val responses = body.string()

@@ -75,21 +75,21 @@ class CreateRecoverWalletActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun safetyDialog() {
-        showLanguageDialog(this,cnListener = {
+        showLanguageDialog(this, cnListener = {
             SharedPreferencesUtils.saveString(this, LANGUAGE, CN)
             setLanguage()
             val it = Intent(this, CreateRecoverWalletActivity::class.java)
             //清空任务栈确保当前打开activit为前台任务栈栈顶
             it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(it)
-        },twListener = {
+        }, twListener = {
             SharedPreferencesUtils.saveString(this, LANGUAGE, TW)
             setLanguage()
             val it = Intent(this, CreateRecoverWalletActivity::class.java)
             //清空任务栈确保当前打开activit为前台任务栈栈顶
             it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(it)
-        },enListener = {
+        }, enListener = {
             SharedPreferencesUtils.saveString(this, LANGUAGE, EN)
             setLanguage()
             val it = Intent(this, CreateRecoverWalletActivity::class.java)

@@ -54,11 +54,19 @@ class ContResult<out A, out E : ResultError>(val cont: Cont<Result<A, E>>) {
     }
 
     companion object {
-        fun <A, E : ResultError> pure(r: Result<A, E>): ContResult<A, E> = ContResult(Cont { cb -> cb(r) })
-        fun <A> success(a: A): ContResult<A, Nothing> = ContResult(Cont { cb -> cb(Result.success(a)) })
-        fun <E : ResultError> failure(e: E): ContResult<Nothing, E> = ContResult(Cont { cb -> cb(Result.failure(e)) })
+        fun <A, E : ResultError> pure(r: Result<A, E>): ContResult<A, E> =
+            ContResult(Cont { cb -> cb(r) })
 
-        fun <A> retry(attempts: Int, operation: () -> ContResult<A, Retry>): ContResult<A, ResultError> {
+        fun <A> success(a: A): ContResult<A, Nothing> =
+            ContResult(Cont { cb -> cb(Result.success(a)) })
+
+        fun <E : ResultError> failure(e: E): ContResult<Nothing, E> =
+            ContResult(Cont { cb -> cb(Result.failure(e)) })
+
+        fun <A> retry(
+            attempts: Int,
+            operation: () -> ContResult<A, Retry>
+        ): ContResult<A, ResultError> {
             return operation().recover {
                 when (it) {
                     is Retry.retry -> if (attempts > 0) retry(
@@ -70,11 +78,19 @@ class ContResult<out A, out E : ResultError>(val cont: Cont<Result<A, E>>) {
             }
         }
 
-        fun <A, B, C, E : ResultError> map2(ra: ContResult<A, E>, rb: ContResult<B, E>, f: (A, B) -> C): ContResult<C, E> {
+        fun <A, B, C, E : ResultError> map2(
+            ra: ContResult<A, E>,
+            rb: ContResult<B, E>,
+            f: (A, B) -> C
+        ): ContResult<C, E> {
             return ra.flatMap { a -> rb.map { b -> f(a, b) } }
         }
 
-        fun <A, B, C, E : ResultError> flatMap2(ra: ContResult<A, E>, rb: ContResult<B, E>, f: (A, B) -> ContResult<C, E>): ContResult<C, E> {
+        fun <A, B, C, E : ResultError> flatMap2(
+            ra: ContResult<A, E>,
+            rb: ContResult<B, E>,
+            f: (A, B) -> ContResult<C, E>
+        ): ContResult<C, E> {
             return ra.flatMap { a -> rb.flatMap { b -> f(a, b) } }
         }
     }

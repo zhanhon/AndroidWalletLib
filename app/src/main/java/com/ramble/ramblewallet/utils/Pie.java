@@ -47,6 +47,7 @@ public class Pie {
      * 收到消息，刷新接口
      */
     public static final int EVENT_PUSH_MSG = 2011;
+
     private Pie() {
         throw new IllegalStateException("Pie");
     }

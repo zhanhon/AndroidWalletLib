@@ -1,7 +1,6 @@
 package com.ramble.ramblewallet.utils
 
 import io.reactivex.*
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -12,7 +11,6 @@ import io.reactivex.schedulers.Schedulers
  * 作者　: potato
  * 描述　:
  */
-
 
 
 operator fun CompositeDisposable.plusAssign(disposable: Disposable) {

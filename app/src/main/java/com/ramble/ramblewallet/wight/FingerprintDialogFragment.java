@@ -10,12 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 import androidx.core.os.CancellationSignal;
 import androidx.fragment.app.DialogFragment;
 
 import com.ramble.ramblewallet.R;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -36,6 +38,7 @@ public class FingerprintDialogFragment extends DialogFragment {
      * 标识是否是用户主动取消的认证。
      */
     private boolean isSelfCancelled;
+    private OnFingerprintSetting onFingerprintSetting;
 
     public void setCipher(Cipher cipher) {
         mCipher = cipher;
@@ -51,7 +54,7 @@ public class FingerprintDialogFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        fingerprintManager = getContext().getSystemService(FingerprintManager.class);
-        fingerprintManagerCompat =  FingerprintManagerCompat.from(mActivity);
+        fingerprintManagerCompat = FingerprintManagerCompat.from(mActivity);
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Material_Light_Dialog);
     }
 
@@ -93,6 +96,29 @@ public class FingerprintDialogFragment extends DialogFragment {
 
     }
 
+    private void stopListening() {
+        if (mCancellationSignal != null) {
+            mCancellationSignal.cancel();
+            mCancellationSignal = null;
+            isSelfCancelled = true;
+        }
+    }
+
+    public void setOnFingerprintSetting(
+            OnFingerprintSetting onFingerprintSetting) {
+        this.onFingerprintSetting = onFingerprintSetting;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopListening();
+    }
+
+    public interface OnFingerprintSetting {
+        void onFingerprint(boolean isSucceed);
+    }
+
     public class MyCallBack extends FingerprintManagerCompat.AuthenticationCallback {
 
         // 当出现错误的时候回调此函数，比如多次尝试都失败了的时候，errString是错误信息
@@ -100,10 +126,10 @@ public class FingerprintDialogFragment extends DialogFragment {
         public void onAuthenticationError(int errMsgId, CharSequence errString) {
             if (!isSelfCancelled) {
                 errorMsg.setText(errString);
-                Log.e("TAG", "errMsgId="+errMsgId);
-                Toast.makeText(mActivity, "errMsgId="+errMsgId, Toast.LENGTH_SHORT).show();
+                Log.e("TAG", "errMsgId=" + errMsgId);
+                Toast.makeText(mActivity, "errMsgId=" + errMsgId, Toast.LENGTH_SHORT).show();
                 if (errMsgId == FingerprintManager.FINGERPRINT_ERROR_LOCKOUT) {
-                    Log.e("TAG", ""+errString);
+                    Log.e("TAG", "" + errString);
                     dismiss();
                 }
             }
@@ -120,7 +146,7 @@ public class FingerprintDialogFragment extends DialogFragment {
         @Override
         public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
             errorMsg.setText(helpString);
-            Log.e("TAG", "helpString="+helpString);
+            Log.e("TAG", "helpString=" + helpString);
         }
 
         // 当验证的指纹成功时会回调此函数，然后不再监听指纹sensor
@@ -134,36 +160,10 @@ public class FingerprintDialogFragment extends DialogFragment {
             } catch (IllegalBlockSizeException e) {
                 e.printStackTrace();
             }
-            if(onFingerprintSetting!=null) {
+            if (onFingerprintSetting != null) {
                 onFingerprintSetting.onFingerprint(true);
             }
             dismiss();
         }
-    }
-
-    private void stopListening() {
-        if (mCancellationSignal != null) {
-            mCancellationSignal.cancel();
-            mCancellationSignal = null;
-            isSelfCancelled = true;
-        }
-    }
-
-    private OnFingerprintSetting onFingerprintSetting;
-
-    public void setOnFingerprintSetting(
-            OnFingerprintSetting onFingerprintSetting) {
-        this.onFingerprintSetting = onFingerprintSetting;
-    }
-
-    public interface OnFingerprintSetting{
-        void onFingerprint(boolean isSucceed);
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        stopListening();
     }
 }

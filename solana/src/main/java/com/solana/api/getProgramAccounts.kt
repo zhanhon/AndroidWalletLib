@@ -2,34 +2,38 @@ package com.solana.api
 
 import com.solana.core.PublicKey
 import com.solana.models.*
-import com.solana.models.buffer.BufferInfo
-import com.solana.vendor.borshj.Borsh
 import com.solana.vendor.borshj.BorshCodable
 import com.squareup.moshi.Types
 import java.lang.reflect.Type
 import java.util.function.Consumer
 
-fun <T: BorshCodable>Api.getProgramAccounts(
+fun <T : BorshCodable> Api.getProgramAccounts(
     account: PublicKey,
     offset: Long,
     bytes: String,
     decodeTo: Class<T>,
     onComplete: (Result<List<ProgramAccount<T>>>) -> Unit
-){
+) {
     val filters: MutableList<Any> = ArrayList()
     filters.add(Filter(Memcmp(offset, bytes)))
     val programAccountConfig = ProgramAccountConfig(filters = filters)
     return getProgramAccounts(account, programAccountConfig, decodeTo, onComplete)
 }
 
-fun <T: BorshCodable> Api.getProgramAccounts(account: PublicKey,
-                               decodeTo: Class<T>,
-                               onComplete: (Result<List<ProgramAccount<T>>>) -> Unit
+fun <T : BorshCodable> Api.getProgramAccounts(
+    account: PublicKey,
+    decodeTo: Class<T>,
+    onComplete: (Result<List<ProgramAccount<T>>>) -> Unit
 ) {
-    return getProgramAccounts(account, ProgramAccountConfig(RpcSendTransactionConfig.Encoding.base64), decodeTo, onComplete)
+    return getProgramAccounts(
+        account,
+        ProgramAccountConfig(RpcSendTransactionConfig.Encoding.base64),
+        decodeTo,
+        onComplete
+    )
 }
 
-private fun <T: BorshCodable> Api.getProgramAccounts(
+private fun <T : BorshCodable> Api.getProgramAccounts(
     account: PublicKey,
     programAccountConfig: ProgramAccountConfig?,
     decodeTo: Class<T>,
@@ -50,7 +54,7 @@ private fun <T: BorshCodable> Api.getProgramAccounts(
     router.request<List<ProgramAccount<T>>>(
         "getProgramAccounts", params,
         type
-    ){ result ->
+    ) { result ->
         result.onSuccess {
             onComplete(Result.success(it))
         }.onFailure {
@@ -59,7 +63,7 @@ private fun <T: BorshCodable> Api.getProgramAccounts(
     }
 }
 
-fun <T :BorshCodable> Api.getProgramAccounts(
+fun <T : BorshCodable> Api.getProgramAccounts(
     account: PublicKey,
     memcmpList: List<Memcmp>,
     dataSize: Int,
@@ -100,10 +104,11 @@ fun <T :BorshCodable> Api.getProgramAccounts(
     }
 }
 
-fun <T :BorshCodable>Api.getProgramAccounts(account: PublicKey,
-                                            memcmpList: List<Memcmp>,
-                                            decodeTo: Class<T>,
-                                            onComplete: (Result<List<ProgramAccount<T>>>) -> Unit
+fun <T : BorshCodable> Api.getProgramAccounts(
+    account: PublicKey,
+    memcmpList: List<Memcmp>,
+    decodeTo: Class<T>,
+    onComplete: (Result<List<ProgramAccount<T>>>) -> Unit
 ) {
     val params: MutableList<Any> = ArrayList()
     params.add(account.toString())
@@ -129,7 +134,7 @@ fun <T :BorshCodable>Api.getProgramAccounts(account: PublicKey,
     router.request<List<ProgramAccount<T>>>(
         "getProgramAccounts", params,
         type
-    ){ result ->
+    ) { result ->
         result.onSuccess {
             onComplete(Result.success(it))
         }.onFailure {

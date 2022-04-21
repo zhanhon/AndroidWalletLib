@@ -181,10 +181,10 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             //生成一个Cipher对象
             cipher = ToolUtils.initCipher()
         }
-        cipher?.let { showFingerPrintDialog(it,title) }
+        cipher?.let { showFingerPrintDialog(it, title) }
     }
 
-    private fun showFingerPrintDialog(cipher: Cipher,title: String) {
+    private fun showFingerPrintDialog(cipher: Cipher, title: String) {
         val dialogFragment = FingerprintDialogFragment()
         dialogFragment.setCipher(cipher)
         dialogFragment.show(supportFragmentManager, "fingerprint")

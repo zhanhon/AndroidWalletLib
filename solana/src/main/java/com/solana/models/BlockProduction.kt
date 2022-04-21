@@ -7,13 +7,13 @@ data class BlockProduction(
     val value: BlockProductionValue
 ) {
     @JsonClass(generateAdapter = true)
-    data class BlockProductionRange (
+    data class BlockProductionRange(
         val firstSlot: Long,
         val lastSlot: Long
     )
 
     @JsonClass(generateAdapter = true)
-    data class BlockProductionValue (
+    data class BlockProductionValue(
         val byIdentity: Map<String, List<Double>>?,
         val blockProductionRange: BlockProductionRange?
     )

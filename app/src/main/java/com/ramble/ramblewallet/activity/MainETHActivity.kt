@@ -7,7 +7,9 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.text.InputFilter
-import android.view.*
+import android.view.KeyEvent
+import android.view.View
+import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -564,8 +566,8 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             mainAdapter = MainAdapter(mainETHTokenBean)
             binding.rvCurrency.adapter = mainAdapter
             mainAdapter.setOnItemClickListener { adapter, _, position ->
-                 if (adapter.getItem(position) is MainETHTokenBean) {
-                     var symbol=(adapter.getItem(position) as MainETHTokenBean).title
+                if (adapter.getItem(position) is MainETHTokenBean) {
+                    var symbol = (adapter.getItem(position) as MainETHTokenBean).title
                     startActivity(Intent(this, QueryActivity::class.java).apply {
                         putExtra(ARG_PARAM1, walletSelleted.address)
                         putExtra(ARG_PARAM2, adapter.getItem(position) as MainETHTokenBean)

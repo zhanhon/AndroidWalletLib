@@ -8,7 +8,7 @@ data class SimulatedTransaction(
 ) : RPC<SimulatedTransaction.Value>(null, value) {
 
     @JsonClass(generateAdapter = true)
-    class Value (
+    class Value(
         val accounts: List<SimulatedAccount.Value>,
         val logs: List<String>,
     )
@@ -20,9 +20,9 @@ data class SimulatedAccount(
 ) : RPC<SimulatedAccount.Value>(null, value) {
 
     @JsonClass(generateAdapter = true)
-    class Value (
+    class Value(
         val data: List<String>,
-        val executable:Boolean,
+        val executable: Boolean,
         val lamports: Long,
         val owner: String?,
         val rentEpoch: Long,

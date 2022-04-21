@@ -2,14 +2,11 @@ package com.solana.models.buffer
 
 import com.solana.core.PublicKey
 import com.solana.core.PublicKeyRule
-import com.solana.models.RPC
-import com.solana.models.TokenAccountInfo
 import com.solana.vendor.borshj.BorshCodable
 import com.solana.vendor.borshj.BorshInput
 import com.solana.vendor.borshj.BorshOutput
 import com.solana.vendor.borshj.BorshRule
 import com.squareup.moshi.JsonClass
-import java.lang.Exception
 
 @JsonClass(generateAdapter = true)
 data class AccountInfo(

@@ -54,7 +54,7 @@ public class WalletTRXUtils {
             return new Wallet(walletname, walletPassword, mnemonic, address, privateKey, keystore, 2, mnemonicList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Wallet("", "", "", "", "", "",  2, null);
+            return new Wallet("", "", "", "", "", "", 2, null);
         }
     }
 

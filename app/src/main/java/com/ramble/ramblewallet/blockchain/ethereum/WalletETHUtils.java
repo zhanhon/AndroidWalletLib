@@ -1,10 +1,8 @@
 package com.ramble.ramblewallet.blockchain.ethereum;
 
 import static org.web3j.crypto.Keys.ADDRESS_LENGTH_IN_HEX;
-import static org.web3j.crypto.Keys.PRIVATE_KEY_LENGTH_IN_HEX;
 
 import com.develop.mnemonic.KeyPairUtils;
-import com.develop.mnemonic.MnemonicUtils;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,19 +10,13 @@ import com.ramble.ramblewallet.bean.Wallet;
 import com.ramble.ramblewallet.blockchain.ethereum.utils.EthUtils;
 
 import org.web3j.crypto.CipherException;
-import org.web3j.crypto.Credentials;
 import org.web3j.crypto.ECKeyPair;
-import org.web3j.crypto.Hash;
-import org.web3j.crypto.Keys;
 import org.web3j.crypto.WalletFile;
 import org.web3j.utils.Numeric;
 
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.util.List;
 
 /**
@@ -84,7 +76,7 @@ public class WalletETHUtils {
             return new Wallet(walletname, walletPassword, null, address, privateKey, keyStore, 1, mnemonicList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Wallet("", "", "", "","", "", 1, null);
+            return new Wallet("", "", "", "", "", "", 1, null);
         }
     }
 
@@ -107,7 +99,7 @@ public class WalletETHUtils {
             return new Wallet(walletname, walletPassword, null, address, keystore, keyStore, 1, mnemonicList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Wallet("", "", "", "","", "", 1, null);
+            return new Wallet("", "", "", "", "", "", 1, null);
         }
     }
 

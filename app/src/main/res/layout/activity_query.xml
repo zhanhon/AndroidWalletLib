@@ -43,7 +43,8 @@
                 tools:text="25323232323" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout style="@style/MatchWrap"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            style="@style/MatchWrap"
             android:layout_weight="1">
 
             <com.ramble.ramblewallet.wight.MySmartTabLayout
@@ -91,13 +92,15 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <LinearLayout
             android:id="@+id/trans_view"
-            app:layout_constraintTop_toBottomOf="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="10dp">
+            android:paddingBottom="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/pager">
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -122,8 +125,8 @@
                 android:id="@+id/tv_gathering"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:gravity="center"
                 android:background="@color/white"
+                android:gravity="center"
                 android:text="@string/gathering"
                 android:textColor="@color/color_000000"
                 android:textSize="@dimen/sp_15" />

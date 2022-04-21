@@ -138,18 +138,18 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         }
     }
 
-    private fun selectData(idButton:Int){
+    private fun selectData(idButton: Int) {
         myDataBeans = arrayListOf()
         myData.forEach {
-            when(idButton){
-                0-> myDataBeans.add(it)
-                1-> if (it.type == 2) {
+            when (idButton) {
+                0 -> myDataBeans.add(it)
+                1 -> if (it.type == 2) {
                     myDataBeans.add(it)
                 }
-                2->  if (it.type == 1) {
+                2 -> if (it.type == 1) {
                     myDataBeans.add(it)
                 }
-                else-> if (it.type == idButton) {
+                else -> if (it.type == idButton) {
                     myDataBeans.add(it)
                 }
             }

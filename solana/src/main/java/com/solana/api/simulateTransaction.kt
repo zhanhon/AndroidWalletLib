@@ -15,7 +15,8 @@ fun Api.simulateTransaction(
     val base58addresses = addresses.map(PublicKey::toBase58)
     val accounts = mapOf(
         "encoding" to RpcSendTransactionConfig.Encoding.base64.getEncoding(),
-        "addresses" to base58addresses)
+        "addresses" to base58addresses
+    )
     simulateTransactionConfig.accounts = accounts
     simulateTransactionConfig.replaceRecentBlockhash = true
     val params: MutableList<Any> = ArrayList()

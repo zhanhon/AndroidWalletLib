@@ -1,10 +1,13 @@
 package com.solana.api
 
 import com.solana.models.RecentBlockhash
-import java.lang.RuntimeException
 
 fun Api.getRecentBlockhash(onComplete: ((Result<String>) -> Unit)) {
-    return router.request<RecentBlockhash>("getRecentBlockhash", null, RecentBlockhash::class.java){ result ->
+    return router.request<RecentBlockhash>(
+        "getRecentBlockhash",
+        null,
+        RecentBlockhash::class.java
+    ) { result ->
         result.onSuccess { recentBlockHash ->
             onComplete(Result.success(recentBlockHash.value.blockhash))
             return@request

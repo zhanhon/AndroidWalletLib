@@ -3,7 +3,6 @@ package com.solana.core
 import com.solana.vendor.ShortvecEncoding
 import org.bitcoinj.core.Base58
 import java.nio.ByteBuffer
-import java.util.*
 
 class Message {
     private class MessageHeader {
@@ -86,13 +85,16 @@ class Message {
         for (accountMeta in keysList) {
             accountKeysBuff.put(accountMeta.publicKey.toByteArray())
             if (accountMeta.isSigner) {
-                messageHeader.numRequiredSignatures = (messageHeader.numRequiredSignatures.plus(1)).toByte()
+                messageHeader.numRequiredSignatures =
+                    (messageHeader.numRequiredSignatures.plus(1)).toByte()
                 if (!accountMeta.isWritable) {
-                    messageHeader.numReadonlySignedAccounts = (messageHeader.numReadonlySignedAccounts.plus(1)).toByte()
+                    messageHeader.numReadonlySignedAccounts =
+                        (messageHeader.numReadonlySignedAccounts.plus(1)).toByte()
                 }
             } else {
                 if (!accountMeta.isWritable) {
-                    messageHeader.numReadonlyUnsignedAccounts= (messageHeader.numReadonlyUnsignedAccounts.plus(1)).toByte()
+                    messageHeader.numReadonlyUnsignedAccounts =
+                        (messageHeader.numReadonlyUnsignedAccounts.plus(1)).toByte()
                 }
             }
         }

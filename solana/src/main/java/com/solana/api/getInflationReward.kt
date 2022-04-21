@@ -20,7 +20,7 @@ fun Api.getInflationReward(
     router.request<List<InflationReward>>(
         "getInflationReward", params,
         List::class.java
-    ){ result ->
+    ) { result ->
         result.onSuccess {
             onComplete(Result.success(it))
         }.onFailure {

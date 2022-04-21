@@ -34,10 +34,12 @@ public class TrxApi {
      * T开头地址
      */
     private String addressT;
+
     public TrxApi(String addressNumber, String prikeyHex) {
         this.addressNumber = addressNumber;
         this.prikeyHex = prikeyHex;
     }
+
     public TrxApi(String addressNumber, String addressT, String prikeyHex) {
         this.addressNumber = addressNumber;
         this.addressT = addressT;

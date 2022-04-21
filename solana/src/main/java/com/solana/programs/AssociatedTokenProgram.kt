@@ -5,7 +5,8 @@ import com.solana.core.PublicKey
 import com.solana.core.TransactionInstruction
 
 object AssociatedTokenProgram : Program() {
-    val SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID = PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL")
+    val SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID =
+        PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL")
 
     fun createAssociatedTokenAccountInstruction(
         associatedProgramId: PublicKey = SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID,

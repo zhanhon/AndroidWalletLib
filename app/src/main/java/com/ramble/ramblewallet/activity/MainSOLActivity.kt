@@ -358,7 +358,7 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
         }
         if (isSolValidAddress(walletSelleted.address)) {
             getSOLBalance(this, walletSelleted.address)
-            getsSOLTokenBalance(this, walletSelleted.address, contractAddress)
+            //getsSOLTokenBalance(this, walletSelleted.address, contractAddress)
         }
         binding.tvTrxAddress.text = addressHandle(walletSelleted.address)
     }

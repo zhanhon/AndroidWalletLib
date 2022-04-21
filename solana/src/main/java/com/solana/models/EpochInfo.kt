@@ -3,7 +3,7 @@ package com.solana.models
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class EpochInfo (
+data class EpochInfo(
     val absoluteSlot: Long,
     val blockHeight: Long,
     val epoch: Long,

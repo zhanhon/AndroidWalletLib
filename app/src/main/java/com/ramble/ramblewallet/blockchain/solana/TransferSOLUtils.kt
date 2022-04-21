@@ -25,7 +25,8 @@ object TransferSOLUtils {
 
     fun getSOLBalance(context: Activity, address: String) {
         Thread {
-            val solana = Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
+            val solana =
+                Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
             val balance = solana.api.getBalance(PublicKey(address)).blockingGet() / 1000000000f
             println("-=-=-=->balance：${balance}")
         }.start()

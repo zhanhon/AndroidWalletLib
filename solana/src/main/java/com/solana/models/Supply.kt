@@ -7,7 +7,7 @@ data class Supply(
     override val value: Value
 ) : RPC<Supply.Value>(null, value) {
     @JsonClass(generateAdapter = true)
-    class Value (
+    class Value(
         val total: Long,
         val circulating: Long,
         val nonCirculating: Long,

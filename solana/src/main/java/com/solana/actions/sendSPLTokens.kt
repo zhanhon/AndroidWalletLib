@@ -6,8 +6,8 @@ import com.solana.core.Transaction
 import com.solana.programs.AssociatedTokenProgram
 import com.solana.programs.TokenProgram
 import com.solana.vendor.ContResult
-import com.solana.vendor.ResultError
 import com.solana.vendor.Result
+import com.solana.vendor.ResultError
 import com.solana.vendor.flatMap
 
 fun Action.sendSPLTokens(
@@ -17,7 +17,7 @@ fun Action.sendSPLTokens(
     amount: Long,
     account: Account,
     onComplete: ((Result<String, ResultError>) -> Unit)
-){
+) {
     ContResult<SPLTokenDestinationAddress, ResultError> { cb ->
         this.findSPLTokenDestinationAddress(
             mintAddress,
@@ -26,27 +26,29 @@ fun Action.sendSPLTokens(
     }.flatMap { spl ->
         val toPublicKey = spl.first
         val isUnregisteredAsocciatedToken = spl.second
-        if(fromPublicKey.toBase58() == toPublicKey.toBase58()){
+        if (fromPublicKey.toBase58() == toPublicKey.toBase58()) {
             return@flatMap ContResult.failure(ResultError("Same send and destination address."))
         }
 
         val transaction = Transaction()
 
         // create associated token address
-        if(isUnregisteredAsocciatedToken) {
+        if (isUnregisteredAsocciatedToken) {
             val mint = mintAddress
             val owner = destinationAddress
-            val createATokenInstruction = AssociatedTokenProgram.createAssociatedTokenAccountInstruction(
-                mint =  mint,
-                associatedAccount = toPublicKey,
-                owner = owner,
-                payer = account.publicKey
-            )
+            val createATokenInstruction =
+                AssociatedTokenProgram.createAssociatedTokenAccountInstruction(
+                    mint = mint,
+                    associatedAccount = toPublicKey,
+                    owner = owner,
+                    payer = account.publicKey
+                )
             transaction.addInstruction(createATokenInstruction)
         }
 
         // send instruction
-        val sendInstruction = TokenProgram.transfer(fromPublicKey,toPublicKey, amount, account.publicKey)
+        val sendInstruction =
+            TokenProgram.transfer(fromPublicKey, toPublicKey, amount, account.publicKey)
         transaction.addInstruction(sendInstruction)
         return@flatMap ContResult.success(transaction)
     }.flatMap { transaction ->

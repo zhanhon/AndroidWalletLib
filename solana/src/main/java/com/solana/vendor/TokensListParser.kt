@@ -1,6 +1,5 @@
 package com.solana.vendor
 
-import com.solana.Solana
 import com.solana.models.Token
 import com.solana.models.TokenTag
 import com.solana.models.TokensList

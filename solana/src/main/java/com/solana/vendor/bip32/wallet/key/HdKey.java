@@ -31,14 +31,6 @@ public class HdKey {
     HdKey() {
     }
 
-    public void setVersion(byte[] version) {
-        this.version = version;
-    }
-
-    public void setDepth(int depth) {
-        this.depth = depth;
-    }
-
     public void setFingerprint(byte[] fingerprint) {
         this.fingerprint = fingerprint;
     }
@@ -47,20 +39,17 @@ public class HdKey {
         this.childNumber = childNumber;
     }
 
-    public void setChainCode(byte[] chainCode) {
-        this.chainCode = chainCode;
-    }
-
-    public void setKeyData(byte[] keyData) {
-        this.keyData = keyData;
-    }
-
     public byte[] getChainCode() {
         return chainCode;
     }
 
+    public void setChainCode(byte[] chainCode) {
+        this.chainCode = chainCode;
+    }
+
     /**
      * Get the full chain key.  This is not the public/private key for the address.
+     *
      * @return full HD Key
      */
     public byte[] getKey() {
@@ -87,11 +76,23 @@ public class HdKey {
         return depth;
     }
 
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
     public byte[] getKeyData() {
         return keyData;
     }
 
+    public void setKeyData(byte[] keyData) {
+        this.keyData = keyData;
+    }
+
     public byte[] getVersion() {
         return version;
+    }
+
+    public void setVersion(byte[] version) {
+        this.version = version;
     }
 }

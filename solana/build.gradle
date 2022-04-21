@@ -53,7 +53,7 @@ dependencies {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifact("$buildDir/outputs/aar/solana-release.aar")  {
+            artifact("$buildDir/outputs/aar/solana-release.aar") {
                 builtBy tasks.getByName("assemble")
             }
             artifactId 'solana'

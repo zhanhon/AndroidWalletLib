@@ -8,6 +8,7 @@ import org.junit.Test
 
 class BorshTests {
     private val borsh = Borsh()
+
     @Test
     fun roundtripPoint2Df() {
         val point = Point2Df(123f, 456f)
@@ -25,6 +26,7 @@ class BorshTests {
     class Point2Df : BorshCodable {
         @FieldOrder(0)
         private var x = 0f
+
         @FieldOrder(1)
         private var y = 0f
 
@@ -47,6 +49,7 @@ class BorshTests {
     class Rect2Df : BorshCodable {
         @FieldOrder(0)
         private var topLeft: Point2Df? = null
+
         @FieldOrder(1)
         private var bottomRight: Point2Df? = null
 

@@ -26,9 +26,9 @@ import javax.crypto.SecretKey;
  */
 public class ToolUtils {
 
+    private static final String DEFAULT_KEY_NAME = "default_key";
     private static KeyStore keyStore;
     private static Cipher cipher;
-    private static final String DEFAULT_KEY_NAME = "default_key";
 
     /**
      * 判断是否支持指纹识别
