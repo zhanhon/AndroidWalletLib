@@ -2,15 +2,13 @@ package com.ramble.ramblewallet.activity
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.view.*
-import android.widget.TextView
+import android.view.KeyEvent
+import android.view.View
+import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -52,7 +50,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     private var totalBalance: BigDecimal = BigDecimal("0")
     private var unitPrice = ""
 
-    //USDT
+    //TRC20-USDT
     private var contractAddress = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t" //正式链
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -435,7 +433,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             binding.rvCurrency.adapter = mainAdapter
             mainAdapter.setOnItemClickListener { adapter, _, position ->
                 if (adapter.getItem(position) is MainETHTokenBean) {
-                    var symbol=(adapter.getItem(position) as MainETHTokenBean).title
+                    var symbol = (adapter.getItem(position) as MainETHTokenBean).title
                     startActivity(Intent(this, QueryActivity::class.java).apply {
                         putExtra(ARG_PARAM1, walletSelleted.address)
                         putExtra(ARG_PARAM2, adapter.getItem(position) as MainETHTokenBean)

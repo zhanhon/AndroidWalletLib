@@ -1,30 +1,31 @@
 package com.solana.api
 
-import com.google.gson.Gson
 import com.solana.core.PublicKey
 import com.solana.models.RPC
 import com.solana.models.buffer.BufferInfo
-import com.solana.models.buffer.BufferInfoJson
-import com.solana.networking.models.RpcResponse
 import com.squareup.moshi.Types
 import java.lang.reflect.Type
 
-fun <T>Api.getAccountInfo(account: PublicKey,
-                                        decodeTo: Class<T>,
-                                        onComplete: ((Result<BufferInfo<T>>) -> Unit)) {
+fun <T> Api.getAccountInfo(
+    account: PublicKey,
+    decodeTo: Class<T>,
+    onComplete: ((Result<BufferInfo<T>>) -> Unit)
+) {
     return getAccountInfo(account, HashMap(), decodeTo, onComplete)
 }
 
-fun <T> Api.getAccountInfo(account: PublicKey,
-                          additionalParams: Map<String, Any?>,
-                          decodeTo: Class<T>,
-                          onComplete: ((Result<BufferInfo<T>>) -> Unit)) {
+fun <T> Api.getAccountInfo(
+    account: PublicKey,
+    additionalParams: Map<String, Any?>,
+    decodeTo: Class<T>,
+    onComplete: ((Result<BufferInfo<T>>) -> Unit)
+) {
 
 
     val params: MutableList<Any> = ArrayList()
     val parameterMap: MutableMap<String, Any?> = HashMap()
-    parameterMap["encoding"] = additionalParams.getOrDefault("encoding", "base64+zstd")
-    params.add(account.toBase58())
+    parameterMap["encoding"] = additionalParams.getOrDefault("encoding", "base64")
+    params.add(account.toString())
     params.add(parameterMap)
 
     val type = Types.newParameterizedType(
@@ -35,10 +36,9 @@ fun <T> Api.getAccountInfo(account: PublicKey,
         )
     )
 
-    router.request<RPC<BufferInfoJson<T>>>("getAccountInfo", params, type) { result ->
+    router.request<RPC<BufferInfo<T>>>("getAccountInfo", params, type) { result ->
         result
             .map {
-                println("-=-=-=->transactionId：${Gson().toJson(it)}")
                 it.value!!
             }
             .onSuccess {

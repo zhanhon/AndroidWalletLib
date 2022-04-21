@@ -1,10 +1,8 @@
 package com.solana.api
 
-import android.util.Base64
 import com.solana.core.Account
 import com.solana.core.Transaction
 import com.solana.models.RpcSendTransactionConfig
-import java.lang.RuntimeException
 
 fun Api.sendTransaction(
     transaction: Transaction,
@@ -18,7 +16,7 @@ fun Api.sendTransaction(
                 transaction.setRecentBlockHash(recentBlockHash)
                 transaction.sign(signers)
                 val serializedTransaction: ByteArray = transaction.serialize()
-                val base64Trx: String = Base64.encodeToString(serializedTransaction, android.util.Base64.NO_WRAP)
+                val base64Trx: String = serializedTransaction.decodeToString()
                 listOf(base64Trx, RpcSendTransactionConfig())
             }.onSuccess {
                 router.request("sendTransaction", it, String::class.java, onComplete)
@@ -30,7 +28,7 @@ fun Api.sendTransaction(
         transaction.setRecentBlockHash(recentBlockHash)
         transaction.sign(signers)
         val serializedTransaction: ByteArray = transaction.serialize()
-        val base64Trx: String = Base64.encodeToString(serializedTransaction, android.util.Base64.NO_WRAP)
+        val base64Trx: String = serializedTransaction.decodeToString()
         val params = listOf(base64Trx, RpcSendTransactionConfig())
         router.request("sendTransaction", params, String::class.java, onComplete)
     }

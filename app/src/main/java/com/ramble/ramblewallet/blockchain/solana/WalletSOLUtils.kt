@@ -5,6 +5,7 @@ import android.util.Log
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.blockchain.solana.solanasdk.core.Account
 import com.solana.core.Account.Companion.privateKeyToWallet
+import org.komputing.kbase58.encodeToBase58String
 
 class WalletSOLUtils {
 
@@ -44,7 +45,7 @@ class WalletSOLUtils {
                     Base64.DEFAULT
                 )
                 val address = account.publicKey.toBase58()
-                val privateKey = Base64.encodeToString(account.secretKey, Base64.NO_WRAP)
+                val privateKey = account.secretKey.encodeToBase58String()
                 Log.v("-=-=->privateKey:", privateKey)
                 Log.v("-=-=->address:", address)
                 Wallet(

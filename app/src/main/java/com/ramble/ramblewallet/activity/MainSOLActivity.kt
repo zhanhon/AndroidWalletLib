@@ -24,9 +24,8 @@ import com.ramble.ramblewallet.bean.MainETHTokenBean
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.bean.Wallet
-import com.ramble.ramblewallet.blockchain.tron.TransferTrxUtils.balanceOfTrc20
-import com.ramble.ramblewallet.blockchain.tron.TransferTrxUtils.balanceOfTrx
-import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils
+import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils.getSOLBalance
+import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils.getsSOLTokenBalance
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainSolBinding
 import com.ramble.ramblewallet.network.ApiResponse
@@ -52,8 +51,8 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
     private var totalBalance: BigDecimal = BigDecimal("0")
     private var unitPrice = ""
 
-    //USDT
-    private var contractAddress = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t" //正式链
+    //SPL-USDT
+    private var contractAddress = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB" //正式链
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -235,7 +234,7 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.iv_gathering_top, R.id.ll_gathering -> {
                 startActivity(Intent(this, GatheringActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "TRX")
+                    putExtra(ARG_PARAM1, "SOL")
                     putExtra(ARG_PARAM2, walletSelleted.address)
                 })
             }
@@ -243,8 +242,8 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(
                         ARG_PARAM2, MainETHTokenBean(
-                            "TRX",
-                            "TRX",
+                            "SOL",
+                            "SOL",
                             trxBalance,
                             unitPrice,
                             currencyUnit,
@@ -260,8 +259,8 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
                     putExtra(ARG_PARAM1, 3)
                     putExtra(
                         ARG_PARAM2, MainETHTokenBean(
-                            "TRX",
-                            "TRX",
+                            "SOL",
+                            "SOL",
                             trxBalance,
                             unitPrice,
                             currencyUnit,
@@ -356,19 +355,19 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
-        if (WalletTRXUtils.isTrxValidAddress(walletSelleted.address)) {
-            balanceOfTrx(this, walletSelleted.address)
-            balanceOfTrc20(this, walletSelleted.address, contractAddress)
-        }
+        //if (WalletTRXUtils.isTrxValidAddress(walletSelleted.address)) {
+        getSOLBalance(this, walletSelleted.address)
+        getsSOLTokenBalance(this, walletSelleted.address, contractAddress)
+        //}
         binding.tvTrxAddress.text = addressHandle(walletSelleted.address)
     }
 
-    fun setTrxBalance(balance: BigDecimal) {
+    fun setSolBalance(balance: BigDecimal) {
         trxBalance = balance
         refreshData()
     }
 
-    fun setTokenBalance(balance: BigDecimal) {
+    fun setSolTokenBalance(balance: BigDecimal) {
         tokenBalance = balance
         refreshData()
     }
@@ -424,14 +423,14 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
                 dialog.dismiss()
             }
             tvGathering.setOnClickListener { v1: View? ->
-                if (mainETHTokenBean.symbol == "TRX") {
+                if (mainETHTokenBean.symbol == "SOL") {
                     startActivity(Intent(this, GatheringActivity::class.java).apply {
-                        putExtra(ARG_PARAM1, "TRX")
+                        putExtra(ARG_PARAM1, "SOL")
                         putExtra(ARG_PARAM2, walletSelleted.address)
                     })
                 } else {
                     startActivity(Intent(this, GatheringActivity::class.java).apply {
-                        putExtra(ARG_PARAM1, "TRX-${mainETHTokenBean.symbol}")
+                        putExtra(ARG_PARAM1, "SOL-${mainETHTokenBean.symbol}")
                         putExtra(ARG_PARAM2, walletSelleted.address)
                     })
                 }
@@ -454,7 +453,7 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("CheckResult")
     private fun refreshData() {
         var list: ArrayList<String> = arrayListOf()
-        list.add("TRX")
+        list.add("SOL")
         list.add("USDT")
         var req = StoreInfo.Req()
         req.list = list
@@ -498,10 +497,10 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
                     unitPrice = quote.price
                 }
             }
-            if (storeInfo.symbol == "TRX") {
+            if (storeInfo.symbol == "SOL") {
                 mainETHTokenBean.add(
                     MainETHTokenBean(
-                        "TRX",
+                        "SOL",
                         storeInfo.symbol,
                         trxBalance,
                         unitPrice,
@@ -520,10 +519,10 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
                     unitPrice = quote.price
                 }
             }
-            if (storeInfo.symbol != "TRX") {
+            if (storeInfo.symbol != "SOL") {
                 mainETHTokenBean.add(
                     MainETHTokenBean(
-                        "TRX-${storeInfo.symbol}",
+                        "SOL-${storeInfo.symbol}",
                         storeInfo.symbol,
                         if (storeInfo.symbol == "USDT") tokenBalance else BigDecimal("0"),
                         unitPrice,

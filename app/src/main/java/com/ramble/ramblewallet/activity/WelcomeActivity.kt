@@ -26,7 +26,7 @@ class WelcomeActivity : BaseActivity() {
 
     private lateinit var wallet: Wallet
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
-    private var times = 0
+    private var putAddressTimes = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +55,9 @@ class WelcomeActivity : BaseActivity() {
                     }
                     3 -> {
                         startActivity(Intent(this, MainBTCActivity::class.java))
+                    }
+                    4 -> {
+                        startActivity(Intent(this, MainSOLActivity::class.java))
                     }
                 }
             }
@@ -99,9 +102,9 @@ class WelcomeActivity : BaseActivity() {
                 if (it.code() == 1) {
                     it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
                 } else {
-                    if (times < 3) {
+                    if (putAddressTimes < 3) {
                         putAddress(detailsList)
-                        times++
+                        putAddressTimes++
                     }
                     println("-=-=-=->putAddress:${it.message()}")
                 }

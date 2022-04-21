@@ -1,5 +1,7 @@
 package com.ramble.ramblewallet.blockchain.solana
 
+import android.app.Activity
+import android.util.Base64
 import com.google.gson.Gson
 import com.solana.Solana
 import com.solana.actions.Action
@@ -15,29 +17,27 @@ import com.solana.programs.SystemProgram
 import io.reactivex.Single
 import io.reactivex.disposables.Disposables
 import org.json.JSONObject
+import java.math.BigInteger
 import java.util.*
 
 
 object TransferSOLUtils {
 
-    fun getBalance() {
+    fun getSOLBalance(context: Activity, address: String) {
         Thread {
-            val solana =
-                Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
-            val balance =
-                solana.api.getBalance(PublicKey("Ch4CJs1bFL9bftBYbpWacar8o9sX9ALWeBgxizYxfLci"))
-                    .blockingGet() / 1000000000f
+            val solana = Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
+            val balance = solana.api.getBalance(PublicKey(address)).blockingGet() / 1000000000f
             println("-=-=-=->balance：${balance}")
         }.start()
     }
 
-    fun getTokenBalance() {
+    fun getsSOLTokenBalance(context: Activity, address: String, contractAddress: String) {
         Thread {
             val solana =
                 Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
             val result = solana.api.getTokenAccountsByOwner(
-                PublicKey("Ch4CJs1bFL9bftBYbpWacar8o9sX9ALWeBgxizYxfLci"),
-                PublicKey("Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB")
+                PublicKey(address),
+                PublicKey(contractAddress)
             ).blockingGet()
             val balanceJson = solana.api.getTokenAccountBalance(result).blockingGet()
             val json = JSONObject(Gson().toJson(balanceJson))
@@ -46,12 +46,25 @@ object TransferSOLUtils {
         }.start()
     }
 
-    fun sendSOL() {
+    fun transferSOL(context: Activity, toAddress: String, privateKey: String?, amount: BigInteger) {
+        val account = Account.privateKeyToWallet(Base64.decode(privateKey, Base64.DEFAULT))
         Thread {
             val solana =
                 Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
-            val lamports = 1000000L //需要乘上10九次方   1000000 = 0.001
-            val destination = PublicKey("6nPn5BmREMctaS37B2zz3Veb92GujaUif7o1uNtUY42d")
+            val instructions =
+                SystemProgram.transfer(account.publicKey, PublicKey(toAddress), amount.toLong())
+            val transaction = com.solana.core.Transaction()
+            transaction.addInstruction(instructions)
+            val transactionHash =
+                solana.api.sendTransaction(transaction, listOf(account)).blockingGet()
+            println("-=-=-=->transactionHash：${transactionHash}")
+        }.start()
+    }
+
+    fun transferSOLToken() { //接口结构有变，未成功
+        Thread {
+            val solana =
+                Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
             val feePayer: Account = Account.fromMnemonic(
                 Arrays.asList(
                     "ranch",
@@ -68,47 +81,18 @@ object TransferSOLUtils {
                     "rhythm"
                 ), "", DerivationPath.BIP44_M_44H_501H_0H_OH
             )
-            val instructions = SystemProgram.transfer(feePayer.publicKey, destination, lamports)
-            val transaction = com.solana.core.Transaction()
-            transaction.addInstruction(instructions)
-            val transactionHash =
-                solana.api.sendTransaction(transaction, listOf(feePayer)).blockingGet()
-            println("-=-=-=->transactionHash：${transactionHash}")
+            val source = PublicKey("Ch4CJs1bFL9bftBYbpWacar8o9sX9ALWeBgxizYxfLci")
+            val destination = PublicKey("6nPn5BmREMctaS37B2zz3Veb92GujaUif7o1uNtUY42d")
+            val mintAddress = PublicKey("Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB")
+            val transactionId = solana.action.sendSPLTokens(
+                feePayer,
+                mintAddress = mintAddress,
+                fromPublicKey = source,
+                destinationAddress = destination,
+                1000L
+            ).blockingGet()
+            println("-=-=-=->transactionId：${Gson().toJson(transactionId)}")
         }.start()
-    }
-
-    fun sendSPLTokens() { //接口结构有变，未成功
-//        Thread {
-//            val solana =
-//                Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
-//            val feePayer: Account = Account.fromMnemonic(
-//                Arrays.asList(
-//                    "ranch",
-//                    "slight",
-//                    "close",
-//                    "cart",
-//                    "venture",
-//                    "trip",
-//                    "minute",
-//                    "repeat",
-//                    "cute",
-//                    "utility",
-//                    "cotton",
-//                    "rhythm"
-//                ), "", DerivationPath.BIP44_M_44H_501H_0H_OH
-//            )
-//            val source = PublicKey("Ch4CJs1bFL9bftBYbpWacar8o9sX9ALWeBgxizYxfLci")
-//            val destination = PublicKey("6nPn5BmREMctaS37B2zz3Veb92GujaUif7o1uNtUY42d")
-//            val mintAddress = PublicKey("Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB")
-//            val transactionId = solana.action.sendSPLTokens(
-//                feePayer,
-//                mintAddress = mintAddress,
-//                fromPublicKey = source,
-//                destinationAddress = destination,
-//                1000L
-//            ).blockingGet()
-//            println("-=-=-=->transactionId：${Gson().toJson(transactionId)}")
-//        }.start()
     }
 
 
@@ -125,7 +109,10 @@ object TransferSOLUtils {
         }
     }
 
-    private fun Api.getTokenAccountsByOwner(address: PublicKey, tokenMint: PublicKey): Single<PublicKey> {
+    private fun Api.getTokenAccountsByOwner(
+        address: PublicKey,
+        tokenMint: PublicKey
+    ): Single<PublicKey> {
         return Single.create { emitter ->
             this.getTokenAccountsByOwner(address, tokenMint) { result ->
                 result.onSuccess {

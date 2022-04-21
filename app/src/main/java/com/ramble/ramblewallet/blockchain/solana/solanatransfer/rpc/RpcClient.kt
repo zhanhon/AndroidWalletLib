@@ -1,6 +1,5 @@
 package com.ramble.ramblewallet.blockchain.solana.solanatransfer.rpc
 
-import com.google.gson.Gson
 import com.ramble.ramblewallet.blockchain.solana.solanatransfer.rpc.types.RpcRequest
 import com.ramble.ramblewallet.blockchain.solana.solanatransfer.rpc.types.RpcResponse
 import com.ramble.ramblewallet.blockchain.solana.solanatransfer.utils.json
@@ -53,7 +52,6 @@ class RpcClient {
         return try {
             httpClient.newCall(request).execute().use { response ->
                 val body = response.body?.string()
-                println("-=-=-=->body:${Gson().toJson(body)}")
                 val rpcResponse =
                     json.decodeFromString(RpcResponse.serializer(deserializer), body!!)
                 if (rpcResponse.error != null) {
