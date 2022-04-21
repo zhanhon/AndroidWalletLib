@@ -323,7 +323,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         if (isValidSolSuccess) {
             putAddress(detailsList)
             SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletSOL))
-            startActivity(Intent(this, MainBTCActivity::class.java))
+            startActivity(Intent(this, MainSOLActivity::class.java))
         }
     }
 

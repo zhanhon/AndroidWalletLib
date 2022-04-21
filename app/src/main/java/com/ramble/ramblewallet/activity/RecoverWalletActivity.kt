@@ -634,7 +634,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         if (isSolValidAddress(walletSOL.address)) {
             putAddress(walletSOL, 4)
             SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletSOL))
-            startActivity(Intent(this, MainBTCActivity::class.java))
+            startActivity(Intent(this, MainSOLActivity::class.java))
         } else {
             when (chooseMode) {
                 1 -> {

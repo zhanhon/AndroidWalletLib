@@ -118,7 +118,7 @@ class CreateWalletListActivity : BaseActivity(), View.OnClickListener {
                 showDialog(binding.tvBtcCurrencyName.text.toString(), 3)
             }
             R.id.rl_sol -> {
-                showDialog(binding.tvBtcCurrencyName.text.toString(), 4)
+                showDialog(binding.tvSolCurrencyName.text.toString(), 4)
             }
         }
     }

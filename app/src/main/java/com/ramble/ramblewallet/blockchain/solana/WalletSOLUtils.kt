@@ -31,7 +31,7 @@ class WalletSOLUtils {
                     walletname,
                     walletPassword,
                     mnemonic,
-                    account.publicKey.toBase58(),
+                    address,
                     privateKey,
                     null,
                     4,
