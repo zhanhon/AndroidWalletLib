@@ -19,6 +19,7 @@ import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.LanguageSetting.setLanguage
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.ToolUtils
 import com.ramble.ramblewallet.utils.applyIo
 import java.util.*
 
@@ -27,6 +28,7 @@ class WelcomeActivity : BaseActivity() {
     private lateinit var wallet: Wallet
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var putAddressTimes = 0
+    private var isFinger = false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +38,14 @@ class WelcomeActivity : BaseActivity() {
             WindowManager.LayoutParams.FLAG_SECURE
         )
         setContentView(R.layout.activity_welcome)
+        isFinger = SharedPreferencesUtils.getBoolean(
+            this,
+            ISFINGERPRINT_KEY_COMMON,
+            false
+        ) || SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY_ALL, false)
+        if (isFinger){
+            ToolUtils.supportFingerprint(this)
+        }
         skipConfirmHandle()
         Handler().postDelayed({
             if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isEmpty()) {

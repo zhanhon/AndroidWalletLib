@@ -14,6 +14,7 @@ import com.ramble.ramblewallet.constant.ISFINGERPRINT_KEY_ALL
 import com.ramble.ramblewallet.constant.ISFINGERPRINT_KEY_COMMON
 import com.ramble.ramblewallet.databinding.ActivityFingerPrintBinding
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.ToolUtils
 import com.ramble.ramblewallet.utils.showCommonDialog
 
 /**
@@ -89,6 +90,7 @@ class FingerPrintActivity : BaseActivity(), View.OnClickListener,
     private fun confirmTipsDialog(buttonView: CompoundButton, key: String) {
         showCommonDialog(this, getString(R.string.fingerprint_toggle_text), confirmListener = {
             SharedPreferencesUtils.saveBoolean(this, key, true)
+            ToolUtils.supportFingerprint(this)
         }, tvcListener = {
             buttonView.isChecked = false
         }, btcListener = {

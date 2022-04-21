@@ -159,7 +159,6 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 } else {
                     inputPasswordDialog(getString(R.string.secret_key_backup))
                 }
-                inputPasswordDialog(getString(R.string.secret_key_backup))
             }
             R.id.rl_keystore_backups -> {
                 if (isFinger) {//开启指纹验证
