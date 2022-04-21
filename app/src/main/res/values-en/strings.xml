@@ -235,8 +235,8 @@ But there are primary security concerns.
 Please confirm to open.</string>
     <string name="fingerprint_success">Fingerprint unlocked successfully！</string>
     <string name="fingerprint_failed">Fingerprint unlock failed！</string>
-    <string name="check_version">The version and update will be carried out, please press the confirmation to start the execution</string>
-    <string name="fingerprint_not_support">Your phone does not support fingerprint function</string>
-    <string name="fingerprint_setting">You have not set a lock screen, please set a lock screen and add a fingerprint</string>
-    <string name="fingerprint_need_add">You need to add at least one fingerprint in system settings</string>
+    <string name="check_version">The version and update will be carried out. Please press the confirmation to start the execution</string>
+    <string name="fingerprint_not_support">Your phone does not support the fingerprint function</string>
+    <string name="fingerprint_setting">You have not set the function of the lock screen. Please select a lock screen and add a fingerprint</string>
+    <string name="fingerprint_need_add">You need to add at least one fingerprint in the system settings</string>
 </resources>
