@@ -78,37 +78,37 @@ object TransferSOLUtils {
     }
 
     fun sendSPLTokens() { //接口结构有变，未成功
-        Thread {
-            val solana =
-                Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
-            val feePayer: Account = Account.fromMnemonic(
-                Arrays.asList(
-                    "ranch",
-                    "slight",
-                    "close",
-                    "cart",
-                    "venture",
-                    "trip",
-                    "minute",
-                    "repeat",
-                    "cute",
-                    "utility",
-                    "cotton",
-                    "rhythm"
-                ), "", DerivationPath.BIP44_M_44H_501H_0H_OH
-            )
-            val source = PublicKey("Ch4CJs1bFL9bftBYbpWacar8o9sX9ALWeBgxizYxfLci")
-            val destination = PublicKey("6nPn5BmREMctaS37B2zz3Veb92GujaUif7o1uNtUY42d")
-            val mintAddress = PublicKey("Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB")
-            val transactionId = solana.action.sendSPLTokens(
-                feePayer,
-                mintAddress = mintAddress,
-                fromPublicKey = source,
-                destinationAddress = destination,
-                1000L
-            ).blockingGet()
-            println("-=-=-=->transactionId：${Gson().toJson(transactionId)}")
-        }.start()
+//        Thread {
+//            val solana =
+//                Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
+//            val feePayer: Account = Account.fromMnemonic(
+//                Arrays.asList(
+//                    "ranch",
+//                    "slight",
+//                    "close",
+//                    "cart",
+//                    "venture",
+//                    "trip",
+//                    "minute",
+//                    "repeat",
+//                    "cute",
+//                    "utility",
+//                    "cotton",
+//                    "rhythm"
+//                ), "", DerivationPath.BIP44_M_44H_501H_0H_OH
+//            )
+//            val source = PublicKey("Ch4CJs1bFL9bftBYbpWacar8o9sX9ALWeBgxizYxfLci")
+//            val destination = PublicKey("6nPn5BmREMctaS37B2zz3Veb92GujaUif7o1uNtUY42d")
+//            val mintAddress = PublicKey("Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB")
+//            val transactionId = solana.action.sendSPLTokens(
+//                feePayer,
+//                mintAddress = mintAddress,
+//                fromPublicKey = source,
+//                destinationAddress = destination,
+//                1000L
+//            ).blockingGet()
+//            println("-=-=-=->transactionId：${Gson().toJson(transactionId)}")
+//        }.start()
     }
 
 

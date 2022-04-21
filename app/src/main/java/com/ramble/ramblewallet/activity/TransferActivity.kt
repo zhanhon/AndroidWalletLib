@@ -3,6 +3,7 @@ package com.ramble.ramblewallet.activity
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -14,6 +15,8 @@ import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
@@ -28,6 +31,7 @@ import com.ramble.ramblewallet.blockchain.bitcoin.TransferBTCUtils.transferBTC
 import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.blockchain.ethereum.TransferEthUtils.*
 import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils
+import com.ramble.ramblewallet.blockchain.solana.solanatokentransfer.WebViewJavascriptBridge
 import com.ramble.ramblewallet.blockchain.tron.TransferTrxUtils.*
 import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils
 import com.ramble.ramblewallet.constant.*
@@ -43,6 +47,7 @@ import com.ramble.ramblewallet.utils.StringUtils.strAddComma
 import com.ramble.ramblewallet.wight.FingerprintDialogFragment
 import com.ramble.ramblewallet.wight.FingerprintDialogFragment.OnFingerprintSetting
 import org.bitcoinj.core.UTXO
+import java.lang.reflect.InvocationTargetException
 import java.math.BigDecimal
 import java.math.BigInteger
 import javax.crypto.Cipher
@@ -72,6 +77,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     private var isToken: Boolean = false
     private lateinit var tokenBean: MainETHTokenBean
     private var isFinger = false
+    private lateinit var bridge: WebViewJavascriptBridge
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,9 +99,48 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         } else {
             transferUnit = transferTitle
         }
-
         binding.edtReceiverAddress.setText(transferReceiverAddress)
         initClick()
+        initWebView()
+    }
+
+    //允许跨域请求
+    private fun setAllowUniversalAccessFromFileURLs(mwebview: WebView) {
+        try { //本地HTML里面有跨域的请求 原生webview需要设置之后才能实现跨域请求
+            if (Build.VERSION.SDK_INT >= 16) {
+                val clazz: Class<*> = mwebview.settings.javaClass
+                val method = clazz.getMethod(
+                    "setAllowUniversalAccessFromFileURLs", Boolean::class.javaPrimitiveType
+                )
+                if (method != null) {
+                    method.invoke(mwebview.settings, true)
+                }
+            }
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
+        } catch (e: NoSuchMethodException) {
+            e.printStackTrace()
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
+        } catch (e: InvocationTargetException) {
+            e.printStackTrace()
+        }
+    }
+    private fun initWebView() {
+        val webview = findViewById<WebView>(R.id.web_view_token_transfer)
+        setAllowUniversalAccessFromFileURLs(webview)
+        bridge = WebViewJavascriptBridge(this, webview)
+        webview.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                view.loadUrl(url)
+                return true
+            }
+            override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
+                bridge.injectJavascript()
+            }
+            override fun onPageFinished(view: WebView, url: String) {}
+        }
+        webview.loadUrl("file:///android_asset/index.html")
     }
 
     override fun onResume() {
@@ -160,7 +205,16 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 showMinerFeeDialog()
             }
             R.id.tv_select_all -> {
-                binding.edtInputQuantity.setText(DecimalFormatUtil.format(transferBalance, 8))
+                val data = java.util.HashMap<String, String>()
+                data["toPublicKey"] = "36MjPHq5C2MLLMtQ3tCSUom6vUCjLruV5aUWta6EP4KL"
+                data["mintAuthority"] = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB"
+                data["endpoint"] = "https://api.mainnet-beta.solana.com"
+                data["amount"] = "1" //这里的"1"实际上是0.000001
+                data["secretKey"] = "231,191,64,41,87,172,66,114,26,9,197,223,69,18,108,118,27,196,58,13,158,179,240,37,29,174,65,94,75,71,29,141,205,251,48,22,55,59,127,205,24,19,152,10,39,65,168,161,84,99,0,24,56,100,177,174,254,155,4,178,36,171,142,212"
+                bridge.call("solanaTokenTransfer", data) { map ->
+                    println("-=-=-=->map：${map}")
+                }
+                //binding.edtInputQuantity.setText(DecimalFormatUtil.format(transferBalance, 8))
             }
             R.id.btn_confirm -> {
                 if (confirmValidForTransfer()) return
@@ -628,7 +682,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun transfer() {
-        when (walletSelleted.walletType) {  //链类型|1:ETH|2:TRX|3:BTC
+        when (walletSelleted.walletType) {  //链类型|1:ETH|2:TRX|3:BTC|4:SOL|5:DOGE
             1 -> {
                 if (isToken) {
                     transferETHToken( //暂时是USDT合约
@@ -695,6 +749,19 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         ),
                         btcFee
                     )
+                }
+            }
+            4 -> {
+                val data = HashMap<String, String>()
+                data["toPublicKey"] = "36MjPHq5C2MLLMtQ3tCSUom6vUCjLruV5aUWta6EP4KL"
+                data["mintAuthority"] = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB"
+                data["endpoint"] = "https://api.mainnet-beta.solana.com"
+                data["amount"] = "1" //这里的"1"实际上是0.000001
+                data["secretKey"] =
+                    "231,191,64,41,87,172,66,114,26,9,197,223,69,18,108,118,27,196,58,13,158,179,240,37,29,174,65,94,75,71,29,141,205,251,48,22,55,59,127,205,24,19,152,10,39,65,168,161,84,99,0,24,56,100,177,174,254,155,4,178,36,171,142,212"
+                //调用 JS的方法
+                bridge.call("solanaTokenTransfer", data) { map ->
+                    println("-=-=-=->map:${map}")
                 }
             }
         }
