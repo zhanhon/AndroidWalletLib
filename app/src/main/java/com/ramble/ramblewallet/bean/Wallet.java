@@ -12,7 +12,6 @@ public class Wallet {
     private String mnemonic;
     private String address;
     private String privateKey;
-    private String publicKey;
     private String keystore;
     private String filename;
     private int walletType;  //链类型|1:ETH|2:TRX|3:BTC|4:SOL|5:DOGE
@@ -24,21 +23,20 @@ public class Wallet {
 
     }
 
-    public Wallet(String mnemonic, String address, String privateKey, String publicKey) {
+    public Wallet(String mnemonic, String address, String privateKey) {
         this.mnemonic = mnemonic;
         this.address = address;
         this.privateKey = privateKey;
-        this.publicKey = publicKey;
     }
 
-    public Wallet(String mnemonic, String address, String privateKey, String publicKey, String keystore) {
-        this(mnemonic, address, privateKey, publicKey);
+    public Wallet(String mnemonic, String address, String privateKey, String keystore) {
+        this(mnemonic, address, privateKey);
         this.keystore = keystore;
     }
 
     public Wallet(String walletName, String walletPassword, String mnemonic, String address,
-                  String privateKey, String publicKey, String keystore, int walletType, List<String> mnemonicList) {
-        this(mnemonic, address, privateKey, publicKey, keystore);
+                  String privateKey, String keystore, int walletType, List<String> mnemonicList) {
+        this(mnemonic, address, privateKey, keystore);
         this.walletName = walletName;
         this.walletPassword = walletPassword;
         this.walletType = walletType;
@@ -46,8 +44,8 @@ public class Wallet {
     }
 
     public Wallet(String walletName, String walletPassword, String mnemonic, String address,
-                  String privateKey, String publicKey, String keystore, int walletType, List<String> mnemonicList, boolean isClickDelete) {
-        this(walletName, walletPassword, mnemonic, address, privateKey, publicKey, keystore, walletType, mnemonicList);
+                  String privateKey, String keystore, int walletType, List<String> mnemonicList, boolean isClickDelete) {
+        this(walletName, walletPassword, mnemonic, address, privateKey, keystore, walletType, mnemonicList);
         this.isClickDelete = isClickDelete;
     }
 
@@ -121,14 +119,6 @@ public class Wallet {
 
     public void setPrivateKey(String privateKey) {
         this.privateKey = privateKey;
-    }
-
-    public String getPublicKey() {
-        return publicKey;
-    }
-
-    public void setPublicKey(String publicKey) {
-        this.publicKey = publicKey;
     }
 
     public String getKeystore() {

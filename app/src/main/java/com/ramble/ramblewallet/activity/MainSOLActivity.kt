@@ -26,6 +26,7 @@ import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils.getSOLBalance
 import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils.getsSOLTokenBalance
+import com.ramble.ramblewallet.blockchain.solana.WalletSOLUtils.Companion.isSolValidAddress
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainSolBinding
 import com.ramble.ramblewallet.network.ApiResponse
@@ -355,10 +356,10 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
-        //if (WalletTRXUtils.isTrxValidAddress(walletSelleted.address)) {
-        getSOLBalance(this, walletSelleted.address)
-        getsSOLTokenBalance(this, walletSelleted.address, contractAddress)
-        //}
+        if (isSolValidAddress(walletSelleted.address)) {
+            getSOLBalance(this, walletSelleted.address)
+            getsSOLTokenBalance(this, walletSelleted.address, contractAddress)
+        }
         binding.tvTrxAddress.text = addressHandle(walletSelleted.address)
     }
 

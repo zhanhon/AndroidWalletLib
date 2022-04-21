@@ -50,11 +50,10 @@ public class WalletDOGEUtils {
             ECKeyPair ecKeyPair1 = decrypt(walletPassword, walletFile2);
             String address = fromHexAddress("41" + walletFile.getAddress());
             String privateKey = ecKeyPair1.getPrivateKey().toString(16);
-            String publicKey = ecKeyPair1.getPublicKey().toString(16);
-            return new Wallet(walletname, walletPassword, mnemonic, address, privateKey, publicKey, keystore, 2, mnemonicList);
+            return new Wallet(walletname, walletPassword, mnemonic, address, privateKey, keystore, 2, mnemonicList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Wallet("", "", "", "", "", "", "", 2, null);
+            return new Wallet("", "", "", "", "", "", 2, null);
         }
     }
 
@@ -77,12 +76,11 @@ public class WalletDOGEUtils {
             WalletFile walletFile2 = objectMapper.readValue(keystore, WalletFile.class);
             ECKeyPair ecKeyPair1 = decrypt(walletPassword, walletFile2);
             String address = fromHexAddress("41" + walletFile.getAddress());
-            String publicKey = ecKeyPair1.getPublicKey().toString(16);
             //由于通过privateKey无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
-            return new Wallet(walletname, walletPassword, null, address, privateKey, publicKey, keystore, 2, mnemonicList);
+            return new Wallet(walletname, walletPassword, null, address, privateKey, keystore, 2, mnemonicList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Wallet("", "", "", "", "", "", "", 2, null);
+            return new Wallet("", "", "", "", "", "", 2, null);
         }
     }
 
@@ -105,10 +103,10 @@ public class WalletDOGEUtils {
             String privateKey = ecKeyPair1.getPrivateKey().toString(16);
             String publicKey = ecKeyPair1.getPublicKey().toString(16);
             //由于通过keystore无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
-            return new Wallet(walletname, walletPassword, null, address, privateKey, publicKey, keystore, 2, mnemonicList);
+            return new Wallet(walletname, walletPassword, null, address, privateKey, keystore, 2, mnemonicList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Wallet("", "", "", "", "", "", "", 2, null);
+            return new Wallet("", "", "", "", "", "", 2, null);
         }
     }
 
