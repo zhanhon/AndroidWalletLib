@@ -169,6 +169,9 @@ class QueryFragment : BaseFragment(),
 
     @SuppressLint("CheckResult")
     private fun loadData() {
+        if (address.isNullOrEmpty()) {
+            address = wallet.address
+        }
         var req = QueryTransferRecord.Req(
             dateType,
             currentPage,
