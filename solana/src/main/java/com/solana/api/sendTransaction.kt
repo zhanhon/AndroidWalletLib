@@ -1,8 +1,12 @@
 package com.solana.api
 
+import android.util.Base64.DEFAULT
+import android.util.Base64.encodeToString
 import com.solana.core.Account
 import com.solana.core.Transaction
 import com.solana.models.RpcSendTransactionConfig
+import org.komputing.kbase58.encodeToBase58String
+import java.util.*
 
 fun Api.sendTransaction(
     transaction: Transaction,
@@ -16,7 +20,7 @@ fun Api.sendTransaction(
                 transaction.setRecentBlockHash(recentBlockHash)
                 transaction.sign(signers)
                 val serializedTransaction: ByteArray = transaction.serialize()
-                val base64Trx: String = serializedTransaction.decodeToString()
+                val base64Trx: String = encodeToString(serializedTransaction, DEFAULT)
                 listOf(base64Trx, RpcSendTransactionConfig())
             }.onSuccess {
                 router.request("sendTransaction", it, String::class.java, onComplete)
@@ -28,7 +32,7 @@ fun Api.sendTransaction(
         transaction.setRecentBlockHash(recentBlockHash)
         transaction.sign(signers)
         val serializedTransaction: ByteArray = transaction.serialize()
-        val base64Trx: String = serializedTransaction.decodeToString()
+        val base64Trx: String = encodeToString(serializedTransaction, DEFAULT)
         val params = listOf(base64Trx, RpcSendTransactionConfig())
         router.request("sendTransaction", params, String::class.java, onComplete)
     }

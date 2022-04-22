@@ -1,5 +1,6 @@
 package com.solana.api
 
+import android.util.Base64
 import com.solana.core.PublicKey
 import com.solana.models.RPC
 import com.solana.models.buffer.BufferInfo
@@ -42,7 +43,7 @@ fun <T> Api.getAccountInfo(
                 it.value!!
             }
             .onSuccess {
-                //onComplete(Result.success(it))
+                onComplete(Result.success(it))
             }
             .onFailure {
                 onComplete(Result.failure(it))

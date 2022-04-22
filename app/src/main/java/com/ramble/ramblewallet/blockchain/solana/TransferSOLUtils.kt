@@ -49,7 +49,7 @@ object TransferSOLUtils {
     }
 
     fun transferSOL(context: Activity, toAddress: String, privateKey: String?, amount: BigInteger) {
-        val account = Account.privateKeyToWallet(Base64.decode(privateKey, Base64.DEFAULT))
+        val account = Account.privateKeyToWallet(Base58.base58Decode(privateKey))
         Thread {
             val solana =
                 Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
