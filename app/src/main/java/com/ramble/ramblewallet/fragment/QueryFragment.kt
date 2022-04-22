@@ -25,6 +25,7 @@ import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.network.transferInfoUrl
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.TimeUtils.dateToCurrency
+import com.ramble.ramblewallet.utils.TimeUtils.dateToWalletTypeInt
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
@@ -144,12 +145,7 @@ class QueryFragment : BaseFragment(),
             )
         currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
         addressType = if (currencyUnit.isNotEmpty()) {
-            when (currencyUnit) {
-                "ETH" -> 1
-                "BTC" -> 3
-                "TRX" -> 2
-                else -> 4
-            }
+            dateToWalletTypeInt(currencyUnit)
         } else {
             wallet.walletType
         }
@@ -157,10 +153,10 @@ class QueryFragment : BaseFragment(),
 
     @SuppressLint("CheckResult")
     private fun loadData() {
-        if (address.isNullOrEmpty()) {
+        if (address.isEmpty()) {
             address = wallet.address
         }
-        var req = QueryTransferRecord.Req(
+        val req = QueryTransferRecord.Req(
             dateType,
             currentPage,
             100,

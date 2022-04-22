@@ -53,7 +53,7 @@ class TransPopupRecord(val mContext: Activity) : BasePopupWindow(mContext) {
                     binding.ivTrx.visibility = View.VISIBLE
                     binding.ivSola.visibility = View.INVISIBLE
                 }
-                "SOLANA" -> {
+                "SOL" -> {
                     binding.ivEth.visibility = View.INVISIBLE
                     binding.ivBtc.visibility = View.INVISIBLE
                     binding.ivTrx.visibility = View.INVISIBLE

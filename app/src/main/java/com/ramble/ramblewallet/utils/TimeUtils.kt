@@ -46,7 +46,7 @@ object TimeUtils {
      * 转主链类型
      */
 
-    fun dateToWalletType( date: Int?): String {
+    fun dateToWalletType(date: Int?): String {
         return when (date) {
             1 -> {//ETH
                 "ETH"
@@ -67,11 +67,28 @@ object TimeUtils {
         }
     }
 
+
+    /***
+     * 转主链类型
+     */
+
+    fun dateToWalletTypeInt(date: String?): Int {
+        return when (date) {
+            "ETH" -> 1
+            "BTC" -> 3
+            "TRX" -> 2
+            "SOL" -> 4
+            "DOGE" -> 5
+            else -> 6
+        }
+
+    }
+
     /***
      * 转语言
      */
 
-    fun dateToLang( context: Context): Int {
+    fun dateToLang(context: Context): Int {
         return when (SharedPreferencesUtils.getString(context, LANGUAGE, CN)) {
             CN -> {
                 1
@@ -89,8 +106,8 @@ object TimeUtils {
      * 转货币
      */
 
-    fun dateToCurrency( context: Context): Int {
-        return  when (SharedPreferencesUtils.getString(context, CURRENCY, USD)) {
+    fun dateToCurrency(context: Context): Int {
+        return when (SharedPreferencesUtils.getString(context, CURRENCY, USD)) {
             CNY -> {
                 2
             }

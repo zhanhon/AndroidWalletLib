@@ -149,12 +149,7 @@ class TransactionQueryFragment : BaseFragment(),
             )
         currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
         addressType = if (currencyUnit.isNotEmpty()) {
-            when (currencyUnit) {
-                "ETH" -> 1
-                "BTC" -> 3
-                "TRX" -> 2
-                else -> 4
-            }
+            TimeUtils.dateToWalletTypeInt(currencyUnit)
         } else {
             wallet.walletType
         }
@@ -163,7 +158,7 @@ class TransactionQueryFragment : BaseFragment(),
 
     @SuppressLint("CheckResult")
     private fun loadData() {
-        var req = QueryTransferRecord.Req(
+        val req = QueryTransferRecord.Req(
             dateType,
             currentPage,
             20,
@@ -219,12 +214,7 @@ class TransactionQueryFragment : BaseFragment(),
     private fun saveData(list: ArrayList<Wallet>): String {
         var sb = StringBuffer()
         if (currencyUnit.isNotEmpty()) {
-            var walletType = when (currencyUnit) {
-                "ETH" -> 1
-                "BTC" -> 3
-                "TRX" -> 2
-                else -> 4
-            }
+            val walletType = TimeUtils.dateToWalletTypeInt(currencyUnit)
             list.forEach {
                 if (walletType == it.walletType) {
                     sb.append(it.address).append(",")
@@ -238,7 +228,7 @@ class TransactionQueryFragment : BaseFragment(),
             }
         }
 
-        var addStr =
+        val addStr =
             if (sb.isNotEmpty()) sb.deleteCharAt(sb.length - 1).toString() else sb.toString()
         return addStr
     }
