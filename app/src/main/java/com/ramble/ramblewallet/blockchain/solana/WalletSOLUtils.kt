@@ -2,8 +2,9 @@ package com.ramble.ramblewallet.blockchain.solana
 
 import android.util.Base64
 import com.ramble.ramblewallet.bean.Wallet
-import com.ramble.ramblewallet.blockchain.solana.solanasdk.core.Account
+import com.solana.core.Account
 import com.solana.core.Account.Companion.privateKeyToWallet
+import io.github.novacrypto.base58.Base58
 import org.komputing.kbase58.encodeToBase58String
 
 class WalletSOLUtils {
@@ -24,7 +25,7 @@ class WalletSOLUtils {
         ): Wallet {
             return try {
                 var passphrase: ArrayList<String> = mnemonic.split(" ") as ArrayList<String>
-                val account = Account.fromBip44Mnemonic(passphrase, Base64.DEFAULT)
+                val account = Account.fromBip44Mnemonic(passphrase)
                 val address = account.publicKey.toBase58()
                 val privateKey = account.secretKey.encodeToBase58String()
                 Wallet(
@@ -58,7 +59,7 @@ class WalletSOLUtils {
             mnemonicList: List<String>
         ): Wallet {
             return try {
-                val account = privateKeyToWallet(Base64.decode(privateKey, Base64.DEFAULT))
+                val account = privateKeyToWallet(Base58.base58Decode(privateKey))
                 val address = account.publicKey.toBase58()
                 Wallet(walletname, walletPassword, null, address, privateKey, null, 4, mnemonicList)
             } catch (e: Exception) {

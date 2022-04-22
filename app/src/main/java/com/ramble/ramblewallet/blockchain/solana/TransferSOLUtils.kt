@@ -14,6 +14,7 @@ import com.solana.models.TokenResultObjects
 import com.solana.networking.NetworkingRouter
 import com.solana.networking.RPCEndpoint
 import com.solana.programs.SystemProgram
+import io.github.novacrypto.base58.Base58
 import io.reactivex.Single
 import io.reactivex.disposables.Disposables
 import org.json.JSONObject
@@ -66,27 +67,13 @@ object TransferSOLUtils {
         Thread {
             val solana =
                 Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
-            val feePayer: Account = Account.fromMnemonic(
-                Arrays.asList(
-                    "ranch",
-                    "slight",
-                    "close",
-                    "cart",
-                    "venture",
-                    "trip",
-                    "minute",
-                    "repeat",
-                    "cute",
-                    "utility",
-                    "cotton",
-                    "rhythm"
-                ), "", DerivationPath.BIP44_M_44H_501H_0H_OH
-            )
+            val privateKey = "36AYNyF9rpTqKahAvtUwyverakCJ2Lae3p1uWyKcVYxcB43tgrA6uYLFmS1bPyUDCn7Pn5TJnwUVBuUa5kRUZ4VG";
+            val account = Account.privateKeyToWallet(Base58.base58Decode(privateKey))
             val source = PublicKey("Ch4CJs1bFL9bftBYbpWacar8o9sX9ALWeBgxizYxfLci")
             val destination = PublicKey("6nPn5BmREMctaS37B2zz3Veb92GujaUif7o1uNtUY42d")
             val mintAddress = PublicKey("Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB")
             val transactionId = solana.action.sendSPLTokens(
-                feePayer,
+                account,
                 mintAddress = mintAddress,
                 fromPublicKey = source,
                 destinationAddress = destination,
