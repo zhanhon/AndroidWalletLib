@@ -21,6 +21,7 @@ import com.ramble.ramblewallet.item.StationItem
 import com.ramble.ramblewallet.utils.Pie
 import com.ramble.ramblewallet.utils.RxBus
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.TimeUtils
 import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
@@ -98,17 +99,7 @@ open class StationFragment : BaseFragment() {
 
 
     private fun loadData() {
-        var lang = when (SharedPreferencesUtils.getString(myActivity, LANGUAGE, CN)) {
-            CN -> {
-                1
-            }
-            TW -> {
-                2
-            }
-            else -> {
-                3
-            }
-        }
+        var lang = TimeUtils.dateToLang(myActivity)
         if (records.isNotEmpty()) {
             ArrayList<SimpleRecyclerItem>().apply {
                 records.forEach { item ->

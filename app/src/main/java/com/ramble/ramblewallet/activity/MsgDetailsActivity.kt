@@ -20,6 +20,7 @@ import com.ramble.ramblewallet.network.getPrivacyInfo
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.LanguageSetting
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.TimeUtils
 import com.ramble.ramblewallet.utils.applyIo
 
 /**
@@ -151,17 +152,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("CheckResult")
     private fun getData() {
         var req = PrivacyPolicyInfo.Req()
-        req.lang = when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
-            CN -> {
-                1
-            }
-            TW -> {
-                2
-            }
-            else -> {
-                3
-            }
-        }
+        req.lang = TimeUtils.dateToLang(this)
         req.type = when (typeText) {
             3 -> "privacy"
             else -> "service"

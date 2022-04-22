@@ -22,6 +22,7 @@ import com.ramble.ramblewallet.item.StationItem
 import com.ramble.ramblewallet.network.noticeInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.TimeUtils
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
@@ -92,17 +93,7 @@ class ProclamationFragment : BaseFragment() {
 
     @SuppressLint("CheckResult")
     private fun loadData() {
-        var lang = when (SharedPreferencesUtils.getString(myActivity, LANGUAGE, CN)) {
-            CN -> {
-                1
-            }
-            TW -> {
-                2
-            }
-            else -> {
-                3
-            }
-        }
+        var lang = TimeUtils.dateToLang(myActivity)
         var req = Page.Req(currentPage, 20, lang)
         myActivity.mApiService.getNotice(
             req.toApiRequest(noticeInfoUrl)

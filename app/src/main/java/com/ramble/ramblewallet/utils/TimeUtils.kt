@@ -1,7 +1,11 @@
 package com.ramble.ramblewallet.utils
 
 import android.app.Activity
+import android.content.Context
 import com.ramble.ramblewallet.R
+import com.ramble.ramblewallet.constant.CN
+import com.ramble.ramblewallet.constant.LANGUAGE
+import com.ramble.ramblewallet.constant.TW
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,5 +44,47 @@ object TimeUtils {
         return weekDays[w]
     }
 
+    /***
+     * 转主链类型
+     */
+
+    fun dateToWalletType( date: Int?): String {
+        return when (date) {
+            1 -> {//ETH
+                "ETH"
+            }
+            2 -> {//TRX
+                "TRX"
+            }
+            3 -> {//btc
+                "BTC"
+            }
+            4 -> {//btc
+                "SOL"
+            }
+            5 -> {//btc
+                "DOGE"
+            }
+            else -> "SOL"
+        }
+    }
+
+    /***
+     * 转主链类型
+     */
+
+    fun dateToLang( context: Context): Int {
+        return when (SharedPreferencesUtils.getString(context, LANGUAGE, CN)) {
+            CN -> {
+                1
+            }
+            TW -> {
+                2
+            }
+            else -> {
+                3
+            }
+        }
+    }
 
 }

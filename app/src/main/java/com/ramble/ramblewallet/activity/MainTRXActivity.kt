@@ -91,17 +91,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("CheckResult")
     private fun redPoint() {
 
-        var lang = when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
-            CN -> {
-                1
-            }
-            TW -> {
-                2
-            }
-            else -> {
-                3
-            }
-        }
+        val lang = TimeUtils.dateToLang(this)
         var redList: ArrayList<Page.Record> = arrayListOf()
         var records2: ArrayList<Page.Record> = arrayListOf()
         var req = Page.Req(1, 1000, lang)

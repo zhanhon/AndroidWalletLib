@@ -25,6 +25,7 @@ import com.ramble.ramblewallet.network.*
 import com.ramble.ramblewallet.update.AppVersion
 import com.ramble.ramblewallet.update.UpdateUtils
 import com.ramble.ramblewallet.utils.*
+import com.ramble.ramblewallet.utils.TimeUtils.dateToLang
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -190,17 +191,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
      */
     @SuppressLint("CheckResult")
     private fun redPoint() {
-        var lang = when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
-            CN -> {
-                1
-            }
-            TW -> {
-                2
-            }
-            else -> {
-                3
-            }
-        }
+        val lang = dateToLang(this)
         var redList: ArrayList<Page.Record> = arrayListOf()
         var records2: ArrayList<Page.Record> = arrayListOf()
         var req = Page.Req(1, 1000, lang)

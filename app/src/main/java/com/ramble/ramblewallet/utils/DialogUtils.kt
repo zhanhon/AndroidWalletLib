@@ -30,6 +30,7 @@ import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.databinding.*
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start
+import com.ramble.ramblewallet.utils.TimeUtils.dateToWalletType
 
 
 /**
@@ -377,24 +378,7 @@ fun showBottomSan(
             WindowManager.LayoutParams.WRAP_CONTENT
         )
         window?.setGravity(Gravity.BOTTOM)
-        binding.tvTransferTitle.text = when (walletType) {
-            1 -> {//ETH
-                "ETH"
-            }
-            2 -> {//TRX
-                "TRX"
-            }
-            3 -> {//btc
-                "BTC"
-            }
-            4 -> {//btc
-                "SOL"
-            }
-            5 -> {//btc
-                "DOGE"
-            }
-            else -> "SOL"
-        }
+        binding.tvTransferTitle.text = dateToWalletType(walletType)
         var isSame = false
         var num = -1
         var name = ""
