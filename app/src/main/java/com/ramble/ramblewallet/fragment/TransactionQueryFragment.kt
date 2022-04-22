@@ -23,10 +23,7 @@ import com.ramble.ramblewallet.helper.start2
 import com.ramble.ramblewallet.item.TransferItem
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.network.transferInfoUrl
-import com.ramble.ramblewallet.utils.Pie
-import com.ramble.ramblewallet.utils.RxBus
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.applyIo
+import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.wight.ProgressItem
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils
 import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
@@ -140,20 +137,7 @@ class TransactionQueryFragment : BaseFragment(),
             3 -> 2
             else -> null
         }
-
-        changeCurrencyType =
-            when (SharedPreferencesUtils.getString(myActivity, CURRENCY, USD)) {
-                CNY -> {
-                    2
-                }
-                HKD -> {
-                    3
-                }
-                else -> {
-                    1
-                }
-            }
-
+        changeCurrencyType = TimeUtils.dateToCurrency(myActivity)
         saveWalletList = Gson().fromJson(
             SharedPreferencesUtils.getString(myActivity, WALLETINFO, ""),
             object : TypeToken<ArrayList<Wallet>>() {}.type

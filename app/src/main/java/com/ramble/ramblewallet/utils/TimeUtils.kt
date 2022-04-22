@@ -3,9 +3,7 @@ package com.ramble.ramblewallet.utils
 import android.app.Activity
 import android.content.Context
 import com.ramble.ramblewallet.R
-import com.ramble.ramblewallet.constant.CN
-import com.ramble.ramblewallet.constant.LANGUAGE
-import com.ramble.ramblewallet.constant.TW
+import com.ramble.ramblewallet.constant.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -70,7 +68,7 @@ object TimeUtils {
     }
 
     /***
-     * 转主链类型
+     * 转语言
      */
 
     fun dateToLang( context: Context): Int {
@@ -87,4 +85,21 @@ object TimeUtils {
         }
     }
 
+    /***
+     * 转货币
+     */
+
+    fun dateToCurrency( context: Context): Int {
+        return  when (SharedPreferencesUtils.getString(context, CURRENCY, USD)) {
+            CNY -> {
+                2
+            }
+            HKD -> {
+                3
+            }
+            else -> {
+                1
+            }
+        }
+    }
 }
