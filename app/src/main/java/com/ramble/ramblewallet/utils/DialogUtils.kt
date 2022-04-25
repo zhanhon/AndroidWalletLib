@@ -639,6 +639,7 @@ fun showCurrencyDialog(
 fun showCommonDialog(
     activity: Activity,
     title: String,
+    titleContent: String?=null,
     confirmListener: View.OnClickListener? = null,
     tvcListener: View.OnClickListener? = null,
     btcListener: View.OnClickListener? = null
@@ -657,6 +658,9 @@ fun showCommonDialog(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
+        if (titleContent!=null){
+            binding.tvTitle.text = titleContent
+        }
         binding.tvContent.text = title
         binding.btnConfirm.setOnClickListener {
             dismiss()

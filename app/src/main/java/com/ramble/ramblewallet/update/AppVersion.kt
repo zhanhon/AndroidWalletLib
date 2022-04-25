@@ -13,34 +13,34 @@ class AppVersion @SuppressWarnings("unused") constructor() {
     var id: Int? = -1
 
     @Json(name = "isForceUpdate")
-    var isForceUpdate: Int? = -1
+    var isForceUpdate: Int? = -1//强制更新|0:否|1:是
 
     @Json(name = "isNeedUpdate")
-    var isNeedUpdate: Int? = -1
+    var isNeedUpdate: Int? = -1//状态|0:停用|1:启用
 
     @Json(name = "isPopPrompt")
-    var isPopPrompt: Int? = -1
+    var isPopPrompt: Int? = -1//弹框提示|0:否|1:是
 
     @Json(name = "isVersionPrompt")
-    var isVersionPrompt: Int? = -1
+    var isVersionPrompt: Int? = -1//版本提示|0:否|1:是
 
     @Json(name = "updateContent")
-    var updateContent: String? = ""
+    var updateContent: String? = ""//更新描述内容
 
     @Json(name = "updateUrl")
-    var updateUrl: String? = ""
+    var updateUrl: String? = ""//APP更新地址
 
     @Json(name = "version")
-    var version: String? = ""
+    var version: String? = ""//当前版本号
 
     class Req : ApiRequest.Body() {
 
         @Json(name = "appType")
-        var appType: Int = 1
+        var appType: Int = 1//APP类型|1:android|2:ios
             private set
 
         @Json(name = "version")
-        var version: String = BuildConfig.VERSION_NAME
+        var version: String = BuildConfig.VERSION_NAME//当前版本号
             private set
     }
 }

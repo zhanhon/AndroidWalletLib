@@ -128,7 +128,8 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             if (it.code() == 1) {
                 GlobalScope.launch {
 //                    delay(800)
-                    checkAppVersion(it.data()!!)
+                    confirmTipsDialog(it.data()!!)
+
                 }
 
             }
@@ -165,13 +166,14 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.clearText.setOnClickListener(this)
         binding.incFingerPrint.setOnClickListener(this)
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).setOnClickListener {
-            confirmTipsDialog()
+            checkVersion()
+
         }
     }
 
-    private fun confirmTipsDialog() {
-        showCommonDialog(this, getString(R.string.check_version), confirmListener = {
-            checkVersion()
+    private fun confirmTipsDialog(version: AppVersion) {
+        showCommonDialog(this, getString(R.string.check_version),titleContent ="" , confirmListener = {
+            checkAppVersion(version)
         })
     }
 
