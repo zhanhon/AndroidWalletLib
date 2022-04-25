@@ -174,7 +174,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     private fun confirmTipsDialog(version: AppVersion) {
         showCommonDialog(this, getString(R.string.check_version),titleContent ="" , confirmListener = {
             checkAppVersion(version)
-        })
+        },isForceUpdate = true)
     }
 
     override fun onResume() {

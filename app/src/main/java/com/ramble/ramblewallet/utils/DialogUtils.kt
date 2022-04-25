@@ -11,6 +11,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.CheckBox
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.MyApp
@@ -639,10 +640,11 @@ fun showCurrencyDialog(
 fun showCommonDialog(
     activity: Activity,
     title: String,
-    titleContent: String?=null,
+    titleContent: String? = null,
     confirmListener: View.OnClickListener? = null,
     tvcListener: View.OnClickListener? = null,
-    btcListener: View.OnClickListener? = null
+    btcListener: View.OnClickListener? = null,
+    isForceUpdate: Boolean? = null
 ): Dialog {
     val binding: DialogDeleteConfirmTipsBinding =
         LayoutInflater.from(activity).dataBinding(
@@ -658,8 +660,11 @@ fun showCommonDialog(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
-        if (titleContent!=null){
+        if (titleContent != null) {
             binding.tvTitle.text = titleContent
+        }
+        if (isForceUpdate != null) {
+            binding.btnCancel.isVisible = false
         }
         binding.tvContent.text = title
         binding.btnConfirm.setOnClickListener {
