@@ -45,12 +45,9 @@ public class WalletTRXUtils {
             ECKeyPair ecKeyPair = ECKeyPair.create(deterministicKey.getPrivKey());
             ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
             WalletFile walletFile = createLight(walletPassword, ecKeyPair);
-            String keystore = objectMapper.writeValueAsString(walletFile);
-            WalletFile walletFile2 = objectMapper.readValue(keystore, WalletFile.class);
-            ECKeyPair ecKeyPair1 = decrypt(walletPassword, walletFile2);
             String address = fromHexAddress("41" + walletFile.getAddress());
-            String privateKey = ecKeyPair1.getPrivateKey().toString(16);
-            String publicKey = ecKeyPair1.getPublicKey().toString(16);
+            String privateKey = ecKeyPair.getPrivateKey().toString(16);
+            String keystore = objectMapper.writeValueAsString(walletFile);
             return new Wallet(walletname, walletPassword, mnemonic, address, privateKey, keystore, 2, mnemonicList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,10 +71,7 @@ public class WalletTRXUtils {
             ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
             WalletFile walletFile = createLight(walletPassword, ecKeyPair);
             String keystore = objectMapper.writeValueAsString(walletFile);
-            WalletFile walletFile2 = objectMapper.readValue(keystore, WalletFile.class);
-            ECKeyPair ecKeyPair1 = decrypt(walletPassword, walletFile2);
             String address = fromHexAddress("41" + walletFile.getAddress());
-            String publicKey = ecKeyPair1.getPublicKey().toString(16);
             //由于通过privateKey无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
             return new Wallet(walletname, walletPassword, null, address, privateKey, keystore, 2, mnemonicList);
         } catch (Exception e) {
@@ -97,13 +91,10 @@ public class WalletTRXUtils {
     public static Wallet generateWalletByKeyStore(String walletname, String walletPassword, String keystore, List<String> mnemonicList) {
         try {
             ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
-            WalletFile walletFile2 = objectMapper.readValue(keystore, WalletFile.class);
-            ECKeyPair ecKeyPair = decrypt(walletPassword, walletFile2);
-            WalletFile walletFile1 = createLight(walletPassword, ecKeyPair);
-            ECKeyPair ecKeyPair1 = decrypt(walletPassword, walletFile2);
-            String address = fromHexAddress("41" + walletFile1.getAddress());
-            String privateKey = ecKeyPair1.getPrivateKey().toString(16);
-            String publicKey = ecKeyPair1.getPublicKey().toString(16);
+            WalletFile walletFile = objectMapper.readValue(keystore, WalletFile.class);
+            ECKeyPair ecKeyPair = decrypt(walletPassword, walletFile);
+            String address = fromHexAddress("41" + walletFile.getAddress());
+            String privateKey = ecKeyPair.getPrivateKey().toString(16);
             //由于通过keystore无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
             return new Wallet(walletname, walletPassword, null, address, privateKey, keystore, 2, mnemonicList);
         } catch (Exception e) {

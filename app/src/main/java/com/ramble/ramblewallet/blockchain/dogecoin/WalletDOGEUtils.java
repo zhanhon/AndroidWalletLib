@@ -3,16 +3,24 @@ package com.ramble.ramblewallet.blockchain.dogecoin;
 import static org.web3j.crypto.Wallet.createLight;
 import static org.web3j.crypto.Wallet.decrypt;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.ramble.ramblewallet.bean.Wallet;
 import com.ramble.ramblewallet.blockchain.tron.tronsdk.StringTronUtil;
 import com.ramble.ramblewallet.blockchain.tron.tronsdk.common.utils.ByteArray;
 
+import org.bitcoinj.core.Address;
+import org.bitcoinj.core.ECKey;
+import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.crypto.ChildNumber;
 import org.bitcoinj.crypto.DeterministicHierarchy;
 import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.crypto.HDKeyDerivation;
 import org.bitcoinj.crypto.HDUtils;
+import org.bitcoinj.params.MainNetParams;
+import org.bitcoinj.script.Script;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.MnemonicUtils;
 import org.web3j.crypto.WalletFile;
@@ -31,31 +39,35 @@ public class WalletDOGEUtils {
         throw new IllegalStateException("WalletDOGEUtils");
     }
 
-    /**
-     * 通过助记词生成钱包
-     *
-     * @param walletname
-     * @param walletPassword
-     * @param mnemonic
-     * @return
-     */
-    public static Wallet generateWalletByMnemonic(String walletname, String walletPassword, String mnemonic, List<String> mnemonicList) {
+    public static Wallet generateWalletByMnemonic() {
         try {
-            DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(mnemonic, 0);
-            ECKeyPair ecKeyPair = ECKeyPair.create(deterministicKey.getPrivKey());
-            ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
-            WalletFile walletFile = createLight(walletPassword, ecKeyPair);
-            String keystore = objectMapper.writeValueAsString(walletFile);
-            WalletFile walletFile2 = objectMapper.readValue(keystore, WalletFile.class);
-            ECKeyPair ecKeyPair1 = decrypt(walletPassword, walletFile2);
-            String address = fromHexAddress("41" + walletFile.getAddress());
-            String privateKey = ecKeyPair1.getPrivateKey().toString(16);
-            return new Wallet(walletname, walletPassword, mnemonic, address, privateKey, keystore, 2, mnemonicList);
+            String passphrase = "olympic derive maid nature fatigue design pull claim viable run hamster cousin";
+            DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(passphrase, 0);
+            ECKeyPair keyPair = ECKeyPair.create(deterministicKey.getPrivKey());
+            ECKey ecKey = ECKey.fromPrivate(keyPair.getPrivateKey());
+            NetworkParameters networkParameters = MainNetParams.get();
+
+            Address address = new Address(networkParameters, ecKey.getPubKeyHash()) {
+                @Override
+                public byte[] getHash() {
+                    return new byte[0];
+                }
+
+                @Override
+                public Script.ScriptType getOutputScriptType() {
+                    return null;
+                }
+            };
+            //LegacyAddress address1 = LegacyAddress.fromKey(networkParameters, ecKeyPair);
+            Log.v("-=-=->address1:", new Gson().toJson(address));
+
+
         } catch (Exception e) {
             e.printStackTrace();
-            return new Wallet("", "", "", "", "", "", 2, null);
         }
+        return new Wallet("", "", "", "", "", "", 2, null);
     }
+
 
     /**
      * 通过privateKey生成钱包
