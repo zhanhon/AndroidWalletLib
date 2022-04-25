@@ -77,9 +77,6 @@ public class TransferBTCUtils {
                 if (context instanceof MainBTCActivity) {
                     ((MainBTCActivity) context).setBtcBalance(new BigDecimal("0"));
                 }
-                if (context instanceof TransferActivity) {
-                    ((TransferActivity) context).setBalance(new BigDecimal("0"));
-                }
             }
 
             @Override
@@ -92,15 +89,9 @@ public class TransferBTCUtils {
                     if (context instanceof MainBTCActivity) {
                         ((MainBTCActivity) context).setBtcBalance(new BigDecimal(balanceBefore));
                     }
-                    if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).setBalance(new BigDecimal(balanceBefore));
-                    }
                 } catch (Exception e) {
                     if (context instanceof MainBTCActivity) {
                         ((MainBTCActivity) context).setBtcBalance(new BigDecimal("0"));
-                    }
-                    if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).setBalance(new BigDecimal("0"));
                     }
                     e.printStackTrace();
                 }

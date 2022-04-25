@@ -177,7 +177,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 showMinerFeeDialog()
             }
             R.id.tv_select_all -> {
-                binding.edtInputQuantity.setText(DecimalFormatUtil.format(transferBalance, 8))
+                binding.edtInputQuantity.setText(DecimalFormatUtil.format(tokenBean.balance, 8))
             }
             R.id.btn_confirm -> {
                 if (confirmValidForTransfer()) return
@@ -188,7 +188,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     private fun confirmValidForTransfer(): Boolean {
         if (BigDecimal(binding.edtInputQuantity.text.trim().toString()).compareTo(
-                transferBalance
+                tokenBean.balance
             ) == 1
         ) {
             ToastUtils.showToastFree(this, getString(R.string.balance_insufficient))
@@ -399,60 +399,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }
 
         binding.tvTransferTitle.text = tokenBean.title + " " + getString(R.string.transfer)
-        binding.tvQuantityBalance.text =
-            getString(R.string.transfer_balance) + " " + "0" + " " + transferUnit
-        initBalanceForTransfer()
-    }
-
-    private fun initBalanceForTransfer() {
-        when (walletSelleted.walletType) {
-            1 -> {
-                if (WalletETHUtils.isEthValidAddress(walletSelleted.address)) {
-                    initBalanceForEth()
-                }
-            }
-            2 -> {
-                if (WalletTRXUtils.isTrxValidAddress(walletSelleted.address)) {
-                    initBalanceForTrx()
-                }
-            }
-            3 -> {
-                if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address) && (!tokenBean.isToken)) {
-                    balanceOfBtc(this, walletSelleted.address)
-                }
-            }
-        }
-    }
-
-    private fun initBalanceForTrx() {
-        if (tokenBean.isToken) {
-            balanceOfTrc20(
-                this,
-                walletSelleted.address,
-                tokenBean.contractAddress
-            )
-        } else {
-            balanceOfTrx(this, walletSelleted.address)
-        }
-    }
-
-    private fun initBalanceForEth() {
-        if (tokenBean.isToken) {
-            Thread {
-                transferBalance =
-                    getBalanceToken(walletSelleted.address, tokenBean)
-                if (transferBalance != BigDecimal("0")) {
-                    setBalanceView(transferBalance)
-                }
-            }.start()
-        } else {
-            Thread {
-                transferBalance = getBalanceETH(walletSelleted.address)
-                if (transferBalance != BigDecimal("0")) {
-                    setBalanceView(transferBalance)
-                }
-            }.start()
-        }
+        binding.tvQuantityBalance.text = getString(R.string.transfer_balance) +
+                " " + DecimalFormatUtil.format(tokenBean.balance, 8) + " " + transferUnit
     }
 
     @SuppressLint("CheckResult")
@@ -521,11 +469,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    fun setBalance(balance: BigDecimal) {
-        transferBalance = balance
-        setBalanceView(transferBalance)
-    }
-
     private fun setEthMinerFee() {
         gas = BigDecimal(gasPrice).multiply(BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
         binding.tvMinerFeeValue.text = "${DecimalFormatUtil.format(gas, 8)} ETH"
@@ -552,16 +495,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }"
         binding.tvTips.visibility = View.INVISIBLE
     }
-
-    private fun setBalanceView(balance: BigDecimal) {
-        postUI {
-            binding.tvQuantityBalance.text =
-                getString(R.string.transfer_balance) + " " + DecimalFormatUtil.format(
-                    balance, 8
-                ) + " " + transferUnit
-        }
-    }
-
 
     private fun transactionConfirmationDialog() {
         var dialog = AlertDialog.Builder(this).create()

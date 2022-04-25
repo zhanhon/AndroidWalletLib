@@ -39,15 +39,9 @@ object TransferSOLUtils {
                 if (context is MainSOLActivity) {
                     context.setSolBalance(BigDecimal(balance.toString()))
                 }
-                if (context is TransferActivity) {
-                    context.setBalance(BigDecimal(balance.toString()))
-                }
             } catch (e: Exception) {
                 if (context is MainSOLActivity) {
                     context.setSolBalance(BigDecimal(balance.toString()))
-                }
-                if (context is TransferActivity) {
-                    context.setBalance(BigDecimal(balance.toString()))
                 }
                 e.printStackTrace()
             }
@@ -72,16 +66,10 @@ object TransferSOLUtils {
                     if (context is MainSOLActivity) {
                         context.setSolTokenBalance(BigDecimal(balance))
                     }
-                    if (context is TransferActivity) {
-                        context.setBalance(BigDecimal(balance))
-                    }
                 }
             } catch (e: Exception) {
                 if (context is MainSOLActivity) {
                     context.setSolTokenBalance(BigDecimal(balance))
-                }
-                if (context is TransferActivity) {
-                    context.setBalance(BigDecimal(balance))
                 }
                 e.printStackTrace()
             }
