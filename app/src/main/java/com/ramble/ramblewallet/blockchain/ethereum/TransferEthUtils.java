@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi;
 import com.ramble.ramblewallet.BuildConfig;
 import com.ramble.ramblewallet.activity.TransferActivity;
 import com.ramble.ramblewallet.bean.MainETHTokenBean;
-import com.ramble.ramblewallet.blockchain.ethereum.utils.StringHexUtils;
+import com.ramble.ramblewallet.blockchain.ethereum.utils.EthUtils;
 
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.TypeReference;
@@ -96,7 +96,7 @@ public class TransferEthUtils {
             BigInteger nonce = transactionCount.getTransactionCount();
 
             if (remark != null) {
-                remark = StringHexUtils.byte2HexString(remark.getBytes(StandardCharsets.UTF_8));
+                remark = EthUtils.byte2HexString(remark.getBytes(StandardCharsets.UTF_8));
             }
             //创建RawTransaction交易对象
             RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, gasPrice, gasLimit, toAddress, value, remark);

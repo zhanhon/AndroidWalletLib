@@ -25,26 +25,6 @@ public class EthUtils {
     }
 
     /**
-     * 获取私钥
-     *
-     * @param ecKeyPair
-     * @return
-     */
-    public static String getPrivateKey(ECKeyPair ecKeyPair) {
-        return toKeyString(ecKeyPair.getPrivateKey());
-    }
-
-    /**
-     * 获取公钥
-     *
-     * @param ecKeyPair
-     * @return
-     */
-    public static String getPublicKey(ECKeyPair ecKeyPair) {
-        return toKeyString(ecKeyPair.getPublicKey());
-    }
-
-    /**
      * 格式化地址
      *
      * @param address
@@ -57,14 +37,19 @@ public class EthUtils {
         return address;
     }
 
-    /**
-     * 私钥 公钥 BigInteger 类型转成string
-     *
-     * @param key
-     * @return
-     */
-    public static String toKeyString(BigInteger key) {
-        return key.toString(16);
+    public static String byte2HexString(byte[] byteArr) {
+        if (byteArr == null || byteArr.length < 1) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (byte t : byteArr) {
+            if ((t & 0XF0) == 0) {
+                sb.append("0");
+            }
+            sb.append(Integer.toHexString(t & 0XFF));
+        }
+        return sb.toString();
     }
+
 
 }
