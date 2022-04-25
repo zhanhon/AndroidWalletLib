@@ -5,8 +5,6 @@ import android.util.Base64.encodeToString
 import com.solana.core.Account
 import com.solana.core.Transaction
 import com.solana.models.RpcSendTransactionConfig
-import org.komputing.kbase58.encodeToBase58String
-import java.util.*
 
 fun Api.sendTransaction(
     transaction: Transaction,

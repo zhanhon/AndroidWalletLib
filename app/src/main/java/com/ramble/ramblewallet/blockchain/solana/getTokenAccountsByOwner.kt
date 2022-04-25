@@ -1,6 +1,9 @@
-package com.solana.api
+package com.ramble.ramblewallet.blockchain.solana
 
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.solana.api.Api
+import com.solana.api.getTokenAccount
 import com.solana.core.PublicKey
 import com.solana.models.RPC
 import com.solana.models.TokenAccountInfo
@@ -16,7 +19,7 @@ fun Api.getTokenAccountsByOwner(
     val parameterMap: MutableMap<String, Any> = HashMap()
     parameterMap["mint"] = tokenMint.toBase58()
     params.add(parameterMap)
-    params.add(mapOf("encoding" to "base64", "commitment" to "recent"))
+    params.add(mapOf("encoding" to "jsonParsed", "commitment" to "recent"))
 
     val type = Types.newParameterizedType(
         RPC::class.java,
@@ -36,8 +39,17 @@ fun Api.getTokenAccountsByOwner(
     ) { result ->
         result.map {
             if (it.value?.size!! > 0) {
-                println("-=-=-=->value：${Gson().toJson(it.value?.first())}")
-                it.value?.first()?.get("pubkey") as String
+                val jsonToList: List<TokenAccountsInfo> = Gson().fromJson(
+                    it.value.toString(),
+                    object : TypeToken<List<TokenAccountsInfo>>() {}.type
+                )
+                var resultValue = "111111"
+                for (index in jsonToList.indices) {
+                    if (jsonToList[index].account.data.parsed.info.tokenAmount.uiAmountString != "0") {
+                        resultValue = it.value!![index]["pubkey"] as String
+                    }
+                }
+                resultValue
             } else {
                 "111111"
             }
