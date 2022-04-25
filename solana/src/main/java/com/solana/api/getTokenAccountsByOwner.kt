@@ -1,5 +1,6 @@
 package com.solana.api
 
+import com.google.gson.Gson
 import com.solana.core.PublicKey
 import com.solana.models.RPC
 import com.solana.models.TokenAccountInfo
@@ -15,6 +16,7 @@ fun Api.getTokenAccountsByOwner(
     val parameterMap: MutableMap<String, Any> = HashMap()
     parameterMap["mint"] = tokenMint.toBase58()
     params.add(parameterMap)
+    params.add(mapOf("encoding" to "base64", "commitment" to "recent"))
 
     val type = Types.newParameterizedType(
         RPC::class.java,
@@ -34,6 +36,7 @@ fun Api.getTokenAccountsByOwner(
     ) { result ->
         result.map {
             if (it.value?.size!! > 0) {
+                println("-=-=-=->value：${Gson().toJson(it.value?.first())}")
                 it.value?.first()?.get("pubkey") as String
             } else {
                 "111111"

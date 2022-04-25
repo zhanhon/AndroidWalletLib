@@ -10,7 +10,8 @@ fun Api.getTokenAccountBalance(
     onComplete: (Result<TokenResultObjects.TokenAmountInfo>) -> Unit
 ) {
     val params: MutableList<Any> = ArrayList()
-    params.add(tokenAccount.toString())
+    params.add(tokenAccount.toBase58())
+    params.add(mapOf("encoding" to "base64", "commitment" to "recent"))
     val type = Types.newParameterizedType(
         RPC::class.java,
         TokenResultObjects.TokenAmountInfo::class.java
