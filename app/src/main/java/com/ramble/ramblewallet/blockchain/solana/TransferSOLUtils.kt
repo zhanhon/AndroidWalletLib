@@ -1,15 +1,18 @@
 package com.ramble.ramblewallet.blockchain.solana
 
 import android.app.Activity
-import android.util.Base64
+import android.os.Build
+import android.webkit.WebView
 import com.google.gson.Gson
+import com.ramble.ramblewallet.activity.MainSOLActivity
+import com.ramble.ramblewallet.activity.TransferActivity
 import com.solana.Solana
 import com.solana.actions.Action
 import com.solana.actions.sendSPLTokens
 import com.solana.api.*
 import com.solana.core.Account
-import com.solana.core.DerivationPath
 import com.solana.core.PublicKey
+import com.solana.models.TokenAccountInfo
 import com.solana.models.TokenResultObjects
 import com.solana.networking.NetworkingRouter
 import com.solana.networking.RPCEndpoint
@@ -18,48 +21,98 @@ import io.github.novacrypto.base58.Base58
 import io.reactivex.Single
 import io.reactivex.disposables.Disposables
 import org.json.JSONObject
+import java.lang.reflect.InvocationTargetException
+import java.math.BigDecimal
 import java.math.BigInteger
-import java.util.*
+import kotlin.properties.Delegates
 
 
 object TransferSOLUtils {
 
     fun getSOLBalance(context: Activity, address: String) {
         Thread {
-            val solana =
-                Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
-            val balance = solana.api.getBalance(PublicKey(address)).blockingGet() / 1000000000f
-            println("-=-=-=->balance：${balance}")
+            var balance by Delegates.notNull<Float>()
+            try {
+                val solana =
+                    Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
+                balance = solana.api.getBalance(PublicKey(address)).blockingGet() / 1000000000f
+                if (context is MainSOLActivity) {
+                    context.setSolBalance(BigDecimal(balance.toString()))
+                }
+                if (context is TransferActivity) {
+                    context.setBalance(BigDecimal(balance.toString()))
+                }
+            } catch (e: Exception) {
+                if (context is MainSOLActivity) {
+                    context.setSolBalance(BigDecimal(balance.toString()))
+                }
+                if (context is TransferActivity) {
+                    context.setBalance(BigDecimal(balance.toString()))
+                }
+                e.printStackTrace()
+            }
         }.start()
     }
 
     fun getsSOLTokenBalance(context: Activity, address: String, contractAddress: String) {
         Thread {
-            val solana =
-                Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
-            val result = solana.api.getTokenAccountsByOwner(
-                PublicKey(address),
-                PublicKey(contractAddress)
-            ).blockingGet()
-            val balanceJson = solana.api.getTokenAccountBalance(result).blockingGet()
-            val json = JSONObject(Gson().toJson(balanceJson))
-            val balance = json.optString("uiAmountString")
-            println("-=-=-=->balance：${balance}")
+            var balance by Delegates.notNull<String>()
+            try {
+                val solana =
+                    Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
+                val result = solana.api.getTokenAccountsByOwner(
+                    PublicKey(address),
+                    PublicKey(contractAddress)
+                ).blockingGet()
+                if (result != PublicKey("111111")) {
+                    val balanceJson = solana.api.getTokenAccountBalance(result).blockingGet()
+                    val json = JSONObject(Gson().toJson(balanceJson))
+                    balance = json.optString("uiAmountString")
+                    println("-=-=-=->balance：${balance}")
+                    if (context is MainSOLActivity) {
+                        context.setSolTokenBalance(BigDecimal(balance))
+                    }
+                    if (context is TransferActivity) {
+                        context.setBalance(BigDecimal(balance))
+                    }
+                }
+            } catch (e: Exception) {
+                if (context is MainSOLActivity) {
+                    context.setSolTokenBalance(BigDecimal(balance))
+                }
+                if (context is TransferActivity) {
+                    context.setBalance(BigDecimal(balance))
+                }
+                e.printStackTrace()
+            }
         }.start()
     }
 
     fun transferSOL(context: Activity, toAddress: String, privateKey: String?, amount: BigInteger) {
-        val account = Account.privateKeyToWallet(Base58.base58Decode(privateKey))
         Thread {
-            val solana =
-                Solana(NetworkingRouter(RPCEndpoint.mainnetBetaSolana), InMemoryAccountStorage())
-            val instructions =
-                SystemProgram.transfer(account.publicKey, PublicKey(toAddress), amount.toLong())
-            val transaction = com.solana.core.Transaction()
-            transaction.addInstruction(instructions)
-            val transactionHash =
-                solana.api.sendTransaction(transaction, listOf(account)).blockingGet()
-            println("-=-=-=->transactionHash：${transactionHash}")
+            try {
+                val account = Account.privateKeyToWallet(Base58.base58Decode(privateKey))
+                val solana =
+                    Solana(
+                        NetworkingRouter(RPCEndpoint.mainnetBetaSolana),
+                        InMemoryAccountStorage()
+                    )
+                val instructions =
+                    SystemProgram.transfer(account.publicKey, PublicKey(toAddress), amount.toLong())
+                val transaction = com.solana.core.Transaction()
+                transaction.addInstruction(instructions)
+                val transactionHash =
+                    solana.api.sendTransaction(transaction, listOf(account)).blockingGet()
+                println("-=-=-=->transactionHash：${transactionHash}")
+                if (context is TransferActivity) {
+                    context.transferSuccess(transactionHash, null)
+                }
+            } catch (e: Exception) {
+                if (context is TransferActivity) {
+                    context.transferFail(e.message!!)
+                }
+                e.printStackTrace()
+            }
         }.start()
     }
 
@@ -83,6 +136,43 @@ object TransferSOLUtils {
         }.start()
     }
 
+    //允许跨域请求
+    fun setAllowUniversalAccessFromFileURLs(mwebview: WebView) {
+        try { //本地HTML里面有跨域的请求 原生webview需要设置之后才能实现跨域请求
+            if (Build.VERSION.SDK_INT >= 16) {
+                val clazz: Class<*> = mwebview.settings.javaClass
+                val method = clazz.getMethod(
+                    "setAllowUniversalAccessFromFileURLs", Boolean::class.javaPrimitiveType
+                )
+                if (method != null) {
+                    method.invoke(mwebview.settings, true)
+                }
+            }
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
+        } catch (e: NoSuchMethodException) {
+            e.printStackTrace()
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
+        } catch (e: InvocationTargetException) {
+            e.printStackTrace()
+        }
+    }
+
+    fun Api.getTokenAccountsByDelegate(
+        accountDelegate: PublicKey,
+        requiredParams: Map<String, Any>,
+        optionalParams: Map<String, Any>?,
+        onComplete: (Result<TokenAccountInfo>) -> Unit
+    ) {
+        return getTokenAccount(
+            accountDelegate,
+            requiredParams,
+            optionalParams,
+            "getTokenAccountsByDelegate",
+            onComplete
+        )
+    }
 
     private fun Api.getBalance(account: PublicKey): Single<Long> {
         return Single.create { emitter ->

@@ -20,8 +20,8 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.*
-import com.ramble.ramblewallet.blockchain.ethereum.TransferEthUtils
-import com.ramble.ramblewallet.blockchain.ethereum.TransferEthUtils.getBalanceETH
+import com.ramble.ramblewallet.blockchain.ethereum.TransferETHUtils
+import com.ramble.ramblewallet.blockchain.ethereum.TransferETHUtils.getBalanceETH
 import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainEthBinding
@@ -38,7 +38,7 @@ import java.math.BigDecimal
 class MainETHActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainEthBinding
-    private var mainETHTokenBean: ArrayList<MainETHTokenBean> = arrayListOf()
+    private var mainETHTokenBean: ArrayList<MainTokenBean> = arrayListOf()
     private lateinit var mainAdapter: MainAdapter
     private lateinit var currencyUnit: String
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
@@ -263,7 +263,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_transfer_top, R.id.ll_transfer -> {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(
-                        ARG_PARAM2, MainETHTokenBean(
+                        ARG_PARAM2, MainTokenBean(
                             "ETH",
                             "ETH",
                             ethBalance,
@@ -280,7 +280,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, ScanActivity::class.java).apply {
                     putExtra(ARG_PARAM1, 3)
                     putExtra(
-                        ARG_PARAM2, MainETHTokenBean(
+                        ARG_PARAM2, MainTokenBean(
                             "ETH",
                             "ETH",
                             ethBalance,
@@ -467,11 +467,11 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             mainAdapter = MainAdapter(mainETHTokenBean)
             binding.rvCurrency.adapter = mainAdapter
             mainAdapter.setOnItemClickListener { adapter, _, position ->
-                if (adapter.getItem(position) is MainETHTokenBean) {
-                    var symbol = (adapter.getItem(position) as MainETHTokenBean).title
+                if (adapter.getItem(position) is MainTokenBean) {
+                    var symbol = (adapter.getItem(position) as MainTokenBean).title
                     startActivity(Intent(this, QueryActivity::class.java).apply {
                         putExtra(ARG_PARAM1, walletSelleted.address)
-                        putExtra(ARG_PARAM2, adapter.getItem(position) as MainETHTokenBean)
+                        putExtra(ARG_PARAM2, adapter.getItem(position) as MainTokenBean)
                         putExtra(ARG_PARAM3, symbol)
                     })
                 }
@@ -490,7 +490,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             if (storeInfo.symbol == "ETH") {
                 unitPriceETH = storeInfo.price
                 mainETHTokenBean.add(
-                    MainETHTokenBean(
+                    MainTokenBean(
                         "ETH",
                         storeInfo.symbol,
                         ethBalance,
@@ -511,7 +511,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             if (storeInfo.symbol == "ETH") {
                 return@forEach
             }
-            var tokenBean = MainETHTokenBean(
+            var tokenBean = MainTokenBean(
                 "ETH-${storeInfo.symbol}",
                 storeInfo.symbol,
                 BigDecimal("0"),
@@ -523,9 +523,10 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             )
             mainETHTokenBean.add(tokenBean)
             Thread {
-                TransferEthUtils.getBalanceToken(walletSelleted.address, tokenBean)
+                TransferETHUtils.getBalanceToken(walletSelleted.address, tokenBean)
             }.start()
-            TransferEthUtils().setOnListener { tokenBean, tokenBalance ->
+            TransferETHUtils()
+                .setOnListener { tokenBean, tokenBalance ->
                 postUI {
                     tokenBean.balance = tokenBalance
                     totalBalance += tokenBalance.multiply(BigDecimal(tokenBean.unitPrice))

@@ -33,7 +33,11 @@ fun Api.getTokenAccountsByOwner(
         type
     ) { result ->
         result.map {
-            it.value!!.first().get("pubkey") as String
+            if (it.value?.size!! > 0) {
+                it.value?.first()?.get("pubkey") as String
+            } else {
+                "111111"
+            }
         }.map {
             PublicKey(it)
         }.onSuccess {

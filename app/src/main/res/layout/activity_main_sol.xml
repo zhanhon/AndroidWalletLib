@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="TRX"
+                android:text="SOL"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/sp_20"
                 android:visibility="invisible" />
@@ -266,7 +266,7 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/tv_trx_address"
+                                android:id="@+id/tv_sol_address"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0xxxs....sdfs"

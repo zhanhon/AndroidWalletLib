@@ -8,7 +8,7 @@ import static com.ramble.ramblewallet.utils.StringUtils.strAddComma;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.ramble.ramblewallet.R;
-import com.ramble.ramblewallet.bean.MainETHTokenBean;
+import com.ramble.ramblewallet.bean.MainTokenBean;
 import com.ramble.ramblewallet.utils.DecimalFormatUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -20,13 +20,13 @@ import java.util.List;
  * @创建人： Ricky
  * @创建时间： 2021/12/5
  */
-public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHolder> {
-    public MainAdapter(List<MainETHTokenBean> datas) {
+public class MainAdapter extends BaseQuickAdapter<MainTokenBean, BaseViewHolder> {
+    public MainAdapter(List<MainTokenBean> datas) {
         super(R.layout.activity_main_item, datas);
     }
 
     @Override
-    protected void convert(@NotNull BaseViewHolder baseViewHolder, MainETHTokenBean mainETHTokenBean) {
+    protected void convert(@NotNull BaseViewHolder baseViewHolder, MainTokenBean mainETHTokenBean) {
         tokenIcon(baseViewHolder, mainETHTokenBean);
         baseViewHolder.setText(R.id.tv_token_name, mainETHTokenBean.getSymbol());
         baseViewHolder.setText(R.id.tv_token_balance, strAddComma(DecimalFormatUtil.format(mainETHTokenBean.getBalance(), 8)));
@@ -46,7 +46,7 @@ public class MainAdapter extends BaseQuickAdapter<MainETHTokenBean, BaseViewHold
         baseViewHolder.setText(R.id.tv_unit_price, strAddComma(DecimalFormatUtil.format(new BigDecimal(mainETHTokenBean.getUnitPrice()), 8)));
     }
 
-    private void tokenIcon(@NotNull BaseViewHolder baseViewHolder, MainETHTokenBean mainETHTokenBean) {
+    private void tokenIcon(@NotNull BaseViewHolder baseViewHolder, MainTokenBean mainETHTokenBean) {
         switch (mainETHTokenBean.getSymbol()) {
             case "ETH":
                 baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_eth);

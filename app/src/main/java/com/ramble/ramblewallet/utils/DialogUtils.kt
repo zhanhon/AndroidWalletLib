@@ -18,7 +18,7 @@ import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.AddressBookActivity
 import com.ramble.ramblewallet.activity.ScanActivity
 import com.ramble.ramblewallet.activity.TransferActivity
-import com.ramble.ramblewallet.bean.MainETHTokenBean
+import com.ramble.ramblewallet.bean.MainTokenBean
 import com.ramble.ramblewallet.bean.MyAddressBean
 import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils.isBtcValidAddress
 import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils.isEthValidAddress
@@ -137,7 +137,7 @@ fun showBottomDialog2(
             activity.start(ScanActivity::class.java, Bundle().also {
                 it.putInt(ARG_PARAM1, 1)
                 it.putSerializable(
-                    ARG_PARAM2, MainETHTokenBean(
+                    ARG_PARAM2, MainTokenBean(
                         "ETH",
                         "ETH",
                         null,
@@ -354,7 +354,7 @@ fun showBottomSan(
     activity: ScanActivity,
     address: String,
     walletType: Int,
-    tokenBean: MainETHTokenBean,
+    tokenBean: MainTokenBean,
     type: Int,
 ): Dialog {
     val binding: DialogTransItemBinding =

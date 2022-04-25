@@ -20,7 +20,7 @@ import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.QRCodeReader
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.MainETHTokenBean
+import com.ramble.ramblewallet.bean.MainTokenBean
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
@@ -49,7 +49,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     private var isLight = false
     private var zxingview: ZXingView? = null
     private var type = 0
-    private lateinit var tokenBean: MainETHTokenBean
+    private lateinit var tokenBean: MainTokenBean
     private lateinit var walletSelleted: Wallet
 
 
@@ -62,7 +62,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
         )
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scan)
         type = getExtras().getInt(ARG_PARAM1, 0)
-        tokenBean = intent.getSerializableExtra(ARG_PARAM2) as MainETHTokenBean
+        tokenBean = intent.getSerializableExtra(ARG_PARAM2) as MainTokenBean
         zxingview = findViewById(R.id.zxingview)
         zxingview?.setDelegate(this)
         initListener()

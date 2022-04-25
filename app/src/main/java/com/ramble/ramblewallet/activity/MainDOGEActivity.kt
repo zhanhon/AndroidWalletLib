@@ -20,12 +20,11 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.MainETHTokenBean
+import com.ramble.ramblewallet.bean.MainTokenBean
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.bean.Wallet
-import com.ramble.ramblewallet.blockchain.bitcoin.TransferBTCUtils.balanceOfBtc
-import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils
+import com.ramble.ramblewallet.blockchain.dogecoin.WalletDOGEUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainDogeBinding
 import com.ramble.ramblewallet.network.ApiResponse
@@ -39,14 +38,14 @@ import java.math.BigDecimal
 class MainDOGEActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainDogeBinding
-    private var mainETHTokenBean: ArrayList<MainETHTokenBean> = arrayListOf()
+    private var mainTokenBean: ArrayList<MainTokenBean> = arrayListOf()
     private lateinit var mainAdapter: MainAdapter
     private lateinit var currencyUnit: String
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var isClickEyes = false
     private var animator: ObjectAnimator? = null
     private lateinit var walletSelleted: Wallet
-    private var btcBalance: BigDecimal = BigDecimal("0")
+    private var dogeBalance: BigDecimal = BigDecimal("0")
     private var totalBalance: BigDecimal = BigDecimal("0")
     private var unitPrice = ""
 
@@ -108,7 +107,7 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
         ).applyIo().subscribe(
             {
                 if (it.code() == 1) {
-                    redPointBtcHandle(it, redList, records2, lang)
+                    redPointDogeHandle(it, redList, records2, lang)
                 } else {
                     println("==================>getTransferInfo1:${it.message()}")
                 }
@@ -120,7 +119,7 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
         )
     }
 
-    private fun redPointBtcHandle(
+    private fun redPointDogeHandle(
         it: ApiResponse<Page>,
         redList: ArrayList<Page.Record>,
         records2: ArrayList<Page.Record>,
@@ -162,7 +161,7 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
             } else {
                 arrayListOf()
             }
-            redPointEthHandleSub(records21, redList, lang)
+            redPointDogeHandleSub(records21, redList, lang)
             if (redList.isNotEmpty()) {
                 binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
             } else {
@@ -171,7 +170,7 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun redPointEthHandleSub(
+    private fun redPointDogeHandleSub(
         records21: ArrayList<Page.Record>,
         redList: ArrayList<Page.Record>,
         lang: Int
@@ -222,17 +221,17 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.iv_gathering_top, R.id.ll_gathering -> {
                 startActivity(Intent(this, GatheringActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, "BTC")
+                    putExtra(ARG_PARAM1, "DOGE")
                     putExtra(ARG_PARAM2, walletSelleted.address)
                 })
             }
             R.id.iv_transfer_top, R.id.ll_transfer -> {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(
-                        ARG_PARAM2, MainETHTokenBean(
-                            "BTC",
-                            "BTC",
-                            btcBalance,
+                        ARG_PARAM2, MainTokenBean(
+                            "DOGE",
+                            "DOGE",
+                            dogeBalance,
                             unitPrice,
                             currencyUnit,
                             null,
@@ -246,10 +245,10 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, ScanActivity::class.java).apply {
                     putExtra(ARG_PARAM1, 3)
                     putExtra(
-                        ARG_PARAM2, MainETHTokenBean(
-                            "BTC",
-                            "BTC",
-                            btcBalance,
+                        ARG_PARAM2, MainTokenBean(
+                            "DOGE",
+                            "DOGE",
+                            dogeBalance,
                             unitPrice,
                             currencyUnit,
                             null,
@@ -324,7 +323,6 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
         binding.ivEyes.setOnClickListener(this)
         binding.llCopyAddress.setOnClickListener(this)
         binding.tvNtf.setOnClickListener(this)
-
     }
 
     private fun initData() {
@@ -343,18 +341,18 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
             HKD -> binding.tvCurrencyUnit.text = "HK$"
             USD -> binding.tvCurrencyUnit.text = "$"
         }
-        if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address)) {
-            balanceOfBtc(this, walletSelleted.address)
+        if (WalletDOGEUtils.isDogeValidAddress(walletSelleted.address)) {
+            //balanceOfDoge(this, walletSelleted.address)
         }
-        binding.tvBtcAddress.text = addressHandle(walletSelleted.address)
+        binding.tvDogeAddress.text = addressHandle(walletSelleted.address)
     }
 
-    fun setBtcBalance(balance: BigDecimal) {
-        btcBalance = balance
+    fun setDogeBalance(balance: BigDecimal) {
+        dogeBalance = balance
         refreshData()
     }
 
-    private fun setBalanceBTC(balance: BigDecimal) {
+    private fun setBalanceDOGE(balance: BigDecimal) {
         postUI {
             if (DecimalFormatUtil.format(balance, 2) == "0") {
                 binding.tvBalanceTotal.text = "0"
@@ -383,7 +381,7 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
         animator = null
     }
 
-    private fun showTransferGatheringDialog(mainETHTokenBean: MainETHTokenBean) {
+    private fun showTransferGatheringDialog(mainTokenBean: MainTokenBean) {
         var dialog = AlertDialog.Builder(this).create()
         dialog.show()
         val window: Window? = dialog.window
@@ -396,23 +394,23 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
             val tvTransfer = window.findViewById<TextView>(R.id.tv_transfer)
             val tvGathering = window.findViewById<TextView>(R.id.tv_gathering)
 
-            tvTokenTitle.text = mainETHTokenBean.symbol
+            tvTokenTitle.text = mainTokenBean.symbol
 
             tvTransfer.setOnClickListener {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
-                    putExtra(ARG_PARAM2, mainETHTokenBean)
+                    putExtra(ARG_PARAM2, mainTokenBean)
                 })
                 dialog.dismiss()
             }
             tvGathering.setOnClickListener {
-                if (mainETHTokenBean.symbol == "BTC") {
+                if (mainTokenBean.symbol == "DOGE") {
                     startActivity(Intent(this, GatheringActivity::class.java).apply {
-                        putExtra(ARG_PARAM1, "BTC")
+                        putExtra(ARG_PARAM1, "DOGE")
                         putExtra(ARG_PARAM2, walletSelleted.address)
                     })
                 } else {
                     startActivity(Intent(this, GatheringActivity::class.java).apply {
-                        putExtra(ARG_PARAM1, "BTC-${mainETHTokenBean.symbol}")
+                        putExtra(ARG_PARAM1, "DOGE-${mainTokenBean.symbol}")
                         putExtra(ARG_PARAM2, walletSelleted.address)
                     })
                 }
@@ -435,30 +433,29 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("CheckResult")
     private fun refreshData() {
         var list: ArrayList<String> = arrayListOf()
-        list.add("BTC")
-        //list.add("USDT")   暂时不用Omni-USDT
+        list.add("DOGE")
         var req = StoreInfo.Req()
         req.list = list
         req.convertId = "2781,2787,2792" //美元、人民币、港币
-        req.platformId = 1 //BTC 1,ETH 1027,TRX 1958
+        req.platformId = 1 //BTC:1, ETH:1027, TRX:1958
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
-                btcHomeDataHandle(it)
+                dogeHomeDataHandle(it)
             } else {
-                println("-=-=-=->BTC${it.message()}")
+                println("-=-=-=->DOGE${it.message()}")
             }
             binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         }, {
-            println("-=-=-=->BTC${it.printStackTrace()}")
+            println("-=-=-=->DOGE${it.printStackTrace()}")
             binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         })
     }
 
-    private fun btcHomeDataHandle(it: ApiResponse<List<StoreInfo>>) {
+    private fun dogeHomeDataHandle(it: ApiResponse<List<StoreInfo>>) {
         it.data()?.let { data ->
-            mainETHTokenBean.clear()
+            mainTokenBean.clear()
             totalBalance = BigDecimal("0.00")
             data.forEach { storeInfo ->
                 storeInfo.quote.forEach { quote ->
@@ -466,12 +463,12 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
                         unitPrice = quote.price
                     }
                 }
-                if (storeInfo.symbol == "BTC") {
-                    mainETHTokenBean.add(
-                        MainETHTokenBean(
-                            "BTC",
+                if (storeInfo.symbol == "DOGE") {
+                    mainTokenBean.add(
+                        MainTokenBean(
+                            "DOGE",
                             storeInfo.symbol,
-                            btcBalance,
+                            dogeBalance,
                             unitPrice,
                             currencyUnit,
                             null,
@@ -479,17 +476,17 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
                             false
                         )
                     )
-                    totalBalance += btcBalance.multiply(BigDecimal(unitPrice))
+                    totalBalance += dogeBalance.multiply(BigDecimal(unitPrice))
                 }
-                mainAdapter = MainAdapter(mainETHTokenBean)
+                mainAdapter = MainAdapter(mainTokenBean)
                 binding.rvCurrency.adapter = mainAdapter
                 mainAdapter.setOnItemClickListener { adapter, _, position ->
-                    if (adapter.getItem(position) is MainETHTokenBean) {
-                        showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
+                    if (adapter.getItem(position) is MainTokenBean) {
+                        showTransferGatheringDialog((adapter.getItem(position) as MainTokenBean))
                     }
                 }
             }
-            setBalanceBTC(totalBalance)
+            setBalanceDOGE(totalBalance)
         }
     }
 }

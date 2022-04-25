@@ -18,7 +18,7 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.MainETHTokenBean
+import com.ramble.ramblewallet.bean.MainTokenBean
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.bean.Wallet
@@ -37,7 +37,7 @@ import java.math.BigDecimal
 class MainBTCActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBtcBinding
-    private var mainETHTokenBean: ArrayList<MainETHTokenBean> = arrayListOf()
+    private var mainTokenBean: ArrayList<MainTokenBean> = arrayListOf()
     private lateinit var mainAdapter: MainAdapter
     private lateinit var currencyUnit: String
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
@@ -160,7 +160,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
             } else {
                 arrayListOf()
             }
-            redPointEthHandleSub(records21, redList, lang)
+            redPointBtcHandleSub(records21, redList, lang)
             if (redList.isNotEmpty()) {
                 binding.ivNoticeTop.setImageResource(R.drawable.vector_message_center_red)
             } else {
@@ -169,7 +169,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun redPointEthHandleSub(
+    private fun redPointBtcHandleSub(
         records21: ArrayList<Page.Record>,
         redList: ArrayList<Page.Record>,
         lang: Int
@@ -227,7 +227,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_transfer_top, R.id.ll_transfer -> {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(
-                        ARG_PARAM2, MainETHTokenBean(
+                        ARG_PARAM2, MainTokenBean(
                             "BTC",
                             "BTC",
                             btcBalance,
@@ -244,7 +244,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, ScanActivity::class.java).apply {
                     putExtra(ARG_PARAM1, 3)
                     putExtra(
-                        ARG_PARAM2, MainETHTokenBean(
+                        ARG_PARAM2, MainTokenBean(
                             "BTC",
                             "BTC",
                             btcBalance,
@@ -407,7 +407,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
 
     private fun btcHomeDataHandle(it: ApiResponse<List<StoreInfo>>) {
         it.data()?.let { data ->
-            mainETHTokenBean.clear()
+            mainTokenBean.clear()
             totalBalance = BigDecimal("0.00")
             data.forEach { storeInfo ->
                 storeInfo.quote.forEach { quote ->
@@ -416,8 +416,8 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
                 if (storeInfo.symbol == "BTC") {
-                    mainETHTokenBean.add(
-                        MainETHTokenBean(
+                    mainTokenBean.add(
+                        MainTokenBean(
                             "BTC",
                             storeInfo.symbol,
                             btcBalance,
@@ -430,14 +430,14 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
                     )
                     totalBalance += btcBalance.multiply(BigDecimal(unitPrice))
                 }
-                mainAdapter = MainAdapter(mainETHTokenBean)
+                mainAdapter = MainAdapter(mainTokenBean)
                 binding.rvCurrency.adapter = mainAdapter
                 mainAdapter.setOnItemClickListener { adapter, _, position ->
-                    if (adapter.getItem(position) is MainETHTokenBean) {
-                        var symbol = (adapter.getItem(position) as MainETHTokenBean).title
+                    if (adapter.getItem(position) is MainTokenBean) {
+                        var symbol = (adapter.getItem(position) as MainTokenBean).title
                         startActivity(Intent(this, QueryActivity::class.java).apply {
                             putExtra(ARG_PARAM1, walletSelleted.address)
-                            putExtra(ARG_PARAM2, adapter.getItem(position) as MainETHTokenBean)
+                            putExtra(ARG_PARAM2, adapter.getItem(position) as MainTokenBean)
                             putExtra(ARG_PARAM3, symbol)
                         })
                     }

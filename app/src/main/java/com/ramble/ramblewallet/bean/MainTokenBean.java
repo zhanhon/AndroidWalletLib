@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  * @创建人： Ricky
  * @创建时间： 2021/12/5
  */
-public class MainETHTokenBean implements Serializable {
+public class MainTokenBean implements Serializable {
 
     private String title;
     private String symbol;
@@ -18,8 +18,8 @@ public class MainETHTokenBean implements Serializable {
     private Integer decimalPoints;
     private boolean isToken;
 
-    public MainETHTokenBean(String title, String symbol, BigDecimal balance, String unitPrice,
-                            String currencyUnit, String contractAddress, Integer decimalPoints, boolean isToken) {
+    public MainTokenBean(String title, String symbol, BigDecimal balance, String unitPrice,
+                         String currencyUnit, String contractAddress, Integer decimalPoints, boolean isToken) {
         this.title = title;
         this.symbol = symbol;
         this.balance = balance;

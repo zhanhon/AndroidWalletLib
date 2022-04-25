@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi;
 
 import com.ramble.ramblewallet.BuildConfig;
 import com.ramble.ramblewallet.activity.TransferActivity;
-import com.ramble.ramblewallet.bean.MainETHTokenBean;
+import com.ramble.ramblewallet.bean.MainTokenBean;
 import com.ramble.ramblewallet.blockchain.ethereum.utils.EthUtils;
 
 import org.web3j.abi.FunctionEncoder;
@@ -43,7 +43,7 @@ import java.util.concurrent.Future;
  * @创建人： Ricky
  * @创建时间： 2021/12/19
  */
-public class TransferEthUtils {
+public class TransferETHUtils {
 
     public static final String APIKEY = "0b81da36bb9b4532bbd865c26e79ac98";
 
@@ -64,7 +64,7 @@ public class TransferEthUtils {
         }
     }
 
-    public static BigDecimal getBalanceToken(String address, MainETHTokenBean tokenBean) throws IOException {
+    public static BigDecimal getBalanceToken(String address, MainTokenBean tokenBean) throws IOException {
         try {
             String value = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + APIKEY))
                     .ethCall(Transaction.createEthCallTransaction(address,
@@ -171,7 +171,7 @@ public class TransferEthUtils {
     }
 
     public interface BalanceGet {
-        void onListener(MainETHTokenBean tokenBean, BigDecimal tokenBalance);
+        void onListener(MainTokenBean tokenBean, BigDecimal tokenBalance);
     }
 
 }

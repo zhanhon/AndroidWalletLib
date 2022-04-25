@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.MainETHTokenBean
+import com.ramble.ramblewallet.bean.MainTokenBean
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.constant.ARG_PARAM3
@@ -28,7 +28,7 @@ import com.ramble.ramblewallet.wight.adapter.FragmentPagerAdapter2
 class QueryActivity : BaseActivity(), View.OnClickListener {
     private lateinit var adapter: MyAdapter
     private lateinit var binding: ActivityQueryBinding
-    private lateinit var tokenBean: MainETHTokenBean
+    private lateinit var tokenBean: MainTokenBean
     private lateinit var countAddress: String
     private lateinit var symbol: String
 
@@ -41,7 +41,7 @@ class QueryActivity : BaseActivity(), View.OnClickListener {
         )
         binding = DataBindingUtil.setContentView(this, R.layout.activity_query)
         countAddress = intent.getStringExtra(ARG_PARAM1).toString()
-        tokenBean = intent.getSerializableExtra(ARG_PARAM2) as MainETHTokenBean
+        tokenBean = intent.getSerializableExtra(ARG_PARAM2) as MainTokenBean
         symbol = intent.getStringExtra(ARG_PARAM3).toString()
         initView()
         initListener()

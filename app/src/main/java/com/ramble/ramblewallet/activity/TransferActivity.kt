@@ -29,12 +29,13 @@ import com.ramble.ramblewallet.bean.*
 import com.ramble.ramblewallet.blockchain.bitcoin.TransferBTCUtils.balanceOfBtc
 import com.ramble.ramblewallet.blockchain.bitcoin.TransferBTCUtils.transferBTC
 import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils
-import com.ramble.ramblewallet.blockchain.ethereum.TransferEthUtils.*
+import com.ramble.ramblewallet.blockchain.ethereum.TransferETHUtils.*
 import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils
+import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils.setAllowUniversalAccessFromFileURLs
 import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils.transferSOL
 import com.ramble.ramblewallet.blockchain.solana.WalletSOLUtils
 import com.ramble.ramblewallet.blockchain.solana.solanatokentransfer.WebViewJavascriptBridge
-import com.ramble.ramblewallet.blockchain.tron.TransferTrxUtils.*
+import com.ramble.ramblewallet.blockchain.tron.TransferTRXUtils.*
 import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityTransferBinding
@@ -49,7 +50,7 @@ import com.ramble.ramblewallet.utils.StringUtils.strAddComma
 import com.ramble.ramblewallet.wight.FingerprintDialogFragment
 import com.ramble.ramblewallet.wight.FingerprintDialogFragment.OnFingerprintSetting
 import org.bitcoinj.core.UTXO
-import java.lang.reflect.InvocationTargetException
+import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.BigInteger
 import javax.crypto.Cipher
@@ -58,28 +59,25 @@ import javax.crypto.Cipher
 class TransferActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityTransferBinding
-    private var transferBalance: BigDecimal = BigDecimal("0.00")
+    private var transferBalance: BigDecimal = BigDecimal("0")
     private var transferUnit: String? = ""
     private lateinit var currencyUnit: String
     private lateinit var currencySymbol: String
+    private lateinit var walletSelleted: Wallet
+    private lateinit var tokenBean: MainTokenBean
+    private lateinit var bridge: WebViewJavascriptBridge
+    private lateinit var gas: BigDecimal
     private var gasLimit: String? = ""
     private var fastGasPrice: String? = ""
     private var slowGasPrice: String? = ""
     private var gasPrice: String? = ""
-    private var rate: String? = ""
-    private var gas: BigDecimal = BigDecimal("0.00")
     private var btcFee: String? = ""
     private var btcFeeFast: String? = ""
     private var btcFeeSlow: String? = ""
-    private var times = 0
     private var isCustom = false
-    private lateinit var walletSelleted: Wallet
-    private lateinit var transferTitle: String
     private var transferReceiverAddress: String? = null
-    private var isToken: Boolean = false
-    private lateinit var tokenBean: MainETHTokenBean
     private var isFinger = false
-    private lateinit var bridge: WebViewJavascriptBridge
+    private var cipher: Cipher? = null
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,43 +88,16 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         )
         binding = DataBindingUtil.setContentView(this, R.layout.activity_transfer)
         transferReceiverAddress = intent.getStringExtra(ARG_PARAM1)
-        tokenBean = intent.getSerializableExtra(ARG_PARAM2) as MainETHTokenBean
-        rate = tokenBean.unitPrice
-        isToken = tokenBean.isToken
-        transferTitle = tokenBean.title
-
-        if (transferTitle.contains("-")) {
-            val index = transferTitle.indexOf("-")
-            transferUnit = transferTitle.substring(index + 1, transferTitle.length)
+        tokenBean = intent.getSerializableExtra(ARG_PARAM2) as MainTokenBean
+        transferUnit = if (tokenBean.title.contains("-")) {
+            val index = tokenBean.title.indexOf("-")
+            tokenBean.title.substring(index + 1, tokenBean.title.length)
         } else {
-            transferUnit = transferTitle
+            tokenBean.title
         }
         binding.edtReceiverAddress.setText(transferReceiverAddress)
         initClick()
         initWebView()
-    }
-
-    //允许跨域请求
-    private fun setAllowUniversalAccessFromFileURLs(mwebview: WebView) {
-        try { //本地HTML里面有跨域的请求 原生webview需要设置之后才能实现跨域请求
-            if (Build.VERSION.SDK_INT >= 16) {
-                val clazz: Class<*> = mwebview.settings.javaClass
-                val method = clazz.getMethod(
-                    "setAllowUniversalAccessFromFileURLs", Boolean::class.javaPrimitiveType
-                )
-                if (method != null) {
-                    method.invoke(mwebview.settings, true)
-                }
-            }
-        } catch (e: IllegalArgumentException) {
-            e.printStackTrace()
-        } catch (e: NoSuchMethodException) {
-            e.printStackTrace()
-        } catch (e: IllegalAccessException) {
-            e.printStackTrace()
-        } catch (e: InvocationTargetException) {
-            e.printStackTrace()
-        }
     }
 
     private fun initWebView() {
@@ -150,11 +121,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        isFinger = SharedPreferencesUtils.getBoolean(
-            this,
-            ISFINGERPRINT_KEY,
-            false
-        ) || SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY_ALL, false)
+        isFinger = SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY, false)
+                || SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY_ALL, false)
         initData()
         if (walletSelleted.walletType == 2) {
             binding.edtInputQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(24))
@@ -238,7 +206,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     ToastUtils.showToastFree(this, getString(R.string.address_already_err))
                     return true
                 }
-                if (isToken) {
+                if (tokenBean.isToken) {
                     isAddressActivateToken(
                         this,
                         binding.edtReceiverAddress.text.toString(),
@@ -323,9 +291,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private var cipher: Cipher? = null
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////
     private fun setFingerprint() {
         if (ToolUtils.supportFingerprint(this)) {
             ToolUtils.initKey() //生成一个对称加密的key
@@ -348,8 +313,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
         })
     }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////
 
     private fun initClick() {
         binding.ivBack.setOnClickListener(this)
@@ -386,7 +349,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 initBtcMiner()
             }
         }
-
 
         binding.edtReceiverAddress.addTextChangedListener(object : TextWatcher {
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -436,7 +398,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
-        binding.tvTransferTitle.text = transferTitle + " " + getString(R.string.transfer)
+        binding.tvTransferTitle.text = tokenBean.title + " " + getString(R.string.transfer)
         binding.tvQuantityBalance.text =
             getString(R.string.transfer_balance) + " " + "0" + " " + transferUnit
         initBalanceForTransfer()
@@ -455,7 +417,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             3 -> {
-                if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address) && (!isToken)) {
+                if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address) && (!tokenBean.isToken)) {
                     balanceOfBtc(this, walletSelleted.address)
                 }
             }
@@ -463,7 +425,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initBalanceForTrx() {
-        if (isToken) {
+        if (tokenBean.isToken) {
             balanceOfTrc20(
                 this,
                 walletSelleted.address,
@@ -475,7 +437,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initBalanceForEth() {
-        if (isToken) {
+        if (tokenBean.isToken) {
             Thread {
                 transferBalance =
                     getBalanceToken(walletSelleted.address, tokenBean)
@@ -522,7 +484,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("CheckResult")
     private fun initEthMinerFee() {
         mApiService.getEthMinerConfig(
-            EthMinerConfig.Req(transferTitle).toApiRequest(getEthMinerConfigUrl)
+            EthMinerConfig.Req(tokenBean.title).toApiRequest(getEthMinerConfigUrl)
         ).applyIo().subscribe(
             {
                 if (it.code() == 1) {
@@ -548,7 +510,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         postUI {
             if (!isAddressActivate) {
                 binding.tvNoActivateTips.visibility = View.VISIBLE
-                if (isToken) {
+                if (tokenBean.isToken) {
                     binding.tvNoActivateTips.setText(R.string.trx_address_no_activate_token)
                 } else {
                     binding.tvNoActivateTips.setText(R.string.trx_address_no_activate)
@@ -568,7 +530,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         gas = BigDecimal(gasPrice).multiply(BigDecimal(gasLimit)).divide(BigDecimal("1000000000"))
         binding.tvMinerFeeValue.text = "${DecimalFormatUtil.format(gas, 8)} ETH"
         binding.tvMinerFeeValueConvert.text = "≈${currencyUnit} ${currencySymbol}${
-            DecimalFormatUtil.format(BigDecimal(rate).multiply(gas), 8)
+            DecimalFormatUtil.format(BigDecimal(tokenBean.unitPrice).multiply(gas), 8)
         }"
         binding.tvTips.text = "$gasPrice Gwei * Gas Limit (${strAddComma(gasLimit)})"
     }
@@ -582,7 +544,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         } BTC"
         binding.tvMinerFeeValueConvert.text = "≈${currencyUnit} ${currencySymbol}${
             DecimalFormatUtil.format(
-                BigDecimal(rate).multiply(
+                BigDecimal(tokenBean.unitPrice).multiply(
                     BigDecimal(btcFee).multiply(BigDecimal("72"))
                         .divide(BigDecimal("1000000000"))
                 ), 8
@@ -641,7 +603,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             dialogTheme(window)
 
             val tvTransferTile = window.findViewById<TextView>(R.id.tv_transfer_tile)
-            tvTransferTile.text = transferTitle + getString(R.string.transfer)
+            tvTransferTile.text = tokenBean.title + getString(R.string.transfer)
             val edtWalletPassword = window.findViewById<TextView>(R.id.edt_wallet_password)
             edtWalletPassword.addTextChangedListener(object : TextWatcher {
                 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -690,19 +652,18 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun transfer() {
+        val amount = binding.edtInputQuantity.text.trim().toString()
         when (walletSelleted.walletType) {  //链类型|1:ETH|2:TRX|3:BTC|4:SOL|5:DOGE
             1 -> {
-                if (isToken) {
-                    transferETHToken( //暂时是USDT合约
+                if (tokenBean.isToken) {
+                    transferETHToken(
                         this,
                         walletSelleted.address,
                         transferReceiverAddress,
                         tokenBean.contractAddress,
                         walletSelleted.privateKey,
-                        BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
-                            BigDecimal("1000000")
-                        ).toBigInteger(),
-                        (BigInteger(gasPrice).multiply(BigInteger("1000000000"))), //GWEI → WEI
+                        BigDecimal(amount).multiply(BigDecimal("10").pow(6)).toBigInteger(),
+                        BigInteger(gasPrice).multiply(BigInteger("10").pow(9)), //GWEI → WEI
                         BigInteger(gasLimit)
                     )
                 } else {
@@ -711,24 +672,22 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         walletSelleted.address,
                         transferReceiverAddress,
                         walletSelleted.privateKey,
-                        binding.edtInputQuantity.text.trim().toString(),
-                        (BigInteger(gasPrice).multiply(BigInteger("1000000000"))), //GWEI → WEI
+                        amount,
+                        BigInteger(gasPrice).multiply(BigInteger("10").pow(9)), //GWEI → WEI
                         BigInteger(gasLimit),
                         binding.edtInputTransferRemarks.text.trim().toString()
                     )
                 }
             }
             2 -> {
-                if (isToken) {
+                if (tokenBean.isToken) {
                     transferTRXToken(
                         this,
                         walletSelleted.address,
                         transferReceiverAddress,
                         tokenBean.contractAddress,
                         walletSelleted.privateKey,
-                        BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
-                            BigDecimal("1000000")
-                        ).toBigInteger(),
+                        BigDecimal(amount).multiply(BigDecimal("10").pow(6)).toBigInteger(),
                         binding.edtInputTransferRemarks.text.trim().toString()
                     )
                 } else {
@@ -737,46 +696,54 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         walletSelleted.address,
                         transferReceiverAddress,
                         walletSelleted.privateKey,
-                        BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
-                            BigDecimal("1000000")
-                        ),
+                        BigDecimal(amount).multiply(BigDecimal("10").pow(6)),
                         binding.edtInputTransferRemarks.text.trim().toString()
                     )
                 }
             }
             3 -> {
-                if (!isToken) {
+                if (!tokenBean.isToken) {
                     transferBTC(
                         this,
                         walletSelleted.address,
                         transferReceiverAddress,
                         walletSelleted.privateKey,
-                        BigDecimal(binding.edtInputQuantity.text.trim().toString()).multiply(
-                            BigDecimal("100000000")
-                        ),
+                        BigDecimal(amount).multiply(BigDecimal("10").pow(8)),
                         btcFee
                     )
                 }
             }
             4 -> {
-                if (isToken) {
+                if (tokenBean.isToken) {
                     val data = HashMap<String, String>()
                     data["toPublicKey"] = transferReceiverAddress!!
                     data["mintAuthority"] = tokenBean.contractAddress
                     data["endpoint"] = "https://api.mainnet-beta.solana.com"
-                    data["amount"] = "1" //这里的"1"实际上是0.000001
+                    data["amount"] = BigDecimal(amount).multiply(BigDecimal("10").pow(6)).toString()
                     data["secretKey"] = walletSelleted.privateKey
                     bridge.call("solanaTokenTransfer", data) { map ->
-                        println("-=-=-=->hash：${map}")
+                        val json = JSONObject(map)
+                        val transactionHash = json.optString("tx")
+                        if (transactionHash.isNotEmpty()) {
+                            postUI {
+                                transactionFinishConfirmDialog(transactionHash)
+                            }
+                            putTransAddress(transactionHash, null)
+                        } else {
+                            postUI {
+                                ToastUtils.showToastFree(
+                                    this,
+                                    getString(R.string.transaction_failed)
+                                )
+                            }
+                        }
                     }
                 } else {
                     transferSOL(
                         this,
                         transferReceiverAddress!!,
                         walletSelleted.privateKey,
-                        BigInteger(binding.edtInputQuantity.text.trim().toString()).multiply(
-                            BigInteger("1000000")
-                        )
+                        BigInteger(amount).multiply(BigInteger("10").pow(6))
                     )
                 }
             }
@@ -784,8 +751,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun transferSuccess(transactionHash: String, utxos: MutableList<UTXO>?) {
-        println("-=-=-=-=->transactionUTXO:${Gson().toJson(utxos)}")
-        println("-=-=-=-=->transactionHash:${transactionHash}")
         if (transactionHash.isNotEmpty()) {
             postUI {
                 transactionFinishConfirmDialog(transactionHash)
@@ -817,8 +782,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             inputs?.add(a)
             var tferb = (transferBalance - BigDecimal(
                 DecimalFormatUtil.format(
-                    BigDecimal(btcFee).multiply(BigDecimal("72")).divide(BigDecimal("1000000000")),
-                    8
+                    BigDecimal(
+                        btcFee
+                    ).multiply(BigDecimal("72")).divide(BigDecimal("10").pow(9)), 8
                 )
             ) - BigDecimal(edtInputQuantity)).toString()
             var a1 = ReportTransferInfo.InRecord(
@@ -838,6 +804,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 )
             }
         }
+        var putAddressTimes = 0
         mApiService.reportTransferRecord(
             ReportTransferInfo.Req(
                 walletSelleted.walletType,
@@ -858,9 +825,9 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 if (it.code() == 1) {
                     it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
                 } else {
-                    if (times < 3) {
+                    if (putAddressTimes < 3) {
                         putTransAddress(hash, utxos)
-                        times++
+                        putAddressTimes++
                     }
                     println("-=-=-=->putAddress:${it.message()}")
                 }
@@ -870,8 +837,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         )
     }
 
-
-    fun transferFail(strFail: String) {
+    fun transferFail(errorMessage: String) {
         postUI {
             ToastUtils.showToastFree(this, getString(R.string.transaction_failed))
         }
@@ -964,19 +930,19 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<TextView>(R.id.miner_fee_limit_title).text = "21000"
 
             gas = BigDecimal(gasPrice).multiply(BigDecimal(gasLimit))
-                .divide(BigDecimal("1000000000"))
+                .divide(BigDecimal("10").pow(9))
             window.findViewById<TextView>(R.id.tv_transfer_gas_fast).text =
                 "${
                     DecimalFormatUtil.format(
                         BigDecimal(fastGasPrice).multiply(BigDecimal(gasLimit))
-                            .divide(BigDecimal("1000000000")), 8
+                            .divide(BigDecimal("10").pow(9)), 8
                     )
                 } ETH"
             window.findViewById<TextView>(R.id.tv_transfer_gas_slow).text =
                 "${
                     DecimalFormatUtil.format(
                         BigDecimal(slowGasPrice).multiply(BigDecimal(gasLimit))
-                            .divide(BigDecimal("1000000000")), 8
+                            .divide(BigDecimal("10").pow(9)), 8
                     )
                 } ETH"
 
@@ -993,7 +959,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 }
                 setEthMinerFee()
                 dialog.dismiss()
-                if (isToken) {
+                if (tokenBean.isToken) {
                     tokenFeeTipsLogic()
                 } else {
                     mainFeeTipsLogic()
@@ -1025,7 +991,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             return
         }
         if ((BigDecimal(gasPrice) > BigDecimal("300"))
-            || (BigDecimal(gasLimit) > BigDecimal("100000"))
+            || (BigDecimal(gasLimit) > BigDecimal("10").pow(5))
         ) {
             transactionFailDialog(getString(R.string.miner_fee_high_tips))
             return
@@ -1057,14 +1023,14 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 "${
                     DecimalFormatUtil.format(
                         BigDecimal(btcFeeFast).multiply(BigDecimal("72"))
-                            .divide(BigDecimal("1000000000")), 8
+                            .divide(BigDecimal("10").pow(9)), 8
                     )
                 } BTC"
             window.findViewById<TextView>(R.id.tv_transfer_gas_slow).text =
                 "${
                     DecimalFormatUtil.format(
                         BigDecimal(btcFeeSlow).multiply(BigDecimal("72"))
-                            .divide(BigDecimal("1000000000")), 8
+                            .divide(BigDecimal("10").pow(9)), 8
                     )
                 } BTC"
 
@@ -1072,7 +1038,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             onClickTransferSlow(window)
             onClickTransferCustom(window)
 
-            inputWatch(window.findViewById<EditText>(R.id.miner_fee_gas_price), 250, 1)
+            inputWatch(window.findViewById(R.id.miner_fee_gas_price), 250, 1)
 
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 if (isCustom) {
@@ -1103,13 +1069,10 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 .setBackgroundResource(R.drawable.shape_fix_gray_line_btn)
             window.findViewById<LinearLayout>(R.id.ll_transfer_custom)
                 .setBackgroundResource(R.drawable.shape_fix_green_line_btn)
-
             window.findViewById<RelativeLayout>(R.id.rl_transfer_fast_bottom)
                 .setBackgroundResource(R.drawable.shape_half_radius_gray_bottom_btn)
             window.findViewById<RelativeLayout>(R.id.rl_transfer_slow_bottom)
                 .setBackgroundResource(R.drawable.shape_half_radius_gray_bottom_btn)
-
-
             window.findViewById<TextView>(R.id.tv_transfer_gas_fast)
                 .setTextColor(resources.getColor(R.color.color_9598AA))
             window.findViewById<TextView>(R.id.tv_transfer_gas_slow)
@@ -1127,17 +1090,14 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 .setBackgroundResource(R.drawable.shape_fix_green_line_btn)
             window.findViewById<LinearLayout>(R.id.ll_transfer_custom)
                 .setBackgroundResource(R.drawable.shape_fix_gray_line_btn)
-
             window.findViewById<RelativeLayout>(R.id.rl_transfer_fast_bottom)
                 .setBackgroundResource(R.drawable.shape_half_radius_gray_bottom_btn)
             window.findViewById<RelativeLayout>(R.id.rl_transfer_slow_bottom)
                 .setBackgroundResource(R.drawable.shape_half_radius_green_bottom_btn)
-
             window.findViewById<TextView>(R.id.tv_transfer_gas_fast)
                 .setTextColor(resources.getColor(R.color.color_9598AA))
             window.findViewById<TextView>(R.id.tv_transfer_gas_slow)
                 .setTextColor(resources.getColor(R.color.color_FFFFFF))
-
             gasPrice = slowGasPrice
             btcFee = btcFeeSlow
             isCustom = false
@@ -1153,22 +1113,18 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 .setBackgroundResource(R.drawable.shape_fix_gray_line_btn)
             window.findViewById<LinearLayout>(R.id.ll_transfer_custom)
                 .setBackgroundResource(R.drawable.shape_fix_gray_line_btn)
-
             window.findViewById<RelativeLayout>(R.id.rl_transfer_fast_bottom)
                 .setBackgroundResource(R.drawable.shape_half_radius_green_bottom_btn)
             window.findViewById<RelativeLayout>(R.id.rl_transfer_slow_bottom)
                 .setBackgroundResource(R.drawable.shape_half_radius_gray_bottom_btn)
-
             window.findViewById<TextView>(R.id.tv_transfer_gas_fast)
                 .setTextColor(resources.getColor(R.color.color_FFFFFF))
             window.findViewById<TextView>(R.id.tv_transfer_gas_slow)
                 .setTextColor(resources.getColor(R.color.color_9598AA))
-
             gasPrice = fastGasPrice
             btcFee = btcFeeFast
             isCustom = false
         }
     }
-
 
 }

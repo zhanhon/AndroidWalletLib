@@ -14,6 +14,8 @@
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/vector_trx.xml" value="0.213" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_about.xml" value="0.3605128205128205" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_create_wallet_list.xml" value="0.35185185185185186" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_main_doge.xml" value="0.3605128205128205" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_main_sol.xml" value="0.3605128205128205" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_mine.xml" value="0.36614583333333334" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_mine_item.xml" value="0.36614583333333334" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_recover_wallet_list.xml" value="0.35185185185185186" />
@@ -21,6 +23,8 @@
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_update.xml" value="0.36793327154772937" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_wallet_manage.xml" value="0.35185185185185186" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_wallet_more_operate.xml" value="0.36614583333333334" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/dialog_btc_miner_fee.xml" value="0.36614583333333334" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/dialog_common.xml" value="0.36614583333333334" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/dialog_create_wallet_list.xml" value="0.36614583333333334" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/dialog_ios_updata.xml" value="0.3619791666666667" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/dialog_recover_wallet_list.xml" value="0.36614583333333334" />

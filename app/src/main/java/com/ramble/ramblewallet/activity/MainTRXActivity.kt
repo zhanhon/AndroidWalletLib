@@ -18,12 +18,12 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.MainETHTokenBean
+import com.ramble.ramblewallet.bean.MainTokenBean
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.bean.Wallet
-import com.ramble.ramblewallet.blockchain.tron.TransferTrxUtils.balanceOfTrc20
-import com.ramble.ramblewallet.blockchain.tron.TransferTrxUtils.balanceOfTrx
+import com.ramble.ramblewallet.blockchain.tron.TransferTRXUtils.balanceOfTrc20
+import com.ramble.ramblewallet.blockchain.tron.TransferTRXUtils.balanceOfTrx
 import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainTrxBinding
@@ -38,7 +38,7 @@ import java.math.BigDecimal
 class MainTRXActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainTrxBinding
-    private var mainETHTokenBean: ArrayList<MainETHTokenBean> = arrayListOf()
+    private var mainTokenBean: ArrayList<MainTokenBean> = arrayListOf()
     private lateinit var mainAdapter: MainAdapter
     private lateinit var currencyUnit: String
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
@@ -230,7 +230,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_transfer_top, R.id.ll_transfer -> {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(
-                        ARG_PARAM2, MainETHTokenBean(
+                        ARG_PARAM2, MainTokenBean(
                             "TRX",
                             "TRX",
                             trxBalance,
@@ -247,7 +247,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, ScanActivity::class.java).apply {
                     putExtra(ARG_PARAM1, 3)
                     putExtra(
-                        ARG_PARAM2, MainETHTokenBean(
+                        ARG_PARAM2, MainTokenBean(
                             "TRX",
                             "TRX",
                             trxBalance,
@@ -403,12 +403,12 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             if (it.code() == 1) {
                 trxHomeDataHandle(it)
             } else {
-                println("-=-=-=->ETH${it.message()}")
+                println("-=-=-=->TRX${it.message()}")
             }
             binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         }, {
-            println("-=-=-=->ETH${it.printStackTrace()}")
+            println("-=-=-=->TRX${it.printStackTrace()}")
             binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         })
@@ -416,17 +416,17 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
 
     private fun trxHomeDataHandle(it: ApiResponse<List<StoreInfo>>) {
         it.data()?.let { data ->
-            mainETHTokenBean.clear()
+            mainTokenBean.clear()
             totalBalance = BigDecimal("0.00")
             trxHomeDataHandleSub(data)
-            mainAdapter = MainAdapter(mainETHTokenBean)
+            mainAdapter = MainAdapter(mainTokenBean)
             binding.rvCurrency.adapter = mainAdapter
             mainAdapter.setOnItemClickListener { adapter, _, position ->
-                if (adapter.getItem(position) is MainETHTokenBean) {
-                    var symbol = (adapter.getItem(position) as MainETHTokenBean).title
+                if (adapter.getItem(position) is MainTokenBean) {
+                    var symbol = (adapter.getItem(position) as MainTokenBean).title
                     startActivity(Intent(this, QueryActivity::class.java).apply {
                         putExtra(ARG_PARAM1, walletSelleted.address)
-                        putExtra(ARG_PARAM2, adapter.getItem(position) as MainETHTokenBean)
+                        putExtra(ARG_PARAM2, adapter.getItem(position) as MainTokenBean)
                         putExtra(ARG_PARAM3, symbol)
                     })
                 }
@@ -443,8 +443,8 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             if (storeInfo.symbol == "TRX") {
-                mainETHTokenBean.add(
-                    MainETHTokenBean(
+                mainTokenBean.add(
+                    MainTokenBean(
                         "TRX",
                         storeInfo.symbol,
                         trxBalance,
@@ -465,8 +465,8 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             if (storeInfo.symbol != "TRX") {
-                mainETHTokenBean.add(
-                    MainETHTokenBean(
+                mainTokenBean.add(
+                    MainTokenBean(
                         "TRX-${storeInfo.symbol}",
                         storeInfo.symbol,
                         if (storeInfo.symbol == "USDT") tokenBalance else BigDecimal("0"),

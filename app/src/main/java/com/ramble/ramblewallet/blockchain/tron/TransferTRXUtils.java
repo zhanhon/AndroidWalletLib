@@ -37,7 +37,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class TransferTrxUtils {
+public class TransferTRXUtils {
 
     public static final String APIKEY = "db3a1845-857d-414f-9d50-8207e39a2ec8";
     private static final String SMARTCONTRACT = "/wallet/triggersmartcontract";
@@ -48,7 +48,7 @@ public class TransferTrxUtils {
     private static final String EXACT = "1000000";
     private static final String TRANSACTION = "transaction";
 
-    private TransferTrxUtils() {
+    private TransferTRXUtils() {
         throw new IllegalStateException("TransferTrxUtils");
     }
 

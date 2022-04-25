@@ -20,7 +20,7 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.adapter.MainAdapter
 import com.ramble.ramblewallet.base.BaseActivity
-import com.ramble.ramblewallet.bean.MainETHTokenBean
+import com.ramble.ramblewallet.bean.MainTokenBean
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.bean.Wallet
@@ -40,14 +40,14 @@ import java.math.BigDecimal
 class MainSOLActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainSolBinding
-    private var mainETHTokenBean: ArrayList<MainETHTokenBean> = arrayListOf()
     private lateinit var mainAdapter: MainAdapter
     private lateinit var currencyUnit: String
+    private lateinit var walletSelleted: Wallet
+    private var mainTokenBean: ArrayList<MainTokenBean> = arrayListOf()
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var isClickEyes = false
     private var animator: ObjectAnimator? = null
-    private lateinit var walletSelleted: Wallet
-    private var trxBalance: BigDecimal = BigDecimal("0")
+    private var solBalance: BigDecimal = BigDecimal("0")
     private var tokenBalance: BigDecimal = BigDecimal("0")
     private var totalBalance: BigDecimal = BigDecimal("0")
     private var unitPrice = ""
@@ -232,10 +232,10 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_transfer_top, R.id.ll_transfer -> {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
                     putExtra(
-                        ARG_PARAM2, MainETHTokenBean(
+                        ARG_PARAM2, MainTokenBean(
                             "SOL",
                             "SOL",
-                            trxBalance,
+                            solBalance,
                             unitPrice,
                             currencyUnit,
                             null,
@@ -249,10 +249,10 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, ScanActivity::class.java).apply {
                     putExtra(ARG_PARAM1, 3)
                     putExtra(
-                        ARG_PARAM2, MainETHTokenBean(
+                        ARG_PARAM2, MainTokenBean(
                             "SOL",
                             "SOL",
-                            trxBalance,
+                            solBalance,
                             unitPrice,
                             currencyUnit,
                             null,
@@ -348,13 +348,13 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
         }
         if (isSolValidAddress(walletSelleted.address)) {
             getSOLBalance(this, walletSelleted.address)
-            //getsSOLTokenBalance(this, walletSelleted.address, contractAddress)
+            getsSOLTokenBalance(this, walletSelleted.address, contractAddress)
         }
-        binding.tvTrxAddress.text = addressHandle(walletSelleted.address)
+        binding.tvSolAddress.text = addressHandle(walletSelleted.address)
     }
 
     fun setSolBalance(balance: BigDecimal) {
-        trxBalance = balance
+        solBalance = balance
         refreshData()
     }
 
@@ -363,7 +363,7 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
         refreshData()
     }
 
-    private fun setBalanceTRX(balance: BigDecimal) {
+    private fun setBalanceSOL(balance: BigDecimal) {
         postUI {
             if (DecimalFormatUtil.format(balance, 2) == "0") {
                 binding.tvBalanceTotal.text = "0"
@@ -392,7 +392,7 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
         animator = null
     }
 
-    private fun showTransferGatheringDialog(mainETHTokenBean: MainETHTokenBean) {
+    private fun showTransferGatheringDialog(mainTokenBean: MainTokenBean) {
         var dialog = AlertDialog.Builder(this).create()
         dialog.show()
         val window: Window? = dialog.window
@@ -405,23 +405,23 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
             val tvTransfer = window.findViewById<TextView>(R.id.tv_transfer)
             val tvGathering = window.findViewById<TextView>(R.id.tv_gathering)
 
-            tvTokenTitle.text = mainETHTokenBean.symbol
+            tvTokenTitle.text = mainTokenBean.symbol
 
             tvTransfer.setOnClickListener {
                 startActivity(Intent(this, TransferActivity::class.java).apply {
-                    putExtra(ARG_PARAM2, mainETHTokenBean)
+                    putExtra(ARG_PARAM2, mainTokenBean)
                 })
                 dialog.dismiss()
             }
             tvGathering.setOnClickListener { v1: View? ->
-                if (mainETHTokenBean.symbol == "SOL") {
+                if (mainTokenBean.symbol == "SOL") {
                     startActivity(Intent(this, GatheringActivity::class.java).apply {
                         putExtra(ARG_PARAM1, "SOL")
                         putExtra(ARG_PARAM2, walletSelleted.address)
                     })
                 } else {
                     startActivity(Intent(this, GatheringActivity::class.java).apply {
-                        putExtra(ARG_PARAM1, "SOL-${mainETHTokenBean.symbol}")
+                        putExtra(ARG_PARAM1, "SOL-${mainTokenBean.symbol}")
                         putExtra(ARG_PARAM2, walletSelleted.address)
                     })
                 }
@@ -449,39 +449,44 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
         var req = StoreInfo.Req()
         req.list = list
         req.convertId = "2781,2787,2792" //美元、人民币、港币
-        req.platformId = 1958 //BTC 1,ETH 1027,TRX 1958
+        req.platformId = 1958 //BTC:1, ETH:1027, TRX:1958, SOL:
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
-                trxHomeDataHandle(it)
+                solHomeDataHandle(it)
             } else {
-                println("-=-=-=->ETH${it.message()}")
+                println("-=-=-=->SOL${it.message()}")
             }
             binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         }, {
-            println("-=-=-=->ETH${it.printStackTrace()}")
+            println("-=-=-=->SOL${it.printStackTrace()}")
             binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         })
     }
 
-    private fun trxHomeDataHandle(it: ApiResponse<List<StoreInfo>>) {
+    private fun solHomeDataHandle(it: ApiResponse<List<StoreInfo>>) {
         it.data()?.let { data ->
-            mainETHTokenBean.clear()
+            mainTokenBean.clear()
             totalBalance = BigDecimal("0.00")
-            trxHomeDataHandleSub(data)
-            mainAdapter = MainAdapter(mainETHTokenBean)
+            solHomeDataHandleSub(data)
+            mainAdapter = MainAdapter(mainTokenBean)
             binding.rvCurrency.adapter = mainAdapter
             mainAdapter.setOnItemClickListener { adapter, _, position ->
-                if (adapter.getItem(position) is MainETHTokenBean) {
-                    showTransferGatheringDialog((adapter.getItem(position) as MainETHTokenBean))
+                if (adapter.getItem(position) is MainTokenBean) {
+                    var symbol = (adapter.getItem(position) as MainTokenBean).title
+                    startActivity(Intent(this, QueryActivity::class.java).apply {
+                        putExtra(ARG_PARAM1, walletSelleted.address)
+                        putExtra(ARG_PARAM2, adapter.getItem(position) as MainTokenBean)
+                        putExtra(ARG_PARAM3, symbol)
+                    })
                 }
             }
-            setBalanceTRX(totalBalance)
+            setBalanceSOL(totalBalance)
         }
     }
 
-    private fun trxHomeDataHandleSub(data: List<StoreInfo>) {
+    private fun solHomeDataHandleSub(data: List<StoreInfo>) {
         data.forEach { storeInfo ->
             storeInfo.quote.forEach { quote ->
                 if (quote.symbol == currencyUnit) {
@@ -489,11 +494,11 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             if (storeInfo.symbol == "SOL") {
-                mainETHTokenBean.add(
-                    MainETHTokenBean(
+                mainTokenBean.add(
+                    MainTokenBean(
                         "SOL",
                         storeInfo.symbol,
-                        trxBalance,
+                        solBalance,
                         unitPrice,
                         currencyUnit,
                         null,
@@ -501,7 +506,7 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
                         false
                     )
                 )
-                totalBalance += trxBalance.multiply(BigDecimal(unitPrice))
+                totalBalance += solBalance.multiply(BigDecimal(unitPrice))
             }
         }
         data.forEach { storeInfo ->
@@ -511,8 +516,8 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             if (storeInfo.symbol != "SOL") {
-                mainETHTokenBean.add(
-                    MainETHTokenBean(
+                mainTokenBean.add(
+                    MainTokenBean(
                         "SOL-${storeInfo.symbol}",
                         storeInfo.symbol,
                         if (storeInfo.symbol == "USDT") tokenBalance else BigDecimal("0"),
