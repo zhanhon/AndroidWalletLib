@@ -5,6 +5,10 @@ import android.content.Context
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.bean.AllTokenBean
 import com.ramble.ramblewallet.bean.StoreInfo
+import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils
+import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils
+import com.ramble.ramblewallet.blockchain.solana.WalletSOLUtils
+import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils
 import com.ramble.ramblewallet.constant.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -173,5 +177,71 @@ object TimeUtils {
         allToken.storeInfos = myStores
         allToken.myCurrency = date
         return allToken
+    }
+
+    /***
+     * 转Type
+     */
+
+    fun dateToType(date: String): Int {
+        return when {
+            WalletBTCUtils.isBtcValidAddress(date) -> {
+                2
+            }
+            WalletETHUtils.isEthValidAddress(date) -> {
+                1
+            }
+            WalletTRXUtils.isTrxValidAddress(date) -> {
+                3
+            }
+            WalletSOLUtils.isSolValidAddress(date) -> {
+                4
+            }
+            else -> 6
+        }
+    }
+
+    /***
+     * 转Type
+     */
+
+    fun dateToTypeString(date: String): String {
+        return  when {
+            WalletBTCUtils.isBtcValidAddress(date) -> {
+                "BTC01"
+            }
+            WalletETHUtils.isEthValidAddress(date) -> {
+                "ETH01"
+            }
+            WalletTRXUtils.isTrxValidAddress(date) -> {
+                "TRX01"
+            }
+            WalletSOLUtils.isSolValidAddress(date) -> {
+                "SOL01"
+            }
+            else -> "ETH01"
+        }
+    }
+
+    /***
+     * 转Type2
+     */
+
+    fun dateToTypeStringTwo(date: String,cout:Int): String {
+        return  when {
+            WalletBTCUtils.isBtcValidAddress(date) -> {
+                "BTC" + String.format("%02d", cout)
+            }
+            WalletETHUtils.isEthValidAddress(date) -> {
+                "ETH" + String.format("%02d", cout)
+            }
+            WalletTRXUtils.isTrxValidAddress(date) -> {
+                "TRX" + String.format("%02d", cout)
+            }
+            WalletSOLUtils.isSolValidAddress(date) -> {
+                "SOL" + String.format("%02d", cout)
+            }
+            else -> ""
+        }
     }
 }

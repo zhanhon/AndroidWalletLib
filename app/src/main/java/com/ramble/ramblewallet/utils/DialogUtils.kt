@@ -196,67 +196,22 @@ fun showBottomDialog2(
                                     ),
                                     object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                                 )
-                            var number = 0
-                            when {
-                                isBtcValidAddress(binding.editAddress.text.toString()) -> {
-                                    number = 2
-                                }
-                                isEthValidAddress(binding.editAddress.text.toString()) -> {
-                                    number = 1
-                                }
-                                isTrxValidAddress(binding.editAddress.text.toString()) -> {
-                                    number = 3
-                                }
-                                isSolValidAddress(binding.editAddress.text.toString()) -> {
-                                    number = 4
-                                }
-                            }
+                            val number = TimeUtils.dateToType(binding.editAddress.text.toString())
                             var cout = 1
                             myData.forEach {
                                 if (it.type == number) {
                                     cout++
                                 }
                             }
-
-                            when {
-                                isBtcValidAddress(binding.editAddress.text.toString()) -> {
-                                    "BTC" + String.format("%02d", cout)
-                                }
-                                isEthValidAddress(binding.editAddress.text.toString()) -> {
-                                    "ETH" + String.format("%02d", cout)
-                                }
-                                isTrxValidAddress(binding.editAddress.text.toString()) -> {
-                                    "TRX" + String.format("%02d", cout)
-                                }
-                                isSolValidAddress(binding.editAddress.text.toString()) -> {
-                                    "SOL" + String.format("%02d", cout)
-                                }
-                                else -> ""
-                            }
-
+                            TimeUtils.dateToTypeStringTwo(binding.editAddress.text.toString(),cout)
                         }
 
                     } else {
                         if (binding.editName.text.toString().isNotEmpty()) {
                             binding.editName.text.toString()
                         } else {
-                            when {
-                                isBtcValidAddress(binding.editAddress.text.toString()) -> {
-                                    "BTC01"
-                                }
-                                isEthValidAddress(binding.editAddress.text.toString()) -> {
-                                    "ETH01"
-                                }
-                                isTrxValidAddress(binding.editAddress.text.toString()) -> {
-                                    "TRX01"
-                                }
-                                isSolValidAddress(binding.editAddress.text.toString()) -> {
-                                    "SOL01"
-                                }
-                                else -> "ETH01"
-                            }
+                            TimeUtils.dateToTypeString(binding.editAddress.text.toString())
                         }
-
                     }
                 }
             }
@@ -292,21 +247,7 @@ fun showBottomDialog2(
             val data = MyAddressBean()
             data.address = binding.editAddress.text.toString()
             data.userName = name
-            data.type = when {
-                isBtcValidAddress(binding.editAddress.text.toString()) -> {
-                    2
-                }
-                isEthValidAddress(binding.editAddress.text.toString()) -> {
-                    1
-                }
-                isTrxValidAddress(binding.editAddress.text.toString()) -> {
-                    3
-                }
-                isSolValidAddress(binding.editAddress.text.toString()) -> {
-                    4
-                }
-                else -> 6
-            }
+            data.type =  TimeUtils.dateToType(binding.editAddress.text.toString())
             if (data.type == 6) {
                 ToastUtils.showToastFree(activity, activity.getString(R.string.address_already_err))
                 return@setOnClickListener
@@ -436,88 +377,28 @@ fun showBottomSan(
                                             ),
                                             object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                                         )
-                                    var number = 0
-                                    when {
-                                        isBtcValidAddress(binding.tvAddress.text.toString()) -> {
-                                            number = 2
-                                        }
-                                        isEthValidAddress(binding.tvAddress.text.toString()) -> {
-                                            number = 1
-                                        }
-                                        isTrxValidAddress(binding.tvAddress.text.toString()) -> {
-                                            number = 3
-                                        }
-                                        isSolValidAddress(binding.tvAddress.text.toString()) -> {
-                                            number = 4
-                                        }
-                                    }
+                                    val number = TimeUtils.dateToType(binding.tvAddress.text.toString())
                                     var cout = 1
                                     myData.forEach {
                                         if (it.type == number) {
                                             cout++
                                         }
                                     }
-
-                                    when {
-                                        isBtcValidAddress(binding.tvAddress.text.toString()) -> {
-                                            "BTC" + String.format("%02d", cout)
-                                        }
-                                        isEthValidAddress(binding.tvAddress.text.toString()) -> {
-                                            "ETH" + String.format("%02d", cout)
-                                        }
-                                        isTrxValidAddress(binding.tvAddress.text.toString()) -> {
-                                            "TRX" + String.format("%02d", cout)
-                                        }
-                                        isSolValidAddress(binding.tvAddress.text.toString()) -> {
-                                            "SOL" + String.format("%02d", cout)
-                                        }
-                                        else -> ""
-                                    }
-
+                                    TimeUtils.dateToTypeStringTwo(binding.tvAddress.text.toString(),cout)
                                 }
-
                             } else {
                                 if (binding.editName.text.toString().isNotEmpty()) {
                                     binding.editName.text.toString()
                                 } else {
-                                    when {
-                                        isBtcValidAddress(binding.tvAddress.text.toString()) -> {
-                                            "BTC01"
-                                        }
-                                        isEthValidAddress(binding.tvAddress.text.toString()) -> {
-                                            "ETH01"
-                                        }
-                                        isTrxValidAddress(binding.tvAddress.text.toString()) -> {
-                                            "TRX01"
-                                        }
-                                        isSolValidAddress(binding.tvAddress.text.toString()) -> {
-                                            "SOL01"
-                                        }
-                                        else -> "ETH01"
-                                    }
+                                    TimeUtils.dateToTypeString(binding.tvAddress.text.toString())
                                 }
-
                             }
                         }
                     }
                     val data = MyAddressBean()
                     data.address = binding.tvAddress.text.toString()
                     data.userName = name
-                    data.type = when {
-                        isBtcValidAddress(binding.tvAddress.text.toString()) -> {
-                            2
-                        }
-                        isEthValidAddress(binding.tvAddress.text.toString()) -> {
-                            1
-                        }
-                        isTrxValidAddress(binding.tvAddress.text.toString()) -> {
-                            3
-                        }
-                        isSolValidAddress(binding.tvAddress.text.toString()) -> {
-                            4
-                        }
-                        else -> 6
-                    }
+                    data.type = TimeUtils.dateToType(binding.tvAddress.text.toString())
                     if (data.type == 6) {
                         ToastUtils.showToastFree(
                             activity,
