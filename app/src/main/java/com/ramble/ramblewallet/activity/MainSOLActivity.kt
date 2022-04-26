@@ -24,8 +24,10 @@ import com.ramble.ramblewallet.bean.MainTokenBean
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.bean.Wallet
+import com.ramble.ramblewallet.blockchain.dogecoin.WalletDOGEUtils
 import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils.getSOLBalance
 import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils.getsSOLTokenBalance
+import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils.transferSOLToken
 import com.ramble.ramblewallet.blockchain.solana.WalletSOLUtils.Companion.isSolValidAddress
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMainSolBinding
@@ -263,10 +265,11 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
                 })
             }
             R.id.iv_balance_refresh -> {
-                startSyncAnimation()
-                Handler().postDelayed({
-                    initData()
-                }, 2000)
+                WalletDOGEUtils.generateWalletByMnemonic()
+//                startSyncAnimation()
+//                Handler().postDelayed({
+//                    initData()
+//                }, 2000)
             }
             R.id.iv_eyes -> {
                 if (isClickEyes) {

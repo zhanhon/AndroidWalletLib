@@ -1,4 +1,4 @@
-package com.ramble.ramblewallet.blockchain.dogecoin;
+package com.ramble.ramblewallet.blockchain.dogecoin.dogesdk;
 
 import org.bitcoinj.params.AbstractBitcoinNetParams;
 
@@ -16,11 +16,7 @@ public class DogeParams extends AbstractBitcoinNetParams {
         p2shHeader = 22;
         dumpedPrivateKeyHeader = 158;
         addressHeader = 30;
-        //acceptableAddressCodes = new int[]{addressHeader, p2shHeader};
         id = ID_DOGE_MAINNET;
-//        interval = INTERVAL;
-//        bip32HeaderPub = 0x02facafd; //The 4 byte header that serializes in base58 to "dgub".
-//        bip32HeaderPriv =  0x02fac398; //The 4 byte header that serializes in base58 to "dgpv".
     }
 
     private static DogeParams instance;
