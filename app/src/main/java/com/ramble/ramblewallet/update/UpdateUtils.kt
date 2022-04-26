@@ -27,9 +27,8 @@ class UpdateUtils {
                     update.updateUrl = newVersionData?.updateUrl
                     update.versionCode = BuildConfig.VERSION_CODE + 1//模拟一个versioncode
                     update.versionName = newVersionData?.version
-                    update.updateContent = newVersionData?.updateContent
-                    update.appSize = newVersionData?.appSize.toString()
-                    when (newVersionData?.isForceUpdate) {
+                    update.updateContent = newVersionData?.content
+                    when (newVersionData?.forcedUpdatingShow) {
                         1 -> update.isForced = true
                         else -> update.isForced = false
                     }

@@ -1,26 +1,39 @@
 package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.view.Gravity
+import android.view.Window
 import android.view.WindowManager
+import android.widget.Button
+import android.widget.CompoundButton
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.ramble.ramblewallet.BuildConfig
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
+import com.ramble.ramblewallet.network.faqInfoUrl
+import com.ramble.ramblewallet.network.getAppVersion
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.update.AppVersion
+import com.ramble.ramblewallet.update.UpdateUtils
+import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.LanguageSetting.setLanguage
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.ToolUtils
-import com.ramble.ramblewallet.utils.applyIo
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 class WelcomeActivity : BaseActivity() {
@@ -43,10 +56,80 @@ class WelcomeActivity : BaseActivity() {
             ISFINGERPRINT_KEY_COMMON,
             false
         ) || SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY_ALL, false)
-        if (isFinger){
+        if (isFinger) {
             ToolUtils.supportFingerprint(this)
         }
         skipConfirmHandle()
+        isForcedUpdatingShow()
+    }
+
+    @SuppressLint("CheckResult")
+    private fun isForcedUpdatingShow() {
+        GlobalScope.launch {
+            mApiService.appVersion(AppVersion.Req().toApiRequest(getAppVersion)).subscribe({
+                if (it.code() == 1) {
+                    if (it.data()!!.version!! != BuildConfig.VERSION_NAME) {
+                        if (it.data()!!.forcedUpdatingShow == 1) {//强制更新
+                            RxBus.emitEvent(Pie.EVENT_PUSH_FOC_UP, it.data()!!)
+                            return@subscribe
+                        }
+                        if (it.data()!!.floatingWindowShow == 1) {//软更新
+                            RxBus.emitEvent(Pie.EVENT_PUSH_FOC, it.data()!!)
+                        }
+                    } else {
+                        RxBus.emitEvent(Pie.EVENT_PUSH_JUMP, it.data()!!)
+                    }
+                }
+            }, {
+
+            })
+        }
+    }
+
+    /***
+     * 强制更新
+     */
+    private fun forcedUpDataDialog(version: AppVersion) {
+        val title=version.date+" "+version.version+"更新内容"
+        showCommonDialog(this, version.content!!, titleContent = title, confirmListener = {
+            checkAppVersion(version)
+        }, isForceUpdate = false)
+    }
+
+    /***
+     * 软性更新
+     */
+    private fun upDataDialog(version: AppVersion) {
+        val title=version.date+" "+version.version+"更新内容"
+        showCommonDialog(this, version.content!!, titleContent = title,
+            confirmListener = { checkAppVersion(version) },
+            btcListener = { startActivityJun() }, isForceUpdate = true)
+    }
+
+    override fun onRxBus(event: RxBus.Event) {
+        super.onRxBus(event)
+        when (event.id()) {
+            Pie.EVENT_PUSH_FOC -> {
+                upDataDialog(event.data())
+            }
+            Pie.EVENT_PUSH_FOC_UP -> {
+                forcedUpDataDialog(event.data())
+            }
+            Pie.EVENT_PUSH_JUMP -> {
+                startActivityJun()
+            }
+            else -> return
+        }
+    }
+
+    private fun checkAppVersion(version: AppVersion) {
+        UpdateUtils().checkUpdate(version, false)
+    }
+
+    /***
+     * 进入主页
+     */
+    private fun startActivityJun() {
         Handler().postDelayed({
             if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isEmpty()) {
                 startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
@@ -72,7 +155,6 @@ class WelcomeActivity : BaseActivity() {
                 }
             }
         }, 3000)
-
     }
 
     /***

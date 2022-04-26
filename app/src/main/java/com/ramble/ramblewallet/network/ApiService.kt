@@ -25,7 +25,7 @@ const val queryFaqInfoUrl = "wallet-decentralized-api/faq/queryAllFaqByType"
 const val getStoreUrl = "wallet-decentralized-api/sys/listStoreCoinmarketcap"
 const val getPrivacyInfo = "wallet-decentralized-api/sys/getPrivacyPolicy"
 const val reportTransferUrl = "wallet-decentralized-api/transfer/reportTransferRecord"
-const val getAppVersion = "wallet-decentralized-api/transfer/reportTransferRecord"
+const val getAppVersion = "/wallet-decentralized-api/app-version/queryNewAppVersion"
 
 
 interface ApiService {

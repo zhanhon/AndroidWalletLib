@@ -138,7 +138,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun checkAppVersion(version: AppVersion) {
-        if (version.isNeedUpdate == 1) {
+        if (version.forcedUpdatingShow == 1) {
             UpdateUtils().checkUpdate(version, false)
 //            if (version.isForceUpdate == 1) {
 ////                start(ForceUpdateActivity::class.java)
@@ -167,7 +167,6 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incFingerPrint.setOnClickListener(this)
         binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).setOnClickListener {
             checkVersion()
-
         }
     }
 
