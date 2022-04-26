@@ -145,7 +145,7 @@
     <string name="network_anomaly">网络异常，请检查网络连接</string>
     <string name="retry">重试</string>
     <string name="error_tips_backup">您已输入错误超过三次,是否取消或返回上个页面</string>
-    <string name="btc_minimum_amount_prompt">最小转账金额为0.0001，请重新输入</string>
+    <string name="btc_minimum_amount_prompt">最小转账金额为<tools>%s</tools>，请重新输入</string>
     <string name="save_qr_picture_title">钱包的KEYSTORE</string>
 
     <string name="input_keystore">请输入Keystore</string>

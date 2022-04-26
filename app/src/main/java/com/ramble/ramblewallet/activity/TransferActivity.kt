@@ -187,10 +187,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun confirmValidForTransfer(): Boolean {
-        if (BigDecimal(binding.edtInputQuantity.text.trim().toString()).compareTo(
-                tokenBean.balance
-            ) == 1
-        ) {
+        val amount = binding.edtInputQuantity.text.trim().toString()
+        if (BigDecimal(amount).compareTo(tokenBean.balance) == 1) {
             ToastUtils.showToastFree(this, getString(R.string.balance_insufficient))
             return true
         }
@@ -221,29 +219,24 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     ToastUtils.showToastFree(this, getString(R.string.address_already_err))
                     return true
                 }
-                if (BigDecimal(binding.edtInputQuantity.text.toString()).compareTo(
-                        BigDecimal("0.0001")
-                    ) == -1
-                ) {
-                    ToastUtils.showToastFree(
-                        this,
-                        getString(R.string.btc_minimum_amount_prompt)
-                    )
+                if (BigDecimal(amount).compareTo(BigDecimal("0.0001")) == -1) {
+                    ToastUtils.showToastFree(this, getString(R.string.btc_minimum_amount_prompt))
                     return true
                 }
             }
             4 -> {
                 if (!WalletSOLUtils.isSolValidAddress(binding.edtReceiverAddress.text.toString())) {
-                    ToastUtils.showToastFree(this, getString(R.string.address_already_err))
+                    ToastUtils.showToastFree(this, String.format(getString(R.string.btc_minimum_amount_prompt), "0.0001"))
+                    return true
+                }
+                if (BigDecimal(amount).compareTo(BigDecimal("0.000001")) == -1) {
+                    ToastUtils.showToastFree(this, String.format(getString(R.string.btc_minimum_amount_prompt), "0.000001"))
                     return true
                 }
             }
         }
-        if (StrUtil.equalsIgnoreCase(
-                binding.tvWalletAddress.text.toString(),
-                binding.edtReceiverAddress.text.toString()
-            )
-        ) {
+        if (StrUtil.equalsIgnoreCase(binding.tvWalletAddress.text.toString(),
+                binding.edtReceiverAddress.text.toString())) {
             ToastUtils.showToastFree(this, getString(R.string.repeat_address))
             return true
         }
