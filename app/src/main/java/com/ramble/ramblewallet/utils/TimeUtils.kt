@@ -96,15 +96,9 @@ object TimeUtils {
 
     fun dateToLang(context: Context): Int {
         return when (SharedPreferencesUtils.getString(context, LANGUAGE, CN)) {
-            CN -> {
-                1
-            }
-            TW -> {
-                2
-            }
-            else -> {
-                3
-            }
+            CN -> 1
+            TW -> 2
+            else -> 3
         }
     }
 
@@ -114,15 +108,9 @@ object TimeUtils {
 
     fun dateToCurrency(context: Context): Int {
         return when (SharedPreferencesUtils.getString(context, CURRENCY, USD)) {
-            CNY -> {
-                2
-            }
-            HKD -> {
-                3
-            }
-            else -> {
-                1
-            }
+            CNY -> 2
+            HKD -> 3
+            else -> 1
         }
     }
 
@@ -185,18 +173,10 @@ object TimeUtils {
 
     fun dateToType(date: String): Int {
         return when {
-            WalletBTCUtils.isBtcValidAddress(date) -> {
-                2
-            }
-            WalletETHUtils.isEthValidAddress(date) -> {
-                1
-            }
-            WalletTRXUtils.isTrxValidAddress(date) -> {
-                3
-            }
-            WalletSOLUtils.isSolValidAddress(date) -> {
-                4
-            }
+            WalletBTCUtils.isBtcValidAddress(date) -> 2
+            WalletETHUtils.isEthValidAddress(date) -> 1
+            WalletTRXUtils.isTrxValidAddress(date) -> 3
+            WalletSOLUtils.isSolValidAddress(date) -> 4
             else -> 6
         }
     }
@@ -206,19 +186,11 @@ object TimeUtils {
      */
 
     fun dateToTypeString(date: String): String {
-        return  when {
-            WalletBTCUtils.isBtcValidAddress(date) -> {
-                "BTC01"
-            }
-            WalletETHUtils.isEthValidAddress(date) -> {
-                "ETH01"
-            }
-            WalletTRXUtils.isTrxValidAddress(date) -> {
-                "TRX01"
-            }
-            WalletSOLUtils.isSolValidAddress(date) -> {
-                "SOL01"
-            }
+        return when {
+            WalletBTCUtils.isBtcValidAddress(date) -> "BTC01"
+            WalletETHUtils.isEthValidAddress(date) -> "ETH01"
+            WalletTRXUtils.isTrxValidAddress(date) -> "TRX01"
+            WalletSOLUtils.isSolValidAddress(date) -> "SOL01"
             else -> "ETH01"
         }
     }
@@ -227,20 +199,12 @@ object TimeUtils {
      * 转Type2
      */
 
-    fun dateToTypeStringTwo(date: String,cout:Int): String {
-        return  when {
-            WalletBTCUtils.isBtcValidAddress(date) -> {
-                "BTC" + String.format("%02d", cout)
-            }
-            WalletETHUtils.isEthValidAddress(date) -> {
-                "ETH" + String.format("%02d", cout)
-            }
-            WalletTRXUtils.isTrxValidAddress(date) -> {
-                "TRX" + String.format("%02d", cout)
-            }
-            WalletSOLUtils.isSolValidAddress(date) -> {
-                "SOL" + String.format("%02d", cout)
-            }
+    fun dateToTypeStringTwo(date: String, cout: Int): String {
+        return when {
+            WalletBTCUtils.isBtcValidAddress(date) -> "BTC" + String.format("%02d", cout)
+            WalletETHUtils.isEthValidAddress(date) -> "ETH" + String.format("%02d", cout)
+            WalletTRXUtils.isTrxValidAddress(date) -> "TRX" + String.format("%02d", cout)
+            WalletSOLUtils.isSolValidAddress(date) -> "SOL" + String.format("%02d", cout)
             else -> ""
         }
     }
