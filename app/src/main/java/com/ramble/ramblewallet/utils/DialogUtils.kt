@@ -463,6 +463,7 @@ fun showCommonDialog(
         )
         if (titleContent != null) {
             binding.tvTitle.text = titleContent
+            setCancelable(false)
         }
         if (isForceUpdate != null) {
             binding.btnCancel.isVisible = isForceUpdate

@@ -124,28 +124,20 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("CheckResult")
     private fun checkVersion() {
-        mApiService.appVersion(AppVersion.Req().toApiRequest(faqInfoUrl)).subscribe({
-            if (it.code() == 1) {
-                GlobalScope.launch {
-//                    delay(800)
-                    confirmTipsDialog(it.data()!!)
-
+        GlobalScope.launch {
+            mApiService.appVersion(AppVersion.Req().toApiRequest(getAppVersion)).subscribe({
+                if (it.code() == 1) {
+                    if (it.data()!!.version!! != BuildConfig.VERSION_NAME&&it.data()!!.artificialShow == 1) { //软更新
+                        RxBus.emitEvent(Pie.EVENT_PUSH_FOC_MINE, it.data()!!)
+                    }
                 }
-
-            }
-        }, {
-        })
+            }, {
+            })
+        }
     }
 
     private fun checkAppVersion(version: AppVersion) {
-        if (version.forcedUpdatingShow == 1) {
-            UpdateUtils().checkUpdate(version, false)
-//            if (version.isForceUpdate == 1) {
-////                start(ForceUpdateActivity::class.java)
-//            } else if (version.isPopPrompt == 1 && MMKVManager.getVersionIgnore() != version.version) {
-//                UpdateUtils().checkUpdate(version,false)
-//            }
-        }
+        UpdateUtils().checkUpdate(version, false)
     }
 
     /****
@@ -171,9 +163,16 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun confirmTipsDialog(version: AppVersion) {
-        showCommonDialog(this, getString(R.string.check_version),titleContent ="" , confirmListener = {
-            checkAppVersion(version)
-        },isForceUpdate = true)
+        val title=version.date+" "+version.version+"更新内容"
+        showCommonDialog(
+            this,
+            version.content!!,
+            titleContent = title,
+            confirmListener = {
+                checkAppVersion(version)
+            },
+            isForceUpdate = true
+        )
     }
 
     override fun onResume() {
@@ -323,6 +322,10 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             Pie.EVENT_PUSH_MSG -> {
                 onResume()
             }
+            Pie.EVENT_PUSH_FOC_MINE -> {
+                confirmTipsDialog(event.data()!!)
+            }
+
             else -> return
         }
     }

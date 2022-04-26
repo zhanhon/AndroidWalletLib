@@ -59,6 +59,10 @@ public class Pie {
      * 收到消息，刷新接口
      */
     public static final int EVENT_PUSH_FOC_UP = 2014;
+    /**
+     * 收到消息，刷新接口
+     */
+    public static final int EVENT_PUSH_FOC_MINE = 2015;
 
 
     private Pie() {
