@@ -30,8 +30,6 @@ import com.ramble.ramblewallet.wight.adapter.RecyclerAdapter
 import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.LocalTime
 
 /**
  * 时间　: 2021/12/17 13:30
@@ -44,8 +42,6 @@ class TransactionQueryFragment : BaseFragment(),
     lateinit var myActivity: TransactionQueryActivity
         private set
     private var gameType: Int = 1
-    private lateinit var chooseDay: LocalDateTime
-    private lateinit var startDay: LocalDateTime
     private var status: Int? = null
     private var transferType: Int? = null
     private var endTime: Long? = null
@@ -82,8 +78,6 @@ class TransactionQueryFragment : BaseFragment(),
     ): View? {
         if (reusedView == null) {
             binding = inflater.dataBinding(R.layout.fragment_transaction_query, container)
-            chooseDay = LocalDateTime.now()
-            chooseDay = LocalDateTime.of(chooseDay.toLocalDate(), LocalTime.MAX)
             binding.lyPullRefresh.setRefreshHeader(ClassicsHeader(myActivity))
             binding.lyPullRefresh.setRefreshFooter(ClassicsFooter(myActivity))
             //刷新的监听事件
@@ -272,17 +266,14 @@ class TransactionQueryFragment : BaseFragment(),
             }
             R.id.week -> {
                 dateType = "WW"
-                startDay = LocalDateTime.of(chooseDay.plusDays(-7).toLocalDate(), LocalTime.MIN)
                 reFreshData()
             }
             R.id.month -> {
                 dateType = "MM"
-                startDay = LocalDateTime.of(chooseDay.plusMonths(-1).toLocalDate(), LocalTime.MIN)
                 reFreshData()
             }
             R.id.year -> {
                 dateType = "YY"
-                startDay = LocalDateTime.of(chooseDay.plusYears(-1).toLocalDate(), LocalTime.MIN)
                 reFreshData()
             }
         }
