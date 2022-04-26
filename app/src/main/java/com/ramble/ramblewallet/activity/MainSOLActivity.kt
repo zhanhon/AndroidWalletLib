@@ -265,11 +265,10 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
                 })
             }
             R.id.iv_balance_refresh -> {
-                WalletDOGEUtils.generateWalletByMnemonic()
-//                startSyncAnimation()
-//                Handler().postDelayed({
-//                    initData()
-//                }, 2000)
+                startSyncAnimation()
+                Handler().postDelayed({
+                    initData()
+                }, 2000)
             }
             R.id.iv_eyes -> {
                 if (isClickEyes) {
