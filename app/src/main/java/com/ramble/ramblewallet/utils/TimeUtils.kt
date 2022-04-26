@@ -2,8 +2,12 @@ package com.ramble.ramblewallet.utils
 
 import android.app.Activity
 import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.bean.AllTokenBean
+import com.ramble.ramblewallet.bean.MyAddressBean
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils
@@ -206,6 +210,44 @@ object TimeUtils {
             WalletTRXUtils.isTrxValidAddress(date) -> "TRX" + String.format("%02d", cout)
             WalletSOLUtils.isSolValidAddress(date) -> "SOL" + String.format("%02d", cout)
             else -> ""
+        }
+    }
+
+    /***
+     * 转Type2
+     */
+
+    fun dateToNameString(date: String, context: Context): String {
+        return if (SharedPreferencesUtils.getString(
+                context,
+                ADDRESS_BOOK_INFO,
+                ""
+            )
+                .isNotEmpty()
+        ) {
+            date.ifEmpty {
+                val myData: ArrayList<MyAddressBean> =
+                    Gson().fromJson(
+                        SharedPreferencesUtils.getString(
+                            context,
+                            ADDRESS_BOOK_INFO,
+                            ""
+                        ),
+                        object : TypeToken<ArrayList<MyAddressBean>>() {}.type
+                    )
+                val number = dateToType(date)
+                var cout = 1
+                myData.forEach {
+                    if (it.type == number) {
+                        cout++
+                    }
+                }
+                dateToTypeStringTwo(date, cout)
+            }
+        } else {
+            date.ifEmpty {
+                dateToTypeString(date)
+            }
         }
     }
 }

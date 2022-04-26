@@ -21,10 +21,6 @@ import com.ramble.ramblewallet.activity.ScanActivity
 import com.ramble.ramblewallet.activity.TransferActivity
 import com.ramble.ramblewallet.bean.MainTokenBean
 import com.ramble.ramblewallet.bean.MyAddressBean
-import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils.isBtcValidAddress
-import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils.isEthValidAddress
-import com.ramble.ramblewallet.blockchain.solana.WalletSOLUtils.Companion.isSolValidAddress
-import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.constant.ADDRESS_BOOK_INFO
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
@@ -175,45 +171,9 @@ fun showBottomDialog2(
                     }
                 }
             }
-            var name = when (type) {
-                1 -> {
-                    binding.editName.text.toString()
-                }
-                else -> {
-                    if (SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
-                            .isNotEmpty()
-                    ) {
-
-                        if (binding.editName.text.toString().isNotEmpty()) {
-                            binding.editName.text.toString()
-                        } else {
-                            val myData: ArrayList<MyAddressBean> =
-                                Gson().fromJson(
-                                    SharedPreferencesUtils.getString(
-                                        MyApp.sInstance,
-                                        ADDRESS_BOOK_INFO,
-                                        ""
-                                    ),
-                                    object : TypeToken<ArrayList<MyAddressBean>>() {}.type
-                                )
-                            val number = TimeUtils.dateToType(binding.editAddress.text.toString())
-                            var cout = 1
-                            myData.forEach {
-                                if (it.type == number) {
-                                    cout++
-                                }
-                            }
-                            TimeUtils.dateToTypeStringTwo(binding.editAddress.text.toString(),cout)
-                        }
-
-                    } else {
-                        if (binding.editName.text.toString().isNotEmpty()) {
-                            binding.editName.text.toString()
-                        } else {
-                            TimeUtils.dateToTypeString(binding.editAddress.text.toString())
-                        }
-                    }
-                }
+            val name = when (type) {
+                1 -> binding.editName.text.toString()
+                else -> TimeUtils.dateToNameString(binding.editAddress.text.toString(), activity)
             }
             if (SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
                     .isNotEmpty()
@@ -274,7 +234,6 @@ fun showBottomDialog2(
                     RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_ADD, data)
                 }
             }
-
             dismiss()
         }
         activity.setOnResultsListener(object : AddressBookActivity.OnResultsListener {
@@ -353,47 +312,8 @@ fun showBottomSan(
                     }
                 } else {
                     name = when (type) {
-                        1 -> {
-                            binding.editName.text.toString()
-                        }
-                        else -> {
-                            if (SharedPreferencesUtils.getString(
-                                    MyApp.sInstance,
-                                    ADDRESS_BOOK_INFO,
-                                    ""
-                                )
-                                    .isNotEmpty()
-                            ) {
-
-                                if (binding.editName.text.toString().isNotEmpty()) {
-                                    binding.editName.text.toString()
-                                } else {
-                                    val myData: ArrayList<MyAddressBean> =
-                                        Gson().fromJson(
-                                            SharedPreferencesUtils.getString(
-                                                MyApp.sInstance,
-                                                ADDRESS_BOOK_INFO,
-                                                ""
-                                            ),
-                                            object : TypeToken<ArrayList<MyAddressBean>>() {}.type
-                                        )
-                                    val number = TimeUtils.dateToType(binding.tvAddress.text.toString())
-                                    var cout = 1
-                                    myData.forEach {
-                                        if (it.type == number) {
-                                            cout++
-                                        }
-                                    }
-                                    TimeUtils.dateToTypeStringTwo(binding.tvAddress.text.toString(),cout)
-                                }
-                            } else {
-                                if (binding.editName.text.toString().isNotEmpty()) {
-                                    binding.editName.text.toString()
-                                } else {
-                                    TimeUtils.dateToTypeString(binding.tvAddress.text.toString())
-                                }
-                            }
-                        }
+                        1 -> binding.editName.text.toString()
+                        else -> TimeUtils.dateToNameString(binding.tvAddress.text.toString(), activity)
                     }
                     val data = MyAddressBean()
                     data.address = binding.tvAddress.text.toString()
