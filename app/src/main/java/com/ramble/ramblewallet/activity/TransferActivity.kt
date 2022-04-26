@@ -26,10 +26,10 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.*
-import com.ramble.ramblewallet.blockchain.bitcoin.TransferBTCUtils.balanceOfBtc
 import com.ramble.ramblewallet.blockchain.bitcoin.TransferBTCUtils.transferBTC
 import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils
-import com.ramble.ramblewallet.blockchain.ethereum.TransferETHUtils.*
+import com.ramble.ramblewallet.blockchain.ethereum.TransferETHUtils.transferETH
+import com.ramble.ramblewallet.blockchain.ethereum.TransferETHUtils.transferETHToken
 import com.ramble.ramblewallet.blockchain.ethereum.WalletETHUtils
 import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils.setAllowUniversalAccessFromFileURLs
 import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils.transferSOL
@@ -674,9 +674,10 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 } else {
                     transferSOL(
                         this,
+                        walletSelleted.address,
                         transferReceiverAddress!!,
                         walletSelleted.privateKey,
-                        BigInteger(amount).multiply(BigInteger("10").pow(6))
+                        BigDecimal(amount).multiply(BigDecimal("10").pow(6))
                     )
                 }
             }

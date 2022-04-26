@@ -11,6 +11,7 @@
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/shape_wallet_manage_btc.xml" value="0.213" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/shape_wallet_manage_doge.xml" value="0.213" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/shape_wallet_manage_sol.xml" value="0.213" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/vector_sol_selecter.xml" value="0.201" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/vector_trx.xml" value="0.213" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_about.xml" value="0.3605128205128205" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_create_wallet_list.xml" value="0.35185185185185186" />
@@ -23,6 +24,7 @@
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_update.xml" value="0.36793327154772937" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_wallet_manage.xml" value="0.35185185185185186" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_wallet_more_operate.xml" value="0.36614583333333334" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/bottom_notice_dialog2.xml" value="0.3296296296296296" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/dialog_btc_miner_fee.xml" value="0.36614583333333334" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/dialog_common.xml" value="0.36614583333333334" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/dialog_create_wallet_list.xml" value="0.36614583333333334" />

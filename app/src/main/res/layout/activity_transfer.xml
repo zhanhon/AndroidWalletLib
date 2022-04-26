@@ -161,7 +161,7 @@
                             android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                             android:hint="@string/address"
                             android:inputType="textEmailAddress"
-                            android:maxLength="42"
+                            android:maxLength="44"
                             android:text=""
                             android:textColor="@color/color_9598AA"
                             android:textColorHint="@color/color_9598AA"

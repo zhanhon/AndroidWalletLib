@@ -451,7 +451,7 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
         var req = StoreInfo.Req()
         req.list = list
         req.convertId = "2781,2787,2792" //美元、人民币、港币
-        req.platformId = 1958 //BTC:1, ETH:1027, TRX:1958, SOL:
+        req.platformId = 5426 //BTC:1, ETH:1027, TRX:1958, SOL:5426
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
                 solHomeDataHandle(it)

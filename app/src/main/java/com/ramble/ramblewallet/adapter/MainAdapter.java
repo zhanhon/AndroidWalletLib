@@ -57,6 +57,9 @@ public class MainAdapter extends BaseQuickAdapter<MainTokenBean, BaseViewHolder>
             case "BTC":
                 baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_btc);
                 break;
+            case "SOL":
+                baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.vector_sol_selecter);
+                break;
             case "WETH":
                 baseViewHolder.setImageResource(R.id.iv_token_icon, R.drawable.ic_weth);
                 break;
