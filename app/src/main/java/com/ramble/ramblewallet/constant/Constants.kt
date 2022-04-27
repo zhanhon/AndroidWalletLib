@@ -38,6 +38,8 @@ const val READ_ID_NEW = "read_ID_new"
 const val TOKEN_INFO_NO = "token_info_no"
 const val STATION_INFO = "station_info"
 
+const val TOKEN_DB_NO = "token_db_no"
+
 const val REQUEST_CODE_1025 = 1025
 const val REQUEST_CODE_1029 = 1029
 

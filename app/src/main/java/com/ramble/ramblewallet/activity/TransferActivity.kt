@@ -226,17 +226,26 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
             4 -> {
                 if (!WalletSOLUtils.isSolValidAddress(binding.edtReceiverAddress.text.toString())) {
-                    ToastUtils.showToastFree(this, String.format(getString(R.string.btc_minimum_amount_prompt), "0.0001"))
+                    ToastUtils.showToastFree(
+                        this,
+                        String.format(getString(R.string.btc_minimum_amount_prompt), "0.0001")
+                    )
                     return true
                 }
                 if (BigDecimal(amount).compareTo(BigDecimal("0.000001")) == -1) {
-                    ToastUtils.showToastFree(this, String.format(getString(R.string.btc_minimum_amount_prompt), "0.000001"))
+                    ToastUtils.showToastFree(
+                        this,
+                        String.format(getString(R.string.btc_minimum_amount_prompt), "0.000001")
+                    )
                     return true
                 }
             }
         }
-        if (StrUtil.equalsIgnoreCase(binding.tvWalletAddress.text.toString(),
-                binding.edtReceiverAddress.text.toString())) {
+        if (StrUtil.equalsIgnoreCase(
+                binding.tvWalletAddress.text.toString(),
+                binding.edtReceiverAddress.text.toString()
+            )
+        ) {
             ToastUtils.showToastFree(this, getString(R.string.repeat_address))
             return true
         }
@@ -690,6 +699,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    var putAddressTimes = 0
+
     /***
      *上报转出交易记录
      */
@@ -731,7 +742,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 )
             }
         }
-        var putAddressTimes = 0
+
         mApiService.reportTransferRecord(
             ReportTransferInfo.Req(
                 walletSelleted.walletType,
@@ -750,6 +761,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         ).applyIo().subscribe(
             {
                 if (it.code() == 1) {
+                    putAddressTimes = 0
                     it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
                 } else {
                     if (putAddressTimes < 3) {

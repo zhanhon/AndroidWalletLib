@@ -9,14 +9,14 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.google.gson.Gson
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MainTokenBean
-import com.ramble.ramblewallet.constant.ARG_PARAM1
-import com.ramble.ramblewallet.constant.ARG_PARAM2
-import com.ramble.ramblewallet.constant.ARG_PARAM3
+import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityQueryBinding
 import com.ramble.ramblewallet.fragment.QueryFragment
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.wight.adapter.FragmentPagerAdapter2
 
 
@@ -48,7 +48,13 @@ class QueryActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initView() {
-        adapter = MyAdapter(supportFragmentManager, this, tokenBean.contractAddress)
+        adapter = MyAdapter(supportFragmentManager, this)
+        SharedPreferencesUtils.saveString(
+            this,
+            TOKEN_DB_NO,
+            tokenBean.contractAddress
+        )
+       val address =SharedPreferencesUtils.getString(this, TOKEN_DB_NO, "")
         binding.pager.adapter = adapter
         binding.layoutTab.setViewPager(binding.pager)
         binding.tvMineTitle.text = tokenBean.symbol
@@ -79,9 +85,8 @@ class QueryActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    class MyAdapter(fm: FragmentManager, activity: QueryActivity, address: String?) :
+    class MyAdapter(fm: FragmentManager, activity: QueryActivity) :
         FragmentPagerAdapter2(fm) {
-        private val address = address
         private val titles: Array<String> = arrayOf(
             activity.getString(R.string.all),
             activity.getString(R.string.cash_out),
@@ -97,7 +102,7 @@ class QueryActivity : BaseActivity(), View.OnClickListener {
                 3 -> 2
                 else -> 1
             }
-            return QueryFragment.newInstance(gameType, address)
+            return QueryFragment.newInstance(gameType)
         }
 
         override fun getCount(): Int = titles.size
