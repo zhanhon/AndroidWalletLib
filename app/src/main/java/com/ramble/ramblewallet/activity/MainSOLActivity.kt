@@ -493,7 +493,7 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
                     unitPrice = quote.price
                 }
             }
-            if (storeInfo.symbol == "SOL") {
+            if ((storeInfo.symbol == "SOL") && (storeInfo.name == "Solana")) {
                 mainTokenBean.add(
                     MainTokenBean(
                         "SOL",
