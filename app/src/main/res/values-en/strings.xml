@@ -239,4 +239,6 @@ Please confirm to open.</string>
     <string name="fingerprint_not_support">Your phone does not support the fingerprint function</string>
     <string name="fingerprint_setting">You have not set the function of the lock screen. Please select a lock screen and add a fingerprint</string>
     <string name="fingerprint_need_add">You need to add at least one fingerprint in the system settings</string>
+    <string name="force_update">Force update</string>
+    <string name="update_connect">Update content</string>
 </resources>

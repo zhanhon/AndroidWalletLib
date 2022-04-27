@@ -237,4 +237,6 @@
     <string name="fingerprint_not_support">您的手机不支持指纹功能</string>
     <string name="fingerprint_setting">您还未设置锁屏，请先设置锁屏并添加一个指纹</string>
     <string name="fingerprint_need_add">您至少需要在系统设置中添加一个指纹</string>
+    <string name="force_update">强制更新</string>
+    <string name="update_connect">更新内容</string>
 </resources>

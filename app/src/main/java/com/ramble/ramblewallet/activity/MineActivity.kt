@@ -163,7 +163,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun confirmTipsDialog(version: AppVersion) {
-        val title=version.date+" "+version.version+"更新内容"
+        val title=version.date+" "+version.version+getString(R.string.update_connect)
         showCommonDialog(
             this,
             version.content!!,

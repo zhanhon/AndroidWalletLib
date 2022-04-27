@@ -467,6 +467,9 @@ fun showCommonDialog(
         }
         if (isForceUpdate != null) {
             binding.btnCancel.isVisible = isForceUpdate
+            if (!isForceUpdate){
+                binding.btnConfirm.text = activity.getString(R.string.force_update)
+            }
         }
         binding.tvContent.text = title
         binding.btnConfirm.setOnClickListener {
