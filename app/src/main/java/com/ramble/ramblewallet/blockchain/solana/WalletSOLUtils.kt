@@ -72,7 +72,7 @@ class WalletSOLUtils {
             if (address.isEmpty()) {
                 return false
             }
-            return true
+            return address.length == 44
         }
     }
 }
