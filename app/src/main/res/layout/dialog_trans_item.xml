@@ -78,7 +78,7 @@
                 android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:gravity="left|center_vertical"
                 android:hint="@string/contributing_address_hint"
-                android:maxLength="42"
+                android:maxLength="44"
                 android:paddingStart="@dimen/dp_16"
                 android:textColor="@color/front_one"
                 android:textColorHint="@color/front_four" />
