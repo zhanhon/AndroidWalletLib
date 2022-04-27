@@ -185,9 +185,15 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
                     3 -> {
                         "https://btc.com/btc/transaction/${trans?.txHash}"
                     }
+                    4 -> {
+                        "https://explorer.solana.com/tx/${trans?.txHash}"
+                    }
+                    5 -> {
+                        "https://btc.com/btc/transaction/${trans?.txHash}"
+                    }
                     else -> ""
                 }
-                var intent = Intent()
+                val intent = Intent()
                 intent.action = "android.intent.action.VIEW"
                 intent.data = Uri.parse(urlString)
                 startActivity(intent)
