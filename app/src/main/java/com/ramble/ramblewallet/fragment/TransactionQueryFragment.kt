@@ -161,7 +161,7 @@ class TransactionQueryFragment : BaseFragment(),
             changeCurrencyType,
             null,
             endTime,
-            null,
+            0,
             startTime,
             status,
             transferType

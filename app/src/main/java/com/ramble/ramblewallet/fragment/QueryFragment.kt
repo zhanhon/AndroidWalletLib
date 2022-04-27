@@ -157,6 +157,7 @@ class QueryFragment : BaseFragment(),
         var isToken: Int? = null
         if (address.isEmpty()) {
             address = wallet.address
+            isToken=0
         } else {
             contractAddress = address
             isToken = 1
