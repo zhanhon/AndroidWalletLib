@@ -5,7 +5,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_CA7C14"
+        android:background="@color/color_AD8B1E"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -110,7 +110,7 @@
                     android:id="@+id/appbar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_CA7C14">
+                    android:background="@color/color_AD8B1E">
 
                     <LinearLayout
                         android:id="@+id/linearBtns"
@@ -193,7 +193,7 @@
                         android:id="@+id/ll_card"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_240"
-                        android:background="@mipmap/ic_home_btc_spread"
+                        android:background="@mipmap/ic_home_card_doge"
                         android:orientation="vertical"
                         android:padding="@dimen/dp_10">
 

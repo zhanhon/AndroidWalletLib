@@ -195,7 +195,7 @@
                         android:id="@+id/ll_card"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_240"
-                        android:background="@mipmap/ic_home_sol_spread"
+                        android:background="@mipmap/ic_home_card_sol"
                         android:orientation="vertical"
                         android:padding="@dimen/dp_10">
 

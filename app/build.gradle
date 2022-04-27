@@ -102,7 +102,7 @@ android {
         pre_formal {
             applicationId "com.ramble.ramblewallet"
             buildConfigField "long", "PLATFORM_ID", '1'
-            buildConfigField "String[]", "BASE_SERVER_URL", '{"https://ramblewt666.com","https://ramblewt688.com","https://ramblewt888.com"}'
+            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.229.173.84:8095/"}'
             buildConfigField "String[]", "RPC_ETH_NODE", '{"https://mainnet.infura.io/v3"}'
             buildConfigField "String[]", "RPC_TRX_NODE", '{"https://api.trongrid.io"}'
         }
