@@ -125,19 +125,24 @@ class QueryTransferRecord @SuppressWarnings("unused") constructor() {
         @Json(name = "pageSize")
         var pageSize: Int = 20,   //每页显示条数
         @Json(name = "address")
-        var address: String,  //地址
+        var address: String? = null,  //地址
         @Json(name = "addressType")
-        var addressType: Int,   //地址类型（链）|1:ETH以太坊地址|2:TRX波场地址|3:比特币地址
+        var addressType: Int,   //主链类型（链）|1:ETH以太坊地址|2:TRX波场地址|3:比特币地址|4:SQL地址|5:DOGE(本期不支持)
         @Json(name = "changeCurrencyType")
         var changeCurrencyType: Int,   //转换币种类型|默认为1:USD|2:CNY|3:HKD
+        @Json(name = "contractAddress")
+        var contractAddress: String? = null,  //代币交易合约地址（用户查询代币交易,当isToken=1时，该字段有效）
         @Json(name = "endTimeMillis")
         var endTimeMillis: Long?,  //查询结束时间
+        @Json(name = "isToken")
+        var isToken: Int? = null,//是否查询代币交易|0或者null:查询主链币|1:查询代币
         @Json(name = "startTimeMillis")
         var startTimeMillis: Long?, //查询开始时间
         @Json(name = "status")
         var status: Int? = null,   //交易记录状态|3:失败|其它null
         @Json(name = "transferType")
-        var transferType: Int? = null  //交易类型|1:转出|2:转入|其它null
+        var transferType: Int? = null//交易类型|1:转出|2:转入|其它null
+
     ) : ApiRequest.Body()
 
     override fun toString(): String {

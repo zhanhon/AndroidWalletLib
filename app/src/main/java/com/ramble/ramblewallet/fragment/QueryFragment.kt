@@ -153,8 +153,13 @@ class QueryFragment : BaseFragment(),
 
     @SuppressLint("CheckResult")
     private fun loadData() {
+        var contractAddress: String? = null
+        var isToken: Int? = null
         if (address.isEmpty()) {
             address = wallet.address
+        } else {
+            contractAddress = address
+            isToken = 1
         }
         val req = QueryTransferRecord.Req(
             dateType,
@@ -163,7 +168,9 @@ class QueryFragment : BaseFragment(),
             address,
             addressType,
             changeCurrencyType,
+            contractAddress,
             endTime,
+            isToken,
             startTime,
             status,
             transferType
