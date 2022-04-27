@@ -173,7 +173,7 @@ fun showBottomDialog2(
             }
             val name = when (type) {
                 1 -> binding.editName.text.toString()
-                else -> TimeUtils.dateToNameString(binding.editAddress.text.toString(), activity)
+                else -> TimeUtils.dateToNameString(binding.editAddress.text.toString(),binding.editName.text.toString(), activity)
             }
             if (SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
                     .isNotEmpty()
@@ -313,7 +313,7 @@ fun showBottomSan(
                 } else {
                     name = when (type) {
                         1 -> binding.editName.text.toString()
-                        else -> TimeUtils.dateToNameString(binding.tvAddress.text.toString(), activity)
+                        else -> TimeUtils.dateToNameString(binding.tvAddress.text.toString(),binding.editName.text.toString(), activity)
                     }
                     val data = MyAddressBean()
                     data.address = binding.tvAddress.text.toString()

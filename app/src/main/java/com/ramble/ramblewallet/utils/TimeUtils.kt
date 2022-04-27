@@ -217,15 +217,18 @@ object TimeUtils {
      * 转Type2
      */
 
-    fun dateToNameString(date: String, context: Context): String {
-        return if (SharedPreferencesUtils.getString(
+    fun dateToNameString(date: String,nameUser:String, context: Context): String {
+        var name: String? = null
+        if (SharedPreferencesUtils.getString(
                 context,
                 ADDRESS_BOOK_INFO,
                 ""
             )
                 .isNotEmpty()
         ) {
-            date.ifEmpty {
+            if (nameUser.isNotEmpty()) {
+                name = nameUser
+            } else {
                 val myData: ArrayList<MyAddressBean> =
                     Gson().fromJson(
                         SharedPreferencesUtils.getString(
@@ -242,12 +245,17 @@ object TimeUtils {
                         cout++
                     }
                 }
-                dateToTypeStringTwo(date, cout)
+                name = dateToTypeStringTwo(date, cout)
             }
         } else {
-            date.ifEmpty {
+            name = if (nameUser.isNotEmpty()) {
+                nameUser
+            } else {
                 dateToTypeString(date)
             }
         }
+        return name
     }
+
 }
+
