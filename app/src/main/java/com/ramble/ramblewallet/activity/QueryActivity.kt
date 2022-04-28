@@ -54,10 +54,14 @@ class QueryActivity : BaseActivity(), View.OnClickListener {
             TOKEN_DB_NO,
             tokenBean.contractAddress
         )
-       val address =SharedPreferencesUtils.getString(this, TOKEN_DB_NO, "")
         binding.pager.adapter = adapter
         binding.layoutTab.setViewPager(binding.pager)
         binding.tvMineTitle.text = tokenBean.symbol
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        SharedPreferencesUtils.saveString(this, TOKEN_DB_NO, "")
     }
 
     private fun initListener() {
@@ -69,6 +73,7 @@ class QueryActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> {
+                SharedPreferencesUtils.saveString(this, TOKEN_DB_NO, "")
                 finish()
             }
             R.id.tv_transfer -> {

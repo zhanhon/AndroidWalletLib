@@ -160,6 +160,7 @@ class QueryFragment : BaseFragment(),
             address = wallet.address
         } else {
             contractAddress = address
+            address = wallet.address
             isToken = 1
         }
         val req = QueryTransferRecord.Req(
