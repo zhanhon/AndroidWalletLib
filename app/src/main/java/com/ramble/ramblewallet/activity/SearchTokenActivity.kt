@@ -125,13 +125,8 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
                 apply(adapter.itemCount)
-            } else {
-                println("==================>getTransferInfo1:${it.message()}")
             }
-        }, {
-            println("==================>getTransferInfo1:${it.printStackTrace()}")
-        }
-        )
+        }, {})
     }
 
     private fun apply(count: Int) {

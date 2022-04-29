@@ -163,13 +163,8 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
                 title = it.data()!!.title
                 createTime = it.data()!!.createTime
                 isCheckContent(content, title)
-            } else {
-                println("==================>getTransferInfo1:${it.message()}")
             }
-        }, {
-            println("==================>getTransferInfo1:${it.printStackTrace()}")
-        }
-        )
+        }, {})
     }
 
     private fun isCheckContent(content: String, title: String) {

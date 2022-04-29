@@ -39,7 +39,6 @@ public class WebViewJavascriptBridge {
 
     @JavascriptInterface
     public void postMessage(String data) {
-        System.out.println(data);
         flush(data);
     }
 
@@ -86,7 +85,6 @@ public class WebViewJavascriptBridge {
 
     private void flush(String messageString) {
         if (messageString == null) {
-            System.out.println("Javascript give data is null");
             return;
         }
         Gson gson = new Gson();
@@ -114,12 +112,9 @@ public class WebViewJavascriptBridge {
             Handler handler = messageHandlers.get(handlerName);
             if (handler == null) {
                 String error = String.format("NoHandlerException, No handler for message from JS:%s", handlerName);
-                System.out.println(error);
                 return;
             }
             LinkedTreeMap treeMap = (LinkedTreeMap) message.get("data");
-            System.out.println("treeMap");
-            System.out.println(treeMap);
             handler.handler(treeMap, callback);
         }
     }

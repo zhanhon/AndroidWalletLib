@@ -96,11 +96,9 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                println("-=-=->${s}")
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                println("-=-=->${s}")
             }
         })
         binding.edtContributingWords.addTextChangedListener(object : TextWatcher {
@@ -662,19 +660,13 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)
         ).applyIo().subscribe(
             {
-                if (it.code() == 1) {
-                    it.data()?.let { data ->
-                        println("-=-=-=->putAddress-recover:${data}")
-                    }
-                } else {
+                if (it.code() != 1) {
                     if (putAddressTimes < 3) {
                         putAddress(wallet, walletType)
                         putAddressTimes++
                     }
-                    println("-=-=-=->putAddress-recover:${it.message()}")
                 }
             }, {
-                println("-=-=-=->putAddress-recover:${it.printStackTrace()}")
             }
         )
     }

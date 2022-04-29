@@ -584,16 +584,12 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         ).applyIo().subscribe(
             {
                 if (it.code() == 1) {
-                    it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
-                } else {
                     if (putAddressTimes < 3) {
                         putAddress(detailsList)
                         putAddressTimes++
                     }
-                    println("-=-=-=->putAddress:${it.message()}")
                 }
             }, {
-                println("-=-=-=->putAddress:${it.printStackTrace()}")
             }
         )
     }

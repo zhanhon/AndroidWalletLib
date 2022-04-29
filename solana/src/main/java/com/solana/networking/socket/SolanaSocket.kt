@@ -153,17 +153,10 @@ class SolanaSocket(
     }
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
-        if (enableDebugLogs) {
-            println(TAG + " connected")
-        }
         delegate?.connected()
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
-
-        if (enableDebugLogs) {
-            println(TAG + " text: $text")
-        }
         val responseJsonAdapter = moshi.adapter(Map::class.java)
         try {
             val dictJson = responseJsonAdapter.fromJson(text)
@@ -260,30 +253,17 @@ class SolanaSocket(
     }
 
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
-        if (enableDebugLogs) {
-            println(TAG + " bytes")
-        }
-
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-        if (enableDebugLogs) {
-            println(TAG + " closing")
-        }
         delegate?.disconnecting(code, reason)
     }
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-        if (enableDebugLogs) {
-            println(TAG + " closed")
-        }
         delegate?.disconnected(code, reason)
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-        if (enableDebugLogs) {
-            println(TAG + " failure")
-        }
         delegate?.error(Exception(t))
     }
 }

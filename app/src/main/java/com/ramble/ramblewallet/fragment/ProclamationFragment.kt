@@ -102,22 +102,15 @@ class ProclamationFragment : BaseFragment() {
                 if (it.code() == 1) {
                     it.data()?.let { data ->
                         totalPage = data.totalPage
-                        println("==================>getTransferInfo:${data}")
                         dataItem(data)
                         apply(adapter.itemCount)
                         onLoaded()
                     }
-
-                } else {
-                    println("==================>getTransferInfo1:${it.message()}")
                 }
-
             }, {
                 onLoaded()
-                println("==================>getTransferInfo1:${it.printStackTrace()}")
             }
         )
-
     }
 
     private fun dataItem(data: Page) {

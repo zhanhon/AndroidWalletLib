@@ -144,13 +144,8 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             {
                 if (it.code() == 1) {
                     redPointEthHandle(it, redList, records2, lang)
-                } else {
-                    println("==================>getTransferInfo1:${it.message()}")
                 }
-
             }, {
-
-                println("==================>getTransferInfo1:${it.printStackTrace()}")
             }
         )
     }
@@ -163,7 +158,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     ) {
         var records21 = records2
         it.data()?.let { data ->
-            println("==================>getTransferInfo:${data}")
             var read: ArrayList<Int> =
                 if (SharedPreferencesUtils.getString(this, READ_ID_NEW, "").isNotEmpty()) {
                     Gson().fromJson(
@@ -447,13 +441,10 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
                 ethHomeDataHandle(it)
-            } else {
-                println("-=-=-=->ETH${it.message()}")
             }
             binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         }, {
-            println("-=-=-=->ETH${it.printStackTrace()}")
             binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         })

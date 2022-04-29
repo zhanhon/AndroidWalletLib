@@ -3,7 +3,6 @@ package com.ramble.ramblewallet.blockchain.dogecoin;
 import static com.alibaba.fastjson.JSON.parseArray;
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -120,7 +119,6 @@ public class TransferDOGEUtils {
                     JSONArray unspentOutputs = jsonObject.getJSONObject("data").getJSONArray("txs");
                     List<Map> outputs = parseArray(unspentOutputs.toJSONString(), Map.class);
                     if (outputs.isEmpty()) {
-                        Log.v("-=-=->", "交易异常，余额不足");
                         return;
                     }
                     for (int i = 0; i < outputs.size(); i++) {
@@ -227,10 +225,6 @@ public class TransferDOGEUtils {
             String changeAddress = fromAddress;
             Long utxoAmount = 0L;
             List<UTXO> needUtxos = new ArrayList<>();
-            //获取未消费列表
-            if (utxos.isEmpty()) {
-                Log.v("-=-=-=->", "未消费列表为空");
-            }
             //遍历未花费列表，组装合适的item
             for (UTXO utxo : utxos) {
                 if (utxoAmount >= (amount + fee)) {
@@ -242,10 +236,6 @@ public class TransferDOGEUtils {
             }
             //消费列表总金额 - 已经转账的金额 - 手续费 就等于需要返回给自己的金额了
             Long changeAmount = utxoAmount - (amount + fee);
-            //余额判断
-            if (changeAmount < 0) {
-                Log.v("-=-=-=->", "utxo余额不足");
-            }
             //输出-转给自己(找零)
             if (changeAmount > 0) {
                 transaction.addOutput(Coin.valueOf(changeAmount), Address.fromString(networkParameters, changeAddress));

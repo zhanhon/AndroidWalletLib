@@ -92,7 +92,8 @@ class WelcomeActivity : BaseActivity() {
      */
     private fun upDataDialog(version: AppVersion) {
         val title = version.date + " " + version.version + getString(R.string.update_connect)
-        showCommonDialog(this, version.content!!, titleContent = title,
+        showCommonDialog(
+            this, version.content!!, titleContent = title,
             confirmListener = { checkAppVersion(version) },
             btcListener = { startActivityJun() }, isForceUpdate = true
         )
@@ -183,17 +184,13 @@ class WelcomeActivity : BaseActivity() {
             AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)
         ).applyIo().subscribe(
             {
-                if (it.code() == 1) {
-                    it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
-                } else {
+                if (it.code() != 1) {
                     if (putAddressTimes < 3) {
                         putAddress(detailsList)
                         putAddressTimes++
                     }
-                    println("-=-=-=->putAddress:${it.message()}")
                 }
             }, {
-                println("-=-=-=->putAddress:${it.printStackTrace()}")
             }
         )
     }

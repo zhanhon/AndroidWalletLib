@@ -1,7 +1,5 @@
 package com.ramble.ramblewallet.blockchain.dogecoin;
 
-import android.util.Log;
-
 import com.ramble.ramblewallet.bean.Wallet;
 
 import org.bitcoinj.core.ECKey;
@@ -35,8 +33,6 @@ public class WalletDOGEUtils {
             ECKey ecKey = ECKey.fromPrivate(keyPair.getPrivateKey());
             LegacyAddress address = LegacyAddress.fromKey(DogeParams.get(), ecKey);
             String privateKey = ecKey.getPrivateKeyAsHex();
-            Log.v("-=-=->address:", address.toBase58());
-            Log.v("-=-=->privateKey:", privateKey);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,8 +44,6 @@ public class WalletDOGEUtils {
             String privateKey = "ad521fa141e9068a9143d463ab38a596961d56aa9e78ff88a87b34d28d728d85";
             ECKey ecKey = ECKey.fromPrivate(Numeric.toBigInt(privateKey));
             LegacyAddress address = LegacyAddress.fromKey(DogeParams.get(), ecKey);
-            Log.v("-=-=->address2:", address.toBase58());
-            Log.v("-=-=->privateKey2:", privateKey);
         } catch (Exception e) {
             e.printStackTrace();
         }

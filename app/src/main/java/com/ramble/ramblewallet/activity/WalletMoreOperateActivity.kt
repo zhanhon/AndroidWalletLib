@@ -521,7 +521,6 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
 
                 override
                 fun onDenied(deniedPermissions: List<String?>?) {
-                    println("-=-=->${deniedPermissions.toString()}")
                 }
             })
     }
@@ -662,17 +661,13 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)
         ).applyIo().subscribe(
             {
-                if (it.code() == 1) {
-                    it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
-                } else {
+                if (it.code() != 1) {
                     if (times < 3) {
                         putAddress(detailsList)
                         times++
                     }
-                    println("-=-=-=->putAddress:${it.message()}")
                 }
             }, {
-                println("-=-=-=->putAddress:${it.printStackTrace()}")
             }
         )
     }

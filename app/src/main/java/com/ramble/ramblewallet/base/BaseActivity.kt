@@ -68,7 +68,6 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     open fun onRxBus(event: RxBus.Event) {
-        println("-=-=-=->BTC")
     }
 
     override fun onDestroy() {

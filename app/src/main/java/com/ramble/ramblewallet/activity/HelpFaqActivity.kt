@@ -79,13 +79,8 @@ class HelpFaqActivity : BaseActivity(), View.OnClickListener {
                             adapter.addAll(this.toList())
                         }
                     }
-                } else {
-                    println("==================>getTransferInfo1:${it.message()}")
                 }
-            }, {
-                println("==================>getTransferInfo1:${it.printStackTrace()}")
-            }
-            )
+            }, {})
     }
 
 

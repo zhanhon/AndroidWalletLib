@@ -69,7 +69,6 @@ object TransferSOLUtils {
                     val balanceJson = solana.api.getTokenAccountBalance(result).blockingGet()
                     val json = JSONObject(Gson().toJson(balanceJson))
                     balance = json.optString("uiAmountString")
-                    println("-=-=-=->balance：${balance}")
                     if (context is MainSOLActivity) {
                         context.setSolTokenBalance(BigDecimal(balance))
                     }

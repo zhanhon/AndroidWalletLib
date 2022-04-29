@@ -1,9 +1,5 @@
 package com.ramble.ramblewallet.blockchain.tron.tronsdk.common.bip32;
 
-import static com.ramble.ramblewallet.blockchain.tron.tronsdk.common.bip32.Assertions.verifyPrecondition;
-
-import android.util.Log;
-
 import com.ramble.ramblewallet.blockchain.tron.tronsdk.common.crypto.ECKey;
 import com.ramble.ramblewallet.blockchain.tron.tronsdk.common.crypto.Hash;
 
@@ -81,10 +77,6 @@ public class Sign {
                 break;
             }
         }
-        if (recId == -1) {
-            Log.v("-=-=-=->", "Could not construct a recoverable key. Are your credentials valid?");
-        }
-
         int headerByte = recId + 27;
 
         // 1 header + 32 bytes for R + 32 bytes for S
@@ -118,10 +110,6 @@ public class Sign {
      * @return An ECKey containing only the public part, or null if recovery wasn't possible.
      */
     public static BigInteger recoverFromSignature(int recId, ECKey.ECDSASignature sig, byte[] message) {
-        verifyPrecondition(recId >= 0, "recId must be positive");
-        verifyPrecondition(sig.r.signum() >= 0, "r must be positive");
-        verifyPrecondition(sig.s.signum() >= 0, "s must be positive");
-        verifyPrecondition(message != null, "message cannot be null");
 
         // 1.0 For j from 0 to h   (h == recId here and the loop is outside this function)
         //   1.1 Let x = r + jn
@@ -222,8 +210,6 @@ public class Sign {
 
         byte[] r = signatureData.getR();
         byte[] s = signatureData.getS();
-        verifyPrecondition(r != null && r.length == 32, "r must be 32 bytes");
-        verifyPrecondition(s != null && s.length == 32, "s must be 32 bytes");
 
         int header = signatureData.getV() & 0xFF;
         // The header byte: 0x1B = first key with even y, 0x1C = first key with odd y,

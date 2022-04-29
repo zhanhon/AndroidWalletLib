@@ -108,13 +108,8 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
             {
                 if (it.code() == 1) {
                     redPointDogeHandle(it, redList, records2, lang)
-                } else {
-                    println("==================>getTransferInfo1:${it.message()}")
                 }
-
             }, {
-
-                println("==================>getTransferInfo1:${it.printStackTrace()}")
             }
         )
     }
@@ -127,7 +122,6 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
     ) {
         var records21 = records2
         it.data()?.let { data ->
-            println("==================>getTransferInfo:${data}")
             var read: ArrayList<Int> =
                 if (SharedPreferencesUtils.getString(this, READ_ID_NEW, "").isNotEmpty()) {
                     Gson().fromJson(
@@ -441,13 +435,10 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
                 dogeHomeDataHandle(it)
-            } else {
-                println("-=-=-=->DOGE${it.message()}")
             }
             binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         }, {
-            println("-=-=-=->DOGE${it.printStackTrace()}")
             binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         })

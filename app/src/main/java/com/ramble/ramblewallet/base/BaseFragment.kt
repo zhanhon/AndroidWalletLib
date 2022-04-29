@@ -73,7 +73,6 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
     }
 
     open fun onRxBus(event: RxBus.Event) {
-        println("-=-=-=->BTC")
     }
 
 }

@@ -101,13 +101,8 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             {
                 if (it.code() == 1) {
                     redPointHandle(it, redList, records2, lang)
-                } else {
-                    println("==================>getTransferInfo1:${it.message()}")
                 }
-
             }, {
-
-                println("==================>getTransferInfo1:${it.printStackTrace()}")
             }
         )
     }
@@ -120,7 +115,6 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     ) {
         var records21 = records2
         it.data()?.let { data ->
-            println("==================>getTransferInfo:${data}")
             var read: ArrayList<Int> =
                 if (SharedPreferencesUtils.getString(this, READ_ID_NEW, "").isNotEmpty()) {
                     Gson().fromJson(
@@ -402,13 +396,10 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
         mApiService.getStore(req.toApiRequest(getStoreUrl)).applyIo().subscribe({
             if (it.code() == 1) {
                 trxHomeDataHandle(it)
-            } else {
-                println("-=-=-=->TRX${it.message()}")
             }
             binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         }, {
-            println("-=-=-=->TRX${it.printStackTrace()}")
             binding.lyPullRefresh.finishRefresh() //刷新完成
             cancelSyncAnimation()
         })

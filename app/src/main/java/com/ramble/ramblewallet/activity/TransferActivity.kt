@@ -422,11 +422,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                             setBtcMinerFee()
                         }
                     }
-                } else {
-                    println("-=-=-=->BTC:${it.message()}")
                 }
             }, {
-                println("-=-=-=->BTC:${it.printStackTrace()}")
             }
         )
     }
@@ -447,11 +444,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         gasPrice = fastGasPrice
                         setEthMinerFee()
                     }
-                } else {
-                    println("-=-=-=->ETH:${it.message()}")
                 }
             }, {
-                println("-=-=-=->ETH:${it.printStackTrace()}")
             }
         )
     }
@@ -760,18 +754,13 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                 .toApiRequest(reportTransferUrl)
         ).applyIo().subscribe(
             {
-                if (it.code() == 1) {
-                    putAddressTimes = 0
-                    it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
-                } else {
+                if (it.code() != 1) {
                     if (putAddressTimes < 3) {
                         putTransAddress(hash, utxos)
                         putAddressTimes++
                     }
-                    println("-=-=-=->putAddress:${it.message()}")
                 }
             }, {
-                println("-=-=-=->putAddress:${it.printStackTrace()}")
             }
         )
     }

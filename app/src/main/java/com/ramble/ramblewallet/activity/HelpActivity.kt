@@ -81,14 +81,8 @@ class HelpActivity : BaseActivity(), View.OnClickListener {
                     }
 
                 }
-            } else {
-                println("==================>getTransferInfo1:${it.message()}")
             }
-        }, {
-            println("==================>getTransferInfo1:${it.printStackTrace()}")
-        }
-        )
-
+        }, {})
     }
 
 

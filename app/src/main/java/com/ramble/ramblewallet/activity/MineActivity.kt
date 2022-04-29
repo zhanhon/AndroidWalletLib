@@ -201,13 +201,8 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             {
                 if (it.code() == 1) {
                     redPointMineHandle(it, redList, records2, lang)
-                } else {
-                    println("==================>getTransferInfo1:${it.message()}")
                 }
-
             }, {
-
-                println("==================>getTransferInfo1:${it.printStackTrace()}")
             }
         )
     }
@@ -221,7 +216,6 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     ) {
         var records21 = records2
         it.data()?.let { data ->
-            println("==================>getTransferInfo:${data}")
             var read: ArrayList<Int> =
                 if (SharedPreferencesUtils.getString(this, READ_ID_NEW, "").isNotEmpty()) {
                     Gson().fromJson(
@@ -432,17 +426,13 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)
         ).applyIo().subscribe(
             {
-                if (it.code() == 1) {
-                    it.data()?.let { data -> println("-=-=-=->putAddress:${data}") }
-                } else {
+                if (it.code() != 1) {
                     if (times < 3) {
                         putAddress(detailsList)
                         times++
                     }
-                    println("-=-=-=->putAddress:${it.message()}")
                 }
             }, {
-                println("-=-=-=->putAddress:${it.printStackTrace()}")
             }
         )
     }

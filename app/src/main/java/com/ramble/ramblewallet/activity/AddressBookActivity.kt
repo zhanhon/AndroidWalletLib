@@ -304,6 +304,5 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     }
 
     override fun apply(count: Int) {
-        println("-=-=-=->BTC")
     }
 }
