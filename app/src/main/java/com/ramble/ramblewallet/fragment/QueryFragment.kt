@@ -171,6 +171,7 @@ class QueryFragment : BaseFragment(),
             changeCurrencyType,
             contractAddress,
             endTime,
+            1,
             startTime,
             status,
             transferType
