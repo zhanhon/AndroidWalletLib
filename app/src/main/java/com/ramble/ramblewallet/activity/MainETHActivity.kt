@@ -527,13 +527,13 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             }.start()
             TransferETHUtils()
                 .setOnListener { tokenBean, tokenBalance ->
-                postUI {
-                    tokenBean.balance = tokenBalance
-                    totalBalance += tokenBalance.multiply(BigDecimal(tokenBean.unitPrice))
-                    mainAdapter.notifyDataSetChanged()
-                    setBalanceETH(totalBalance)
+                    postUI {
+                        tokenBean.balance = tokenBalance
+                        totalBalance += tokenBalance.multiply(BigDecimal(tokenBean.unitPrice))
+                        mainAdapter.notifyDataSetChanged()
+                        setBalanceETH(totalBalance)
+                    }
                 }
-            }
         }
     }
 }

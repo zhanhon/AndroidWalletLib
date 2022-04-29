@@ -11,13 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.FaqInfos
-import com.ramble.ramblewallet.constant.*
+import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
+import com.ramble.ramblewallet.constant.ARG_PARAM3
+import com.ramble.ramblewallet.constant.ARG_PARAM4
 import com.ramble.ramblewallet.databinding.ActivityHelpBinding
 import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.item.Help
 import com.ramble.ramblewallet.network.faqInfoUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.TimeUtils
 import com.ramble.ramblewallet.utils.applyIo
 import com.ramble.ramblewallet.wight.adapter.AdapterUtils

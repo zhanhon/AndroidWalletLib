@@ -1,6 +1,5 @@
 package com.ramble.ramblewallet.blockchain.solana
 
-import android.util.Base64
 import com.ramble.ramblewallet.bean.Wallet
 import com.solana.core.Account
 import com.solana.core.Account.Companion.privateKeyToWallet

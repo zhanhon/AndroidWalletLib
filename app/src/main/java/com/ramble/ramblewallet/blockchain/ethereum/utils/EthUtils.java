@@ -3,8 +3,6 @@ package com.ramble.ramblewallet.blockchain.ethereum.utils;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Keys;
 
-import java.math.BigInteger;
-
 /**
  * @author Angus
  */

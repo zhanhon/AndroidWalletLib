@@ -9,11 +9,13 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.google.gson.Gson
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MainTokenBean
-import com.ramble.ramblewallet.constant.*
+import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
+import com.ramble.ramblewallet.constant.ARG_PARAM3
+import com.ramble.ramblewallet.constant.TOKEN_DB_NO
 import com.ramble.ramblewallet.databinding.ActivityQueryBinding
 import com.ramble.ramblewallet.fragment.QueryFragment
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils

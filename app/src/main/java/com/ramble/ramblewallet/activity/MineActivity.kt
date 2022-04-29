@@ -127,7 +127,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         GlobalScope.launch {
             mApiService.appVersion(AppVersion.Req().toApiRequest(getAppVersion)).subscribe({
                 if (it.code() == 1) {
-                    if (it.data()!!.version!! != BuildConfig.VERSION_NAME&&it.data()!!.artificialShow == 1) { //软更新
+                    if (it.data()!!.version!! != BuildConfig.VERSION_NAME && it.data()!!.artificialShow == 1) { //软更新
                         RxBus.emitEvent(Pie.EVENT_PUSH_FOC_MINE, it.data()!!)
                     }
                 }
@@ -163,7 +163,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun confirmTipsDialog(version: AppVersion) {
-        val title=version.date+" "+version.version+getString(R.string.update_connect)
+        val title = version.date + " " + version.version + getString(R.string.update_connect)
         showCommonDialog(
             this,
             version.content!!,
@@ -323,7 +323,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 onResume()
             }
             Pie.EVENT_PUSH_FOC_MINE -> {
-                confirmTipsDialog(event.data()!!)
+                confirmTipsDialog(event.data())
             }
 
             else -> return

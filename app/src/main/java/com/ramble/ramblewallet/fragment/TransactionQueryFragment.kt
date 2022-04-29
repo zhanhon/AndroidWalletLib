@@ -16,7 +16,10 @@ import com.ramble.ramblewallet.activity.TransactionQueryActivity
 import com.ramble.ramblewallet.base.BaseFragment
 import com.ramble.ramblewallet.bean.QueryTransferRecord
 import com.ramble.ramblewallet.bean.Wallet
-import com.ramble.ramblewallet.constant.*
+import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.CURRENCY_TRAN
+import com.ramble.ramblewallet.constant.WALLETINFO
+import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.FragmentTransactionQueryBinding
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start2

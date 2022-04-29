@@ -1,20 +1,12 @@
 package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.view.Gravity
-import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.CompoundButton
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -24,7 +16,6 @@ import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
-import com.ramble.ramblewallet.network.faqInfoUrl
 import com.ramble.ramblewallet.network.getAppVersion
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -90,7 +81,7 @@ class WelcomeActivity : BaseActivity() {
      * 强制更新
      */
     private fun forcedUpDataDialog(version: AppVersion) {
-        val title=version.date+" "+version.version+getString(R.string.update_connect)
+        val title = version.date + " " + version.version + getString(R.string.update_connect)
         showCommonDialog(this, version.content!!, titleContent = title, confirmListener = {
             checkAppVersion(version)
         }, isForceUpdate = false)
@@ -100,10 +91,11 @@ class WelcomeActivity : BaseActivity() {
      * 软性更新
      */
     private fun upDataDialog(version: AppVersion) {
-        val title=version.date+" "+version.version+getString(R.string.update_connect)
+        val title = version.date + " " + version.version + getString(R.string.update_connect)
         showCommonDialog(this, version.content!!, titleContent = title,
             confirmListener = { checkAppVersion(version) },
-            btcListener = { startActivityJun() }, isForceUpdate = true)
+            btcListener = { startActivityJun() }, isForceUpdate = true
+        )
     }
 
     override fun onRxBus(event: RxBus.Event) {

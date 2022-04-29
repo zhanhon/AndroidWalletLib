@@ -129,7 +129,7 @@ public class WebViewJavascriptBridge {
         String messageString = jsonObject.toString();
         messageString = messageString.replace("\\", "\\\\");
         messageString = messageString.replace("\"", "\\\"");
-        messageString = messageString.replace("\'", "\\\'");
+        messageString = messageString.replace("'", "\\'");
         messageString = messageString.replace("\n", "\\n");
         messageString = messageString.replace("\r", "\\r");
         messageString = messageString.replace("\f", "\\f");

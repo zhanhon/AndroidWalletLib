@@ -9,6 +9,8 @@ import org.bitcoinj.params.AbstractBitcoinNetParams;
  */
 public class DogeParams extends AbstractBitcoinNetParams {
     public static final String ID_DOGE_MAINNET = "org.dogecoin.production";
+    private static DogeParams instance;
+
     public DogeParams() {
         super();
         p2shHeader = 22;
@@ -17,7 +19,6 @@ public class DogeParams extends AbstractBitcoinNetParams {
         id = ID_DOGE_MAINNET;
     }
 
-    private static DogeParams instance;
     public static synchronized DogeParams get() {
         if (instance == null) {
             instance = new DogeParams();

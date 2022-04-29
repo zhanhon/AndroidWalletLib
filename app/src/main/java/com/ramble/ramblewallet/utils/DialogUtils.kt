@@ -173,7 +173,11 @@ fun showBottomDialog2(
             }
             val name = when (type) {
                 1 -> binding.editName.text.toString()
-                else -> TimeUtils.dateToNameString(binding.editAddress.text.toString(),binding.editName.text.toString(), activity)
+                else -> TimeUtils.dateToNameString(
+                    binding.editAddress.text.toString(),
+                    binding.editName.text.toString(),
+                    activity
+                )
             }
             if (SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
                     .isNotEmpty()
@@ -207,7 +211,7 @@ fun showBottomDialog2(
             val data = MyAddressBean()
             data.address = binding.editAddress.text.toString()
             data.userName = name
-            data.type =  TimeUtils.dateToType(binding.editAddress.text.toString())
+            data.type = TimeUtils.dateToType(binding.editAddress.text.toString())
             if (data.type == 6) {
                 ToastUtils.showToastFree(activity, activity.getString(R.string.address_already_err))
                 return@setOnClickListener
@@ -313,7 +317,11 @@ fun showBottomSan(
                 } else {
                     name = when (type) {
                         1 -> binding.editName.text.toString()
-                        else -> TimeUtils.dateToNameString(binding.tvAddress.text.toString(),binding.editName.text.toString(), activity)
+                        else -> TimeUtils.dateToNameString(
+                            binding.tvAddress.text.toString(),
+                            binding.editName.text.toString(),
+                            activity
+                        )
                     }
                     val data = MyAddressBean()
                     data.address = binding.tvAddress.text.toString()
@@ -467,7 +475,7 @@ fun showCommonDialog(
         }
         if (isForceUpdate != null) {
             binding.btnCancel.isVisible = isForceUpdate
-            if (!isForceUpdate){
+            if (!isForceUpdate) {
                 binding.btnConfirm.text = activity.getString(R.string.force_update)
             }
         }

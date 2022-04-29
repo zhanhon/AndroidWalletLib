@@ -38,7 +38,7 @@ public class AdapterUtils {
      */
     @NonNull
     public static <V extends View> V findView(View view, int viewId) {
-        return (V) view.findViewById(viewId);
+        return view.findViewById(viewId);
     }
 
 

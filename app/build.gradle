@@ -167,7 +167,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.7.0'
-    //implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation files('libs/tron-sdk-1.jar')
@@ -203,7 +202,6 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
     //BTC
     implementation 'org.bitcoinj:bitcoinj-core:0.15.10'
-    //implementation 'com.github.bitcoinj:bitcoinj:0.15.10'
     implementation 'commons-codec:commons-codec:1.13'
     //TRX
     implementation 'org.fusesource.leveldbjni:leveldbjni-all:1.8'

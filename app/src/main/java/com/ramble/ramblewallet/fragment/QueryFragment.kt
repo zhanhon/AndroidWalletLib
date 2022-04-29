@@ -153,7 +153,7 @@ class QueryFragment : BaseFragment(),
 
     @SuppressLint("CheckResult")
     private fun loadData() {
-        address =SharedPreferencesUtils.getString(myActivity, TOKEN_DB_NO, "")
+        address = SharedPreferencesUtils.getString(myActivity, TOKEN_DB_NO, "")
         var contractAddress: String? = null
         var isToken: Int? = null
         if (address.isEmpty()) {

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.bean.AllTokenBean
 import com.ramble.ramblewallet.bean.MyAddressBean
@@ -217,7 +216,7 @@ object TimeUtils {
      * 转Type2
      */
 
-    fun dateToNameString(date: String,nameUser:String, context: Context): String {
+    fun dateToNameString(date: String, nameUser: String, context: Context): String {
         var name: String? = null
         if (SharedPreferencesUtils.getString(
                 context,

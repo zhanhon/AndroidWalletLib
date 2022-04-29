@@ -97,7 +97,13 @@ object TransferSOLUtils {
                 val toPublicKey = TransactionPublicKey(toAddress)
                 val signer = TransactionAccount(privateKey)
                 val transaction = Transaction()
-                transaction.addInstruction(transfer(fromPublicKey, toPublicKey, amount.longValueExact()))
+                transaction.addInstruction(
+                    transfer(
+                        fromPublicKey,
+                        toPublicKey,
+                        amount.longValueExact()
+                    )
+                )
                 val transactionHash = api.sendTransaction(transaction, signer)
                 if (context is TransferActivity) {
                     context.transferSuccess(transactionHash, null)
