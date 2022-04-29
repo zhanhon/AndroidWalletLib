@@ -1,13 +1,11 @@
-package com.ramble.ramblewallet.blockchain.dogecoin.dogesdk;
+package com.ramble.ramblewallet.blockchain.dogecoin;
 
 import org.bitcoinj.params.AbstractBitcoinNetParams;
 
 /**
- * @author zhaoda
- * @date 2019/10/18.
- * GitHub：
- * email：
- * description：
+ * @创建人： Ricky
+ * @创建时间： 2022/4/29
+ * @内容：必须重写DogeParams
  */
 public class DogeParams extends AbstractBitcoinNetParams {
     public static final String ID_DOGE_MAINNET = "org.dogecoin.production";

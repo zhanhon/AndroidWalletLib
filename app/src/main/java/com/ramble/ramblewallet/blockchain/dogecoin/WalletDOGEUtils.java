@@ -3,9 +3,9 @@ package com.ramble.ramblewallet.blockchain.dogecoin;
 import android.util.Log;
 
 import com.ramble.ramblewallet.bean.Wallet;
-import com.ramble.ramblewallet.blockchain.dogecoin.dogesdk.DogeParams;
-import com.ramble.ramblewallet.blockchain.dogecoin.dogesdk.ECKey;
 
+import org.bitcoinj.core.ECKey;
+import org.bitcoinj.core.LegacyAddress;
 import org.bitcoinj.crypto.ChildNumber;
 import org.bitcoinj.crypto.DeterministicHierarchy;
 import org.bitcoinj.crypto.DeterministicKey;
@@ -13,11 +13,13 @@ import org.bitcoinj.crypto.HDKeyDerivation;
 import org.bitcoinj.crypto.HDUtils;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.MnemonicUtils;
+import org.web3j.utils.Numeric;
 
 import java.util.List;
 
 /**
- * @author Angus
+ * @创建人： Ricky
+ * @创建时间： 2022/4/29
  */
 public class WalletDOGEUtils {
 
@@ -31,9 +33,9 @@ public class WalletDOGEUtils {
             DeterministicKey deterministicKey = generateKeyFromMnemonicAndUid(passphrase, 0);
             ECKeyPair keyPair = ECKeyPair.create(deterministicKey.getPrivKey());
             ECKey ecKey = ECKey.fromPrivate(keyPair.getPrivateKey());
-            String address = ecKey.toAddress(DogeParams.get()).toBase58();
-            String privateKey = ecKey.getPrivateKeyAsWiF(DogeParams.get());
-            Log.v("-=-=->address:", address);
+            LegacyAddress address = LegacyAddress.fromKey(DogeParams.get(), ecKey);
+            String privateKey = ecKey.getPrivateKeyAsHex();
+            Log.v("-=-=->address:", address.toBase58());
             Log.v("-=-=->privateKey:", privateKey);
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,28 +43,19 @@ public class WalletDOGEUtils {
         return new Wallet("", "", "", "", "", "", 2, null);
     }
 
+    public static Wallet generateWalletByPrivateKey() {
+        try {
+            String privateKey = "ad521fa141e9068a9143d463ab38a596961d56aa9e78ff88a87b34d28d728d85";
+            ECKey ecKey = ECKey.fromPrivate(Numeric.toBigInt(privateKey));
+            LegacyAddress address = LegacyAddress.fromKey(DogeParams.get(), ecKey);
+            Log.v("-=-=->address2:", address.toBase58());
+            Log.v("-=-=->privateKey2:", privateKey);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new Wallet("", "", "", "", "", "", 2, null);
 
-    /**
-     * 通过privateKey生成钱包
-     *
-     * @param walletname
-     * @param walletPassword
-     * @param privateKey
-     * @return
-     */
-//    public static Wallet generateWalletByPrivateKey(String walletname, String walletPassword, String privateKey, List<String> mnemonicList) {
-//        try {
-//            BigInteger pk = Numeric.toBigIntNoPrefix(privateKey);
-//            byte[] privateKeyByte = pk.toByteArray();
-//            ECKeyPair ecKeyPair = ECKeyPair.create(privateKeyByte);
-//
-//            //由于通过privateKey无法生成助记词，故恢复钱包助记词可为空，备份时不需要有助记词备份
-//            return new Wallet(walletname, walletPassword, null, address, privateKey, keystore, 2, mnemonicList);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return new Wallet("", "", "", "", "", "", 2, null);
-//        }
-//    }
+    }
 
     /**
      * 校验是否是狗狗币
@@ -71,7 +64,7 @@ public class WalletDOGEUtils {
      * @return
      */
     public static boolean isDogeValidAddress(String input) {
-        if (input.isEmpty() || !input.startsWith("T")) {
+        if (input.isEmpty() || !input.startsWith("D")) {
             return false;
         }
         return input.length() == 34;
