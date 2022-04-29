@@ -134,8 +134,6 @@ class QueryTransferRecord @SuppressWarnings("unused") constructor() {
         var contractAddress: String? = null,  //代币交易合约地址（用户查询代币交易,当isToken=1时，该字段有效）
         @Json(name = "endTimeMillis")
         var endTimeMillis: Long?,  //查询结束时间
-        @Json(name = "isToken")
-        var isToken: Int? = null,//是否查询代币交易|0或者null:查询主链币|1:查询代币
         @Json(name = "startTimeMillis")
         var startTimeMillis: Long?, //查询开始时间
         @Json(name = "status")

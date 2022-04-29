@@ -161,7 +161,6 @@ class QueryFragment : BaseFragment(),
         } else {
             contractAddress = address
             address = wallet.address
-            isToken = 1
         }
         val req = QueryTransferRecord.Req(
             dateType,
@@ -172,7 +171,6 @@ class QueryFragment : BaseFragment(),
             changeCurrencyType,
             contractAddress,
             endTime,
-            isToken,
             startTime,
             status,
             transferType
