@@ -84,7 +84,7 @@ class WelcomeActivity : BaseActivity() {
      */
     private fun forcedUpDataDialog(version: AppVersion) {
         val title = version.date + " " + version.version + getString(R.string.update_connect)
-        showCommonDialog(this, version.content!!, titleContent = title, confirmListener = {
+        showVersionDialog(this, version.content!!, titleContent = title, confirmListener = {
             checkAppVersion(version)
         }, isForceUpdate = false)
     }
@@ -94,7 +94,7 @@ class WelcomeActivity : BaseActivity() {
      */
     private fun upDataDialog(version: AppVersion) {
         val title = version.date + " " + version.version + getString(R.string.update_connect)
-        showCommonDialog(
+        showVersionDialog(
             this, version.content!!, titleContent = title,
             confirmListener = { checkAppVersion(version) },
             btcListener = { startActivityJun() }, isForceUpdate = true
