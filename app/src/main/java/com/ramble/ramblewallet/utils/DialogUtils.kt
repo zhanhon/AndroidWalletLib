@@ -9,7 +9,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.widget.CheckBox
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import com.google.gson.Gson
@@ -18,7 +17,6 @@ import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.AddressBookActivity
 import com.ramble.ramblewallet.activity.ScanActivity
-import com.ramble.ramblewallet.activity.TransferActivity
 import com.ramble.ramblewallet.bean.MainTokenBean
 import com.ramble.ramblewallet.bean.MyAddressBean
 import com.ramble.ramblewallet.constant.ADDRESS_BOOK_INFO
@@ -27,7 +25,6 @@ import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.databinding.*
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start
-import com.ramble.ramblewallet.utils.TimeUtils.dateToWalletType
 
 
 /**

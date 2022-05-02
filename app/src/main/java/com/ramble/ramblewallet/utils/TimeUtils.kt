@@ -51,31 +51,6 @@ object TimeUtils {
         return weekDays[w]
     }
 
-    /***
-     * 转主链类型
-     */
-
-    fun dateToWalletType(date: Int?): String {
-        return when (date) {
-            1 -> {//ETH
-                "ETH"
-            }
-            2 -> {//TRX
-                "TRX"
-            }
-            3 -> {//btc
-                "BTC"
-            }
-            4 -> {//btc
-                "SOL"
-            }
-            5 -> {//btc
-                "DOGE"
-            }
-            else -> "SOL"
-        }
-    }
-
 
     /***
      * 转主链类型
