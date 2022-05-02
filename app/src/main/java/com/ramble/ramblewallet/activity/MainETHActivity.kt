@@ -75,32 +75,42 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
      * 数据初始化
      */
     private fun initView() {
-        if (SharedPreferencesUtils.getSecurityString(
-                this,
-                TOKEN_INFO_NO,
-                ""
-            ).isNotEmpty()
-        ) {
+        if (SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, "").isNotEmpty()) {
             walletSelleted = Gson().fromJson(
                 SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
                 object : TypeToken<Wallet>() {}.type
             )
-            myAllToken = Gson().fromJson(
-                SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, ""),
-                object : TypeToken<ArrayList<AllTokenBean>>() {}.type
-            )
-            var allAddress: ArrayList<String> = arrayListOf()
-            myAllToken.forEach {
-                allAddress.add(it.myCurrency)
-            }
-            if (!allAddress.contains(walletSelleted.address)) {
-                myAllToken.add(dateToAllTokenBean(walletSelleted.address))
-                SharedPreferencesUtils.saveSecurityString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
-            }
+            if (SharedPreferencesUtils.getSecurityString(
+                    this,
+                    TOKEN_INFO_NO,
+                    ""
+                ).isNotEmpty()
+            ) {
+                myAllToken = Gson().fromJson(
+                    SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, ""),
+                    object : TypeToken<ArrayList<AllTokenBean>>() {}.type
+                )
+                var allAddress: ArrayList<String> = arrayListOf()
+                myAllToken.forEach {
+                    allAddress.add(it.myCurrency)
+                }
+                if (!allAddress.contains(walletSelleted.address)) {
+                    myAllToken.add(dateToAllTokenBean(walletSelleted.address))
+                    SharedPreferencesUtils.saveSecurityString(
+                        this,
+                        TOKEN_INFO_NO,
+                        Gson().toJson(myAllToken)
+                    )
+                }
 
-        } else {
-            myAllToken.add(dateToAllTokenBean(walletSelleted.address))
-            SharedPreferencesUtils.saveSecurityString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
+            } else {
+                myAllToken.add(dateToAllTokenBean(walletSelleted.address))
+                SharedPreferencesUtils.saveSecurityString(
+                    this,
+                    TOKEN_INFO_NO,
+                    Gson().toJson(myAllToken)
+                )
+            }
         }
     }
 
