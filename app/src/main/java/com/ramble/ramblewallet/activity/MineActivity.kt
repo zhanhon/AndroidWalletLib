@@ -1,6 +1,7 @@
 package com.ramble.ramblewallet.activity
 
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
@@ -42,6 +43,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     private var times = 0
     var redList: ArrayList<Page.Record> = arrayListOf()
     var records2: ArrayList<Page.Record> = arrayListOf()
+    private var animator: ObjectAnimator? = null
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,16 +124,31 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
 
+    private fun startSyncAnimation() {
+        if (animator != null) {
+            return
+        }
+        animator = binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).asyncAnimator()
+    }
+
+    private fun cancelSyncAnimation() {
+        animator?.cancel()
+        animator = null
+    }
+
     @SuppressLint("CheckResult")
     private fun checkVersion() {
+        startSyncAnimation()
         GlobalScope.launch {
             mApiService.appVersion(AppVersion.Req().toApiRequest(getAppVersion)).subscribe({
-                if (it.code() == 1) {
+                RxBus.emitEvent(Pie.EVENT_PUSH_MINE, 1)
+                if (it.code() == 1 && it.data()!!.version != null) {
                     if (it.data()!!.version!! != BuildConfig.VERSION_NAME && it.data()!!.artificialShow == 1) { //软更新
                         RxBus.emitEvent(Pie.EVENT_PUSH_FOC_MINE, it.data()!!)
                     }
                 }
             }, {
+                RxBus.emitEvent(Pie.EVENT_PUSH_MINE, 1)
             })
         }
     }
@@ -319,7 +336,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             Pie.EVENT_PUSH_FOC_MINE -> {
                 confirmTipsDialog(event.data())
             }
-
+            Pie.EVENT_PUSH_MINE -> {
+                cancelSyncAnimation()
+            }
             else -> return
         }
     }
