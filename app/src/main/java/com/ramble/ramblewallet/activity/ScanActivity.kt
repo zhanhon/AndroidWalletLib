@@ -38,6 +38,7 @@ import com.ramble.ramblewallet.constant.REQUEST_CODE_1029
 import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityScanBinding
 import com.ramble.ramblewallet.helper.getExtras
+import com.ramble.ramblewallet.helper.start
 import com.ramble.ramblewallet.helper.startMatisseActivity
 import com.ramble.ramblewallet.network.ObjUtils.isCameraPermission
 import com.ramble.ramblewallet.utils.*
@@ -54,7 +55,7 @@ import java.util.*
  */
 
 class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
-    EasyPermissions.PermissionCallbacks , WCCallbacks {
+    EasyPermissions.PermissionCallbacks, WCCallbacks {
     private lateinit var binding: ActivityScanBinding
     private var isLight = false
     private var zxingview: ZXingView? = null
@@ -222,18 +223,23 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
         }
     }
 
-    private fun onWalletConnect(result:String){
+    private fun onWalletConnect(result: String) {
         if (interactor != null) {
             interactor?.killSession()
             interactor = null
         } else {
             val sessionStr: String = result
-            val clientMeta = WCPeerMeta(getString(R.string.app_name), "https://github.com/TrustWallet/wallet-connect-swift")
+            val clientMeta = WCPeerMeta(
+                getString(R.string.app_name),
+                "https://github.com/TrustWallet/wallet-connect-swift"
+            )
             val session: WCSession = WCSession.fromURI(sessionStr) ?: return
 
             //Use Prefs instead
             interactor = WCInteractor(
-                session, clientMeta, Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+                session,
+                clientMeta,
+                Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
             )
             interactor?.callbacks = this
             interactor?.connect()
@@ -242,24 +248,29 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
 
     override fun onScanQRCodeSuccess(result: String?) {
         zxingview?.stopSpot()
-        if (result!!.contains("wc:")){
-            if (type==3){
+        if (result!!.contains("wc:")) {
+            if (type == 3) {
                 onWalletConnect(result)
             }
-        }else{
+        } else {
             when (type) {
                 1 -> {
                     RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_SCAN, result)
                     finish()
                 }
-                else -> {
-                    if (result != null) {
-                        showBottomSan(this, result, walletSelleted.walletType, tokenBean, type)
-                    }
+                2 -> {
+                    RxBus.emitEvent(Pie.EVENT_RESS_TRANS_SCAN, result)
+                    finish()
+                }
+                3 -> {
+                    start(TransferActivity::class.java, Bundle().also {
+                        it.putString(ARG_PARAM1, result)
+                        it.putSerializable(ARG_PARAM2, tokenBean)
+                    })
+                    finish()
                 }
             }
         }
-
     }
 
 
@@ -287,7 +298,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
 
     override fun onSessionRequest(id: Long, peer: WCPeerMeta) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-            .setMessage("Confirm session with ${peer.url}")
+            .setMessage("Confirm session with ${peer.name}")
             .setPositiveButton("Confirm") { _, _ ->
                 interactor?.approveSession(
                     arrayOf(walletSelleted.address),
