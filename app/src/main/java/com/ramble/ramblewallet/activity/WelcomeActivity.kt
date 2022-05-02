@@ -58,7 +58,7 @@ class WelcomeActivity : BaseActivity() {
     private fun isForcedUpdatingShow() {
         GlobalScope.launch {
             mApiService.appVersion(AppVersion.Req().toApiRequest(getAppVersion)).subscribe({
-                if (it.code() == 1) {
+                if (it.code() == 1&&it.data()!!.version!=null) {
                     if (it.data()!!.version!! != BuildConfig.VERSION_NAME) {
                         if (it.data()!!.forcedUpdatingShow == 1) {//强制更新
                             RxBus.emitEvent(Pie.EVENT_PUSH_FOC_UP, it.data()!!)
@@ -70,9 +70,11 @@ class WelcomeActivity : BaseActivity() {
                     } else {
                         RxBus.emitEvent(Pie.EVENT_PUSH_JUMP, it.data()!!)
                     }
+                }else{
+                    RxBus.emitEvent(Pie.EVENT_PUSH_JUMP, it.data()!!)
                 }
             }, {
-
+                RxBus.emitEvent(Pie.EVENT_PUSH_JUMP, "1")
             })
         }
     }
