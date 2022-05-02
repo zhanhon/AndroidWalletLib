@@ -79,7 +79,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
         zxingview?.setDelegate(this)
         initListener()
         walletSelleted = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
             object : TypeToken<Wallet>() {}.type
         )
     }

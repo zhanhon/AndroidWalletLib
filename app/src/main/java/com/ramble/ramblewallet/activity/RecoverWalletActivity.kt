@@ -138,9 +138,9 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     private fun initData() {
         walletType = intent.getIntExtra(ARG_PARAM1, 1)
         chooseMode = intent.getIntExtra(ARG_PARAM2, 0)
-        if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isNotEmpty()) {
+        if (SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, "").isNotEmpty()) {
             walletSelleted = Gson().fromJson(
-                SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+                SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
                 object : TypeToken<Wallet>() {}.type
             )
         }
@@ -193,10 +193,10 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             ToastUtils.showToastFree(this, getString(R.string.different_password))
             return
         }
-        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+        if (SharedPreferencesUtils.getSecurityString(this, WALLETINFO, "").isNotEmpty()) {
             saveWalletList =
                 Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                    SharedPreferencesUtils.getSecurityString(this, WALLETINFO, ""),
                     object : TypeToken<ArrayList<Wallet>>() {}.type
                 )
         }
@@ -418,10 +418,10 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             wallet.index = saveWalletList[0].index + 1
         }
         saveWalletList.add(wallet)
-        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (isEthValidAddress(wallet.address)) {
             putAddress(wallet, 1)
-            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(wallet))
+            SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(wallet))
             startActivity(Intent(this, MainETHActivity::class.java))
         } else {
             when (chooseMode) {
@@ -531,10 +531,10 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             wallet.index = saveWalletList[0].index + 1
         }
         saveWalletList.add(wallet)
-        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (isTrxValidAddress(wallet.address)) {
             putAddress(wallet, 2)
-            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(wallet))
+            SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(wallet))
             startActivity(Intent(this, MainTRXActivity::class.java))
         } else {
             when (chooseMode) {
@@ -581,10 +581,10 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             wallet.index = saveWalletList[0].index + 1
         }
         saveWalletList.add(wallet)
-        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (isBtcValidAddress(wallet.address)) {
             putAddress(wallet, 3)
-            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(wallet))
+            SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(wallet))
             startActivity(Intent(this, MainBTCActivity::class.java))
         } else {
             when (chooseMode) {
@@ -628,10 +628,10 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             walletSOL.index = saveWalletList[0].index + 1
         }
         saveWalletList.add(walletSOL)
-        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (isSolValidAddress(walletSOL.address)) {
             putAddress(walletSOL, 4)
-            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletSOL))
+            SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletSOL))
             startActivity(Intent(this, MainSOLActivity::class.java))
         } else {
             when (chooseMode) {
@@ -653,8 +653,8 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         detailsList.add(
             AddressReport.DetailsList(wallet.address, 0, walletType)
         ) //链类型|1:ETH|2:TRX|3:ETC
-        val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
-        val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
+        val languageCode = SharedPreferencesUtils.getSecurityString(appContext, LANGUAGE, CN)
+        val deviceToken = SharedPreferencesUtils.getSecurityString(appContext, DEVICE_TOKEN, "")
         if (detailsList.size == 0) return
         mApiService.putAddress(
             AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)

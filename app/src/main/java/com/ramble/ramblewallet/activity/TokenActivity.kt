@@ -59,7 +59,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
     private fun initView() {
         binding.tvTokenTitle.text = tokenTitle + getString(R.string.token)
         walletSelleted = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
             object : TypeToken<Wallet>() {}.type
         )
         LinearLayoutManager(this).apply {
@@ -73,7 +73,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
         binding.rvTokenCurrency.adapter = adapter
 
         myAllToken = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+            SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, ""),
             object : TypeToken<ArrayList<AllTokenBean>>() {}.type
         )
         myAllToken.forEach {
@@ -102,7 +102,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                 myStores = arrayListOf()
                 adapter.clear()
                 myAllToken = Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                    SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, ""),
                     object : TypeToken<ArrayList<AllTokenBean>>() {}.type
                 )
                 myAllToken.forEach {
@@ -126,7 +126,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
 
-                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
+                SharedPreferencesUtils.saveSecurityString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
                 ArrayList<SimpleRecyclerItem>().apply {
                     myStores.forEach { o -> this.add(AddTokenItem(o)) }
                     adapter.addAll(this.toList())
@@ -136,7 +136,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                 myStores = arrayListOf()
                 adapter.clear()
                 myAllToken = Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                    SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, ""),
                     object : TypeToken<ArrayList<AllTokenBean>>() {}.type
                 )
                 myAllToken.forEach {
@@ -180,7 +180,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
                 myAllToken = Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                    SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, ""),
                     object : TypeToken<ArrayList<AllTokenBean>>() {}.type
                 )
                 myAllToken.forEach {
@@ -194,7 +194,7 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                         it.storeInfos = myStores
                     }
                 }
-                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
+                SharedPreferencesUtils.saveSecurityString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
                 adapter.notifyItemChanged(position)
             }
         }

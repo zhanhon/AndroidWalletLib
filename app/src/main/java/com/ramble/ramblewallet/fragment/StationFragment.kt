@@ -81,14 +81,14 @@ open class StationFragment : BaseFragment() {
 
 
     private fun reFreshData() {
-        records = if (SharedPreferencesUtils.getString(
+        records = if (SharedPreferencesUtils.getSecurityString(
                 myActivity,
                 STATION_INFO,
                 ""
             ).isNotEmpty()
         ) {
             Gson().fromJson(
-                SharedPreferencesUtils.getString(myActivity, STATION_INFO, ""),
+                SharedPreferencesUtils.getSecurityString(myActivity, STATION_INFO, ""),
                 object : TypeToken<ArrayList<Page.Record>>() {}.type
             )
         } else {
@@ -126,9 +126,9 @@ open class StationFragment : BaseFragment() {
     }
 
     private fun dataCheck(item: Page.Record): Page.Record {
-        if (SharedPreferencesUtils.getString(myActivity, READ_ID, "").isNotEmpty()) {
+        if (SharedPreferencesUtils.getSecurityString(myActivity, READ_ID, "").isNotEmpty()) {
             list = Gson().fromJson(
-                SharedPreferencesUtils.getString(myActivity, READ_ID, ""),
+                SharedPreferencesUtils.getSecurityString(myActivity, READ_ID, ""),
                 object : TypeToken<ArrayList<Int>>() {}.type
             )
             if (list.contains(item.id)) {
@@ -161,14 +161,14 @@ open class StationFragment : BaseFragment() {
                     return
                 }
                 val itemBean = AdapterUtils.getHolder(v).getItem<StationItem>().data
-                list = if (SharedPreferencesUtils.getString(
+                list = if (SharedPreferencesUtils.getSecurityString(
                         myActivity,
                         READ_ID,
                         ""
                     ).isNotEmpty()
                 ) {
                     Gson().fromJson(
-                        SharedPreferencesUtils.getString(myActivity, READ_ID, ""),
+                        SharedPreferencesUtils.getSecurityString(myActivity, READ_ID, ""),
                         object : TypeToken<ArrayList<Int>>() {}.type
                     )
                 } else {
@@ -183,7 +183,7 @@ open class StationFragment : BaseFragment() {
                 }
 
                 itemBean.isRead = 1
-                SharedPreferencesUtils.saveString(myActivity, READ_ID, Gson().toJson(list))
+                SharedPreferencesUtils.saveSecurityString(myActivity, READ_ID, Gson().toJson(list))
                 adapter.notifyItemChanged(AdapterUtils.getHolder(v).adapterPosition)
                 start2(MsgDetailsActivity::class.java, Bundle().also {
                     it.putString(ARG_PARAM1, itemBean.title)
@@ -246,7 +246,7 @@ open class StationFragment : BaseFragment() {
                             list.remove()
                         }
                     }
-                    SharedPreferencesUtils.saveString(
+                    SharedPreferencesUtils.saveSecurityString(
                         myActivity,
                         STATION_INFO,
                         Gson().toJson(records)

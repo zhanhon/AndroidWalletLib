@@ -52,10 +52,10 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
         binding.pager.adapter = adapter
         binding.layoutTab.setViewPager(binding.pager)
         wallet = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
             object : TypeToken<Wallet>() {}.type
         )
-        var currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY_TRAN, "")
+        var currencyUnit = SharedPreferencesUtils.getSecurityString(this, CURRENCY_TRAN, "")
         if (currencyUnit.isNotEmpty()) {
             when (currencyUnit) {
                 "ETH" -> {
@@ -132,7 +132,7 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        SharedPreferencesUtils.saveString(this, CURRENCY_TRAN, "")
+        SharedPreferencesUtils.saveSecurityString(this, CURRENCY_TRAN, "")
     }
 
     override fun onClick(v: View?) {

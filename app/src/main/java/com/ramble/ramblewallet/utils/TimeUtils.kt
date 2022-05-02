@@ -98,7 +98,7 @@ object TimeUtils {
      */
 
     fun dateToLang(context: Context): Int {
-        return when (SharedPreferencesUtils.getString(context, LANGUAGE, CN)) {
+        return when (SharedPreferencesUtils.getSecurityString(context, LANGUAGE, CN)) {
             CN -> 1
             TW -> 2
             else -> 3
@@ -110,7 +110,7 @@ object TimeUtils {
      */
 
     fun dateToCurrency(context: Context): Int {
-        return when (SharedPreferencesUtils.getString(context, CURRENCY, USD)) {
+        return when (SharedPreferencesUtils.getSecurityString(context, CURRENCY, USD)) {
             CNY -> 2
             HKD -> 3
             else -> 1
@@ -218,7 +218,7 @@ object TimeUtils {
 
     fun dateToNameString(date: String, nameUser: String, context: Context): String {
         var name: String? = null
-        if (SharedPreferencesUtils.getString(
+        if (SharedPreferencesUtils.getSecurityString(
                 context,
                 ADDRESS_BOOK_INFO,
                 ""
@@ -230,7 +230,7 @@ object TimeUtils {
             } else {
                 val myData: ArrayList<MyAddressBean> =
                     Gson().fromJson(
-                        SharedPreferencesUtils.getString(
+                        SharedPreferencesUtils.getSecurityString(
                             context,
                             ADDRESS_BOOK_INFO,
                             ""

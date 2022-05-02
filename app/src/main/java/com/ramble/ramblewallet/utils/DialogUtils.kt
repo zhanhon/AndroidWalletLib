@@ -179,12 +179,12 @@ fun showBottomDialog2(
                     activity
                 )
             }
-            if (SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
+            if (SharedPreferencesUtils.getSecurityString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
                     .isNotEmpty()
             ) {
                 val myData: ArrayList<MyAddressBean> =
                     Gson().fromJson(
-                        SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, ""),
+                        SharedPreferencesUtils.getSecurityString(MyApp.sInstance, ADDRESS_BOOK_INFO, ""),
                         object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                     )
                 myData.forEach { bean ->
@@ -217,12 +217,12 @@ fun showBottomDialog2(
                 return@setOnClickListener
             }
             var myData2: ArrayList<MyAddressBean> = arrayListOf()
-            if (SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
+            if (SharedPreferencesUtils.getSecurityString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
                     .isNotEmpty()
             ) {
                 myData2 =
                     Gson().fromJson(
-                        SharedPreferencesUtils.getString(MyApp.sInstance, ADDRESS_BOOK_INFO, ""),
+                        SharedPreferencesUtils.getSecurityString(MyApp.sInstance, ADDRESS_BOOK_INFO, ""),
                         object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                     )
             }
@@ -230,7 +230,7 @@ fun showBottomDialog2(
             when (type) {
                 1 -> RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_UPDATA, data)
                 2 -> {
-                    SharedPreferencesUtils.saveString(
+                    SharedPreferencesUtils.saveSecurityString(
                         activity,
                         ADDRESS_BOOK_INFO,
                         Gson().toJson(myData2)
@@ -267,10 +267,10 @@ fun showBottomSan(
             R.layout.dialog_trans_item
         )
     var myDataBeans: ArrayList<MyAddressBean> = arrayListOf()
-    if (SharedPreferencesUtils.getString(activity, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
+    if (SharedPreferencesUtils.getSecurityString(activity, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
         myDataBeans =
             Gson().fromJson(
-                SharedPreferencesUtils.getString(activity, ADDRESS_BOOK_INFO, ""),
+                SharedPreferencesUtils.getSecurityString(activity, ADDRESS_BOOK_INFO, ""),
                 object : TypeToken<java.util.ArrayList<MyAddressBean>>() {}.type
             )
     }
@@ -308,7 +308,7 @@ fun showBottomSan(
                 if (isSame) {
                     if (binding.editName.text.toString().trim() != name) {
                         myDataBeans[num].userName = binding.editName.text.toString().trim()
-                        SharedPreferencesUtils.saveString(
+                        SharedPreferencesUtils.saveSecurityString(
                             activity,
                             ADDRESS_BOOK_INFO,
                             Gson().toJson(myDataBeans)
@@ -335,7 +335,7 @@ fun showBottomSan(
                         return@setOnClickListener
                     }
                     myDataBeans.add(data)
-                    SharedPreferencesUtils.saveString(
+                    SharedPreferencesUtils.saveSecurityString(
                         activity,
                         ADDRESS_BOOK_INFO,
                         Gson().toJson(myDataBeans)

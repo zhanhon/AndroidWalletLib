@@ -66,7 +66,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             WindowManager.LayoutParams.FLAG_SECURE
         )
         binding = DataBindingUtil.setContentView(this, R.layout.activity_wallet_more_operate)
-        SharedPreferencesUtils.saveBoolean(this, IS_CONFIRM_MNEMONIC, false)
+        SharedPreferencesUtils.saveSecurityBoolean(this, IS_CONFIRM_MNEMONIC, false)
         walletCurrent = Gson().fromJson(
             intent.getStringExtra(ARG_PARAM1),
             object : TypeToken<Wallet>() {}.type
@@ -74,7 +74,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
 
         if (walletCurrent.walletType == 1) {
             myAllToken = Gson().fromJson(
-                SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, ""),
                 object : TypeToken<ArrayList<AllTokenBean>>() {}.type
             )
         }
@@ -102,11 +102,11 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
         }
 
         saveWalletList = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+            SharedPreferencesUtils.getSecurityString(this, WALLETINFO, ""),
             object : TypeToken<ArrayList<Wallet>>() {}.type
         )
         walletSelleted = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
             object : TypeToken<Wallet>() {}.type
         )
 
@@ -244,12 +244,12 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
-        SharedPreferencesUtils.saveString(
+        SharedPreferencesUtils.saveSecurityString(
             this,
             WALLETSELECTED,
             Gson().toJson(saveWalletList[0])
         )
-        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (walletCurrent.walletType == 1) {
             val lists = myAllToken.iterator()
             lists.forEach {
@@ -257,7 +257,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                     lists.remove()
                 }
             }
-            SharedPreferencesUtils.saveString(
+            SharedPreferencesUtils.saveSecurityString(
                 this,
                 TOKEN_INFO_NO,
                 Gson().toJson(myAllToken)
@@ -267,11 +267,11 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        isFinger = SharedPreferencesUtils.getBoolean(
+        isFinger = SharedPreferencesUtils.getSecurityBoolean(
             this,
             ISFINGERPRINT_KEY_COMMON,
             false
-        ) || SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY_ALL, false)
+        ) || SharedPreferencesUtils.getSecurityBoolean(this, ISFINGERPRINT_KEY_ALL, false)
     }
 
     private fun inputPasswordDialog(title: String) {
@@ -393,14 +393,14 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                         it.walletName = edtWalletName.text.trim().toString()
                     }
                 }
-                SharedPreferencesUtils.saveString(
+                SharedPreferencesUtils.saveSecurityString(
                     this,
                     WALLETINFO,
                     Gson().toJson(saveWalletList)
                 )
                 if (walletCurrent.address == walletSelleted.address) {
                     walletSelleted.walletName = edtWalletName.text.trim().toString()
-                    SharedPreferencesUtils.saveString(
+                    SharedPreferencesUtils.saveSecurityString(
                         this,
                         WALLETSELECTED,
                         Gson().toJson(walletSelleted)
@@ -474,7 +474,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun savePicture() {
-        val lang = SharedPreferencesUtils.getString(this, LANGUAGE, CN)
+        val lang = SharedPreferencesUtils.getSecurityString(this, LANGUAGE, CN)
         requestRuntimePermission(
             arrayOf(
                 "android.permission.CAMERA",
@@ -654,8 +654,8 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("CheckResult")
     private fun putAddress(detailsList: ArrayList<AddressReport.DetailsList>) {
-        val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
-        val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
+        val languageCode = SharedPreferencesUtils.getSecurityString(appContext, LANGUAGE, CN)
+        val deviceToken = SharedPreferencesUtils.getSecurityString(appContext, DEVICE_TOKEN, "")
         if (detailsList.size == 0) return
         mApiService.putAddress(
             AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)

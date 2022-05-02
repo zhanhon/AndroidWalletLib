@@ -140,11 +140,11 @@ class ProclamationFragment : BaseFragment() {
     }
 
     private fun dataCheck(item: Page.Record): Page.Record {
-        if (SharedPreferencesUtils.getString(myActivity, READ_ID_NEW, "")
+        if (SharedPreferencesUtils.getSecurityString(myActivity, READ_ID_NEW, "")
                 .isNotEmpty()
         ) {
             list = Gson().fromJson(
-                SharedPreferencesUtils.getString(myActivity, READ_ID_NEW, ""),
+                SharedPreferencesUtils.getSecurityString(myActivity, READ_ID_NEW, ""),
                 object : TypeToken<ArrayList<Int>>() {}.type
             )
             if (list.contains(item.id)
@@ -187,14 +187,14 @@ class ProclamationFragment : BaseFragment() {
         when (v!!.id) {
             R.id.item_msg_notic -> {
                 val itemBean = AdapterUtils.getHolder(v).getItem<StationItem>().data
-                list = if (SharedPreferencesUtils.getString(
+                list = if (SharedPreferencesUtils.getSecurityString(
                         myActivity,
                         READ_ID_NEW,
                         ""
                     ).isNotEmpty()
                 ) {
                     Gson().fromJson(
-                        SharedPreferencesUtils.getString(myActivity, READ_ID_NEW, ""),
+                        SharedPreferencesUtils.getSecurityString(myActivity, READ_ID_NEW, ""),
                         object : TypeToken<ArrayList<Int>>() {}.type
                     )
                 } else {
@@ -208,7 +208,7 @@ class ProclamationFragment : BaseFragment() {
                     list.add(itemBean.id)
                 }
 
-                SharedPreferencesUtils.saveString(myActivity, READ_ID_NEW, Gson().toJson(list))
+                SharedPreferencesUtils.saveSecurityString(myActivity, READ_ID_NEW, Gson().toJson(list))
                 itemBean.isRead = 1
                 adapter.notifyItemChanged(AdapterUtils.getHolder(v).adapterPosition)
                 start2(MsgDetailsActivity::class.java, Bundle().also {

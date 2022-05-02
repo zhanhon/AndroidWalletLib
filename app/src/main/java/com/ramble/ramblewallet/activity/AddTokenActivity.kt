@@ -61,7 +61,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
 
     private fun initView() {
         walletSelleted = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
             object : TypeToken<Wallet>() {}.type
         )
         LinearLayoutManager(this).apply {
@@ -85,7 +85,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
         )
         binding.rvTokenManageCurrency.adapter = recommendTokenAdapter
         myAllToken = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+            SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, ""),
             object : TypeToken<ArrayList<AllTokenBean>>() {}.type
         )
         myAllToken.forEach {
@@ -156,7 +156,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 adapter.clear()
                 recommendTokenAdapter.clear()
                 myAllToken = Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                    SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, ""),
                     object : TypeToken<ArrayList<AllTokenBean>>() {}.type
                 )
                 myAllToken.forEach {
@@ -179,7 +179,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                         it.storeInfos = myDataBeansMyAssets
                     }
                 }
-                SharedPreferencesUtils.saveString(
+                SharedPreferencesUtils.saveSecurityString(
                     this,
                     TOKEN_INFO_NO,
                     Gson().toJson(myAllToken)
@@ -191,7 +191,7 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
                 adapter.clear()
                 recommendTokenAdapter.clear()
                 myAllToken = Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                    SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, ""),
                     object : TypeToken<ArrayList<AllTokenBean>>() {}.type
                 )
                 myAllToken.forEach {

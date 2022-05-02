@@ -121,7 +121,7 @@ class GatheringActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun savePicture() {
-        val lang = SharedPreferencesUtils.getString(this, LANGUAGE, CN)
+        val lang = SharedPreferencesUtils.getSecurityString(this, LANGUAGE, CN)
         requestRuntimePermission(
             arrayOf(
                 "android.permission.CAMERA",

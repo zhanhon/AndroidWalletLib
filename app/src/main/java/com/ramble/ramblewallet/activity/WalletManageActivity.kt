@@ -69,7 +69,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     override fun onResume() {
         super.onResume()
         saveWalletList = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+            SharedPreferencesUtils.getSecurityString(this, WALLETINFO, ""),
             object : TypeToken<ArrayList<Wallet>>() {}.type
         )
         val list = saveWalletList.iterator()
@@ -79,7 +79,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             }
         }
         saveWalletListSorted = ArrayList(saveWalletList.sortedByDescending { it.index })
-        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletListSorted))
+        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletListSorted))
         initView()
     }
 
@@ -102,7 +102,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
 
     private fun loadData(walletManageBean: ArrayList<Wallet>) {
         walletSelleted = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
             object : TypeToken<Wallet>() {}.type
         )
         walletManageBean.forEach {
@@ -112,7 +112,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         binding.rvMainCurrency.adapter = walletManageAdapter
         walletManageAdapter.setOnItemClickListener { adapter, view, position ->
             if (adapter.getItem(position) is Wallet) {
-                SharedPreferencesUtils.saveString(
+                SharedPreferencesUtils.saveSecurityString(
                     this,
                     WALLETSELECTED,
                     Gson().toJson(adapter.getItem(position) as Wallet)
@@ -335,13 +335,13 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 }
             }
         }
-        SharedPreferencesUtils.saveString(
+        SharedPreferencesUtils.saveSecurityString(
             this,
             WALLETSELECTED,
             Gson().toJson(walletManageBean[0])
         )
         saveWalletList = walletManageBean
-        SharedPreferencesUtils.saveString(
+        SharedPreferencesUtils.saveSecurityString(
             this,
             WALLETINFO,
             Gson().toJson(saveWalletList)
@@ -350,9 +350,9 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
         binding.ivAddWallet.visibility = View.VISIBLE
         loadData(walletManageBean)
-        if (!SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, "").isNullOrEmpty()) {
+        if (!SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, "").isNullOrEmpty()) {
             myAllToken = Gson().fromJson(
-                SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+                SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, ""),
                 object : TypeToken<ArrayList<AllTokenBean>>() {}.type
             )
 
@@ -364,7 +364,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     }
                 }
             }
-            SharedPreferencesUtils.saveString(
+            SharedPreferencesUtils.saveSecurityString(
                 this,
                 TOKEN_INFO_NO,
                 Gson().toJson(myAllToken)
@@ -374,8 +374,8 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
 
     @SuppressLint("CheckResult")
     private fun putAddress(detailsList: ArrayList<AddressReport.DetailsList>) {
-        val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
-        val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
+        val languageCode = SharedPreferencesUtils.getSecurityString(appContext, LANGUAGE, CN)
+        val deviceToken = SharedPreferencesUtils.getSecurityString(appContext, DEVICE_TOKEN, "")
         if (detailsList.size == 0) return
         mApiService.putAddress(
             AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)

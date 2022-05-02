@@ -51,7 +51,7 @@ class QueryActivity : BaseActivity(), View.OnClickListener {
 
     private fun initView() {
         adapter = MyAdapter(supportFragmentManager, this)
-        SharedPreferencesUtils.saveString(
+        SharedPreferencesUtils.saveSecurityString(
             this,
             TOKEN_DB_NO,
             tokenBean.contractAddress
@@ -63,7 +63,7 @@ class QueryActivity : BaseActivity(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        SharedPreferencesUtils.saveString(this, TOKEN_DB_NO, "")
+        SharedPreferencesUtils.saveSecurityString(this, TOKEN_DB_NO, "")
     }
 
     private fun initListener() {
@@ -75,7 +75,7 @@ class QueryActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> {
-                SharedPreferencesUtils.saveString(this, TOKEN_DB_NO, "")
+                SharedPreferencesUtils.saveSecurityString(this, TOKEN_DB_NO, "")
                 finish()
             }
             R.id.tv_transfer -> {

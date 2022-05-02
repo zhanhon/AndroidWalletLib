@@ -60,7 +60,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
     private fun initView() {
         wallet =
             Gson().fromJson(
-                SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+                SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
                 object : TypeToken<Wallet>() {}.type
             )
         LinearLayoutManager(this).apply {
@@ -99,7 +99,7 @@ class SearchTokenActivity : BaseActivity(), View.OnClickListener {
             }
         }
         myAllToken = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+            SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, ""),
             object : TypeToken<ArrayList<AllTokenBean>>() {}.type
         )
         myAllToken.forEach {

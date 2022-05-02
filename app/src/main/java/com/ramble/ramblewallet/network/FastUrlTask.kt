@@ -21,10 +21,10 @@ object FastUrlTask {
     private const val timeOut = 5000L
     private val executor = Executors.newFixedThreadPool(BuildConfig.BASE_SERVER_URL.size)
     private val checkConnectClient = OkHttpClient.Builder()
-        .sslSocketFactory(
-            provideSSLContext(provideX509TrustManager()).socketFactory,
-            provideX509TrustManager()
-        )
+//        .sslSocketFactory(
+//            provideSSLContext(provideX509TrustManager()).socketFactory,
+//            provideX509TrustManager()
+//        )
         .hostnameVerifier { _, _ -> true }
         .connectTimeout(timeOut, TimeUnit.MILLISECONDS)
         .build()

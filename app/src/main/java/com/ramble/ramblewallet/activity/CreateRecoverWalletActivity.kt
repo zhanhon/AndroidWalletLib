@@ -58,7 +58,7 @@ class CreateRecoverWalletActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setLanguage() {
-        when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
+        when (SharedPreferencesUtils.getSecurityString(this, LANGUAGE, CN)) {
             CN -> {
                 binding.tvMore.text = getString(R.string.language_simplified_chinese)
                 LanguageSetting.setLanguage(this, 1)
@@ -76,21 +76,21 @@ class CreateRecoverWalletActivity : BaseActivity(), View.OnClickListener {
 
     private fun safetyDialog() {
         showLanguageDialog(this, cnListener = {
-            SharedPreferencesUtils.saveString(this, LANGUAGE, CN)
+            SharedPreferencesUtils.saveSecurityString(this, LANGUAGE, CN)
             setLanguage()
             val it = Intent(this, CreateRecoverWalletActivity::class.java)
             //清空任务栈确保当前打开activit为前台任务栈栈顶
             it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(it)
         }, twListener = {
-            SharedPreferencesUtils.saveString(this, LANGUAGE, TW)
+            SharedPreferencesUtils.saveSecurityString(this, LANGUAGE, TW)
             setLanguage()
             val it = Intent(this, CreateRecoverWalletActivity::class.java)
             //清空任务栈确保当前打开activit为前台任务栈栈顶
             it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(it)
         }, enListener = {
-            SharedPreferencesUtils.saveString(this, LANGUAGE, EN)
+            SharedPreferencesUtils.saveSecurityString(this, LANGUAGE, EN)
             setLanguage()
             val it = Intent(this, CreateRecoverWalletActivity::class.java)
             //清空任务栈确保当前打开activit为前台任务栈栈顶

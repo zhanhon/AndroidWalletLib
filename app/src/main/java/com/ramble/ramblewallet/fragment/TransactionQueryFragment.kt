@@ -136,15 +136,15 @@ class TransactionQueryFragment : BaseFragment(),
         }
         changeCurrencyType = TimeUtils.dateToCurrency(myActivity)
         saveWalletList = Gson().fromJson(
-            SharedPreferencesUtils.getString(myActivity, WALLETINFO, ""),
+            SharedPreferencesUtils.getSecurityString(myActivity, WALLETINFO, ""),
             object : TypeToken<ArrayList<Wallet>>() {}.type
         )
         wallet =
             Gson().fromJson(
-                SharedPreferencesUtils.getString(myActivity, WALLETSELECTED, ""),
+                SharedPreferencesUtils.getSecurityString(myActivity, WALLETSELECTED, ""),
                 object : TypeToken<Wallet>() {}.type
             )
-        currencyUnit = SharedPreferencesUtils.getString(activity, CURRENCY_TRAN, "")
+        currencyUnit = SharedPreferencesUtils.getSecurityString(activity, CURRENCY_TRAN, "")
         addressType = if (currencyUnit.isNotEmpty()) {
             TimeUtils.dateToWalletTypeInt(currencyUnit)
         } else {

@@ -121,8 +121,8 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        isFinger = SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY, false)
-                || SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY_ALL, false)
+        isFinger = SharedPreferencesUtils.getSecurityBoolean(this, ISFINGERPRINT_KEY, false)
+                || SharedPreferencesUtils.getSecurityBoolean(this, ISFINGERPRINT_KEY_ALL, false)
         initData()
         if (walletSelleted.walletType == 2) {
             binding.edtInputQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(24))
@@ -327,10 +327,10 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n", "CheckResult")
     private fun initData() {
-        currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, USD)
-        if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isNotEmpty()) {
+        currencyUnit = SharedPreferencesUtils.getSecurityString(this, CURRENCY, USD)
+        if (SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, "").isNotEmpty()) {
             walletSelleted = Gson().fromJson(
-                SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+                SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
                 object : TypeToken<Wallet>() {}.type
             )
             binding.tvWalletAddress.text = walletSelleted.address

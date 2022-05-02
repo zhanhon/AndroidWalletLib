@@ -45,10 +45,10 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
                 binding.tvCreateWalletTitle.text = getString(R.string.new_wallet)
             }
         }
-        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+        if (SharedPreferencesUtils.getSecurityString(this, WALLETINFO, "").isNotEmpty()) {
             saveWalletList =
                 Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                    SharedPreferencesUtils.getSecurityString(this, WALLETINFO, ""),
                     object : TypeToken<ArrayList<Wallet>>() {}.type
                 )
         }

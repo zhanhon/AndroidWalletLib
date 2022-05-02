@@ -68,11 +68,11 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
     private fun initView() {
         //初始化推荐代币
         myAllToken = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, TOKEN_INFO_NO, ""),
+            SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, ""),
             object : TypeToken<ArrayList<AllTokenBean>>() {}.type
         )
         walletSelleted = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
             object : TypeToken<Wallet>() {}.type
         )
         myAllToken.forEach {
@@ -106,7 +106,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                             it.storeInfos = myStores
                         }
                     }
-                    SharedPreferencesUtils.saveString(
+                    SharedPreferencesUtils.saveSecurityString(
                         this@TokenManageActivity,
                         TOKEN_INFO_NO,
                         Gson().toJson(myAllToken)
@@ -200,7 +200,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                         it.storeInfos = myStores
                     }
                 }
-                SharedPreferencesUtils.saveString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
+                SharedPreferencesUtils.saveSecurityString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
                 adapter.notifyItemChanged(position)
                 RxBus.emitEvent(Pie.EVENT_MINUS_TOKEN, item)
             }
@@ -232,7 +232,7 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                 it.storeInfos = myStores
             }
         }
-        SharedPreferencesUtils.saveString(
+        SharedPreferencesUtils.saveSecurityString(
             this@TokenManageActivity,
             TOKEN_INFO_NO,
             Gson().toJson(myAllToken)

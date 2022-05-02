@@ -178,14 +178,14 @@ public class UmInitConfig {
             @Override
             public void onSuccess(String deviceToken) {
                 Log.i(TAG, "device token: " + deviceToken);
-                SharedPreferencesUtils.saveString(context, DEVICE_TOKEN, deviceToken);
+                SharedPreferencesUtils.saveSecurityString(context, DEVICE_TOKEN, deviceToken);
                 context.sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
             }
 
             @Override
             public void onFailure(String s, String s1) {
                 Log.i(TAG, "register failed: " + s + " " + s1);
-                SharedPreferencesUtils.saveString(context, DEVICE_TOKEN, "");
+                SharedPreferencesUtils.saveSecurityString(context, DEVICE_TOKEN, "");
                 context.sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
             }
         });

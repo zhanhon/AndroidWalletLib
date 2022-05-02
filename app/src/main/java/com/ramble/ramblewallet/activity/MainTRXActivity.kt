@@ -116,9 +116,9 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
         var records21 = records2
         it.data()?.let { data ->
             var read: ArrayList<Int> =
-                if (SharedPreferencesUtils.getString(this, READ_ID_NEW, "").isNotEmpty()) {
+                if (SharedPreferencesUtils.getSecurityString(this, READ_ID_NEW, "").isNotEmpty()) {
                     Gson().fromJson(
-                        SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
+                        SharedPreferencesUtils.getSecurityString(this, READ_ID_NEW, ""),
                         object : TypeToken<ArrayList<Int>>() {}.type
                     )
                 } else {
@@ -133,14 +133,14 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
                     redList.add(item)
                 }
             }
-            records21 = if (SharedPreferencesUtils.getString(
+            records21 = if (SharedPreferencesUtils.getSecurityString(
                     this,
                     STATION_INFO,
                     ""
                 ).isNotEmpty()
             ) {
                 Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, STATION_INFO, ""),
+                    SharedPreferencesUtils.getSecurityString(this, STATION_INFO, ""),
                     object : TypeToken<ArrayList<Page.Record>>() {}.type
                 )
 
@@ -164,14 +164,14 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
         if (records21.isNotEmpty()) {
             records21.forEach { item ->
                 if (item.lang == lang) {
-                    if (SharedPreferencesUtils.getString(
+                    if (SharedPreferencesUtils.getSecurityString(
                             this,
                             READ_ID,
                             ""
                         ).isNotEmpty()
                     ) {
                         var read: ArrayList<Int> = Gson().fromJson(
-                            SharedPreferencesUtils.getString(this, READ_ID, ""),
+                            SharedPreferencesUtils.getSecurityString(this, READ_ID, ""),
                             object : TypeToken<ArrayList<Int>>() {}.type
                         )
                         if (read.contains(item.id)
@@ -323,13 +323,13 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initData() {
-        currencyUnit = SharedPreferencesUtils.getString(this, CURRENCY, USD)
+        currencyUnit = SharedPreferencesUtils.getSecurityString(this, CURRENCY, USD)
         saveWalletList = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+            SharedPreferencesUtils.getSecurityString(this, WALLETINFO, ""),
             object : TypeToken<ArrayList<Wallet>>() {}.type
         )
         walletSelleted = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
             object : TypeToken<Wallet>() {}.type
         )
         binding.tvWalletName.text = walletSelleted.walletName

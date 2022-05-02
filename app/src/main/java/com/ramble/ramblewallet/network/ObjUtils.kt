@@ -23,7 +23,7 @@ object ObjUtils {
 
     @JvmStatic
     fun <T : ApiRequest.Body> apiRequest(body: T, apiName: String): ApiRequest<T> {
-        val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
+        val languageCode = SharedPreferencesUtils.getSecurityString(appContext, LANGUAGE, CN)
         val currentTime = System.currentTimeMillis()
         var signOriginal: String = apiName + currentTime + "1" + AppUtils.getSecretKey()
         val sign = Md5Util.md5(signOriginal)

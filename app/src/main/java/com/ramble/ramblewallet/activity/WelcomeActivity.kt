@@ -42,11 +42,11 @@ class WelcomeActivity : BaseActivity() {
             WindowManager.LayoutParams.FLAG_SECURE
         )
         setContentView(R.layout.activity_welcome)
-        isFinger = SharedPreferencesUtils.getBoolean(
+        isFinger = SharedPreferencesUtils.getSecurityBoolean(
             this,
             ISFINGERPRINT_KEY_COMMON,
             false
-        ) || SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY, false)
+        ) || SharedPreferencesUtils.getSecurityBoolean(this, ISFINGERPRINT_KEY, false)
         if (isFinger) {
             ToolUtils.supportFingerprint(this)
         }
@@ -126,12 +126,12 @@ class WelcomeActivity : BaseActivity() {
      */
     private fun startActivityJun() {
         Handler().postDelayed({
-            if (SharedPreferencesUtils.getString(this, WALLETSELECTED, "").isEmpty()) {
+            if (SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, "").isEmpty()) {
                 startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
             } else {
                 wallet =
                     Gson().fromJson(
-                        SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+                        SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
                         object : TypeToken<Wallet>() {}.type
                     )
                 when (wallet.walletType) {
@@ -158,10 +158,10 @@ class WelcomeActivity : BaseActivity() {
      */
 
     private fun skipConfirmHandle() {
-        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+        if (SharedPreferencesUtils.getSecurityString(this, WALLETINFO, "").isNotEmpty()) {
             saveWalletList =
                 Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                    SharedPreferencesUtils.getSecurityString(this, WALLETINFO, ""),
                     object : TypeToken<ArrayList<Wallet>>() {}.type
                 )
             var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
@@ -179,8 +179,8 @@ class WelcomeActivity : BaseActivity() {
      */
     @SuppressLint("CheckResult")
     private fun putAddress(detailsList: ArrayList<AddressReport.DetailsList>) {
-        val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
-        val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
+        val languageCode = SharedPreferencesUtils.getSecurityString(appContext, LANGUAGE, CN)
+        val deviceToken = SharedPreferencesUtils.getSecurityString(appContext, DEVICE_TOKEN, "")
         if (detailsList.size == 0) return
         mApiService.putAddress(
             AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)
@@ -201,9 +201,9 @@ class WelcomeActivity : BaseActivity() {
     @SuppressLint("CheckResult")
     override fun onResume() {
         super.onResume()
-        val fristShow = SharedPreferencesUtils.getBoolean(this, FIRSTLANGUAGE, true)
+        val fristShow = SharedPreferencesUtils.getSecurityBoolean(this, FIRSTLANGUAGE, true)
         if (fristShow) {//第一次
-            SharedPreferencesUtils.saveBoolean(this, FIRSTLANGUAGE, false)
+            SharedPreferencesUtils.saveSecurityBoolean(this, FIRSTLANGUAGE, false)
             //设置跟随手机系统语言进行设置app默认语言
             val locale: Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Resources.getSystem().configuration.locales[0]
@@ -212,13 +212,13 @@ class WelcomeActivity : BaseActivity() {
             }
             when (locale.country) {
                 "CN" -> {
-                    SharedPreferencesUtils.saveString(this, LANGUAGE, CN)
+                    SharedPreferencesUtils.saveSecurityString(this, LANGUAGE, CN)
                 }
                 "TW" -> {
-                    SharedPreferencesUtils.saveString(this, LANGUAGE, TW)
+                    SharedPreferencesUtils.saveSecurityString(this, LANGUAGE, TW)
                 }
                 else -> {
-                    SharedPreferencesUtils.saveString(this, LANGUAGE, EN)
+                    SharedPreferencesUtils.saveSecurityString(this, LANGUAGE, EN)
                 }
             }
         } else {
@@ -227,7 +227,7 @@ class WelcomeActivity : BaseActivity() {
     }
 
     private fun setLanguage() {
-        when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
+        when (SharedPreferencesUtils.getSecurityString(this, LANGUAGE, CN)) {
             CN -> {
                 setLanguage(this, 1)
             }

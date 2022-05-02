@@ -41,11 +41,11 @@ class FingerPrintActivity : BaseActivity(), View.OnClickListener,
     private fun initView() {
         binding.tvMineTitle.text = getString(R.string.fingerprint_transaction)
         binding.toggleAll.isChecked =
-            SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY_ALL, false)
+            SharedPreferencesUtils.getSecurityBoolean(this, ISFINGERPRINT_KEY_ALL, false)
         binding.toggleCommon.isChecked =
-            SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY_COMMON, false)
+            SharedPreferencesUtils.getSecurityBoolean(this, ISFINGERPRINT_KEY_COMMON, false)
         binding.toggleTrans.isChecked =
-            SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY, false)
+            SharedPreferencesUtils.getSecurityBoolean(this, ISFINGERPRINT_KEY, false)
     }
 
     private fun initListener() {
@@ -67,21 +67,21 @@ class FingerPrintActivity : BaseActivity(), View.OnClickListener,
                 if (isChecked) {
                     confirmTipsDialog(buttonView, ISFINGERPRINT_KEY_ALL)
                 } else {
-                    SharedPreferencesUtils.saveBoolean(this, ISFINGERPRINT_KEY_ALL, isChecked)
+                    SharedPreferencesUtils.saveSecurityBoolean(this, ISFINGERPRINT_KEY_ALL, isChecked)
                 }
             }
             R.id.toggle_common -> {
                 if (isChecked) {
                     confirmTipsDialog(buttonView, ISFINGERPRINT_KEY_COMMON)
                 } else {
-                    SharedPreferencesUtils.saveBoolean(this, ISFINGERPRINT_KEY_COMMON, isChecked)
+                    SharedPreferencesUtils.saveSecurityBoolean(this, ISFINGERPRINT_KEY_COMMON, isChecked)
                 }
             }
             R.id.toggle_trans -> {
                 if (isChecked) {
                     confirmTipsDialog(buttonView, ISFINGERPRINT_KEY)
                 } else {
-                    SharedPreferencesUtils.saveBoolean(this, ISFINGERPRINT_KEY, isChecked)
+                    SharedPreferencesUtils.saveSecurityBoolean(this, ISFINGERPRINT_KEY, isChecked)
                 }
             }
         }
@@ -89,7 +89,7 @@ class FingerPrintActivity : BaseActivity(), View.OnClickListener,
 
     private fun confirmTipsDialog(buttonView: CompoundButton, key: String) {
         showCommonDialog(this, getString(R.string.fingerprint_toggle_text), confirmListener = {
-            SharedPreferencesUtils.saveBoolean(this, key, true)
+            SharedPreferencesUtils.saveSecurityBoolean(this, key, true)
             ToolUtils.supportFingerprint(this)
         }, tvcListener = {
             buttonView.isChecked = false

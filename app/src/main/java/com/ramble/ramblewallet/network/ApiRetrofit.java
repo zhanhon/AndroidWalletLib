@@ -59,7 +59,7 @@ public class ApiRetrofit {
 
         mClient = new OkHttpClient.Builder()
                 .addInterceptor(mLogInterceptor)//添加log拦截器
-                .sslSocketFactory(createSSLSocketFactory())
+                //.sslSocketFactory(createSSLSocketFactory())
                 .cache(cache)
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
@@ -89,6 +89,11 @@ public class ApiRetrofit {
 
     public static ApiRetrofit getInstance() {
         if (mApiRetrofit == null) {
+            synchronized (Object.class) {
+                if (mApiRetrofit == null) {
+                    mApiRetrofit = new ApiRetrofit();
+                }
+            }
             mApiRetrofit = new ApiRetrofit();
         }
         return mApiRetrofit;

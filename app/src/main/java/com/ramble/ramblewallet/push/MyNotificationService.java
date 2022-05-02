@@ -65,13 +65,13 @@ public class MyNotificationService extends Service {
                     lang = 1;
                 }
                 a.setLang(lang);
-                if (!SharedPreferencesUtils.getString(
+                if (!SharedPreferencesUtils.getSecurityString(
                         this,
                         STATION_INFO,
                         ""
                 ).isEmpty()) {
                     records = new Gson().fromJson(
-                            SharedPreferencesUtils.getString(this, STATION_INFO, ""),
+                            SharedPreferencesUtils.getSecurityString(this, STATION_INFO, ""),
                             new TypeToken<ArrayList<Page.Record>>() {
                             }.getType()
                     );
@@ -79,7 +79,7 @@ public class MyNotificationService extends Service {
                     records = new ArrayList<Page.Record>();
                 }
                 records.add(a);
-                SharedPreferencesUtils.saveString(this, STATION_INFO, new Gson().toJson(records));
+                SharedPreferencesUtils.saveSecurityString(this, STATION_INFO, new Gson().toJson(records));
                 RxBus.INSTANCE.emitEvent(Pie.EVENT_PUSH_MSG, true);
             } else if (msg.extra.get(MESSAGE_TYPE).equals("202")) {//公告
 

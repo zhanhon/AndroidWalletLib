@@ -60,8 +60,8 @@ class MineActivity : BaseActivity(), View.OnClickListener {
      * View初始化
      */
     private fun initView() {
-        language = SharedPreferencesUtils.getString(this, LANGUAGE, CN)
-        currency = SharedPreferencesUtils.getString(this, CURRENCY, USD)
+        language = SharedPreferencesUtils.getSecurityString(this, LANGUAGE, CN)
+        currency = SharedPreferencesUtils.getSecurityString(this, CURRENCY, USD)
         binding.tvMineTitle.text = getString(R.string.personal_management)
         binding.incManageWallet.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.wallet_management)
@@ -197,7 +197,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         initView()
         redPoint()
         walletSelleted = Gson().fromJson(
-            SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+            SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
             object : TypeToken<Wallet>() {}.type
         )
     }
@@ -234,9 +234,9 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         var records21 = records2
         it.data()?.let { data ->
             var read: ArrayList<Int> =
-                if (SharedPreferencesUtils.getString(this, READ_ID_NEW, "").isNotEmpty()) {
+                if (SharedPreferencesUtils.getSecurityString(this, READ_ID_NEW, "").isNotEmpty()) {
                     Gson().fromJson(
-                        SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
+                        SharedPreferencesUtils.getSecurityString(this, READ_ID_NEW, ""),
                         object : TypeToken<ArrayList<Int>>() {}.type
                     )
                 } else {
@@ -251,14 +251,14 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                     redList.add(item)
                 }
             }
-            records21 = if (SharedPreferencesUtils.getString(
+            records21 = if (SharedPreferencesUtils.getSecurityString(
                     this,
                     STATION_INFO,
                     ""
                 ).isNotEmpty()
             ) {
                 Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, STATION_INFO, ""),
+                    SharedPreferencesUtils.getSecurityString(this, STATION_INFO, ""),
                     object : TypeToken<ArrayList<Page.Record>>() {}.type
                 )
 
@@ -282,14 +282,14 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         if (records21.isNotEmpty()) {
             records21.forEach { item ->
                 if (item.lang == lang) {
-                    if (SharedPreferencesUtils.getString(
+                    if (SharedPreferencesUtils.getSecurityString(
                             this,
                             READ_ID,
                             ""
                         ).isNotEmpty()
                     ) {
                         var read: ArrayList<Int> = Gson().fromJson(
-                            SharedPreferencesUtils.getString(this, READ_ID, ""),
+                            SharedPreferencesUtils.getSecurityString(this, READ_ID, ""),
                             object : TypeToken<ArrayList<Int>>() {}.type
                         )
                         if (read.contains(item.id)
@@ -417,10 +417,10 @@ class MineActivity : BaseActivity(), View.OnClickListener {
      */
 
     private fun skipConfirmHandle() {
-        if (SharedPreferencesUtils.getString(this, WALLETINFO, "").isNotEmpty()) {
+        if (SharedPreferencesUtils.getSecurityString(this, WALLETINFO, "").isNotEmpty()) {
             saveWalletList =
                 Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, WALLETINFO, ""),
+                    SharedPreferencesUtils.getSecurityString(this, WALLETINFO, ""),
                     object : TypeToken<ArrayList<Wallet>>() {}.type
                 )
             var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
@@ -438,8 +438,8 @@ class MineActivity : BaseActivity(), View.OnClickListener {
      */
     @SuppressLint("CheckResult")
     private fun putAddress(detailsList: ArrayList<AddressReport.DetailsList>) {
-        val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
-        val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
+        val languageCode = SharedPreferencesUtils.getSecurityString(appContext, LANGUAGE, CN)
+        val deviceToken = SharedPreferencesUtils.getSecurityString(appContext, DEVICE_TOKEN, "")
         if (detailsList.size == 0) return
         mApiService.putAddress(
             AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)
@@ -458,15 +458,15 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
     private fun languageDialog() {
         showLanguageDialog(this, cnListener = {
-            SharedPreferencesUtils.saveString(this, LANGUAGE, CN)
+            SharedPreferencesUtils.saveSecurityString(this, LANGUAGE, CN)
             setLanguage()
             onResume()
         }, twListener = {
-            SharedPreferencesUtils.saveString(this, LANGUAGE, TW)
+            SharedPreferencesUtils.saveSecurityString(this, LANGUAGE, TW)
             setLanguage()
             onResume()
         }, enListener = {
-            SharedPreferencesUtils.saveString(this, LANGUAGE, EN)
+            SharedPreferencesUtils.saveSecurityString(this, LANGUAGE, EN)
             setLanguage()
             onResume()
         })
@@ -474,20 +474,20 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
     private fun currencyDialog() {
         showCurrencyDialog(this, cnyListener = {
-            SharedPreferencesUtils.saveString(this, CURRENCY, CNY)
+            SharedPreferencesUtils.saveSecurityString(this, CURRENCY, CNY)
             binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = CNY
         }, hkdListener = {
-            SharedPreferencesUtils.saveString(this, CURRENCY, HKD)
+            SharedPreferencesUtils.saveSecurityString(this, CURRENCY, HKD)
             binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = HKD
         }, usdListener = {
-            SharedPreferencesUtils.saveString(this, CURRENCY, USD)
+            SharedPreferencesUtils.saveSecurityString(this, CURRENCY, USD)
             binding.incCurrencyUnit.findViewById<TextView>(R.id.tv_mine_subtitle).text = USD
         })
     }
 
 
     private fun setLanguage() {
-        when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
+        when (SharedPreferencesUtils.getSecurityString(this, LANGUAGE, CN)) {
             CN -> {
                 binding.incMultiLanguage.findViewById<TextView>(R.id.tv_mine_subtitle).text =
                     getString(R.string.language_simplified_chinese)

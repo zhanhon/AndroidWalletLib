@@ -29,10 +29,10 @@ class TransPopupRecord(val mContext: Activity) : BasePopupWindow(mContext) {
         val view = createPopupById(R.layout.top_notice_dialog)
         binding = DataBindingUtil.bind(view.findViewById(R.id.trans_item))!!
         var wallet: Wallet = Gson().fromJson(
-            SharedPreferencesUtils.getString(mContext, WALLETSELECTED, ""),
+            SharedPreferencesUtils.getSecurityString(mContext, WALLETSELECTED, ""),
             object : TypeToken<Wallet>() {}.type
         )
-        var currencyUnit = SharedPreferencesUtils.getString(mContext, CURRENCY_TRAN, "")
+        var currencyUnit = SharedPreferencesUtils.getSecurityString(mContext, CURRENCY_TRAN, "")
         if (currencyUnit.isNotEmpty()) {
             when (currencyUnit) {
                 "ETH" -> {
@@ -90,22 +90,22 @@ class TransPopupRecord(val mContext: Activity) : BasePopupWindow(mContext) {
         }
 
         binding.rlEth.setOnClickListener {
-            SharedPreferencesUtils.saveString(mContext, CURRENCY_TRAN, "ETH")
+            SharedPreferencesUtils.saveSecurityString(mContext, CURRENCY_TRAN, "ETH")
             RxBus.emitEvent(Pie.EVENT_TRAN_TYPE, 1)
             dismiss()
         }
         binding.rlBtc.setOnClickListener {
-            SharedPreferencesUtils.saveString(mContext, CURRENCY_TRAN, "BTC")
+            SharedPreferencesUtils.saveSecurityString(mContext, CURRENCY_TRAN, "BTC")
             RxBus.emitEvent(Pie.EVENT_TRAN_TYPE, 0)
             dismiss()
         }
         binding.rlTrx.setOnClickListener {
-            SharedPreferencesUtils.saveString(mContext, CURRENCY_TRAN, "TRX")
+            SharedPreferencesUtils.saveSecurityString(mContext, CURRENCY_TRAN, "TRX")
             RxBus.emitEvent(Pie.EVENT_TRAN_TYPE, 2)
             dismiss()
         }
         binding.rlSola.setOnClickListener {
-            SharedPreferencesUtils.saveString(mContext, CURRENCY_TRAN, "SOL")
+            SharedPreferencesUtils.saveSecurityString(mContext, CURRENCY_TRAN, "SOL")
             RxBus.emitEvent(Pie.EVENT_TRAN_TYPE, 3)
             dismiss()
         }

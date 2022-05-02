@@ -94,7 +94,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             R.id.btn_mnemonic_completed -> {
                 if (mnemonicETHChoose == mnemonicETHOriginal) {
                     if (mnemonic != null) {
-                        SharedPreferencesUtils.saveBoolean(this, IS_CONFIRM_MNEMONIC, true)
+                        SharedPreferencesUtils.saveSecurityBoolean(this, IS_CONFIRM_MNEMONIC, true)
                         MnemonicActivity.instance.finish()
                         finish()
                     } else {
@@ -169,7 +169,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         mnemonicETHOriginal.forEach {
             walletETHString = "$walletETHString$it "
         }
-        val walletList = SharedPreferencesUtils.getString(this, WALLETINFO, "")
+        val walletList = SharedPreferencesUtils.getSecurityString(this, WALLETINFO, "")
         if (walletList.isNotEmpty()) {
             saveWalletList =
                 Gson().fromJson(walletList, object : TypeToken<ArrayList<Wallet>>() {}.type)
@@ -231,7 +231,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         saveWalletList.add(walletBTC)
         walletETH.index = saveWalletList[saveWalletList.size - 1].index + 1
         saveWalletList.add(walletETH)
-        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
         detailsList.add(AddressReport.DetailsList(walletETH.address, 0, 1))
         detailsList.add(AddressReport.DetailsList(walletBTC.address, 0, 3))
@@ -245,7 +245,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         if (isValidEthSuccess && isValidTrxSuccess && isValidBtcSuccess && isValidSolSuccess) {
             putAddress(detailsList)
             //设置选择默认
-            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
+            SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletETH))
             startActivity(Intent(this, MainETHActivity::class.java))
         }
     }
@@ -309,13 +309,13 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         }
         walletSOL.index = saveWalletList[0].index + 1
         saveWalletList.add(walletSOL)
-        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
         detailsList.add(AddressReport.DetailsList(walletSOL.address, 0, 3))
         var isValidSolSuccess = isSolValidAddress(walletSOL.address)
         if (isValidSolSuccess) {
             putAddress(detailsList)
-            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletSOL))
+            SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletSOL))
             startActivity(Intent(this, MainSOLActivity::class.java))
         }
     }
@@ -341,13 +341,13 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         }
         walletBTC.index = saveWalletList[0].index + 1
         saveWalletList.add(walletBTC)
-        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
         detailsList.add(AddressReport.DetailsList(walletBTC.address, 0, 3))
         var isValidBtcSuccess = isBtcValidAddress(walletBTC.address)
         if (isValidBtcSuccess) {
             putAddress(detailsList)
-            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletBTC))
+            SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletBTC))
             startActivity(Intent(this, MainBTCActivity::class.java))
         }
     }
@@ -373,13 +373,13 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         }
         walletTRX.index = saveWalletList[0].index + 1
         saveWalletList.add(walletTRX)
-        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
         detailsList.add(AddressReport.DetailsList(walletTRX.address, 0, 2))
         var isValidTrxSuccess = isTrxValidAddress(walletTRX.address)
         if (isValidTrxSuccess) {
             putAddress(detailsList)
-            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletTRX))
+            SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletTRX))
             startActivity(Intent(this, MainTRXActivity::class.java))
         }
     }
@@ -405,13 +405,13 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         }
         walletETH.index = saveWalletList[0].index + 1
         saveWalletList.add(walletETH)
-        SharedPreferencesUtils.saveString(this, WALLETINFO, Gson().toJson(saveWalletList))
+        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
         detailsList.add(AddressReport.DetailsList(walletETH.address, 0, 1))
         var isValidEthSuccess = isEthValidAddress(walletETH.address)
         if (isValidEthSuccess) {
             putAddress(detailsList)
-            SharedPreferencesUtils.saveString(this, WALLETSELECTED, Gson().toJson(walletETH))
+            SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletETH))
             startActivity(Intent(this, MainETHActivity::class.java))
         }
     }
@@ -486,7 +486,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             }
             window.findViewById<Button>(R.id.btn_cancel_create).setOnClickListener {
                 if (isBackupMnemonic) {
-                    SharedPreferencesUtils.saveBoolean(this, IS_CONFIRM_MNEMONIC, false)
+                    SharedPreferencesUtils.saveSecurityBoolean(this, IS_CONFIRM_MNEMONIC, false)
                     MnemonicActivity.instance.finish()
                     finish()
                 } else {
@@ -576,8 +576,8 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("CheckResult")
     private fun putAddress(detailsList: ArrayList<AddressReport.DetailsList>) {
-        val languageCode = SharedPreferencesUtils.getString(appContext, LANGUAGE, CN)
-        val deviceToken = SharedPreferencesUtils.getString(appContext, DEVICE_TOKEN, "")
+        val languageCode = SharedPreferencesUtils.getSecurityString(appContext, LANGUAGE, CN)
+        val deviceToken = SharedPreferencesUtils.getSecurityString(appContext, DEVICE_TOKEN, "")
         if (detailsList.size == 0) return
         mApiService.putAddress(
             AddressReport.Req(detailsList, deviceToken, languageCode).toApiRequest(reportAddressUrl)

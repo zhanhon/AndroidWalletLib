@@ -68,21 +68,21 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         }
         binding.rvMainCurrency.adapter = adapter
 
-        if (SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
+        if (SharedPreferencesUtils.getSecurityString(this, ADDRESS_BOOK_INFO, "").isNotEmpty()) {
             myDataBeans =
                 Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, ""),
+                    SharedPreferencesUtils.getSecurityString(this, ADDRESS_BOOK_INFO, ""),
                     object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                 )
             myData =
                 Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, ""),
+                    SharedPreferencesUtils.getSecurityString(this, ADDRESS_BOOK_INFO, ""),
                     object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                 )
         }
         if (isFromTransfer) {
             walletSelleted = Gson().fromJson(
-                SharedPreferencesUtils.getString(this, WALLETSELECTED, ""),
+                SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
                 object : TypeToken<Wallet>() {}.type
             )
             dataCheck()
@@ -196,14 +196,14 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             Pie.EVENT_ADDRESS_BOOK_UPDATA -> {
                 myDataBeans.set(pos, event.data())
                 myData.set(pos, event.data())
-                SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
+                SharedPreferencesUtils.saveSecurityString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
                 adapter.replaceAt(pos, AddressBookItem(event.data()))
                 adapter.notifyDataSetChanged()
             }
             Pie.EVENT_ADDRESS_BOOK_ADD -> {
                 myData = arrayListOf()
                 myData = Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, ADDRESS_BOOK_INFO, ""),
+                    SharedPreferencesUtils.getSecurityString(this, ADDRESS_BOOK_INFO, ""),
                     object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                 )
                 selectData(idButton)
@@ -248,7 +248,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     delListener = {//删除
                         myDataBeans.removeAt(position)
                         myData.removeAt(position)
-                        SharedPreferencesUtils.saveString(
+                        SharedPreferencesUtils.saveSecurityString(
                             this,
                             ADDRESS_BOOK_INFO,
                             Gson().toJson(myData)
@@ -261,7 +261,7 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 val position = AdapterUtils.getHolder(v).adapterPosition
                 myDataBeans.removeAt(position)
                 myData.removeAt(position)
-                SharedPreferencesUtils.saveString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
+                SharedPreferencesUtils.saveSecurityString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
                 adapter.remove(position)
                 adapter.notifyDataSetChanged()
             }

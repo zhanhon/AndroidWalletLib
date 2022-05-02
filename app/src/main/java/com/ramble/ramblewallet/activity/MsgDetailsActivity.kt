@@ -93,14 +93,14 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
 
     private fun listData() {
         if (id != 0) {
-            list = if (SharedPreferencesUtils.getString(
+            list = if (SharedPreferencesUtils.getSecurityString(
                     this,
                     READ_ID,
                     ""
                 ).isNotEmpty()
             ) {
                 Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, READ_ID, ""),
+                    SharedPreferencesUtils.getSecurityString(this, READ_ID, ""),
                     object : TypeToken<ArrayList<Int>>() {}.type
                 )
             } else {
@@ -113,20 +113,20 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
             } else {
                 list.add(id)
             }
-            SharedPreferencesUtils.saveString(this, READ_ID, Gson().toJson(list))
+            SharedPreferencesUtils.saveSecurityString(this, READ_ID, Gson().toJson(list))
         }
     }
 
     private fun listData2() {
         if (id != 0) {
-            list = if (SharedPreferencesUtils.getString(
+            list = if (SharedPreferencesUtils.getSecurityString(
                     this,
                     READ_ID_NEW,
                     ""
                 ).isNotEmpty()
             ) {
                 Gson().fromJson(
-                    SharedPreferencesUtils.getString(this, READ_ID_NEW, ""),
+                    SharedPreferencesUtils.getSecurityString(this, READ_ID_NEW, ""),
                     object : TypeToken<ArrayList<Int>>() {}.type
                 )
             } else {
@@ -140,7 +140,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
                 list.add(id)
             }
 
-            SharedPreferencesUtils.saveString(this, READ_ID_NEW, Gson().toJson(list))
+            SharedPreferencesUtils.saveSecurityString(this, READ_ID_NEW, Gson().toJson(list))
         }
     }
 
@@ -185,7 +185,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setLanguage() {
-        when (SharedPreferencesUtils.getString(this, LANGUAGE, CN)) {
+        when (SharedPreferencesUtils.getSecurityString(this, LANGUAGE, CN)) {
             CN -> {
                 LanguageSetting.setLanguage(this, 1)
             }
