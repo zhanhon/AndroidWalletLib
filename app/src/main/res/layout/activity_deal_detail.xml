@@ -338,7 +338,7 @@
                                 android:layout_weight="1"
                                 android:ellipsize="end"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/sp_13"
+                                android:textSize="@dimen/sp_12"
                                 tools:text="0x2323243245q777qqqqqqqqqqqqqqqq" />
 
                             <ImageView
