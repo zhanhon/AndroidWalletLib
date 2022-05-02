@@ -46,7 +46,7 @@ class WelcomeActivity : BaseActivity() {
             this,
             ISFINGERPRINT_KEY_COMMON,
             false
-        ) || SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY_ALL, false)
+        ) || SharedPreferencesUtils.getBoolean(this, ISFINGERPRINT_KEY, false)
         if (isFinger) {
             ToolUtils.supportFingerprint(this)
         }
