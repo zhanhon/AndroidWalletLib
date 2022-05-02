@@ -79,13 +79,13 @@ android {
         //开发环境：http://13.229.173.84:8095/
         //ETH开发节点：http://18.141.62.32:8545
         //TRX节点nile：https://api.nileex.io
-//        pre_dev {
-//            applicationId "com.ramble.ramblewallet"
-//            buildConfigField "long", "PLATFORM_ID", '1'
-//            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.229.173.84:8095/"}'
-//            buildConfigField "String[]", "RPC_ETH_NODE", '{"http://18.141.62.32:8545"}'
-//            buildConfigField "String[]", "RPC_TRX_NODE", '{"https://api.nileex.io"}'
-//        }
+        pre_dev {
+            applicationId "com.ramble.ramblewallet"
+            buildConfigField "long", "PLATFORM_ID", '1'
+            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.229.173.84:8095/"}'
+            buildConfigField "String[]", "RPC_ETH_NODE", '{"http://18.141.62.32:8545"}'
+            buildConfigField "String[]", "RPC_TRX_NODE", '{"https://api.nileex.io"}'
+        }
         //测试环境：http://13.214.207.185:8095/
         //ETH测试节点：http://122.248.244.178:8545
         //TRX节点nile：https://api.nileex.io
@@ -99,13 +99,13 @@ android {
         //测试环境：http://13.214.207.185:8095/
         //ETH测试节点：https://mainnet.infura.io/v3
         //TRX节点nile：https://api.trongrid.io
-        pre_formal {
-            applicationId "com.ramble.ramblewallet"
-            buildConfigField "long", "PLATFORM_ID", '1'
-            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.229.173.84:8095/"}'
-            buildConfigField "String[]", "RPC_ETH_NODE", '{"https://mainnet.infura.io/v3"}'
-            buildConfigField "String[]", "RPC_TRX_NODE", '{"https://api.trongrid.io"}'
-        }
+//        pre_formal {
+//            applicationId "com.ramble.ramblewallet"
+//            buildConfigField "long", "PLATFORM_ID", '1'
+//            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.229.173.84:8095/"}'
+//            buildConfigField "String[]", "RPC_ETH_NODE", '{"https://mainnet.infura.io/v3"}'
+//            buildConfigField "String[]", "RPC_TRX_NODE", '{"https://api.trongrid.io"}'
+//        }
     }
 
 }
@@ -269,4 +269,6 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'com.zhihu.android:matisse:0.5.3-beta3'
     implementation 'com.github.razerdp:BasePopup:2.1.9'
+    //wallet-connect
+    implementation project(":wallet-connect")
 }

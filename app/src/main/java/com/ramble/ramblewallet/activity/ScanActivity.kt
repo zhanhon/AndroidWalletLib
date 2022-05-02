@@ -2,11 +2,15 @@ package com.ramble.ramblewallet.activity
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
@@ -18,6 +22,12 @@ import com.google.gson.reflect.TypeToken
 import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.QRCodeReader
+import com.paytomat.walletconnect.android.Status
+import com.paytomat.walletconnect.android.WCCallbacks
+import com.paytomat.walletconnect.android.WCInteractor
+import com.paytomat.walletconnect.android.model.WCBinanceOrder
+import com.paytomat.walletconnect.android.model.WCPeerMeta
+import com.paytomat.walletconnect.android.model.WCSession
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.MainTokenBean
@@ -44,14 +54,16 @@ import java.util.*
  */
 
 class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
-    EasyPermissions.PermissionCallbacks {
+    EasyPermissions.PermissionCallbacks , WCCallbacks {
     private lateinit var binding: ActivityScanBinding
     private var isLight = false
     private var zxingview: ZXingView? = null
     private var type = 0
     private lateinit var tokenBean: MainTokenBean
     private lateinit var walletSelleted: Wallet
+    private var interactor: WCInteractor? = null
 
+    private val handler: Handler = Handler(Looper.getMainLooper())
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -154,6 +166,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     override fun onStart() {
         super.onStart()
         requestCodeQRCodePermissions()
+        interactor?.connect()
     }
 
     override fun onRequestPermissionsResult(
@@ -181,6 +194,7 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     override fun onStop() {
         super.onStop()
         zxingview?.stopCamera()
+        interactor?.disconnect()
     }
 
     override fun onDestroy() {
@@ -208,20 +222,44 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
         }
     }
 
+    private fun onWalletConnect(result:String){
+        if (interactor != null) {
+            interactor?.killSession()
+            interactor = null
+        } else {
+            val sessionStr: String = result
+            val clientMeta = WCPeerMeta(getString(R.string.app_name), "https://github.com/TrustWallet/wallet-connect-swift")
+            val session: WCSession = WCSession.fromURI(sessionStr) ?: return
+
+            //Use Prefs instead
+            interactor = WCInteractor(
+                session, clientMeta, Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+            )
+            interactor?.callbacks = this
+            interactor?.connect()
+        }
+    }
+
     override fun onScanQRCodeSuccess(result: String?) {
         zxingview?.stopSpot()
-        when (type) {
-            1 -> {
-                RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_SCAN, result)
-                finish()
+        if (result!!.contains("wc:")){
+            if (type==3){
+                onWalletConnect(result)
             }
-            else -> {
-                if (result != null) {
-                    showBottomSan(this, result, walletSelleted.walletType, tokenBean, type)
+        }else{
+            when (type) {
+                1 -> {
+                    RxBus.emitEvent(Pie.EVENT_ADDRESS_BOOK_SCAN, result)
+                    finish()
                 }
-
+                else -> {
+                    if (result != null) {
+                        showBottomSan(this, result, walletSelleted.walletType, tokenBean, type)
+                    }
+                }
             }
         }
+
     }
 
 
@@ -231,6 +269,52 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
 
     override fun onScanQRCodeOpenCameraError() {
         //暂时不需要实现此方法
+    }
+
+    override fun onStatusUpdate(status: Status) {
+        handler.post {
+            when (status) {
+                Status.DISCONNECTED -> "Disconnected"
+                Status.FAILED_CONNECT -> "Failed to connect"
+                Status.CONNECTING -> "Connecting"
+                Status.CONNECTED -> "Connected"
+            }
+
+//            screen_main_connect_button.isEnabled = status != Status.CONNECTING
+//            screen_main_connect_button.text = if (status == Status.CONNECTED) "Disconnect" else "Connect"
+        }
+    }
+
+    override fun onSessionRequest(id: Long, peer: WCPeerMeta) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            .setMessage("Confirm session with ${peer.url}")
+            .setPositiveButton("Confirm") { _, _ ->
+                interactor?.approveSession(
+                    arrayOf(walletSelleted.address),
+                    1
+                )
+            }.setNegativeButton("Reject") { _, _ ->
+                interactor?.rejectSession()
+                interactor?.killSession()
+            }
+        handler.post { builder.show() }
+    }
+
+    override fun onBnbSign(id: Long, order: WCBinanceOrder<*>) {
+        handler.post {
+            AlertDialog.Builder(this)
+                .setMessage(Gson().toJson(order))
+                .setPositiveButton("ok") { _, _ ->
+//                    val orderJson: String = GsonBuilder().serializeNulls().create().toJson(order)
+//                    val signature: ByteArray = Signature.signMessage(orderJson.toByteArray(), privateKey)
+//                    val signed = WCBinanceOrderSignature(
+//                        Hex.toHexString(signature),
+//                        Hex.toHexString(privateKey.publicKey.bytes)
+//                    )
+//                    interactor?.approveBnbOrder(id, signed)
+                }.setNegativeButton("no") { _, _ -> interactor?.rejectRequest(id, "Rejected") }
+                .show()
+        }
     }
 
 }
