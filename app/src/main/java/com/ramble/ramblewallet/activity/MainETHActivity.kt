@@ -75,16 +75,16 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
      * 数据初始化
      */
     private fun initView() {
-        walletSelleted = Gson().fromJson(
-            SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
-            object : TypeToken<Wallet>() {}.type
-        )
         if (SharedPreferencesUtils.getSecurityString(
                 this,
                 TOKEN_INFO_NO,
                 ""
             ).isNotEmpty()
         ) {
+            walletSelleted = Gson().fromJson(
+                SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
+                object : TypeToken<Wallet>() {}.type
+            )
             myAllToken = Gson().fromJson(
                 SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, ""),
                 object : TypeToken<ArrayList<AllTokenBean>>() {}.type
