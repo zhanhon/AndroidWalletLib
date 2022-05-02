@@ -30,7 +30,7 @@ public class SymmEncoder {
 
     private static byte[] AesEcbDecode(byte[] encodedText, SecretKey key) {
         try {
-            Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
+            Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
             cipher.init(Cipher.DECRYPT_MODE, key);
             return cipher.doFinal(encodedText);
         } catch (Exception ex) {
