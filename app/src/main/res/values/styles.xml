@@ -101,7 +101,7 @@
 
     <style name="GameCartSetQuickAmountButton" parent="SingleLineText">
         <item name="android:layout_width">@dimen/dp_100</item>
-        <item name="android:layout_height">@dimen/dp_30</item>
+        <item name="android:layout_height">@dimen/dp_40</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/sp_15</item>
