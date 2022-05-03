@@ -32,14 +32,15 @@ object TransferSOLUtils {
 
     fun getSOLBalance(context: Activity, address: String) {
         Thread {
-            var balance by Delegates.notNull<Float>()
+            var balance by Delegates.notNull<BigDecimal>()
             try {
                 val solana =
                     Solana(
                         NetworkingRouter(RPCEndpoint.mainnetBetaSolana),
                         InMemoryAccountStorage()
                     )
-                balance = solana.api.getBalance(PublicKey(address)).blockingGet() / 1000000000f
+                val balanceOrigin = solana.api.getBalance(PublicKey(address)).blockingGet()
+                balance = BigDecimal(balanceOrigin.toString()).divide(BigDecimal("10").pow(9))
                 if (context is MainSOLActivity) {
                     context.setSolBalance(BigDecimal(balance.toString()))
                 }
