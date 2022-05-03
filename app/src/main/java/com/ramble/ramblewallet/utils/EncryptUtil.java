@@ -107,7 +107,7 @@ public class EncryptUtil {
      */
     public String encrypt(String plainText) {
         try {
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             SecretKeySpec keyspec = new SecretKeySpec(key.getBytes(), "AES");
             cipher.init(Cipher.ENCRYPT_MODE, keyspec);
             byte[] encrypted = cipher.doFinal(plainText.getBytes());
@@ -126,7 +126,7 @@ public class EncryptUtil {
     public String decrypt(String cipherText) {
         try {
             byte[] encrypted1 = Base64.decode(cipherText, Base64.NO_WRAP);
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             SecretKeySpec keyspec = new SecretKeySpec(key.getBytes(), "AES");
             cipher.init(Cipher.DECRYPT_MODE, keyspec);
             byte[] original = cipher.doFinal(encrypted1);
