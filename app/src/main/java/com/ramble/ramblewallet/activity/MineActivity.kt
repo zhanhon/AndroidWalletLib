@@ -153,8 +153,8 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun checkAppVersion(version: AppVersion) {
-        UpdateUtils().checkUpdate(version, false)
+    private fun checkAppVersion(version: AppVersion,title:String,isFoce:Boolean) {
+        UpdateUtils().checkUpdate(version, title,isFoce,false)
     }
 
     /****
@@ -181,15 +181,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
     private fun confirmTipsDialog(version: AppVersion) {
         val title = version.date + " " + version.version + getString(R.string.update_connect)
-        showVersionDialog(
-            this,
-            version.content!!,
-            titleContent = title,
-            confirmListener = {
-                checkAppVersion(version)
-            },
-            isForceUpdate = true
-        )
+        checkAppVersion(version,title,false)
     }
 
     override fun onResume() {

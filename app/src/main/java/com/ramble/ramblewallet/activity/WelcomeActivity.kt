@@ -84,9 +84,7 @@ class WelcomeActivity : BaseActivity() {
      */
     private fun forcedUpDataDialog(version: AppVersion) {
         val title = version.date + " " + version.version + getString(R.string.update_connect)
-        showVersionDialog(this, version.content!!, titleContent = title, confirmListener = {
-            checkAppVersion(version)
-        }, isForceUpdate = false)
+        checkAppVersion(version,title,true)
     }
 
     /***
@@ -94,11 +92,7 @@ class WelcomeActivity : BaseActivity() {
      */
     private fun upDataDialog(version: AppVersion) {
         val title = version.date + " " + version.version + getString(R.string.update_connect)
-        showVersionDialog(
-            this, version.content!!, titleContent = title,
-            confirmListener = { checkAppVersion(version) },
-            btcListener = { startActivityJun() }, isForceUpdate = true
-        )
+        checkAppVersion(version,title,false)
     }
 
     override fun onRxBus(event: RxBus.Event) {
@@ -117,8 +111,8 @@ class WelcomeActivity : BaseActivity() {
         }
     }
 
-    private fun checkAppVersion(version: AppVersion) {
-        UpdateUtils().checkUpdate(version, false)
+    private fun checkAppVersion(version: AppVersion,title: String,isFoce:Boolean) {
+        UpdateUtils().checkUpdate(version, title,isFoce,true)
     }
 
     /***

@@ -77,15 +77,16 @@
 
         </LinearLayout>
 
-
         <Button
             android:id="@+id/btn_cancel"
             style="@style/GameCartSetQuickAmountButton"
             android:layout_width="@dimen/dp_100"
             android:layout_marginTop="18dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/shape_ios_commit_btn"
+            android:background="@drawable/shape_white_bottom_green_line_btn"
             android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/color_3BB7A5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintRight_toRightOf="parent"
