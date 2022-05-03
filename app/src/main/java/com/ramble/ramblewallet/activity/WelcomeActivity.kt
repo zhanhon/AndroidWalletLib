@@ -32,7 +32,6 @@ class WelcomeActivity : BaseActivity() {
     private lateinit var wallet: Wallet
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var putAddressTimes = 0
-    private var isFinger = false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,14 +41,6 @@ class WelcomeActivity : BaseActivity() {
             WindowManager.LayoutParams.FLAG_SECURE
         )
         setContentView(R.layout.activity_welcome)
-        isFinger = SharedPreferencesUtils.getSecurityBoolean(
-            this,
-            ISFINGERPRINT_KEY_COMMON,
-            false
-        ) || SharedPreferencesUtils.getSecurityBoolean(this, ISFINGERPRINT_KEY, false)
-        if (isFinger) {
-            ToolUtils.supportFingerprint(this)
-        }
         skipConfirmHandle()
         isForcedUpdatingShow()
     }

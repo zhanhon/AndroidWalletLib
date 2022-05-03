@@ -102,8 +102,11 @@ class FingerPrintActivity : BaseActivity(), View.OnClickListener,
             btnCancel = getString(R.string.cancel),
             btnConfirm = getString(R.string.btn_confirm),
             confirmListener = {
-                SharedPreferencesUtils.saveSecurityBoolean(this, key, true)
-                ToolUtils.supportFingerprint(this)
+                if (ToolUtils.supportFingerprint(this)){
+                    SharedPreferencesUtils.saveSecurityBoolean(this, key, true)
+                }else{
+                    buttonView.isChecked = false
+                }
             },
             btnCancleListener = {
                 buttonView.isChecked = false
