@@ -122,7 +122,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         isFinger = SharedPreferencesUtils.getSecurityBoolean(this, ISFINGERPRINT_KEY, false)
-                || SharedPreferencesUtils.getSecurityBoolean(this, ISFINGERPRINT_KEY_ALL, false)
         initData()
         if (walletSelleted.walletType == 2) {
             binding.edtInputQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(24))

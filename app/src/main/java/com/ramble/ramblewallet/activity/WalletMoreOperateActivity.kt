@@ -277,7 +277,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             this,
             ISFINGERPRINT_KEY_COMMON,
             false
-        ) || SharedPreferencesUtils.getSecurityBoolean(this, ISFINGERPRINT_KEY_ALL, false)
+        )
     }
 
     private fun inputPasswordDialog(title: String) {
