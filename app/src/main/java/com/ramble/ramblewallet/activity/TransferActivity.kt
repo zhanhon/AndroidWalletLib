@@ -673,7 +673,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                         walletSelleted.address,
                         transferReceiverAddress!!,
                         walletSelleted.privateKey,
-                        BigDecimal(amount).multiply(BigDecimal("10").pow(6))
+                        BigDecimal(amount).multiply(BigDecimal("10").pow(9))
                     )
                 }
             }
