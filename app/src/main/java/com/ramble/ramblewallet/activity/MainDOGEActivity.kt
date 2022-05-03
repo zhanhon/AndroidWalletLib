@@ -341,7 +341,7 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
         }
         binding.tvDogeAddress.text = addressHandle(walletSelleted.address)
         isAlreadyBackupMnemonic = SharedPreferencesUtils.getSecurityBoolean(this, ISALREADYBACKUPMNEMONIC, false)
-        if (!isAlreadyBackupMnemonic) {
+        if (!isAlreadyBackupMnemonic && walletSelleted.mnemonic.isNotEmpty()) {
             showCommonDialog(this,
                 title = getString(R.string.tips),
                 titleContent = getString(R.string.mnemonic_no_backup_tips),
