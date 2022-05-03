@@ -333,16 +333,18 @@ fun showCurrencyDialog(
  */
 fun showCommonDialog(
     activity: Activity,
-    title: String,
+    title: String? = null,
     titleContent: String? = null,
+    btnCancel: String? = null,
+    btnConfirm: String? = null,
     confirmListener: View.OnClickListener? = null,
-    tvcListener: View.OnClickListener? = null,
-    btcListener: View.OnClickListener? = null,
+    btnCancleListener: View.OnClickListener? = null,
+    tvCancelListener: View.OnClickListener? = null,
     isForceUpdate: Boolean? = null
 ): Dialog {
-    val binding: DialogDeleteConfirmTipsBinding =
+    val binding: DialogCommonBinding =
         LayoutInflater.from(activity).dataBinding(
-            R.layout.dialog_delete_confirm_tips
+            R.layout.dialog_common
         )
 
     return AlertDialog.Builder(activity).create().apply {
@@ -354,27 +356,26 @@ fun showCommonDialog(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
-        if (titleContent != null) {
-            binding.tvTitle.text = titleContent
-            setCancelable(false)
-        }
         if (isForceUpdate != null) {
             binding.btnCancel.isVisible = isForceUpdate
             if (!isForceUpdate) {
                 binding.btnConfirm.text = activity.getString(R.string.force_update)
             }
         }
-        binding.tvContent.text = title
+        binding.tvTitle.text = title
+        binding.tvContent.text = titleContent
+        binding.btnCancel.text = btnCancel
+        binding.btnConfirm.text = btnConfirm
         binding.btnConfirm.setOnClickListener {
             dismiss()
             confirmListener?.onClick(it)
         }
-        binding.tvCancel.setOnClickListener {
-            tvcListener?.onClick(it)
+        binding.btnCancel.setOnClickListener {
+            btnCancleListener?.onClick(it)
             dismiss()
         }
-        binding.btnCancel.setOnClickListener {
-            btcListener?.onClick(it)
+        binding.tvCancel.setOnClickListener {
+            tvCancelListener?.onClick(it)
             dismiss()
         }
     }

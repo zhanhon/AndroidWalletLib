@@ -49,6 +49,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     private var tokenBalance: BigDecimal = BigDecimal("0")
     private var totalBalance: BigDecimal = BigDecimal("0")
     private var unitPrice = ""
+    private var isAlreadyBackupMnemonic = false
 
     //TRC20-USDT
     private var contractAddress = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t" //正式链

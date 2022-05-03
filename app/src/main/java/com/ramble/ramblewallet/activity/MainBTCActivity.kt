@@ -47,6 +47,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
     private var btcBalance: BigDecimal = BigDecimal("0")
     private var totalBalance: BigDecimal = BigDecimal("0")
     private var unitPrice = ""
+    private var isAlreadyBackupMnemonic = false
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")

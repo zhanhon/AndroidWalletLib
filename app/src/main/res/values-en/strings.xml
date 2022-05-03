@@ -147,6 +147,9 @@
     <string name="error_tips_backup">You have entered the wrong input more than three times, Whether to cancel or return to the previous page</string>
     <string name="btc_minimum_amount_prompt">The minimum amount is <tools>%s</tools>，Please try again.</string>
     <string name="save_qr_picture_title"> WALLET\'S KEYSTORE</string>
+    <string name="mnemonic_no_backup_tips">The mnemonic has not been recorded yet. To backup the mnemonic, please select Backup in the wallet management</string>
+    <string name="backup_now">Backup</string>
+    <string name="backup_later">Later</string>
 
 
     <string name="input_keystore">Please Enter Keystore</string>

@@ -50,6 +50,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private var ethBalance: BigDecimal = BigDecimal("0")
     private var totalBalance: BigDecimal = BigDecimal("0.00")
     private var unitPriceETH = ""
+    private var isAlreadyBackupMnemonic = false
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -395,6 +396,20 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             }.start()
         }
         binding.tvEthAddress.text = addressHandle(walletSelleted.address)
+        isAlreadyBackupMnemonic = SharedPreferencesUtils.getSecurityBoolean(this, ISALREADYBACKUPMNEMONIC, false)
+        if (!isAlreadyBackupMnemonic) {
+            showCommonDialog(this,
+                title = getString(R.string.tips),
+                titleContent = getString(R.string.mnemonic_no_backup_tips),
+                btnCancel = getString(R.string.backup_later),
+                btnConfirm = getString(R.string.backup_now),
+                confirmListener = {
+                    startActivity(Intent(this, WalletMoreOperateActivity::class.java).apply {
+                        putExtra(ARG_PARAM1, Gson().toJson(walletSelleted))
+                    })
+                }
+            )
+        }
     }
 
     private fun setBalanceETH(balance: BigDecimal) {

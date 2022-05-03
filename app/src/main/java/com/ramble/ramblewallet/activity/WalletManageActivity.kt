@@ -79,7 +79,11 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             }
         }
         saveWalletListSorted = ArrayList(saveWalletList.sortedByDescending { it.index })
-        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletListSorted))
+        SharedPreferencesUtils.saveSecurityString(
+            this,
+            WALLETINFO,
+            Gson().toJson(saveWalletListSorted)
+        )
         initView()
     }
 
@@ -304,14 +308,19 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     }
 
     private fun deleteConfirmTipsDialog() {
-        showCommonDialog(this, getString(R.string.please_confirm_delete_wallet), confirmListener = {
-            btnConfirmSub()
-        }, btcListener = {
-            isDeletePage = false
-            binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
-            binding.ivAddWallet.visibility = View.VISIBLE
-            loadData(walletManageBean)
-        })
+        showCommonDialog(this,
+            title = getString(R.string.tips),
+            titleContent = getString(R.string.please_confirm_delete_wallet),
+            btnCancel = getString(R.string.cancel),
+            btnConfirm = getString(R.string.btn_confirm),
+            confirmListener = { btnConfirmSub() },
+            btnCancleListener = {
+                isDeletePage = false
+                binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
+                binding.ivAddWallet.visibility = View.VISIBLE
+                loadData(walletManageBean)
+            }
+        )
     }
 
     private fun btnConfirmSub() {

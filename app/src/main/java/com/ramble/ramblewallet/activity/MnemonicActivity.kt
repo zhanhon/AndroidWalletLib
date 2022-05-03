@@ -29,10 +29,7 @@ import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMnemonicBinding
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.utils.ClipboardUtils
-import com.ramble.ramblewallet.utils.DoubleUtils
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.applyIo
+import com.ramble.ramblewallet.utils.*
 
 
 class MnemonicActivity : BaseActivity(), View.OnClickListener {
@@ -48,10 +45,11 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
     private var walletETHString: String = ""
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4:SOL|5:DOGE|100:BTC、ETH、TRX、SOL、DOGE
-    private var isBackupMnemonic = false
+    private var isFromBackupMnemonic = false
     private var mnemonic: String? = null
     private var fromMnemonicList: ArrayList<String>? = arrayListOf()
     private var putAddressTimes = 0
+    private var isAlreadyBackupMnemonic = false
 
     companion object {
         @JvmField
@@ -70,7 +68,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         walletName = intent.getStringExtra(ARG_PARAM1).toString()
         walletPassword = intent.getStringExtra(ARG_PARAM2).toString()
         walletType = intent.getIntExtra(ARG_PARAM3, 1)
-        isBackupMnemonic = intent.getBooleanExtra(ARG_PARAM4, false)
+        isFromBackupMnemonic = intent.getBooleanExtra(ARG_PARAM4, false)
         mnemonic = intent.getStringExtra(ARG_PARAM5)
         fromMnemonicList = intent.getStringArrayListExtra(ARG_PARAM6)
 
@@ -94,7 +92,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
-        if (isBackupMnemonic) {
+        if (isFromBackupMnemonic) {
             binding.btnSkipThis.visibility = View.GONE
         } else {
             binding.btnSkipThis.visibility = View.VISIBLE
@@ -130,9 +128,23 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                         ClipboardUtils.copy(mnemonicList[0], this)
                     }
                 }
+                SharedPreferencesUtils.saveSecurityBoolean(this, ISALREADYBACKUPMNEMONIC, true)
             }
             R.id.btn_skip_this -> {
-                skipConfirmHandle()
+                isAlreadyBackupMnemonic = SharedPreferencesUtils.getSecurityBoolean(this, ISALREADYBACKUPMNEMONIC, false)
+                if (isAlreadyBackupMnemonic) {
+                    skipConfirmHandle()
+                } else {
+                    showCommonDialog(this,
+                        title = getString(R.string.tips),
+                        titleContent = getString(R.string.mnemonic_no_backup_tips),
+                        btnCancel = getString(R.string.cancel),
+                        btnConfirm = getString(R.string.btn_confirm),
+                        confirmListener = {
+                            skipConfirmHandle()
+                        }
+                    )
+                }
             }
         }
     }
@@ -160,7 +172,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 putExtra(ARG_PARAM3, walletPassword)
                 putExtra(ARG_PARAM4, currentTab)
                 putExtra(ARG_PARAM5, walletType)
-                putExtra(ARG_PARAM6, isBackupMnemonic)
+                putExtra(ARG_PARAM6, isFromBackupMnemonic)
                 putExtra(ARG_PARAM7, mnemonic)
             })
         }

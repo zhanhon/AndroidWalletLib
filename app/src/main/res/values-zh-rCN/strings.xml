@@ -147,6 +147,9 @@
     <string name="error_tips_backup">您已输入错误超过三次,是否取消或返回上个页面</string>
     <string name="btc_minimum_amount_prompt">最小转账金额为<tools>%s</tools>，请重新输入</string>
     <string name="save_qr_picture_title">钱包的KEYSTORE</string>
+    <string name="mnemonic_no_backup_tips">尚未记录助记词，如需备份，请在钱包管理中选择备份</string>
+    <string name="backup_now">立即备份</string>
+    <string name="backup_later">稍后备份</string>
 
 
     <string name="input_keystore">请输入Keystore</string>

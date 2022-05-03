@@ -67,14 +67,22 @@ class FingerPrintActivity : BaseActivity(), View.OnClickListener,
                 if (isChecked) {
                     confirmTipsDialog(buttonView, ISFINGERPRINT_KEY_ALL)
                 } else {
-                    SharedPreferencesUtils.saveSecurityBoolean(this, ISFINGERPRINT_KEY_ALL, isChecked)
+                    SharedPreferencesUtils.saveSecurityBoolean(
+                        this,
+                        ISFINGERPRINT_KEY_ALL,
+                        isChecked
+                    )
                 }
             }
             R.id.toggle_common -> {
                 if (isChecked) {
                     confirmTipsDialog(buttonView, ISFINGERPRINT_KEY_COMMON)
                 } else {
-                    SharedPreferencesUtils.saveSecurityBoolean(this, ISFINGERPRINT_KEY_COMMON, isChecked)
+                    SharedPreferencesUtils.saveSecurityBoolean(
+                        this,
+                        ISFINGERPRINT_KEY_COMMON,
+                        isChecked
+                    )
                 }
             }
             R.id.toggle_trans -> {
@@ -88,13 +96,21 @@ class FingerPrintActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun confirmTipsDialog(buttonView: CompoundButton, key: String) {
-        showCommonDialog(this, getString(R.string.fingerprint_toggle_text), confirmListener = {
-            SharedPreferencesUtils.saveSecurityBoolean(this, key, true)
-            ToolUtils.supportFingerprint(this)
-        }, tvcListener = {
-            buttonView.isChecked = false
-        }, btcListener = {
-            buttonView.isChecked = false
-        })
+        showCommonDialog(this,
+            title = getString(R.string.tips),
+            titleContent = getString(R.string.fingerprint_toggle_text),
+            btnCancel = getString(R.string.cancel),
+            btnConfirm = getString(R.string.btn_confirm),
+            confirmListener = {
+                SharedPreferencesUtils.saveSecurityBoolean(this, key, true)
+                ToolUtils.supportFingerprint(this)
+            },
+            btnCancleListener = {
+                buttonView.isChecked = false
+            },
+            tvCancelListener = {
+                buttonView.isChecked = false
+            }
+        )
     }
 }

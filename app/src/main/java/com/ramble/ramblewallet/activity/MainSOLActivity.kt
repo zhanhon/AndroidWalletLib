@@ -51,6 +51,7 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
     private var tokenBalance: BigDecimal = BigDecimal("0")
     private var totalBalance: BigDecimal = BigDecimal("0")
     private var unitPrice = ""
+    private var isAlreadyBackupMnemonic = false
 
     //SPL-USDT
     private var contractAddress = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB" //正式链

@@ -221,10 +221,16 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun deleteConfirmTipsDialog() {
-        showCommonDialog(this, getString(R.string.please_confirm_delete_wallet), confirmListener = {
-            btnConfirmSub()
-            finish()
-        })
+        showCommonDialog(this,
+            title = getString(R.string.tips),
+            titleContent = getString(R.string.please_confirm_delete_wallet),
+            btnCancel = getString(R.string.cancel),
+            btnConfirm = getString(R.string.btn_confirm),
+            confirmListener = {
+                btnConfirmSub()
+                finish()
+            }
+        )
     }
 
     private fun btnConfirmSub() {
