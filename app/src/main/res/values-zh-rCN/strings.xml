@@ -232,7 +232,7 @@
     <string name="fingerprint_transaction">指纹交易</string>
     <string name="fingerprint_all">全选</string>
     <string name="fingerprint_common_toggle">一般管理指纹开关</string>
-    <string name="fingerprint_trans_toggle">指纹交易开关</string>
+    <string name="fingerprint_trans_toggle">交易指纹开关</string>
     <string name="fingerprint_toggle_text">开启指纹辨识功能，将加速管理便利但有基础安全隐忧，请确认开启</string>
     <string name="fingerprint_success">指纹解锁成功！</string>
     <string name="fingerprint_failed">指纹解锁失败！</string>
