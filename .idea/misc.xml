@@ -7,6 +7,8 @@
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/corner_all.xml" value="0.2185" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/selector_check_sol.xml" value="0.213" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/selector_check_trx.xml" value="0.213" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/shape_gray_endways_bottom_btn.xml" value="0.1895" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/shape_green_endways_bottom_btn.xml" value="0.1895" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/shape_ios_cancel_btn.xml" value="0.205" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/shape_wallet_manage_btc.xml" value="0.213" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/shape_wallet_manage_doge.xml" value="0.213" />
@@ -15,7 +17,9 @@
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/vector_trx.xml" value="0.213" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_about.xml" value="0.3605128205128205" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_create_wallet_list.xml" value="0.35185185185185186" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_main_btc.xml" value="0.30833333333333335" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_main_doge.xml" value="0.3605128205128205" />
+        <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_main_eth.xml" value="0.30833333333333335" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_main_sol.xml" value="0.3605128205128205" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_main_trx.xml" value="0.337037037037037" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/layout/activity_mine.xml" value="0.36614583333333334" />

@@ -284,43 +284,26 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_90"
+                            android:layout_marginTop="@dimen/dp_85"
                             android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginTop="@dimen/dp_2"
-                                android:layout_marginBottom="@dimen/dp_2"
-                                android:background="@drawable/shape_green_endways_bottom_btn" />
 
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/dp_5"
+                                android:drawableBottom="@drawable/shape_green_endways_bottom_btn"
                                 android:text="@string/asset"
                                 android:textColor="@color/color_000000" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginStart="@dimen/dp_20"
-                                android:layout_marginTop="@dimen/dp_2"
-                                android:layout_marginBottom="@dimen/dp_2"
-                                android:background="@drawable/shape_gray_endways_bottom_btn" />
 
                             <TextView
                                 android:id="@+id/tv_ntf"
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginStart="@dimen/dp_5"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_12"
                                 android:text="NFT"
                                 android:textColor="@color/color_9598AA" />
 
                         </LinearLayout>
-
                     </LinearLayout>
 
                 </com.google.android.material.appbar.AppBarLayout>
