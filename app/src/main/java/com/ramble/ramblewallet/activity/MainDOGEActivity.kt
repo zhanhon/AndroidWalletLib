@@ -340,6 +340,20 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
             //balanceOfDoge(this, walletSelleted.address)
         }
         binding.tvDogeAddress.text = addressHandle(walletSelleted.address)
+        isAlreadyBackupMnemonic = SharedPreferencesUtils.getSecurityBoolean(this, ISALREADYBACKUPMNEMONIC, false)
+        if (!isAlreadyBackupMnemonic) {
+            showCommonDialog(this,
+                title = getString(R.string.tips),
+                titleContent = getString(R.string.mnemonic_no_backup_tips),
+                btnCancel = getString(R.string.backup_later),
+                btnConfirm = getString(R.string.backup_now),
+                confirmListener = {
+                    startActivity(Intent(this, WalletMoreOperateActivity::class.java).apply {
+                        putExtra(ARG_PARAM1, Gson().toJson(walletSelleted))
+                    })
+                }
+            )
+        }
     }
 
     fun setDogeBalance(balance: BigDecimal) {
