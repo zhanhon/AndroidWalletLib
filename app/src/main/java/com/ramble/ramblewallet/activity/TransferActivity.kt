@@ -128,8 +128,13 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             binding.edtInputQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(24))
             EditTextTools(binding.edtInputQuantity, 24, 6)
         } else {
-            binding.edtInputQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(26))
-            EditTextTools(binding.edtInputQuantity, 26, 8)
+            if (tokenBean.isToken) {
+                binding.edtInputQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(24))
+                EditTextTools(binding.edtInputQuantity, 24, 6)
+            } else {
+                binding.edtInputQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(26))
+                EditTextTools(binding.edtInputQuantity, 26, 8)
+            }
         }
         binding.edtInputQuantity.addTextChangedListener(object : TextWatcher {
             @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
