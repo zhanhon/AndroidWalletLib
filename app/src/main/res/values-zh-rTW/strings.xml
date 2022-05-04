@@ -242,4 +242,6 @@
     <string name="fingerprint_need_add">您至少需要在系統設置中添加一個指紋</string>
     <string name="force_update">強制更新</string>
     <string name="update_connect">更新內容</string>
+    <string name="verify_existing">請驗證指紋</string>
+    <string name="verify_existing_again">驗證指紋失敗，請重新驗證</string>
 </resources>

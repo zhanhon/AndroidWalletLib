@@ -241,4 +241,6 @@
     <string name="fingerprint_need_add">您至少需要在系统设置中添加一个指纹</string>
     <string name="update_connect">更新内容</string>
     <string name="force_update">强制更新</string>
+    <string name="verify_existing">请验证指纹</string>
+    <string name="verify_existing_again">验证指纹失败，请重新验证</string>
 </resources>

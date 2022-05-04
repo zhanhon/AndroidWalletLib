@@ -244,4 +244,6 @@ Please confirm to open.</string>
     <string name="fingerprint_need_add">You need to add at least one fingerprint in the system settings</string>
     <string name="force_update">Force update</string>
     <string name="update_connect">Update content</string>
+    <string name="verify_existing">Verify Existing Fingerprint</string>
+    <string name="verify_existing_again">The verification is failed, please try again.</string>
 </resources>

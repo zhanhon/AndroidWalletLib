@@ -4,20 +4,16 @@ package com.ramble.ramblewallet.wight;
 import android.content.Context;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 import androidx.core.os.CancellationSignal;
 import androidx.fragment.app.DialogFragment;
-
 import com.ramble.ramblewallet.R;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -126,10 +122,8 @@ public class FingerprintDialogFragment extends DialogFragment {
         public void onAuthenticationError(int errMsgId, CharSequence errString) {
             if (!isSelfCancelled) {
                 errorMsg.setText(errString);
-                Log.e("TAG", "errMsgId=" + errMsgId);
-                Toast.makeText(mActivity, "errMsgId=" + errMsgId, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mActivity, "errMsgId=" + errMsgId, Toast.LENGTH_SHORT).show();
                 if (errMsgId == FingerprintManager.FINGERPRINT_ERROR_LOCKOUT) {
-                    Log.e("TAG", "" + errString);
                     dismiss();
                 }
             }
@@ -138,15 +132,13 @@ public class FingerprintDialogFragment extends DialogFragment {
         // 当指纹验证失败的时候会回调此函数，失败之后允许多次尝试，失败次数过多会停止响应一段时间然后再停止sensor的工作
         @Override
         public void onAuthenticationFailed() {
-            errorMsg.setText("指纹认证失败，请再试一次");
-            Log.e("TAG", "onAuthenticationFailed");
+            errorMsg.setText(mActivity.getString(R.string.verify_existing_again));
         }
 
         //错误时提示帮助，比如说指纹错误，我们将显示在界面上 让用户知道情况
         @Override
         public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
             errorMsg.setText(helpString);
-            Log.e("TAG", "helpString=" + helpString);
         }
 
         // 当验证的指纹成功时会回调此函数，然后不再监听指纹sensor
