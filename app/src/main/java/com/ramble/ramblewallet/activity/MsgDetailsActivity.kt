@@ -29,6 +29,7 @@ import com.ramble.ramblewallet.utils.applyIo
  * 描述　: 消息详情
  */
 class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
+
     private lateinit var binding: ActivityMsgDetailsBinding
     private var title = ""
     private var content = ""
@@ -40,10 +41,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
-        )
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_msg_details)
         binding.web.display
         setLanguage()

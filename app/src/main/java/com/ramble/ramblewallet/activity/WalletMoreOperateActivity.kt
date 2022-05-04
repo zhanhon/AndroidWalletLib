@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.Environment.getExternalStorageDirectory
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
@@ -50,8 +51,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityWalletMoreOperateBinding
     private lateinit var walletCurrent: Wallet
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
-    private val sdCardDir =
-        Environment.getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DCIM
+    private val sdCardDir = getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DCIM
     private lateinit var walletSelleted: Wallet
     var mPermissionListener: PermissionListener? = null
     private var times = 0
@@ -61,10 +61,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
-        )
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_wallet_more_operate)
         SharedPreferencesUtils.saveSecurityBoolean(this, IS_CONFIRM_MNEMONIC, false)
         walletCurrent = Gson().fromJson(

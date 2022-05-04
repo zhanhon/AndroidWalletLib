@@ -56,6 +56,7 @@ import java.util.*
 
 class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     EasyPermissions.PermissionCallbacks, WCCallbacks {
+
     private lateinit var binding: ActivityScanBinding
     private var isLight = false
     private var zxingview: ZXingView? = null
@@ -63,16 +64,12 @@ class ScanActivity : BaseActivity(), View.OnClickListener, QRCodeView.Delegate,
     private lateinit var tokenBean: MainTokenBean
     private lateinit var walletSelleted: Wallet
     private var interactor: WCInteractor? = null
-
     private val handler: Handler = Handler(Looper.getMainLooper())
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
-        )
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scan)
         type = getExtras().getInt(ARG_PARAM1, 0)
         tokenBean = intent.getSerializableExtra(ARG_PARAM2) as MainTokenBean

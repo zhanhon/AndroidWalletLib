@@ -28,6 +28,7 @@ import com.ramble.ramblewallet.wight.adapter.FragmentPagerAdapter2
  * 描述　: 代币历史记录
  */
 class QueryActivity : BaseActivity(), View.OnClickListener {
+
     private lateinit var adapter: MyAdapter
     private lateinit var binding: ActivityQueryBinding
     private lateinit var tokenBean: MainTokenBean
@@ -37,10 +38,7 @@ class QueryActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
-        )
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_query)
         countAddress = intent.getStringExtra(ARG_PARAM1).toString()
         tokenBean = intent.getSerializableExtra(ARG_PARAM2) as MainTokenBean

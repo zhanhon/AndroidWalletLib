@@ -30,6 +30,7 @@ import com.ramble.ramblewallet.wight.adapter.FragmentPagerAdapter2
  * 描述　: 交易查询
  */
 class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
+
     private lateinit var adapter: MyAdapter
     private lateinit var binding: ActivityTransactionQueryBinding
     private var isSpread = false
@@ -38,10 +39,7 @@ class TransactionQueryActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
-        )
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_transaction_query)
         initView()
         initListener()

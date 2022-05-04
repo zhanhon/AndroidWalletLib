@@ -59,10 +59,7 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("WrongConstant")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
-        )
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color_8565FF)
         //设置状态栏字体颜色，true:代表黑色，false代表白色
         StateUtils.setLightStatusBar(this, false)
@@ -92,7 +89,6 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
      */
     @SuppressLint("CheckResult")
     private fun redPoint() {
-
         val lang = TimeUtils.dateToLang(this)
         var redList: ArrayList<Page.Record> = arrayListOf()
         var records2: ArrayList<Page.Record> = arrayListOf()

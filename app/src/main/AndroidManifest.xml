@@ -82,11 +82,6 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.NewAddActivity"
-            android:configChanges="keyboardHidden|screenSize|orientation"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activity.WalletManageActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"

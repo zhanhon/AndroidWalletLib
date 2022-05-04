@@ -45,15 +45,11 @@ class AddTokenActivity : BaseActivity(), View.OnClickListener {
     private var myAllToken: ArrayList<AllTokenBean> = arrayListOf()
     private lateinit var walletSelleted: Wallet
     private var isSpread = false
-    private var lastString = ""
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
-        )
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_token)
         initView()
         initListener()

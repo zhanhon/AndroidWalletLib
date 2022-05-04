@@ -61,10 +61,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
-        )
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_mnemonic_confirm)
         walletSelleted = intent.getSerializableExtra(ARG_PARAM1) as Wallet
         mnemonicDoubleList = intent.getStringArrayListExtra(ARG_PARAM2)!!
