@@ -48,7 +48,6 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
     private var dogeBalance: BigDecimal = BigDecimal("0")
     private var totalBalance: BigDecimal = BigDecimal("0")
     private var unitPrice = ""
-    private var isAlreadyBackupMnemonic = false
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -340,8 +339,7 @@ class MainDOGEActivity : BaseActivity(), View.OnClickListener {
             //balanceOfDoge(this, walletSelleted.address)
         }
         binding.tvDogeAddress.text = addressHandle(walletSelleted.address)
-        isAlreadyBackupMnemonic = SharedPreferencesUtils.getSecurityBoolean(this, ISALREADYBACKUPMNEMONIC, false)
-        if (!isAlreadyBackupMnemonic && walletSelleted.mnemonic.isNotEmpty()) {
+        if (!walletSelleted.isBackupAlready && !walletSelleted.mnemonic.isNullOrEmpty()) {
             showCommonDialog(this,
                 title = getString(R.string.tips),
                 titleContent = getString(R.string.mnemonic_no_backup_tips),

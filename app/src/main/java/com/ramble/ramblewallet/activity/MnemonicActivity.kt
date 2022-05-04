@@ -39,17 +39,12 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
     private lateinit var contributingWordsAdapter: MnemonicAdapter
     private lateinit var mnemonicETH: ArrayList<String>
     private lateinit var mnemonicList: List<String>
-    private lateinit var walletName: String
-    private lateinit var walletPassword: String
     private lateinit var currentTab: String
     private var walletETHString: String = ""
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
-    private var walletType = 1 //链类型|1:ETH|2:TRX|3:BTC|4:SOL|5:DOGE|100:BTC、ETH、TRX、SOL、DOGE
-    private var isFromBackupMnemonic = false
-    private var mnemonic: String? = null
-    private var fromMnemonicList: ArrayList<String>? = arrayListOf()
     private var putAddressTimes = 0
     private var isAlreadyBackupMnemonic = false
+    private lateinit var walletSelleted: Wallet
 
     companion object {
         @JvmField
@@ -65,13 +60,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
             WindowManager.LayoutParams.FLAG_SECURE
         )
         binding = DataBindingUtil.setContentView(this, R.layout.activity_mnemonic)
-        walletName = intent.getStringExtra(ARG_PARAM1).toString()
-        walletPassword = intent.getStringExtra(ARG_PARAM2).toString()
-        walletType = intent.getIntExtra(ARG_PARAM3, 1)
-        isFromBackupMnemonic = intent.getBooleanExtra(ARG_PARAM4, false)
-        mnemonic = intent.getStringExtra(ARG_PARAM5)
-        fromMnemonicList = intent.getStringArrayListExtra(ARG_PARAM6)
-
+        walletSelleted = intent.getSerializableExtra(ARG_PARAM1) as Wallet
         initClick()
     }
 
@@ -80,8 +69,8 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         currentTab = "english"//默认英文
         binding.vEnglish.setBackgroundResource(R.color.color_3F5E94)
         binding.vChinese.visibility = View.INVISIBLE
-        if ((mnemonic != null) && (fromMnemonicList != null)) {
-            mnemonicList = fromMnemonicList as ArrayList<String>
+        if ((walletSelleted.mnemonic != null) && (walletSelleted.mnemonicList != null)) {
+            mnemonicList = walletSelleted.mnemonicList as ArrayList<String>
         } else {
             when (SharedPreferencesUtils.getSecurityString(this, LANGUAGE, CN)) {
                 EN, CN -> {
@@ -92,12 +81,17 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
-        if (isFromBackupMnemonic) {
+        if (walletSelleted.address.isNotEmpty()) {
             binding.btnSkipThis.visibility = View.GONE
         } else {
             binding.btnSkipThis.visibility = View.VISIBLE
         }
         createContributingWordsPage(mnemonicList[0])
+        val walletList = SharedPreferencesUtils.getSecurityString(this, WALLETINFO, "")
+        if (walletList.isNotEmpty()) {
+            saveWalletList =
+                Gson().fromJson(walletList, object : TypeToken<ArrayList<Wallet>>() {}.type)
+        }
     }
 
     override fun onClick(v: View) {
@@ -128,10 +122,25 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                         ClipboardUtils.copy(mnemonicList[0], this)
                     }
                 }
-                SharedPreferencesUtils.saveSecurityBoolean(this, ISALREADYBACKUPMNEMONIC, true)
+                if (walletSelleted.address.isNotEmpty()) {
+                    val walletTemp = Wallet(
+                        walletSelleted.walletName,
+                        walletSelleted.walletPassword,
+                        walletSelleted.mnemonic,
+                        walletSelleted.address,
+                        walletSelleted.privateKey,
+                        walletSelleted.keystore,
+                        walletSelleted.walletType,
+                        walletSelleted.mnemonicList
+                    )
+                    walletTemp.isBackupAlready = true
+                    updateListData(walletTemp)
+                    SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletTemp))
+                    SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
+                }
+                isAlreadyBackupMnemonic = true
             }
             R.id.btn_skip_this -> {
-                isAlreadyBackupMnemonic = SharedPreferencesUtils.getSecurityBoolean(this, ISALREADYBACKUPMNEMONIC, false)
                 if (isAlreadyBackupMnemonic) {
                     skipConfirmHandle()
                 } else {
@@ -147,6 +156,17 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    private fun updateListData(walletTemp: Wallet) {
+        var position = 0
+        saveWalletList.forEachIndexed { index, wallet ->
+            if (wallet.address == walletSelleted.address) {
+                position = index
+            }
+        }
+        saveWalletList.removeAt(position)
+        saveWalletList.add(position, walletTemp)
     }
 
     private fun initClick() {
@@ -168,12 +188,12 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         binding.btnContributingWordsConfirm.setOnClickListener {
             startActivity(Intent(this, MnemonicConfirmActivity::class.java).apply {
                 putStringArrayListExtra(ARG_PARAM1, ArrayList(mnemonicList))
-                putExtra(ARG_PARAM2, walletName)
-                putExtra(ARG_PARAM3, walletPassword)
+                putExtra(ARG_PARAM2, walletSelleted.walletName)
+                putExtra(ARG_PARAM3, walletSelleted.walletPassword)
                 putExtra(ARG_PARAM4, currentTab)
-                putExtra(ARG_PARAM5, walletType)
-                putExtra(ARG_PARAM6, isFromBackupMnemonic)
-                putExtra(ARG_PARAM7, mnemonic)
+                putExtra(ARG_PARAM5, walletSelleted.walletType)
+                putExtra(ARG_PARAM6, walletSelleted.address.isNotEmpty())
+                putExtra(ARG_PARAM7, walletSelleted.mnemonic)
             })
         }
     }
@@ -188,12 +208,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                 walletETHString = mnemonicList[1]
             }
         }
-        val walletList = SharedPreferencesUtils.getSecurityString(this, WALLETINFO, "")
-        if (walletList.isNotEmpty()) {
-            saveWalletList =
-                Gson().fromJson(walletList, object : TypeToken<ArrayList<Wallet>>() {}.type)
-        }
-        when (walletType) {
+        when (walletSelleted.walletType) {
             1 -> { //ETH
                 ethLogicHandle()
             }
@@ -214,30 +229,36 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
 
     private fun allLogicHandle() {
         var walletETH = WalletETHUtils.generateWalletByMnemonic(
-            walletName,
-            walletPassword,
+            walletSelleted.walletName,
+            walletSelleted.walletPassword,
             mnemonicList[0],
             mnemonicList
         )
         val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
-            walletName,
-            walletPassword,
+            walletSelleted.walletName,
+            walletSelleted.walletPassword,
             mnemonicList[0],
             mnemonicList
         )
         val walletBTC = WalletBTCUtils.generateWalletByMnemonic(
-            walletName,
-            walletPassword,
+            walletSelleted.walletName,
+            walletSelleted.walletPassword,
             mnemonicList[0],
             mnemonicList
         )
         val walletSOL = WalletSOLUtils.generateWalletByMnemonic(
-            walletName,
-            walletPassword,
+            walletSelleted.walletName,
+            walletSelleted.walletPassword,
             mnemonicList[0],
             mnemonicList
         )
         allLogicHandleSub(walletETH, walletTRX, walletBTC, walletSOL)
+        if (isAlreadyBackupMnemonic){
+            walletSOL.isBackupAlready = true
+            walletTRX.isBackupAlready = true
+            walletBTC.isBackupAlready = true
+            walletETH.isBackupAlready = true
+        }
         if (saveWalletList.isEmpty()) {
             walletSOL.index = 0
         } else {
@@ -275,7 +296,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
         walletBTC: Wallet,
         walletSOL: Wallet,
     ) {
-        if (walletName.isEmpty()) {
+        if (walletSelleted.walletName.isEmpty()) {
             var index1 = 1
             var index2 = 1
             var index3 = 1
@@ -309,12 +330,12 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
 
     private fun solLogicHandle() {
         val walletSOL = WalletSOLUtils.generateWalletByMnemonic(
-            walletName,
-            walletPassword,
+            walletSelleted.walletName,
+            walletSelleted.walletPassword,
             mnemonicList[0],
             mnemonicList
         )
-        if (walletName.isEmpty()) {
+        if (walletSelleted.walletName.isEmpty()) {
             var index = 1
             walletSOL.walletName = "SOL" + String.format("%02d", index)
             if (saveWalletList.isNotEmpty()) {
@@ -327,6 +348,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
             walletSOL.walletName = "SOL" + String.format("%02d", index)
         }
         walletSOL.index = saveWalletList[0].index + 1
+        if (isAlreadyBackupMnemonic) walletSOL.isBackupAlready = true
         saveWalletList.add(walletSOL)
         SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
@@ -341,12 +363,12 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
 
     private fun btcLogicHandle() {
         val walletBTC = WalletBTCUtils.generateWalletByMnemonic(
-            walletName,
-            walletPassword,
+            walletSelleted.walletName,
+            walletSelleted.walletPassword,
             mnemonicList[0],
             mnemonicList
         )
-        if (walletName.isEmpty()) {
+        if (walletSelleted.walletName.isEmpty()) {
             var index = 1
             walletBTC.walletName = "BTC" + String.format("%02d", index)
             if (saveWalletList.isNotEmpty()) {
@@ -359,6 +381,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
             walletBTC.walletName = "BTC" + String.format("%02d", index)
         }
         walletBTC.index = saveWalletList[0].index + 1
+        if (isAlreadyBackupMnemonic) walletBTC.isBackupAlready = true
         saveWalletList.add(walletBTC)
         SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
@@ -373,12 +396,12 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
 
     private fun trxLogicHandle() {
         val walletTRX = WalletTRXUtils.generateWalletByMnemonic(
-            walletName,
-            walletPassword,
+            walletSelleted.walletName,
+            walletSelleted.walletPassword,
             mnemonicList[0],
             mnemonicList
         )
-        if (walletName.isEmpty()) {
+        if (walletSelleted.walletName.isEmpty()) {
             var index = 1
             walletTRX.walletName = "TRX" + String.format("%02d", index)
             if (saveWalletList.isNotEmpty()) {
@@ -391,6 +414,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
             walletTRX.walletName = "TRX" + String.format("%02d", index)
         }
         walletTRX.index = saveWalletList[0].index + 1
+        if (isAlreadyBackupMnemonic) walletTRX.isBackupAlready = true
         saveWalletList.add(walletTRX)
         SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
@@ -405,12 +429,12 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
 
     private fun ethLogicHandle() {
         var walletETH = WalletETHUtils.generateWalletByMnemonic(
-            walletName,
-            walletPassword,
+            walletSelleted.walletName,
+            walletSelleted.walletPassword,
             mnemonicList[0],
             mnemonicList
         )
-        if (walletName.isEmpty()) {
+        if (walletSelleted.walletName.isEmpty()) {
             var index = 1
             walletETH.walletName = "ETH" + String.format("%02d", index)
             if (saveWalletList.isNotEmpty()) {
@@ -423,6 +447,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
             walletETH.walletName = "ETH" + String.format("%02d", index)
         }
         walletETH.index = saveWalletList[0].index + 1
+        if (isAlreadyBackupMnemonic) walletETH.isBackupAlready = true
         saveWalletList.add(walletETH)
         SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()

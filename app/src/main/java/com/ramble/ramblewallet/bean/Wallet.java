@@ -1,11 +1,12 @@
 package com.ramble.ramblewallet.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author Ricky
  */
-public class Wallet {
+public class Wallet implements Serializable {
     private int index;
     private String walletName;
     private String walletPassword;
@@ -14,9 +15,10 @@ public class Wallet {
     private String privateKey;
     private String keystore;
     private String filename;
-    private int walletType;  //链类型|1:ETH|2:TRX|3:BTC|4:SOL|5:DOGE
+    private int walletType;  //链类型|1:ETH|2:TRX|3:BTC|4:SOL|5:DOGE|100:BTC、ETH、TRX、SOL、DOGE
     private boolean isClickDelete;
     private boolean isChoose;
+    private boolean isBackupAlready;
     private List<String> mnemonicList;
 
     public Wallet() {
@@ -63,6 +65,14 @@ public class Wallet {
 
     public void setMnemonicList(List<String> mnemonicList) {
         this.mnemonicList = mnemonicList;
+    }
+
+    public boolean isBackupAlready() {
+        return isBackupAlready;
+    }
+
+    public void setBackupAlready(boolean backupAlready) {
+        isBackupAlready = backupAlready;
     }
 
     public boolean isClickDelete() {

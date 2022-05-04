@@ -14,7 +14,9 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.Wallet
-import com.ramble.ramblewallet.constant.*
+import com.ramble.ramblewallet.constant.ARG_PARAM1
+import com.ramble.ramblewallet.constant.ARG_PARAM2
+import com.ramble.ramblewallet.constant.WALLETINFO
 import com.ramble.ramblewallet.databinding.ActivityCreateWalletBinding
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.utils.ToastUtils
@@ -147,10 +149,11 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
                     return
                 }
                 startActivity(Intent(this, MnemonicActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, binding.edtWalletName.text.toString())
-                    putExtra(ARG_PARAM2, binding.edtWalletPassword.text.toString())
-                    putExtra(ARG_PARAM3, walletType)
-                    putExtra(ARG_PARAM4, false)
+                    putExtra(ARG_PARAM1, Wallet(
+                        binding.edtWalletName.text.trim().toString(),
+                        binding.edtWalletPassword.text.toString(),
+                        "", "", "", "", walletType, null
+                    ))
                 })
             }
         }

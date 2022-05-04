@@ -49,7 +49,6 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
     private var tokenBalance: BigDecimal = BigDecimal("0")
     private var totalBalance: BigDecimal = BigDecimal("0")
     private var unitPrice = ""
-    private var isAlreadyBackupMnemonic = false
 
     //TRC20-USDT
     private var contractAddress = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t" //正式链
@@ -344,8 +343,7 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             balanceOfTrc20(this, walletSelleted.address, contractAddress)
         }
         binding.tvTrxAddress.text = addressHandle(walletSelleted.address)
-        isAlreadyBackupMnemonic = SharedPreferencesUtils.getSecurityBoolean(this, ISALREADYBACKUPMNEMONIC, false)
-        if (!isAlreadyBackupMnemonic && walletSelleted.mnemonic.isNotEmpty()) {
+        if (!walletSelleted.isBackupAlready && !walletSelleted.mnemonic.isNullOrEmpty()) {
             showCommonDialog(this,
                 title = getString(R.string.tips),
                 titleContent = getString(R.string.mnemonic_no_backup_tips),

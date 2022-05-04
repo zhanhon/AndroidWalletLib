@@ -47,7 +47,6 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
     private var btcBalance: BigDecimal = BigDecimal("0")
     private var totalBalance: BigDecimal = BigDecimal("0")
     private var unitPrice = ""
-    private var isAlreadyBackupMnemonic = false
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -340,8 +339,7 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
             balanceOfBtc(this, walletSelleted.address)
         }
         binding.tvBtcAddress.text = addressHandle(walletSelleted.address)
-        isAlreadyBackupMnemonic = SharedPreferencesUtils.getSecurityBoolean(this, ISALREADYBACKUPMNEMONIC, false)
-        if (!isAlreadyBackupMnemonic && walletSelleted.mnemonic.isNotEmpty()) {
+        if (!walletSelleted.isBackupAlready && !walletSelleted.mnemonic.isNullOrEmpty()) {
             showCommonDialog(this,
                 title = getString(R.string.tips),
                 titleContent = getString(R.string.mnemonic_no_backup_tips),

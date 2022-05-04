@@ -196,15 +196,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                     }
                     getString(R.string.backup_memorization_words) -> {
                         startActivity(Intent(this, MnemonicActivity::class.java).apply {
-                            putExtra(ARG_PARAM1, walletCurrent.walletName)
-                            putExtra(ARG_PARAM2, walletCurrent.walletPassword)
-                            putExtra(ARG_PARAM3, walletCurrent.walletType)
-                            putExtra(ARG_PARAM4, true)
-                            putExtra(ARG_PARAM5, walletCurrent.mnemonic)
-                            putStringArrayListExtra(
-                                ARG_PARAM6,
-                                walletCurrent.mnemonicList as java.util.ArrayList<String>?
-                            )
+                            putExtra(ARG_PARAM1, walletCurrent)
                         })
                     }
                     getString(R.string.secret_key_backup) -> {
@@ -327,15 +319,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                         }
                         getString(R.string.backup_memorization_words) -> {
                             startActivity(Intent(this, MnemonicActivity::class.java).apply {
-                                putExtra(ARG_PARAM1, walletCurrent.walletName)
-                                putExtra(ARG_PARAM2, walletCurrent.walletPassword)
-                                putExtra(ARG_PARAM3, walletCurrent.walletType)
-                                putExtra(ARG_PARAM4, true)
-                                putExtra(ARG_PARAM5, walletCurrent.mnemonic)
-                                putStringArrayListExtra(
-                                    ARG_PARAM6,
-                                    walletCurrent.mnemonicList as java.util.ArrayList<String>?
-                                )
+                                putExtra(ARG_PARAM1, walletCurrent)
                             })
                         }
                         getString(R.string.secret_key_backup) -> {

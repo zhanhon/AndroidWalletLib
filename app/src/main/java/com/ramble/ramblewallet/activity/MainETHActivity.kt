@@ -50,7 +50,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private var ethBalance: BigDecimal = BigDecimal("0")
     private var totalBalance: BigDecimal = BigDecimal("0.00")
     private var unitPriceETH = ""
-    private var isAlreadyBackupMnemonic = false
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("WrongConstant")
@@ -396,8 +395,7 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
             }.start()
         }
         binding.tvEthAddress.text = addressHandle(walletSelleted.address)
-        isAlreadyBackupMnemonic = SharedPreferencesUtils.getSecurityBoolean(this, ISALREADYBACKUPMNEMONIC, false)
-        if (!isAlreadyBackupMnemonic && walletSelleted.mnemonic.isNotEmpty()) {
+        if (!walletSelleted.isBackupAlready && !walletSelleted.mnemonic.isNullOrEmpty()) {
             showCommonDialog(this,
                 title = getString(R.string.tips),
                 titleContent = getString(R.string.mnemonic_no_backup_tips),

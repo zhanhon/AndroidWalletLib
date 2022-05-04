@@ -72,7 +72,6 @@ const val WALLETSELECTED = "wallet_selected"
 const val ADDRESS_BOOK_INFO = "address_book_info"
 const val SELECTED_TOKENS = "selected_tokens"
 const val IS_CONFIRM_MNEMONIC = "is_confirm_mnemonic"
-const val ISALREADYBACKUPMNEMONIC = "is_already_backup_mnemonic"
 
 /**
  * 是否设置指纹解锁key
