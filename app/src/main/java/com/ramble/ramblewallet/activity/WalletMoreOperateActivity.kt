@@ -116,7 +116,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             binding.tvDeleteWallet.visibility = View.VISIBLE
         }
 
-        if (walletCurrent.mnemonic != null) {
+        if (!walletCurrent.mnemonic.isNullOrEmpty()) {
             binding.rlContributingWordsBackups.visibility = View.VISIBLE
         } else {
             binding.rlContributingWordsBackups.visibility = View.GONE
