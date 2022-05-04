@@ -133,6 +133,7 @@ class MnemonicActivity : BaseActivity(), View.OnClickListener {
                         walletSelleted.walletType,
                         walletSelleted.mnemonicList
                     )
+                    walletTemp.index = walletSelleted.index
                     walletTemp.isBackupAlready = true
                     updateListData(walletTemp)
                     SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletTemp))
