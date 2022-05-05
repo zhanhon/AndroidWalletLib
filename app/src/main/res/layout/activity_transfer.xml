@@ -165,7 +165,7 @@
                             android:text=""
                             android:textColor="@color/color_9598AA"
                             android:textColorHint="@color/color_9598AA"
-                            android:textSize="@dimen/sp_11" />
+                            android:textSize="@dimen/sp_10" />
 
                         <ImageView
                             android:id="@+id/iv_address_book"

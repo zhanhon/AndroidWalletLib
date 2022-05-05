@@ -221,16 +221,13 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     return true
                 }
                 if (BigDecimal(amount).compareTo(BigDecimal("0.0001")) == -1) {
-                    ToastUtils.showToastFree(this, getString(R.string.btc_minimum_amount_prompt))
+                    ToastUtils.showToastFree(this, String.format(getString(R.string.btc_minimum_amount_prompt), "0.0001"))
                     return true
                 }
             }
             4 -> {
                 if (!WalletSOLUtils.isSolValidAddress(binding.edtReceiverAddress.text.toString())) {
-                    ToastUtils.showToastFree(
-                        this,
-                        String.format(getString(R.string.btc_minimum_amount_prompt), "0.0001")
-                    )
+                    ToastUtils.showToastFree(this, getString(R.string.address_already_err))
                     return true
                 }
                 if (BigDecimal(amount).compareTo(BigDecimal("0.000001")) == -1) {
