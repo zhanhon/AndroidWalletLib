@@ -8,9 +8,7 @@ import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
-import android.widget.CompoundButton
 import androidx.annotation.RequiresApi
-import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -22,24 +20,19 @@ import com.paytomat.walletconnect.android.model.WCPeerMeta
 import com.paytomat.walletconnect.android.model.WCSession
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
-
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.WALLETSELECTED
 import com.ramble.ramblewallet.databinding.ActivityWalletConnectBinding
 import com.ramble.ramblewallet.helper.getExtras
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /**
  * 时间　: 2022/5/2 15:43
  * 作者　: potato
  * 描述　:
  */
-class WalletConnectActivity : BaseActivity(), WCCallbacks, View.OnClickListener{
+class WalletConnectActivity : BaseActivity(), WCCallbacks, View.OnClickListener {
 
     private lateinit var binding: ActivityWalletConnectBinding
     private var interactor: WCInteractor? = null

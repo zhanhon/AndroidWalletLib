@@ -68,4 +68,5 @@ class TransferItem(val activity: Activity, val data: QueryTransferRecord.Record)
         val subStr2 = str.substring(strLength - 5, strLength)
         return "$subStr1...$subStr2"
     }
+
 }

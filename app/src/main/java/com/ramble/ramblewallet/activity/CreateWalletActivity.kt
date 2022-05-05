@@ -146,11 +146,13 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
                     return
                 }
                 startActivity(Intent(this, MnemonicActivity::class.java).apply {
-                    putExtra(ARG_PARAM1, Wallet(
-                        binding.edtWalletName.text.trim().toString(),
-                        binding.edtWalletPassword.text.toString(),
-                        "", "", "", "", walletType, null
-                    ))
+                    putExtra(
+                        ARG_PARAM1, Wallet(
+                            binding.edtWalletName.text.trim().toString(),
+                            binding.edtWalletPassword.text.toString(),
+                            "", "", "", "", walletType, null
+                        )
+                    )
                 })
             }
         }

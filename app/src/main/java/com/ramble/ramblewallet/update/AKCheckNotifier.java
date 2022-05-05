@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
@@ -22,10 +21,10 @@ public class AKCheckNotifier extends CheckNotifier {
     String title;
     Boolean first;
 
-    public AKCheckNotifier(DialogInterface.OnClickListener onClickListener,String title,Boolean first) {
+    public AKCheckNotifier(DialogInterface.OnClickListener onClickListener, String title, Boolean first) {
         this.onClickListener = onClickListener;
-        this.title=title;
-        this.first=first;
+        this.title = title;
+        this.first = first;
     }
 
     @Override
@@ -38,7 +37,7 @@ public class AKCheckNotifier extends CheckNotifier {
         TextView tv_title = inflate.findViewById(R.id.txt_title);
         tv_title.setText(title);
         TextView tv_content = inflate.findViewById(R.id.txt_message);
-        String updateContent =update.getUpdateContent();
+        String updateContent = update.getUpdateContent();
         tv_content.setText(updateContent);
         tv_content.setMovementMethod(ScrollingMovementMethod.getInstance());
         Button btn_no = inflate.findViewById(R.id.btn_no);
@@ -47,7 +46,7 @@ public class AKCheckNotifier extends CheckNotifier {
             //不能直接用忽略，调用取消，掉忽略第三方会保存在自己的SP里面做忽略
             sendUserCancel();
             SafeDialogHandle.safeDismissDialog(dialog);
-            if(first){
+            if (first) {
                 RxBus.INSTANCE.emitEvent(Pie.EVENT_PUSH_JUMP, "1");
             }
         });

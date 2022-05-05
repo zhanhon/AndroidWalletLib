@@ -1,6 +1,5 @@
 package com.ramble.ramblewallet.activity
 
-
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.os.Build
@@ -149,8 +148,8 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun checkAppVersion(version: AppVersion,title:String,isFoce:Boolean) {
-        UpdateUtils().checkUpdate(version, title,isFoce,false)
+    private fun checkAppVersion(version: AppVersion, title: String, isFoce: Boolean) {
+        UpdateUtils().checkUpdate(version, title, isFoce, false)
     }
 
     /****
@@ -177,7 +176,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
     private fun confirmTipsDialog(version: AppVersion) {
         val title = version.date + " " + version.version + getString(R.string.update_connect)
-        checkAppVersion(version,title,false)
+        checkAppVersion(version, title, false)
     }
 
     override fun onResume() {

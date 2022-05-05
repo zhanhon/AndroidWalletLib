@@ -69,7 +69,6 @@ class QueryFragment : BaseFragment(),
         arguments?.let {
             gameType = it.getInt(ARG_PARAM1, 1)
         }
-
         adapter.onClickListener = this
     }
 
@@ -101,7 +100,6 @@ class QueryFragment : BaseFragment(),
                 }
             }
             binding.tableHeader.check(R.id.all)
-
             binding.recycler.adapter = adapter
             binding.tableHeader.setOnCheckedChangeListener(this)
             reusedView = binding.root
@@ -109,14 +107,12 @@ class QueryFragment : BaseFragment(),
         return reusedView
     }
 
-
     private fun reFreshData() {
         currentPage = 1
         totalPage = 1
         dataCheck()
         loadData()
     }
-
 
     override fun actualLazyLoad() {
         super.actualLazyLoad()
@@ -155,7 +151,6 @@ class QueryFragment : BaseFragment(),
     private fun loadData() {
         address = SharedPreferencesUtils.getSecurityString(myActivity, TOKEN_DB_NO, "")
         var contractAddress: String? = null
-        var isToken: Int? = null
         if (address.isEmpty()) {
             address = wallet.address
         } else {
@@ -200,7 +195,6 @@ class QueryFragment : BaseFragment(),
                 }
             }, {})
     }
-
 
     private fun onLoaded() {
         ProgressItem.removeFrom(adapter)

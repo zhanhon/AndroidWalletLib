@@ -9,13 +9,13 @@ import org.lzh.framework.updatepluginlib.model.Update
 
 class UpdateUtils {
 
-    fun checkUpdate(newVersionData: AppVersion?, title:String,cancel: Boolean,first:Boolean) {
+    fun checkUpdate(newVersionData: AppVersion?, title: String, cancel: Boolean, first: Boolean) {
         val allDialogShowStrategy = DialogShowStrategy()
         UpdateConfig.getConfig()
             .setCheckWorker(OkhttpCheckWorker::class.java)
             .setDownloadWorker(OkhttpDownloadWorker::class.java)
             .setDownloadNotifier(AkDownloadNotifier())
-            .setCheckNotifier(AKCheckNotifier(null,title,first))
+            .setCheckNotifier(AKCheckNotifier(null, title, first))
             .setFileChecker(FileChecker()).checkEntity = CheckEntity()
             .setMethod("POST")
             .setUrl("go:")

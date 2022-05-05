@@ -16,8 +16,6 @@ public class TrustAllCerts implements X509TrustManager {
     @Override
     public void checkServerTrusted(X509Certificate[] chain, String authType) {
         for (X509Certificate cert : chain) {
-            // Make sure that it hasn't expired.
-            // Verify the certificate's public key chain.
             try {
                 cert.checkValidity();
                 cert.verify(cert.getPublicKey());

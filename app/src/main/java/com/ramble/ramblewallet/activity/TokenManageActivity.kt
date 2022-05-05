@@ -195,7 +195,11 @@ class TokenManageActivity : BaseActivity(), View.OnClickListener {
                         it.storeInfos = myStores
                     }
                 }
-                SharedPreferencesUtils.saveSecurityString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
+                SharedPreferencesUtils.saveSecurityString(
+                    this,
+                    TOKEN_INFO_NO,
+                    Gson().toJson(myAllToken)
+                )
                 adapter.notifyItemChanged(position)
                 RxBus.emitEvent(Pie.EVENT_MINUS_TOKEN, item)
             }

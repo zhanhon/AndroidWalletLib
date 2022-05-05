@@ -55,7 +55,7 @@ object TransferSOLUtils {
 
     fun getsSOLTokenBalance(context: Activity, address: String, contractAddress: String) {
         Thread {
-            var balance by Delegates.notNull<String>()
+            var balance = "0"
             try {
                 val solana =
                     Solana(

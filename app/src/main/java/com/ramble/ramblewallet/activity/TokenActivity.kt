@@ -123,7 +123,11 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
 
-                SharedPreferencesUtils.saveSecurityString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
+                SharedPreferencesUtils.saveSecurityString(
+                    this,
+                    TOKEN_INFO_NO,
+                    Gson().toJson(myAllToken)
+                )
                 ArrayList<SimpleRecyclerItem>().apply {
                     myStores.forEach { o -> this.add(AddTokenItem(o)) }
                     adapter.addAll(this.toList())
@@ -191,7 +195,11 @@ class TokenActivity : BaseActivity(), View.OnClickListener {
                         it.storeInfos = myStores
                     }
                 }
-                SharedPreferencesUtils.saveSecurityString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
+                SharedPreferencesUtils.saveSecurityString(
+                    this,
+                    TOKEN_INFO_NO,
+                    Gson().toJson(myAllToken)
+                )
                 adapter.notifyItemChanged(position)
             }
         }

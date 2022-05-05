@@ -21,8 +21,11 @@ import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.update.AppVersion
 import com.ramble.ramblewallet.update.UpdateUtils
-import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.LanguageSetting.setLanguage
+import com.ramble.ramblewallet.utils.Pie
+import com.ramble.ramblewallet.utils.RxBus
+import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.applyIo
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -46,7 +49,7 @@ class WelcomeActivity : BaseActivity() {
     private fun isForcedUpdatingShow() {
         GlobalScope.launch {
             mApiService.appVersion(AppVersion.Req().toApiRequest(getAppVersion)).subscribe({
-                if (it.code() == 1&&it.data()!!.version!=null) {
+                if (it.code() == 1 && it.data()!!.version != null) {
                     if (it.data()!!.version!! != BuildConfig.VERSION_NAME) {
                         if (it.data()!!.forcedUpdatingShow == 1) {//强制更新
                             RxBus.emitEvent(Pie.EVENT_PUSH_FOC_UP, it.data()!!)
@@ -58,7 +61,7 @@ class WelcomeActivity : BaseActivity() {
                     } else {
                         RxBus.emitEvent(Pie.EVENT_PUSH_JUMP, it.data()!!)
                     }
-                }else{
+                } else {
                     RxBus.emitEvent(Pie.EVENT_PUSH_JUMP, it.data()!!)
                 }
             }, {
@@ -72,7 +75,7 @@ class WelcomeActivity : BaseActivity() {
      */
     private fun forcedUpDataDialog(version: AppVersion) {
         val title = version.date + " " + version.version + getString(R.string.update_connect)
-        checkAppVersion(version,title,true)
+        checkAppVersion(version, title, true)
     }
 
     /***
@@ -80,7 +83,7 @@ class WelcomeActivity : BaseActivity() {
      */
     private fun upDataDialog(version: AppVersion) {
         val title = version.date + " " + version.version + getString(R.string.update_connect)
-        checkAppVersion(version,title,false)
+        checkAppVersion(version, title, false)
     }
 
     override fun onRxBus(event: RxBus.Event) {
@@ -99,8 +102,8 @@ class WelcomeActivity : BaseActivity() {
         }
     }
 
-    private fun checkAppVersion(version: AppVersion,title: String,isFoce:Boolean) {
-        UpdateUtils().checkUpdate(version, title,isFoce,true)
+    private fun checkAppVersion(version: AppVersion, title: String, isFoce: Boolean) {
+        UpdateUtils().checkUpdate(version, title, isFoce, true)
     }
 
     /***

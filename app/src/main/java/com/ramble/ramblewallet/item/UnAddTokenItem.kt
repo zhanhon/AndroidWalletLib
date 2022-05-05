@@ -22,7 +22,6 @@ class UnAddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
             "WETH" -> {
                 binding.ivTokenIcon.setImageResource(R.drawable.ic_weth)
             }
-
             "WBTC" -> {
                 binding.ivTokenIcon.setImageResource(R.drawable.vector_wbtc)
             }
@@ -71,4 +70,5 @@ class UnAddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
         val subStr2 = str.substring(strLength - 6, strLength)
         return "$subStr1...$subStr2"
     }
+
 }

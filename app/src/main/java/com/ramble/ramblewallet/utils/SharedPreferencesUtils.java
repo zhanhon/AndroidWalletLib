@@ -3,8 +3,6 @@ package com.ramble.ramblewallet.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.ramble.ramblewallet.MyApp;
-
 
 public class SharedPreferencesUtils {
 
@@ -51,7 +49,7 @@ public class SharedPreferencesUtils {
         return securitySP.getBoolean(key, defValue);
     }
 
-    public static void saveSecurityString(Context context, String key, String value){
+    public static void saveSecurityString(Context context, String key, String value) {
         securitySP = new SecuritySharedPreference(context, SP_NAME, Context.MODE_PRIVATE);
         securitySP.edit().putString(key, value).apply();
     }

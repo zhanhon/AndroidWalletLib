@@ -21,7 +21,6 @@ import com.ramble.ramblewallet.fragment.QueryFragment
 import com.ramble.ramblewallet.utils.SharedPreferencesUtils
 import com.ramble.ramblewallet.wight.adapter.FragmentPagerAdapter2
 
-
 /**
  * 时间　: 2022/4/18 13:50
  * 作者　: potato

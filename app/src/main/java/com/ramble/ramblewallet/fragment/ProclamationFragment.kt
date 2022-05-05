@@ -31,7 +31,6 @@ import com.ramble.ramblewallet.wight.adapter.SimpleRecyclerItem
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 
-
 /**
  * 时间　: 2021/12/15 14:29
  * 作者　: potato
@@ -208,7 +207,11 @@ class ProclamationFragment : BaseFragment() {
                     list.add(itemBean.id)
                 }
 
-                SharedPreferencesUtils.saveSecurityString(myActivity, READ_ID_NEW, Gson().toJson(list))
+                SharedPreferencesUtils.saveSecurityString(
+                    myActivity,
+                    READ_ID_NEW,
+                    Gson().toJson(list)
+                )
                 itemBean.isRead = 1
                 adapter.notifyItemChanged(AdapterUtils.getHolder(v).adapterPosition)
                 start2(MsgDetailsActivity::class.java, Bundle().also {
@@ -225,8 +228,6 @@ class ProclamationFragment : BaseFragment() {
     companion object {
         @JvmStatic
         fun newInstance(): ProclamationFragment = ProclamationFragment()
-
     }
-
 
 }

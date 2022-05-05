@@ -27,7 +27,6 @@ import com.ramble.ramblewallet.utils.*
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 
-
 class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     View.OnClickListener {
 

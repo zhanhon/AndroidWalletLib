@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.view.WindowManager.LayoutParams
 import android.widget.RadioGroup
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
@@ -197,7 +196,11 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             Pie.EVENT_ADDRESS_BOOK_UPDATA -> {
                 myDataBeans.set(pos, event.data())
                 myData.set(pos, event.data())
-                SharedPreferencesUtils.saveSecurityString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
+                SharedPreferencesUtils.saveSecurityString(
+                    this,
+                    ADDRESS_BOOK_INFO,
+                    Gson().toJson(myData)
+                )
                 adapter.replaceAt(pos, AddressBookItem(event.data()))
                 adapter.notifyDataSetChanged()
             }
@@ -262,7 +265,11 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 val position = AdapterUtils.getHolder(v).adapterPosition
                 myDataBeans.removeAt(position)
                 myData.removeAt(position)
-                SharedPreferencesUtils.saveSecurityString(this, ADDRESS_BOOK_INFO, Gson().toJson(myData))
+                SharedPreferencesUtils.saveSecurityString(
+                    this,
+                    ADDRESS_BOOK_INFO,
+                    Gson().toJson(myData)
+                )
                 adapter.remove(position)
                 adapter.notifyDataSetChanged()
             }

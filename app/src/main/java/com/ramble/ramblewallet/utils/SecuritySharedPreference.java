@@ -7,7 +7,9 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+
 import androidx.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -15,22 +17,23 @@ import java.util.Set;
 
 public class SecuritySharedPreference implements SharedPreferences {
 
-    private SharedPreferences mSharedPreferences;
     private static final String TAG = SecuritySharedPreference.class.getName();
-    private Context mContext;
+    private final SharedPreferences mSharedPreferences;
+    private final Context mContext;
 
     /**
      * constructor
+     *
      * @param context should be ApplicationContext not activity
-     * @param name file name
-     * @param mode context mode
+     * @param name    file name
+     * @param mode    context mode
      */
-    public SecuritySharedPreference(Context context, String name, int mode){
+    public SecuritySharedPreference(Context context, String name, int mode) {
         mContext = context;
-        if (TextUtils.isEmpty(name)){
+        if (TextUtils.isEmpty(name)) {
             mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         } else {
-            mSharedPreferences =  context.getSharedPreferences(name, mode);
+            mSharedPreferences = context.getSharedPreferences(name, mode);
         }
 
     }
@@ -39,9 +42,9 @@ public class SecuritySharedPreference implements SharedPreferences {
     public Map<String, String> getAll() {
         final Map<String, ?> encryptMap = mSharedPreferences.getAll();
         final Map<String, String> decryptMap = new HashMap<>();
-        for (Map.Entry<String, ?> entry : encryptMap.entrySet()){
+        for (Map.Entry<String, ?> entry : encryptMap.entrySet()) {
             Object cipherText = entry.getValue();
-            if (cipherText != null){
+            if (cipherText != null) {
                 decryptMap.put(entry.getKey(), entry.getValue().toString());
             }
         }
@@ -50,17 +53,19 @@ public class SecuritySharedPreference implements SharedPreferences {
 
     /**
      * encrypt function
+     *
      * @return cipherText base64
      */
-    private String encryptPreference(String plainText){
+    private String encryptPreference(String plainText) {
         return EncryptUtil.getInstance(mContext).encrypt(plainText);
     }
 
     /**
      * decrypt function
+     *
      * @return plainText
      */
-    private String decryptPreference(String cipherText){
+    private String decryptPreference(String cipherText) {
         return EncryptUtil.getInstance(mContext).decrypt(cipherText);
     }
 
@@ -75,11 +80,11 @@ public class SecuritySharedPreference implements SharedPreferences {
     @Override
     public Set<String> getStringSet(String key, Set<String> defValues) {
         final Set<String> encryptSet = mSharedPreferences.getStringSet(encryptPreference(key), null);
-        if (encryptSet == null){
+        if (encryptSet == null) {
             return defValues;
         }
         final Set<String> decryptSet = new HashSet<>();
-        for (String encryptValue : encryptSet){
+        for (String encryptValue : encryptSet) {
             decryptSet.add(decryptPreference(encryptValue));
         }
         return decryptSet;
@@ -144,16 +149,16 @@ public class SecuritySharedPreference implements SharedPreferences {
     /**
      * 处理加密过渡
      */
-    public void handleTransition(){
+    public void handleTransition() {
         Map<String, ?> oldMap = mSharedPreferences.getAll();
         Map<String, String> newMap = new HashMap<>();
-        for (Map.Entry<String, ?> entry : oldMap.entrySet()){
-            Log.i(TAG, "key:"+entry.getKey()+", value:"+ entry.getValue());
+        for (Map.Entry<String, ?> entry : oldMap.entrySet()) {
+            Log.i(TAG, "key:" + entry.getKey() + ", value:" + entry.getValue());
             newMap.put(encryptPreference(entry.getKey()), encryptPreference(entry.getValue().toString()));
         }
         Editor editor = mSharedPreferences.edit();
         editor.clear().commit();
-        for (Map.Entry<String, String> entry : newMap.entrySet()){
+        for (Map.Entry<String, String> entry : newMap.entrySet()) {
             editor.putString(entry.getKey(), entry.getValue());
         }
         editor.commit();
@@ -164,12 +169,12 @@ public class SecuritySharedPreference implements SharedPreferences {
      */
     final class SecurityEditor implements Editor {
 
-        private Editor mEditor;
+        private final Editor mEditor;
 
         /**
          * constructor
          */
-        private SecurityEditor(){
+        private SecurityEditor() {
             mEditor = mSharedPreferences.edit();
         }
 
@@ -182,7 +187,7 @@ public class SecuritySharedPreference implements SharedPreferences {
         @Override
         public Editor putStringSet(String key, Set<String> values) {
             final Set<String> encryptSet = new HashSet<>();
-            for (String value : values){
+            for (String value : values) {
                 encryptSet.add(encryptPreference(value));
             }
             mEditor.putStringSet(encryptPreference(key), encryptSet);
@@ -221,6 +226,7 @@ public class SecuritySharedPreference implements SharedPreferences {
 
         /**
          * Mark in the editor to remove all values from the preferences.
+         *
          * @return this
          */
         @Override
@@ -231,6 +237,7 @@ public class SecuritySharedPreference implements SharedPreferences {
 
         /**
          * 提交数据到本地
+         *
          * @return Boolean 判断是否提交成功
          */
         @Override

@@ -20,7 +20,6 @@ import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.databinding.ActivityCreateWalletListBinding
 
-
 class CreateWalletListActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityCreateWalletListBinding

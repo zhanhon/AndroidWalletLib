@@ -110,14 +110,12 @@ class TransactionQueryFragment : BaseFragment(),
         return reusedView
     }
 
-
     private fun reFreshData() {
         currentPage = 1
         totalPage = 1
         dataCheck()
         loadData()
     }
-
 
     override fun actualLazyLoad() {
         super.actualLazyLoad()
@@ -221,7 +219,6 @@ class TransactionQueryFragment : BaseFragment(),
                 }
             }
         }
-
         val addStr =
             if (sb.isNotEmpty()) sb.deleteCharAt(sb.length - 1).toString() else sb.toString()
         return addStr

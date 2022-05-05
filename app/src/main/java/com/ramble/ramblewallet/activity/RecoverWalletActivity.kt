@@ -628,7 +628,11 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (isSolValidAddress(walletSOL.address)) {
             putAddress(walletSOL, 4)
-            SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletSOL))
+            SharedPreferencesUtils.saveSecurityString(
+                this,
+                WALLETSELECTED,
+                Gson().toJson(walletSOL)
+            )
             startActivity(Intent(this, MainSOLActivity::class.java))
         } else {
             when (chooseMode) {

@@ -45,13 +45,13 @@ import java.io.FileOutputStream
 import java.io.IOException
 import javax.crypto.Cipher
 
-
 class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityWalletMoreOperateBinding
     private lateinit var walletCurrent: Wallet
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
-    private val sdCardDir = getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DCIM
+    private val sdCardDir =
+        getExternalStorageDirectory().toString() + "/" + Environment.DIRECTORY_DCIM
     private lateinit var walletSelleted: Wallet
     var mPermissionListener: PermissionListener? = null
     private var times = 0

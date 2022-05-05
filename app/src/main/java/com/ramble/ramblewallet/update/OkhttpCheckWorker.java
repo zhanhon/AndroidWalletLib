@@ -8,9 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
-
 import okhttp3.Call;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -27,12 +24,7 @@ public class OkhttpCheckWorker extends CheckWorker {
     public final static OkHttpClient sOkClient;
 
     static {
-        sOkClient = new OkHttpClient.Builder().hostnameVerifier(new HostnameVerifier() {
-            @Override
-            public boolean verify(String hostname, SSLSession session) {
-                return true;
-            }
-        }).build();
+        sOkClient = new OkHttpClient.Builder().hostnameVerifier((hostname, session) -> true).build();
     }
 
     @Override

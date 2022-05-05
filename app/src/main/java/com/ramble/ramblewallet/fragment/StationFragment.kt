@@ -262,7 +262,6 @@ open class StationFragment : BaseFragment() {
         }
     }
 
-
     private fun passStatus(isedit: Boolean) {
         setAdapterEditable(isedit)
     }
@@ -270,7 +269,6 @@ open class StationFragment : BaseFragment() {
     companion object {
         @JvmStatic
         fun newInstance(): StationFragment = StationFragment()
-
     }
 
 }

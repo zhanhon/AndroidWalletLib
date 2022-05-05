@@ -31,7 +31,6 @@ import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
 
-
 class MnemonicActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMnemonicBinding

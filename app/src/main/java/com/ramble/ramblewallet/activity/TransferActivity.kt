@@ -55,7 +55,6 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import javax.crypto.Cipher
 
-
 class TransferActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityTransferBinding
@@ -125,10 +124,12 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             EditTextTools(binding.edtInputQuantity, 24, 6)
         } else {
             if (tokenBean.isToken) {
-                binding.edtInputQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(24))
+                binding.edtInputQuantity.filters =
+                    arrayOf<InputFilter>(InputFilter.LengthFilter(24))
                 EditTextTools(binding.edtInputQuantity, 24, 6)
             } else {
-                binding.edtInputQuantity.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(26))
+                binding.edtInputQuantity.filters =
+                    arrayOf<InputFilter>(InputFilter.LengthFilter(26))
                 EditTextTools(binding.edtInputQuantity, 26, 8)
             }
         }
@@ -221,7 +222,10 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     return true
                 }
                 if (BigDecimal(amount).compareTo(BigDecimal("0.0001")) == -1) {
-                    ToastUtils.showToastFree(this, String.format(getString(R.string.btc_minimum_amount_prompt), "0.0001"))
+                    ToastUtils.showToastFree(
+                        this,
+                        String.format(getString(R.string.btc_minimum_amount_prompt), "0.0001")
+                    )
                     return true
                 }
             }

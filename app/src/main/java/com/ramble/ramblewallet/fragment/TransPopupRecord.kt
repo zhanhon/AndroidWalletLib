@@ -24,7 +24,6 @@ class TransPopupRecord(val mContext: Activity) : BasePopupWindow(mContext) {
 
     private lateinit var binding: TopNoticeDialogBinding
 
-
     override fun onCreateContentView(): View {
         val view = createPopupById(R.layout.top_notice_dialog)
         binding = DataBindingUtil.bind(view.findViewById(R.id.trans_item))!!

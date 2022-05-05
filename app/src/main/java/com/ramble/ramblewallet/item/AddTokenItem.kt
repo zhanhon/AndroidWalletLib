@@ -24,7 +24,6 @@ class AddTokenItem(val data: StoreInfo) : SimpleRecyclerItem() {
             "WETH" -> {
                 binding.ivTokenIcon.setImageResource(R.drawable.ic_weth)
             }
-
             "WBTC" -> {
                 binding.ivTokenIcon.setImageResource(R.drawable.vector_wbtc)
             }

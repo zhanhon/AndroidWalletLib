@@ -180,7 +180,11 @@ fun showBottomDialog2(
             ) {
                 val myData: ArrayList<MyAddressBean> =
                     Gson().fromJson(
-                        SharedPreferencesUtils.getSecurityString(MyApp.sInstance, ADDRESS_BOOK_INFO, ""),
+                        SharedPreferencesUtils.getSecurityString(
+                            MyApp.sInstance,
+                            ADDRESS_BOOK_INFO,
+                            ""
+                        ),
                         object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                     )
                 myData.forEach { bean ->
@@ -218,7 +222,11 @@ fun showBottomDialog2(
             ) {
                 myData2 =
                     Gson().fromJson(
-                        SharedPreferencesUtils.getSecurityString(MyApp.sInstance, ADDRESS_BOOK_INFO, ""),
+                        SharedPreferencesUtils.getSecurityString(
+                            MyApp.sInstance,
+                            ADDRESS_BOOK_INFO,
+                            ""
+                        ),
                         object : TypeToken<ArrayList<MyAddressBean>>() {}.type
                     )
             }

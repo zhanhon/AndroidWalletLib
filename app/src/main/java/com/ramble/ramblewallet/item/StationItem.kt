@@ -20,7 +20,6 @@ class StationItem(val data: Page.Record) : CheckableSimpleRecyclerItem(), View.O
 
     override fun getLayout(): Int = R.layout.item_notice
 
-
     override fun bind(holder: ViewHolder) {
         val binding: ItemNoticeBinding = holder.binding()
         binding.title1.text = data.title

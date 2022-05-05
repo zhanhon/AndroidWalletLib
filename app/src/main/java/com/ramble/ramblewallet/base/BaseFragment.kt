@@ -22,9 +22,7 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
     @JvmField
     protected val onDestroyComposite = CompositeDisposable()
 
-    protected val onDetachComposite = CompositeDisposable()
-
-    protected var lock = false
+    private val onDetachComposite = CompositeDisposable()
 
     override fun actualLazyLoad() {
         super.actualLazyLoad()
@@ -45,7 +43,6 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
 
     @CallSuper
     override fun onAttach(context: Context) {
-//        viewModelFactory = MyApp.appComponent.viewModelFactory()
         super.onAttach(context)
     }
 

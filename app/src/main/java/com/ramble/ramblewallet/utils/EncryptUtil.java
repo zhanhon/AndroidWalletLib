@@ -7,19 +7,21 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
 public class EncryptUtil {
 
-    private String key;
-    private static EncryptUtil instance;
     private static final String TAG = EncryptUtil.class.getSimpleName();
+    private static EncryptUtil instance;
+    private final String key;
 
 
-    private EncryptUtil(Context context){
+    private EncryptUtil(Context context) {
         String serialNo = getDeviceSerialNumber(context);
         //加密随机字符串生成AES key
         key = SHA(serialNo + "#$ERDTS$D%F^Gojikbh").substring(0, 16);
@@ -28,13 +30,14 @@ public class EncryptUtil {
 
     /**
      * 单例模式
+     *
      * @param context context
      * @return
      */
-    public static EncryptUtil getInstance(Context context){
-        if (instance == null){
-            synchronized (EncryptUtil.class){
-                if (instance == null){
+    public static EncryptUtil getInstance(Context context) {
+        if (instance == null) {
+            synchronized (EncryptUtil.class) {
+                if (instance == null) {
                     instance = new EncryptUtil(context);
                 }
             }
@@ -68,24 +71,25 @@ public class EncryptUtil {
 
     /**
      * SHA加密
+     *
      * @param strText 明文
      * @return
      */
-    private String SHA(final String strText){
+    private String SHA(final String strText) {
         // 返回值
         String strResult = null;
         // 是否是有效字符串
-        if (strText != null && strText.length() > 0){
-            try{
+        if (strText != null && strText.length() > 0) {
+            try {
                 // SHA 加密开始
                 MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
                 // 传入要加密的字符串
                 messageDigest.update(strText.getBytes());
-                byte byteBuffer[] = messageDigest.digest();
+                byte[] byteBuffer = messageDigest.digest();
                 StringBuffer strHexString = new StringBuffer();
-                for (int i = 0; i < byteBuffer.length; i++){
+                for (int i = 0; i < byteBuffer.length; i++) {
                     String hex = Integer.toHexString(0xff & byteBuffer[i]);
-                    if (hex.length() == 1){
+                    if (hex.length() == 1) {
                         strHexString.append('0');
                     }
                     strHexString.append(hex);
@@ -102,6 +106,7 @@ public class EncryptUtil {
 
     /**
      * AES128加密
+     *
      * @param plainText 明文
      * @return
      */
@@ -120,6 +125,7 @@ public class EncryptUtil {
 
     /**
      * AES128解密
+     *
      * @param cipherText 密文
      * @return
      */

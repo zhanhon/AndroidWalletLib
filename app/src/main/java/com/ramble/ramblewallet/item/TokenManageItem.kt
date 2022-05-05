@@ -49,7 +49,6 @@ class TokenManageItem(val data: StoreInfo) : CheckableSimpleRecyclerItem(), View
             "WETH" -> {
                 binding.ivTokenIcon.setImageResource(R.drawable.ic_weth)
             }
-
             "WBTC" -> {
                 binding.ivTokenIcon.setImageResource(R.drawable.vector_wbtc)
             }
@@ -110,4 +109,5 @@ class TokenManageItem(val data: StoreInfo) : CheckableSimpleRecyclerItem(), View
         val subStr2 = str.substring(strLength - 6, strLength)
         return "$subStr1...$subStr2"
     }
+
 }
