@@ -10,15 +10,6 @@ import org.bitcoinj.crypto.MnemonicCode
 import java.nio.ByteBuffer
 import java.util.*
 
-
-sealed class DerivationPath(val path: String) {
-    object DEPRECATED_M_501H_0H_0_0 : DerivationPath("M/501H/0H/0/0")
-    object BIP44_M_44H_501H_0H : DerivationPath("M/44H/501H/0H")
-    object BIP44_M_44H_501H_0H_OH : DerivationPath("M/44H/501H/0H/0H")
-
-}
-
-
 class Account {
     private var keyPair: TweetNaclFast.Signature.KeyPair
 

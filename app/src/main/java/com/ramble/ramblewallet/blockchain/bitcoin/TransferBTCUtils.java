@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import com.ramble.ramblewallet.BuildConfig;
 import com.ramble.ramblewallet.activity.MainBTCActivity;
 import com.ramble.ramblewallet.activity.TransferActivity;
 
@@ -55,6 +56,7 @@ import okhttp3.Response;
 public class TransferBTCUtils {
 
     private static final boolean ISMAINNET = true;
+    private static final String host = "BTC"; //测试节点："BTCTEST"
 
     private TransferBTCUtils() {
         throw new IllegalStateException("TransferBTCUtils");
@@ -63,8 +65,7 @@ public class TransferBTCUtils {
     //"https://api.blockcypher.com/v1/btc/test3/addrs/" + address + "/balance"   //免费用户：每秒2次限流
     public static void balanceOfBtc(Activity context, String address) {
         OkHttpClient okHttpClient = new OkHttpClient();
-        final String[] host = {ISMAINNET ? "BTC" : "BTCTEST"};
-        String url = "https://chain.so/api/v2/get_address_balance/" + host[0] + "/" + address; //免费用户：每秒5次限流
+        String url = BuildConfig.RPC_BTC_NODE + "/get_address_balance/" + host + "/" + address; //免费用户：每秒5次限流
         Request request = new Request
                 .Builder()
                 .url(url)//要访问的链接
@@ -101,8 +102,7 @@ public class TransferBTCUtils {
     public static void transferBTC(Activity context, String fromAddress, String toAddress,
                                    String privateKey, BigDecimal amount, String btcFee) {
         final List<UTXO>[] utxos = new List[]{Lists.newArrayList()};
-        final String[] host = {ISMAINNET ? "BTC" : "BTCTEST"};
-        String url = "https://chain.so/api/v2/get_tx_unspent/" + host[0] + "/" + fromAddress;
+        String url = BuildConfig.RPC_BTC_NODE + "/get_tx_unspent/" + host + "/" + fromAddress;
         try {
             Call call = getCallGet(url);
             call.enqueue(new Callback() {
@@ -154,7 +154,7 @@ public class TransferBTCUtils {
                     }
                     JSONObject jsonObjectTransaction = new JSONObject();
                     jsonObjectTransaction.put("tx_hex", toHex);
-                    String url = ISMAINNET ? "https://chain.so/api/v2/send_tx/BTC" : "https://chain.so/api/v2/send_tx/BTCTEST";
+                    String url = BuildConfig.RPC_BTC_NODE + "/send_tx/" + host;
                     Call callTransaction = getCall(url, jsonObjectTransaction);
                     callTransaction.enqueue(new Callback() {
                         @Override
@@ -194,7 +194,6 @@ public class TransferBTCUtils {
                 .build();
         return okHttpClient.newCall(request);
     }
-
 
     @NotNull
     private static Call getCall(String url, JSONObject param) {

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import android.webkit.WebView
 import com.google.gson.Gson
+import com.ramble.ramblewallet.BuildConfig
 import com.ramble.ramblewallet.activity.MainSOLActivity
 import com.ramble.ramblewallet.activity.TransferActivity
 import com.ramble.ramblewallet.blockchain.solana.solanatransfer.core.Transaction
@@ -12,19 +13,18 @@ import com.ramble.ramblewallet.blockchain.solana.solanatransfer.core.Transaction
 import com.ramble.ramblewallet.blockchain.solana.solanatransfer.programs.SystemProgram.transfer
 import com.ramble.ramblewallet.blockchain.solana.solanatransfer.rpc.RpcApi
 import com.ramble.ramblewallet.blockchain.solana.solanatransfer.rpc.RpcClient
-import com.solana.Solana
 import com.solana.api.Api
 import com.solana.api.getBalance
 import com.solana.api.getTokenAccountBalance
 import com.solana.core.PublicKey
 import com.solana.models.TokenResultObjects
 import com.solana.networking.NetworkingRouter
-import com.solana.networking.RPCEndpoint
 import io.reactivex.Single
 import io.reactivex.disposables.Disposables
 import org.json.JSONObject
 import java.lang.reflect.InvocationTargetException
 import java.math.BigDecimal
+import java.net.URL
 import kotlin.properties.Delegates
 
 
@@ -34,12 +34,8 @@ object TransferSOLUtils {
         Thread {
             var balance by Delegates.notNull<BigDecimal>()
             try {
-                val solana =
-                    Solana(
-                        NetworkingRouter(RPCEndpoint.mainnetBetaSolana),
-                        InMemoryAccountStorage()
-                    )
-                val balanceOrigin = solana.api.getBalance(PublicKey(address)).blockingGet()
+                val api = Api(NetworkingRouter(URL(BuildConfig.RPC_SOL_NODE)))
+                val balanceOrigin = api.getBalance(PublicKey(address)).blockingGet()
                 balance = BigDecimal(balanceOrigin.toString()).divide(BigDecimal("10").pow(9))
                 if (context is MainSOLActivity) {
                     context.setSolBalance(BigDecimal(balance.toString()))
@@ -57,17 +53,13 @@ object TransferSOLUtils {
         Thread {
             var balance = "0"
             try {
-                val solana =
-                    Solana(
-                        NetworkingRouter(RPCEndpoint.mainnetBetaSolana),
-                        InMemoryAccountStorage()
-                    )
-                val result = solana.api.getTokenAccountsByOwner(
+                val api = Api(NetworkingRouter(URL(BuildConfig.RPC_SOL_NODE)))
+                val result = api.getTokenAccountsByOwner(
                     PublicKey(address),
                     PublicKey(contractAddress)
                 ).blockingGet()
                 if (result != PublicKey("111111")) {
-                    val balanceJson = solana.api.getTokenAccountBalance(result).blockingGet()
+                    val balanceJson = api.getTokenAccountBalance(result).blockingGet()
                     val json = JSONObject(Gson().toJson(balanceJson))
                     balance = json.optString("uiAmountString")
                     if (context is MainSOLActivity) {
@@ -92,7 +84,7 @@ object TransferSOLUtils {
     ) {
         Thread {
             try {
-                val api by lazy { RpcApi(RpcClient("https://api.mainnet-beta.solana.com")) }
+                val api by lazy { RpcApi(RpcClient(BuildConfig.RPC_SOL_NODE)) }
                 val fromPublicKey = TransactionPublicKey(fromAddress)
                 val toPublicKey = TransactionPublicKey(toAddress)
                 val signer = TransactionAccount(privateKey)

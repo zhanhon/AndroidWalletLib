@@ -76,35 +76,38 @@ android {
     }
 
     productFlavors {
-        //开发环境：http://13.229.173.84:8095/
+        //开发环境：http://13.229.173.84:8095
         //ETH开发节点：http://18.141.62.32:8545
         //TRX节点nile：https://api.nileex.io
 //        pre_dev {
 //            applicationId "com.ramble.ramblewallet"
-//            buildConfigField "long", "PLATFORM_ID", '1'
-//            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.229.173.84:8095/"}'
+//            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.229.173.84:8095"}'
 //            buildConfigField "String[]", "RPC_ETH_NODE", '{"http://18.141.62.32:8545"}'
 //            buildConfigField "String[]", "RPC_TRX_NODE", '{"https://api.nileex.io"}'
 //        }
-        //测试环境：http://13.214.207.185:8095/
+
+        //测试环境：http://13.214.207.185:8095
         //ETH测试节点：http://122.248.244.178:8545
         //TRX节点nile：https://api.nileex.io
 //        pre_test {
 //            applicationId "com.ramble.ramblewallet"
-//            buildConfigField "long", "PLATFORM_ID", '1'
-//            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.214.207.185:8095/"}'
+//            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.214.207.185:8095"}'
 //            buildConfigField "String[]", "RPC_ETH_NODE", '{"http://122.248.244.178:8545"}'
 //            buildConfigField "String[]", "RPC_TRX_NODE", '{"https://api.nileex.io"}'
 //        }
-        //测试环境：http://13.214.207.185:8095/
-        //ETH测试节点：https://mainnet.infura.io/v3
-        //TRX节点nile：https://api.trongrid.io
+
+        //正式环境："https://ramblewt666.com","https://ramblewt688.com","https://ramblewt888.com"
+        //ETH主网节点：https://mainnet.infura.io/v3
+        //TRX主网节点：https://api.trongrid.io
+        //SOL主网节点：https://api.mainnet-beta.solana.com
+        //BTC主网节点：https://chain.so/api/v2
         pre_formal {
             applicationId "com.ramble.ramblewallet"
-            buildConfigField "long", "PLATFORM_ID", '1'
-            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.214.207.185:8095/"}'
-            buildConfigField "String[]", "RPC_ETH_NODE", '{"https://mainnet.infura.io/v3"}'
-            buildConfigField "String[]", "RPC_TRX_NODE", '{"https://api.trongrid.io"}'
+            buildConfigField "String[]", "BASE_SERVER_URL", '{"http://13.214.207.185:8095"}'
+            buildConfigField "String", "RPC_ETH_NODE", '"https://mainnet.infura.io/v3"'
+            buildConfigField "String", "RPC_TRX_NODE", '"https://api.trongrid.io"'
+            buildConfigField "String", "RPC_SOL_NODE", '"https://api.mainnet-beta.solana.com"'
+            buildConfigField "String", "RPC_BTC_NODE", '"https://chain.so/api/v2"'
         }
     }
 

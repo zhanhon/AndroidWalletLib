@@ -54,7 +54,7 @@ public class TransferETHUtils {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static BigDecimal getBalanceETH(String address) {
         try {
-            Web3j web3 = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + APIKEY));
+            Web3j web3 = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE + "/" + APIKEY));
             Future<EthGetBalance> ethGetBalanceFuture = web3.ethGetBalance(address, DefaultBlockParameterName.LATEST).sendAsync();
             return new BigDecimal(ethGetBalanceFuture.get().getBalance().toString()).divide(new BigDecimal("10").pow(18));
         } catch (ExecutionException | InterruptedException e) {
@@ -66,7 +66,7 @@ public class TransferETHUtils {
 
     public static BigDecimal getBalanceToken(String address, MainTokenBean tokenBean) throws IOException {
         try {
-            String value = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + APIKEY))
+            String value = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE + "/" + APIKEY))
                     .ethCall(Transaction.createEthCallTransaction(address,
                             tokenBean.getContractAddress(), DATA_PREFIX + address.substring(2)), DefaultBlockParameterName.PENDING).send().getValue();
             String s = new BigInteger(value.substring(2), 16).toString();
@@ -87,7 +87,7 @@ public class TransferETHUtils {
     public static void transferETH(Activity context, String fromAddress, String toAddress, String privateKey, String number,
                                    BigInteger gasPrice, BigInteger gasLimit, String remark) {
         try {
-            Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + APIKEY));
+            Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE + "/" + APIKEY));
             BigInteger value = Convert.toWei(number, Convert.Unit.ETHER).toBigInteger();
             //加载转账所需的凭证，用私钥
             Credentials credentials = Credentials.create(privateKey);
@@ -126,7 +126,7 @@ public class TransferETHUtils {
     public static void transferETHToken(Context context, String fromAddress, String toAddress, String contractAddress, String privateKey, BigInteger number,
                                         BigInteger gasPrice, BigInteger gasLimit) {
         try {
-            Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE[0] + "/" + APIKEY));
+            Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE + "/" + APIKEY));
             //加载转账所需的凭证，用私钥
             Credentials credentials = Credentials.create(privateKey);
             //获取nonce，交易笔数

@@ -20,6 +20,7 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.io.IOException
 import java.lang.reflect.Type
+import java.net.URL
 
 sealed class NetworkingError(override val message: String?) : Exception(message) {
     object invalidResponseNoData : NetworkingError("No data was returned.")
@@ -28,7 +29,7 @@ sealed class NetworkingError(override val message: String?) : Exception(message)
 }
 
 class NetworkingRouter(
-    val endpoint: RPCEndpoint,
+    private val baseUrl: URL,
     private val httpClient: OkHttpClient = OkHttpClient()
 ) {
 
@@ -57,7 +58,7 @@ class NetworkingRouter(
         clazz: Type?,
         onComplete: (Result<T>) -> Unit
     ) {
-        val url = endpoint.url
+        val url = baseUrl
         val rpcRequest = RpcRequest(method, params)
         val rpcRequestJsonAdapter: JsonAdapter<RpcRequest> = moshi.adapter(RpcRequest::class.java)
 
