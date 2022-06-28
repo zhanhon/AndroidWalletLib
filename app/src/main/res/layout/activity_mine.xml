@@ -8,47 +8,39 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_46"
-            android:background="@color/color_FFFFFF"
-            android:padding="@dimen/dp_10">
+            android:background="@color/color_FFFFFF">
 
             <ImageView
                 android:id="@+id/iv_back"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:layout_marginStart="@dimen/dp_5"
-                android:layout_marginEnd="@dimen/dp_10"
-                android:src="@drawable/vector_left_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_width="@dimen/dp_46"
+                android:layout_height="match_parent"
+                android:padding="@dimen/dp_12"
+                android:src="@drawable/vector_left_back" />
 
             <TextView
                 android:id="@+id/tv_mine_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/dp_10"
                 android:textColor="@color/color_000000"
                 android:textSize="@dimen/sp_17"
+                android:layout_centerHorizontal="true"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 tools:text="25323232323" />
 
             <ImageView
                 android:id="@+id/iv_mine_right"
-                android:layout_width="@dimen/dp_24"
-                android:layout_height="@dimen/dp_24"
+                android:padding="@dimen/dp_12"
+                android:layout_width="@dimen/dp_46"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/dp_10"
-                android:src="@drawable/ic_bell_unread"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_bell_unread"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -69,10 +61,12 @@
                     android:background="@color/color_F9F9F9" />
 
                 <include
+                    android:visibility="gone"
                     android:id="@+id/inc_manage_wallet"
                     layout="@layout/activity_mine_item" />
 
                 <View
+                    android:visibility="gone"
                     android:id="@+id/v_2"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_10"
@@ -103,6 +97,7 @@
                     layout="@layout/activity_mine_item" />
 
                 <include
+                    android:visibility="gone"
                     android:id="@+id/inc_finger_print"
                     layout="@layout/activity_mine_item" />
 
@@ -122,18 +117,18 @@
                     android:background="@color/color_F9F9F9" />
 
                 <include
+                    android:visibility="gone"
                     android:id="@+id/inc_service_agreement"
                     layout="@layout/activity_mine_item" />
 
                 <include
+                    android:visibility="gone"
                     android:id="@+id/inc_privacy_statement"
                     layout="@layout/activity_mine_item" />
 
-                <include
-                    android:id="@+id/inc_about_us"
-                    layout="@layout/activity_mine_item" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/clear_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -1,18 +1,17 @@
 package com.ramble.ramblewallet.activity
 
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
-import android.os.Build
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.ramble.ramblewallet.BuildConfig
+import com.hjq.language.MultiLanguages
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
@@ -21,13 +20,12 @@ import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityMineBinding
 import com.ramble.ramblewallet.helper.start
-import com.ramble.ramblewallet.network.*
-import com.ramble.ramblewallet.update.AppVersion
-import com.ramble.ramblewallet.update.UpdateUtils
+import com.ramble.ramblewallet.network.ApiResponse
+import com.ramble.ramblewallet.network.noticeInfoUrl
+import com.ramble.ramblewallet.network.reportAddressUrl
+import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.TimeUtils.dateToLang
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 /***
  * 我的管理页面
@@ -37,13 +35,10 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityMineBinding
     private lateinit var language: String
     private lateinit var currency: String
-    private lateinit var walletSelleted: Wallet
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var times = 0
     var redList: ArrayList<Page.Record> = arrayListOf()
-    private var animator: ObjectAnimator? = null
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
@@ -92,7 +87,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
             }
         binding.incHelpFeedback.findViewById<TextView>(R.id.tv_mine_title).text =
-            getString(R.string.help_feedback)
+            getString(R.string.forgot_password)
         binding.incHelpFeedback.findViewById<ImageView>(R.id.iv_mine_icon)
             .setImageResource(R.drawable.ic_help_feedback)
         binding.incServiceAgreement.findViewById<TextView>(R.id.tv_mine_title).text =
@@ -103,53 +98,11 @@ class MineActivity : BaseActivity(), View.OnClickListener {
             getString(R.string.privacy_statement)
         binding.incPrivacyStatement.findViewById<ImageView>(R.id.iv_mine_icon)
             .setImageResource(R.drawable.ic_privacy_statement)
-        binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_title).text =
-            getString(R.string.about_us)
-        binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_icon)
-            .setImageResource(R.drawable.ic_about)
-        binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next)
-            .setImageResource(R.drawable.ic_mine_cycle)
-        binding.incAboutUs.findViewById<TextView>(R.id.tv_mine_subtitle).text =
-            BuildConfig.VERSION_NAME
         binding.clearText.text = getString(R.string.clear_cache)
         binding.incFingerPrint.findViewById<TextView>(R.id.tv_mine_title).text =
             getString(R.string.fingerprint_transaction)
         binding.incFingerPrint.findViewById<ImageView>(R.id.iv_mine_icon)
             .setImageResource(R.drawable.ic_finger_print)
-    }
-
-
-    private fun startSyncAnimation() {
-        if (animator != null) {
-            return
-        }
-        animator = binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).asyncAnimator()
-    }
-
-    private fun cancelSyncAnimation() {
-        animator?.cancel()
-        animator = null
-    }
-
-    @SuppressLint("CheckResult")
-    private fun checkVersion() {
-        startSyncAnimation()
-        GlobalScope.launch {
-            mApiService.appVersion(AppVersion.Req().toApiRequest(getAppVersion)).subscribe({
-                RxBus.emitEvent(Pie.EVENT_PUSH_MINE, 1)
-                if (it.code() == 1 && it.data()!!.version != null) {
-                    if (it.data()!!.version!! != BuildConfig.VERSION_NAME && it.data()!!.artificialShow == 1) { //软更新
-                        RxBus.emitEvent(Pie.EVENT_PUSH_FOC_MINE, it.data()!!)
-                    }
-                }
-            }, {
-                RxBus.emitEvent(Pie.EVENT_PUSH_MINE, 1)
-            })
-        }
-    }
-
-    private fun checkAppVersion(version: AppVersion, title: String, isFoce: Boolean) {
-        UpdateUtils().checkUpdate(version, title, isFoce, false)
     }
 
     /****
@@ -166,27 +119,14 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         binding.incTransactionQuery.setOnClickListener(this)
         binding.incMultiLanguage.setOnClickListener(this)
         binding.incCurrencyUnit.setOnClickListener(this)
-        binding.incAboutUs.setOnClickListener(this)
         binding.clearText.setOnClickListener(this)
         binding.incFingerPrint.setOnClickListener(this)
-        binding.incAboutUs.findViewById<ImageView>(R.id.iv_mine_next).setOnClickListener {
-            checkVersion()
-        }
-    }
-
-    private fun confirmTipsDialog(version: AppVersion) {
-        val title = version.date + " " + version.version + getString(R.string.update_connect)
-        checkAppVersion(version, title, false)
     }
 
     override fun onResume() {
         super.onResume()
         initView()
         redPoint()
-        walletSelleted = Gson().fromJson(
-            SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
-            object : TypeToken<Wallet>() {}.type
-        )
     }
 
 
@@ -196,12 +136,10 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("CheckResult")
     private fun redPoint() {
         val lang = dateToLang(this)
-        var redList: ArrayList<Page.Record> = arrayListOf()
-        var records2: ArrayList<Page.Record> = arrayListOf()
-        var req = Page.Req(1, 1000, lang)
-        mApiService.getNotice(
-            req.toApiRequest(noticeInfoUrl)
-        ).applyIo().subscribe(
+        val redList: ArrayList<Page.Record> = arrayListOf()
+        val records2: ArrayList<Page.Record> = arrayListOf()
+        val req = Page.Req(1, 1000, lang)
+        mApiService.getNotice(req.toApiRequest(noticeInfoUrl)).applyIo().subscribe(
             {
                 if (it.code() == 1) {
                     redPointMineHandle(it, redList, records2, lang)
@@ -215,12 +153,12 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         it: ApiResponse<Page>,
         redList: ArrayList<Page.Record>,
         records2: ArrayList<Page.Record>,
-        lang: Int
+        lang: Int,
 
-    ) {
+        ) {
         var records21 = records2
         it.data()?.let { data ->
-            var read: ArrayList<Int> =
+            val read: ArrayList<Int> =
                 if (SharedPreferencesUtils.getSecurityString(this, READ_ID_NEW, "").isNotEmpty()) {
                     Gson().fromJson(
                         SharedPreferencesUtils.getSecurityString(this, READ_ID_NEW, ""),
@@ -264,7 +202,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     private fun redPointMineHandleSub(
         records21: ArrayList<Page.Record>,
         redList: ArrayList<Page.Record>,
-        lang: Int
+        lang: Int,
     ) {
         if (records21.isNotEmpty()) {
             records21.forEach { item ->
@@ -275,7 +213,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                             ""
                         ).isNotEmpty()
                     ) {
-                        var read: ArrayList<Int> = Gson().fromJson(
+                        val read: ArrayList<Int> = Gson().fromJson(
                             SharedPreferencesUtils.getSecurityString(this, READ_ID, ""),
                             object : TypeToken<ArrayList<Int>>() {}.type
                         )
@@ -296,35 +234,11 @@ class MineActivity : BaseActivity(), View.OnClickListener {
     }
 
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        when (walletSelleted.walletType) {
-            1 -> {
-                start(MainETHActivity::class.java)
-            }
-            2 -> {
-                start(MainTRXActivity::class.java)
-            }
-            3 -> {
-                start(MainBTCActivity::class.java)
-            }
-            4 -> {
-                start(MainSOLActivity::class.java)
-            }
-        }
-    }
-
     override fun onRxBus(event: RxBus.Event) {
         super.onRxBus(event)
         when (event.id()) {
             Pie.EVENT_PUSH_MSG -> {
                 onResume()
-            }
-            Pie.EVENT_PUSH_FOC_MINE -> {
-                confirmTipsDialog(event.data())
-            }
-            Pie.EVENT_PUSH_MINE -> {
-                cancelSyncAnimation()
             }
             else -> return
         }
@@ -333,21 +247,8 @@ class MineActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.iv_back -> { //区分不同钱包进行跳转
-                when (walletSelleted.walletType) {
-                    1 -> {
-                        start(MainETHActivity::class.java)
-                    }
-                    2 -> {
-                        start(MainTRXActivity::class.java)
-                    }
-                    3 -> {
-                        start(MainBTCActivity::class.java)
-                    }
-                    4 -> {
-                        start(MainSOLActivity::class.java)
-                    }
-                }
+            R.id.iv_back -> {
+                finish()
             }
             R.id.iv_mine_right -> {
                 start(MessageCenterActivity::class.java)
@@ -369,9 +270,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 })
             }
             R.id.inc_manage_wallet -> {
-                start(WalletManageActivity::class.java, Bundle().also {
-                    it.putBoolean(ARG_PARAM1, true)
-                })
+                start(WalletManageActivity::class.java)
             }
             R.id.inc_address_book -> {
                 start(AddressBookActivity::class.java, Bundle().also {
@@ -379,7 +278,14 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                 })
             }
             R.id.inc_help_feedback -> {
-                start(HelpActivity::class.java)
+                startActivity(Intent(this, MMWebViewActivity::class.java).apply {
+                    putExtra(ARG_TITLE, getString(R.string.forgot_password))
+                    if (getLanguageType() == 1){//中文
+                        data = Uri.parse(baseChatServerUrl + FORGOT_PASSWORD_CN)
+                    }else{
+                        data = Uri.parse(baseChatServerUrl + FORGOT_PASSWORD_EN)
+                    }
+                })
             }
             R.id.inc_transaction_query -> {
                 start(TransactionQueryActivity::class.java)
@@ -399,18 +305,29 @@ class MineActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    fun getLanguageType(): Int{
+        val languages: Int = SharedPreferencesUtils.getLanguages()
+        if (languages == 0) {
+            val locale = MultiLanguages.getAppLanguage()
+            if (locale.language.contains("zh")) {
+                //中文
+                return 1
+            } else {
+                return 2
+            }
+        } else {
+            return languages
+        }
+    }
+
     /***
      *切换语言重新上传地址
      */
-
     private fun skipConfirmHandle() {
-        if (SharedPreferencesUtils.getSecurityString(this, WALLETINFO, "").isNotEmpty()) {
-            saveWalletList =
-                Gson().fromJson(
-                    SharedPreferencesUtils.getSecurityString(this, WALLETINFO, ""),
-                    object : TypeToken<ArrayList<Wallet>>() {}.type
-                )
-            var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+        val walletInfo = SharedPreferencesUtils.getSecurityString(this, WALLETINFO, "")
+        if (walletInfo.isNotEmpty()) {
+            saveWalletList = Gson().fromJson(walletInfo, object : TypeToken<ArrayList<Wallet>>() {}.type)
+            val detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
             saveWalletList.forEach {
                 detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
             }
@@ -439,6 +356,7 @@ class MineActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
             }, {
+                it.printStackTrace()
             }
         )
     }

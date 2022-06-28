@@ -6,18 +6,60 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/color_FFFFFF"
         tools:context=".activity.MnemonicActivity">
+        <RelativeLayout
+            android:id="@+id/rela_title"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_46">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="@dimen/dp_46"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dp_12"
+                android:src="@drawable/vector_left_back" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/backup_mnemonic"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="@dimen/sp_17"
+                android:textStyle="bold" />
+            <View
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:listDivider" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_hint"
+            android:textColor="@color/color_999999"
+            android:layout_marginStart="@dimen/dp_10"
+            android:textSize="@dimen/sp_14"
+            android:layout_marginTop="@dimen/dp_6"
+            android:text="@string/backup_mnemonic_hint"
+            app:layout_constraintTop_toBottomOf="@+id/rela_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
 
         <LinearLayout
             android:id="@+id/ll_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_100"
-            android:layout_marginTop="@dimen/dp_50"
             android:layout_marginEnd="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintTop_toBottomOf="@+id/tv_hint"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintStart_toStartOf="parent">
 
             <LinearLayout
                 android:id="@+id/ll_english"
@@ -70,49 +112,64 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_50"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_30"
             android:overScrollMode="never"
+            android:background="@drawable/wallet_shape_rv_mnemonic_bg"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ll_title"
             app:spanCount="3" />
 
+        <TextView
+            android:id="@+id/tv_hint_operate"
+            android:text="@string/mnemonic_hint_operate"
+            android:textSize="14sp"
+            android:textColor="@color/color_999999"
+            android:layout_marginTop="@dimen/dp_30"
+            android:paddingStart="@dimen/dp_20"
+            android:paddingEnd="@dimen/dp_20"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_contributing_words"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
         <LinearLayout
             android:id="@+id/ll_copy_and_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
-            android:layout_marginTop="@dimen/dp_50"
+            android:layout_marginTop="@dimen/dp_70"
             android:layout_marginEnd="@dimen/dp_10"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_contributing_words">
+            app:layout_constraintTop_toBottomOf="@id/tv_hint_operate">
 
-            <Button
+            <TextView
                 android:id="@+id/btn_one_copy"
                 android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_50"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="@dimen/dp_20"
                 android:layout_marginEnd="@dimen/dp_20"
                 android:layout_weight="1"
-                android:background="@drawable/shape_white_bottom_green_line_btn"
+                android:background="@drawable/shape_normal_radio_wallet"
                 android:gravity="center"
                 android:outlineProvider="none"
                 android:text="@string/one_copy"
                 android:textAllCaps="false"
-                android:textColor="@color/color_3BB7A5" />
+                android:textColor="@color/base_color" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_contributing_words_confirm"
                 android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_50"
                 android:layout_marginStart="@dimen/dp_20"
                 android:layout_marginEnd="@dimen/dp_20"
                 android:layout_weight="1"
-                android:background="@drawable/shape_green_bottom_btn"
+                android:background="@drawable/button_shape_enable"
                 android:gravity="center"
                 android:outlineProvider="none"
                 android:text="@string/contributing_words_confirm_second"
@@ -120,19 +177,19 @@
                 android:textColor="@color/color_FFFFFF" />
         </LinearLayout>
 
-        <Button
+        <TextView
             android:id="@+id/btn_skip_this"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginStart="@dimen/dp_30"
             android:layout_marginEnd="@dimen/dp_30"
             android:layout_marginBottom="@dimen/dp_30"
-            android:background="@drawable/shape_white_bottom_green_line_btn"
+            android:background="@drawable/shape_normal_radio_wallet"
             android:gravity="center"
             android:outlineProvider="none"
             android:text="@string/skip_this_step"
             android:textAllCaps="false"
-            android:textColor="@color/color_3BB7A5"
+            android:textColor="@color/base_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

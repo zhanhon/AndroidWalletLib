@@ -67,10 +67,11 @@
 
         <ImageView
             android:id="@+id/iv_wallet_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_26"
+            android:layout_height="@dimen/dp_26"
             android:layout_marginEnd="@dimen/dp_5"
-            android:background="@drawable/vector_wallet_more"
+            android:paddingBottom="@dimen/dp_6"
+            android:src="@drawable/vector_wallet_more"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -81,18 +82,21 @@
             android:layout_marginStart="@dimen/dp_5"
             android:text="0x01fdrr3423...232rwqr"
             android:textColor="@color/color_80FFFFFF"
-            android:textSize="@dimen/dp_11"
+            android:textSize="@dimen/sp_11"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/dp_8"
             android:id="@+id/iv_copy_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
-            android:background="@drawable/vector_home_copy"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:paddingTop="@dimen/dp_4"
+            android:paddingEnd="@dimen/dp_4"
+            android:src="@drawable/vector_home_copy"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/tv_currency_address" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

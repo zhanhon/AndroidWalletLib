@@ -12,7 +12,7 @@
     <string name="gathering_tips_trx">本地址仅能接受波场<tools>%s</tools>资产，请勿转入其他公链资产</string>
     <string name="gathering_tips_btc">本地址仅能接受比特币<tools>%s</tools>资产，请勿转入其他公链资产</string>
     <string name="bitcoin">比特币</string>
-    <string name="edit_wallet">编辑钱包</string>
+    <string name="edit_wallet">钱包名称</string>
     <string name="gathering_save">储存</string>
     <string name="create_wallet">创建钱包</string>
     <string name="save_address_book">存入地址本</string>
@@ -75,9 +75,12 @@
     <string name="all">全部</string>
     <string name="all_transactions">全部交易</string>
     <string name="confirm">确认</string>
+    <string name="password">密码</string>
     <string name="passord_confirm">确认密码</string>
+    <string name="passord_reset">重置密码</string>
+    <string name="reset_id_wallet">重置身份钱包</string>
     <string name="confirm_delete">确认删除</string>
-    <string name="scan">扫码</string>
+    <string name="scan">扫一扫</string>
     <string name="generate_QR_code_store">生成二维码并储存</string>
     <string name="fail">失败</string>
     <string name="gathering">收款</string>
@@ -137,7 +140,6 @@
     <string name="edit_address_wallet">编辑地址</string>
     <string name="no_records">暂无记录</string>
     <string name="no_results">暂无结果</string>
-    <string name="app_name">漫步钱包</string>
     <string name="balance_insufficient">余额不足</string>
     <string name="trx_address_no_activate">该账户未激活，将额外消耗您 1.1 TRX 用于激活该账户</string>
     <string name="trx_address_no_activate_token">账户未激活，可正常转账 TRC20 通证，但不会激活该账户</string>
@@ -150,6 +152,7 @@
     <string name="mnemonic_no_backup_tips">尚未记录助记词，如需备份，请在钱包管理中选择备份</string>
     <string name="backup_now">立即备份</string>
     <string name="backup_later">稍后备份</string>
+    <string name="backup_mnemonic">备份助记词</string>
 
     <string name="input_keystore">请输入Keystore</string>
     <string name="input_secret_key">请输入密钥</string>
@@ -164,8 +167,11 @@
     <string name="please_input_wallet_name">请输入钱包名称</string>
     <string name="input_wallet_name">输入名称</string>
     <string name="my_wallet">我的钱包</string>
+    <string name="id_wallet">身份钱包</string>
+    <string name="create_import">创建/导入</string>
     <string name="delete_wallet">删除钱包</string>
     <string name="different_password">密码不一致</string>
+    <string name="password_incorrect">密码不正确</string>
     <string name="password_less_six_tips">密码不小于6位</string>
     <string name="confirm_transaction">确认交易</string>
     <string name="confirm_contributing_words_error">确认助记词有误</string>
@@ -195,6 +201,7 @@
     <string name="choose_fill">选填</string>
     <string name="add_wallet">添加钱包</string>
     <string name="least_save_wallet">至少保留一个钱包</string>
+    <string name="no_wallet_to_delete">没有钱包可以删除</string>
     <string name="next">下一步</string>
     <string name="refresh_pull_down">下拉更新</string>
     <string name="refresh_time">最后更新于{key}</string>
@@ -217,6 +224,7 @@
     <string name="scan_qr_code_fail">识别失败，请试试其它二维码</string>
     <string name="edit_book">编辑</string>
     <string name="delete_book">删除</string>
+    <string name="deleting">删除中</string>
     <string name="message_center_title">消息</string>
     <string name="address_already_exists">已存在相同名称或者地址</string>
     <string name="address_already_null">地址或昵称不能为空</string>
@@ -243,4 +251,18 @@
     <string name="force_update">强制更新</string>
     <string name="verify_existing">请验证指纹</string>
     <string name="verify_existing_again">验证指纹失败，请重新验证</string>
+    <string name="backup_mnemonic_hint">请按顺序抄写助记词，确保备份正确</string>
+    <string name="loading">加载中…</string>
+    <string name="reset_password_mnemonic_tip">使用助记词可以修改钱包密码</string>
+    <string name="reset_password_et_mnemonic_tip">顺序输入助记词单词，并使用空格分割</string>
+    <string name="reset_success">重置密码成功</string>
+    <string name="reset_password_mnemonic_error">助记词输入错误</string>
+    <string name="reset_password_is_id">这个钱包已存在身份钱包</string>
+    <string name="forgot_password">忘记密码</string>
+    <string name="mnemonic_hint_operate">• 妥善保管助记词至隔离网络的安全地方。\n• 请勿将助记词在联网环境下分享和存储，比如邮件、相册、社交应用等。</string>
+    <string name="system_prompt">温馨提示</string>
+    <string name="ssl_error">SSL认证失败，是否继续访问？</string>
+    <string name="label_file_selector">文件选择器</string>
+    <string name="label_browser_provider">Chromium内核提供技术支持</string>
+    <string name="label_web_provider">网页由&#160;%1$s&#160;提供</string>
 </resources>

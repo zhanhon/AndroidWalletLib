@@ -3,6 +3,10 @@ package com.ramble.ramblewallet.base
 import android.content.Context
 import android.view.View
 import androidx.annotation.CallSuper
+import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
+import com.ramble.ramblewallet.network.ApiRetrofit
+import com.ramble.ramblewallet.network.ApiService
 import com.ramble.ramblewallet.utils.RxBus
 import com.ramble.ramblewallet.utils.addTo
 import io.reactivex.disposables.CompositeDisposable
@@ -23,6 +27,8 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
     protected val onDestroyComposite = CompositeDisposable()
 
     private val onDetachComposite = CompositeDisposable()
+    lateinit var mLoadingPopupView: BasePopupView
+    var mApiService: ApiService = ApiRetrofit.getInstance().apiService
 
     override fun actualLazyLoad() {
         super.actualLazyLoad()
@@ -39,11 +45,13 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
                 }
             )
             .addTo(onDestroyComposite)
+
     }
 
     @CallSuper
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        mLoadingPopupView = XPopup.Builder(context).asLoading().setTitle("加载中...")
     }
 
     override fun onDetach() {
@@ -63,6 +71,7 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        dismissLoadingDialog()
         onDetachComposite.dispose()
         onPauseComposite.dispose()
         onStopComposite.dispose()
@@ -70,6 +79,16 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
     }
 
     open fun onRxBus(event: RxBus.Event) {
+    }
+
+    protected open fun showLoadingDialog() {
+        mLoadingPopupView.show()
+    }
+
+    protected open fun dismissLoadingDialog() {
+        if (mLoadingPopupView.isShow) {
+            mLoadingPopupView.dismiss()
+        }
     }
 
 }

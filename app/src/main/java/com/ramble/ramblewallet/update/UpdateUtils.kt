@@ -1,6 +1,6 @@
 package com.ramble.ramblewallet.update
 
-import com.ramble.ramblewallet.BuildConfig
+import com.ramble.ramblewallet.network.AppUtils
 import org.lzh.framework.updatepluginlib.UpdateBuilder
 import org.lzh.framework.updatepluginlib.UpdateConfig
 import org.lzh.framework.updatepluginlib.base.UpdateParser
@@ -25,7 +25,7 @@ class UpdateUtils {
                 override fun parse(response: String): Update {
                     val update = UpdateImp()
                     update.updateUrl = newVersionData?.updateUrl
-                    update.versionCode = BuildConfig.VERSION_CODE + 1//模拟一个versioncode
+                    update.versionCode = AppUtils.getVersionCode() + 1//模拟一个versioncode
                     update.versionName = newVersionData?.version
                     update.updateContent = newVersionData?.content
                     when (newVersionData?.forcedUpdatingShow) {

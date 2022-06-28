@@ -22,6 +22,7 @@ import com.ramble.ramblewallet.bean.MainTokenBean
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.bean.Wallet
+import com.ramble.ramblewallet.blockchain.IBalanceListener
 import com.ramble.ramblewallet.blockchain.tron.TransferTRXUtils.balanceOfTrc20
 import com.ramble.ramblewallet.blockchain.tron.TransferTRXUtils.balanceOfTrx
 import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils
@@ -74,13 +75,13 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
         redPoint()
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true)
-            return true
-        }
-        return super.onKeyDown(keyCode, event)
-    }
+//    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            moveTaskToBack(true)
+//            return true
+//        }
+//        return super.onKeyDown(keyCode, event)
+//    }
 
     /***
      * 未读消息红点展示
@@ -335,8 +336,16 @@ class MainTRXActivity : BaseActivity(), View.OnClickListener {
             USD -> binding.tvCurrencyUnit.text = "$"
         }
         if (WalletTRXUtils.isTrxValidAddress(walletSelleted.address)) {
-            balanceOfTrx(this, walletSelleted.address)
-            balanceOfTrc20(this, walletSelleted.address, contractAddress)
+            balanceOfTrx(walletSelleted.address,object :IBalanceListener{
+                override fun onBalance(bigDecimal: BigDecimal) {
+                    setTrxBalance(bigDecimal)
+                }
+            })
+            balanceOfTrc20(walletSelleted.address, contractAddress,object :IBalanceListener{
+                override fun onBalance(bigDecimal: BigDecimal) {
+                    setTokenBalance(bigDecimal)
+                }
+            })
         }
         binding.tvTrxAddress.text = addressHandle(walletSelleted.address)
         if (!walletSelleted.isBackupAlready && !walletSelleted.mnemonic.isNullOrEmpty()) {

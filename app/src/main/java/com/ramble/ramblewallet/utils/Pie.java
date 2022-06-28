@@ -31,6 +31,7 @@ public class Pie {
      * 删除代币
      */
     public static final int EVENT_DEL_TOKEN = 2006;
+
     /**
      * 消除消息
      */
@@ -59,14 +60,32 @@ public class Pie {
      * 收到消息，刷新接口
      */
     public static final int EVENT_PUSH_FOC_UP = 2014;
-    /**
-     * 收到消息，刷新接口
-     */
-    public static final int EVENT_PUSH_FOC_MINE = 2015;
+
     /**
      * 收到消息，刷新接口
      */
     public static final int EVENT_PUSH_MINE = 2016;
+
+    /**
+     * 转账收款地址
+     */
+    public static final int EVENT_TRANS_ADDRESS = 2017;
+
+
+     /////////////////////////与宿主通讯//////////////////////////////
+    /**
+     * fragment 切换
+     */
+    public static final int EVENT_FRAGMENT_TOGGLE = 3000;
+    /**
+     * 刷新fragment弹窗
+     */
+    public static final int EVENT_REFRESH_POPUP = 3001;
+
+    /**
+     * 钱包消息数量
+     */
+    public static final int EVENT_MSG_NUM = 3002;
 
 
     private Pie() {

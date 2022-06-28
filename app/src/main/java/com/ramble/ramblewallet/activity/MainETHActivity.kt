@@ -41,7 +41,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
     private var mainETHTokenBean: ArrayList<MainTokenBean> = arrayListOf()
     private lateinit var mainAdapter: MainAdapter
     private lateinit var currencyUnit: String
-    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var isClickEyes = false
     private var animator: ObjectAnimator? = null
     private var saveTokenList: ArrayList<StoreInfo> = arrayListOf()
@@ -127,13 +126,13 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
         redPoint()
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true)
-            return true
-        }
-        return super.onKeyDown(keyCode, event)
-    }
+//    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            moveTaskToBack(true)
+//            return true
+//        }
+//        return super.onKeyDown(keyCode, event)
+//    }
 
     /***
      * 未读消息红点展示
@@ -370,10 +369,6 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
 
     private fun initData() {
         currencyUnit = SharedPreferencesUtils.getSecurityString(this, CURRENCY, USD)
-        saveWalletList = Gson().fromJson(
-            SharedPreferencesUtils.getSecurityString(this, WALLETINFO, ""),
-            object : TypeToken<ArrayList<Wallet>>() {}.type
-        )
         walletSelleted = Gson().fromJson(
             SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
             object : TypeToken<Wallet>() {}.type
@@ -532,18 +527,13 @@ class MainETHActivity : BaseActivity(), View.OnClickListener {
                 true
             )
             mainETHTokenBean.add(tokenBean)
-            Thread {
-                TransferETHUtils.getBalanceToken(walletSelleted.address, tokenBean)
-            }.start()
-            TransferETHUtils()
-                .setOnListener { tokenBean, tokenBalance ->
-                    postUI {
-                        tokenBean.balance = tokenBalance
-                        totalBalance += tokenBalance.multiply(BigDecimal(tokenBean.unitPrice))
-                        mainAdapter.notifyDataSetChanged()
-                        setBalanceETH(totalBalance)
-                    }
+            TransferETHUtils.getBalanceToken(walletSelleted.address, tokenBean,object :TransferETHUtils.BalanceGet{
+                override fun onListener(tokenBalance: BigDecimal) {
+                    tokenBean.balance = tokenBalance
+                    totalBalance += tokenBalance.multiply(BigDecimal(tokenBean.unitPrice))
+                    setBalanceETH(totalBalance)
                 }
+            })
         }
     }
 }

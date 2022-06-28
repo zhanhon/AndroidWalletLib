@@ -18,13 +18,28 @@ public class ToastUtils {
      * toast 自定义
      */
     public static Toast showToastFree(Context ctx, String str) {
-        Toast toast = Toast.makeText(ctx, str, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(ctx.getApplicationContext(), str, Toast.LENGTH_SHORT);
         LinearLayout toastView = (LinearLayout) LayoutInflater.from(ctx).inflate(R.layout.toast_hor_view, null);
         TextView tv = toastView.findViewById(R.id.tv_toast_content);
         tv.setText(str);
         toast.setView(toastView);
         toast.show();
         return toast;
+    }
+
+    /**
+     * Prevent continuous click, jump two pages
+     */
+    private static long lastToastTime;
+    private final static long TIME = 1500;
+
+    public static boolean isShowToast() {
+        long time = System.currentTimeMillis();
+        if (time - lastToastTime < TIME) {
+            return true;
+        }
+        lastToastTime = time;
+        return false;
     }
 
 }

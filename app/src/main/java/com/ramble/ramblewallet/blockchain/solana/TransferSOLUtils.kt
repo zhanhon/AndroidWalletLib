@@ -1,12 +1,10 @@
 package com.ramble.ramblewallet.blockchain.solana
 
-import android.app.Activity
-import android.os.Build
 import android.webkit.WebView
 import com.google.gson.Gson
-import com.ramble.ramblewallet.BuildConfig
-import com.ramble.ramblewallet.activity.MainSOLActivity
-import com.ramble.ramblewallet.activity.TransferActivity
+import com.ramble.ramblewallet.BuildConfig.RPC_SOL_NODE
+import com.ramble.ramblewallet.blockchain.IBalanceListener
+import com.ramble.ramblewallet.blockchain.ITransferListener
 import com.ramble.ramblewallet.blockchain.solana.solanatransfer.core.Transaction
 import com.ramble.ramblewallet.blockchain.solana.solanatransfer.core.TransactionAccount
 import com.ramble.ramblewallet.blockchain.solana.solanatransfer.core.TransactionPublicKey
@@ -25,66 +23,54 @@ import org.json.JSONObject
 import java.lang.reflect.InvocationTargetException
 import java.math.BigDecimal
 import java.net.URL
-import kotlin.properties.Delegates
 
 
 object TransferSOLUtils {
 
-    fun getSOLBalance(context: Activity, address: String) {
-        Thread {
-            var balance by Delegates.notNull<BigDecimal>()
-            try {
-                val api = Api(NetworkingRouter(URL(BuildConfig.RPC_SOL_NODE)))
-                val balanceOrigin = api.getBalance(PublicKey(address)).blockingGet()
-                balance = BigDecimal(balanceOrigin.toString()).divide(BigDecimal("10").pow(9))
-                if (context is MainSOLActivity) {
-                    context.setSolBalance(BigDecimal(balance.toString()))
-                }
-            } catch (e: Exception) {
-                if (context is MainSOLActivity) {
-                    context.setSolBalance(BigDecimal(balance.toString()))
-                }
-                e.printStackTrace()
-            }
-        }.start()
+    private val node = RPC_SOL_NODE
+    fun getSOLBalance(address: String,iBalanceListener: IBalanceListener) {
+        var balance = BigDecimal(0)
+        try {
+            val api = Api(NetworkingRouter(URL(node)))
+            val balanceOrigin = api.getBalance(PublicKey(address)).blockingGet()
+            balance = BigDecimal(balanceOrigin.toString()).divide(BigDecimal("10").pow(9))
+            iBalanceListener.onBalance(balance)
+        } catch (e: Exception) {
+            iBalanceListener.onBalance(balance)
+            e.printStackTrace()
+        }
     }
 
-    fun getsSOLTokenBalance(context: Activity, address: String, contractAddress: String) {
-        Thread {
-            var balance = "0"
-            try {
-                val api = Api(NetworkingRouter(URL(BuildConfig.RPC_SOL_NODE)))
-                val result = api.getTokenAccountsByOwner(
-                    PublicKey(address),
-                    PublicKey(contractAddress)
-                ).blockingGet()
-                if (result != PublicKey("111111")) {
-                    val balanceJson = api.getTokenAccountBalance(result).blockingGet()
-                    val json = JSONObject(Gson().toJson(balanceJson))
-                    balance = json.optString("uiAmountString")
-                    if (context is MainSOLActivity) {
-                        context.setSolTokenBalance(BigDecimal(balance))
-                    }
-                }
-            } catch (e: Exception) {
-                if (context is MainSOLActivity) {
-                    context.setSolTokenBalance(BigDecimal(balance))
-                }
-                e.printStackTrace()
+    fun getsSOLTokenBalance(address: String, contractAddress: String,iBalanceListener: IBalanceListener) {
+        var balance = "0"
+        try {
+            val api = Api(NetworkingRouter(URL(node)))
+            val result = api.getTokenAccountsByOwner(
+                PublicKey(address),
+                PublicKey(contractAddress)
+            ).blockingGet()
+            if (result != PublicKey("111111")) {
+                val balanceJson = api.getTokenAccountBalance(result).blockingGet()
+                val json = JSONObject(Gson().toJson(balanceJson))
+                balance = json.optString("uiAmountString")
+                iBalanceListener.onBalance(BigDecimal(balance))
             }
-        }.start()
+        } catch (e: Exception) {
+            iBalanceListener.onBalance(BigDecimal(balance))
+            e.printStackTrace()
+        }
     }
 
     fun transferSOL(
-        context: Activity,
         fromAddress: String,
         toAddress: String,
         privateKey: String,
-        amount: BigDecimal
+        amount: BigDecimal,
+        iTransferListener: ITransferListener
     ) {
         Thread {
             try {
-                val api by lazy { RpcApi(RpcClient(BuildConfig.RPC_SOL_NODE)) }
+                val api by lazy { RpcApi(RpcClient(node)) }
                 val fromPublicKey = TransactionPublicKey(fromAddress)
                 val toPublicKey = TransactionPublicKey(toAddress)
                 val signer = TransactionAccount(privateKey)
@@ -97,13 +83,9 @@ object TransferSOLUtils {
                     )
                 )
                 val transactionHash = api.sendTransaction(transaction, signer)
-                if (context is TransferActivity) {
-                    context.transferSuccess(transactionHash, null)
-                }
+                iTransferListener.onTransferSuccess(transactionHash, null)
             } catch (e: Exception) {
-                if (context is TransferActivity) {
-                    context.transferFail(e.message!!)
-                }
+                iTransferListener.onTransferFail(e.message!!)
                 e.printStackTrace()
             }
         }.start()
@@ -112,14 +94,12 @@ object TransferSOLUtils {
     //允许跨域请求
     fun setAllowUniversalAccessFromFileURLs(mwebview: WebView) {
         try { //本地HTML里面有跨域的请求 原生webview需要设置之后才能实现跨域请求
-            if (Build.VERSION.SDK_INT >= 16) {
-                val clazz: Class<*> = mwebview.settings.javaClass
-                val method = clazz.getMethod(
-                    "setAllowUniversalAccessFromFileURLs", Boolean::class.javaPrimitiveType
-                )
-                if (method != null) {
-                    method.invoke(mwebview.settings, true)
-                }
+            val clazz: Class<*> = mwebview.settings.javaClass
+            val method = clazz.getMethod(
+                "setAllowUniversalAccessFromFileURLs", Boolean::class.javaPrimitiveType
+            )
+            if (method != null) {
+                method.invoke(mwebview.settings, true)
             }
         } catch (e: IllegalArgumentException) {
             e.printStackTrace()

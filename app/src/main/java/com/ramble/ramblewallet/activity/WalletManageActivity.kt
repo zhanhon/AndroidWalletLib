@@ -2,17 +2,16 @@ package com.ramble.ramblewallet.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.RadioGroup
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
+import com.ramble.ramblewallet.adapter.IdWalletManageAdapter
 import com.ramble.ramblewallet.adapter.WalletManageAdapter
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
@@ -20,7 +19,10 @@ import com.ramble.ramblewallet.bean.AllTokenBean
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityWalletManageBinding
-import com.ramble.ramblewallet.helper.start
+import com.ramble.ramblewallet.fragment.MainBTCFragment
+import com.ramble.ramblewallet.fragment.MainETHFragment
+import com.ramble.ramblewallet.fragment.MainSOLFragment
+import com.ramble.ramblewallet.fragment.MainTRXFragment
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
 import com.ramble.ramblewallet.utils.*
@@ -32,33 +34,22 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
 
     private lateinit var binding: ActivityWalletManageBinding
     private var walletManageBean: ArrayList<Wallet> = arrayListOf()
+    private var idWalletManageBean: ArrayList<Wallet> = arrayListOf()//身份钱包
+    private var importWalletManageBean: ArrayList<Wallet> = arrayListOf()//创建导入钱包
     private var walletManageCurrencyBean: ArrayList<Wallet> = arrayListOf()
     private lateinit var walletManageAdapter: WalletManageAdapter
+    private lateinit var idWalletAdapter: IdWalletManageAdapter
     private var isDeletePage = false
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var saveWalletListSorted: ArrayList<Wallet> = arrayListOf()
     private lateinit var walletSelleted: Wallet
     private var putAddressTimes = 0
-    private var myAllToken: ArrayList<AllTokenBean> = arrayListOf()
-    private var isFromMine = false
-    private var isWalletCurrency = false
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_wallet_manage)
-        isFromMine = intent.getBooleanExtra(ARG_PARAM1, false)
-        binding.lyPullRefresh.setRefreshHeader(ClassicsHeader(this))
-        binding.lyPullRefresh.setRefreshFooter(ClassicsFooter(this))
-        //刷新的监听事件
-        binding.lyPullRefresh.setOnRefreshListener {
-            binding.lyPullRefresh.finishRefresh() //刷新完成
-        }
-        //加载的监听事件
-        binding.lyPullRefresh.setOnLoadMoreListener {
-            binding.lyPullRefresh.finishLoadMore() //加载完成
-        }
+        initView()
         initListener()
     }
 
@@ -80,16 +71,74 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             WALLETINFO,
             Gson().toJson(saveWalletListSorted)
         )
-        initView()
-    }
-
-    @SuppressLint("WrongConstant")
-    private fun initView() {
         if (saveWalletListSorted.isNotEmpty()) {
             walletManageBean = saveWalletListSorted
             loadData(walletManageBean)
         }
+    }
+
+    @SuppressLint("WrongConstant")
+    private fun initView() {
         binding.groupButton.check(R.id.check_all)
+
+        walletManageAdapter = WalletManageAdapter()
+        binding.rvMainCurrency.adapter = walletManageAdapter
+        walletManageAdapter.setOnItemClickListener { adapter, _, position ->
+            if (adapter.getItem(position) is Wallet) {
+                SharedPreferencesUtils.saveSecurityString(
+                    this,
+                    WALLETSELECTED,
+                    Gson().toJson(adapter.getItem(position) as Wallet)
+                )
+                when ((adapter.getItem(position) as Wallet).walletType) {
+                    WALLET_TYPE_ETH -> {
+                        RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainETHFragment::class.toString())
+                    }
+                    WALLET_TYPE_TRX -> {
+                        RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainTRXFragment::class.toString())
+                    }
+                    WALLET_TYPE_BTC -> {
+                        RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainBTCFragment::class.toString())
+                    }
+                    WALLET_TYPE_SOL -> {
+                        RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainSOLFragment::class.toString())
+                    }
+                }
+            }
+        }
+        walletManageAdapter.setOnItemChildClickListener { adapter, view, position ->
+            walletManageItemClick(view, adapter, position, importWalletManageBean)
+        }
+
+        //身份钱包
+        idWalletAdapter = IdWalletManageAdapter()
+        binding.rvIdWallet.adapter = idWalletAdapter
+        idWalletAdapter.setOnItemClickListener { adapter, _, position ->
+            if (adapter.getItem(position) is Wallet) {
+                SharedPreferencesUtils.saveSecurityString(
+                    this,
+                    WALLETSELECTED,
+                    Gson().toJson(adapter.getItem(position) as Wallet)
+                )
+                when ((adapter.getItem(position) as Wallet).walletType) {
+                    WALLET_TYPE_ETH -> {
+                        RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainETHFragment::class.toString())
+                    }
+                    WALLET_TYPE_TRX -> {
+                        RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainTRXFragment::class.toString())
+                    }
+                    WALLET_TYPE_BTC -> {
+                        RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainBTCFragment::class.toString())
+                    }
+                    WALLET_TYPE_SOL -> {
+                        RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainSOLFragment::class.toString())
+                    }
+                }
+            }
+        }
+        idWalletAdapter.setOnItemChildClickListener { adapter, view, position ->
+            walletManageItemClick(view, adapter, position, idWalletManageBean)
+        }
     }
 
     private fun initListener() {
@@ -98,47 +147,30 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         binding.ivManageWalletRight.setOnClickListener(this)
         binding.ivAddWallet.setOnClickListener(this)
         binding.tvDefaultWallet.setOnClickListener(this)
+        binding.ivResetPassword.setOnClickListener(this)
+        binding.ivMine.setOnClickListener(this)
     }
 
     private fun loadData(walletManageBean: ArrayList<Wallet>) {
+        idWalletManageBean.clear()
+        importWalletManageBean.clear()
         walletSelleted = Gson().fromJson(
             SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
             object : TypeToken<Wallet>() {}.type
         )
         walletManageBean.forEach {
             it.isChoose = it.address == walletSelleted.address
-        }
-        walletManageAdapter = WalletManageAdapter(walletManageBean, isDeletePage)
-        binding.rvMainCurrency.adapter = walletManageAdapter
-        walletManageAdapter.setOnItemClickListener { adapter, view, position ->
-            if (adapter.getItem(position) is Wallet) {
-                SharedPreferencesUtils.saveSecurityString(
-                    this,
-                    WALLETSELECTED,
-                    Gson().toJson(adapter.getItem(position) as Wallet)
-                )
-                when ((adapter.getItem(position) as Wallet).walletType) {
-                    1 -> {
-                        startActivity(Intent(this, MainETHActivity::class.java))
-                    }
-                    2 -> {
-                        startActivity(Intent(this, MainTRXActivity::class.java))
-                    }
-                    3 -> {
-                        startActivity(Intent(this, MainBTCActivity::class.java))
-                    }
-                    4 -> {
-                        startActivity(Intent(this, MainSOLActivity::class.java))
-                    }
-                }
+            if (it.isIdWallet){
+                idWalletManageBean.add(it)
+            }else{
+                importWalletManageBean.add(it)
             }
         }
-        walletManageAdapter.addChildClickViewIds(R.id.iv_copy_address)
-        walletManageAdapter.addChildClickViewIds(R.id.iv_wallet_more)
-        walletManageAdapter.addChildClickViewIds(R.id.cl_delete)
-        walletManageAdapter.setOnItemChildClickListener { adapter, view, position ->
-            walletManageItemClick(view, adapter, position, walletManageBean)
-        }
+        walletManageAdapter.setNeedDelete(isDeletePage)
+        walletManageAdapter.setList(importWalletManageBean)
+
+        idWalletAdapter.setList(idWalletManageBean)
+
     }
 
     private fun walletManageItemClick(
@@ -173,7 +205,6 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                                 (adapter.getItem(position) as Wallet).mnemonicList,
                                 false,
                             )
-                        walletManageAdapter.notifyItemChanged(position)
                     } else {
                         walletManageBean[position] =
                             Wallet(
@@ -187,8 +218,8 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                                 (adapter.getItem(position) as Wallet).mnemonicList,
                                 true
                             )
-                        walletManageAdapter.notifyItemChanged(position)
                     }
+                    walletManageAdapter.setData(position,walletManageBean[position])
                 }
             }
         }
@@ -197,22 +228,20 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
         when (checkedId) {
             R.id.check_all -> {
-                isWalletCurrency = false
                 binding.tvDefaultWallet.visibility = View.GONE
-                binding.lyPullRefresh.visibility = View.VISIBLE
                 loadData(walletManageBean)
             }
             R.id.check_eth -> {
-                switchRadio(1)
+                switchRadio(WALLET_TYPE_ETH)
             }
             R.id.check_btc -> {
-                switchRadio(3)
+                switchRadio(WALLET_TYPE_BTC)
             }
             R.id.check_trx -> {
-                switchRadio(2)
+                switchRadio(WALLET_TYPE_TRX)
             }
             R.id.check_sol -> {
-                switchRadio(4)
+                switchRadio(WALLET_TYPE_SOL)
             }
         }
     }
@@ -226,10 +255,8 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         }
         if (walletManageCurrencyBean.size == 0) {
             binding.tvDefaultWallet.visibility = View.VISIBLE
-            binding.lyPullRefresh.visibility = View.GONE
         } else {
             binding.tvDefaultWallet.visibility = View.GONE
-            binding.lyPullRefresh.visibility = View.VISIBLE
             loadData(walletManageCurrencyBean)
         }
     }
@@ -237,14 +264,13 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> {
-                if (isDeletePage) {
-                    isDeletePage = false
-                    binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
-                    binding.ivAddWallet.visibility = View.VISIBLE
-                    loadData(walletManageBean)
-                } else {
-                    backClickSub()
-                }
+                finish()
+            }
+            R.id.iv_mine -> {
+                startActivity(Intent(this, MineActivity::class.java))
+            }
+            R.id.iv_reset_password -> {
+                startActivity(Intent(this, ResetPasswordActivity::class.java))
             }
             R.id.iv_add_wallet -> {
                 startActivity(Intent(this, CreateWalletListActivity::class.java))
@@ -259,6 +285,10 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
     }
 
     private fun manageWalletRightSub() {
+        if (importWalletManageBean.size == 0){
+            ToastUtils.showToastFree(this, getString(R.string.no_wallet_to_delete))
+            return
+        }
         if (isDeletePage) {
             var isAllClickDelete = true
             walletManageBean.iterator().forEach {
@@ -267,8 +297,7 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             if (isAllClickDelete) {
                 ToastUtils.showToastFree(this, getString(R.string.least_save_wallet))
                 isDeletePage = false
-                binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
-                binding.ivAddWallet.visibility = View.VISIBLE
+                binding.ivManageWalletRight.setImageResource(R.mipmap.qb_ic_delete)
                 loadData(walletManageBean)
             } else {
                 deleteConfirmTipsDialog()
@@ -276,32 +305,11 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
         } else {
             binding.checkAll.performClick()
             isDeletePage = true
-            binding.ivManageWalletRight.setBackgroundResource(R.drawable.ic_delelet_line)
-            binding.ivAddWallet.visibility = View.INVISIBLE
+            binding.ivManageWalletRight.setImageResource(R.drawable.ic_delelet_line)
             loadData(walletManageBean)
         }
     }
 
-    private fun backClickSub() {
-        if (isFromMine) {
-            start(MineActivity::class.java)
-        } else {
-            when (walletSelleted.walletType) {
-                1 -> {
-                    start(MainETHActivity::class.java)
-                }
-                2 -> {
-                    start(MainTRXActivity::class.java)
-                }
-                3 -> {
-                    start(MainBTCActivity::class.java)
-                }
-                4 -> {
-                    start(MainSOLActivity::class.java)
-                }
-            }
-        }
-    }
 
     private fun deleteConfirmTipsDialog() {
         showCommonDialog(this,
@@ -312,23 +320,26 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
             confirmListener = { btnConfirmSub() },
             btnCancleListener = {
                 isDeletePage = false
-                binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
-                binding.ivAddWallet.visibility = View.VISIBLE
+                binding.ivManageWalletRight.setImageResource(R.mipmap.qb_ic_delete)
                 loadData(walletManageBean)
             }
         )
     }
 
     private fun btnConfirmSub() {
-        var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
-        var delete: ArrayList<Wallet> = arrayListOf()
+        val detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+        val delete: ArrayList<Wallet> = arrayListOf()
         walletManageBean.forEach {
-            if (it.isClickDelete) {
-                detailsList.add(AddressReport.DetailsList(it.address, 2, it.walletType))
-                delete.add(it)
-            } else {
-                detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
+            importWalletManageBean.forEach { impotWallet ->
+                if (impotWallet.isClickDelete && impotWallet.address == it.address) {
+                    it.isClickDelete = true
+                    detailsList.add(AddressReport.DetailsList(it.address, 2, it.walletType))
+                    delete.add(it)
+                } else {
+                    detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
+                }
             }
+
         }
         putAddress(detailsList)
         val list = walletManageBean.iterator()
@@ -340,41 +351,12 @@ class WalletManageActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                 }
             }
         }
-        SharedPreferencesUtils.saveSecurityString(
-            this,
-            WALLETSELECTED,
-            Gson().toJson(walletManageBean[0])
-        )
+        SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletManageBean[0]))
         saveWalletList = walletManageBean
-        SharedPreferencesUtils.saveSecurityString(
-            this,
-            WALLETINFO,
-            Gson().toJson(saveWalletList)
-        )
+        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         isDeletePage = false
-        binding.ivManageWalletRight.setBackgroundResource(R.drawable.vector_more_address)
-        binding.ivAddWallet.visibility = View.VISIBLE
+        binding.ivManageWalletRight.setImageResource(R.mipmap.qb_ic_delete)
         loadData(walletManageBean)
-        if (!SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, "").isNullOrEmpty()) {
-            myAllToken = Gson().fromJson(
-                SharedPreferencesUtils.getSecurityString(this, TOKEN_INFO_NO, ""),
-                object : TypeToken<ArrayList<AllTokenBean>>() {}.type
-            )
-
-            val lists = myAllToken.iterator()
-            lists.forEach {
-                delete.forEach { wallet ->
-                    if (it.myCurrency == wallet.address) {
-                        lists.remove()
-                    }
-                }
-            }
-            SharedPreferencesUtils.saveSecurityString(
-                this,
-                TOKEN_INFO_NO,
-                Gson().toJson(myAllToken)
-            )
-        }
     }
 
     @SuppressLint("CheckResult")

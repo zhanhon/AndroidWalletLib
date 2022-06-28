@@ -26,6 +26,8 @@ import com.google.gson.reflect.TypeToken
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.*
+import com.ramble.ramblewallet.blockchain.IAddressActivateListener
+import com.ramble.ramblewallet.blockchain.ITransferListener
 import com.ramble.ramblewallet.blockchain.bitcoin.TransferBTCUtils.transferBTC
 import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.blockchain.ethereum.TransferETHUtils.transferETH
@@ -83,7 +85,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_transfer)
-        transferReceiverAddress = intent.getStringExtra(ARG_PARAM1)
         tokenBean = intent.getSerializableExtra(ARG_PARAM2) as MainTokenBean
         transferUnit = if (tokenBean.title.contains("-")) {
             val index = tokenBean.title.indexOf("-")
@@ -91,7 +92,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         } else {
             tokenBean.title
         }
-        binding.edtReceiverAddress.setText(transferReceiverAddress)
         initClick()
         initWebView()
     }
@@ -134,7 +134,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
         }
         binding.edtInputQuantity.addTextChangedListener(object : TextWatcher {
-            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun afterTextChanged(s: Editable?) {
                 btnIsClick()
             }
@@ -155,13 +154,17 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             Pie.EVENT_RESS_TRANS_SCAN -> {
                 binding.edtReceiverAddress.text = event.data()
             }
+            Pie.EVENT_TRANS_ADDRESS -> {
+                transferReceiverAddress = event.data()
+                binding.edtReceiverAddress.setText(transferReceiverAddress)
+            }
         }
     }
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.iv_back -> {
-                backChoosePurpose()
+                finish()
             }
             R.id.iv_transfer_scan -> {
                 start(ScanActivity::class.java, Bundle().also {
@@ -195,28 +198,37 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             return true
         }
         when (walletSelleted.walletType) { //链类型|1:ETH|2:TRX|3:BTC|4:SOL
-            1 -> {
+            WALLET_TYPE_ETH-> {
                 if (!WalletETHUtils.isEthValidAddress(binding.edtReceiverAddress.text.toString())) {
                     ToastUtils.showToastFree(this, getString(R.string.address_already_err))
                     return true
                 }
             }
-            2 -> {
+            WALLET_TYPE_TRX -> {
                 if (!WalletTRXUtils.isTrxValidAddress(binding.edtReceiverAddress.text.toString())) {
                     ToastUtils.showToastFree(this, getString(R.string.address_already_err))
                     return true
                 }
                 if (tokenBean.isToken) {
                     isAddressActivateToken(
-                        this,
                         binding.edtReceiverAddress.text.toString(),
-                        tokenBean.contractAddress
+                        tokenBean.contractAddress,
+                        object :IAddressActivateListener{
+                            override fun onAddressActivate(boolean: Boolean) {
+                                isTrxAddressActivate(boolean)
+                            }
+                        }
                     )
                 } else {
-                    isAddressActivate(this, binding.edtReceiverAddress.text.toString())
+                    isAddressActivate(binding.edtReceiverAddress.text.toString(),object :IAddressActivateListener{
+                        override fun onAddressActivate(boolean: Boolean) {
+                            isTrxAddressActivate(boolean)
+                        }
+
+                    })
                 }
             }
-            3 -> {
+            WALLET_TYPE_BTC -> {
                 if (!WalletBTCUtils.isBtcValidAddress(binding.edtReceiverAddress.text.toString())) {
                     ToastUtils.showToastFree(this, getString(R.string.address_already_err))
                     return true
@@ -229,7 +241,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     return true
                 }
             }
-            4 -> {
+            WALLET_TYPE_SOL -> {
                 if (!WalletSOLUtils.isSolValidAddress(binding.edtReceiverAddress.text.toString())) {
                     ToastUtils.showToastFree(this, getString(R.string.address_already_err))
                     return true
@@ -256,43 +268,18 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     private fun showMinerFeeDialog() {
         when (walletSelleted.walletType) {
-            1 -> {
+            WALLET_TYPE_ETH -> {
                 showEthDialog()
             }
-            3 -> {
+            WALLET_TYPE_BTC -> {
                 showBtcDialog()
             }
         }
     }
 
-    private fun backChoosePurpose() {
-        when (walletSelleted.walletType) {
-            1 -> {
-                start(MainETHActivity::class.java)
-            }
-            2 -> {
-                start(MainTRXActivity::class.java)
-            }
-            3 -> {
-                start(MainBTCActivity::class.java)
-            }
-            4 -> {
-                start(MainSOLActivity::class.java)
-            }
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun btnIsClick() {
-        if ((binding.edtReceiverAddress.text.trim().toString().isNotEmpty())
-            && (binding.edtInputQuantity.text.trim().toString().isNotEmpty())
-        ) {
-            binding.btnConfirm.isEnabled = true
-            binding.btnConfirm.background = getDrawable(R.drawable.shape_green_bottom_btn)
-        } else {
-            binding.btnConfirm.isEnabled = false
-            binding.btnConfirm.background = getDrawable(R.drawable.shape_gray_bottom_btn)
-        }
+        binding.btnConfirm.isEnabled = ((binding.edtReceiverAddress.text.trim().toString().isNotEmpty())
+                && (binding.edtInputQuantity.text.trim().toString().isNotEmpty()))
     }
 
     private fun setFingerprint() {
@@ -355,7 +342,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
         }
 
         binding.edtReceiverAddress.addTextChangedListener(object : TextWatcher {
-            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun afterTextChanged(s: Editable?) {
                 btnIsClick()
             }
@@ -369,7 +355,6 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             }
         })
         binding.edtInputQuantity.addTextChangedListener(object : TextWatcher {
-            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun afterTextChanged(s: Editable?) {
                 btnIsClick()
             }
@@ -556,7 +541,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     s: CharSequence?,
                     start: Int,
                     count: Int,
-                    after: Int
+                    after: Int,
                 ) {
                     //暂时不需要实现此方法
                 }
@@ -583,64 +568,106 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun transfer() {
+        showLoadingDialog()
         val amount = binding.edtInputQuantity.text.trim().toString()
         when (walletSelleted.walletType) {  //链类型|1:ETH|2:TRX|3:BTC|4:SOL|5:DOGE
             1 -> {
                 if (tokenBean.isToken) {
                     transferETHToken(
-                        this,
                         walletSelleted.address,
                         transferReceiverAddress,
                         tokenBean.contractAddress,
                         walletSelleted.privateKey,
                         BigDecimal(amount).multiply(BigDecimal("10").pow(6)).toBigInteger(),
                         BigInteger(gasPrice).multiply(BigInteger("10").pow(9)), //GWEI → WEI
-                        BigInteger(gasLimit)
+                        BigInteger(gasLimit),
+                        object :ITransferListener{
+                            override fun onTransferSuccess(transactionHash: String, utxos: MutableList<UTXO>?) {
+                                transferSuccess(transactionHash, utxos)
+                            }
+
+                            override fun onTransferFail(errorMessage: String) {
+                                transferFail(errorMessage)
+                            }
+                        }
                     )
                 } else {
                     transferETH(
-                        this,
                         walletSelleted.address,
                         transferReceiverAddress,
                         walletSelleted.privateKey,
                         amount,
                         BigInteger(gasPrice).multiply(BigInteger("10").pow(9)), //GWEI → WEI
                         BigInteger(gasLimit),
-                        binding.edtInputTransferRemarks.text.trim().toString()
+                        binding.edtInputTransferRemarks.text.trim().toString(),
+                        object :ITransferListener{
+                            override fun onTransferSuccess(transactionHash: String, utxos: MutableList<UTXO>?) {
+                                transferSuccess(transactionHash, utxos)
+                            }
+
+                            override fun onTransferFail(errorMessage: String) {
+                                transferFail(errorMessage)
+                            }
+                        }
                     )
                 }
             }
             2 -> {
                 if (tokenBean.isToken) {
                     transferTRXToken(
-                        this,
                         walletSelleted.address,
                         transferReceiverAddress,
                         tokenBean.contractAddress,
                         walletSelleted.privateKey,
                         BigDecimal(amount).multiply(BigDecimal("10").pow(6)).toBigInteger(),
-                        binding.edtInputTransferRemarks.text.trim().toString()
+                        binding.edtInputTransferRemarks.text.trim().toString(),
+                        object :ITransferListener{
+                            override fun onTransferSuccess(transactionHash: String, utxos: MutableList<UTXO>?) {
+                                transferSuccess(transactionHash, utxos)
+                            }
+
+                            override fun onTransferFail(errorMessage: String) {
+                                transferFail(errorMessage)
+                            }
+                        }
                     )
                 } else {
                     transferTRX(
-                        this,
                         walletSelleted.address,
                         transferReceiverAddress,
                         walletSelleted.privateKey,
                         BigDecimal(amount).multiply(BigDecimal("10").pow(6)),
-                        binding.edtInputTransferRemarks.text.trim().toString()
+                        binding.edtInputTransferRemarks.text.trim().toString(),
+                        object :ITransferListener{
+                            override fun onTransferSuccess(transactionHash: String, utxos: MutableList<UTXO>?) {
+                                transferSuccess(transactionHash, utxos)
+                            }
+
+                            override fun onTransferFail(errorMessage: String) {
+                                transferFail(errorMessage)
+                            }
+                        }
                     )
                 }
             }
             3 -> {
                 if (!tokenBean.isToken) {
                     transferBTC(
-                        this,
                         walletSelleted.address,
                         transferReceiverAddress,
                         walletSelleted.privateKey,
                         BigDecimal(amount).multiply(BigDecimal("10").pow(8)),
-                        btcFee
+                        btcFee,object: ITransferListener{
+                            override fun onTransferSuccess(transactionHash: String, utxos: MutableList<UTXO>?) {
+                                transferSuccess(transactionHash,utxos)
+                            }
+
+                            override fun onTransferFail(errorMessage: String) {
+                                transferFail(errorMessage)
+                            }
+
+                        }
+
                     )
                 }
             }
@@ -671,11 +698,22 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
                     }
                 } else {
                     transferSOL(
-                        this,
                         walletSelleted.address,
                         transferReceiverAddress!!,
                         walletSelleted.privateKey,
-                        BigDecimal(amount).multiply(BigDecimal("10").pow(9))
+                        BigDecimal(amount).multiply(BigDecimal("10").pow(9)),
+                        object :ITransferListener{
+                            override fun onTransferSuccess(
+                                transactionHash: String,
+                                utxos: MutableList<UTXO>?,
+                            ) {
+                                transferSuccess(transactionHash, utxos)
+                            }
+
+                            override fun onTransferFail(errorMessage: String) {
+                                transferFail(errorMessage)
+                            }
+                        }
                     )
                 }
             }
@@ -683,16 +721,16 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun transferSuccess(transactionHash: String, utxos: MutableList<UTXO>?) {
-        if (transactionHash.isNotEmpty()) {
-            postUI {
+        postUI {
+            if (transactionHash.isNotEmpty()) {
                 transactionFinishConfirmDialog(transactionHash)
-            }
-            putTransAddress(transactionHash, utxos)
-        } else {
-            postUI {
+                putTransAddress(transactionHash, utxos)
+            } else {
                 ToastUtils.showToastFree(this, getString(R.string.transaction_failed))
             }
+            dismissLoadingDialog()
         }
+
     }
 
     var putAddressTimes = 0
@@ -769,6 +807,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
 
     fun transferFail(errorMessage: String) {
         postUI {
+            dismissLoadingDialog()
             ToastUtils.showToastFree(this, getString(R.string.transaction_failed))
         }
     }
@@ -785,6 +824,7 @@ class TransferActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
                 dialog.dismiss()
                 startActivity(Intent(this, TransactionQueryActivity::class.java))
+                finish()
             }
             window.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
                 dialog.dismiss()

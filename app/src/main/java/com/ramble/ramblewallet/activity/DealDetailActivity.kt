@@ -150,7 +150,6 @@ class DealDetailActivity : BaseActivity(), View.OnClickListener {
 
     private fun initListener() {
         binding.ivBack.setOnClickListener(this)
-        binding.ivMineRight.setOnClickListener(this)
         binding.numberCopy.setOnClickListener(this)
         binding.btnDetail.setOnClickListener(this)
         adapter.onClickListener = this

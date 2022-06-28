@@ -11,8 +11,6 @@ import retrofit2.http.POST
  * 作者　: potato
  * 描述　:
  */
-
-
 const val reportAddressUrl = "wallet-decentralized-api/address/report"
 const val getEthMinerConfigUrl = "wallet-decentralized-api/sys/getEthMinerConfig"
 const val getBtcMinerConfigUrl = "wallet-decentralized-api/sys/getBtcMinerConfig"

@@ -1,66 +1,66 @@
 package com.ramble.ramblewallet.adapter;
 
 import android.view.View;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.ramble.ramblewallet.R;
 import com.ramble.ramblewallet.bean.Wallet;
+import com.ramble.ramblewallet.constant.ConstantsKt;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-/**
- * @创建人： Ricky
- * @创建时间： 2021/12/5
- */
 public class WalletManageAdapter extends BaseQuickAdapter<Wallet, BaseViewHolder> {
-    private final boolean isNeedDelete;
+    private boolean isNeedDelete;
 
-    public WalletManageAdapter(List<Wallet> datas, boolean isNeedDelete) {
-        super(R.layout.activity_wallet_manage_item, datas);
-        this.isNeedDelete = isNeedDelete;
+    public WalletManageAdapter() {
+        super(R.layout.activity_wallet_manage_item);
+        addChildClickViewIds(R.id.iv_copy_address);
+        addChildClickViewIds(R.id.iv_wallet_more);
+        addChildClickViewIds(R.id.cl_delete);
     }
 
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, Wallet walletManageBean) {
         if (isNeedDelete) {
-            baseViewHolder.itemView.findViewById(R.id.cl_delete).setVisibility(View.VISIBLE);
+            baseViewHolder.getView(R.id.cl_delete).setVisibility(View.VISIBLE);
             if (walletManageBean.isClickDelete()) {
                 baseViewHolder.setImageResource(R.id.iv_delete, R.drawable.vector_have_deleted);
             } else {
                 baseViewHolder.setImageResource(R.id.iv_delete, R.drawable.vector_not_deleted);
             }
         } else {
-            baseViewHolder.itemView.findViewById(R.id.cl_delete).setVisibility(View.GONE);
+            baseViewHolder.getView(R.id.cl_delete).setVisibility(View.GONE);
         }
         if (walletManageBean.isChoose()) {
-            baseViewHolder.itemView.findViewById(R.id.tv_is_choose).setVisibility(View.VISIBLE);
+            baseViewHolder.getView(R.id.tv_is_choose).setVisibility(View.VISIBLE);
         } else {
-            baseViewHolder.itemView.findViewById(R.id.tv_is_choose).setVisibility(View.GONE);
+            baseViewHolder.getView(R.id.tv_is_choose).setVisibility(View.GONE);
         }
         baseViewHolder.setText(R.id.tv_wallet_name, walletManageBean.getWalletName());
         baseViewHolder.setText(R.id.tv_currency_address, addressHandle(walletManageBean.getAddress()));
 
         switch (walletManageBean.getWalletType()) {
-            case 1:
+            case ConstantsKt.WALLET_TYPE_ETH:
                 baseViewHolder.setText(R.id.tv_currency_name, "ETH");
                 baseViewHolder.setBackgroundResource(R.id.cy_wallet_manage_item, R.drawable.shape_wallet_manage_eth);
                 break;
-            case 2:
+            case ConstantsKt.WALLET_TYPE_TRX:
                 baseViewHolder.setText(R.id.tv_currency_name, "TRX");
                 baseViewHolder.setBackgroundResource(R.id.cy_wallet_manage_item, R.drawable.shape_wallet_manage_trx);
                 break;
-            case 3:
+            case ConstantsKt.WALLET_TYPE_BTC:
                 baseViewHolder.setText(R.id.tv_currency_name, "BTC");
                 baseViewHolder.setBackgroundResource(R.id.cy_wallet_manage_item, R.drawable.shape_wallet_manage_btc);
                 break;
-            case 4:
+            case ConstantsKt.WALLET_TYPE_SOL:
                 baseViewHolder.setText(R.id.tv_currency_name, "SOL");
                 baseViewHolder.setBackgroundResource(R.id.cy_wallet_manage_item, R.drawable.shape_wallet_manage_sol);
                 break;
-            case 5:
+            case ConstantsKt.WALLET_TYPE_DOGE:
                 baseViewHolder.setText(R.id.tv_currency_name, "DOGE");
                 baseViewHolder.setBackgroundResource(R.id.cy_wallet_manage_item, R.drawable.shape_wallet_manage_doge);
                 break;
@@ -79,4 +79,7 @@ public class WalletManageAdapter extends BaseQuickAdapter<Wallet, BaseViewHolder
         return subStr1 + "..." + subStr2;
     }
 
+    public void setNeedDelete(boolean needDelete) {
+        isNeedDelete = needDelete;
+    }
 }

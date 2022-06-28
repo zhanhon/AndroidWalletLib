@@ -2,6 +2,7 @@ package com.ramble.ramblewallet.utils
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -11,8 +12,10 @@ import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.lxj.xpopup.XPopup
 import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.activity.AddressBookActivity
@@ -23,8 +26,11 @@ import com.ramble.ramblewallet.constant.ADDRESS_BOOK_INFO
 import com.ramble.ramblewallet.constant.ARG_PARAM1
 import com.ramble.ramblewallet.constant.ARG_PARAM2
 import com.ramble.ramblewallet.databinding.*
+import com.ramble.ramblewallet.fragment.MainBTCFragment
 import com.ramble.ramblewallet.helper.dataBinding
 import com.ramble.ramblewallet.helper.start
+import com.ramble.ramblewallet.popup.CustomPopup
+
 
 /**
  * 时间　: 2022/1/5 15:52
@@ -175,13 +181,13 @@ fun showBottomDialog2(
                     activity
                 )
             }
-            if (SharedPreferencesUtils.getSecurityString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
+            if (SharedPreferencesUtils.getSecurityString(MyApp.getInstance.sInstance, ADDRESS_BOOK_INFO, "")
                     .isNotEmpty()
             ) {
                 val myData: ArrayList<MyAddressBean> =
                     Gson().fromJson(
                         SharedPreferencesUtils.getSecurityString(
-                            MyApp.sInstance,
+                            MyApp.getInstance.sInstance,
                             ADDRESS_BOOK_INFO,
                             ""
                         ),
@@ -217,13 +223,13 @@ fun showBottomDialog2(
                 return@setOnClickListener
             }
             var myData2: ArrayList<MyAddressBean> = arrayListOf()
-            if (SharedPreferencesUtils.getSecurityString(MyApp.sInstance, ADDRESS_BOOK_INFO, "")
+            if (SharedPreferencesUtils.getSecurityString(MyApp.getInstance.sInstance, ADDRESS_BOOK_INFO, "")
                     .isNotEmpty()
             ) {
                 myData2 =
                     Gson().fromJson(
                         SharedPreferencesUtils.getSecurityString(
-                            MyApp.sInstance,
+                            MyApp.getInstance.sInstance,
                             ADDRESS_BOOK_INFO,
                             ""
                         ),
@@ -340,7 +346,7 @@ fun showCurrencyDialog(
  * 描述　:通用样式选择弹窗
  */
 fun showCommonDialog(
-    activity: Activity,
+    activity: Context,
     title: String? = null,
     titleContent: String? = null,
     btnCancel: String? = null,
@@ -387,6 +393,32 @@ fun showCommonDialog(
             dismiss()
         }
     }
+}
+
+fun showCommonXPopup(
+    context: Context,
+    title: String? = null,
+    titleContent: String? = null,
+    btnCancel: String? = null,
+    btnConfirm: String? = null,
+    confirmListener: View.OnClickListener? = null,
+    btnCancleListener: View.OnClickListener? = null
+){
+    XPopup
+        .Builder(context)
+        .isDestroyOnDismiss(true)
+        .asCustom(
+            CustomPopup(
+                context,
+                title,
+                titleContent,
+                btnCancel,
+                btnConfirm,
+                confirmListener,
+                btnCancleListener
+            )
+        )
+        .show()
 }
 
 

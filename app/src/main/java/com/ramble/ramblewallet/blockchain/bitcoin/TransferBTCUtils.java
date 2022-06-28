@@ -2,15 +2,17 @@ package com.ramble.ramblewallet.blockchain.bitcoin;
 
 import static com.alibaba.fastjson.JSON.parseArray;
 
-import android.app.Activity;
+import android.os.Build;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.ramble.ramblewallet.BuildConfig;
-import com.ramble.ramblewallet.activity.MainBTCActivity;
-import com.ramble.ramblewallet.activity.TransferActivity;
+import com.ramble.ramblewallet.blockchain.IBalanceListener;
+import com.ramble.ramblewallet.blockchain.ITransferListener;
+import com.ramble.ramblewallet.constant.ConstantsKt;
+import com.ramble.ramblewallet.network.LoggerInterceptor;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bitcoinj.core.Address;
@@ -57,15 +59,18 @@ public class TransferBTCUtils {
 
     private static final boolean ISMAINNET = true;
     private static final String host = "BTC"; //测试节点："BTCTEST"
+    private static final String node = BuildConfig.RPC_BTC_NODE;
 
     private TransferBTCUtils() {
         throw new IllegalStateException("TransferBTCUtils");
     }
 
     //"https://api.blockcypher.com/v1/btc/test3/addrs/" + address + "/balance"   //免费用户：每秒2次限流
-    public static void balanceOfBtc(Activity context, String address) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        String url = BuildConfig.RPC_BTC_NODE + "/get_address_balance/" + host + "/" + address; //免费用户：每秒5次限流
+    public static void balanceOfBtc(String address, IBalanceListener listener) {
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new LoggerInterceptor())
+                .build();
+        String url = node + "/get_address_balance/" + host + "/" + address; //免费用户：每秒5次限流
         Request request = new Request
                 .Builder()
                 .url(url)//要访问的链接
@@ -74,9 +79,8 @@ public class TransferBTCUtils {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                if (context instanceof MainBTCActivity) {
-                    ((MainBTCActivity) context).setBtcBalance(new BigDecimal("0"));
-                }
+                e.printStackTrace();
+                listener.onBalance(new BigDecimal("0"));
             }
 
             @Override
@@ -86,31 +90,25 @@ public class TransferBTCUtils {
                     org.json.JSONObject json = new org.json.JSONObject(string);
 
                     String balanceBefore = json.getJSONObject("data").optString("confirmed_balance");
-                    if (context instanceof MainBTCActivity) {
-                        ((MainBTCActivity) context).setBtcBalance(new BigDecimal(balanceBefore));
-                    }
+                    listener.onBalance(new BigDecimal(balanceBefore));
                 } catch (Exception e) {
-                    if (context instanceof MainBTCActivity) {
-                        ((MainBTCActivity) context).setBtcBalance(new BigDecimal("0"));
-                    }
+                    listener.onBalance(new BigDecimal("0"));
                     e.printStackTrace();
                 }
             }
         });
     }
 
-    public static void transferBTC(Activity context, String fromAddress, String toAddress,
-                                   String privateKey, BigDecimal amount, String btcFee) {
+    public static void transferBTC(String fromAddress, String toAddress,
+                                   String privateKey, BigDecimal amount, String btcFee, ITransferListener listener) {
         final List<UTXO>[] utxos = new List[]{Lists.newArrayList()};
-        String url = BuildConfig.RPC_BTC_NODE + "/get_tx_unspent/" + host + "/" + fromAddress;
+        String url = node + "/get_tx_unspent/" + host + "/" + fromAddress;
         try {
             Call call = getCallGet(url);
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    if (context instanceof TransferActivity) {
-                        ((TransferActivity) context).transferFail(e.getMessage());
-                    }
+                    listener.onTransferFail(e.getMessage());
                 }
 
                 @Override
@@ -144,7 +142,9 @@ public class TransferBTCUtils {
                         utxos[0].add(utxo);
                     }
                     //根据金额降序排序
-                    utxos[0] = utxos[0].stream().sorted(Comparator.comparing(UTXO::getValue, Comparator.reverseOrder())).collect(Collectors.toList());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        utxos[0] = utxos[0].stream().sorted(Comparator.comparing(UTXO::getValue, Comparator.reverseOrder())).collect(Collectors.toList());
+                    }
                     long fee = getFee(btcFee, amount.longValue(), utxos[0]);
                     String toHex = null;
                     try {
@@ -154,14 +154,12 @@ public class TransferBTCUtils {
                     }
                     JSONObject jsonObjectTransaction = new JSONObject();
                     jsonObjectTransaction.put("tx_hex", toHex);
-                    String url = BuildConfig.RPC_BTC_NODE + "/send_tx/" + host;
+                    String url = node + "/send_tx/" + host;
                     Call callTransaction = getCall(url, jsonObjectTransaction);
                     callTransaction.enqueue(new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            if (context instanceof TransferActivity) {
-                                ((TransferActivity) context).transferFail(e.getMessage());
-                            }
+                            listener.onTransferFail(e.getMessage());
                         }
 
                         @Override
@@ -170,9 +168,7 @@ public class TransferBTCUtils {
                             try {
                                 org.json.JSONObject trans = new org.json.JSONObject(result);
                                 String constantResult = trans.getJSONObject("data").optString("txid");
-                                if (context instanceof TransferActivity) {
-                                    ((TransferActivity) context).transferSuccess(constantResult, utxos[0]);
-                                }
+                                listener.onTransferSuccess(constantResult, utxos[0]);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

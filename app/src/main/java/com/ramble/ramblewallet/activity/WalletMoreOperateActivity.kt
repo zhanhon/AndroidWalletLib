@@ -25,9 +25,14 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
+import com.lxj.xpopup.interfaces.SimpleCallback
+import com.ramble.ramblewallet.MyApp
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
@@ -35,8 +40,10 @@ import com.ramble.ramblewallet.bean.AllTokenBean
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityWalletMoreOperateBinding
+import com.ramble.ramblewallet.fragment.MainETHFragment
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
+import com.ramble.ramblewallet.popup.EditPopup
 import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.wight.FingerprintDialogFragment
 import java.io.File
@@ -58,7 +65,6 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
     private var myAllToken: ArrayList<AllTokenBean> = arrayListOf()
     private var isFinger = false
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
@@ -76,7 +82,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             )
         }
         when (walletCurrent.walletType) {
-            1 -> {
+            WALLET_TYPE_ETH -> {
                 binding.tvRecoverWalletTitle.text =
                     "ETH" + " " + walletCurrent.walletName + getString(R.string.di_wallet)
             }
@@ -107,7 +113,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             object : TypeToken<Wallet>() {}.type
         )
 
-        if (saveWalletList.size == 1) {
+        if (saveWalletList.size == 1 || walletCurrent.isIdWallet) {
             binding.tvDeleteWallet.visibility = View.GONE
         } else {
             binding.tvDeleteWallet.visibility = View.VISIBLE
@@ -165,7 +171,8 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             R.id.tv_delete_wallet -> {
-                deleteConfirmTipsDialog()
+                passwordConfirmationDialog()
+
             }
         }
     }
@@ -209,21 +216,39 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
         })
     }
 
-    private fun deleteConfirmTipsDialog() {
-        showCommonDialog(this,
-            title = getString(R.string.tips),
-            titleContent = getString(R.string.please_confirm_delete_wallet),
-            btnCancel = getString(R.string.cancel),
-            btnConfirm = getString(R.string.btn_confirm),
-            confirmListener = {
-                btnConfirmSub()
-                finish()
-            }
-        )
+    private fun passwordConfirmationDialog() {
+        val editPopup = EditPopup(this,
+            getString(R.string.wallet_password),
+            "",
+            getString(R.string.please_input_password),
+            getString(R.string.cancel),
+            getString(R.string.confirm), object : EditPopup.OnClickConfirmListener {
+                override fun onClickConfirm(view: View?, text: String?) {
+                    if (text == walletSelleted.walletPassword) {
+                        btnConfirmSub()
+                        finish()
+                    } else {
+                        ToastUtils.showToastFree(
+                            this@WalletMoreOperateActivity,
+                            getString(R.string.password_incorrect)
+                        )
+                    }
+
+                }
+            })
+        XPopup.Builder(this)
+            .isDarkTheme(true)
+            .setPopupCallback(object : SimpleCallback(){
+                override fun beforeShow(popupView: BasePopupView?) {
+                    editPopup.setIsPasswordView(true)
+                }
+            })
+            .asCustom(editPopup)
+            .show()
     }
 
     private fun btnConfirmSub() {
-        var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+        val detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
         saveWalletList.forEach {
             if (it.isClickDelete) {
                 detailsList.add(AddressReport.DetailsList(it.address, 2, it.walletType))
@@ -239,25 +264,18 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
-        SharedPreferencesUtils.saveSecurityString(
-            this,
-            WALLETSELECTED,
-            Gson().toJson(saveWalletList[0])
-        )
+        SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(saveWalletList[0]))
         SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
-        if (walletCurrent.walletType == 1) {
+        if (walletCurrent.walletType == WALLET_TYPE_ETH) {
             val lists = myAllToken.iterator()
             lists.forEach {
                 if (it.myCurrency == walletCurrent.address) {
                     lists.remove()
                 }
             }
-            SharedPreferencesUtils.saveSecurityString(
-                this,
-                TOKEN_INFO_NO,
-                Gson().toJson(myAllToken)
-            )
+            SharedPreferencesUtils.saveSecurityString(this, TOKEN_INFO_NO, Gson().toJson(myAllToken))
         }
+        RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE, MyApp.getInstance.startActivityJun(this))
     }
 
     override fun onResume() {
@@ -299,7 +317,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                     s: CharSequence?,
                     start: Int,
                     count: Int,
-                    after: Int
+                    after: Int,
                 ) {
                     //暂时不需要实现此方法
                 }
@@ -365,7 +383,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
                     s: CharSequence?,
                     start: Int,
                     count: Int,
-                    after: Int
+                    after: Int,
                 ) {
                     //暂时不需要实现此方法
                 }
@@ -592,7 +610,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
      */
     open fun requestRuntimePermission(
         permissions: Array<String>,
-        permissionListener: PermissionListener
+        permissionListener: PermissionListener,
     ) {
         mPermissionListener = permissionListener
         val permissionList: MutableList<String> = ArrayList()
@@ -615,7 +633,7 @@ class WalletMoreOperateActivity : BaseActivity(), View.OnClickListener {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String?>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {

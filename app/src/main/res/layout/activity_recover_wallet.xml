@@ -167,19 +167,19 @@
                 android:minLines="5"
                 android:padding="@dimen/dp_5"
                 android:textColorHint="@color/color_9598AA"
-                android:textSize="@dimen/dp_13"
+                android:textSize="@dimen/sp_13"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_contributing_words" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_confirm"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_50"
                 android:layout_marginStart="@dimen/dp_30"
                 android:layout_marginTop="@dimen/dp_100"
                 android:layout_marginEnd="@dimen/dp_30"
-                android:background="@drawable/shape_gray_bottom_btn"
+                android:background="@drawable/button_shape_enable"
                 android:enabled="false"
                 android:gravity="center"
                 android:outlineProvider="none"

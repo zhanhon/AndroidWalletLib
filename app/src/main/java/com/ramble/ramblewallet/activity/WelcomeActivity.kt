@@ -10,12 +10,12 @@ import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.ramble.ramblewallet.BuildConfig
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.base.BaseActivity
 import com.ramble.ramblewallet.bean.AddressReport
 import com.ramble.ramblewallet.bean.Wallet
 import com.ramble.ramblewallet.constant.*
+import com.ramble.ramblewallet.network.AppUtils
 import com.ramble.ramblewallet.network.getAppVersion
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
@@ -50,7 +50,7 @@ class WelcomeActivity : BaseActivity() {
         GlobalScope.launch {
             mApiService.appVersion(AppVersion.Req().toApiRequest(getAppVersion)).subscribe({
                 if (it.code() == 1 && it.data()!!.version != null) {
-                    if (it.data()!!.version!! != BuildConfig.VERSION_NAME) {
+                    if (it.data()!!.version!! != AppUtils.getVersionName()) {
                         if (it.data()!!.forcedUpdatingShow == 1) {//强制更新
                             RxBus.emitEvent(Pie.EVENT_PUSH_FOC_UP, it.data()!!)
                             return@subscribe
@@ -149,7 +149,7 @@ class WelcomeActivity : BaseActivity() {
                     SharedPreferencesUtils.getSecurityString(this, WALLETINFO, ""),
                     object : TypeToken<ArrayList<Wallet>>() {}.type
                 )
-            var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+            val detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
             saveWalletList.forEach {
                 detailsList.add(AddressReport.DetailsList(it.address, 0, it.walletType))
             }

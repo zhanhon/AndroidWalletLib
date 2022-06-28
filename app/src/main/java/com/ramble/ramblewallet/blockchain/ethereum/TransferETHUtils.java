@@ -1,18 +1,20 @@
 package com.ramble.ramblewallet.blockchain.ethereum;
 
+import static org.web3j.utils.Convert.Unit.WEI;
+
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
 import com.ramble.ramblewallet.BuildConfig;
-import com.ramble.ramblewallet.activity.TransferActivity;
 import com.ramble.ramblewallet.bean.MainTokenBean;
+import com.ramble.ramblewallet.blockchain.ITransferListener;
 import com.ramble.ramblewallet.blockchain.ethereum.utils.EthUtils;
+import com.ramble.ramblewallet.constant.ConstantsKt;
 
 import org.web3j.abi.FunctionEncoder;
+import org.web3j.abi.FunctionReturnDecoder;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Function;
@@ -24,18 +26,23 @@ import org.web3j.crypto.TransactionEncoder;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.Transaction;
+import org.web3j.protocol.core.methods.response.EthCall;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.Transfer;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Numeric;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -45,16 +52,16 @@ import java.util.concurrent.Future;
  */
 public class TransferETHUtils {
 
-    public static final String APIKEY = "0b81da36bb9b4532bbd865c26e79ac98";
+//    public static final String APIKEY = "0b81da36bb9b4532bbd865c26e79ac98";
+    public static final String APIKEY = "0941bc1785a84adb9d9c943da76ba023";
 
     private static final String DATA_PREFIX = "0x70a08231000000000000000000000000";
-
-    public static BalanceGet getBalance;
+    private static final String node = BuildConfig.RPC_ETH_NODE;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static BigDecimal getBalanceETH(String address) {
         try {
-            Web3j web3 = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE + "/" + APIKEY));
+            Web3j web3 = Web3j.build(new HttpService(node + "/" + APIKEY));
             Future<EthGetBalance> ethGetBalanceFuture = web3.ethGetBalance(address, DefaultBlockParameterName.LATEST).sendAsync();
             return new BigDecimal(ethGetBalanceFuture.get().getBalance().toString()).divide(new BigDecimal("10").pow(18));
         } catch (ExecutionException | InterruptedException e) {
@@ -64,30 +71,60 @@ public class TransferETHUtils {
         }
     }
 
-    public static BigDecimal getBalanceToken(String address, MainTokenBean tokenBean) throws IOException {
+    public static BigDecimal getBalanceToken(String fromAddress, String contractAddress) {
+        String methodName = "balanceOf";
+        List<Type> inputParameters = new ArrayList<>();
+        List<TypeReference<?>> outputParameters = new ArrayList<>();
+        Address address = new Address(fromAddress);
+        inputParameters.add(address);
+
+        TypeReference<Uint256> typeReference = new TypeReference<Uint256>() {
+        };
+        outputParameters.add(typeReference);
+        Function function = new Function(methodName, inputParameters, outputParameters);
+        String data = FunctionEncoder.encode(function);
+        Transaction transaction = Transaction.createEthCallTransaction(fromAddress, contractAddress, data);
+
+        EthCall ethCall;
+        BigDecimal balanceValue = BigDecimal.ZERO;
         try {
-            String value = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE + "/" + APIKEY))
+            Web3j web3j = Web3j.build(new HttpService(node + "/" + APIKEY));
+            ethCall = web3j.ethCall(transaction, DefaultBlockParameterName.LATEST).send();
+            List<Type> results = FunctionReturnDecoder.decode(ethCall.getValue(), function.getOutputParameters());
+            int value = 0;
+            if(results != null && results.size()>0){
+                value = Integer.parseInt(String.valueOf(results.get(0).getValue()));
+            }
+            balanceValue = new BigDecimal(value).divide(WEI.getWeiFactor(), 6, RoundingMode.HALF_DOWN);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return balanceValue;
+    }
+
+    public static void getBalanceToken(String address, MainTokenBean tokenBean,BalanceGet balanceGet) {
+        try {
+            String value = Web3j.build(new HttpService(node + "/" + APIKEY))
                     .ethCall(Transaction.createEthCallTransaction(address,
                             tokenBean.getContractAddress(), DATA_PREFIX + address.substring(2)), DefaultBlockParameterName.PENDING).send().getValue();
             String s = new BigInteger(value.substring(2), 16).toString();
+            BigDecimal finalBalance;
             if (s.equals("0x")) {
-                return BigDecimal.valueOf(0);
+                finalBalance = BigDecimal.valueOf(0);
             } else {
-                BigDecimal finalBalance = new BigDecimal(s).divide(new BigDecimal("10").pow(tokenBean.getDecimalPoints()));
-                getBalance.onListener(tokenBean, finalBalance);
-                return finalBalance;
+                finalBalance = new BigDecimal(s).divide(new BigDecimal("10").pow(tokenBean.getDecimalPoints()));
             }
+            balanceGet.onListener(finalBalance);
         } catch (Exception e) {
             e.printStackTrace();
-            return BigDecimal.valueOf(0);
         }
     }
 
     @SuppressLint("LongLogTag")
-    public static void transferETH(Activity context, String fromAddress, String toAddress, String privateKey, String number,
-                                   BigInteger gasPrice, BigInteger gasLimit, String remark) {
+    public static void transferETH(String fromAddress, String toAddress, String privateKey, String number,
+                                   BigInteger gasPrice, BigInteger gasLimit, String remark, ITransferListener listener) {
         try {
-            Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE + "/" + APIKEY));
+            Web3j web3j = Web3j.build(new HttpService(node + "/" + APIKEY));
             BigInteger value = Convert.toWei(number, Convert.Unit.ETHER).toBigInteger();
             //加载转账所需的凭证，用私钥
             Credentials credentials = Credentials.create(privateKey);
@@ -107,14 +144,10 @@ public class TransferETHUtils {
             //发送交易
             EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexValue).sendAsync().get();
             if (ethSendTransaction.hasError()) {
-                if (context instanceof TransferActivity) {
-                    ((TransferActivity) context).transferFail(ethSendTransaction.getError().getMessage());
-                }
+                listener.onTransferFail(ethSendTransaction.getError().getMessage());
             } else {
                 String transactionHash = ethSendTransaction.getTransactionHash();
-                if (context instanceof TransferActivity) {
-                    ((TransferActivity) context).transferSuccess(transactionHash, null);
-                }
+                listener.onTransferSuccess(transactionHash,null);
             }
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
@@ -123,10 +156,10 @@ public class TransferETHUtils {
     }
 
     @SuppressLint("LongLogTag")
-    public static void transferETHToken(Context context, String fromAddress, String toAddress, String contractAddress, String privateKey, BigInteger number,
-                                        BigInteger gasPrice, BigInteger gasLimit) {
+    public static void transferETHToken(String fromAddress, String toAddress, String contractAddress, String privateKey, BigInteger number,
+                                        BigInteger gasPrice, BigInteger gasLimit,ITransferListener listener) {
         try {
-            Web3j web3j = Web3j.build(new HttpService(BuildConfig.RPC_ETH_NODE + "/" + APIKEY));
+            Web3j web3j = Web3j.build(new HttpService(node + "/" + APIKEY));
             //加载转账所需的凭证，用私钥
             Credentials credentials = Credentials.create(privateKey);
             //获取nonce，交易笔数
@@ -151,14 +184,10 @@ public class TransferETHUtils {
             //发送交易
             EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexValue).sendAsync().get();
             if (ethSendTransaction.hasError()) {
-                if (context instanceof TransferActivity) {
-                    ((TransferActivity) context).transferFail(ethSendTransaction.getError().getMessage());
-                }
+                listener.onTransferFail(ethSendTransaction.getError().getMessage());
             } else {
                 String transactionHash = ethSendTransaction.getTransactionHash();
-                if (context instanceof TransferActivity) {
-                    ((TransferActivity) context).transferSuccess(transactionHash, null);
-                }
+                listener.onTransferSuccess(transactionHash, null);
             }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -166,12 +195,9 @@ public class TransferETHUtils {
         }
     }
 
-    public void setOnListener(BalanceGet balance) {
-        getBalance = balance;
-    }
 
     public interface BalanceGet {
-        void onListener(MainTokenBean tokenBean, BigDecimal tokenBalance);
+        void onListener(BigDecimal tokenBalance);
     }
 
 }

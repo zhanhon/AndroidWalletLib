@@ -1,6 +1,6 @@
 package com.ramble.ramblewallet.network
 
-import com.ramble.ramblewallet.BuildConfig
+import com.ramble.ramblewallet.constant.baseServerUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.internal.platform.Platform
@@ -19,7 +19,7 @@ import javax.net.ssl.SSLContext as SSLContext1
 
 object FastUrlTask {
     private const val timeOut = 5000L
-    private val executor = Executors.newFixedThreadPool(BuildConfig.BASE_SERVER_URL.size)
+    private val executor = Executors.newFixedThreadPool(baseServerUrl.size)
     private val checkConnectClient = OkHttpClient.Builder()
 //        .sslSocketFactory(
 //            provideSSLContext(provideX509TrustManager()).socketFactory,
@@ -61,7 +61,8 @@ object FastUrlTask {
         val tasks = urls.map { url ->
             Callable {
                 val request = Request.Builder()
-                    .url("$url/wallet-decentralized-api/actuator/health")
+//                    .url("$url/wallet-decentralized-api/actuator/health")
+                    .url(url)
                     .get()
                     .build()
                 try {

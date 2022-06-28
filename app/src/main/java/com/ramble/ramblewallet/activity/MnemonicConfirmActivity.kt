@@ -34,12 +34,10 @@ import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.custom.AutoLineFeedLayoutManager
 import com.ramble.ramblewallet.databinding.ActivityMnemonicConfirmBinding
+import com.ramble.ramblewallet.fragment.*
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.utils.DoubleUtils
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
-import com.ramble.ramblewallet.utils.ToastUtils
-import com.ramble.ramblewallet.utils.applyIo
+import com.ramble.ramblewallet.utils.*
 
 
 class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
@@ -58,7 +56,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     private var putAddressTimes = 0
     private var clickErrorCount = 0
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
@@ -68,6 +66,31 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
         currentTab = intent.getStringExtra(ARG_PARAM3)!!
         initClick()
         initData()
+    }
+
+    fun updateListData(walletTemp: Wallet){
+        val wallet: Wallet =
+            Gson().fromJson(
+                SharedPreferencesUtils.getSecurityString(this, WALLETSELECTED, ""),
+                object : TypeToken<Wallet>() {}.type
+            )
+        if (walletTemp.address == wallet.address){
+            wallet.isBackupAlready = true
+            SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(wallet))
+        }
+
+        val walletList = SharedPreferencesUtils.getSecurityString(this, WALLETINFO, "")
+        if (walletList.isNotEmpty()) {
+            val walletList: ArrayList<Wallet> = Gson().fromJson(walletList, object : TypeToken<ArrayList<Wallet>>() {}.type)
+            walletList.forEach {
+                if (walletTemp.address == it.address){
+                    it.isBackupAlready = true
+                }
+            }
+            SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(walletList))
+        }
+
+
     }
 
     override fun onClick(v: View) {
@@ -84,8 +107,11 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
                 if (mnemonicETHChoose == mnemonicETHOriginal) {
                     if (!walletSelleted.mnemonic.isNullOrEmpty()) {
                         SharedPreferencesUtils.saveSecurityBoolean(this, IS_CONFIRM_MNEMONIC, true)
-                        MnemonicActivity.instance.finish()
-                        finish()
+                        if (walletSelleted.address.isNotEmpty()) {
+                            walletSelleted.isBackupAlready = true
+                            updateListData(walletSelleted)
+                        }
+                        ActivityManager.getAppManager().finishAllActivity()
                     } else {
                         createWallet()
                     }
@@ -183,7 +209,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun allLogicHandle() {
-        var walletETH = WalletETHUtils.generateWalletByMnemonic(
+        val walletETH = WalletETHUtils.generateWalletByMnemonic(
             walletSelleted.walletName,
             walletSelleted.walletPassword,
             mnemonicDoubleList[0],
@@ -207,6 +233,10 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             mnemonicDoubleList[0],
             mnemonicDoubleList
         )
+        walletETH.isIdWallet = true
+        walletTRX.isIdWallet = true
+        walletBTC.isIdWallet = true
+        walletSOL.isIdWallet = true
         if ((!Gson().toJson(saveWalletList).contains(walletETH.address))
             && (!Gson().toJson(saveWalletList).contains(walletBTC.address))
             && (!Gson().toJson(saveWalletList).contains(walletTRX.address))
@@ -225,30 +255,22 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             saveWalletList.add(walletBTC)
             walletETH.index = saveWalletList[saveWalletList.size - 1].index + 1
             saveWalletList.add(walletETH)
-            SharedPreferencesUtils.saveSecurityString(
-                this,
-                WALLETINFO,
-                Gson().toJson(saveWalletList)
-            )
-            var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+            val detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
             detailsList.add(AddressReport.DetailsList(walletETH.address, 0, 1))
             detailsList.add(AddressReport.DetailsList(walletBTC.address, 0, 3))
             detailsList.add(AddressReport.DetailsList(walletTRX.address, 0, 2))
             detailsList.add(AddressReport.DetailsList(walletSOL.address, 0, 4))
             //2、之后地址校验
-            var isValidEthSuccess = isEthValidAddress(walletETH.address)
-            var isValidTrxSuccess = isTrxValidAddress(walletTRX.address)
-            var isValidBtcSuccess = isBtcValidAddress(walletBTC.address)
+            val isValidEthSuccess = isEthValidAddress(walletETH.address)
+            val isValidTrxSuccess = isTrxValidAddress(walletTRX.address)
+            val isValidBtcSuccess = isBtcValidAddress(walletBTC.address)
             val isValidSolSuccess = isSolValidAddress(walletSOL.address)
             if (isValidEthSuccess && isValidTrxSuccess && isValidBtcSuccess && isValidSolSuccess) {
                 putAddress(detailsList)
+                SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
                 //设置选择默认
-                SharedPreferencesUtils.saveSecurityString(
-                    this,
-                    WALLETSELECTED,
-                    Gson().toJson(walletETH)
-                )
-                startActivity(Intent(this, MainETHActivity::class.java))
+                SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletETH))
+                RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainETHFragment::class.toString())
             }
         }
     }
@@ -313,22 +335,14 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             }
             walletSOL.index = saveWalletList[0].index + 1
             saveWalletList.add(walletSOL)
-            SharedPreferencesUtils.saveSecurityString(
-                this,
-                WALLETINFO,
-                Gson().toJson(saveWalletList)
-            )
-            var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+            val detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
             detailsList.add(AddressReport.DetailsList(walletSOL.address, 0, 3))
-            var isValidSolSuccess = isSolValidAddress(walletSOL.address)
+            val isValidSolSuccess = isSolValidAddress(walletSOL.address)
             if (isValidSolSuccess) {
                 putAddress(detailsList)
-                SharedPreferencesUtils.saveSecurityString(
-                    this,
-                    WALLETSELECTED,
-                    Gson().toJson(walletSOL)
-                )
-                startActivity(Intent(this, MainSOLActivity::class.java))
+                SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
+                SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletSOL))
+                RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainSOLFragment::class.toString())
             }
         }
     }
@@ -355,22 +369,14 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             }
             walletBTC.index = saveWalletList[0].index + 1
             saveWalletList.add(walletBTC)
-            SharedPreferencesUtils.saveSecurityString(
-                this,
-                WALLETINFO,
-                Gson().toJson(saveWalletList)
-            )
-            var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+            val detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
             detailsList.add(AddressReport.DetailsList(walletBTC.address, 0, 3))
-            var isValidBtcSuccess = isBtcValidAddress(walletBTC.address)
+            val isValidBtcSuccess = isBtcValidAddress(walletBTC.address)
             if (isValidBtcSuccess) {
                 putAddress(detailsList)
-                SharedPreferencesUtils.saveSecurityString(
-                    this,
-                    WALLETSELECTED,
-                    Gson().toJson(walletBTC)
-                )
-                startActivity(Intent(this, MainBTCActivity::class.java))
+                SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
+                SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletBTC))
+                RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainBTCFragment::class.toString())
             }
         }
     }
@@ -397,28 +403,20 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             }
             walletTRX.index = saveWalletList[0].index + 1
             saveWalletList.add(walletTRX)
-            SharedPreferencesUtils.saveSecurityString(
-                this,
-                WALLETINFO,
-                Gson().toJson(saveWalletList)
-            )
-            var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+            val detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
             detailsList.add(AddressReport.DetailsList(walletTRX.address, 0, 2))
-            var isValidTrxSuccess = isTrxValidAddress(walletTRX.address)
+            val isValidTrxSuccess = isTrxValidAddress(walletTRX.address)
             if (isValidTrxSuccess) {
                 putAddress(detailsList)
-                SharedPreferencesUtils.saveSecurityString(
-                    this,
-                    WALLETSELECTED,
-                    Gson().toJson(walletTRX)
-                )
-                startActivity(Intent(this, MainTRXActivity::class.java))
+                SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
+                SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletTRX))
+                RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE, MainTRXFragment::class.toString())
             }
         }
     }
 
     private fun ethLogicHandle() {
-        var walletETH = WalletETHUtils.generateWalletByMnemonic(
+        val walletETH = WalletETHUtils.generateWalletByMnemonic(
             walletSelleted.walletName,
             walletSelleted.walletPassword,
             mnemonicDoubleList[0],
@@ -439,22 +437,14 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             }
             walletETH.index = saveWalletList[0].index + 1
             saveWalletList.add(walletETH)
-            SharedPreferencesUtils.saveSecurityString(
-                this,
-                WALLETINFO,
-                Gson().toJson(saveWalletList)
-            )
-            var detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
+            val detailsList: ArrayList<AddressReport.DetailsList> = arrayListOf()
             detailsList.add(AddressReport.DetailsList(walletETH.address, 0, 1))
-            var isValidEthSuccess = isEthValidAddress(walletETH.address)
+            val isValidEthSuccess = isEthValidAddress(walletETH.address)
             if (isValidEthSuccess) {
                 putAddress(detailsList)
-                SharedPreferencesUtils.saveSecurityString(
-                    this,
-                    WALLETSELECTED,
-                    Gson().toJson(walletETH)
-                )
-                startActivity(Intent(this, MainETHActivity::class.java))
+                SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
+                SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletETH))
+                RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainETHFragment::class.toString())
             }
         }
     }
@@ -508,7 +498,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun mnemonicFailDialog() {
-        var dialog = AlertDialog.Builder(this).create()
+        val dialog = AlertDialog.Builder(this).create()
         dialog.show()
         val window: Window? = dialog.window
         if (window != null) {
@@ -530,25 +520,25 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
             window.findViewById<Button>(R.id.btn_cancel_create).setOnClickListener {
                 if (walletSelleted.address.isNotEmpty()) {
                     SharedPreferencesUtils.saveSecurityBoolean(this, IS_CONFIRM_MNEMONIC, false)
-                    MnemonicActivity.instance.finish()
                     finish()
                 } else {
                     when (walletSelleted.walletType) {
                         1 -> {
-                            startActivity(Intent(this, MainETHActivity::class.java))
+                            RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainETHFragment::class.toString())
                         }
                         2 -> {
-                            startActivity(Intent(this, MainTRXActivity::class.java))
+                            RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainTRXFragment::class.toString())
                         }
                         3 -> {
-                            startActivity(Intent(this, MainBTCActivity::class.java))
+                            RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainBTCFragment::class.toString())
                         }
                         4 -> {
-                            startActivity(Intent(this, CreateRecoverWalletActivity::class.java))
+                            RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,CreateRecoverWalletFragment::class.toString())
                         }
                     }
                 }
                 dialog.dismiss()
+                finish()
             }
             window.findViewById<Button>(R.id.btn_skip).setOnClickListener {
                 createWallet()
@@ -600,15 +590,7 @@ class MnemonicConfirmActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun mnemonicConfirmClick(tvMnemonicName: TextView) {
-        if (myDataBeans.size == 12) {
-            binding.btnMnemonicCompleted.isEnabled = true
-            binding.btnMnemonicCompleted.background =
-                getDrawable(R.drawable.shape_green_bottom_btn)
-        } else {
-            binding.btnMnemonicCompleted.isEnabled = false
-            binding.btnMnemonicCompleted.background =
-                getDrawable(R.drawable.shape_gray_bottom_btn)
-        }
+        binding.btnMnemonicCompleted.isEnabled = myDataBeans.size == 12
         mnemonicConfirmAdapter.setOnItemClickListener { _, _, position ->
             tvMnemonicName.visibility = View.VISIBLE
             mnemonicETHChoose.remove(mnemonicETHChoose[position])

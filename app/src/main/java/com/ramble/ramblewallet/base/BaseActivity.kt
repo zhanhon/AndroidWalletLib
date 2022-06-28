@@ -4,14 +4,19 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
+import com.lxj.xpopup.impl.LoadingPopupView
 import com.ramble.ramblewallet.R
 import com.ramble.ramblewallet.network.ApiRetrofit
 import com.ramble.ramblewallet.network.ApiService
+import com.ramble.ramblewallet.utils.ActivityManager
 import com.ramble.ramblewallet.utils.RxBus
 import com.ramble.ramblewallet.utils.addTo
 import io.reactivex.disposables.CompositeDisposable
@@ -30,8 +35,8 @@ abstract class BaseActivity : AppCompatActivity() {
     val onDestroyComposite = CompositeDisposable()
 
     private var mNetWorkStateReceiver: NetWorkStateReceiver? = null
+    lateinit var mLoadingPopupView: LoadingPopupView
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
@@ -50,6 +55,9 @@ abstract class BaseActivity : AppCompatActivity() {
                 }, { it.printStackTrace() }
             )
             .addTo(onDestroyComposite)
+        mLoadingPopupView = XPopup.Builder(this).asLoading().setTitle(getString(R.string.loading))
+        ActivityManager.getAppManager().addActivity(this)
+        Log.i("ramble",javaClass.simpleName)
     }
 
     override fun onResume() {
@@ -67,6 +75,20 @@ abstract class BaseActivity : AppCompatActivity() {
         unregisterReceiver(mNetWorkStateReceiver)
     }
 
+    protected fun setLoadingTitle(string: String){
+        mLoadingPopupView.setTitle(string)
+    }
+
+    protected open fun showLoadingDialog() {
+        mLoadingPopupView.show()
+    }
+
+    protected open fun dismissLoadingDialog() {
+        if (mLoadingPopupView.isShow) {
+            mLoadingPopupView.dismiss()
+        }
+    }
+
     open fun onRxBus(event: RxBus.Event) {
     }
 
@@ -77,6 +99,8 @@ abstract class BaseActivity : AppCompatActivity() {
             onStopComposite.dispose()
             onDestroyComposite.dispose()
         }
+        dismissLoadingDialog()
+        ActivityManager.getAppManager().finishActivity(this)
     }
 
 }

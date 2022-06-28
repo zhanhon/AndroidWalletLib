@@ -1,6 +1,5 @@
 package com.ramble.ramblewallet.activity
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -29,12 +28,14 @@ import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils
 import com.ramble.ramblewallet.blockchain.tron.WalletTRXUtils.isTrxValidAddress
 import com.ramble.ramblewallet.constant.*
 import com.ramble.ramblewallet.databinding.ActivityRecoverWalletBinding
+import com.ramble.ramblewallet.fragment.MainBTCFragment
+import com.ramble.ramblewallet.fragment.MainETHFragment
+import com.ramble.ramblewallet.fragment.MainSOLFragment
+import com.ramble.ramblewallet.fragment.MainTRXFragment
 import com.ramble.ramblewallet.network.reportAddressUrl
 import com.ramble.ramblewallet.network.toApiRequest
-import com.ramble.ramblewallet.utils.SharedPreferencesUtils
+import com.ramble.ramblewallet.utils.*
 import com.ramble.ramblewallet.utils.StringUtils.*
-import com.ramble.ramblewallet.utils.ToastUtils
-import com.ramble.ramblewallet.utils.applyIo
 
 class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
 
@@ -46,7 +47,6 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     private var walletSelleted: Wallet? = null
     private var putAddressTimes = 0
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
@@ -59,7 +59,6 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         binding.ivBack.setOnClickListener(this)
         binding.btnConfirm.setOnClickListener(this)
         binding.edtWalletName.addTextChangedListener(object : TextWatcher {
-            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun afterTextChanged(s: Editable?) {
                 btnIsClick()
             }
@@ -73,7 +72,6 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             }
         })
         binding.edtWalletPassword.addTextChangedListener(object : TextWatcher {
-            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun afterTextChanged(s: Editable?) {
                 btnIsClick()
             }
@@ -87,7 +85,6 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             }
         })
         binding.edtPasswordConfirm.addTextChangedListener(object : TextWatcher {
-            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun afterTextChanged(s: Editable?) {
                 btnIsClick()
             }
@@ -99,7 +96,6 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
             }
         })
         binding.edtContributingWords.addTextChangedListener(object : TextWatcher {
-            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun afterTextChanged(s: Editable?) {
                 btnIsClick()
             }
@@ -114,22 +110,14 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         })
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun btnIsClick() {
-        if ((binding.edtWalletName.text.trim().toString().isNotEmpty())
-            && (binding.edtWalletPassword.text.trim().toString().isNotEmpty())
-            && (binding.edtPasswordConfirm.text.trim().toString().isNotEmpty())
-            && (binding.edtContributingWords.text.trim().toString().isNotEmpty())
-            && (binding.edtWalletPassword.text.trim().toString().length >= 6)
-            && (binding.edtWalletPassword.text.trim().toString()
-                    == binding.edtPasswordConfirm.text.trim().toString())
-        ) {
-            binding.btnConfirm.isEnabled = true
-            binding.btnConfirm.background = getDrawable(R.drawable.shape_green_bottom_btn)
-        } else {
-            binding.btnConfirm.isEnabled = false
-            binding.btnConfirm.background = getDrawable(R.drawable.shape_gray_bottom_btn)
-        }
+        binding.btnConfirm.isEnabled = ((binding.edtWalletName.text.trim().toString().isNotEmpty())
+                && (binding.edtWalletPassword.text.trim().toString().isNotEmpty())
+                && (binding.edtPasswordConfirm.text.trim().toString().isNotEmpty())
+                && (binding.edtContributingWords.text.trim().toString().isNotEmpty())
+                && (binding.edtWalletPassword.text.trim().toString().length >= 6)
+                && (binding.edtWalletPassword.text.trim().toString()
+                == binding.edtPasswordConfirm.text.trim().toString()))
     }
 
     private fun initData() {
@@ -409,17 +397,24 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 )
             }
         }
-        if (saveWalletList.isEmpty()) {
-            wallet.index = 0
-        } else {
-            wallet.index = saveWalletList[0].index + 1
-        }
-        saveWalletList.add(wallet)
-        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (isEthValidAddress(wallet.address)) {
-            putAddress(wallet, 1)
+            var needUpdateBean: Wallet? = null
+            saveWalletList.forEach {
+                if (it.address == wallet.address){//已存在重置密码
+                    needUpdateBean = it
+                }
+            }
+            if (needUpdateBean != null){
+                needUpdateBean!!.walletPassword = binding.edtWalletPassword.text.trim().toString()
+                ToastUtils.showToastFree(this,getString(R.string.reset_success))
+            }else{
+                saveWalletList.add(wallet)
+                putAddress(wallet, 1)
+            }
+            SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
             SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(wallet))
-            startActivity(Intent(this, MainETHActivity::class.java))
+            RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainETHFragment::class.toString())
+            finish()
         } else {
             when (chooseMode) {
                 1 -> {
@@ -439,7 +434,7 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun dictionaryMnemonic() {
-        var mmemoic = binding.edtContributingWords.text.toString()
+        val mmemoic = binding.edtContributingWords.text.toString()
         mnemonicList1 = mmemoic.split(" ") as ArrayList<String>
         if (isHasLowerChar(mmemoic)) {
             mnemonicList.add(mmemoic)
@@ -522,17 +517,29 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 )
             }
         }
-        if (saveWalletList.isEmpty()) {
-            wallet.index = 0
-        } else {
-            wallet.index = saveWalletList[0].index + 1
-        }
-        saveWalletList.add(wallet)
-        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (isTrxValidAddress(wallet.address)) {
-            putAddress(wallet, 2)
+            var needUpdateBean: Wallet? = null
+            saveWalletList.forEach {
+                if (it.address == wallet.address){//已存在重置密码
+                    needUpdateBean = it
+                }
+            }
+            if (needUpdateBean != null){
+                if (needUpdateBean!!.isIdWallet){
+                    //  身份钱包
+                    ToastUtils.showToastFree(this,getString(R.string.reset_password_is_id))
+                }else{
+                    needUpdateBean!!.walletPassword = binding.edtWalletPassword.text.trim().toString()
+                    ToastUtils.showToastFree(this,getString(R.string.reset_success))
+                }
+            }else{
+                saveWalletList.add(wallet)
+                putAddress(wallet, 2)
+            }
+            SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
             SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(wallet))
-            startActivity(Intent(this, MainTRXActivity::class.java))
+            RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainTRXFragment::class.toString())
+            finish()
         } else {
             when (chooseMode) {
                 1 -> {
@@ -577,12 +584,25 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
         } else {
             wallet.index = saveWalletList[0].index + 1
         }
-        saveWalletList.add(wallet)
-        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (isBtcValidAddress(wallet.address)) {
-            putAddress(wallet, 3)
+            var needUpdateBean: Wallet? = null
+            saveWalletList.forEach {
+                if (it.address == wallet.address){//已存在重置密码
+                    needUpdateBean = it
+                }
+            }
+            if (needUpdateBean != null){
+                needUpdateBean!!.walletPassword = binding.edtWalletPassword.text.trim().toString()
+                ToastUtils.showToastFree(this,getString(R.string.reset_success))
+            }else{
+                saveWalletList.add(wallet)
+                putAddress(wallet, WALLET_TYPE_BTC)
+            }
+            SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
+
             SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(wallet))
-            startActivity(Intent(this, MainBTCActivity::class.java))
+            RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainBTCFragment::class.toString())
+            finish()
         } else {
             when (chooseMode) {
                 1 -> {
@@ -619,21 +639,24 @@ class RecoverWalletActivity : BaseActivity(), View.OnClickListener {
                 )
             }
         }
-        if (saveWalletList.isEmpty()) {
-            walletSOL.index = 0
-        } else {
-            walletSOL.index = saveWalletList[0].index + 1
-        }
-        saveWalletList.add(walletSOL)
-        SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
         if (isSolValidAddress(walletSOL.address)) {
-            putAddress(walletSOL, 4)
-            SharedPreferencesUtils.saveSecurityString(
-                this,
-                WALLETSELECTED,
-                Gson().toJson(walletSOL)
-            )
-            startActivity(Intent(this, MainSOLActivity::class.java))
+            var needUpdateBean: Wallet? = null
+            saveWalletList.forEach {
+                if (it.address == walletSOL.address){//已存在重置密码
+                    needUpdateBean = it
+                }
+            }
+            if (needUpdateBean != null){
+                needUpdateBean!!.walletPassword = binding.edtWalletPassword.text.trim().toString()
+                ToastUtils.showToastFree(this,getString(R.string.reset_success))
+            }else{
+                saveWalletList.add(walletSOL)
+                putAddress(walletSOL, 4)
+            }
+            SharedPreferencesUtils.saveSecurityString(this, WALLETINFO, Gson().toJson(saveWalletList))
+            SharedPreferencesUtils.saveSecurityString(this, WALLETSELECTED, Gson().toJson(walletSOL))
+            RxBus.emitEvent(Pie.EVENT_FRAGMENT_TOGGLE,MainSOLFragment::class.toString())
+            finish()
         } else {
             when (chooseMode) {
                 1 -> {

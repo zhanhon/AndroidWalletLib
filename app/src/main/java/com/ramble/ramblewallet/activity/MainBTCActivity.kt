@@ -22,6 +22,7 @@ import com.ramble.ramblewallet.bean.MainTokenBean
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.bean.Wallet
+import com.ramble.ramblewallet.blockchain.IBalanceListener
 import com.ramble.ramblewallet.blockchain.bitcoin.TransferBTCUtils.balanceOfBtc
 import com.ramble.ramblewallet.blockchain.bitcoin.WalletBTCUtils
 import com.ramble.ramblewallet.constant.*
@@ -80,13 +81,13 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
         redPoint()
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true)
-            return true
-        }
-        return super.onKeyDown(keyCode, event)
-    }
+//    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            moveTaskToBack(true)
+//            return true
+//        }
+//        return super.onKeyDown(keyCode, event)
+//    }
 
     /***
      * 未读消息红点展示
@@ -332,7 +333,11 @@ class MainBTCActivity : BaseActivity(), View.OnClickListener {
             USD -> binding.tvCurrencyUnit.text = "$"
         }
         if (WalletBTCUtils.isBtcValidAddress(walletSelleted.address)) {
-            balanceOfBtc(this, walletSelleted.address)
+            balanceOfBtc(walletSelleted.address,object : IBalanceListener{
+                override fun onBalance(bigDecimal: BigDecimal) {
+                    setBtcBalance(btcBalance)
+                }
+            })
         }
         binding.tvBtcAddress.text = addressHandle(walletSelleted.address)
         if (!walletSelleted.isBackupAlready && !walletSelleted.mnemonic.isNullOrEmpty()) {

@@ -17,6 +17,7 @@ buildscript {
         classpath 'com.huawei.agconnect:agcp:1.6.0.300'
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
+        classpath 'com.github.kezong:fat-aar:1.3.8'
     }
 }
 
@@ -29,6 +30,10 @@ allprojects {
         maven { url 'https://dl.bintray.com/thelasterstar/maven/' }
         maven { url 'https://dl.bintray.com/umsdk/release' }
         mavenCentral()
+        //配置fat包依赖
+        flatDir{
+            dirs 'libs'
+        }
     }
 }
 

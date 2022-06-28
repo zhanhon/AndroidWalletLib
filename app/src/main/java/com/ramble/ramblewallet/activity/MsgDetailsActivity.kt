@@ -38,7 +38,6 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
     private var id = 0
     private var list: ArrayList<Int> = arrayListOf()
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
@@ -149,7 +148,7 @@ class MsgDetailsActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("CheckResult")
     private fun getData() {
-        var req = PrivacyPolicyInfo.Req()
+        val req = PrivacyPolicyInfo.Req()
         req.lang = TimeUtils.dateToLang(this)
         req.type = when (typeText) {
             3 -> "privacy"

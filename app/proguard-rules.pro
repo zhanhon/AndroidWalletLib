@@ -25,6 +25,8 @@
 -keepattributes SourceFile,LineNumberTable
 # 混淆采用的算法
 -optimizations !code/simplification/cast,!field/*,!class/merging/*
+-dontwarn com.google.protobuf.**
+-keep class com.google.protobuf.** { *; }
 #######################不需混淆的Android类#####################
 -keep public class * extends android.app.Fragment
 -keep public class * extends android.app.Activity
@@ -98,6 +100,7 @@
   public static final android.os.Parcelable$Creator *;
 }
 #######################避免Serializable接口的子类中指定的某些成员变量和方法混淆####################
+-keep public class * implements java.io.Serializable {*;}
 -keepclassmembers class * implements java.io.Serializable {
     static final long serialVersionUID;
     private static final java.io.ObjectStreamField[] serialPersistentFields;
@@ -169,12 +172,49 @@
 -keep class com.google.gson.stream.** { *; }
 -keep class com.google.gson.examples.android.model.** { *; }
 
+ #xpopup
+-dontwarn com.lxj.xpopup.widget.**
+-keep class com.lxj.xpopup.widget.**{*;}
+
 #######################实体类####################
 -keep class com.ramble.ramblewallet.bean.** { *; }
 
 #######################混淆处理####################
 -keep class org.tron.api.** { *; }
 
+-keep class org.web3j.** {*;}
+
+#kotlin 相关
+-dontwarn kotlin.**
+-keep class kotlin.** { *; }
+-keep interface kotlin.** { *; }
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}
+-keepclasseswithmembers @kotlin.Metadata class * { *; }
+-keepclassmembers class **.WhenMappings {
+    <fields>;
+}
+-assumenosideeffects class kotlin.jvm.internal.Intrinsics {
+    static void checkParameterIsNotNull(java.lang.Object, java.lang.String);
+}
+
+-keep class kotlinx.** { *; }
+-keep interface kotlinx.** { *; }
+-dontwarn kotlinx.**
+-dontnote kotlinx.serialization.SerializationKt
+
+-keep class org.jetbrains.** { *; }
+-keep interface org.jetbrains.** { *; }
+-dontwarn org.jetbrains.**
+
+#######################外部调用混淆处理####################
+-keepclasseswithmembers class com.ramble.ramblewallet.MyApp {
+    <fields>;
+    <methods>;
+}
+-keep class com.ramble.ramblewallet.utils.** { *; }
+-keep class com.ramble.ramblewallet.blockchain.** { *; }
 
 
 

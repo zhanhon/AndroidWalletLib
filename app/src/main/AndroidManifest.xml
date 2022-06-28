@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.ramble.ramblewallet">
+    package="com.ramble.ramblewallet" >
 
     <queries>
         <package android:name="com.instagram.android" />
@@ -20,192 +20,236 @@
         <package android:name="com.facebook.katana" />
         <package android:name="com.linkedin.android" />
     </queries>
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 指纹权限 -->
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
     <application
-        android:name=".MyApp"
-        android:allowBackup="false"
-        android:icon="@mipmap/ic_logo"
-        android:label="@string/app_name"
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppMainTheme"
-        android:usesCleartextTraffic="false"
-        tools:replace="allowBackup">
+        android:allowBackup="true"
+        android:usesCleartextTraffic="true"
+        tools:replace="allowBackup"
+        tools:targetApi="n" >
+
+        <activity
+            android:name=".activity.MMWebViewActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
+        <activity
+            android:name=".activity.ResetPasswordActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.WelcomeActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.WalletMoreOperateActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.AddTokenActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.TokenManageActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.TokenActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.SearchTokenActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.RecoverWalletListActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.GatheringActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.TransferActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.WalletManageActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.AddressBookActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.ScanActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.MineActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.FingerPrintActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.MessageCenterActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.MsgDetailsActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.HelpActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.WalletConnectActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.HelpFaqActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.DealDetailActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.TransactionQueryActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.QueryActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.MnemonicConfirmActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.MnemonicActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".base.BaseActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.RecoverWalletActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.CreateWalletActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.CreateRecoverWalletActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.CreateWalletListActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.MainETHActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.MainTRXActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.MainBTCActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.MainSOLActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
         <activity
             android:name=".activity.MainDOGEActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMainTheme" />
 
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
@@ -219,14 +263,4 @@
         <receiver android:name=".push.NotificationBroadcast" />
     </application>
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!-- 指纹权限 -->
-    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
-    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 </manifest>

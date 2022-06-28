@@ -22,23 +22,12 @@ public class LanguageSetting {
         Resources resources = context.getResources();
         Configuration config = resources.getConfiguration();
         DisplayMetrics dm = resources.getDisplayMetrics();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            if (type == 1) { //0:简体中文、1：繁体中文、2：英文
-                config.setLocale(Locale.SIMPLIFIED_CHINESE);
-            } else if (type == 2) {
-                config.setLocale(Locale.TRADITIONAL_CHINESE);
-            } else if (type == 3) {
-                config.setLocale(Locale.ENGLISH);
-            }
-        } else {
-            if (type == 1) { //0:简体中文、1：繁体中文、2：英文
-                config.locale = Locale.SIMPLIFIED_CHINESE;
-            } else if (type == 2) {
-                config.locale = Locale.TRADITIONAL_CHINESE;
-            } else if (type == 3) {
-                config.locale = Locale.ENGLISH;
-
-            }
+        if (type == 1) { //0:简体中文、1：繁体中文、2：英文
+            config.setLocale(Locale.SIMPLIFIED_CHINESE);
+        } else if (type == 2) {
+            config.setLocale(Locale.TRADITIONAL_CHINESE);
+        } else if (type == 3) {
+            config.setLocale(Locale.US);
         }
 
         resources.updateConfiguration(config, dm);

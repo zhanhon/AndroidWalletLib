@@ -28,7 +28,6 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
     private var walletSource = 1
     private var saveWalletList: ArrayList<Wallet> = arrayListOf()
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
@@ -57,7 +56,6 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
         binding.ivBack.setOnClickListener(this)
         binding.btnConfirm.setOnClickListener(this)
         binding.edtWalletName.addTextChangedListener(object : TextWatcher {
-            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun afterTextChanged(s: Editable?) {
                 btnIsClick()
             }
@@ -71,7 +69,6 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
             }
         })
         binding.edtWalletPassword.addTextChangedListener(object : TextWatcher {
-            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun afterTextChanged(s: Editable?) {
                 btnIsClick()
             }
@@ -85,7 +82,6 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
             }
         })
         binding.edtPasswordConfirm.addTextChangedListener(object : TextWatcher {
-            @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
             override fun afterTextChanged(s: Editable?) {
                 btnIsClick()
             }
@@ -100,23 +96,14 @@ class CreateWalletActivity : BaseActivity(), View.OnClickListener {
         })
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun btnIsClick() {
-        if ((binding.edtWalletPassword.text.isNotEmpty())
-            && (binding.edtPasswordConfirm.text.isNotEmpty())
-            && (binding.edtWalletPassword.text.length >= 6)
-            && (binding.edtWalletPassword.text.trim()
-                .toString() == binding.edtPasswordConfirm.text.trim().toString())
-        ) {
-            binding.btnConfirm.isEnabled = true
-            binding.btnConfirm.background = getDrawable(R.drawable.shape_green_bottom_btn)
-        } else {
-            binding.btnConfirm.isEnabled = false
-            binding.btnConfirm.background = getDrawable(R.drawable.shape_gray_bottom_btn)
-        }
+        binding.btnConfirm.isEnabled = ((binding.edtWalletPassword.text.isNotEmpty())
+                && (binding.edtPasswordConfirm.text.isNotEmpty())
+                && (binding.edtWalletPassword.text.length >= 6)
+                && (binding.edtWalletPassword.text.trim()
+            .toString() == binding.edtPasswordConfirm.text.trim().toString()))
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onClick(v: View) {
         when (v.id) {
             R.id.iv_back -> {

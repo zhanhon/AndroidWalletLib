@@ -54,7 +54,6 @@ class QueryFragment : BaseFragment(),
     private var totalPage = 1
     private val adapter = RecyclerAdapter()
     private lateinit var wallet: Wallet
-    private var saveWalletList: ArrayList<Wallet> = arrayListOf()
     private var address = ""
     private var addressType = 0
     private var currencyUnit = ""
@@ -130,10 +129,6 @@ class QueryFragment : BaseFragment(),
             else -> null
         }
         changeCurrencyType = dateToCurrency(myActivity)
-        saveWalletList = Gson().fromJson(
-            SharedPreferencesUtils.getSecurityString(myActivity, WALLETINFO, ""),
-            object : TypeToken<ArrayList<Wallet>>() {}.type
-        )
         wallet =
             Gson().fromJson(
                 SharedPreferencesUtils.getSecurityString(myActivity, WALLETSELECTED, ""),

@@ -300,10 +300,8 @@ class AddressBookActivity : BaseActivity(), RadioGroup.OnCheckedChangeListener,
                     val holder = AdapterUtils.getHolder(v)
                     when (val item = holder.getItem<SimpleRecyclerItem>()) {
                         is AddressBookItem -> {
-                            startActivity(Intent(this, TransferActivity::class.java).apply {
-                                putExtra(ARG_PARAM1, item.data.address)
-                                putExtra(ARG_PARAM2, intent.getSerializableExtra(ARG_PARAM2))
-                            })
+                            RxBus.emitEvent(Pie.EVENT_TRANS_ADDRESS,item.data.address)
+                            finish()
                         }
                     }
                 }

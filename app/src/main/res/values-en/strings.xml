@@ -12,7 +12,7 @@
     <string name="gathering_tips_trx">This address only can transfer on <tools>%s</tools> network, Please don\'t use the other public blockchain.</string>
     <string name="gathering_tips_btc">This address only can transfer on <tools>%s</tools> network, Please don\'t use the other public blockchain.</string>
     <string name="bitcoin">BTC</string>
-    <string name="edit_wallet">Edit Wallet\'s Name</string>
+    <string name="edit_wallet">Wallet Name</string>
     <string name="gathering_save">Save</string>
     <string name="create_wallet">Create Wallet</string>
     <string name="save_address_book">Save the address book</string>
@@ -64,6 +64,7 @@
     <string name="gathering_wallet_address_title">Wallet Address</string>
     <string name="wallet_management">Wallet Management</string>
     <string name="wallet_name">Wallet Name</string>
+    <string name="password">Password</string>
     <string name="create_recover_wallet_tips">Easy Token, Easy Go!</string>
     <string name="clear_cache">Clean Cache</string>
     <string name="transaction_tips">Please wait for a while.</string>
@@ -76,6 +77,8 @@
     <string name="all_transactions">All transactions</string>
     <string name="confirm">Confirm</string>
     <string name="passord_confirm">Confirm Password</string>
+    <string name="passord_reset">Reset Password</string>
+    <string name="reset_id_wallet">Reset Identity Wallet</string>
     <string name="confirm_delete">Delete</string>
     <string name="scan">Scan</string>
     <string name="generate_QR_code_store">Generate QRcode and save them</string>
@@ -137,7 +140,6 @@
     <string name="edit_address_wallet">Edit address</string>
     <string name="no_records">No Information</string>
     <string name="no_results">No result</string>
-    <string name="app_name">Ramble Wallet</string>
     <string name="balance_insufficient">Balance Not Enough</string>
     <string name="trx_address_no_activate">The account is not activated, you will consume an additional 1.1 TRX to activate the account</string>
     <string name="trx_address_no_activate_token">The account is not activated, the trc20 pass can be transferred normally, but the account will not be activated</string>
@@ -150,7 +152,7 @@
     <string name="mnemonic_no_backup_tips">The mnemonic has not been recorded yet. To backup the mnemonic, please select Backup in the wallet management</string>
     <string name="backup_now">Backup</string>
     <string name="backup_later">Later</string>
-
+    <string name="backup_mnemonic">Backup Mnemonic</string>
 
     <string name="input_keystore">Please Enter Keystore</string>
     <string name="input_secret_key">Please enter the secret key</string>
@@ -165,6 +167,8 @@
     <string name="please_input_wallet_name">Please enter wallet name</string>
     <string name="input_wallet_name">Input Name</string>
     <string name="my_wallet">My Wallet</string>
+    <string name="id_wallet">Identity Wallet</string>
+    <string name="create_import">Create/Import</string>
     <string name="delete_wallet">Delete Wallet</string>
     <string name="different_password">Inconsistent Passwords</string>
     <string name="password_less_six_tips">Password no less than 6 characters</string>
@@ -196,6 +200,7 @@
     <string name="choose_fill">Optional</string>
     <string name="add_wallet">Add Wallet</string>
     <string name="least_save_wallet">Keep at least one wallet</string>
+    <string name="no_wallet_to_delete">No wallet to delete</string>
     <string name="next">Next</string>
     <string name="refresh_pull_down">Pull Down To Update</string>
     <string name="refresh_time">Last Updated On {key}</string>
@@ -246,4 +251,20 @@ Please confirm to open.</string>
     <string name="update_connect">Update content</string>
     <string name="verify_existing">Verify Existing Fingerprint</string>
     <string name="verify_existing_again">The verification is failed, please try again.</string>
+    <string name="backup_mnemonic_hint">Please copy mnemonic in order to make sure the backup is correct</string>
+    <string name="loading">Loading…</string>
+    <string name="deleting">Deleting</string>
+    <string name="password_incorrect">The password is incorrect</string>
+    <string name="reset_password_mnemonic_tip">Use the mnemonic to modify the wallet password</string>
+    <string name="reset_password_et_mnemonic_tip">Enter mnemonic words sequentially, separated by spaces</string>
+    <string name="reset_success">Reset password success</string>
+    <string name="reset_password_mnemonic_error">Mnemonic input error</string>
+    <string name="reset_password_is_id">Identity wallet already exists in this wallet</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="mnemonic_hint_operate">• Keep mnemonics in a safe place where the network is isolated.\n• Do not share and store mnemonic words in an online environment, such as email, photo album, social application, etc.</string>
+    <string name="system_prompt">System prompt</string>
+    <string name="ssl_error">SSL authentication failed, continue to access?</string>
+    <string name="label_file_selector">File Picker</string>
+    <string name="label_browser_provider">ChromiumKernel provides technical support</string>
+    <string name="label_web_provider">web page by&#160;%1$s&#160;provided</string>
 </resources>

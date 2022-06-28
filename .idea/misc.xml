@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../.gradle/caches/transforms-2/files-2.1/75b9afe658dc879c5a3dc651390822a9/jetified-XPopup-2.6.7/res/layout/_xpopup_center_impl_loading.xml" value="0.2980072463768116" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/color_amount_b_commit.xml" value="0.2215" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/corner_all.xml" value="0.2185" />
         <entry key="..\:/Workspace/RambleWallet/app/src/main/res/drawable/selector_check_sol.xml" value="0.213" />
@@ -56,10 +57,112 @@
         <entry key="..\:/workspace/RambleWallet/app/src/main/res/layout/dialog_trans_item.xml" value="0.23324275362318841" />
         <entry key="..\:/workspace/RambleWallet/app/src/main/res/layout/item_address_book.xml" value="0.2586050724637681" />
         <entry key="..\:/workspace/RambleWallet/app/src/main/res/layout/top_notice_dialog.xml" value="0.2586050724637681" />
+        <entry key="UMLibrary/res/layout/upush_bar_image_notification.xml" value="0.10410334346504559" />
+        <entry key="app/src/main/res/drawable/button_shape_enable.xml" value="0.2115" />
+        <entry key="app/src/main/res/drawable/gray_circle.xml" value="0.2345" />
+        <entry key="app/src/main/res/drawable/ic_has_read.xml" value="0.235" />
+        <entry key="app/src/main/res/drawable/ic_toggle_open.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable/icon_chromium.xml" value="0.2345" />
+        <entry key="app/src/main/res/drawable/icon_chromium_warp.xml" value="0.2345" />
+        <entry key="app/src/main/res/drawable/popup_background_shape_wallet.xml" value="0.2115" />
+        <entry key="app/src/main/res/drawable/red_circle.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/shape_button_enable_radio.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/shape_button_radio.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/shape_gray_5dp.xml" value="0.2325" />
+        <entry key="app/src/main/res/drawable/shape_gray_bottom_btn.xml" value="0.1945" />
+        <entry key="app/src/main/res/drawable/shape_green_bottom_btn.xml" value="0.2115" />
+        <entry key="app/src/main/res/drawable/shape_item_decoration.xml" value="0.2325" />
+        <entry key="app/src/main/res/drawable/shape_light_green_bottom_btn.xml" value="0.238" />
+        <entry key="app/src/main/res/drawable/shape_normal_radio_wallet.xml" value="0.2115" />
+        <entry key="app/src/main/res/drawable/shape_toast_bg.xml" value="0.221" />
+        <entry key="app/src/main/res/drawable/shape_wallet_manage_btc.xml" value="0.24" />
+        <entry key="app/src/main/res/drawable/shape_wallet_manage_doge.xml" value="0.24" />
+        <entry key="app/src/main/res/drawable/shape_wallet_manage_sol.xml" value="0.24" />
+        <entry key="app/src/main/res/drawable/shape_wallet_manage_trx.xml" value="0.24" />
+        <entry key="app/src/main/res/drawable/shape_white_bottom_btn.xml" value="0.2115" />
+        <entry key="app/src/main/res/drawable/shape_white_bottom_green_line_btn.xml" value="0.2115" />
+        <entry key="app/src/main/res/drawable/shape_white_rectangle.xml" value="0.239" />
+        <entry key="app/src/main/res/drawable/skin_toggle_selector.xml" value="0.179" />
+        <entry key="app/src/main/res/drawable/vector_add_address.xml" value="0.257" />
+        <entry key="app/src/main/res/drawable/vector_home_address_open.xml" value="0.264" />
+        <entry key="app/src/main/res/drawable/vector_home_scan.xml" value="0.2425" />
+        <entry key="app/src/main/res/drawable/vector_menu.xml" value="0.2425" />
+        <entry key="app/src/main/res/drawable/vector_token_manage.xml" value="0.2425" />
+        <entry key="app/src/main/res/drawable/wallet_popup_background_shape.xml" value="0.239" />
+        <entry key="app/src/main/res/drawable/wallet_shape_gray_et_bg.xml" value="0.2255" />
+        <entry key="app/src/main/res/drawable/wallet_shape_rv_mnemonic_bg.xml" value="0.2325" />
+        <entry key="app/src/main/res/drawable/webview_progress.xml" value="0.2345" />
+        <entry key="app/src/main/res/layout/activity_add_token.xml" value="0.26766304347826086" />
+        <entry key="app/src/main/res/layout/activity_address_book.xml" value="0.26766304347826086" />
+        <entry key="app/src/main/res/layout/activity_address_book_item.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_base.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_create_recover_wallet.xml" value="0.20199275362318841" />
+        <entry key="app/src/main/res/layout/activity_create_wallet.xml" value="0.20199275362318841" />
+        <entry key="app/src/main/res/layout/activity_create_wallet_list.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_deal_detail.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_finger_print.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_gathering.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_help.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_help_faq.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_main_btc.xml" value="0.30842391304347827" />
+        <entry key="app/src/main/res/layout/activity_main_doge.xml" value="0.3786231884057971" />
+        <entry key="app/src/main/res/layout/activity_main_eth.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_main_item.xml" value="0.3786231884057971" />
+        <entry key="app/src/main/res/layout/activity_main_sol.xml" value="0.3786231884057971" />
+        <entry key="app/src/main/res/layout/activity_main_trx.xml" value="0.4046875" />
+        <entry key="app/src/main/res/layout/activity_message_center.xml" value="0.30842391304347827" />
+        <entry key="app/src/main/res/layout/activity_mine.xml" value="0.34692028985507245" />
+        <entry key="app/src/main/res/layout/activity_mine_item.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_mnemonic.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_mnemonic_confirm.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_mnemonic_confirm_item.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_mnemonic_item.xml" value="0.49885406494140627" />
+        <entry key="app/src/main/res/layout/activity_msg_details.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_query.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_recover_wallet.xml" value="0.19680851063829788" />
+        <entry key="app/src/main/res/layout/activity_recover_wallet_list.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_reset_password.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_scan.xml" value="0.14130434782608695" />
+        <entry key="app/src/main/res/layout/activity_search_token.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_token.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_token_item.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_token_manage.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_token_manage_item.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_transaction_query.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_transfer.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_wallet_connect.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_wallet_manage.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_wallet_manage_item.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_wallet_more_operate.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/activity_webview.xml" value="0.1967697143554687" />
+        <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.20199275362318841" />
+        <entry key="app/src/main/res/layout/dialog_common.xml" value="0.26766304347826086" />
+        <entry key="app/src/main/res/layout/dialog_contributing_words_fail.xml" value="0.2545289855072464" />
+        <entry key="app/src/main/res/layout/dialog_create_wallet_list.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/dialog_password_confirmation.xml" value="0.29030797101449274" />
+        <entry key="app/src/main/res/layout/dialog_transaction_confirmation.xml" value="0.29030797101449274" />
+        <entry key="app/src/main/res/layout/dialog_transfer_confirm.xml" value="0.2966485507246377" />
+        <entry key="app/src/main/res/layout/dialog_version_confirm_tips.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_create_recover_wallet.xml" value="0.36739659367396593" />
+        <entry key="app/src/main/res/layout/fragment_main_btc.xml" value="0.3786231884057971" />
+        <entry key="app/src/main/res/layout/fragment_main_currency.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_main_eth.xml" value="0.3016591092965899" />
+        <entry key="app/src/main/res/layout/fragment_main_sol.xml" value="0.3786231884057971" />
+        <entry key="app/src/main/res/layout/fragment_main_trx.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_proclamation.xml" value="0.17028985507246377" />
+        <entry key="app/src/main/res/layout/fragment_transaction_query.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/item_add_token.xml" value="0.23233695652173914" />
+        <entry key="app/src/main/res/layout/item_progress.xml" value="0.33219324497648567" />
+        <entry key="app/src/main/res/layout/popup_custom_layout_wallet.xml" value="0.26766304347826086" />
+        <entry key="app/src/main/res/layout/popup_edit_layout.xml" value="0.29030797101449274" />
+        <entry key="app/src/main/res/layout/toast_hor_view.xml" value="0.2980072463768116" />
+        <entry key="app/src/main/res/layout/top_notice_dialog.xml" value="0.26766304347826086" />
+        <entry key="app/src/main/res/layout/wallet_layout_title_all.xml" value="0.28875793291024476" />
+        <entry key="app/src/main/res/layout/wallet_popup_edit_layout.xml" value="0.2980072463768116" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

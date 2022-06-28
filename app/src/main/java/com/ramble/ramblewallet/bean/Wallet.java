@@ -20,6 +20,7 @@ public class Wallet implements Serializable {
     private boolean isChoose;
     private boolean isBackupAlready;
     private List<String> mnemonicList;
+    private boolean idWallet; //true:身份钱包 false:创建/导入钱包
 
     public Wallet() {
 
@@ -49,6 +50,14 @@ public class Wallet implements Serializable {
                   String privateKey, String keystore, int walletType, List<String> mnemonicList, boolean isClickDelete) {
         this(walletName, walletPassword, mnemonic, address, privateKey, keystore, walletType, mnemonicList);
         this.isClickDelete = isClickDelete;
+    }
+
+    public boolean isIdWallet() {
+        return idWallet;
+    }
+
+    public void setIdWallet(boolean idWallet) {
+        this.idWallet = idWallet;
     }
 
     public int getIndex() {

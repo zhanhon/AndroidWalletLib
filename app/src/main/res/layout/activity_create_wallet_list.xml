@@ -10,19 +10,16 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_FFFFFF"
-            android:padding="@dimen/dp_10">
+            android:layout_height="@dimen/dp_46"
+            android:background="@color/color_FFFFFF">
 
             <ImageView
                 android:id="@+id/iv_back"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:layout_marginStart="@dimen/dp_10"
-                android:layout_marginEnd="@dimen/dp_10"
-                android:background="@drawable/vector_left_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_width="@dimen/dp_46"
+                android:layout_height="match_parent"
+                android:padding="@dimen/dp_12"
+                android:src="@drawable/vector_left_back"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/tv_recover_wallet_title"
@@ -32,9 +29,10 @@
                 android:layout_marginStart="@dimen/dp_10"
                 android:text="@string/new_wallet"
                 android:textColor="@color/color_000000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

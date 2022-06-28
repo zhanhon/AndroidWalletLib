@@ -24,6 +24,7 @@ import com.ramble.ramblewallet.bean.MainTokenBean
 import com.ramble.ramblewallet.bean.Page
 import com.ramble.ramblewallet.bean.StoreInfo
 import com.ramble.ramblewallet.bean.Wallet
+import com.ramble.ramblewallet.blockchain.IBalanceListener
 import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils.getSOLBalance
 import com.ramble.ramblewallet.blockchain.solana.TransferSOLUtils.getsSOLTokenBalance
 import com.ramble.ramblewallet.blockchain.solana.WalletSOLUtils.Companion.isSolValidAddress
@@ -76,13 +77,13 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
         redPoint()
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true)
-            return true
-        }
-        return super.onKeyDown(keyCode, event)
-    }
+//    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            moveTaskToBack(true)
+//            return true
+//        }
+//        return super.onKeyDown(keyCode, event)
+//    }
 
     /***
      * 未读消息红点展示
@@ -337,8 +338,16 @@ class MainSOLActivity : BaseActivity(), View.OnClickListener {
             USD -> binding.tvCurrencyUnit.text = "$"
         }
         if (isSolValidAddress(walletSelleted.address)) {
-            getSOLBalance(this, walletSelleted.address)
-            getsSOLTokenBalance(this, walletSelleted.address, contractAddress)
+            getSOLBalance(walletSelleted.address,object :IBalanceListener{
+                override fun onBalance(bigDecimal: BigDecimal) {
+                    setSolBalance(bigDecimal)
+                }
+            })
+            getsSOLTokenBalance(walletSelleted.address, contractAddress,object :IBalanceListener{
+                override fun onBalance(bigDecimal: BigDecimal) {
+                    setSolTokenBalance(bigDecimal)
+                }
+            })
         }
         binding.tvSolAddress.text = addressHandle(walletSelleted.address)
         if (!walletSelleted.isBackupAlready && !walletSelleted.mnemonic.isNullOrEmpty()) {
