@@ -32,13 +32,14 @@
                 tools:text="25323232323" />
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/iv_mine_right"
-                android:padding="@dimen/dp_12"
                 android:layout_width="@dimen/dp_46"
                 android:layout_height="match_parent"
-                android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_bell_unread"/>
+                android:layout_centerVertical="true"
+                android:padding="@dimen/dp_12"
+                android:src="@drawable/ic_bell_unread" />
 
         </RelativeLayout>
 

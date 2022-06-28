@@ -184,22 +184,26 @@
                     android:src="@mipmap/ic_arrow_right"
                     android:textColor="@color/color_000000" />
             </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_10"
+                android:background="@color/color_EFF2F2" />
+            <TextView
+                android:id="@+id/tv_delete_wallet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_FFFFFF"
+                android:gravity="center"
+                android:padding="@dimen/dp_15"
+                android:text="@string/delete_wallet"
+                android:textColor="@color/color_E11334"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_delete_wallet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_30"
-            android:background="@color/color_FFFFFF"
-            android:gravity="center"
-            android:padding="@dimen/dp_15"
-            android:text="@string/delete_wallet"
-            android:textColor="@color/color_E11334"
-            android:textSize="@dimen/sp_14"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

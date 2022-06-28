@@ -168,7 +168,7 @@
     <string name="my_wallet">我的钱包</string>
     <string name="id_wallet">身份钱包</string>
     <string name="create_import">创建/导入</string>
-    <string name="delete_wallet">删除钱包</string>
+    <string name="delete_wallet">移除</string>
     <string name="different_password">密码不一致</string>
     <string name="password_incorrect">密码不正确</string>
     <string name="password_less_six_tips">密码不小于6位</string>

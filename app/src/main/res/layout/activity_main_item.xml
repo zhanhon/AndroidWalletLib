@@ -7,15 +7,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/dp_10">
+        android:layout_height="@dimen/dp_46">
 
         <ImageView
             android:id="@+id/iv_token_icon"
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_30"
             android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_10" />
 
         <LinearLayout
@@ -27,6 +26,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:layout_marginTop="@dimen/dp_2"
                 android:id="@+id/tv_token_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,6 +66,7 @@
         </LinearLayout>
 
         <TextView
+            android:layout_marginEnd="@dimen/dp_20"
             android:id="@+id/tv_token_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,8 +81,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_1"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="@dimen/dp_30"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:layout_marginStart="@dimen/dp_20"
         android:background="@color/bg_color" />
 
 </LinearLayout>

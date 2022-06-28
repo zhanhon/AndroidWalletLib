@@ -169,7 +169,7 @@
     <string name="my_wallet">My Wallet</string>
     <string name="id_wallet">Identity Wallet</string>
     <string name="create_import">Create/Import</string>
-    <string name="delete_wallet">Delete Wallet</string>
+    <string name="delete_wallet">Remove</string>
     <string name="different_password">Inconsistent Passwords</string>
     <string name="password_less_six_tips">Password no less than 6 characters</string>
     <string name="confirm_transaction">Confirm Transaction</string>
