@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_FFFFFF"
+        tools:context=".activity.CreateRecoverWalletActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rl_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_more"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginRight="@dimen/dp_20"
+                android:background="@drawable/vector_arrow_down"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_000000"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_more"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="1212" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="@dimen/dp_240"
+            android:layout_height="@dimen/dp_240"
+            android:layout_marginTop="@dimen/dp_80"
+            android:background="@mipmap/ic_welcome"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rl_toolbar" />
+
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/btn_create_wallet"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:layout_height="@dimen/dp_40"
+                android:background="@drawable/button_shape_enable"
+                android:outlineProvider="none"
+                android:text="@string/create_wallet"
+                android:textAllCaps="false"
+                android:textSize="@dimen/sp_16"
+                android:layout_marginTop="@dimen/dp_60"
+                android:layout_marginEnd="@dimen/dp_58"
+                android:layout_marginStart="@dimen/dp_58"
+                app:layout_constraintTop_toBottomOf="@id/iv_logo"
+                app:layout_constraintEnd_toEndOf="@id/iv_logo"
+                app:layout_constraintStart_toStartOf="@id/iv_logo"
+                android:textColor="@color/color_FFFFFF"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/btn_recover_wallet"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginStart="@dimen/dp_58"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_58"
+            android:background="@drawable/shape_normal_radio_wallet"
+            android:gravity="center"
+            android:outlineProvider="none"
+            android:text="@string/recover_wallet"
+            android:textAllCaps="false"
+            android:textColor="@color/base_color"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="@id/iv_logo"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/iv_logo"
+            app:layout_constraintTop_toBottomOf="@id/btn_create_wallet" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
